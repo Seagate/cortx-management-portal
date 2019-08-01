@@ -26,7 +26,8 @@ while getopts ":g:v:b:" o; do
 done
 
 cd $BASE_DIR
-[ -z "$BUILD" ] && BUILD=$(git rev-parse --short HEAD)
+[ -z $"$BUILD" ] && BUILD="$(git rev-parse --short HEAD)" \
+        || BUILD="${BUILD}_$(git rev-parse --short HEAD)"
 [ -z "$VER" ] && VER=$(cat $BASE_DIR/VERSION)
 
 echo "Using VERSION=${VER} BUILD=${BUILD} ..."
