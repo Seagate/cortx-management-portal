@@ -1,8 +1,8 @@
 from aiohttp.web import Application, run_app, WebSocketResponse, Response
 from aiohttp import WSMsgType
 
-from aiohttp_rest import RestResource
-from aiohttp_ws import ws_register
+from aio_http_rest import RestResource
+from aio_http_ws import ws_register
 from models import Notes
 
 import asyncio
