@@ -67,7 +67,7 @@ class Alert(Plugin):
     def execute(self, **kwargs):
         raise Exception('execute not implemented for Alerts class')
 
-    def _amqp_callback(self, ch, method, properties, body):
+    def _amqp_callback(self, ct, ch, method, properties, body):
         '''
         1. This is the callback method on which we will receive the alerts from RMQ channel.
         2. This method will call CSM Core's method and will send the alert JSON string as parameter.
