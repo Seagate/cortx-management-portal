@@ -1,0 +1,21 @@
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=Cloud Storage Manager
+# Wants=rabbitmq-server.service
+# After=rabbitmq-server.service syslog.target
+# Requires=rabbitmq-server.service
+
+[Service]
+Type=forking
+PermissionsStartOnly=true
+ExecStartPre=
+ExecStartPre=/usr/bin/mkdir -p /var/run/csm /var/log/csm
+ExecStartPre=/usr/bin/chown csm:csm /var/run/csm /var/log/csm
+ExecStart=/usr/bin/csm_web
+ExecStopPost=
+PIDFile=/var/run/csm/csm_web.pid
+User=csm
+# Restart=on-failure
+TimeoutStartSec=300
