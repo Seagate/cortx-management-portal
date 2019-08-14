@@ -71,19 +71,19 @@ TOPDIR=$(realpath ${DIST}/rpmbuild)
 
 # CSM RPM
 echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/csm.spec
-rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/csm.spec
+rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb --with python36 $BASE_DIR/jenkins/csm.spec
 
 # EOS CSM RPM
 echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/eos-csm.spec
-rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/eos-csm.spec
+rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb --with python36 $BASE_DIR/jenkins/eos-csm.spec
 
 # CSM TEST RPM
 echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/csm-test.spec
-rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/csm-test.spec
+rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb --with python36 $BASE_DIR/jenkins/csm-test.spec
 
 # EOS CSM TEST RPM
 echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/eos-csm-test.spec
-rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/eos-csm-test.spec
+rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb --with python36 $BASE_DIR/jenkins/eos-csm-test.spec
 
 \rm -rf ${DIST}/rpmbuild/BUILDROOT/* ${DIST}/rpmbuild/BUILD/*
 find $BASE_DIR -name *.rpm

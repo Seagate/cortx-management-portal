@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .DS_Store
 node_modules
 /dist
@@ -19,3 +20,8 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+=======
+__pycache__
+dist
+csm
+>>>>>>> db4009d4ee786d8bd9e61ffb9561096a6e51822c
