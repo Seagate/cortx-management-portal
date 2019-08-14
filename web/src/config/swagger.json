@@ -1,0 +1,38 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "schemes": ["http"],
+    "produces": ["application/json"],
+    "paths": {
+      "/sessionkey": {
+        "get": {
+          "tags": ["Get SessionKey"],
+          "summary": "Gets Hard coded session key. In future this needs to be generated Login mechanism and this api will be scrapped",
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          },
+          "content": {
+            "application/json": {}
+          },
+          "parameters": [
+            {
+              "name": "user",
+              "in": "query",
+              "description": "Specifies the user name",
+              "required": true,
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  }
