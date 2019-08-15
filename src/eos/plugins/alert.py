@@ -5,7 +5,7 @@ import threading
 class Alerts(Plugin):
     def __init__(self):
         Plugin.__init__(self)
-        self.amqp_client = AmqpComm()
+        self.comm_client = AmqpComm()
         self.monitor_callback = None
 
     def init(self, callback_fn):
@@ -17,9 +17,9 @@ class Alerts(Plugin):
            will send the alerts as JSON string.  
         '''
         self.monitor_callback = callback_fn
-        self.amqp_client.init()
-        amqp_thread = threading.Thread(target=self.consume, args=())
-        amqp_thread.start()
+        self.comm_client.init()
+        alert_thread = threading.Thread(target=self.consume, args=())
+        alert_thread.start()
 
     def process_request(self, **kwargs):
         raise Exception('process_request not implemented for Alerts class')
@@ -46,4 +46,4 @@ class Alerts(Plugin):
         This is thread function.
         This method registers the callback with basic_consume method and starts consuming the alerts.
         '''
-        self.amqp_client.recv(self._alert_callback)
+        self.comm_client.recv(self._alert_callback)
