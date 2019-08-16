@@ -18,17 +18,18 @@
 """
 
 from abc import ABC, ABCMeta, abstractmethod
+from csm.common.errors import CsmError
 
 class Plugin(metaclass=ABCMeta):
-    '''
+    """
     This is an abstract class. Various plugins will implement this interface i.e. SSPL plugin, S3 plugin etc.
-    '''
+    """
     @abstractmethod
     def init(self):
-        raise Exception('init not implemented for Plugin class')
+        raise CsmError(-1, 'init not implemented for Plugin class')
 
     def process_request(self, **kwargs):
-        '''
+        """
         This method will handle GET/POST calls. 
-        '''
-        raise Exception('process_request not implemented for Plugin class')
+        """
+        raise CsmError(-1, 'process_request not implemented for Plugin class') 
