@@ -19,6 +19,7 @@ from csm.common.comm import AmqpComm
 from csm.eos.plugins.plugin import Plugin
 from csm.common.errors import CsmError
 import threading
+import errno
 
 class AlertPlugin(Plugin):
     def __init__(self):
@@ -40,26 +41,23 @@ class AlertPlugin(Plugin):
         alert_thread.start()
 
     def process_request(self, **kwargs):
-        raise CsmError(-1, 'process_request not implemented for AlertPlugin class') 
+        raise CsmError(errno.ENOSYS, 'process_request not implemented for AlertPlugin class') 
 
-    def _alert_callback(self, ct, ch, method, properties, body):
+    def plugin_callback(self, message):
         """
         1. This is the callback method on which we will receive the 
-           alerts from RMQ channel.
+           alerts from Comm class.
         2. This method will call AlertMonitor class function and will 
            send the alert JSON string as parameter.
         3. Upon receiving the status(i.e True) we will then acknowledge the alert.
         Parameters -
-        1. ch - RMQ Channel
-        2. method - Contains the server-assigned delivery tag
-        3. properties - Contains basic properties like delivery_mode etc. 
-        4. body - Actual alert JSON string
+        1. body - Actual alert JSON string
         """
         if self.monitor_callback:
-            status = self.monitor_callback(body)
+            status = self.monitor_callback(message)
             if status == True:
                 #Acknowledge the alert so that it could be removed from the queue
-                ch.basic_ack(delivery_tag=method.delivery_tag)
+                self.comm_client.acknowledge()
 
     def consume(self):
         """
@@ -67,4 +65,4 @@ class AlertPlugin(Plugin):
         This method registers the callback with basic_consume method 
         and starts consuming the alerts.
         """
-        self.comm_client.recv(self._alert_callback)
+        self.comm_client.recv(self.plugin_callback)

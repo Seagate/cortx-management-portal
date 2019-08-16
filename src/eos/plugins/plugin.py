@@ -19,6 +19,7 @@
 
 from abc import ABC, ABCMeta, abstractmethod
 from csm.common.errors import CsmError
+import errno
 
 class Plugin(metaclass=ABCMeta):
     """
@@ -26,10 +27,10 @@ class Plugin(metaclass=ABCMeta):
     """
     @abstractmethod
     def init(self):
-        raise CsmError(-1, 'init not implemented for Plugin class')
+        raise CsmError(errno.ENOSYS, 'init not implemented for Plugin class')
 
     def process_request(self, **kwargs):
         """
         This method will handle GET/POST calls. 
         """
-        raise CsmError(-1, 'process_request not implemented for Plugin class') 
+        raise CsmError(errno.ENOSYS, 'process_request not implemented for Plugin class') 
