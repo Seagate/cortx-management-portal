@@ -6,4 +6,4 @@ dotenv.config();
 
 
 export const handleCSMUI = (router: Router) =>
-    router.use('/', express.static("${CSM_UI_PATH}"", { index: 'index.html' }));
+    router.use('/', express.static("${CSM_UI_PATH}", { index: 'index.html' }));
