@@ -16,12 +16,12 @@
 """
 
 from csm.common.comm import AmqpComm
-from csm.eos.plugins.plugin import Plugin
+from csm.eos.plugins.plugin import CsmPlugin 
 from csm.common.errors import CsmError
 import threading
 import errno
 
-class AlertPlugin(Plugin):
+class AlertPlugin(CsmPlugin):
     def __init__(self):
         Plugin.__init__(self)
         self.comm_client = AmqpComm()
@@ -41,7 +41,7 @@ class AlertPlugin(Plugin):
         alert_thread.start()
 
     def process_request(self, **kwargs):
-        raise CsmError(errno.ENOSYS, 'process_request not implemented for AlertPlugin class') 
+        raise CsmError(errno.ENOSYS, 'AlertPlugin::process_request is not implemented') 
 
     def plugin_callback(self, message):
         """

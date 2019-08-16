@@ -21,14 +21,15 @@ from abc import ABC, ABCMeta, abstractmethod
 from csm.common.errors import CsmError
 import errno
 
-class Plugin(metaclass=ABCMeta):
+class CsmPlugin(metaclass=ABCMeta):
     """
-    This is an abstract class. Various plugins will implement this interface i.e. SSPL plugin, S3 plugin etc.
+    This is an abstract class. Various plugins will implement this interface i.e. Alert plugin, S3 plugin etc.
     """
     @abstractmethod
     def init(self):
         raise CsmError(errno.ENOSYS, 'init not implemented for Plugin class')
 
+    @abstractmethod
     def process_request(self, **kwargs):
         """
         This method will handle GET/POST calls. 
