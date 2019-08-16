@@ -34,6 +34,8 @@ echo "Using VERSION=${VER} BUILD=${BUILD} ..."
 
 # Array of directories to include in package.
 DIRS=($(ls -p | grep "/" | egrep -v "(dist|jenkins)" | cut -f1 -d'/'))
+# Build UI code and web code 
+sh $BASE_DIR/jenkins/build-web.sh
 
 # Remove existing directory and create fresh one to accomodate all packages.
 DIST="$BASE_DIR/dist"
@@ -41,6 +43,10 @@ mkdir -p $DIST/csm
 
 # Copy all directories into a temporary directory.
 cp -R ${DIRS[*]} $BASE_DIR/__init__.py ${DIST}/csm
+
+#Delete src folder from eos/gui and web
+rm -rf $BASE_DIR/src/web/src/ $BASE_DIR/src/web/tsconfig.json
+rm -rf $BASE_DIR/src/eos/gui/src $BASE_DIR/src/eos/gui/tsconfig.json
 
 # Remove existing directory tree and create fresh one.
 \rm -rf ${DIST}/rpmbuild

@@ -1,29 +1,30 @@
 <template>
   <v-app>
-    <v-app-bar flat dark app>
-      <v-toolbar-title class="headline ">
-        <span>Seagate-</span>
-        <span class="font-weight-light">EOS</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-        <span class="mr-2"></span>
-    </v-app-bar>
-
-    <v-content>
-     
-    </v-content>
+    <headerBar />
+    <div class="main-view">
+      <router-view></router-view>
+    </div>
   </v-app>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Component, Vue } from "vue-property-decorator";
+import HeaderBar from "./components/header/HeaderBar.vue";
 
-export default Vue.extend({
-  name: 'App',
+@Component({
+  name: "App",
   components: {
-  },
-  data: () => ({
-    //
-  }),
-});
+    headerBar: HeaderBar
+  }
+})
+export default class App extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+.main-view{
+  position: relative;
+  top:80px;
+}
+
+</style>
+
