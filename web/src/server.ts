@@ -4,6 +4,7 @@ import { applyMiddleware, applyRoutes } from "./utils";
 import middleware from "./middleware";
 import errorHandlers from "./middleware/errorHandlers";
 import routes from "./services";
+import { SocketService } from "./services/websocket/SocketService";
 
 process.on("uncaughtException", e => {
   console.log(e);
@@ -23,7 +24,14 @@ applyMiddleware(errorHandlers, router);
 
 const { PORT = 3000 } = process.env;
 const server = http.createServer(router);
+const INCOMING_SOCKET_PORT: number = Number(process.env.INCOMING_SOCKET_PORT);
+const OUTGOING_SOCKET_PORT: number = Number(process.env.OUTGOING_SOCKET_PORT);
 
-server.listen(PORT, () =>
-  console.log(`Server111 is running http://localhost:${PORT}...`)
+server.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+
+    // Server shoud send data over other socket
+    const socketServer  = new SocketService(OUTGOING_SOCKET_PORT);
+    socketServer.getConnection(`ws://localhost:${INCOMING_SOCKET_PORT}/ws`);
+  }
 );
