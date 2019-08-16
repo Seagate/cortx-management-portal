@@ -1,12 +1,19 @@
 <template>
-
+  <span >Hello world</span>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Component, Vue } from "vue-property-decorator";
 
-export default Vue.extend({
-  components: {
-  },
-});
+@Component({
+  name: "Home"
+})
+export default class Home extends Vue {}
 </script>
+<style lang="scss" scoped>
+.page {
+  position: relative;
+ 
+}
+</style>
+
