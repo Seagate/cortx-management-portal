@@ -18,12 +18,13 @@
 from csm.common.comm import AmqpComm
 from csm.eos.plugins.plugin import CsmPlugin 
 from csm.common.errors import CsmError
+from csm.common.log import Log
 import threading
 import errno
 
 class AlertPlugin(CsmPlugin):
     def __init__(self):
-        Plugin.__init__(self)
+        CsmPlugin.__init__(self)
         self.comm_client = AmqpComm()
         self.monitor_callback = None
 
@@ -65,4 +66,10 @@ class AlertPlugin(CsmPlugin):
         This method registers the callback with basic_consume method 
         and starts consuming the alerts.
         """
-        self.comm_client.recv(self.plugin_callback)
+        try:
+            self.comm_client.recv(self.plugin_callback)
+        except Exception as e:
+            Log.exception(e)
+
+    def stop(self):
+        self.comm_client.stop()
