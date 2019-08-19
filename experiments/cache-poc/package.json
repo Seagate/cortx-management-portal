@@ -1,0 +1,26 @@
+{
+  "name": "cache-poc",
+  "version": "1.0.0",
+  "description": "Code for cache alternatives access",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
+    "build-ts": "tsc"
+  },
+  "author": "Soniya Moholkar",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@types/memory-cache": "^0.2.0",
+    "@types/redis": "^2.8.13",
+    "express": "^4.17.1",
+    "memory-cache": "^0.2.0",
+    "redis": "^2.8.0"
+  }
+}
