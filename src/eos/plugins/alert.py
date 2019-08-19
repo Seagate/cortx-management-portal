@@ -19,6 +19,7 @@ from csm.common.comm import AmqpComm
 from csm.common.plugin import CsmPlugin 
 from csm.common.errors import CsmError
 from csm.common.log import Log
+from csm.core.blogic import const
 import errno
 import json
 
@@ -48,8 +49,8 @@ class AlertPlugin(CsmPlugin):
 
     def process_request(self, **kwargs):
         for key, value in kwargs.items():
-            if key.strip().lower() == 'cmd' and\
-                    value.strip().lower() == 'listen':
+            if key  == const.CSM_ALERT_CMD and \
+                    value.strip() == 'listen':
                 self._listen()
 
     def _plugin_callback(self, message):
@@ -64,8 +65,8 @@ class AlertPlugin(CsmPlugin):
         1. body - Actual alert JSON string
         """
         if self.monitor_callback:
-            output_schema = self._create_output_schema(message)
-            status = self.monitor_callback(output_schema)
+            alert_message = self._convert_to_csm_schema(message)
+            status = self.monitor_callback(alert_message)
             if status == True:
                 """
                 Acknowledge the alert so that it could be removed from the
@@ -90,9 +91,9 @@ class AlertPlugin(CsmPlugin):
         """
         self.comm_client.stop()
 
-    def _create_output_schema(self, message):
+    def _convert_to_csm_schema(self, message):
         """ 
-        Parsing the alert JSON to create the output schema
+        Parsing the alert JSON to create the csm schema
         """
         msg_body = json.loads(message)
         data = {'$schema': 'http://json-schema.org/draft-03/schema#', 'id':\
