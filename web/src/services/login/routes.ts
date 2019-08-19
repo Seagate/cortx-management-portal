@@ -1,5 +1,5 @@
 
-import { Request, Response } from "express";
+import { Request, Response, request, response } from "express";
 import { getSessionKey } from "./LoginController";
 import { checkUserParams } from "../../middleware/checks";
 
@@ -14,5 +14,5 @@ export default [
         res.status(200).send(result);
       }
     ]
-  }
+  }  
 ];
