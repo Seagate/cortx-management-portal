@@ -16,7 +16,7 @@
 """
 
 from csm.common.comm import AmqpComm
-from csm.eos.plugins.plugin import CsmPlugin 
+from csm.common.plugin import CsmPlugin 
 from csm.common.errors import CsmError
 from csm.common.log import Log
 import threading
