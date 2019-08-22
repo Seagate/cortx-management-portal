@@ -31,7 +31,7 @@ export default class App extends Vue {}
 <style lang="scss" scoped>
 .main-view {
   position: relative;
-  top: 60px;
+  top: 57px;
 }
 </style>
 
