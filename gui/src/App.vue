@@ -34,4 +34,3 @@ export default class App extends Vue {}
   top: 57px;
 }
 </style>
-
