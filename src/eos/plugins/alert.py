@@ -32,7 +32,7 @@ class AlertPlugin(CsmPlugin):
     """
 
     def __init__(self):
-        CsmPlugin.__init__(self)
+        super().__init__()
         self.comm_client = AmqpComm()
         self.monitor_callback = None
 
@@ -65,13 +65,16 @@ class AlertPlugin(CsmPlugin):
         1. body - Actual alert JSON string
         """
         if self.monitor_callback:
-            alert_message = self._convert_to_csm_schema(message)
-            status = self.monitor_callback(alert_message)
-            if status == True:
-                """
-                Acknowledge the alert so that it could be removed from the
-                queue. 
-                """
+            try:
+                alert = self._convert_to_csm_schema(message)
+                status = self.monitor_callback(alert)
+                if status == True:
+                    # Acknowledge the alert so that it could be
+                    # removed from the queue.
+                    self.comm_client.acknowledge()
+            except Exception as e:
+                Log.exception(e)
+                # Silently acknowledge ill-formed CSM alerts
                 self.comm_client.acknowledge()
 
     def _listen(self):
