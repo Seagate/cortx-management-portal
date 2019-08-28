@@ -1,6 +1,6 @@
 <template>
   <v-card class="my-5" width="60%" tile>
-    <v-system-bar height="30em" class="light-green lighten-3">
+    <v-system-bar height="30em" class="widgetheader">
       <span class="font-weight-medium text-uppercase">Alerts</span>
       <v-spacer></v-spacer>
       <img src="@/assets/widget/view-slideover-off.png" id="navLargeMode" style />
@@ -37,34 +37,41 @@
         </v-card>
       </v-row>
     </v-container>
+    <!-- <label>{{ totalRecords }}</label> -->
     <v-data-table calculate-widths :headers="headers" :items="desserts" :items-per-page="3"></v-data-table>
   </v-card>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import store from "./../../store/store";
 
 @Component({
   name: "eos-alert-medium"
 })
 export default class EosAlertMedium extends Vue {
+  public mounted() {
+    this.$store.dispatch("alerts/alertDataAction");
+  }
+
   private data() {
     return {
+      totalRecords: this.$store.getters["alerts/alertTotalRecordCount"],
       headers: [
         {
           text: "Active Time",
           align: "left",
           value: "time",
-          class: "light-green lighten-4 green--text"
+          class: "grey lighten-2"
         },
         {
           text: "Alert Severity",
           value: "severity",
-          class: "light-green lighten-4"
+          class: "grey lighten-2"
         },
         {
           text: "Component",
           value: "component",
-          class: "light-green lighten-4",
+          class: "grey lighten-2",
           sortable: false
         }
       ],

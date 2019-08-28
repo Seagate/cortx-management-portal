@@ -19,9 +19,21 @@
           </v-card-text>
           <v-list width="300px" class="mar-center" min-height="200px" max-height="257px">
             <v-list-item v-for="(item, index) in alertNotifications" :key="index">
-              <img class="mr-2" v-if="item.properties.header.severity==1" src="./../../assets/status/critical-icon.png" />
-              <img class="mr-2" v-if="item.properties.header.severity==2" src="../../assets/status/error-fault.png" />
-              <img class="mr-2" v-if="item.properties.header.severity==3" src="./../../assets/status/healthy-icon.png" />
+              <img
+                class="mr-2"
+                v-if="item.properties.header.severity==1"
+                src="./../../assets/status/critical-icon.png"
+              />
+              <img
+                class="mr-2"
+                v-if="item.properties.header.severity==2"
+                src="../../assets/status/error-fault.png"
+              />
+              <img
+                class="mr-2"
+                v-if="item.properties.header.severity==3"
+                src="./../../assets/status/healthy-icon.png"
+              />
               <v-list-item-content>
                 <v-list-item-title>State:{{ item.properties.header.alert_type }}</v-list-item-title>
                 <v-list-item-subtitle v-html="item.properties.header.location"></v-list-item-subtitle>
@@ -38,17 +50,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import store from "../../store";
+import store from "../../store/store";
 import VueNativeSock from "vue-native-websocket";
 @Component({
   name: "HeaderBar"
 })
 export default class HeaderBar extends Vue {
- 
   public data() {
-    return {
-     
-    };
+    return {};
   }
   public mounted() {
     Vue.use(VueNativeSock, "ws://localhost:8081/", {
@@ -61,7 +70,7 @@ export default class HeaderBar extends Vue {
   }
 
   get alertNotifications() {
-    return this.$store.state.socket.alerts;
+    return this.$store.state.alertNotification.socket.alerts;
   }
 }
 </script>
