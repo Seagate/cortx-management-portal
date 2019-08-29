@@ -37,8 +37,44 @@
         </v-card>
       </v-row>
     </v-container>
-    <!-- <label>{{ totalRecords }}</label> -->
-    <v-data-table calculate-widths :headers="headers" :items="desserts" :items-per-page="3"></v-data-table>
+    <v-data-table
+      calculate-widths
+      :headers="headers"
+      :items="alertData"
+      item-key="created_time"
+      :items-per-page="5"
+      :server-items-length="totalRecordsCount"
+    >
+      <template v-slot:item="props">
+        <tr class="font-weight-medium">
+          <td>{{props.item.created_time}}</td>
+          <td>
+            <v-img
+              height="20"
+              v-if="props.item.severity==1"
+              width="20"
+              src="./../../assets/status/critical-icon.png"
+            />
+            <v-img
+              height="20"
+              v-if="props.item.severity==2"
+              width="20"
+              src="./../../assets/status/error-fault.png"
+            />
+            <v-img
+              height="20"
+              v-if="props.item.severity==3"
+              width="20"
+              src="./../../assets/status/healthy-icon.png"
+            />
+          </td>
+          <td>
+            <div>{{props.item.location}}</div>
+            <div>State:{{props.item.alert_type}}</div>
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 <script lang="ts">
@@ -55,7 +91,6 @@ export default class EosAlertMedium extends Vue {
 
   private data() {
     return {
-      totalRecords: this.$store.getters["alerts/alertTotalRecordCount"],
       headers: [
         {
           text: "Active Time",
@@ -74,60 +109,16 @@ export default class EosAlertMedium extends Vue {
           class: "grey lighten-2",
           sortable: false
         }
-      ],
-      desserts: [
-        {
-          time: "25m",
-          severity: "Degraded",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        },
-        {
-          time: "5h 17m",
-          severity: "Failed",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        },
-        {
-          time: "18h 24m",
-          severity: "Failed",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        },
-        {
-          time: "18h 24m",
-          severity: "Degraded",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        },
-        {
-          time: "18h 24m",
-          severity: "Degraded",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        },
-        {
-          time: "18h 24m",
-          severity: "Degraded",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        },
-        {
-          time: "18h 24m",
-          severity: "Degraded",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        },
-        {
-          time: "18h 24m",
-          severity: "Degraded",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        },
-        {
-          time: "18h 24m",
-          severity: "Degraded",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        },
-        {
-          time: "18h 24m",
-          severity: "Degraded",
-          component: "Cluster 0, Node 1, Power Supply 0; State: Failed"
-        }
       ]
     };
+  }
+
+  get totalRecordsCount() {
+    return this.$store.getters["alerts/alertTotalRecordCount"];
+  }
+
+  get alertData() {
+    return this.$store.getters["alerts/alertData"];
   }
 }
 </script>
