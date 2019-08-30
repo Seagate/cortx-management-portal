@@ -20,8 +20,8 @@ export interface OtherDetails {
 export interface ExtendedInfo {
     resource_type: string;
     position: string;
-    durable - id: string;
-other_details: OtherDetails;
+    durable_id: string;
+    other_details: OtherDetails;
 }
 
 export interface Alert {
