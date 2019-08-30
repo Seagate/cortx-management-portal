@@ -14,10 +14,12 @@
  *****************************************************************************/
 <template>
   <v-card class="my-5" width="60%" tile>
-    <v-system-bar height="30em" class="widgetheader">
-      <span class="font-weight-medium text-uppercase">Alerts</span>
+    <v-system-bar height="40em">
+      <span id="title" class="text-uppercase font-weight-medium text--black">ALERTS</span>
       <v-spacer></v-spacer>
-      <img src="@/assets/widget/view-slideover-off.png" id="navLargeMode" style />
+      <router-link :to="'alertlarge'">
+        <img src="@/assets/widget/view-slideover-off.png" id="navLargeMode" style />
+      </router-link>
     </v-system-bar>
 
     <v-container>
@@ -140,5 +142,8 @@ export default class EosAlertMedium extends Vue {
 #navLargeMode {
   height: 1.4em;
   width: 1.4em;
+}
+#title {  
+  color: black;
 }
 </style>
