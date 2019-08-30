@@ -1,10 +1,11 @@
 import http from "http";
 import express from "express";
+import cors from "cors";
 import { applyMiddleware, applyRoutes } from "./utils";
 import middleware from "./middleware";
-import errorHandlers from "./middleware/errorHandlers";
+import errorHandlers from "./middleware/error_handlers";
 import routes from "./services";
-import { SocketService } from "./services/websocket/SocketService";
+import { SocketService } from "./services/websocket/socket_service";
 
 process.on("uncaughtException", e => {
   console.log(e);
@@ -17,6 +18,7 @@ process.on("unhandledRejection", e => {
 });
 
 const router = express();
+router.use(cors());
 applyMiddleware(middleware, router);
 applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);

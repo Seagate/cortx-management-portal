@@ -1,0 +1,12 @@
+{
+    "/api/v1/alerts": [
+        {
+            "paramname": "sortby",
+            "values": "timestamp"
+        },
+        {
+            "paramname": "sorttype",
+            "values": "asc,desc"
+        }
+    ]
+}

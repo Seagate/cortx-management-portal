@@ -1,38 +1,117 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "version": "1.0.0"
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/api/v1",
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/sessionkey": {
+      "get": {
+        "tags": [
+          "Get SessionKey"
+        ],
+        "summary": "Gets Hard coded session key. In future this needs to be generated Login mechanism and this api will be scrapped",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "description": "Specifies the user name",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
     },
-    "host": "localhost:3000",
-    "basePath": "/api/v1",
-    "schemes": ["http"],
-    "produces": ["application/json"],
-    "paths": {
-      "/sessionkey": {
-        "get": {
-          "tags": ["Get SessionKey"],
-          "summary": "Gets Hard coded session key. In future this needs to be generated Login mechanism and this api will be scrapped",
-          "responses": {
-            "200": {
-              "description": "OK"
-            },
-            "400": {
-              "description": "Bad request"
+    "/alerts": {
+      "get": {
+        "tags": [
+          "Get Alerts"
+        ],
+        "summary": "Gets Hard coded Alerts. In future this needs to be integrated with Python API",
+        "responses": {
+          "200": {
+            "description": "Alerts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_records": {
+                      "type": "integer",
+                      "description": "Alerts count"
+                    }
+                  }
+                }
+              }
             }
           },
-          "content": {
-            "application/json": {}
+          "400": {
+            "description": "Missing Valid Required Parameters"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "sortby",
+            "in": "query",
+            "description": "Specifies sort by option",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "timestamp"
+            ],
+            "default": "timestamp"
           },
-          "parameters": [
-            {
-              "name": "user",
-              "in": "query",
-              "description": "Specifies the user name",
-              "required": true,
-              "type": "string"
-            }
-          ]
-        }
+          {
+            "name": "dir",
+            "in": "query",
+            "description": "Specifies sort direction option",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "default": "desc"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Specifies offset of the result",
+            "required": true,
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Specifies limit for results per page",
+            "required": true,
+            "type": "integer",
+            "default": 10
+          }
+        ]
       }
     }
   }
+}
