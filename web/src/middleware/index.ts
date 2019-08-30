@@ -3,8 +3,8 @@ import {
     handleCompression
   } from "./common";
   
-  import { handleAPIDocs } from "./apiDocs";
-  import { handleCSMUI} from "./staticUI";
+  import { handleAPIDocs } from "./api_docs";
+  import { handleCSMUI} from "./static_ui";
   
   export default [
     handleBodyRequestParsing,
