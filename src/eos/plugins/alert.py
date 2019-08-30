@@ -24,8 +24,7 @@ import errno
 import json, os
 from jsonschema import Draft3Validator
 from jsonschema import validate
-from enum import Enum
-import datetime
+import time
 
 class AlertPlugin(CsmPlugin):
     """
@@ -115,17 +114,26 @@ class AlertPlugin(CsmPlugin):
         creates a CSM schema containing common values i.e status, 
         health, location etc.
         """
-        data = {'id': int((body.get('enclosure-id', -1)))\
-                , 'alert_uuid': int((body.get('enclosure-id', -1))),\
-                'status': '%s' %(body.get('status', "")), 'type': 'hw',\
-                'enclosure_id': int(body.get('enclosure-id', -1)),\
-                'module_name': '%s' %((body.get\
-                ('name', ""))), 'description': '%s' %(body.get\
-                ('health-reason', "")), 'health': '%s' %(body.get\
-                ('health', "")), 'health_recommendation': '%s' %\
-                ((body.get('health-recommendation', ""))), 'location':\
-                '%s' %((body.get('location', ""))), 'resolved': 0,\
-                'acknowledged': 0, 'severity': 1}
+        data = dict()
+        data[const.ALERT_ID] = int(time.time())
+        data[const.ALERT_UUID] = int((body.get(const.IN_ALERT_ENCLOSURE_ID,\
+                const.ALERT_INT_DEFAULT)))
+        data[const.ALERT_STATUS] = '{}'.format(body.get(const.ALERT_STATUS, ""))
+        data[const.ALERT_TYPE] = const.ALERT_HW 
+        data[const.ALERT_ENCLOSURE_ID] = int(body.get\
+                (const.IN_ALERT_ENCLOSURE_ID, const.ALERT_INT_DEFAULT))
+        data[const.ALERT_MODULE_NAME] = '{}'.format(body.get\
+                (const.ALERT_MODULE_NAME, ""))
+        data[const.ALERT_DESCRIPTION] = '{}'.format(body.get\
+                (const.ALERT_HEALTH_REASON, ""))
+        data[const.ALERT_HEALTH] = '{}'.format(body.get(const.ALERT_HEALTH, ""))
+        data[const.ALERT_HEALTH_RECOMMENDATION] = '{}'.format\
+                (body.get(const.IN_ALERT_HEALTH_RECOMMENDATION, ""))
+        data[const.ALERT_LOCATION] = '{}'.format(body.get\
+                (const.ALERT_LOCATION, ""))
+        data[const.ALERT_RESOLVED] = const.ALERT_FALSE
+        data[const.ALERT_ACKNOWLEDGED] = const.ALERT_FALSE
+        data[const.ALERT_SEVERITY] = const.ALERT_TRUE
         return data
 
     def _prepare_csm_schema(self, body, key):
@@ -143,45 +151,47 @@ class AlertPlugin(CsmPlugin):
             info.
             """
             if key == const.FAN_ALERT:
-                details = body[key]['info']['fan_module']
+                details = body[key][const.ALERT_INFO][const.ALERT_FAN_MODULE]
             else:
-                details = body[key]['info']
+                details = body[key][const.ALERT_INFO]
             """ Fetching the common values for CSM schema. """
             data = self._prepare_common_details(details)
-            data.update({'state': '%s' %(body[key].get('alert_type', ""))})
+            data[const.ALERT_STATE] = '{}'.format(body[key].get\
+                    ('alert_type', ""))
             """ Fetching values from extended_info. """
-            extended_info = body[key]['extended_info']
+            extended_info = body[key][const.ALERT_EXTENDED_INFO]
             """
             Creating extended_info for CSM schema. This extended_info will
             contain all the remaining fields other then the common one. 
             The fields for extended_info is fetched from extended_info and
             info dictionaries of SSPL schema.
             """
-            data['extended_info'] = {'resource_type': '%s'\
-                %(body[key].get('resource_type', ""))}
+            data[const.ALERT_EXTENDED_INFO] = {const.ALERT_RESOURCE_TYPE: "",\
+                    const.ALERT_OTHER_DETAILS: {}}
+            data[const.ALERT_EXTENDED_INFO][const.ALERT_RESOURCE_TYPE] =\
+                    '{}'.format(body[key].get(const.ALERT_RESOURCE_TYPE, ""))
             for info in extended_info:
-                data['extended_info'].update({'%s' %(info):\
-                        extended_info[info]})
+                data[const.ALERT_EXTENDED_INFO][info] = extended_info[info]
             """
             Removing the already added fields from the dictionary so that 
             the remaining fields fron info can be directly copied into
             extended_info of CSM schema.
             """
-            details.pop('status', "")
-            details.pop('enclosure-id', -1)
-            details.pop('name', "")
-            details.pop('health-reason', "")
-            details.pop('health', "")
-            details.pop('health-recommendation', "")
-            details.pop('location', "")
+            details.pop(const.ALERT_STATUS, "")
+            details.pop(const.IN_ALERT_ENCLOSURE_ID, const.ALERT_INT_DEFAULT)
+            details.pop(const.ALERT_MODULE_NAME, "")
+            details.pop(const.ALERT_HEALTH_REASON, "")
+            details.pop(const.ALERT_HEALTH, "")
+            details.pop(const.IN_ALERT_HEALTH_RECOMMENDATION, "")
+            details.pop(const.ALERT_LOCATION, "")
             """
             Created other_fields key inside extended_info which will contain the
             remaining fields.
             """
-            data['extended_info'].update({'other_details': details})
+            data[const.ALERT_EXTENDED_INFO][const.ALERT_OTHER_DETAILS] = details
             module_type = key.split('_')
-            data.update({'module_type': '%s' %(module_type[1])})
-            data.update({'updated_time': '%s' %(datetime.datetime.utcnow())})
+            data[const.ALERT_MODULE_TYPE] = '{}'.format(module_type[1])
+            data[const.ALERT_UPDATED_TIME] = int(time.time())
         except KeyError as e:
             Log.exception(e)
         return data
@@ -190,14 +200,23 @@ class AlertPlugin(CsmPlugin):
         """ 
         Parsing the alert JSON to create the csm schema
         """
-        if isinstance(message, dict) == False:
-            msg_body = json.loads(message)
-        else:
-            msg_body = message
-        body = msg_body['message']['sensor_response_type']
-        csm_schema = {}
-        for key in body:
-            csm_schema = self._prepare_csm_schema(body, key)
-            csm_schema.update({'created_time': '%s' %\
-                    (msg_body.get('time', ""))})
+        try:
+            if not isinstance(message, dict):
+                msg_body = json.loads(message)
+            else:
+                msg_body = message
+            body = msg_body['message']['sensor_response_type']
+            csm_schema = {}
+            for key in body:
+                csm_schema = self._prepare_csm_schema(body, key)
+            """
+            For now setting the created_time to current epoch.
+            Once SSPL starts sending the time in epoch we will make
+            use of 'time' field
+            """
+            csm_schema[const.ALERT_CREATED_TIME] = int(time.time())
+            """ Validating the schema. """
+            validate(csm_schema, self._hw_schema)
+        except Exception as e:
+            Log.exception(e)
         return csm_schema
