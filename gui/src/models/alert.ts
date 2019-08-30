@@ -1,27 +1,44 @@
 // Interface for CSM schema for Alert
+export interface OtherDetails {
+    dc12v: number;
+    dctemp: number;
+    vendor: string;
+    description: string;
+    dc33v: number;
+    mfg_vendor_id: string;
+    fru_shortname: string;
+    serial_number: string;
+    mfg_date: string;
+    part_number: string;
+    model: string;
+    revision: string;
+    dc5v: number;
+    dc12i: number;
+    dc5i: number;
+}
+
 export interface ExtendedInfo {
-    fields: string;
+    resource_type: string;
+    position: string;
+    durable - id: string;
+other_details: OtherDetails;
 }
 
 export interface Alert {
-    id: string;
-    alert_uuid: string;
+    id: number;
+    alert_uuid: number;
+    status: string;
     type: string;
-    state: string;
-    created_time: string;
-    updated_time: string;
-    resolved: string;
-    acknowledged: string;
-    severity: string;
-    resource_type: string;
-    enclosure_id: string;
-    module_type: string;
+    enclosure_id: number;
     module_name: string;
-    description_id: string;
     description: string;
     health: string;
-    health_recomendation_id: string;
-    health_recomendation: string;
+    health_recommendation: string;
+    location: string;
+    resolved: number;
+    acknowledged: number;
+    severity: number;
+    state: string;
     extended_info: ExtendedInfo;
 }
 

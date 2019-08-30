@@ -70,7 +70,7 @@
           </td>
           <td>
             <div>{{props.item.location}}</div>
-            <div>State:{{props.item.alert_type}}</div>
+            <div>State:{{props.item.state}}</div>
           </td>
         </tr>
       </template>
