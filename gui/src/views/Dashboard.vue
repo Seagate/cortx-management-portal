@@ -1,9 +1,9 @@
 /*****************************************************************************
- Filename:          alert-medium.vue
- Description:       Alert Medium Component
+ Filename:          dashboard.vue
+ Description:       Dashboard Component
 
- Creation Date:     01/08/2019
- Author:            Piyush Gupte
+ Creation Date:     30/08/2019
+ Author:            Sanjeevan Bhave
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -13,38 +13,24 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-app>
-    <headerBar />
-    <div class="main-view">
-      <v-row>
-        <v-col cols=2>
-          <eos-nav-bar></eos-nav-bar>
-        </v-col>
-        <v-col cols=10>
-          <router-view></router-view>
-        </v-col>
-      </v-row>
-    </div>
-  </v-app>
+  <eos-alert-medium />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HeaderBar from "./components/header/header-bar.vue";
-import EosNavBar from "./components/navigation/nav-bar.vue";
+import EosAlertMedium from "./../components/dashboard/alert-medium.vue";
+
 @Component({
-  name: "App",
+  name: "eos-dashboard",
   components: {
-    headerBar: HeaderBar,
-    eosNavBar: EosNavBar
+    eosAlertMedium: EosAlertMedium
   }
 })
-export default class App extends Vue {}
+export default class Home extends Vue {}
 </script>
-
 <style lang="scss" scoped>
-.main-view {
+.page {
   position: relative;
-  top: 57px;
 }
 </style>
+
