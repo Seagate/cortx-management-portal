@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getAlerts } from "./alerts_controller";
+import { getAlerts } from "./alerts-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 
 

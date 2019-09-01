@@ -1,6 +1,6 @@
 
 import { Request, Response, request, response } from "express";
-import { getSessionKey } from "./login_controller";
+import { getSessionKey } from "./login-controller";
 import { checkRequiredParams } from "../../middleware/validator";
 
 export default [

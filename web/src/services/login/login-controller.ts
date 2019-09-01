@@ -1,4 +1,4 @@
-import { getSessionKeys } from "./providers/session_provider";
+import { getSessionKeys } from "./providers/session-provider";
 
 export const getSessionKey = async (user: string) => {
   // if (q.length < 3) {

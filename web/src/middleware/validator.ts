@@ -14,9 +14,9 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 import { Request, Response, NextFunction } from "express";
-import { HTTP400Error } from "../utils/http_errors";
+import { HTTP400Error } from "../utils/http-errors";
 import * as getparams from './../api_mandatory_params.json';
-import * as sortValidators from './sort_validator';
+import * as sortValidators from './sort-validator';
 
 /**
  * This method validates the request parameters based on their mandatory criteria

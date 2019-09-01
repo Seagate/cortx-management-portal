@@ -14,7 +14,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 
-import { getAlertList } from "./providers/alerts_provider";
+import { getAlertList } from "./providers/alerts-provider";
 
 /**
  * This method is responsible to get the alert data from provider and sends back
