@@ -8,12 +8,13 @@ Description=Cloud Storage Manager
 # Requires=rabbitmq-server.service
 
 [Service]
+Environment=NODE_PORT=%i
 Type=forking
 PermissionsStartOnly=true
 ExecStartPre=
 ExecStartPre=/usr/bin/mkdir -p /var/run/csm /var/log/csm
 ExecStartPre=/usr/bin/chown csm:csm /var/run/csm /var/log/csm
-ExecStart=/usr/bin/csm_web
+ExecStart=/usr/bin/node web-dist/server.js
 ExecStopPost=
 PIDFile=/var/run/csm/csm_web.pid
 User=csm
