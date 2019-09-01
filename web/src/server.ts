@@ -24,13 +24,13 @@ applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);
 
 
-const { PORT = 3000 } = process.env;
+const { NODE_PORT = 3000 } = process.env;
 const server = http.createServer(router);
 const INCOMING_SOCKET_PORT: number = Number(process.env.INCOMING_SOCKET_PORT);
 const OUTGOING_SOCKET_PORT: number = Number(process.env.OUTGOING_SOCKET_PORT);
 
-server.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
+server.listen(NODE_PORT, () => {
+    console.log(`Server is running at http://localhost:${NODE_PORT}`);
 
     // Server shoud send data over other socket
     const socketServer  = new SocketService(OUTGOING_SOCKET_PORT);

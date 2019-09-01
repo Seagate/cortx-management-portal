@@ -1,7 +1,8 @@
 # Build related
 .DS_Store
 node_modules
-/dist
+dist
+web-dist
 __pycache__
 csm
 

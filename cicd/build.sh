@@ -5,6 +5,9 @@ set -e
 BASE_DIR=$(realpath "$(dirname $0)/..")
 PROG_NAME=$(basename $0)
 DIST=$(realpath $BASE_DIR/dist)
+GUI_DIR="$BASE_DIR/src/eos/gui"
+API_DIR="$BASE_DIR/src/web"
+
 
 usage() {
     echo "usage: $PROG_NAME [-v <csm version>] [-b <build no>]" 1>&2;
@@ -31,23 +34,50 @@ cd $BASE_DIR
 [ -z "$VER" ] && VER=$(cat $BASE_DIR/VERSION)
 
 echo "Using VERSION=${VER} BUILD=${BUILD} ..."
-
-# Array of directories to include in package.
-DIRS=($(ls -p | grep "/" | egrep -v "(dist|jenkins)" | cut -f1 -d'/'))
 # Build UI code and web code 
-sh $BASE_DIR/jenkins/build-web.sh
+echo  BASE_DIR $BASE_DIR
+echo GUI_DIR $GUI_DIR
+echo API_DIR $API_DIR
+
+# Build GUI
+#cd $GUI_DIR
+echo $PWD
+echo Running GUI build
+
+# Delete dist folder
+rm -rf $GUI_DIR/dist
+cd $GUI_DIR
+npm install
+npm run build
+
+# Build API
+echo Running API build
+
+# Delete dist folder
+rm -rf $API_DIR/web-dist
+cd $API_DIR
+echo $PWD
+npm install
+npm run build-ts
+
+cd $BASE_DIR
+# Array of directories to include in package.
+DIRS=($(ls -p | grep "/" | egrep -v "(dist|jenkins|experiments)" | cut -f1 -d'/'))
+echo $DIRS
 
 # Remove existing directory and create fresh one to accomodate all packages.
 DIST="$BASE_DIR/dist"
+
 mkdir -p $DIST/csm
 
 # Copy all directories into a temporary directory.
+echo "Copy files to CSM directory"
 cp -R ${DIRS[*]} $BASE_DIR/__init__.py ${DIST}/csm
 
 #Delete src folder from eos/gui and web
-rm -rf $BASE_DIR/src/web/src/ $BASE_DIR/src/web/tsconfig.json
-rm -rf $BASE_DIR/src/eos/gui/src $BASE_DIR/src/eos/gui/tsconfig.json
-
+echo " Deleting web src and eos/gui directory--" ${DIST}/csm/web/src
+rm -rf ${DIST}/csm/src/web/src 
+rm -rf ${DIST}/csm/src/eos/gui/src 
 # Remove existing directory tree and create fresh one.
 \rm -rf ${DIST}/rpmbuild
 mkdir -p ${DIST}/rpmbuild/SOURCES
@@ -56,10 +86,8 @@ cd ${DIST}
 # Create tar for csm
 tar -czvf ${DIST}/rpmbuild/SOURCES/csm-${VER}.tar.gz \
     $(find csm -type f | egrep -v "(test|eos)")
-
 # Create tar for eos-csm
 tar -czvf ${DIST}/rpmbuild/SOURCES/eos-csm-${VER}.tar.gz csm/src/eos
-
 # Create tar for csm-test
 tar -czvf rpmbuild/SOURCES/csm-test-${VER}.tar.gz \
     $(find csm/test -type f | grep -v eos)
