@@ -14,7 +14,7 @@
  *****************************************************************************/
 import Vue from "vue";
 import Vuex from "vuex";
-import alertNotification from "./modules/alertNotification";
+import alertNotification from "./modules/alert-notification";
 import alerts from "./modules/alerts";
 
 Vue.use(Vuex);

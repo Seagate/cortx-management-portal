@@ -26,7 +26,7 @@ import EosAlertMedium from "./../components/dashboard/alert-medium.vue";
     eosAlertMedium: EosAlertMedium
   }
 })
-export default class Home extends Vue {}
+export default class Dashboard extends Vue {}
 </script>
 <style lang="scss" scoped>
 .page {

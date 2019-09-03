@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
+    "dev": "tsc-watch --onSuccess \"node ./web-dist/server.js\"",
     "build-ts": "tsc"
   },
   "keywords": [],

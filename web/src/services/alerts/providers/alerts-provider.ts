@@ -18,7 +18,87 @@ import https from 'https';
 
 export const getAlertList = async (sortby: string, dir: string, offset: number, limit: number) => {
     return new Promise((resolve, reject) => {
-        let http_agent;
+        //TODO - Remove after pyhton API integration
+        let data = `{
+            "total_records":100,
+            "alerts":[
+            {
+            "id":0,
+            "alert_uuid":0,
+            "status":"Not Present",
+            "type":"hw",
+            "enclosure_id":0,
+            "module_name":"",
+            "description":"The power supply is not installed.",
+            "health":"Fault",
+            "health_recommendation":"- If the power supply is missing, insert a power supply of the correct type. - If the power supply is present, confirm that it is fully inserted and locked in place. - If the above steps do not resolve the issue, the power supply has probably failed and if the error persists, it should be replaced.",
+            "location":"Enclosure 0 - Right",
+            "resolved":0,
+            "acknowledged":0,
+            "severity":1,
+            "state":"missing",
+            "extended_info":{
+            "resource_type":"fru",
+            "position":"Right",
+            "durable-id":"psu_0.1",
+            "other_details":{
+            "dc12v":0,
+            "dctemp":0,
+            "vendor":"",
+            "description":"",
+            "dc33v":0,
+            "mfg-vendor-id":"",
+            "fru-shortname":"",
+            "serial-number":"",
+            "mfg-date":"N/A",
+            "part-number":"",
+            "model":"",
+            "revision":"",
+            "dc5v":0,
+            "dc12i":0,
+            "dc5i":0
+            }
+            },
+            "module_type":"psu",
+            "updated_time":"2019-08-28 10:10:53.165203",
+            "created_time":"2019-07-25 11:24:39.303712"
+            },
+            {
+            "id":0,
+            "alert_uuid":0,
+            "status":"Not Installed",
+            "type":"hw",
+            "enclosure_id":0,
+            "module_name":"Fan Module 4",
+            "description":"The fan module is not installed.",
+            "health":"Fault",
+            "health_recommendation":"Install the missing fan module.",
+            "location":"Enclosure 0 - Right",
+            "resolved":0,
+            "acknowledged":0,
+            "severity":1,
+            "state":"missing",
+            "extended_info":{
+            "resource_type":"fru",
+            "fan_module":{
+            "position":"Indexed",
+            "durable-id":"fan_module_0.4"
+            },
+            "other_details":{
+            "fans":[
+            ]
+            }
+            },
+            "module_type":"fan",
+            "updated_time":"2019-08-28 11:14:50.059649",
+            "created_time":"2019-07-25 12:42:37.204118"
+            }
+            ]
+            }`;
+        resolve(JSON.parse(data));
+
+        //TODO: Remove comments once the Python API is up and running.
+        /*let http_agent;
         if (process.env.CSM_AGENT_PROTOCOL == 'http') {
             http_agent = http;
         } else {
@@ -58,6 +138,6 @@ export const getAlertList = async (sortby: string, dir: string, offset: number, 
         }).on("error", (err) => {
             reject(err);
             console.log("Error: " + err.message);
-        });
+        });*/
     });
 };
