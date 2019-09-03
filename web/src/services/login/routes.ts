@@ -1,14 +1,14 @@
 
 import { Request, Response, request, response } from "express";
-import { getSessionKey } from "./LoginController";
-import { checkUserParams } from "../../middleware/checks";
+import { getSessionKey } from "./login-controller";
+import { checkRequiredParams } from "../../middleware/validator";
 
 export default [
   {
     path: "/api/v1/sessionkey",
     method: "get",
     handler: [
-      checkUserParams, // <-- this line
+      checkRequiredParams, // <-- this line
       async ({ query }: Request, res: Response) => {
         const result = await getSessionKey(query.user);
         res.status(200).send(result);

@@ -1,9 +1,9 @@
 /*****************************************************************************
- Filename:          router.ts
- Description:       Router
+ Filename:          store.ts
+ Description:       Root Store
 
- Creation Date:     01/08/2019
- Author:            Piyush Gupte
+ Creation Date:     30/08/2019
+ Author:            Sanjeevan Bhave
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -13,23 +13,15 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 import Vue from "vue";
-import Router from "vue-router";
-import Dashboard from "./views/dashboard.vue";
-import EosAlertLarge from "./components/dashboard/alert-large.vue";
+import Vuex from "vuex";
+import alertNotification from "./modules/alertNotification";
+import alerts from "./modules/alerts";
 
-Vue.use(Router);
+Vue.use(Vuex);
 
-export default new Router({
-  routes: [
-    {
-      path: "/",
-      name: "dashboard",
-      component: Dashboard,
-    },
-    {
-      path: "/alertlarge",
-      name: "eosAlertLarge",
-      component: EosAlertLarge,
-    },
-  ],
+export default new Vuex.Store({
+    modules: {
+        alertNotification,
+        alerts
+    }
 });
