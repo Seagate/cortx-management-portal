@@ -14,7 +14,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 import { Request, Response, NextFunction } from "express";
-import * as sortingparams from '../api_sort_params.json';
+import * as sortingparams from '../api-sort-params.json';
 
 /**
  * This API and its parameters and validations are defined in the 
