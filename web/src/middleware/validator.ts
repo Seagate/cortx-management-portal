@@ -15,7 +15,7 @@
  *****************************************************************************/
 import { Request, Response, NextFunction } from "express";
 import { HTTP400Error } from "../utils/http-errors";
-import * as getparams from './../api_mandatory_params.json';
+import * as getparams from './../api-mandatory-params.json';
 import * as sortValidators from './sort-validator';
 
 /**
