@@ -65,7 +65,7 @@
             <v-img
               height="20"
               width="20"
-              v-if="props.item.resolved==0"
+              v-if="props.item.resolved==1"
               src="./../../assets/status/healthy-icon.png"
             />
           </td>

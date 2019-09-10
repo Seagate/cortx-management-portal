@@ -14,7 +14,8 @@
  *****************************************************************************/
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
+import { Api } from "./../../services/api";
+import apiRegister from "./../../services/api-register";
 import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
 import AlertObject from "./../../models/alert";
 
@@ -33,8 +34,7 @@ export default class Alerts extends VuexModule {
 
     @Action
     public async alertDataAction() {
-        // TO DO: Make URL configurable
-        const res = await axios.get("http://localhost:3000/api/v1/alerts");
+        const res = await Api.getAll(apiRegister.all_alerts);
         const data = res.data;
         this.context.commit("alertDataMutation", data);
     }
