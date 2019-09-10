@@ -1,38 +1,49 @@
-
 {
-    "/api/v1/alerts": [
-        {
-            "paramname": "sortby",
-            "datatype": "string",
-            "required": false,
-            "default": "created_time",
-            "validators": "checkSortingParameters"
-        },
-        {
-            "paramname": "dir",
-            "datatype": "string",
-            "required": false,
-            "default": "desc",
-            "validators": "checkSortingParameters"
-        },
-        {
-            "paramname": "offset",
-            "datatype": "number",
-            "required": false,
-            "default": 1
-        },
-        {
-            "paramname": "limit",
-            "datatype": "number",
-            "required": false,
-            "default": 10
-        }
-    ],
-    "/api/v1/sessionkey":[
-        {
-            "paramname": "user",
-            "datatype": "string",
-            "required": true            
-        }
-    ]
+    "/api/v1/alerts": {
+        "GET": [
+            {
+                "paramname": "sortby",
+                "datatype": "string",
+                "required": false,
+                "default": "created_time",
+                "validators": "checkSortingParameters"
+            },
+            {
+                "paramname": "dir",
+                "datatype": "string",
+                "required": false,
+                "default": "desc",
+                "validators": "checkSortingParameters"
+            },
+            {
+                "paramname": "offset",
+                "datatype": "number",
+                "required": false,
+                "default": 1
+            },
+            {
+                "paramname": "limit",
+                "datatype": "number",
+                "required": false,
+                "default": 10
+            }
+        ],
+        "PATCH": [
+            {
+                "paramname": "acknowledged",
+                "datatype": "boolean",
+                "required": false,
+                "default": false
+            }
+        ]
+    },
+    "/api/v1/sessionkey": {
+        "GET": [
+            {
+                "paramname": "user",
+                "datatype": "string",
+                "required": true
+            }
+        ]
+    }
 }
