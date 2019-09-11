@@ -15,17 +15,17 @@
  ****************************************************************************
 """
 
+import json
+import os
+import time
+
 from csm.common.comm import AmqpComm
-from csm.common.plugin import CsmPlugin 
-from csm.common.errors import CsmError
 from csm.common.log import Log
+from csm.common.plugin import CsmPlugin
+from csm.common.schema import *
 from csm.core.blogic import const
-import errno
-import json, os
 from jsonschema import Draft3Validator
 from jsonschema import validate
-import time
-from csm.common.schema import *
 
 class AlertPlugin(CsmPlugin):
     """
@@ -65,8 +65,7 @@ class AlertPlugin(CsmPlugin):
 
     def process_request(self, **kwargs):
         for key, value in kwargs.items():
-            if key  == const.CSM_ALERT_CMD and \
-                    value.strip() == 'listen':
+            if key == const.CSM_ALERT_CMD and value.strip() == 'listen':
                 self._listen()
 
     def _plugin_callback(self, message):
@@ -84,7 +83,7 @@ class AlertPlugin(CsmPlugin):
             try:
                 alert = self._convert_to_csm_schema(message)
                 status = self.monitor_callback(alert)
-                if status == True:
+                if status:
                     # Acknowledge the alert so that it could be
                     # removed from the queue.
                     self.comm_client.acknowledge()
@@ -114,26 +113,27 @@ class AlertPlugin(CsmPlugin):
         """ 
         Parsing the alert JSON to create the csm schema
         """
-        csm_schema = dict()
+        csm_schema = {}
         try:
             if not isinstance(message, dict):
                 msg_body = json.loads(message)
             else:
                 msg_body = message
-            """
-            Since the mappings in the mapping table is divided as per the 
-            module type i.e. fan, disk etc so we first need to fetch this value
-            from resource_type. As resource_type contains this information.
-            i.e. "resource_type": "encl:fru:disk"
-            """
-            sub_body = msg_body.get(const.ALERT_MESSAGE, {})\
-                    .get(const.ALERT_SENSOR_TYPE, {})
-            resource_type = {}
-            for key in sub_body:
-                resource_type = sub_body[key].get(const.ALERT_RESOURCE_TYPE, "")
-            module_type = resource_type.split(':')[2]
-            serialized_csm_schema = {}
-            serialized_input_schema = {}
+            sub_body = msg_body.get(const.ALERT_MESSAGE, {}).get(
+                const.ALERT_SENSOR_TYPE, {})
+            module_type = list(sub_body.keys())[0]
+            resource_type = sub_body[module_type].get(const.ALERT_RESOURCE_TYPE,
+                                                      "")
+            # todo: TO un-comment the below once the changes for resource_type are
+            #  made by SSPL team in the schema
+            #  Since the mappings in the mapping table is divided as per the
+            #  module type i.e. fan, disk etc so we first need to fetch this value
+            #  from resource_type. As resource_type contains this information.
+            #  i.e. "resource_type": "encl:fru:disk"
+            #  Currently we are fetching those values from enclosure key and hence
+            #  need to change it as well in alert_mapping_table.json
+            # module_type = resource_type.split(':')[2]
+
             """
             Serializing the incoming alert. i.e message.sensor_response_type.xxx
             """
@@ -142,34 +142,32 @@ class AlertPlugin(CsmPlugin):
             Once the input schema is seralized we will now map the input
             schema to output schema based on a mapping table.
             """
-            serialized_csm_schema = self.schema_obj.map_schema(module_type,
-                    serialized_input_schema)
+            serialized_csm_schema = self.schema_obj.map_schema(
+                module_type,
+                serialized_input_schema)
             """
             Once the data is mapped to csm schema its now time to deserialize it
             """
             csm_schema = self.schema_obj.deserialize(serialized_csm_schema)
-            """
-            For now setting the created_time to current epoch.
-            Once SSPL starts sending the time in epoch we will make
-            use of 'time' field.
-            Currently type is not populated, so we are taking a hardcoded
-            value for this.
-            The below 3 fields needs to be put into mapping table once we 
-            receive the updated json from SSPL.
-            """
-            #TODO
+            # todo: For now setting the created_time to current epoch.
+            #   Once SSPL starts sending the time in epoch we will make
+            #   use of 'time' field.
+            #   Currently type is not populated, so we are taking a hardcoded
+            #   value for this.
+            #   The below 3 fields needs to be put into mapping table once we
+            #   receive the updated json from SSPL.
             csm_schema[const.ALERT_CREATED_TIME] = int(time.time())
             csm_schema[const.ALERT_TYPE] = 'hw'
-            csm_schema[const.ALERT_UUID] = int(csm_schema.get(const.ALERT_ENCLOSURE_ID,\
-                const.ALERT_INT_DEFAULT))
+            csm_schema[const.ALERT_UUID] = int(
+                csm_schema.get(const.ALERT_ENCLOSURE_ID, const.ALERT_INT_DEFAULT))
             """
             Below mentioned fields are managed by CSM so they are not the part
             of mapping table
             """
             csm_schema[const.ALERT_ID] = int(time.time())
-            csm_schema[const.ALERT_MODULE_TYPE] = '{}'.format(module_type)
-            csm_schema[const.ALERT_MODULE_NAME] = '{}'.format(
-                    resource_type.split(':', 1)[1])
+            csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
+            csm_schema[const.ALERT_MODULE_NAME] = \
+                f'{resource_type.split(":", 1)[1]}'
             csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
             csm_schema[const.ALERT_RESOLVED] = const.ALERT_FALSE
             csm_schema[const.ALERT_ACKNOWLEDGED] = const.ALERT_FALSE
