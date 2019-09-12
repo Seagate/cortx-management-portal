@@ -35,8 +35,6 @@ export default class Alerts extends VuexModule {
     @Action
     public async alertDataAction() {
         const res = await Api.getAll(apiRegister.all_alerts);
-        // TO DO: Make URL configurable
-        const res = await axios.get("/api/v1/alerts");
         const data = res.data;
         this.context.commit("alertDataMutation", data);
     }

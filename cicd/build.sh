@@ -61,9 +61,9 @@ npm run build-ts
 
 #Delete src folder from web
 echo " Deleting web src and eos/gui directory--" ${DIST}/csm/web/src
+cp -R  ${DIST}/csm/src/web/.env ${DIST}/csm/src/web/web-dist
 rm -rf ${DIST}/csm/src/web/src
 WEB_BUILD_END_TIME=$(date +%s)
-
 UI_BUILD_START_TIME=$(date +%s)
 echo "Running UI Build"
 cd $GUI_DIR
@@ -71,6 +71,7 @@ npm install
 npm run build
 
 UI_BUILD_END_TIME=$(date +%s)
+
 
 TAR_START_TIME=$(date +%s)
 cd $BASE_DIR
@@ -110,6 +111,7 @@ rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDI
 echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/eos-csm.spec
 rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb --with python36 $BASE_DIR/jenkins/eos-csm.spec
 
+
 # CSM TEST RPM
 echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/csm-test.spec
 rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb --with python36 $BASE_DIR/jenkins/csm-test.spec
@@ -144,7 +146,6 @@ RPM_DIFF=$(( $RPM_BUILD_END_TIME - $RPM_BUILD_START_TIME ))
 printf "Time taken in creating RPM !!!!!!!!!!!!"
 printf "%02d:%02d:%02d\n" $(( RPM_DIFF / 3600 )) $(( ( RPM_DIFF / 60 ) % 60 )) $(( RPM_DIFF % 60 ))
 
-
 DIFF=$(( $BUILD_END_TIME - $BUILD_START_TIME ))
 h=$(( DIFF / 3600 ))
 m=$(( ( DIFF / 60 ) % 60 ))
@@ -152,6 +153,3 @@ s=$(( DIFF % 60 ))
 
 printf "%02d:%02d:%02d\n" $h $m $s
 echo "Build took %02d:%02d:%02d\n" $h $m $s
-# TODO - Clean rpmbuild tree.
-
-                                                     
