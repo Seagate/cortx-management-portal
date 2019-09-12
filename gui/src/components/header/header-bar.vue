@@ -74,7 +74,7 @@ export default class HeaderBar extends Vue {
     return {};
   }
   public mounted() {
-    Vue.use(VueNativeSock, "ws://localhost:8081/", {
+    Vue.use(VueNativeSock, "ws://"+window.location.hostname+":8081/", {
       store,
       format: "json",
       reconnection: true, // (Boolean) whether to reconnect automatically (false)
