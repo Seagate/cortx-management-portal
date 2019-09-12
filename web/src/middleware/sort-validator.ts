@@ -18,7 +18,7 @@ import * as sortingparams from '../api-sort-params.json';
 
 /**
  * This API and its parameters and validations are defined in the 
- * apisortingparameters.json. 
+ * api-sort-params.json. 
  * @param req 
  * @param res 
  * @param next 
@@ -40,7 +40,7 @@ export const checkSortingParameters = (req: Request, res: Response, next: NextFu
                     break;
                 }
             } else {
-                console.log("Parameter is not present.");
+                console.log("Parameter is not present." + sortingParam.paramname.trim());
             }
         }
     }

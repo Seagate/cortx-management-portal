@@ -15,7 +15,24 @@
  *****************************************************************************/
 import http from 'http';
 import https from 'https';
+import { Request } from "express";
 
+let base_url = process.env.CSM_AGENT_PROTOCOL + "://" + process.env.CSM_AGENT_HOST
+    + (process.env.CSM_AGENT_PORT ? ":" + process.env.CSM_AGENT_PORT : "");
+let http_agent: any;
+if (process.env.CSM_AGENT_PROTOCOL == 'http') {
+    http_agent = http;
+} else {
+    http_agent = https;
+}
+
+/**
+ * The get API to get the alerts.
+ * @param sortby 
+ * @param dir 
+ * @param offset 
+ * @param limit 
+ */
 export const getAlertList = async (sortby: string, dir: string, offset: number, limit: number) => {
     return new Promise((resolve, reject) => {
         //TODO - Remove after pyhton API integration
@@ -104,9 +121,7 @@ export const getAlertList = async (sortby: string, dir: string, offset: number, 
         } else {
             http_agent = https;
         }
-        let url = process.env.CSM_AGENT_PROTOCOL + "://" + process.env.CSM_AGENT_HOST
-            + (process.env.CSM_AGENT_PORT ? ":" + process.env.CSM_AGENT_PORT : "")
-            + "/api/v1/alerts";
+        let url = base_url + "/api/v1/alerts";
         
         if(sortby){
             let seperator = (url.indexOf('?') == -1 ? '?' : '&');
@@ -139,5 +154,40 @@ export const getAlertList = async (sortby: string, dir: string, offset: number, 
             reject(err);
             console.log("Error: " + err.message);
         });*/
+    });
+};
+
+/**
+ * The API is to update the specified alert.
+ * @param req 
+ */
+export const updateAlert = async (req: Request) => {
+    return new Promise((resolve, reject) => {
+        const requestData = JSON.stringify(req.body);
+        const url = base_url + "/api/v1/alerts/" + req.params.alert_id;
+        resolve();
+        // const options = {
+        //     method: "PATCH",
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Content-Length': requestData.length
+        //     }
+        // }
+
+        // let httpRequest = http_agent.request(url, options, (resp: any) => {
+        //     let data = '';
+        //     resp.on('data', (chunk: any) => {
+        //         data += chunk;
+        //     })
+        //     resp.on('end', () => {
+        //         console.log(data);
+        //         resolve(JSON.parse(data));
+        //     });
+        // }).on("error", (err: any) => {
+        //     reject(err);
+        //     console.log("Error: " + err.message);
+        // });
+        // httpRequest.write(requestData);
+        // httpRequest.end();
     });
 };
