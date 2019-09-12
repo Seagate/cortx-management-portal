@@ -14,8 +14,9 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getAlerts } from "./alerts-controller";
+import { getAlerts, updateAlerts } from "./alerts-controller";
 import { checkRequiredParams } from './../../middleware/validator';
+import { HTTP400Error } from "../../utils/http-errors";
 
 
 /**
@@ -29,8 +30,28 @@ export default [
     handler: [
       checkRequiredParams,
       async ({ query }: Request, res: Response) => {
-        const result = await getAlerts(query.sortby, query.dir, query.offset, query.limit);
-        res.status(200).send(result);
+        try {
+          const result = await getAlerts(query.sortby, query.dir, query.offset, query.limit);
+          res.status(200).send(result);
+        } catch (err) {
+          throw new HTTP400Error(err);
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/alerts/:alert_id",
+    method: "patch",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await updateAlerts(req, res);
+          res.status(204).send();
+        } catch (err) {
+          throw new HTTP400Error(err);
+        }
+        
       }
     ]
   }

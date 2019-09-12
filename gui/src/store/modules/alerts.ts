@@ -26,6 +26,7 @@ Vue.use(Vuex);
 })
 export default class Alerts extends VuexModule {
     public alerts: AlertObject | null = null;
+    public header: object | null = null;
 
     @Mutation
     public alertDataMutation(payload: AlertObject) {
@@ -33,8 +34,8 @@ export default class Alerts extends VuexModule {
     }
 
     @Action
-    public async alertDataAction() {
-        const res = await Api.getAll(apiRegister.all_alerts);
+    public async alertDataAction(queryParams: object) {
+        const res = await Api.getAll(apiRegister.all_alerts, queryParams);
         const data = res.data;
         this.context.commit("alertDataMutation", data);
     }
@@ -53,5 +54,16 @@ export default class Alerts extends VuexModule {
         }
 
         return;
+    }
+
+    // Set headers for alert table
+    @Mutation
+    public alertHeaderMutation(headerObj: object) {
+        this.header = headerObj;
+    }
+
+    // Get alert headers
+    get alertHeader() {
+        return this.header;
     }
 }

@@ -14,7 +14,8 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 
-import { getAlertList } from "./providers/alerts-provider";
+import { getAlertList, updateAlert } from "./providers/alerts-provider";
+import { Request, Response, request, response } from "express";
 
 /**
  * This method is responsible to get the alert data from provider and sends back
@@ -28,6 +29,13 @@ import { getAlertList } from "./providers/alerts-provider";
  */
 export const getAlerts = async (sortby: string, dir: string, offset: number, limit: number) => {
     let alertData = getAlertList(sortby, dir, offset, limit);
+    let result = await alertData;
+    return result;
+};
+
+
+export const updateAlerts = async (req: Request, res: Response) => {
+    let alertData = updateAlert(req);
     let result = await alertData;
     return result;
 };

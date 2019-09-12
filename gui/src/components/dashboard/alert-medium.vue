@@ -55,12 +55,30 @@
     </v-container>
     <v-data-table
       calculate-widths
-      :headers="headers"
       :items="alertData"
       item-key="created_time"
       :items-per-page="5"
       :server-items-length="totalRecordsCount"
+      hide-default-header
     >
+      <template v-slot:header="{props}">
+        <th
+          v-for="header in alertHeader"
+          :key="header.text"
+          class="tableheader text-capitalize font-weight-medium grey lighten-5 text--black pt-2"
+          @click="onSort(header.value, header, props.options.page, props.options.itemsPerPage)"
+        >
+          {{ header.text }}
+          <img
+            v-if="header.sortable && header.sortDir === 'desc'"
+            src="./../../assets/caret-green-down.png"
+          />
+          <img
+            v-if="header.sortable && header.sortDir === 'asc'"
+            src="./../../assets/caret-green-up.png"
+          />
+        </th>
+      </template>
       <template v-slot:item="props">
         <tr class="font-weight-medium">
           <td>{{props.item.created_time}}</td>
@@ -102,37 +120,82 @@ import store from "./../../store/store";
 })
 export default class EosAlertMedium extends Vue {
   public mounted() {
+    // Call action to get all alert data
     this.$store.dispatch("alerts/alertDataAction");
+
+    // Set Alert table default header options
+    const header = [
+      {
+        text: "Active Time",
+        align: "left",
+        value: "created_time",
+        class: "grey lighten-2",
+        sortable: true,
+        sortDir: "desc"
+      },
+      {
+        text: "Alert Severity",
+        value: "severity",
+        align: "left",
+        class: "grey lighten-2",
+        sortable: true,
+        sortDir: "desc"
+      },
+      {
+        text: "Component",
+        value: "component",
+        class: "grey lighten-2",
+        align: "right",
+        sortable: false
+      }
+    ];
+    // Mutate header data in store
+    this.$store.commit("alerts/alertHeaderMutation", header);
+  }
+
+  // Column sort handler
+  public onSort(
+    sortby: string,
+    sortedHeader: any,
+    offset: number,
+    limit: number
+  ) {
+    // Check if current column is sortable
+    if (!sortedHeader.sortable) {
+      return;
+    }
+    // Create query parameter for API request
+    const queryParams = {
+      sortby,
+      dir: sortedHeader.sortDir,
+      offset,
+      limit
+    };
+
+    // Change sort direction in alertHeader data for current selected/sorted column
+    for (const header of this.alertHeader) {
+      if (header.value === sortby) {
+        header.sortDir = sortedHeader.sortDir === "desc" ? "asc" : "desc";
+      }
+    }
+    // Update alert header data set with updated sort direction
+    this.$store.commit("alerts/alertHeaderMutation", this.alertHeader);
+    this.$store.dispatch("alerts/alertDataAction", queryParams);
   }
 
   private data() {
-    return {
-      headers: [
-        {
-          text: "Active Time",
-          align: "left",
-          value: "time",
-          class: "grey lighten-2"
-        },
-        {
-          text: "Alert Severity",
-          value: "severity",
-          class: "grey lighten-2"
-        },
-        {
-          text: "Component",
-          value: "component",
-          class: "grey lighten-2",
-          sortable: false
-        }
-      ]
-    };
+    return {};
   }
 
+  // Get total_records from alert API
   get totalRecordsCount() {
     return this.$store.getters["alerts/alertTotalRecordCount"];
   }
-
+  // Get the header data from store
+  get alertHeader() {
+    return this.$store.getters["alerts/alertHeader"];
+  }
+  // Get all alerts from API
   get alertData() {
     return this.$store.getters["alerts/alertData"];
   }
@@ -143,7 +206,10 @@ export default class EosAlertMedium extends Vue {
   height: 1.4em;
   width: 1.4em;
 }
-#title {  
+#title {
   color: black;
+}
+.tableheader {
+  height: 2.5em;
 }
 </style>
