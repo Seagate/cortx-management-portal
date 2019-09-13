@@ -35,22 +35,22 @@
             <v-list-item v-for="(item, index) in alertNotifications" :key="index">
               <img
                 class="mr-2"
-                v-if="item.properties.header.severity==1"
+                v-if="item.state=='missing'"
                 src="./../../assets/status/critical-icon.png"
               />
               <img
                 class="mr-2"
-                v-if="item.properties.header.severity==2"
+                v-if="item.state=='fault'"
                 src="../../assets/status/error-fault.png"
               />
               <img
                 class="mr-2"
-                v-if="item.properties.header.severity==3"
+                v-if="item.state=='insertion' || item.state=='fault resolved'"
                 src="./../../assets/status/healthy-icon.png"
               />
               <v-list-item-content>
-                <v-list-item-title>State:{{ item.properties.header.alert_type }}</v-list-item-title>
-                <v-list-item-subtitle v-html="item.properties.header.location"></v-list-item-subtitle>
+                <v-list-item-title>State:{{ item.state }}</v-list-item-title>
+                <v-list-item-subtitle v-html="item.location"></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>

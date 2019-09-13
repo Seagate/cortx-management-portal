@@ -39,6 +39,18 @@ export default class Alerts extends VuexModule {
         const data = res.data;
         this.context.commit("alertDataMutation", data);
     }
+    @Action
+    public async updateAlert(payload: any): Promise<any | undefined> {
+        try {
+            const res = Api.patch(apiRegister.all_alerts,
+                { acknowledged: payload.acknowledged === "1" ? true : false, comment: payload.comment },
+                payload.id);
+            return res;
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.log(e);
+        }
+    }
 
     get alertTotalRecordCount() {
         if (this.alerts) {
