@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card height="500" width="256" class="mx-auto grey darken-3">
+  <v-card height="800" width="256" class="mx-auto grey darken-3">
     <v-navigation-drawer permanent class="grey darken-3">
       <v-list dense nav>
         <v-list-item v-for="item in items" :key="item.title" link>
