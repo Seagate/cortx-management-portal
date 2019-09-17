@@ -134,8 +134,8 @@ class AlertPlugin(CsmPlugin):
             # module_type = resource_type.split(':')[2]
 
             # Convert  the SSPL Schema to CSM Schema.
-            p = Payload(Dict(msg_body))
-            csm_schema = p.convert(self.mapping_dict .get(module_type, {}))
+            payload_obj = Payload(Dict(msg_body))
+            csm_schema = payload_obj.convert(self.mapping_dict .get(module_type, {}))
             # todo: For now setting the created_time to current epoch.
             #   Once SSPL starts sending the time in epoch we will make
             #   use of 'time' field.
