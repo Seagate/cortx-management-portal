@@ -18,11 +18,10 @@
 import json
 import os
 import time
-
+from csm.common.payload import Payload, Dict, Json
 from csm.common.comm import AmqpComm
 from csm.common.log import Log
 from csm.common.plugin import CsmPlugin
-from csm.common.schema import *
 from csm.core.blogic import const
 from jsonschema import Draft3Validator
 from jsonschema import validate
@@ -39,7 +38,7 @@ class AlertPlugin(CsmPlugin):
         super().__init__()
         self.comm_client = AmqpComm()
         self.monitor_callback = None
-        self.schema_obj = Schema()
+        self.mapping_dict = Json(const.ALERT_MAPPING_TABLE).load()
         try:
             """ Validating the CSM Schema with Draft3Validator """
             if os.path.isfile(const.CSM_HW_SCHEMA):
@@ -134,21 +133,9 @@ class AlertPlugin(CsmPlugin):
             #  need to change it as well in alert_mapping_table.json
             # module_type = resource_type.split(':')[2]
 
-            """
-            Serializing the incoming alert. i.e message.sensor_response_type.xxx
-            """
-            serialized_input_schema = self.schema_obj.serialize(msg_body)
-            """
-            Once the input schema is seralized we will now map the input
-            schema to output schema based on a mapping table.
-            """
-            serialized_csm_schema = self.schema_obj.map_schema(
-                module_type,
-                serialized_input_schema)
-            """
-            Once the data is mapped to csm schema its now time to deserialize it
-            """
-            csm_schema = self.schema_obj.deserialize(serialized_csm_schema)
+            # Convert  the SSPL Schema to CSM Schema.
+            p = Payload(Dict(msg_body))
+            csm_schema = p.convert(self.mapping_dict .get(module_type, {}))
             # todo: For now setting the created_time to current epoch.
             #   Once SSPL starts sending the time in epoch we will make
             #   use of 'time' field.
@@ -160,10 +147,10 @@ class AlertPlugin(CsmPlugin):
             csm_schema[const.ALERT_TYPE] = 'hw'
             csm_schema[const.ALERT_UUID] = int(
                 csm_schema.get(const.ALERT_ENCLOSURE_ID, const.ALERT_INT_DEFAULT))
-            """
-            Below mentioned fields are managed by CSM so they are not the part
-            of mapping table
-            """
+            # """
+            # Below mentioned fields are managed by CSM so they are not the part
+            # of mapping table
+            # """
             csm_schema[const.ALERT_ID] = int(time.time())
             csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
             csm_schema[const.ALERT_MODULE_NAME] = \
@@ -172,7 +159,7 @@ class AlertPlugin(CsmPlugin):
             csm_schema[const.ALERT_RESOLVED] = const.ALERT_FALSE
             csm_schema[const.ALERT_ACKNOWLEDGED] = const.ALERT_FALSE
             csm_schema[const.ALERT_SEVERITY] = const.ALERT_TRUE
-            """ Validating the schema. """
+            # """ Validating the schema. """
             validate(csm_schema, self._hw_schema)
         except Exception as e:
             Log.exception(e)
