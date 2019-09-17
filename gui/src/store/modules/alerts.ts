@@ -14,7 +14,8 @@
  *****************************************************************************/
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
+import { Api } from "./../../services/api";
+import apiRegister from "./../../services/api-register";
 import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
 import AlertObject from "./../../models/alert";
 
@@ -25,6 +26,7 @@ Vue.use(Vuex);
 })
 export default class Alerts extends VuexModule {
     public alerts: AlertObject | null = null;
+    public header: object | null = null;
 
     @Mutation
     public alertDataMutation(payload: AlertObject) {
@@ -32,11 +34,22 @@ export default class Alerts extends VuexModule {
     }
 
     @Action
-    public async alertDataAction() {
-        // TO DO: Make URL configurable
-        const res = await axios.get("http://localhost:3000/api/v1/alerts");
+    public async alertDataAction(queryParams: object) {
+        const res = await Api.getAll(apiRegister.all_alerts, queryParams);
         const data = res.data;
         this.context.commit("alertDataMutation", data);
+    }
+    @Action
+    public async updateAlert(payload: any): Promise<any | undefined> {
+        try {
+            const res = Api.patch(apiRegister.all_alerts,
+                { acknowledged: payload.acknowledged === "1" ? true : false, comment: payload.comment },
+                payload.id);
+            return res;
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.log(e);
+        }
     }
 
     get alertTotalRecordCount() {
@@ -53,5 +66,16 @@ export default class Alerts extends VuexModule {
         }
 
         return;
+    }
+
+    // Set headers for alert table
+    @Mutation
+    public alertHeaderMutation(headerObj: object) {
+        this.header = headerObj;
+    }
+
+    // Get alert headers
+    get alertHeader() {
+        return this.header;
     }
 }

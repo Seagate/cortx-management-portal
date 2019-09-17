@@ -60,17 +60,36 @@
             <div>State:{{props.item.state}}</div>
           </td>
           <td>{{props.item.description}}</td>
-          <td></td>
+          <td>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-img
+                  height="20"
+                  width="20"
+                  dark
+                  v-on="on"
+                  v-if="props.item.comment !=='' && props.item.comment !== undefined"
+                  src="./../../assets/comment-icon.png"
+                />
+              </template>
+              <span>{{ props.item.comment}}</span>
+            </v-tooltip>
+          </td>
           <td>
             <v-img
               height="20"
               width="20"
-              v-if="props.item.resolved==0"
+              v-if="props.item.resolved==1"
               src="./../../assets/status/healthy-icon.png"
             />
           </td>
           <td>
-            <v-checkbox value="1" v-model="props.item.acknowledged" class="mx-2"></v-checkbox>
+            <v-checkbox
+              @change="updateAlert(props.item)"
+              value="1"
+              v-model="props.item.acknowledged"
+              class="mx-2"
+            ></v-checkbox>
           </td>
         </tr>
       </template>
@@ -89,19 +108,33 @@
                 <v-col cols="4">
                   <div class="my-2">Comments</div>
                   <div>
-                    <v-textarea background-color="grey lighten-5" solo name="input-7-4"></v-textarea>
+                    <v-textarea
+                      background-color="grey lighten-5"
+                      v-model="props.item.comment"
+                      solo
+                      name="input-7-4"
+                    ></v-textarea>
                   </div>
                 </v-col>
                 <v-col align-self="center" cols="2">
                   <div class="actbtn">
                     <v-row class="mx-3 mt-10">
+                      <v-card flat @click="updateAlert(props.item)">
+                        <v-img
+                          class="mr-1"
+                          height="20"
+                          width="20"
+                          src="./../../assets/apply-icon.png"
+                        />
+                      </v-card>
+                      <v-card @click="clearComment(props.item)" flat>
                       <v-img
-                        class="mr-1"
                         height="20"
+                        click="(props.item)=> props.item.comment=''"
                         width="20"
-                        src="./../../assets/apply-icon.png"
+                        src="./../../assets/cancel-icon.png"
                       />
-                      <v-img height="20" width="20" src="./../../assets/cancel-icon.png" />
+                      </v-card>
                     </v-row>
                   </div>
                 </v-col>
@@ -152,6 +185,12 @@ export default class EosAlertLarge extends Vue {
         { text: "Acknowledged", value: "acknowledged" }
       ]
     };
+  }
+  public updateAlert(value: any) {
+    this.$store.dispatch("alerts/updateAlert", value);
+  }
+  public clearComment(item: any) {
+    item.comment = "";
   }
   public onExpand(props: any) {
     if (props.isExpanded === false) {

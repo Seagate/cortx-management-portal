@@ -35,22 +35,22 @@
             <v-list-item v-for="(item, index) in alertNotifications" :key="index">
               <img
                 class="mr-2"
-                v-if="item.properties.header.severity==1"
+                v-if="item.state=='missing'"
                 src="./../../assets/status/critical-icon.png"
               />
               <img
                 class="mr-2"
-                v-if="item.properties.header.severity==2"
+                v-if="item.state=='fault'"
                 src="../../assets/status/error-fault.png"
               />
               <img
                 class="mr-2"
-                v-if="item.properties.header.severity==3"
+                v-if="item.state=='insertion' || item.state=='fault resolved'"
                 src="./../../assets/status/healthy-icon.png"
               />
               <v-list-item-content>
-                <v-list-item-title>State:{{ item.properties.header.alert_type }}</v-list-item-title>
-                <v-list-item-subtitle v-html="item.properties.header.location"></v-list-item-subtitle>
+                <v-list-item-title>State:{{ item.state }}</v-list-item-title>
+                <v-list-item-subtitle v-html="item.location"></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -74,7 +74,7 @@ export default class HeaderBar extends Vue {
     return {};
   }
   public mounted() {
-    Vue.use(VueNativeSock, "ws://localhost:8081/", {
+    Vue.use(VueNativeSock, "ws://"+window.location.hostname+":8081/", {
       store,
       format: "json",
       reconnection: true, // (Boolean) whether to reconnect automatically (false)

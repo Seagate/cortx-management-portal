@@ -2,7 +2,7 @@
     "/api/v1/alerts": [
         {
             "paramname": "sortby",
-            "values": "timestamp"
+            "values": "created_time"
         },
         {
             "paramname": "sorttype",
