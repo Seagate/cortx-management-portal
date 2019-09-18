@@ -18,7 +18,7 @@
 import json
 import os
 import time
-from csm.common.payload import Payload, Dict, Json
+from csm.common.payload import Payload, Json, JsonMessage
 from csm.common.comm import AmqpComm
 from csm.common.log import Log
 from csm.common.plugin import CsmPlugin
@@ -114,10 +114,8 @@ class AlertPlugin(CsmPlugin):
         """
         csm_schema = {}
         try:
-            if not isinstance(message, dict):
-                msg_body = json.loads(message)
-            else:
-                msg_body = message
+            json_msg_obj = JsonMessage(message)
+            msg_body = json_msg_obj.load()
             sub_body = msg_body.get(const.ALERT_MESSAGE, {}).get(
                 const.ALERT_SENSOR_TYPE, {})
             module_type = list(sub_body.keys())[0]
@@ -134,7 +132,7 @@ class AlertPlugin(CsmPlugin):
             # module_type = resource_type.split(':')[2]
 
             # Convert  the SSPL Schema to CSM Schema.
-            payload_obj = Payload(Dict(msg_body))
+            payload_obj = Payload(JsonMessage(message))
             csm_schema = payload_obj.convert(
                 self.mapping_dict.get(module_type, {}))
             csm_schema = csm_schema.dump()
@@ -155,8 +153,8 @@ class AlertPlugin(CsmPlugin):
             # """
             csm_schema[const.ALERT_ID] = int(time.time())
             csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
-            csm_schema[const.ALERT_MODULE_NAME] = \
-                f'{resource_type.split(":", 1)[1]}'
+            csm_schema[const.ALERT_MODULE_NAME] = resource_type
+            #todo: with new schema>> f'{resource_type.split(":")[1]}'
             csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
             csm_schema[const.ALERT_RESOLVED] = const.ALERT_FALSE
             csm_schema[const.ALERT_ACKNOWLEDGED] = const.ALERT_FALSE
@@ -164,5 +162,7 @@ class AlertPlugin(CsmPlugin):
             # """ Validating the schema. """
             validate(csm_schema, self._hw_schema)
         except Exception as e:
+            import traceback
+            Log.exception(traceback.format_exc())
             Log.exception(e)
         return csm_schema
