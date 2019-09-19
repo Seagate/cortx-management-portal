@@ -15,13 +15,16 @@
  ****************************************************************************
 """
 
-from csm.common.comm import AmqpComm
-from csm.common.plugin import CsmPlugin 
-from csm.common.errors import CsmError
-from csm.common.log import Log
-from csm.core.blogic import const
-import errno
 import json
+import os
+import time
+from csm.common.payload import Payload, Json, JsonMessage, Dict
+from csm.common.comm import AmqpComm
+from csm.common.log import Log
+from csm.common.plugin import CsmPlugin
+from csm.core.blogic import const
+from jsonschema import Draft3Validator
+from jsonschema import validate
 
 class AlertPlugin(CsmPlugin):
     """
@@ -35,6 +38,18 @@ class AlertPlugin(CsmPlugin):
         super().__init__()
         self.comm_client = AmqpComm()
         self.monitor_callback = None
+        self.mapping_dict = Json(const.ALERT_MAPPING_TABLE).load()
+        try:
+            """ Validating the CSM Schema with Draft3Validator """
+            if os.path.isfile(const.CSM_HW_SCHEMA):
+                with open(const.CSM_HW_SCHEMA, 'r') as hw_file:
+                    self._schema = hw_file.read()
+            """ Remove tabs and newlines """
+            self._hw_schema = json.loads(' '.join(self._schema.split()))
+            """ Validate the schema """
+            Draft3Validator.check_schema(self._hw_schema)
+        except Exception as e:
+            Log.exception(e)
 
     def init(self, callback_fn):
         """
@@ -49,8 +64,7 @@ class AlertPlugin(CsmPlugin):
 
     def process_request(self, **kwargs):
         for key, value in kwargs.items():
-            if key  == const.CSM_ALERT_CMD and \
-                    value.strip() == 'listen':
+            if key == const.CSM_ALERT_CMD and value.strip() == 'listen':
                 self._listen()
 
     def _plugin_callback(self, message):
@@ -68,7 +82,7 @@ class AlertPlugin(CsmPlugin):
             try:
                 alert = self._convert_to_csm_schema(message)
                 status = self.monitor_callback(alert)
-                if status == True:
+                if status:
                     # Acknowledge the alert so that it could be
                     # removed from the queue.
                     self.comm_client.acknowledge()
@@ -98,26 +112,59 @@ class AlertPlugin(CsmPlugin):
         """ 
         Parsing the alert JSON to create the csm schema
         """
-        msg_body = json.loads(message)
-        data = {'$schema': 'http://json-schema.org/draft-03/schema#', 'id':\
-                'http://json-schema.org/draft-03/schema#', 'title':\
-                'CSM HW Schema', 'type': 'object', 'properties':\
-                {'header': {}, 'hw': {}}}
-        
-        dict = msg_body['message']['sensor_response_type']
-        for values in dict.values():
-            data['properties']['header'] = {'type': 'hw', 'alert_type': '%s'\
-                    %(values.get('alert_type', "")), 'type': 'hw', 'status':\
-                    '%s' %(values.get('info', {}).get('status', '')),\
-                    'resolved': 'no', 'acknowledged': 'no', 'description':\
-                    '%s' %(values.get('info', {}).get('health-reason', '')),\
-                     'location': '%s' %(values.get('info', {}).get('location',\
-                     '')), 'severity': '1', 'recommendation': '%s'\
-                     %(values.get('info', {}).get('health-recommendation', ''))}
-            data['properties']['hw'] = {'vendor': '%s' %(values.get('info', {})\
-                    .get('vendor', '')), 'enclosure_id': '%s'\
-                    %(values.get('info', {}).get('enclosure-id', '')), \
-                    'serial_number': '%s' %(values.get('info', {})\
-                    .get('serial-number', '')), 'part_number': '%s'\
-                    %(values.get('info', {}).get('part-number', ''))}
-        return data
+        csm_schema = {}
+        try:
+            json_msg_obj = JsonMessage(message)
+            msg_body = json_msg_obj.load()
+            sub_body = msg_body.get(const.ALERT_MESSAGE, {}).get(
+                const.ALERT_SENSOR_TYPE, {})
+            module_type = list(sub_body.keys())[0]
+            resource_type = sub_body[module_type].get(const.ALERT_RESOURCE_TYPE,
+                                                      "")
+            # todo: TO un-comment the below once the changes for resource_type are
+            #  made by SSPL team in the schema
+            #  Since the mappings in the mapping table is divided as per the
+            #  module type i.e. fan, disk etc so we first need to fetch this value
+            #  from resource_type. As resource_type contains this information.
+            #  i.e. "resource_type": "encl:fru:disk"
+            #  Currently we are fetching those values from enclosure key and hence
+            #  need to change it as well in alert_mapping_table.json
+            # module_type = resource_type.split(':')[2]
+
+            # Convert  the SSPL Schema to CSM Schema.
+            input_alert_payload = Payload(JsonMessage(message))
+            csm_alert_payload = Payload(Dict())
+            input_alert_payload.convert(self.mapping_dict.get(module_type, {}),
+                                        csm_alert_payload)
+            csm_alert_payload.dump()
+            csm_schema = csm_alert_payload.load()
+            print("csm_schema>>>>>>>>>>>>>>>>>>>>>>>\n", csm_schema)
+            print("csm_alert_payload.load()>>>>>>>>>>>>>>>>>>>>>>>\n", csm_alert_payload.load())
+            # todo: For now setting the created_time to current epoch.
+            #   Once SSPL starts sending the time in epoch we will make
+            #   use of 'time' field.
+            #   Currently type is not populated, so we are taking a hardcoded
+            #   value for this.
+            #   The below 3 fields needs to be put into mapping table once we
+            #   receive the updated json from SSPL.
+            csm_schema[const.ALERT_CREATED_TIME] = int(time.time())
+            csm_schema[const.ALERT_TYPE] = 'hw'
+            csm_schema[const.ALERT_UUID] = int(
+                csm_schema.get(const.ALERT_ENCLOSURE_ID, const.ALERT_INT_DEFAULT))
+            # """
+            # Below mentioned fields are managed by CSM so they are not the part
+            # of mapping table
+            # """
+            csm_schema[const.ALERT_ID] = int(time.time())
+            csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
+            csm_schema[const.ALERT_MODULE_NAME] = resource_type
+            # todo: with new schema>> f'{resource_type.split(":")[1]}'
+            csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
+            csm_schema[const.ALERT_RESOLVED] = const.ALERT_FALSE
+            csm_schema[const.ALERT_ACKNOWLEDGED] = const.ALERT_FALSE
+            csm_schema[const.ALERT_SEVERITY] = const.ALERT_TRUE
+            # """ Validating the schema. """
+            validate(csm_schema, self._hw_schema)
+        except Exception as e:
+            Log.exception(e)
+        return csm_schema
