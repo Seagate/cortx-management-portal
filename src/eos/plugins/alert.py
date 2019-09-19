@@ -18,7 +18,7 @@
 import json
 import os
 import time
-from csm.common.payload import Payload, Json, JsonMessage
+from csm.common.payload import Payload, Json, JsonMessage, Dict
 from csm.common.comm import AmqpComm
 from csm.common.log import Log
 from csm.common.plugin import CsmPlugin
@@ -132,10 +132,14 @@ class AlertPlugin(CsmPlugin):
             # module_type = resource_type.split(':')[2]
 
             # Convert  the SSPL Schema to CSM Schema.
-            payload_obj = Payload(JsonMessage(message))
-            csm_schema = payload_obj.convert(
-                self.mapping_dict.get(module_type, {}))
-            csm_schema = csm_schema.dump()
+            input_alert_payload = Payload(JsonMessage(message))
+            csm_alert_payload = Payload(Dict())
+            input_alert_payload.convert(self.mapping_dict.get(module_type, {}),
+                                        csm_alert_payload)
+            csm_alert_payload.dump()
+            csm_schema = csm_alert_payload.load()
+            print("csm_schema>>>>>>>>>>>>>>>>>>>>>>>\n", csm_schema)
+            print("csm_alert_payload.load()>>>>>>>>>>>>>>>>>>>>>>>\n", csm_alert_payload.load())
             # todo: For now setting the created_time to current epoch.
             #   Once SSPL starts sending the time in epoch we will make
             #   use of 'time' field.
@@ -154,7 +158,7 @@ class AlertPlugin(CsmPlugin):
             csm_schema[const.ALERT_ID] = int(time.time())
             csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
             csm_schema[const.ALERT_MODULE_NAME] = resource_type
-            #todo: with new schema>> f'{resource_type.split(":")[1]}'
+            # todo: with new schema>> f'{resource_type.split(":")[1]}'
             csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
             csm_schema[const.ALERT_RESOLVED] = const.ALERT_FALSE
             csm_schema[const.ALERT_ACKNOWLEDGED] = const.ALERT_FALSE
@@ -162,7 +166,5 @@ class AlertPlugin(CsmPlugin):
             # """ Validating the schema. """
             validate(csm_schema, self._hw_schema)
         except Exception as e:
-            import traceback
-            Log.exception(traceback.format_exc())
             Log.exception(e)
         return csm_schema
