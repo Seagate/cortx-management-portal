@@ -51,6 +51,7 @@ mkdir -p $DIST/csm
 echo "Copy files to CSM directory"
 cp -R ${DIRS[*]} $BASE_DIR/__init__.py ${DIST}/csm
 rsync --exclude=gui/ --exclude=node_modules/ -av --progress src ${DIST}/csm
+cp -R ${DIST}/csm/schema ${DIST}/csm/src/
 COPY_END_TIME=$(date +%s)
 
 WEB_BUILD_START_TIME=$(date +%s)
