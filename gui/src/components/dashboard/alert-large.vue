@@ -21,7 +21,7 @@
     </v-system-bar>
     <v-data-table
       :headers="headers"
-      :items="alertData"
+      :items="alertData.alerts"
       :single-expand="singleExpand"
       item-key="created_time"
       show-expand
@@ -38,19 +38,19 @@
           <td>
             <v-img
               height="20"
-              v-if="props.item.severity===1"
+              v-if="props.item.state=='missing'"
               width="20"
               src="./../../assets/status/critical-icon.png"
             />
             <v-img
               height="20"
-              v-if="props.item.severity===2"
+              v-if="props.item.state=='fault'"
               width="20"
               src="./../../assets/status/error-fault.png"
             />
             <v-img
               height="20"
-              v-if="props.item.severity===3"
+              v-if="props.item.state=='insertion' || item.state=='fault resolved'"
               width="20"
               src="./../../assets/status/healthy-icon.png"
             />
@@ -128,12 +128,12 @@
                         />
                       </v-card>
                       <v-card @click="clearComment(props.item)" flat>
-                      <v-img
-                        height="20"
-                        click="(props.item)=> props.item.comment=''"
-                        width="20"
-                        src="./../../assets/cancel-icon.png"
-                      />
+                        <v-img
+                          height="20"
+                          click="(props.item)=> props.item.comment=''"
+                          width="20"
+                          src="./../../assets/cancel-icon.png"
+                        />
                       </v-card>
                     </v-row>
                   </div>

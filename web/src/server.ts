@@ -7,6 +7,8 @@ import errorHandlers from "./middleware/error-handlers";
 import routes from "./services";
 import { SocketService } from "./services/websocket/socket-service";
 
+require("dotenv").config({path: __dirname+"/.env"});
+
 process.on("uncaughtException", e => {
   console.log(e);
   process.exit(1);
@@ -23,17 +25,18 @@ applyMiddleware(middleware, router);
 applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);
 
-
-const { NODE_PORT = 3000 } = process.env;
+const NODE_PORT =  process.env.NODE_PORT?process.env.NODE_PORT:3000;
 const server = http.createServer(router);
 const INCOMING_SOCKET_PORT: number = Number(process.env.INCOMING_SOCKET_PORT);
 const OUTGOING_SOCKET_PORT: number = Number(process.env.OUTGOING_SOCKET_PORT);
 
 server.listen(NODE_PORT, () => {
-    console.log(`Server is running at http://localhost:${NODE_PORT}`);
+    console.log("Server is running at http://localhost:"+NODE_PORT);
 
     // Server shoud send data over other socket
     const socketServer  = new SocketService(OUTGOING_SOCKET_PORT);
-    socketServer.getConnection(`ws://localhost:${INCOMING_SOCKET_PORT}/ws`);
+    socketServer.getConnection("ws://localhost:"+INCOMING_SOCKET_PORT+"/ws");
+
   }
 );
+

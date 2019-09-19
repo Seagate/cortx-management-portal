@@ -55,7 +55,7 @@
     </v-container>
     <v-data-table
       calculate-widths
-      :items="alertData"
+      :items="alertData.alerts"
       item-key="created_time"
       :items-per-page="5"
       :server-items-length="totalRecordsCount"
@@ -85,19 +85,19 @@
           <td>
             <v-img
               height="20"
-              v-if="props.item.severity==1"
+              v-if="props.item.state=='missing'"
               width="20"
               src="./../../assets/status/critical-icon.png"
             />
             <v-img
               height="20"
-              v-if="props.item.severity==2"
+              v-if="props.item.state=='fault'"
               width="20"
               src="./../../assets/status/error-fault.png"
             />
             <v-img
               height="20"
-              v-if="props.item.severity==3"
+              v-if="props.item.state=='insertion' || item.state=='fault resolved'"
               width="20"
               src="./../../assets/status/healthy-icon.png"
             />

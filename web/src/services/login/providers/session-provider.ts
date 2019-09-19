@@ -2,7 +2,6 @@ import request from "request-promise";
 import dotenv from "dotenv";
 
 dotenv.config();
-
 export const getSessionKeys = async (user: string) => {
   // const coreUrl = process.env.core_url;
   const key = process.env.SESSION_KEY;
