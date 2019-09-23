@@ -1,0 +1,11 @@
+
+{
+    "missing": "missing",
+    "not_installed": "Not Installed",
+    "fault": "fault",
+    "error": "Error",
+    "insertion": "insertion",
+    "fault_resolved": "fault resolved",
+    "up": "Up",
+    "ok": "Ok"
+}

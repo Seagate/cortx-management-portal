@@ -55,7 +55,7 @@
     </v-container>
     <v-data-table
       calculate-widths
-      :items="alertData.alerts"
+      :items="alertData"
       item-key="created_time"
       :items-per-page="5"
       :server-items-length="totalRecordsCount"
@@ -85,20 +85,23 @@
           <td>
             <v-img
               height="20"
-              v-if="props.item.state=='missing'"
+              v-if="props.item.state===alertStatus.missing || props.item.state === alertStatus.not_installed"
               width="20"
+              class="ml-2"
               src="./../../assets/status/critical-icon.png"
             />
             <v-img
               height="20"
-              v-if="props.item.state=='fault'"
+              v-if="props.item.state=== alertStatus.fault|| props.item.state == alertStatus.error"
               width="20"
+              class="ml-2"
               src="./../../assets/status/error-fault.png"
             />
             <v-img
               height="20"
-              v-if="props.item.state=='insertion' || item.state=='fault resolved'"
+              v-if="props.item.state===alertStatus.insertion || props.item.state === alertStatus.fault_resolved || props.item.state === alertStatus.up || props.item.state === alertStatus.ok"
               width="20"
+              class="ml-2"
               src="./../../assets/status/healthy-icon.png"
             />
           </td>
@@ -184,7 +187,9 @@ export default class EosAlertMedium extends Vue {
   }
 
   private data() {
-    return {};
+    return {
+       alertStatus: require("./../../common/const-string.json")
+    };
   }
 
   // Get total_records from alert API

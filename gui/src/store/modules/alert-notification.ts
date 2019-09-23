@@ -54,7 +54,7 @@ export default {
         },
         // will get called when we recives messages on web-sockets layer
         SOCKET_ONMESSAGE(state: any, message: any) {
-            state.socket.alerts.push(message);
+            state.socket.alerts.unshift(message);
 
         },
         // will get called on web-socket connection reconnect event.
