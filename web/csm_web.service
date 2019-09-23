@@ -14,9 +14,11 @@ PermissionsStartOnly=true
 ExecStartPre=
 ExecStartPre=/usr/bin/mkdir -p /var/run/csm /var/log/csm
 ExecStartPre=/usr/bin/chown csm:csm /var/run/csm /var/log/csm
-ExecStart=/root/.nvm/versions/node/v12.10.0/bin/node /opt/seagate/csm/web/web-dist/server.js
-ExecStopPost=
+ExecStart=/opt/nvm/versions/node/v12.10.0/bin/node /opt/seagate/csm/web/web-dist/server.js &
+ExecStopPost=fuser -k 3000/tcp
+ExecStopPost=rm -rf /var/run/csm/csm_web.pid
 PIDFile=/var/run/csm/csm_web.pid
 User=csm
 # Restart=on-failure
 TimeoutStartSec=300
+
