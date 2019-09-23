@@ -138,8 +138,6 @@ class AlertPlugin(CsmPlugin):
                                         csm_alert_payload)
             csm_alert_payload.dump()
             csm_schema = csm_alert_payload.load()
-            print("csm_schema>>>>>>>>>>>>>>>>>>>>>>>\n", csm_schema)
-            print("csm_alert_payload.load()>>>>>>>>>>>>>>>>>>>>>>>\n", csm_alert_payload.load())
             # todo: For now setting the created_time to current epoch.
             #   Once SSPL starts sending the time in epoch we will make
             #   use of 'time' field.
