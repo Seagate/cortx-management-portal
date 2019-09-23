@@ -21,7 +21,7 @@
     </v-system-bar>
     <v-data-table
       :headers="headers"
-      :items="alertData.alerts"
+      :items="alertData"
       :single-expand="singleExpand"
       item-key="created_time"
       show-expand
@@ -38,19 +38,19 @@
           <td>
             <v-img
               height="20"
-              v-if="props.item.state=='missing'"
+              v-if="props.item.state===alertStatus.missing || props.item.state === alertStatus.not_installed"
               width="20"
               src="./../../assets/status/critical-icon.png"
             />
             <v-img
               height="20"
-              v-if="props.item.state=='fault'"
+              v-if="props.item.state=== alertStatus.fault|| props.item.state == alertStatus.error"
               width="20"
               src="./../../assets/status/error-fault.png"
             />
             <v-img
               height="20"
-              v-if="props.item.state=='insertion' || item.state=='fault resolved'"
+              v-if="props.item.state===alertStatus.insertion || props.item.state === alertStatus.fault_resolved || props.item.state === alertStatus.up || props.item.state === alertStatus.ok"
               width="20"
               src="./../../assets/status/healthy-icon.png"
             />
@@ -157,7 +157,6 @@ export default class EosAlertLarge extends Vue {
   public mounted() {
     this.$store.dispatch("alerts/alertDataAction");
   }
-
   public data() {
     return {
       singleExpand: false,
@@ -183,7 +182,8 @@ export default class EosAlertLarge extends Vue {
         { text: "Comments", value: "" },
         { text: "Resolved", value: "resolved" },
         { text: "Acknowledged", value: "acknowledged" }
-      ]
+      ],
+      alertStatus: require("./../../common/const-string.json")
     };
   }
   public updateAlert(value: any) {
