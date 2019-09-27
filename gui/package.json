@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest ../../../dist/csm/src/eos/gui/ui-dist",
+    "build": "vue-cli-service build --dest ../../../dist/csm/eos/gui/ui-dist",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
