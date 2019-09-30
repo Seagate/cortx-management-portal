@@ -58,11 +58,15 @@ echo "Using VERSION=${VER} BUILD=${BUILD} PRODUCT=${PRODUCT} TEST=${TEST}..."
 # Create fresh one to accomodate all packages.
 COPY_START_TIME=$(date +%s)
 DIST="$BASE_DIR/dist"
-mkdir -p $DIST/csm/conf $DIST/tmp
+TMPDIR="$DIST/tmp"
+[ -d "$TMPDIR" ] && {
+    rm -rf ${TMPDIR}
+}
+mkdir -p $DIST/csm/conf $TMPDIR
 
 CONF=$BASE_DIR/src/conf/
 cp -R $CONF/etc $CONF/service $DIST/csm/conf
-cp $BASE_DIR/jenkins/csm.spec $DIST/tmp/
+cp $BASE_DIR/jenkins/csm.spec $TMPDIR
 COPY_END_TIME=$(date +%s)
 
 ################### Backend ##############################
@@ -70,39 +74,39 @@ COPY_END_TIME=$(date +%s)
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     # Build CSM Backend
     CORE_BUILD_START_TIME=$(date +%s)
+    cd $TMPDIR
 
     # Copy Backend files
-    mkdir -p $DIST/csm/lib $DIST/csm/bin $DIST/csm/conf $DIST/tmp
-    cp -rs $BASE_DIR/src/ $DIST/tmp/csm
-    cp -rs $BASE_DIR/test/ $DIST/tmp/csm
+    mkdir -p $DIST/csm/lib $DIST/csm/bin $DIST/csm/conf $TMPDIR
+    cp -rs $BASE_DIR/src/ $TMPDIR/csm
+    cp -rs $BASE_DIR/test/ $TMPDIR/csm
 
     # Enable csm package for python import
-    ln -sf $DIST/tmp/csm/  /usr/lib/python3.6/site-packages/
+    export PYTHONPATH=$TMPDIR/csm/:$PYTHONPATH
 
     CONF=$BASE_DIR/src/conf/
     cp -R $BASE_DIR/schema $DIST/csm/
 
     # Check python package
     req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
-    for pkg in $(cat $req_file); do
-        echo "Checking for $pkg package"
-        pip3 install $pkg > /dev/null || { echo "Package missing $pkg"; exit 1;};
-    done
+    echo "Installing python packages..."
+    pip3 install --user -r $req_file  > /dev/null || {
+        echo "Unable to istall package from $req_file"; exit 1;
+    };
 
     # Create spec for pyinstaller
-    cd $DIST/tmp
     [ "$TEST" == true ] && {
-        PYINSTALLER_FILE=$DIST/tmp/${PRODUCT}_csm_test.spec
+        PYINSTALLER_FILE=$TMPDIR/${PRODUCT}_csm_test.spec
         cp $BASE_DIR/jenkins/pyinstaller/product_csm_test.spec ${PYINSTALLER_FILE}
         mkdir -p $DIST/csm/test
         cp -R $BASE_DIR/test/plans $BASE_DIR/test/args.yaml $DIST/csm/test
     } || {
-        PYINSTALLER_FILE=$DIST/tmp/${PRODUCT}_csm.spec
+        PYINSTALLER_FILE=$TMPDIR/${PRODUCT}_csm.spec
         cp $BASE_DIR/jenkins/pyinstaller/product_csm.spec ${PYINSTALLER_FILE}
     }
 
     sed -i -e "s|<PRODUCT>|${PRODUCT}|g" \
-        -e "s|<CSM_PATH>|${DIST}/tmp/csm|g" ${PYINSTALLER_FILE}
+        -e "s|<CSM_PATH>|${TMPDIR}/csm|g" ${PYINSTALLER_FILE}
     pyinstaller --clean -y --distpath ${DIST}/csm --key ${KEY} ${PYINSTALLER_FILE}
     CORE_BUILD_END_TIME=$(date +%s)
 fi
@@ -146,7 +150,7 @@ mkdir -p ${DIST}/rpmbuild/SOURCES
 
 # Genrate spec file for CSM
 sed -i -e "s/<RPM_NAME>/${PRODUCT}_csm/g" \
-    -e "s/<PRODUCT>/${PRODUCT}/g" $DIST/tmp/csm.spec
+    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm.spec
 
 cd ${DIST}
 # Create tar for csm
@@ -160,13 +164,12 @@ TOPDIR=$(realpath ${DIST}/rpmbuild)
 
 # CSM RPM
 echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $BASE_DIR/jenkins/csm.spec
-rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $DIST/tmp/csm.spec
+rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $TMPDIR/csm.spec
 RPM_BUILD_END_TIME=$(date +%s)
 
 # Remove temporary directory
 \rm -rf ${DIST}/csm
-\rm -rf $DIST/tmp
-\rm -rf /usr/lib/python3.6/site-packages/csm
+\rm -rf ${TMPDIR}
 BUILD_END_TIME=$(date +%s)
 
 echo "CSM RPMs ..."
