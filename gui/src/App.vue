@@ -16,12 +16,18 @@
   <v-app>
     <headerBar />
     <div class="main-view">
-      <v-row>
-        <v-col cols=2>
+      <v-row class="container">
+        <v-col v-if="onboardingStatus" cols="2" class="pa-0">
           <eos-nav-bar></eos-nav-bar>
         </v-col>
-        <v-col cols=10>
+        <v-col v-if="!onboardingStatus" cols="1" class="pa-0">
+         
+        </v-col>
+        <v-col cols="10" class="pa-0">
           <router-view></router-view>
+        </v-col>
+         <v-col v-if="!onboardingStatus" cols=1>
+         
         </v-col>
       </v-row>
     </div>
@@ -39,12 +45,22 @@ import EosNavBar from "./components/navigation/nav-bar.vue";
     eosNavBar: EosNavBar
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  get onboardingStatus() {
+    return this.$store.getters["alerts/onboardingStatus"];
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .main-view {
   position: relative;
-  top: 57px;
+  top: 4em;
+  height: 93%;  
+  padding: 0px;
+}
+.container {
+  height: 100.1%;
+  padding: 0px;
 }
 </style>

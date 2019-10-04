@@ -9,7 +9,7 @@ Description=Cloud Storage Manager
 
 [Service]
 Environment=NODE_PORT=%i
-Type=forking
+Type=simple
 PermissionsStartOnly=true
 ExecStartPre=
 ExecStartPre=/usr/bin/mkdir -p /var/run/csm /var/log/csm

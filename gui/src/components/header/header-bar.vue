@@ -18,7 +18,16 @@
       <img src="../../assets/headerBar.png" />
     </span>
     <v-spacer></v-spacer>
-    <div id="alert-menu">
+    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
+    <div class="pa-5 grey--text">
+      <v-icon dark class="pr-1 grey--text" size="20">mdi-help-circle-outline</v-icon>Help
+    </div>
+    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
+    <div class="pa-5 grey--text">{{new Date().toLocaleString()}}</div>
+    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
+    <div class="pa-5 grey--text">Username</div>
+    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
+    <div id="alert-menu" class="pl-10 pr-5 pt-1">
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <div v-on="on" class="alert-container">
@@ -28,7 +37,7 @@
               width="1em"
               height="1em"
             ></v-img>
-            <span id="alert-lbl">Alerts</span>
+            <span id="alert-lbl" class="white--text">Alerts</span>
             <div id="alert-count">{{alertNotifications.length}}</div>
           </div>
         </template>
@@ -60,11 +69,13 @@
             </v-list-item>
           </v-list>
           <v-card-text>
-            <div class="green--text">See all alerts</div>
+            <div @click="$router.push('alertlarge')" class="green--text pointer">See all alerts</div>
           </v-card-text>
         </v-card>
       </v-menu>
     </div>
+    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
+    <div class="pa-5 white--text">Logout</div>
   </v-app-bar>
 </template>
 <script lang="ts">
@@ -82,13 +93,14 @@ export default class HeaderBar extends Vue {
     };
   }
   public mounted() {
-    Vue.use(VueNativeSock, "ws://" + window.location.hostname + ":8081/", {
+    Vue.use(VueNativeSock, "ws://" + window.location.hostname + ":8081/ws", {
       store,
       format: "json",
       reconnection: true, // (Boolean) whether to reconnect automatically (false)
       reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
       reconnectionDelay: 3000 // (Number) how long to initially wait before attempting a new (1000) })
     });
+    this.$store.dispatch("alertDataAction");
   }
 
   get alertNotifications() {
@@ -144,6 +156,7 @@ export default class HeaderBar extends Vue {
     border-bottom: 0px;
   }
 }
+.pointer {cursor: pointer;}
 </style>
 
 

@@ -1,0 +1,34 @@
+{
+  "systemconfig": {
+    "system_config": {
+      "ipv4": {
+        "isManual": true,
+        "ipAddress": "127.0.0.1",
+        "netmask": "255.255.255.0",
+        "gateway": "255.255.255.0"
+      },
+      "ipv6": {
+        "isManual": true,
+        "gateway": "255.255.255.0",
+        "static_addr": [
+          {
+            "ip_address": "127.0.0.2"
+          },
+          {
+            "ip_address": "127.0.0.1"
+          },
+          {
+            "ip_address": "127.0.0.1"
+          }
+        ]
+      },
+      "data_network_setting": {
+        "isExternalLoadBalancer": true,
+        "networkPreference": [
+          "ipv4",
+          "ipv6"
+        ]
+      }
+    }
+  }
+}

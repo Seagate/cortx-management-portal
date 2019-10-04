@@ -16,6 +16,11 @@ import Vue from "vue";
 import Router from "vue-router";
 import Dashboard from "./views/dashboard.vue";
 import EosAlertLarge from "./components/dashboard/alert-large.vue";
+import EosNetworkSettings from "./components/onboarding/system-config/mgmt-network/network-settings.vue";
+import EosNetworkSettingsIpv4 from "./components/onboarding/system-config/mgmt-network/network-settings-ipv4.vue";
+import EosNetworkSettingsIpv6 from "./components/onboarding/system-config/mgmt-network/network-settings-ipv6.vue";
+import EosDataNetwork from "./components/onboarding/system-config/mgmt-network/data-network.vue";
+
 
 Vue.use(Router);
 
@@ -30,6 +35,26 @@ export default new Router({
       path: "/alertlarge",
       name: "eosAlertLarge",
       component: EosAlertLarge,
+    },
+    {
+      path: "/systemconfig1",
+      name: "systemconfig1",
+      component: EosNetworkSettings,
+    },
+    {
+      path: "/systemconfig2",
+      name: "systemconfig2",
+      component: EosNetworkSettingsIpv4,
+    },
+    {
+      path: "/systemconfig3",
+      name: "systemconfig3",
+      component: EosNetworkSettingsIpv6,
+    },
+    {
+      path: "/systemconfig4",
+      name: "systemconfig4",
+      component: EosDataNetwork,
     },
   ],
 });

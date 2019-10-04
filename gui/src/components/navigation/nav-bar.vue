@@ -13,11 +13,11 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card height="800" width="256" class="mx-auto grey darken-3">
-    <v-navigation-drawer permanent class="grey darken-3">
+  <v-card height="100%" class="grey darken-3" tile>
+    <v-navigation-drawer permanent class="grey darken-3" tile floating>
       <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link>
-          <v-list-item-icon>
+        <v-list-item v-for="item in items" :key="item.title" link class="navtext">
+          <v-list-item-icon class="pa-0 ma-2">
             <v-img :src="require('@/assets/navigation/'+item.icon)" width="23" height="23"></v-img>
           </v-list-item-icon>
 
@@ -53,10 +53,12 @@ export default class EosNavBar extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-#alert-img1 {
-  width: 20px;
-  height: 20px;
-  border: 1px solid red;
-  background: url("./../../assets/info-alert-green.png") no-repeat;
+.navtext:first-child {
+  background-color: white !important;
+  width: 105%;
+  border-radius: 0;
+}
+.navtext:first-child .white--text {
+  color: black !important;
 }
 </style>

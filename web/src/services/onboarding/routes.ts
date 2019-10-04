@@ -1,6 +1,6 @@
 /*****************************************************************************
  Filename:          routes.ts
- Description:       REST APIs to get alert details
+ Description:       REST APIs to get and save System Configuration details
 
  Creation Date:     21/08/2019
  Author:            Soniya Moholkar
@@ -14,24 +14,23 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getAlerts, updateAlerts } from "./alerts-controller";
+import { getSystemConfig, saveSystemConfig } from "./on-boarding-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
-
 /**
- * It has all the REST APIs to get the alert related details. 
+ * It has all the REST APIs to get, save, update the System Configuration related details. 
  */
 
 export default [
   {
-    path: "/api/v1/alerts",
+    path: "/api/v1/systemconfig",
     method: "get",
     handler: [
       checkRequiredParams,
       async ({ query }: Request, res: Response) => {
         try {
-          const result = await getAlerts(query);
+          const result = await getSystemConfig(query);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -40,18 +39,17 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts/:alert_id",
-    method: "patch",
+    path: "/api/v1/systemconfig",
+    method: "post",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await updateAlerts(req, res);
-          res.status(HttpStatus.NO_CONTENT).send();
+          const result = await saveSystemConfig(req, res);
+          res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
-        }
-        
+        }        
       }
     ]
   }
