@@ -1,3 +1,4 @@
+import HttpStatus from 'http-status-codes';
 export abstract class HTTPCsmClientError extends Error {
   readonly statusCode!: number;
   readonly name!: string;
@@ -14,7 +15,7 @@ export abstract class HTTPCsmClientError extends Error {
 }
 
 export class HTTP400Error extends HTTPCsmClientError {
-  readonly statusCode = 400;
+  readonly statusCode = HttpStatus.BAD_REQUEST;
 
   constructor(message: string | object = "Bad Request") {
     super(message);
@@ -22,7 +23,7 @@ export class HTTP400Error extends HTTPCsmClientError {
 }
 
 export class HTTP401Error extends HTTPCsmClientError {
-  readonly statusCode = 401;
+  readonly statusCode = HttpStatus.UNAUTHORIZED;
 
   constructor(message: string | object = "Unauthorized") {
     super(message);
@@ -30,7 +31,7 @@ export class HTTP401Error extends HTTPCsmClientError {
 }
 
 export class HTTP403Error extends HTTPCsmClientError {
-  readonly statusCode = 403;
+  readonly statusCode = HttpStatus.FORBIDDEN;
 
   constructor(message: string | object = "Forbidden") {
     super(message);
@@ -38,7 +39,7 @@ export class HTTP403Error extends HTTPCsmClientError {
 }
 
 export class HTTP404Error extends HTTPCsmClientError {
-  readonly statusCode = 404;
+  readonly statusCode = HttpStatus.NOT_FOUND;
 
   constructor(message: string | object = "Not found") {
     super(message);

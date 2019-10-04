@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 // Interface for CSM schema for Alert
-export interface OtherDetails {
+interface OtherDetails {
     dc12v: number;
     dctemp: number;
     vendor: string;
@@ -32,14 +32,14 @@ export interface OtherDetails {
     dc5i: number;
 }
 
-export interface ExtendedInfo {
+interface ExtendedInfo {
     resource_type: string;
     position: string;
     durable_id: string;
     other_details: OtherDetails;
 }
 
-export interface Alert {
+interface Alert {
     id: number;
     alert_uuid: number;
     status: string;
@@ -50,14 +50,21 @@ export interface Alert {
     health: string;
     health_recommendation: string;
     location: string;
-    resolved: number;
+    resolve: number;
     acknowledged: number;
     severity: number;
     state: string;
     extended_info: ExtendedInfo;
 }
 
-export default interface AlertObject {
+export interface AlertObject {
     total_records: number;
     alerts: Alert[];
+}
+
+export interface AlertQueryParam {
+    sortBy: string;
+    dir: string;
+    offset: number;
+    limit: number;
 }

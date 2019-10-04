@@ -17,7 +17,7 @@ import Vuex from "vuex";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
-import AlertObject from "./../../models/alert";
+import { AlertObject, AlertQueryParam } from "./../../models/alert";
 
 Vue.use(Vuex);
 
@@ -27,24 +27,46 @@ Vue.use(Vuex);
 export default class Alerts extends VuexModule {
     public alerts: AlertObject | null = null;
     public header: object | null = null;
+    public isOnboardingDone: boolean = false;
+    public queryParams: AlertQueryParam = {
+        sortBy: "created_time",
+        dir: "desc",
+        offset: 1,
+        limit: 5
+    };
 
     @Mutation
     public alertDataMutation(payload: AlertObject) {
         this.alerts = { ...payload };
     }
 
+    @Mutation
+    public setOnboardingFlag(flag: boolean) {
+        this.isOnboardingDone = flag;
+    }
+    get onboardingStatus() {
+        return this.isOnboardingDone;
+    }
+
     @Action
     public async alertDataAction(queryParams: object) {
-        const res = await Api.getAll(apiRegister.all_alerts, queryParams);
-        const data = res.data;
-        this.context.commit("alertDataMutation", data);
+        queryParams = queryParams ? queryParams : this.queryParams;
+        try {
+            const res = await Api.getAll(apiRegister.all_alerts, queryParams);
+            const data = res.data;
+            this.context.commit("alertDataMutation", data);
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.log("err logger: ", e);
+        }
     }
+
     @Action
     public async updateAlert(payload: any): Promise<any | undefined> {
         try {
             const res = Api.patch(apiRegister.all_alerts,
-                { acknowledged: payload.acknowledged === "1" ? true : false, comment: payload.comment },
-                payload.id);
+                { acknowledged: payload.acknowledged, comment: payload.comment },
+                payload.alert_uuid);
             return res;
         } catch (e) {
             // tslint:disable-next-line: no-console
@@ -68,6 +90,7 @@ export default class Alerts extends VuexModule {
         return;
     }
 
+
     // Set headers for alert table
     @Mutation
     public alertHeaderMutation(headerObj: object) {
@@ -77,5 +100,18 @@ export default class Alerts extends VuexModule {
     // Get alert headers
     get alertHeader() {
         return this.header;
+    }
+
+    // Set query params for Alert Table
+    @Mutation
+    public alertQueryParamMutation({ ...queryParams }) {
+        this.queryParams.sortBy = queryParams.sortBy;
+        this.queryParams.dir = queryParams.dir;
+        this.queryParams.offset = queryParams.offset;
+        this.queryParams.limit = queryParams.limit;
+    }
+    // Get Alert Query Parameter
+    get alertQueryParams(): AlertQueryParam {
+        return this.queryParams;
     }
 }

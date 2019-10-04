@@ -2,8 +2,8 @@
  Filename:          api-register.ts
  Description:       API Register: use for maintainging single registry for API
 
- Creation Date:     05/09/2019
- Author:            Sanjeevan Bhave
+ Creation Date:     24/09/2019
+ Author:            Soniya Moholkar
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -16,5 +16,7 @@ export const version = "v1";
 
 export default {
     all_alerts: `/api/${version}/alerts`,
-    systemconfig: `api/${version}/systemconfig`
+    // UnComment following once Python API is ready
+    //all_system_config: `/api/${version}/systemconfig`
+    all_system_config: `/systemconfig` //remove this once Python API is ready
 };

@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="my-5" width="60%" tile>
+  <v-card class="ma-5 elevation-0 mediumAlert" width="60%" tile>
     <v-system-bar height="40em">
       <span id="title" class="text-uppercase font-weight-medium text--black">ALERTS</span>
       <v-spacer></v-spacer>
@@ -30,7 +30,7 @@
           >SYSTEM HEALTH</v-card-text>
           <v-row class="ml-n1">
             <v-col>
-              <v-img class="mr-n12" height="20" width="20" src="@/assets/status/degraded.png" />
+              <v-img class="mr-n12" height="14" width="14" src="@/assets/status/degraded.png" />
             </v-col>
             <v-col>
               <v-card-text class="ml-n1 mt-n4">Degraded</v-card-text>
@@ -57,31 +57,40 @@
       calculate-widths
       :items="alertData"
       item-key="created_time"
-      :items-per-page="5"
+      :items-per-page.sync="itemsPerPage"
+      :page.sync="page"
+      :update:page="page"
       :server-items-length="totalRecordsCount"
       hide-default-header
+      @update:page="onSortPaginate(null, null, page, itemsPerPage)"
+      id="tblAlertMedium"
     >
       <template v-slot:header="{props}">
         <th
           v-for="header in alertHeader"
           :key="header.text"
-          class="tableheader text-capitalize font-weight-medium grey lighten-5 text--black pt-2"
-          @click="onSort(header.value, header, props.options.page, props.options.itemsPerPage)"
+          class="tableheader text-capitalize font-weight-medium text--black"
+          @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
         >
-          {{ header.text }}
-          <img
-            v-if="header.sortable && header.sortDir === 'desc'"
-            src="./../../assets/caret-green-down.png"
-          />
-          <img
-            v-if="header.sortable && header.sortDir === 'asc'"
-            src="./../../assets/caret-green-up.png"
-          />
+          <span
+            class="headerText"
+            :class="(header.value === sortColumnName && isSortActive) ? 'active' : ''"
+          >{{ header.text }}</span>
+          <span :class="(header.value === sortColumnName && isSortActive) ? 'active' : 'notActive'">
+            <img
+              v-if="header.sortable && header.sortDir === alertStatus.desc"
+              src="./../../assets/table-caret-green-down.png"
+            />
+            <img
+              v-if="header.sortable && header.sortDir === alertStatus.asc"
+              src="./../../assets/table-caret-green-up.png"
+            />
+          </span>
         </th>
       </template>
       <template v-slot:item="props">
-        <tr class="font-weight-medium">
-          <td>{{props.item.created_time}}</td>
+        <tr class="font-weight-small">
+          <td>{{ new Date(props.item.created_time).toLocaleString() }}</td>
           <td>
             <v-img
               height="20"
@@ -92,7 +101,7 @@
             />
             <v-img
               height="20"
-              v-if="props.item.state=== alertStatus.fault|| props.item.state == alertStatus.error"
+              v-if="props.item.state=== alertStatus.fault || props.item.state == alertStatus.error"
               width="20"
               class="ml-2"
               src="./../../assets/status/error-fault.png"
@@ -115,94 +124,49 @@
   </v-card>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import store from "./../../store/store";
+import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import AlertsMixin from "./../../mixins/alerts";
 
 @Component({
   name: "eos-alert-medium"
 })
-export default class EosAlertMedium extends Vue {
+export default class EosAlertMedium extends Mixins(AlertsMixin) {
   public mounted() {
     // Call action to get all alert data
     this.$store.dispatch("alerts/alertDataAction");
-
+    this.$store.commit("alerts/setOnboardingFlag", true);
     // Set Alert table default header options
-    const header = [
+    const headers = [
       {
         text: "Active Time",
-        align: "left",
         value: "created_time",
-        class: "grey lighten-2",
         sortable: true,
         sortDir: "desc"
       },
       {
         text: "Alert Severity",
         value: "severity",
-        align: "left",
-        class: "grey lighten-2",
-        sortable: true,
+        sortable: false,
         sortDir: "desc"
       },
       {
         text: "Component",
         value: "component",
-        class: "grey lighten-2",
-        align: "right",
         sortable: false
       }
     ];
     // Mutate header data in store
-    this.$store.commit("alerts/alertHeaderMutation", header);
+    this.$store.commit("alerts/alertHeaderMutation", headers);
   }
 
-  // Column sort handler
-  public onSort(
-    sortby: string,
-    sortedHeader: any,
-    offset: number,
-    limit: number
-  ) {
-    // Check if current column is sortable
-    if (!sortedHeader.sortable) {
-      return;
-    }
-    // Create query parameter for API request
-    const queryParams = {
-      sortby,
-      dir: sortedHeader.sortDir,
-      offset,
-      limit
-    };
-
-    // Change sort direction in alertHeader data for current selected/sorted column
-    for (const header of this.alertHeader) {
-      if (header.value === sortby) {
-        header.sortDir = sortedHeader.sortDir === "desc" ? "asc" : "desc";
-      }
-    }
-    // Update alert header data set with updated sort direction
-    this.$store.commit("alerts/alertHeaderMutation", this.alertHeader);
-    this.$store.dispatch("alerts/alertDataAction", queryParams);
-  }
-
-  private data() {
+  public data() {
     return {
-       alertStatus: require("./../../common/const-string.json")
+      page: 1, // Page counter, in sync with data table
+      itemsPerPage: 5, // Total rows per page, in sync with data table
+      isSortActive: false, // Set table column sorting flag to default inactive
+      sortColumnName: "", // Set sorting column name to none
+      alertStatus: require("./../../common/const-string.json")
     };
-  }
-
-  // Get total_records from alert API
-  get totalRecordsCount() {
-    return this.$store.getters["alerts/alertTotalRecordCount"];
-  }
-  // Get the header data from store
-  get alertHeader() {
-    return this.$store.getters["alerts/alertHeader"];
-  }
-  // Get all alerts from API
-  get alertData() {
-    return this.$store.getters["alerts/alertData"];
   }
 }
 </script>
@@ -216,5 +180,33 @@ export default class EosAlertMedium extends Vue {
 }
 .tableheader {
   height: 2.5em;
+  background-color: #e3e3e3;
+  border-top: 1px solid whitesmoke;
+  padding-top: 0.5em;
+}
+.active {
+  display: inline-block;
+  color: green !important;
+}
+.notActive {
+  opacity: 0;
+}
+.headerText {
+  color: black;
+}
+.tableheader:hover {
+  .notActive {
+    opacity: 1;
+  }
+}
+.mediumAlert {
+  border: 2px solid #e3e3e3;
+}
+tbody tr {
+  background-color: #ebf1e9 !important ;
+}
+tbody tr:hover {
+  border-top: 2px solid darkgray !important;
+  border-bottom: 2px solid darkgray !important;
 }
 </style>

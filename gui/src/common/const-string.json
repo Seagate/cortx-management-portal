@@ -7,5 +7,7 @@
     "insertion": "insertion",
     "fault_resolved": "fault resolved",
     "up": "Up",
-    "ok": "Ok"
+    "ok": "Ok",
+    "desc": "desc",
+    "asc": "asc"
 }

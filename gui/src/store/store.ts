@@ -16,12 +16,14 @@ import Vue from "vue";
 import Vuex from "vuex";
 import alertNotification from "./modules/alert-notification";
 import alerts from "./modules/alerts";
+import systemConfig from "./modules/system-configuration";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
         alertNotification,
-        alerts
+        alerts,
+        systemConfig
     }
 });

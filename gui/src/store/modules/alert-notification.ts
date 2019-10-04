@@ -14,7 +14,8 @@
  *****************************************************************************/
 import Vue from "vue";
 import Vuex from "vuex";
-
+import { Api } from "./../../services/api";
+import apiRegister from "./../../services/api-register";
 Vue.use(Vuex);
 
 // Interface for CSM schema for Alert
@@ -64,8 +65,30 @@ export default {
         // will get called on web-sockets reconnection error.
         SOCKET_RECONNECT_ERROR(state: any) {
             return;
+        },
+        apiNotification(state: any, list: any) {
+            // tslint:disable-next-line: prefer-for-of
+            for (let alertCount = 0; alertCount < list.alerts.length; alertCount++) {
+                state.socket.alerts.push(list.alerts[alertCount]);
+            }
         }
     },
     actions: {
+        async alertDataAction(context: any) {
+            const queryParams = {
+                sortBy: "created_time",
+                dir: "desc",
+                offset: 1,
+                limit: 5
+            };
+            try {
+                const res = await Api.getAll(apiRegister.all_alerts, queryParams);
+                const data = res.data;
+                context.commit("apiNotification", data);
+            } catch (e) {
+                // tslint:disable-next-line: no-console
+                console.log("err logger: ", e);
+            }
+        }
     }
 };

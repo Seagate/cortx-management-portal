@@ -14,8 +14,8 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 
-import { Api } from "./../api";
-import apiRegister from "./../api-register";
+import { Api } from "../api";
+import apiRegister from "../api-register";
 import { Request, Response, request, response } from "express";
 
 /**
@@ -28,15 +28,15 @@ import { Request, Response, request, response } from "express";
  * @param offset 
  * @param limit 
  */
-export const getAlerts = async (query: any) => {
-    let alertData = Api.getAll(apiRegister.all_alerts, query);
+export const getSystemConfig = async (query: any) => {
+    let alertData = Api.getAll(apiRegister.all_system_config, query);
     let result = await alertData;
     return result;
 };
 
 
-export const updateAlerts = async (req: Request, res: Response) => {
-    let alertData = Api.patch(apiRegister.all_alerts, req, req.params.alert_id);
+export const saveSystemConfig = async (req: Request, res: Response) => {
+    let alertData = Api.post(apiRegister.all_system_config, req);
     let result = await alertData;
     return result;
 };

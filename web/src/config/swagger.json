@@ -3,7 +3,6 @@
   "info": {
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
   "basePath": "/api/v1",
   "schemes": [
     "http"
@@ -45,7 +44,7 @@
         "tags": [
           "Get Alerts"
         ],
-        "summary": "Gets Hard coded Alerts. In future this needs to be integrated with Python API",
+        "summary": "Gets Alerts from Python API",
         "responses": {
           "200": {
             "description": "Alerts",
@@ -65,6 +64,9 @@
           },
           "400": {
             "description": "Missing Valid Required Parameters"
+          },
+          "404": {
+            "description": "Alert Not Found"
           }
         },
         "content": {
@@ -159,6 +161,150 @@
             }
           }
         ]
+      }
+    },
+    "/systemconfig": {
+      "get": {
+        "tags": [
+          "Get System Config"
+        ],
+        "summary": "Get the System Configuration from mock server.",
+        "responses": {
+          "200": {
+            "description": "System Config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "system_config": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No Data Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        }
+      },
+      "post": {
+        "tags": [
+          "Save System Config"
+        ],
+        "summary": "Save the System configuration to the mock server.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "system_config",
+            "in": "body",
+            "description": "system config",
+            "schema": {
+              "$ref": "#/definitions/system_config"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "system_config": {
+      "type": "object",
+      "required": false,
+      "properties": {
+        "system_config": {
+          "type": "object",
+          "properties": {
+            "ipv4": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "isManual": {
+                  "type": "boolean"
+                },
+                "ipAddress": {
+                  "type": "string",
+                  "example": "127.0.0.1"
+                },
+                "netmask": {
+                  "type": "string",
+                  "example": "255.255.255.0"
+                },
+                "gateway": {
+                  "type": "string",
+                  "example": "255.255.255.0"
+                }
+              }
+            },
+            "ipv6": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "isManual": {
+                  "type": "boolean"
+                },
+                "gateway": {
+                  "type": "string",
+                  "example": "255.255.255.0"
+                },
+                "static_addr": {
+                  "type": "array",
+                  "items": {
+                    "ip_address": {
+                      "type": "string"
+                    }
+                  },
+                  "example": [
+                    {
+                      "ip_address": "127.0.0.1"
+                    },
+                    {
+                      "ip_address": "127.0.0.2"
+                    },
+                    {
+                      "ip_address": "127.0.0.3"
+                    }
+                  ]
+                }
+              }
+            },
+            "data_network_setting": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "isExternalLoadBalancer": {
+                  "type": "boolean"
+                },
+                "networkPreference": {
+                  "type": "array",
+                  "items": "string",
+                  "example": [
+                    "ipv4",
+                    "ipv6"
+                  ]
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

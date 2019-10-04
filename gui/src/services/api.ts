@@ -20,6 +20,7 @@ export abstract class Api {
     public static async getAll(url: string, queryParams?: object) {
         return await axios.get(url, { params: queryParams });
     }
+    // Wrapper method for update api
     public static async patch(url: string, payload: object, id: number) {
         return await axios.patch(url + "/" + id, payload);
     }
