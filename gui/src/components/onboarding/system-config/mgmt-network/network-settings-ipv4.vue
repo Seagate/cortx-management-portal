@@ -10,7 +10,7 @@
     <v-row>
       <v-col cols="6">
         <div class="body-2">
-          <div class="title mt-6">Management network settings: IPv4</div>
+          <div class="title mt-6">Management Network Settings: IPv4</div>
           <div class="mt-6">You need to configure a single IP address for management of this system.</div>
           <v-divider class="mt-2" />
           <div class="font-weight-bold mt-6">Source</div>
@@ -22,7 +22,7 @@
           </div>
           <div>
             <div class="mt-4">
-              <span class="font-weight-bold">IP address</span>
+              <span class="font-weight-bold">IP Address</span>
               <div>
                 <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress" />
               </div>

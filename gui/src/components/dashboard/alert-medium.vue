@@ -90,7 +90,7 @@
       </template>
       <template v-slot:item="props">
         <tr class="font-weight-small">
-          <td>{{ new Date(props.item.created_time).toLocaleString() }}</td>
+          <td>{{ new Date(props.item.created_time*1000) | timeago}}</td>
           <td>
             <v-img
               height="20"
@@ -145,8 +145,8 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
       },
       {
         text: "Alert Severity",
-        value: "severity",
-        sortable: false,
+        value: "state",
+        sortable: true,
         sortDir: "desc"
       },
       {

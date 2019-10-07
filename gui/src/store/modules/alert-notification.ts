@@ -35,7 +35,7 @@ export default {
         // all websockets related state data will be stored in socket state object
         socket: {
             alerts: Array<AlertInfo>(),
-            alertCount: Number
+            alertCount: 0
         }
     },
     getters: {
@@ -56,6 +56,7 @@ export default {
         // will get called when we recives messages on web-sockets layer
         SOCKET_ONMESSAGE(state: any, message: any) {
             state.socket.alerts.unshift(message);
+            state.socket.alertCount++;
 
         },
         // will get called on web-socket connection reconnect event.
@@ -71,6 +72,7 @@ export default {
             for (let alertCount = 0; alertCount < list.alerts.length; alertCount++) {
                 state.socket.alerts.push(list.alerts[alertCount]);
             }
+            state.socket.alertCount = list.total_records;
         }
     },
     actions: {

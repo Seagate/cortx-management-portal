@@ -27,7 +27,7 @@
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text">Username</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div id="alert-menu" class="pl-10 pr-5 pt-1">
+    <div id="alert-menu" class="pl-10 pr-3 pt-1">
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <div v-on="on" class="alert-container">
@@ -38,7 +38,7 @@
               height="1em"
             ></v-img>
             <span id="alert-lbl" class="white--text">Alerts</span>
-            <div id="alert-count">{{alertNotifications.length}}</div>
+            <div id="alert-count">{{alertNotifications.alertCount}}</div>
           </div>
         </template>
         <v-card width="20em" min-height="14em" max-height="25em" class="mx-auto elevation-0" tile>
@@ -46,7 +46,7 @@
             <div>Alerts</div>
           </v-card-text>
           <v-list width="18em" class="mar-center" min-height="12em" max-height="16em">
-            <v-list-item v-for="(item, index) in alertNotifications" :key="index">
+            <v-list-item v-for="(item, index) in alertNotifications.alerts" :key="index">
               <img
                 class="mr-2"
                 v-if="item.state===alertStatus.missing || item.state === alertStatus.not_installed"
@@ -93,7 +93,8 @@ export default class HeaderBar extends Vue {
     };
   }
   public mounted() {
-    Vue.use(VueNativeSock, "ws://" + window.location.hostname + ":8081/ws", {
+    const wsUrl = "ws://" + window.location.hostname + ":8081/ws";
+    Vue.use(VueNativeSock, wsUrl, {
       store,
       format: "json",
       reconnection: true, // (Boolean) whether to reconnect automatically (false)
@@ -104,7 +105,7 @@ export default class HeaderBar extends Vue {
   }
 
   get alertNotifications() {
-    return this.$store.state.alertNotification.socket.alerts;
+    return this.$store.state.alertNotification.socket;
   }
 }
 </script>
@@ -156,7 +157,9 @@ export default class HeaderBar extends Vue {
     border-bottom: 0px;
   }
 }
-.pointer {cursor: pointer;}
+.pointer {
+  cursor: pointer;
+}
 </style>
 
 

@@ -10,7 +10,7 @@
     <v-row>
       <v-col cols="6">
         <div class="body-2">
-          <div class="title mt-6">management network settings: IPv6</div>
+          <div class="title mt-6">Management Network Settings: IPv6</div>
           <div class="mt-6">You need to configure a single IP address for management of this system.</div>
           <v-divider class="mt-2" />
           <div class="font-weight-bold mt-6">Source</div>
@@ -76,7 +76,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   private data() {
     return {
       source: "manual",
-      ipaddress: ["10.230.163.142", "10.230.163.144"],
+      ipaddress: [],
       newAddress: ""
     };
   }
@@ -123,5 +123,3 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   cursor: pointer;
 }
 </style>
-
-

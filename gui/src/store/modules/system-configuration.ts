@@ -27,7 +27,7 @@ Vue.use(Vuex);
 export default class SystemConfiguration extends VuexModule {
     public systemConfig: SystemConfigObject = {} as SystemConfigObject;
     public isipV4: boolean = false;
-    public isipV6: boolean = true;
+    public isipV6: boolean = false;
     public isnetworkSettingsSkip: boolean = false;
 
     @Mutation

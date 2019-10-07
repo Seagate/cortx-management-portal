@@ -8,11 +8,11 @@
     ></v-img>
     <v-divider />
     <div class="body-2">
-      <div class="title mt-6">Management Network settings</div>
+      <div class="title mt-6">Management Network Settings</div>
       <div
         class="mt-2"
-      >use the following screens to finalize your Management network settings for mapping the system. You can set system to be managed in an IPv4 network, , an IPv6 network or both. You can skip this section entirely if your network settings are complate.</div>
-      <div class="mt-6">chose which Network settings you'd like to establish.</div>
+      >Use the following screens to finalize your management network settings for mapping the system. You can set system to be managed in an IPv4 network, an IPv6 network or both. You can skip this section entirely if your network settings are complete.</div>
+      <div class="mt-6">Choose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
         <input type="checkbox" name="ipv4" v-model="isipV4Status" @change="isipV4Status" />
@@ -34,7 +34,7 @@
       </div>
       <div
         class="mt-2"
-      >You can skip this step if your management network settings are already complete.</div>
+      >You can skip this step if your Management Network Settings are already complete.</div>
       <v-divider class="mt-8" />
       <div class="mt-8">
         <v-btn @click="gotoNextPage()" elevation="0" color="green">
