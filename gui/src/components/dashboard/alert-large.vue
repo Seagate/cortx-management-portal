@@ -75,7 +75,7 @@
               <img v-if="props.isExpanded" src="./../../assets/caret-green-down.png" />
               <img v-if="!props.isExpanded" src="./../../assets/caret-green-right.png" />
             </td>
-            <td style="width: 12em;">{{ new Date(props.item.created_time).toLocaleString() }}</td>
+            <td style="width: 9em;">{{ new Date(props.item.created_time*1000) | timeago }}</td>
             <td>
               <v-img
                 height="20"
@@ -100,7 +100,7 @@
               <div>{{props.item.location}}</div>
               <div>State:{{props.item.state}}</div>
             </td>
-            <td>{{props.item.description}}</td>
+            <td style="width: 20em;">{{props.item.description}}</td>
             <td>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
@@ -212,8 +212,8 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
       },
       {
         text: "Severity",
-        value: "severity",
-        sortable: false,
+        value: "state",
+        sortable: true,
         sortDir: "desc"
       },
       {

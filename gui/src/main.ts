@@ -17,8 +17,12 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/store";
 import vuetify from "./plugins/vuetify";
+import * as moment from "moment";
 
 Vue.config.productionTip = false;
+Vue.filter("timeago", (date: string) => {
+  return moment.default(date).fromNow();
+});
 
 new Vue({
   router,

@@ -8,7 +8,7 @@
     ></v-img>
     <v-divider />
     <div class="body-2">
-      <div class="title mt-6">Data network settings</div>
+      <div class="title mt-6">Data Network Settings</div>
       <div
         class="mt-2"
       >UPDATE THIS TEXT: Use the following screens to finalize your network settings for managing the system. You can set the system to be managed in an IPv4 and IPv6 network or both. Additionally the system can be configured to utilize DNS within your network. You can skip this section entirely if your network settings are complete.</div>
@@ -41,7 +41,7 @@
         class="mt-1"
       >Selecting IPv6 will allow you to view settings assigned by DHCP or to assign static IPv6 data network settings for environments that do not support DHCP.</div>
       <div class="mt-6">
-        <input type="checkbox" :disabled="isipV6Status && isipV4Status" name="skip"  />
+        <input type="checkbox" :disabled="isipV6Status && isipV4Status" name="skip" />
         <span class="ml-3 font-weight-medium">Skip management network settings</span>
       </div>
       <div
@@ -52,10 +52,7 @@
         <v-btn elevation="0" color="green">
           <span class="white--text">Continue</span>
         </v-btn>
-        <span
-          class="green--text ml-8 pointer"
-          @click="gotToPrevPage()"
-        >Back to previous step</span>
+        <span class="green--text ml-8 pointer" @click="gotToPrevPage()">Back to previous step</span>
       </div>
     </div>
   </v-container>
@@ -83,7 +80,7 @@ export default class EosDataNetwork extends Vue {
   public get isipV6Status(): any {
     return this.$store.getters["systemConfig/isipV6Status"];
   }
-   public set isipV6Status(status: any) {
+  public set isipV6Status(status: any) {
     this.$store.commit("systemConfig/setNetworkManagementSettings", {
       type: "ipV6",
       flag: status
