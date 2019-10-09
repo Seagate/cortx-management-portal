@@ -100,7 +100,7 @@
               <div>{{props.item.location}}</div>
               <div>State:{{props.item.state}}</div>
             </td>
-            <td style="width: 20em;">{{props.item.description}}</td>
+            <td style="width: 19em;">{{props.item.description}}</td>
             <td>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
@@ -153,6 +153,7 @@
                       <v-textarea
                         background-color="grey lighten-5"
                         v-model="props.item.comment"
+                        maxlength="120"
                         solo
                         name="input-7-4"
                       ></v-textarea>
