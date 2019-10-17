@@ -147,7 +147,6 @@ class AlertPlugin(CsmPlugin):
             csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
             csm_schema[const.ALERT_RESOLVED] = False 
             csm_schema[const.ALERT_ACKNOWLEDGED] = False
-            #csm_schema[const.ALERT_SEVERITY] = const.ALERT_TRUE
             csm_schema[const.ALERT_COMMENT] = ""
             # """ Validating the schema. """
             validate(csm_schema, self._hw_schema)
