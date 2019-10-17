@@ -134,21 +134,18 @@ class AlertPlugin(CsmPlugin):
             csm_alert_payload.dump()
             csm_schema = csm_alert_payload.load()
             csm_schema[const.ALERT_TYPE] = 'hw'
-            #csm_schema[const.ALERT_UUID] = int(
-            #    csm_schema.get(const.ALERT_ENCLOSURE_ID, const.ALERT_INT_DEFAULT))
-            # """
+            """
             # Below mentioned fields are managed by CSM so they are not the part
             # of mapping table
-            # """
+            """
             csm_schema[const.ALERT_ID] = int(time.time())
             csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
             csm_schema[const.ALERT_MODULE_NAME] = resource_type
-            # todo: with new schema>> f'{resource_type.split(":")[1]}'
             csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
             csm_schema[const.ALERT_RESOLVED] = False 
             csm_schema[const.ALERT_ACKNOWLEDGED] = False
             csm_schema[const.ALERT_COMMENT] = ""
-            # """ Validating the schema. """
+            """ Validating the schema. """
             validate(csm_schema, self._hw_schema)
         except Exception as e:
             Log.exception(e)
