@@ -20,7 +20,7 @@ import EosNetworkSettings from "./components/onboarding/system-config/mgmt-netwo
 import EosNetworkSettingsIpv4 from "./components/onboarding/system-config/mgmt-network/network-settings-ipv4.vue";
 import EosNetworkSettingsIpv6 from "./components/onboarding/system-config/mgmt-network/network-settings-ipv6.vue";
 import EosDataNetwork from "./components/onboarding/system-config/mgmt-network/data-network.vue";
-
+import EosAccountManagement from "./components/s3/account-management.vue";
 
 Vue.use(Router);
 
@@ -56,5 +56,10 @@ export default new Router({
       name: "systemconfig4",
       component: EosDataNetwork,
     },
+    {
+      path: "/s3account",
+      name: "s3account",
+      component: EosAccountManagement,
+    }
   ],
 });
