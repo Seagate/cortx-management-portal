@@ -153,7 +153,7 @@
                       <v-textarea
                         background-color="grey lighten-5"
                         v-model="props.item.comment"
-                        maxlength="120"
+                        maxlength="255"
                         solo
                         name="input-7-4"
                       ></v-textarea>
