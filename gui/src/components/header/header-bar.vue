@@ -23,7 +23,7 @@
       <v-icon dark class="pr-1 grey--text" size="20">mdi-help-circle-outline</v-icon>Help
     </div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 grey--text">{{new Date().toLocaleString()}}</div>
+    <div class="pa-5 grey--text body-2">{{new Date().toLocaleString()}}</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text">Username</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>

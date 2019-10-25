@@ -15,21 +15,28 @@
       <div class="mt-6">Choose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input type="checkbox" name="ipv4" v-model="isipV4Status" @change="isipV4Status" />
+        <input type="checkbox" name="ipv4" :disabled="isSkip" v-model="isipV4Status" @change="isipV4Status" />
         <span class="ml-3 font-weight-medium">IPv4</span>
       </div>
       <div
         class="mt-2"
       >Selecting IPv4 will allow you to view settings assigned by DHCP or to assign static IPv4 data network for enironments that do not support DHCP.</div>
       <div class="mt-6">
-        <input type="checkbox" @change="isipV6Status" v-model="isipV6Status" name="ipv6" />
+        <input type="checkbox" @change="isipV6Status" :disabled="isSkip" v-model="isipV6Status" name="ipv6" />
         <span class="ml-4 font-weight-medium">IPv6</span>
       </div>
       <div
         class="mt-1"
       >Selecting IPv6 will allow you to view settings assigned by DHCP or to assign static IPv6 data network settings for environments that do not support DHCP.</div>
       <div class="mt-6">
-        <input type="checkbox" name="skip" :disabled="isipV6Status && isipV4Status" value="skip" />
+        <input
+          type="checkbox"
+          name="skip"
+          @change="isSkipNetworkSettings()"
+          v-model="isSkip"
+          :disabled="isipV6Status && isipV4Status"
+          value="skip"
+        />
         <span class="ml-3 font-weight-medium">Skip management network settings</span>
       </div>
       <div
@@ -52,6 +59,11 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "eos-network-settings"
 })
 export default class EosNetworkSettings extends Vue {
+  public data() {
+    return {
+      isSkip: false
+    };
+  }
   public mounted() {
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
@@ -64,7 +76,7 @@ export default class EosNetworkSettings extends Vue {
     } else if (this.isipV6Status === true) {
       this.$router.push("systemconfig3");
     } else if (this.isipV4Status === false && this.isipV6Status === false) {
-      this.$router.push("systemconfig4");
+      this.$router.push("dataconfig1");
     }
   }
   public get isipV4Status(): any {
@@ -85,6 +97,17 @@ export default class EosNetworkSettings extends Vue {
     this.$store.commit("systemConfig/setNetworkManagementSettings", {
       type: "ipV6",
       flag: status
+    });
+  }
+  public isSkipNetworkSettings() {
+    this.$store.commit("systemConfig/setNetworkManagementSettings", {
+      type: "ipV6",
+      flag: false
+    });
+
+    this.$store.commit("systemConfig/setNetworkManagementSettings", {
+      type: "ipV4",
+      flag: false
     });
   }
 }

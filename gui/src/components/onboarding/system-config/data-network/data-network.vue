@@ -17,31 +17,49 @@
       >Do you intend to use your own load balancer or the load balancer included in the system?</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input type="radio" name="loadbalancer" value="internal" />
+        <input type="radio" name="loadbalancer" v-model="loadbalancer" value="internal" />
         <span class="ml-3 font-weight-medium">Use the included load balancer</span>
       </div>
       <div class="mt-4">
-        <input type="radio" name="loadbalancer" value="external" />
+        <input type="radio" name="loadbalancer" v-model="loadbalancer" value="external" />
         <span class="ml-4 font-weight-medium">Use an external load balancer</span>
       </div>
       <div class="mt-8">Chose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input type="checkbox" @change="isipV4Status" v-model="isipV4Status" name="ipv4" />
+        <input
+          type="checkbox"
+          :disabled="isSkip"
+          @change="isipV4Status"
+          v-model="isipV4Status"
+          name="ipv4"
+        />
         <span class="ml-3 font-weight-medium">IPv4</span>
       </div>
       <div
         class="mt-2"
       >Selecting IPv4 will allow you to view settings assigned by DHCP or to assign static IPv4 data network for enironments that do not support DHCP.</div>
       <div class="mt-6">
-        <input type="checkbox" @change="isipV6Status" v-model="isipV6Status" name="ipv6" />
+        <input
+          type="checkbox"
+          :disabled="isSkip"
+          @change="isipV6Status"
+          v-model="isipV6Status"
+          name="ipv6"
+        />
         <span class="ml-4 font-weight-medium">IPv6</span>
       </div>
       <div
         class="mt-1"
       >Selecting IPv6 will allow you to view settings assigned by DHCP or to assign static IPv6 data network settings for environments that do not support DHCP.</div>
       <div class="mt-6">
-        <input type="checkbox" :disabled="isipV6Status && isipV4Status" name="skip" />
+        <input
+          type="checkbox"
+          @change="isSkipNetworkSettings()"
+          :disabled="isipV6Status && isipV4Status"
+          v-model="isSkip"
+          name="skip"
+        />
         <span class="ml-3 font-weight-medium">Skip management network settings</span>
       </div>
       <div
@@ -49,8 +67,8 @@
       >You can skip this step if your management network settings are already complete.</div>
       <v-divider class="mt-8" />
       <div class="mt-8">
-        <v-btn elevation="0" color="green">
-          <span class="white--text">Continue</span>
+        <v-btn elevation="0" :disabled="!(isSkip || (isipV6Status || isipV4Status))" color="green">
+          <span class="white--text" @click="gotToNextPage()">Continue</span>
         </v-btn>
         <span class="green--text ml-8 pointer" @click="gotToPrevPage()">Back to previous step</span>
       </div>
@@ -64,6 +82,12 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "eos-data-network"
 })
 export default class EosDataNetwork extends Vue {
+  public data() {
+    return {
+      loadbalancer: "internal",
+      isSkip: false
+    };
+  }
   public mounted() {
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
@@ -98,7 +122,21 @@ export default class EosDataNetwork extends Vue {
       this.$router.push("systemconfig1");
     }
   }
-}
+  public gotToNextPage() {
+    this.$router.push("dataconfig2");
+  }
+  public isSkipNetworkSettings() {
+    this.$store.commit("systemConfig/setNetworkManagementSettings", {
+      type: "ipV6",
+      flag: false
+    });
+
+    this.$store.commit("systemConfig/setNetworkManagementSettings", {
+      type: "ipV4",
+      flag: false
+    });
+  }
+
 </script>
 
 <style lang="scss" scoped>
