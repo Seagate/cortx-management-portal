@@ -105,6 +105,9 @@ export default class EosDataNetwork extends Vue {
 .pointer {
   cursor: pointer;
 }
+.white--text{
+  text-transform: capitalize;
+}
 </style>
 
 
