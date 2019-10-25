@@ -136,7 +136,7 @@ export default class EosDataNetwork extends Vue {
       flag: false
     });
   }
-
+}
 </script>
 
 <style lang="scss" scoped>
