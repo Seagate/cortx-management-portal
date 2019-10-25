@@ -13,7 +13,10 @@
           <div class="title mt-6">Management Network Settings: IPv6</div>
           <div class="mt-6">You need to configure a single IP address for management of this system.</div>
           <v-divider class="mt-2" />
-          <div class="font-weight-bold mt-6">Source</div>
+          <div class="font-weight-bold mt-6">
+            Source
+            <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
+          </div>
           <div class="mt-4">
             <input type="radio" name="source" value="manual" />
             <span class="ml-3 font-weight-bold">Manual</span>
@@ -52,7 +55,7 @@
           >+ Add another static address (maximum of 4)</div>
           <v-divider class="mt-8" />
           <div class="mt-10">
-            <v-btn elevation="0" color="green" @click="$router.push('systemconfig4')">
+            <v-btn elevation="0" color="green" @click="$router.push('dataconfig1')">
               <span class="white--text">Apply and continue</span>
             </v-btn>
             <span class="green--text ml-8 pointer" @click="gotToPrevPage()">Back to previous step</span>

@@ -27,14 +27,26 @@
       <div class="mt-8">Chose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input type="checkbox" :disabled="isSkip" @change="isipV4Status" v-model="isipV4Status" name="ipv4" />
+        <input
+          type="checkbox"
+          :disabled="isSkip"
+          @change="isipV4Status"
+          v-model="isipV4Status"
+          name="ipv4"
+        />
         <span class="ml-3 font-weight-medium">IPv4</span>
       </div>
       <div
         class="mt-2"
       >Selecting IPv4 will allow you to view settings assigned by DHCP or to assign static IPv4 data network for enironments that do not support DHCP.</div>
       <div class="mt-6">
-        <input type="checkbox" :disabled="isSkip" @change="isipV6Status" v-model="isipV6Status" name="ipv6" />
+        <input
+          type="checkbox"
+          :disabled="isSkip"
+          @change="isipV6Status"
+          v-model="isipV6Status"
+          name="ipv6"
+        />
         <span class="ml-4 font-weight-medium">IPv6</span>
       </div>
       <div
@@ -56,7 +68,7 @@
       <v-divider class="mt-8" />
       <div class="mt-8">
         <v-btn elevation="0" :disabled="!(isSkip || (isipV6Status || isipV4Status))" color="green">
-          <span class="white--text">Continue</span>
+          <span class="white--text" @click="gotToNextPage()">Continue</span>
         </v-btn>
         <span class="green--text ml-8 pointer" @click="gotToPrevPage()">Back to previous step</span>
       </div>
@@ -110,7 +122,9 @@ export default class EosDataNetwork extends Vue {
       this.$router.push("systemconfig1");
     }
   }
-
+  public gotToNextPage() {
+    this.$router.push("dataconfig2");
+  }
   public isSkipNetworkSettings() {
     this.$store.commit("systemConfig/setNetworkManagementSettings", {
       type: "ipV6",
@@ -122,7 +136,7 @@ export default class EosDataNetwork extends Vue {
       flag: false
     });
   }
-}
+
 </script>
 
 <style lang="scss" scoped>
