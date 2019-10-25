@@ -13,7 +13,10 @@
           <div class="title mt-6">Management Network Settings: IPv4</div>
           <div class="mt-6">You need to configure a single IP address for management of this system.</div>
           <v-divider class="mt-2" />
-          <div class="font-weight-bold mt-6">Source</div>
+          <div class="font-weight-bold mt-6">
+            Source
+            <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
+          </div>
           <div class="mt-4">
             <input type="radio" name="source" v-model="source" value="manual" />
             <span class="ml-3 font-weight-bold">Manual</span>
@@ -71,7 +74,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     if (this.$store.getters["systemConfig/isipV6Status"] === true) {
       this.$router.push("systemconfig3");
     } else {
-      this.$router.push("systemconfig4");
+      this.$router.push("dataconfig1");
     }
   }
 

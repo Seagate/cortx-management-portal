@@ -76,7 +76,7 @@ export default class EosNetworkSettings extends Vue {
     } else if (this.isipV6Status === true) {
       this.$router.push("systemconfig3");
     } else if (this.isipV4Status === false && this.isipV6Status === false) {
-      this.$router.push("systemconfig4");
+      this.$router.push("dataconfig1");
     }
   }
   public get isipV4Status(): any {
