@@ -102,7 +102,7 @@
             </td>
             <td style="width: 19em;">{{props.item.description}}</td>
             <td>
-              <v-tooltip top>
+              <v-tooltip top max-width="18em">
                 <template v-slot:activator="{ on }">
                   <v-img
                     height="20"
