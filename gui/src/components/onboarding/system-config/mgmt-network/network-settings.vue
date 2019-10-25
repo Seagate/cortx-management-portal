@@ -94,9 +94,6 @@ export default class EosNetworkSettings extends Vue {
 .pointer {
   cursor: pointer;
 }
-.white--text{
-  text-transform: capitalize;
-}
 </style>
 
 
