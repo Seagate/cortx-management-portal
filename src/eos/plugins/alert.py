@@ -41,15 +41,16 @@ class AlertPlugin(CsmPlugin):
         self.comm_client = AmqpComm()
         self.monitor_callback = None
         self.mapping_dict = Json(const.ALERT_MAPPING_TABLE).load()
+        self._schema = "" 
         try:
             """ Validating the CSM Schema with Draft3Validator """
             if os.path.isfile(const.CSM_HW_SCHEMA):
                 with open(const.CSM_HW_SCHEMA, 'r') as hw_file:
                     self._schema = hw_file.read()
-            """ Remove tabs and newlines """
-            self._hw_schema = json.loads(' '.join(self._schema.split()))
-            """ Validate the schema """
-            Draft3Validator.check_schema(self._hw_schema)
+                """ Remove tabs and newlines """
+                self._hw_schema = json.loads(' '.join(self._schema.split()))
+                """ Validate the schema """
+                Draft3Validator.check_schema(self._hw_schema)
         except Exception as e:
             Log.exception(e)
 
@@ -120,18 +121,10 @@ class AlertPlugin(CsmPlugin):
             msg_body = json_msg_obj.load()
             sub_body = msg_body.get(const.ALERT_MESSAGE, {}).get(
                 const.ALERT_SENSOR_TYPE, {})
-            module_type = list(sub_body.keys())[0]
+            module_type = list(sub_body.keys())[4]
             resource_type = sub_body[module_type].get(const.ALERT_RESOURCE_TYPE,
                                                       "")
-            # todo: TO un-comment the below once the changes for resource_type are
-            #  made by SSPL team in the schema
-            #  Since the mappings in the mapping table is divided as per the
-            #  module type i.e. fan, disk etc so we first need to fetch this value
-            #  from resource_type. As resource_type contains this information.
-            #  i.e. "resource_type": "encl:fru:disk"
-            #  Currently we are fetching those values from enclosure key and hence
-            #  need to change it as well in alert_mapping_table.json
-            # module_type = resource_type.split(':')[2]
+            module_type = resource_type.split(':')[2]
 
             # Convert  the SSPL Schema to CSM Schema.
             input_alert_payload = Payload(JsonMessage(message))
@@ -140,31 +133,19 @@ class AlertPlugin(CsmPlugin):
                                         csm_alert_payload)
             csm_alert_payload.dump()
             csm_schema = csm_alert_payload.load()
-            # todo: For now setting the created_time to current epoch.
-            #   Once SSPL starts sending the time in epoch we will make
-            #   use of 'time' field.
-            #   Currently type is not populated, so we are taking a hardcoded
-            #   value for this.
-            #   The below 3 fields needs to be put into mapping table once we
-            #   receive the updated json from SSPL.
-            csm_schema[const.ALERT_CREATED_TIME] = int(time.time())
             csm_schema[const.ALERT_TYPE] = 'hw'
-            csm_schema[const.ALERT_UUID] = int(
-                csm_schema.get(const.ALERT_ENCLOSURE_ID, const.ALERT_INT_DEFAULT))
-            # """
+            """
             # Below mentioned fields are managed by CSM so they are not the part
             # of mapping table
-            # """
+            """
             csm_schema[const.ALERT_ID] = int(time.time())
             csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
             csm_schema[const.ALERT_MODULE_NAME] = resource_type
-            # todo: with new schema>> f'{resource_type.split(":")[1]}'
             csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
             csm_schema[const.ALERT_RESOLVED] = False 
             csm_schema[const.ALERT_ACKNOWLEDGED] = False
-            csm_schema[const.ALERT_SEVERITY] = const.ALERT_TRUE
             csm_schema[const.ALERT_COMMENT] = ""
-            # """ Validating the schema. """
+            """ Validating the schema. """
             validate(csm_schema, self._hw_schema)
         except Exception as e:
             Log.exception(e)
