@@ -138,11 +138,8 @@ export default class EosDataNetwork extends Vue {
   }
 
 </script>
-
 <style lang="scss" scoped>
 .pointer {
   cursor: pointer;
 }
 </style>
-
-

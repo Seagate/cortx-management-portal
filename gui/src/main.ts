@@ -18,6 +18,7 @@ import router from "./router";
 import store from "./store/store";
 import vuetify from "./plugins/vuetify";
 import * as moment from "moment";
+import "@/common/style.css";
 
 Vue.config.productionTip = false;
 Vue.filter("timeago", (date: string) => {
