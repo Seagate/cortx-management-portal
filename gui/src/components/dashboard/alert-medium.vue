@@ -161,7 +161,6 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
 
   public data() {
     return {
-      page: 1, // Page counter, in sync with data table
       itemsPerPage: 5, // Total rows per page, in sync with data table
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none

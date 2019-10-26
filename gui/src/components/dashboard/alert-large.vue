@@ -126,12 +126,11 @@
             </td>
             <td>
               <v-checkbox
-              type="checkbox"
+                type="checkbox"
                 @change="updateAlert(props.item)"
                 v-model="props.item.acknowledged"
                 class="mx-2"
               ></v-checkbox>
-             
             </td>
           </tr>
         </template>
@@ -237,7 +236,6 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
   }
   public data() {
     return {
-      page: 1, // Page counter, in sync with data table
       singleExpand: false, // Expande single row property
       itemsPerPage: 5, // Total rows per page, in sync with data table
       isSortActive: false, // Set table column sorting flag to default inactive

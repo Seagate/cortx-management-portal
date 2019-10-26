@@ -34,6 +34,7 @@ export default class Alerts extends VuexModule {
         offset: 1,
         limit: 5
     };
+    public currentPage: number = 1;
 
     @Mutation
     public alertDataMutation(payload: AlertObject) {
@@ -46,6 +47,14 @@ export default class Alerts extends VuexModule {
     }
     get onboardingStatus() {
         return this.isOnboardingDone;
+    }
+
+    @Mutation
+    public setPage(page: number) {
+        this.currentPage = page;
+    }
+    get page() {
+        return this.currentPage;
     }
 
     @Action

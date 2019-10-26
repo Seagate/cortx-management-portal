@@ -74,4 +74,12 @@ export default class AlertsMixin extends Vue {
     get queryParams() {
         return this.$store.getters["alerts/alertQueryParams"];
     }
+    // Get current page
+    get page() {
+        return this.$store.getters["alerts/page"];
+    }
+    // Set current page
+    set page(page: number) {
+        this.$store.commit("alerts/setPage", page);
+    }
 }
