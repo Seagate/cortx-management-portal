@@ -52,7 +52,7 @@ interface Alert {
     location: string;
     resolve: number;
     acknowledged: number;
-    severity: number;
+    severity: string;
     state: string;
     extended_info: ExtendedInfo;
 }

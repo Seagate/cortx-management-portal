@@ -35,6 +35,7 @@ export default class Alerts extends VuexModule {
         limit: 5
     };
     public currentPage: number = 1;
+    public recordsPerPage: number = 5;
 
     @Mutation
     public alertDataMutation(payload: AlertObject) {
@@ -55,6 +56,17 @@ export default class Alerts extends VuexModule {
     }
     get page() {
         return this.currentPage;
+    }
+
+    // set items per page
+    @Mutation
+    public setItemsPerPage(noOfRecords: number) {
+        this.recordsPerPage = noOfRecords;
+    }
+
+    // Get items per page
+    get itemsPerPage() {
+        return this.recordsPerPage;
     }
 
     @Action

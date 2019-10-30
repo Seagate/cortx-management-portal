@@ -35,10 +35,14 @@
         show-expand
         class="eos-table"
         :items-per-page.sync="itemsPerPage"
+        :footer-props="{
+        'items-per-page-options': [5, 10, 15]
+        }"
         :page.sync="page"
         :update:page="page"
         :server-items-length="totalRecordsCount"
         hide-default-header
+        @update:items-per-page="onSortPaginate(null, null, page, itemsPerPage)"
         @update:page="onSortPaginate(null, null, page, itemsPerPage)"
       >
         <template v-slot:header="{props}">
@@ -79,15 +83,31 @@
             <td>
               <v-img
                 height="20"
-                v-if="props.item.state===alertStatus.missing || props.item.state === alertStatus.not_installed"
+                v-if="props.item.severity===alertStatus.critical "
                 width="20"
-                src="./../../assets/status/critical-icon.png"
+                class="ml-2"
+                src="./../../assets/status/error-fault.png"
               />
               <v-img
                 height="20"
-                v-if="props.item.state=== alertStatus.fault|| props.item.state == alertStatus.error"
+                v-if="props.item.severity=== alertStatus.error"
                 width="20"
-                src="./../../assets/status/error-fault.png"
+                class="ml-2"
+                src="./../../assets/status/warning.png"
+              />
+              <v-img
+                height="20"
+                v-if="props.item.severity=== alertStatus.warning"
+                width="20"
+                class="ml-2"
+                src="./../../assets/status/degraded.png"
+              />
+              <v-img
+                height="20"
+                v-if="props.item.severity=== alertStatus.informational"
+                width="20"
+                class="ml-2"
+                src="./../../assets/status/info-alert.png"
               />
               <v-img
                 height="20"
@@ -120,7 +140,7 @@
               <v-img
                 height="20"
                 width="20"
-                v-if="props.item.resolved===1"
+                v-if="props.item.resolved===true"
                 src="./../../assets/status/healthy-icon.png"
               />
             </td>
@@ -237,7 +257,6 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
   public data() {
     return {
       singleExpand: false, // Expande single row property
-      itemsPerPage: 5, // Total rows per page, in sync with data table
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
       alertStatus: require("./../../common/const-string.json")

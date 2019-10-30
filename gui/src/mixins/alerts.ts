@@ -82,4 +82,10 @@ export default class AlertsMixin extends Vue {
     set page(page: number) {
         this.$store.commit("alerts/setPage", page);
     }
+    get itemsPerPage() {
+        return this.$store.getters["alerts/itemsPerPage"];
+    }
+    set itemsPerPage(items: number) {
+        this.$store.commit("alerts/setItemsPerPage", items);
+    }
 }
