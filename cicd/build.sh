@@ -86,6 +86,8 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
 
     CONF=$BASE_DIR/src/conf/
     cp -R $BASE_DIR/schema $DIST/csm/
+    mkdir -p  $DIST/csm/cli/
+    cp -R $BASE_DIR/src/cli/schema $DIST/csm/cli/
 
     # Check python package
     req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
