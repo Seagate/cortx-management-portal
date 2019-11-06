@@ -34,10 +34,10 @@
           name="skip"
           @change="isSkipNetworkSettings()"
           v-model="isSkip"
-          :disabled="isipV6Status && isipV4Status"
+          :disabled="isipV6Status || isipV4Status"
           value="skip"
         />
-        <span class="ml-3 font-weight-medium">Skip management network settings</span>
+        <span class="ml-3 font-weight-medium"  >Skip management network settings</span>
       </div>
       <div
         class="mt-2"

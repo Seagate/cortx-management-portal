@@ -109,12 +109,6 @@
                 class="ml-2"
                 src="./../../assets/status/info-alert.png"
               />
-              <v-img
-                height="20"
-                v-if="props.item.state===alertStatus.insertion || props.item.state === alertStatus.fault_resolved || props.item.state === alertStatus.up || props.item.state === alertStatus.ok"
-                width="20"
-                src="./../../assets/status/healthy-icon.png"
-              />
             </td>
             <td>
               <div>{{props.item.location}}</div>
