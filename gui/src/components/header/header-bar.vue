@@ -49,18 +49,23 @@
             <v-list-item v-for="(item, index) in alertNotifications.alerts" :key="index">
               <img
                 class="mr-2"
-                v-if="item.state===alertStatus.missing || item.state === alertStatus.not_installed"
-                src="./../../assets/status/critical-icon.png"
+                v-if="item.severity===alertStatus.critical "
+                src="./../../assets/status/error-fault.png"
               />
               <img
                 class="mr-2"
-                v-if="item.state=== alertStatus.fault|| item.state == alertStatus.error"
-                src="../../assets/status/error-fault.png"
+                v-if="item.severity===alertStatus.error "
+                src="./../../assets/status//warning.png"
               />
               <img
                 class="mr-2"
-                v-if="item.state===alertStatus.insertion || item.state === alertStatus.fault_resolved || item.state === alertStatus.up || item.state === alertStatus.ok"
-                src="./../../assets/status/healthy-icon.png"
+               v-if="item.severity===alertStatus.warning "
+                src="./../../assets/status/degraded.png"
+              />
+              <img
+                class="mr-2"
+                v-if="item.severity===alertStatus.informational "
+                src="./../../assets/status/info-alert.png"
               />
               <v-list-item-content>
                 <v-list-item-title>State:{{ item.state }}</v-list-item-title>
