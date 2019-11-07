@@ -45,5 +45,40 @@
                 "required": true
             }
         ]
+    },
+    "/api/v1/stats": {
+        "GET": [
+            {
+                "paramname": "from",
+                "datatype": "number",
+                "required": true
+            },
+            {
+                "paramname": "to",
+                "datatype": "number",
+                "required": true
+            },
+            {
+                "paramname": "id",
+                "datatype": "number",
+                "required": false
+            },
+            {
+                "paramname": "interval",
+                "datatype": "number",
+                "required": false
+            },
+            {
+                "paramname": "metric_list",
+                "datatype": "string",
+                "required": false,
+                "values": "read,write,total"
+            },
+            {
+                "paramname": "format",
+                "datatype": "string",
+                "required": false
+            }
+        ]
     }
 }

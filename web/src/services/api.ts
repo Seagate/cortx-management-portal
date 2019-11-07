@@ -50,7 +50,8 @@ export abstract class Api {
                 geturl += seperator + key + "=" + query[key];
             }
             http_agent.get(geturl, Api.handleResponse(resolve, reject)).on("error", (err: any) => {
-                reject(err);
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
             });
         });
     }
@@ -75,7 +76,8 @@ export abstract class Api {
             }
 
             let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject)).on("error", (err: any) => {
-                reject(err);
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
             });
             httpRequest.write(requestData);
             httpRequest.end();
@@ -102,7 +104,8 @@ export abstract class Api {
             }
 
             let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject)).on("error", (err: any) => {
-                reject(err);
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
             });
             httpRequest.write(requestData);
             httpRequest.end();
