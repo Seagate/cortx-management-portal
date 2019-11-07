@@ -78,7 +78,7 @@ export default {
     actions: {
         async alertDataAction(context: any) {
             const queryParams = {
-                sortBy: "created_time",
+                sortby: "created_time",
                 dir: "desc",
                 offset: 1,
                 limit: 5
