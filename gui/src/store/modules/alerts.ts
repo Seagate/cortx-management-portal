@@ -29,7 +29,7 @@ export default class Alerts extends VuexModule {
     public header: object | null = null;
     public isOnboardingDone: boolean = false;
     public queryParams: AlertQueryParam = {
-        sortBy: "created_time",
+        sortby: "created_time",
         dir: "desc",
         offset: 1,
         limit: 5

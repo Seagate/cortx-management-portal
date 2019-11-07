@@ -1,11 +1,10 @@
 {
     "/api/v1/alerts": [
         {
-            "paramname": "sortby",
-            "values": "created_time"
+            "paramname": "sortby"
         },
         {
-            "paramname": "sorttype",
+            "paramname": "dir",
             "values": "asc,desc"
         }
     ]

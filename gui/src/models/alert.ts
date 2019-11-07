@@ -63,7 +63,7 @@ export interface AlertObject {
 }
 
 export interface AlertQueryParam {
-    sortBy: string;
+    sortby: string;
     dir: string;
     offset: number;
     limit: number;
