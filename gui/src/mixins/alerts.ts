@@ -22,7 +22,7 @@ export default class AlertsMixin extends Vue {
 
     // Column sort handler
     public onSortPaginate(
-        sortBy: string,
+        sortby: string,
         sortedHeader: any,
         offset: number,
         limit: number
@@ -33,7 +33,7 @@ export default class AlertsMixin extends Vue {
             this.$data.isSortActive = false; // Reset sort active for all columns
             this.$data.sortColumnName = "";
             for (const header of this.alertHeader) {
-                if (header.value === sortBy) {
+                if (header.value === sortby) {
                     header.sortDir = sortedHeader.sortDir === "desc" ? "asc" : "desc";
                     // Set flags sorting active with respective header name
                     this.$data.isSortActive = true;
@@ -45,11 +45,11 @@ export default class AlertsMixin extends Vue {
         }
         // Set queryparams data to store; sortBy is null in case of pagination
         // For sorting sortBy should have column value
-        sortBy = sortBy != null ? sortBy : this.queryParams.sortBy;
+        sortby = sortby != null ? sortby : this.queryParams.sortby;
         const dir =
             sortedHeader != null ? sortedHeader.sortDir : this.queryParams.dir;
         this.$store.commit("alerts/alertQueryParamMutation", {
-            sortBy,
+            sortby,
             dir,
             offset,
             limit

@@ -126,7 +126,7 @@ export default class Alerts extends VuexModule {
     // Set query params for Alert Table
     @Mutation
     public alertQueryParamMutation({ ...queryParams }) {
-        this.queryParams.sortBy = queryParams.sortBy;
+        this.queryParams.sortby = queryParams.sortBy;
         this.queryParams.dir = queryParams.dir;
         this.queryParams.offset = queryParams.offset;
         this.queryParams.limit = queryParams.limit;
