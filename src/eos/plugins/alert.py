@@ -41,7 +41,8 @@ class AlertPlugin(CsmPlugin):
         self.comm_client = AmqpComm()
         self.monitor_callback = None
         self.mapping_dict = Json(const.ALERT_MAPPING_TABLE).load()
-        self._schema = "" 
+        self._schema = ""
+        self._hw_schema = {}
         try:
             """ Validating the CSM Schema with Draft3Validator """
             if os.path.isfile(const.CSM_HW_SCHEMA):
