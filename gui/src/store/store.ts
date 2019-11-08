@@ -17,6 +17,7 @@ import Vuex from "vuex";
 import alertNotification from "./modules/alert-notification";
 import alerts from "./modules/alerts";
 import systemConfig from "./modules/system-configuration";
+import userLogin from "./modules/user-login";
 
 Vue.use(Vuex);
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     modules: {
         alertNotification,
         alerts,
-        systemConfig
+        systemConfig,
+        userLogin
     }
 });
