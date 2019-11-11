@@ -1,7 +1,8 @@
 {
     "/api/v1/alerts": [
         {
-            "paramname": "sortby"
+            "paramname": "sortby",
+            "values": "created_time,severity,resolved,acknowledged"
         },
         {
             "paramname": "dir",
