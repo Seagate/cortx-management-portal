@@ -40,7 +40,7 @@
               <option value="celsius">English</option>
             </select>
           </div>
-          <v-btn class="mt-10" elevation="0" color="green" :disabled="!isValidForm">
+          <v-btn class="mt-10" elevation="0" color="green">
             <span class="white--text" @click="gotToNextPage()">Get Started</span>
           </v-btn>
         </form>
@@ -71,10 +71,13 @@ export default class EosLogin extends Vue {
         username: this.$data.username,
         password: this.$data.password
       };
+
       this.$store
         .dispatch("userLogin/loginAction", queryParams)
         .then((res: any) => {
-          this.$router.push("/");
+          if (res.token) {
+            this.$router.push("/");
+          }
         })
         .catch(() => {
           // tslint:disable-next-line: no-console
