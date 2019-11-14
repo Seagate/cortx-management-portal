@@ -1,8 +1,8 @@
 /*****************************************************************************
- Filename:          api-register.ts
- Description:       API Register: use for maintainging single registry for API
+ Filename:          UserLoginQueryParam.ts
+ Description:       User Login Model
 
- Creation Date:     05/09/2019
+ Creation Date:     11/08/2019
  Author:            Sanjeevan Bhave
 
  Do NOT modify or remove this copyright and confidentiality notice!
@@ -12,11 +12,7 @@
  or disclosure of this code, for any reason, not expressly authorized is
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
-export const version = "v1";
-
-export default {
-    all_alerts: `/api/${version}/alerts`,
-    systemconfig: `api/${version}/systemconfig`,
-    create_user: `api/${version}/user/admin`,
-    login: `api/${version}/login`
-};
+export interface UserLoginQueryParam {
+    username: string;
+    password: string;
+}

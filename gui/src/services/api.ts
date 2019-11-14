@@ -24,4 +24,8 @@ export abstract class Api {
     public static async patch(url: string, payload: object, id: number) {
         return await axios.patch(url + "/" + id, payload);
     }
+    // Wrapper method for post api
+    public static async post(url: string, payload: object) {
+        return await axios.post(url, payload);
+    }
 }
