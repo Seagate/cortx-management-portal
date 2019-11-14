@@ -27,23 +27,23 @@ from boto.connection import DEFAULT_CA_CERTS_FILE
 from boto import config as boto_config
 from csm.common.log import Log
 from csm.common.errors import CsmInternalError
-from csm.core.blogic.models.s3 import IamConnectionConfig, IamAccount,\
+from csm.core.blogic.models.s3 import S3ConnectionConfig, IamAccount,\
                                 ExtendedIamAccount, IamLoginProfile, IamUser,\
                                 IamUserListResponse, IamAccountListResponse,\
                                 IamTempCredentials, IamErrors, IamError
 
 
-class BaseIamClient:
+class BaseClient:
     """
     Base class for IAM API operations.
     """
-    def __init__(self, access_key: str, secret_key: str, config: IamConnectionConfig, loop):
+    def __init__(self, access_key: str, secret_key: str, config: S3ConnectionConfig, loop):
         self._loop = loop
         self._executor = ThreadPoolExecutor()
         self._config = config
         self.iam_connection = self._create_boto_connection(access_key, secret_key, config)
 
-    def _create_boto_connection(self, access_key, secret_key, config: IamConnectionConfig):
+    def _create_boto_connection(self, access_key, secret_key, config: S3ConnectionConfig):
         """
         Helper function that creates IAM connection for the given credentials and configuration
         :returns: an IAMConnection object
@@ -131,7 +131,7 @@ class BaseIamClient:
         })
 
 
-class S3Client(BaseIamClient):
+class IamClient(BaseClient):
     """
     A management object that alows to perform IAM management operations
     """
@@ -461,7 +461,7 @@ class S3Plugin:
     """
     Plugin that provides IAM-related operations implementation.
 
-    The plugin requires an IamConnectionConfig instance that contains the necessary
+    The plugin requires an S3ConnectionConfig instance that contains the necessary
     information for IAM server access.
 
     Steps to use this plugin for IAM Account management:
@@ -489,14 +489,14 @@ class S3Plugin:
         Log.info('S3 plugin is loaded')
 
     @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
-    def get_client(self, access_key, secret_key, connection_config=None) -> S3Client:
+    def get_iam_client(self, access_key, secret_key, connection_config=None) -> IamClient:
         """
         Returns a management object for S3/IAM accounts.
         """
         if not connection_config:
             raise CsmInternalError('Connection configuration must be provided')
 
-        return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop())
+        return IamClient(access_key, secret_key, connection_config, asyncio.get_event_loop())
 
     @Log.trace_method(Log.DEBUG)
     async def get_temp_credentials(self, account_name, password, duration=None,
@@ -510,7 +510,7 @@ class S3Plugin:
         :param user_name: TODO: find out details about this field
         :returns: An instance of IamTempCredentials object
         """
-        base = BaseIamClient('', '', connection_config, asyncio.get_event_loop())
+        base = BaseClient('', '', connection_config, asyncio.get_event_loop())
         params = {
             'AccountName': account_name,
             'Password': password
