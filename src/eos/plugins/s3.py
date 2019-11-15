@@ -23,6 +23,7 @@ from enum import Enum
 from concurrent.futures import ThreadPoolExecutor
 from typing import Union, List
 from boto.iam.connection import IAMConnection
+from boto.s3.connection import S3Connection, OrdinaryCallingFormat
 from boto.connection import DEFAULT_CA_CERTS_FILE
 from boto import config as boto_config
 from csm.common.log import Log
@@ -41,7 +42,10 @@ class BaseClient:
         self._loop = loop
         self._executor = ThreadPoolExecutor()
         self._config = config
-        self.iam_connection = self._create_boto_connection(access_key, secret_key, config)
+        self.connection = self._create_boto_connection(access_key, secret_key, config)
+
+    def _create_boto_connection_object(self, **kwargs):
+        raise NotImplementedError
 
     def _create_boto_connection(self, access_key, secret_key, config: S3ConnectionConfig):
         """
@@ -61,7 +65,7 @@ class BaseClient:
 
         boto_config.set('Boto', 'ca_certificates_file', ca_cert)
 
-        conn = IAMConnection(aws_access_key_id=access_key,
+        conn = self._create_boto_connection_object(aws_access_key_id=access_key,
             aws_secret_access_key=secret_key,
             host=config.host,
             port=config.port,
@@ -89,9 +93,9 @@ class BaseClient:
         handler.parse(body)
         return element
 
-    async def _query_iam(self, action, params, path, verb, list_marker=None):
+    async def _query_conn(self, action, params, path, verb, list_marker=None):
         def _execute():
-            return self.iam_connection.make_request(action, params, path, verb)
+            return self.connection.make_request(action, params, path, verb)
 
         try:
             response = await self._run_async(_execute)
@@ -130,7 +134,6 @@ class BaseClient:
             'Message': 'error_message'
         })
 
-
 class IamClient(BaseClient):
     """
     A management object that alows to perform IAM management operations
@@ -167,6 +170,9 @@ class IamClient(BaseClient):
             'Arn': 'arn'
         }
 
+    def _create_boto_connection_object(self, **kwargs):
+        return IAMConnection(**kwargs)
+    
     @Log.trace_method(Log.DEBUG)
     async def create_account(self, account_name: str,
             account_email: str) -> Union[ExtendedIamAccount, IamError]:
@@ -182,7 +188,7 @@ class IamClient(BaseClient):
             'Email': account_email
         }
 
-        (code, body) = await self._query_iam('CreateAccount', params, '/', 'POST')
+        (code, body) = await self._query_conn('CreateAccount', params, '/', 'POST')
         if code != 201:
             return self._create_error(body)
         else:
@@ -210,7 +216,7 @@ class IamClient(BaseClient):
             'PasswordResetRequired': require_reset
         }
 
-        (code, body) = await self._query_iam('CreateAccountLoginProfile', params, '/', 'POST')
+        (code, body) = await self._query_conn('CreateAccountLoginProfile', params, '/', 'POST')
         if code != 201:
             return self._create_error(body)
         else:
@@ -234,7 +240,7 @@ class IamClient(BaseClient):
             'PasswordResetRequired': require_reset
         }
 
-        (code, body) = await self._query_iam('UpdateAccountLoginProfile', params, '/', 'POST')
+        (code, body) = await self._query_conn('UpdateAccountLoginProfile', params, '/', 'POST')
         if code != 200:
             return self._create_error(body)
         else:
@@ -257,7 +263,7 @@ class IamClient(BaseClient):
         if max_items:
             params['MaxItems'] = max_items
 
-        (code, body) = await self._query_iam('ListAccounts', params,
+        (code, body) = await self._query_conn('ListAccounts', params,
             '/', 'POST', list_marker='Accounts')
         if code != 200:
             return self._create_error(body)
@@ -289,7 +295,7 @@ class IamClient(BaseClient):
             'AccountName': account_name
         }
 
-        (code, body) = await self._query_iam('ResetAccountAccessKey', params, '/', 'POST')
+        (code, body) = await self._query_conn('ResetAccountAccessKey', params, '/', 'POST')
         if code != 201:
             return self._create_error(body)
         else:
@@ -315,7 +321,7 @@ class IamClient(BaseClient):
         if force:
             params['Force'] = True
 
-        (code, body) = await self._query_iam('DeleteAccount', params, '/', 'POST')
+        (code, body) = await self._query_conn('DeleteAccount', params, '/', 'POST')
         if code != 200:
             return self._create_error(body)
         else:
@@ -333,7 +339,7 @@ class IamClient(BaseClient):
             'Path': path
         }
 
-        (code, body) = await self._query_iam('CreateUser', params, '/', 'POST')
+        (code, body) = await self._query_conn('CreateUser', params, '/', 'POST')
         if code != 201:
             return self._create_error(body)
         else:
@@ -351,7 +357,7 @@ class IamClient(BaseClient):
             'PasswordResetRequired': require_reset
         }
 
-        (code, body) = await self._query_iam('CreateUserLoginProfile', params, '/', 'POST')
+        (code, body) = await self._query_conn('CreateUserLoginProfile', params, '/', 'POST')
         if code != 201:
             return self._create_error(body)
         else:
@@ -375,7 +381,7 @@ class IamClient(BaseClient):
         if max_items:
             params['MaxItems'] = max_items
 
-        (code, body) = await self._query_iam('ListUsers', {}, '/', 'POST', list_marker='Users')
+        (code, body) = await self._query_conn('ListUsers', {}, '/', 'POST', list_marker='Users')
         if code != 200:
             return self._create_error(body)
         else:
@@ -404,7 +410,7 @@ class IamClient(BaseClient):
             'UserName': user_name
         }
 
-        (code, body) = await self._query_iam('DeleteUser', params, '/', 'POST')
+        (code, body) = await self._query_conn('DeleteUser', params, '/', 'POST')
         if code != 200:
             return self._create_error(body)
         else:
@@ -424,7 +430,7 @@ class IamClient(BaseClient):
             'UserName': user_name
         }
 
-        (code, body) = await self._query_iam('GetUser', params, '/', 'POST')
+        (code, body) = await self._query_conn('GetUser', params, '/', 'POST')
         if code != 200:
             return self._create_error(body)
         else:
@@ -449,13 +455,51 @@ class IamClient(BaseClient):
         if new_user_name:
             params['NewUserName'] = new_user_name
 
-        (code, body) = await self._query_iam('UpdateUser', params, '/', 'POST')
+        (code, body) = await self._query_conn('UpdateUser', params, '/', 'POST')
         if code != 200:
             return self._create_error(body)
         else:
             # TODO: our IAM server does not return the updated user information
             return True
 
+class S3BucketsWatcher:
+    def __init__(self):
+        pass
+
+    def start(self):
+        pass
+
+    def stop(self):
+        pass
+
+class S3Client(BaseClient):
+    """
+    A management object that operates S3 objects
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+    def _create_boto_connection_object(self, **kwargs):
+        return S3Connection(**kwargs, calling_format=OrdinaryCallingFormat())
+
+    @Log.trace_method(Log.DEBUG)
+    async def create_bucket(self, bucket_name):
+        """
+        Create a S3 bucket using credentials passed during client creation.
+
+        :returns: boto.s3.bucket in case of success, S3Error otherwise
+        """
+        return await self._loop.run_in_executor(self._executor, self.connection.create_bucket,
+            bucket_name)
+
+    @Log.trace_method(Log.DEBUG)
+    async def get_all_buckets(self):
+        return await self._loop.run_in_executor(self._executor, self.connection.get_all_buckets)
+
+    @Log.trace_method(Log.DEBUG)
+    async def delete_bucket(self, bucket_name):
+        return await self._loop.run_in_executor(self._executor, self.connection.delete_bucket, 
+            bucket_name)
 
 class S3Plugin:
     """
@@ -498,6 +542,16 @@ class S3Plugin:
 
         return IamClient(access_key, secret_key, connection_config, asyncio.get_event_loop())
 
+    @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
+    def get_s3_client(self, access_key, secret_key, connection_config=None) -> S3Client:
+        """
+        Returns a management object for S3 objects
+        """
+        if not connection_config:
+            raise CsmInternalError('Connection configuration must be provided')
+        
+        return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop())
+
     @Log.trace_method(Log.DEBUG)
     async def get_temp_credentials(self, account_name, password, duration=None,
                                    user_name=None, connection_config=None):
@@ -510,7 +564,7 @@ class S3Plugin:
         :param user_name: TODO: find out details about this field
         :returns: An instance of IamTempCredentials object
         """
-        base = BaseClient('', '', connection_config, asyncio.get_event_loop())
+        iamcli = IamClient('', '', connection_config, asyncio.get_event_loop())
         params = {
             'AccountName': account_name,
             'Password': password
@@ -521,12 +575,12 @@ class S3Plugin:
         if user_name:
             params['UserName'] = user_name
 
-        (code, body) = await base._query_iam('GetTempAuthCredentials', params, '/', 'POST')
+        (code, body) = await iamcli._query_conn('GetTempAuthCredentials', params, '/', 'POST')
         if code != 201:
-            return base._create_error(body)
+            return iamcli._create_error(body)
         else:
             creds = body['GetTempAuthCredentialsResponse']['GetTempAuthCredentialsResult']
-            return base._create_response(IamTempCredentials, creds['AccessKey'], {
+            return iamcli._create_response(IamTempCredentials, creds['AccessKey'], {
                 'UserName': 'user_name',
                 'AccessKeyId': 'access_key',
                 'SecretAccessKey': 'secret_key',
