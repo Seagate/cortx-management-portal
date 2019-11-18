@@ -122,32 +122,35 @@ class AlertPlugin(CsmPlugin):
             msg_body = json_msg_obj.load()
             sub_body = msg_body.get(const.ALERT_MESSAGE, {}).get(
                 const.ALERT_SENSOR_TYPE, {})
-            module_type = list(sub_body.keys())[4]
-            resource_type = sub_body[module_type].get(const.ALERT_RESOURCE_TYPE,
+            #module_type = sub_body.get("info", {})
+            resource_type = sub_body.get("info", {}).get(const.ALERT_RESOURCE_TYPE,
                                                       "")
-            module_type = resource_type.split(':')[2]
+            if resource_type:
+                module_type = resource_type.split(':')[2]
 
-            # Convert  the SSPL Schema to CSM Schema.
-            input_alert_payload = Payload(JsonMessage(message))
-            csm_alert_payload = Payload(Dict())
-            input_alert_payload.convert(self.mapping_dict.get(module_type, {}),
+                # Convert  the SSPL Schema to CSM Schema.
+                input_alert_payload = Payload(JsonMessage(message))
+                csm_alert_payload = Payload(Dict())
+                input_alert_payload.convert(self.mapping_dict.get(module_type, {}),
                                         csm_alert_payload)
-            csm_alert_payload.dump()
-            csm_schema = csm_alert_payload.load()
-            csm_schema[const.ALERT_TYPE] = 'hw'
-            """
-            # Below mentioned fields are managed by CSM so they are not the part
-            # of mapping table
-            """
-            csm_schema[const.ALERT_ID] = int(time.time())
-            csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
-            csm_schema[const.ALERT_MODULE_NAME] = resource_type
-            csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
-            csm_schema[const.ALERT_RESOLVED] = False 
-            csm_schema[const.ALERT_ACKNOWLEDGED] = False
-            csm_schema[const.ALERT_COMMENT] = ""
-            """ Validating the schema. """
-            validate(csm_schema, self._hw_schema)
+                csm_alert_payload.dump()
+                csm_schema = csm_alert_payload.load()
+                csm_schema[const.ALERT_TYPE] = 'hw'
+                """
+                # Below mentioned fields are managed by CSM so they are not the part
+                # of mapping table
+                """
+                csm_schema[const.ALERT_ID] = int(time.time())
+                csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
+                csm_schema[const.ALERT_MODULE_NAME] = resource_type
+                csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
+                csm_schema[const.ALERT_RESOLVED] = False 
+                csm_schema[const.ALERT_ACKNOWLEDGED] = False
+                csm_schema[const.ALERT_COMMENT] = ""
+                """ Validating the schema. """
+                validate(csm_schema, self._hw_schema)
+            else:
+                Log.error("No resource type found for alert - {%s}" %(message))
         except Exception as e:
             Log.exception(e)
         return csm_schema
