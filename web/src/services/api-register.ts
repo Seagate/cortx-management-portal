@@ -17,5 +17,6 @@ export const version = "v1";
 export default {
     all_alerts: `/api/${version}/alerts`,
     all_system_config: `/api/${version}/config`,
-    management_network: `/api/${version}/networkmanagement`
+    management_network: `/api/${version}/networkmanagement`,
+    stats: `/api/${version}/stats`
 };
