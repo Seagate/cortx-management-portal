@@ -163,6 +163,72 @@
         ]
       }
     },
+    "/stats/{statstype}": {
+      "get": {
+        "tags": [
+          "Get Stats"
+        ],
+        "summary": "Get statetics like throughput, latency, IOPs",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "statstype",
+            "in": "path",
+            "description": "Specifies the stats type",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "throughput",
+              "latency",
+              "iops"
+            ],
+            "default": "throughput"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "from (epoch) time",
+            "required": false,
+            "type": "integer",
+            "default": "1"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "from (epoch) time",
+            "required": true,
+            "type": "integer",
+            "default": "1571830389"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "to (epoch) time",
+            "required": true,
+            "type": "integer",
+            "default": "1571830449"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "description": "from (epoch) time",
+            "required": false,
+            "type": "integer",
+            "default": "10"
+          }
+        ]
+      }    
+    },
     "/systemconfig": {
       "get": {
         "tags": [
