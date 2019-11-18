@@ -39,3 +39,15 @@ export const saveSystemConfig = async (req: Request, res: Response) => {
     return result;
 };
 
+export const getNetworkManagement = async (query: any) => {
+    let alertData = Api.getAll(apiRegister.management_network, query);
+    let result = await alertData;
+    return result;
+};
+
+
+export const updateNetworkManagement = async (req: Request, res: Response) => {
+    let alertData = Api.patch(apiRegister.management_network, req, "");
+    let result = await alertData;
+    return result;
+};
