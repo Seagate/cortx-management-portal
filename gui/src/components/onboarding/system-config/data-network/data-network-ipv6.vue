@@ -8,31 +8,31 @@
     ></v-img>
     <v-divider />
     <div class="body-2">
-      <div class="title mt-6">Data Network Settings: IPv6</div>
-      <div class="mt-2">You need to configure a single IP address for management of this system.</div>
+      <div class="title mt-6" id="lblIpv6DNS">Data Network Settings: IPv6</div>
+      <div class="mt-2" id="lblIpv6Msg">You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
       <div class="font-weight-bold mt-6 black--text">
         Source
         <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
       </div>
       <div class="mt-4">
-        <input type="radio" name="source" v-model="source" value="manual" />
-        <span class="ml-2 font-weight-bold black--text">Manual</span>
-        <input class="ml-6" type="radio" disabled name="DHCP" value="DHCP" />
-        <span class="ml-2 font-weight-bold black--text">DHCP</span>
+        <input type="radio" name="source" v-model="source" value="manual" id="rbtnIpv6Manual" />
+        <span class="ml-2 font-weight-bold black--text" id="lblIpv6Manual">Manual</span>
+        <input class="ml-6" type="radio" disabled name="DHCP" value="DHCP" id="rbtnIpv6DHCP" />
+        <span class="ml-2 font-weight-bold black--text" id="lblIpv6Dhcp">DHCP</span>
       </div>
     </div>
     <div class="row mt-5">
       <div class="col-4 body-2 column">
-        <span class="font-weight-medium black--text">Node 0</span>
+        <span class="font-weight-medium black--text" id="lblIpv6Node0">Node 0</span>
         <v-divider class="mt-2" />
         <div class="mt-5">
-          <span class="font-weight-medium black--text">Gateway</span>
+          <span class="font-weight-medium black--text" id="lblIpv6Gateway">Gateway</span>
           <div>
-            <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress" />
+            <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress"  id="txtIpv6IpAddress"/>
           </div>
         </div>
-        <div class="font-weight-medium mt-8 black--text">Static address</div>
+        <div class="font-weight-medium mt-8 black--text" id="lblIpv6Staticaddress">Static address</div>
         <v-divider class="mt-2" />
         <v-row v-for="value in ipaddressNode0" :key="value" class="mt-2">
           <v-col cols="6">{{value}}</v-col>
@@ -47,9 +47,9 @@
           </v-col>
         </v-row>
         <div class="mt-4">
-          <span class="font-weight-medium black--text">IP address</span>
+          <span class="font-weight-medium black--text" id="lblIPv6Ipadreess">IP address</span>
           <div>
-            <input class="input-text" v-model="newAddressNode0" type="text" name="ipaddress" />
+            <input class="input-text" v-model="newAddressNode0" type="text" name="ipaddress" id="txtIpv6Ipaddress" />
           </div>
         </div>
         <div
@@ -58,15 +58,15 @@
         >+ Add another static address (maximum of 4)</div>
       </div>
       <div class="col-4 body-2 column">
-        <span class="font-weight-medium black--text">Node 1</span>
+        <span class="font-weight-medium black--text" id="lblIpv6Node1">Node 1</span>
         <v-divider class="mt-2" />
         <div class="mt-5">
-          <span class="font-weight-medium black--text">Gateway</span>
+          <span class="font-weight-medium black--text" id="lblIpv6Gateway">Gateway</span>
           <div>
-            <input class="input-text" type="text" name="ipaddressNode0" v-model="ipv4IpAddress" />
+            <input class="input-text" type="text" name="ipaddressNode0" v-model="ipv4IpAddress"  id="txtIpv6IpaddressNode0"/>
           </div>
         </div>
-        <div class="font-weight-medium mt-8 black--text">Static Addresses</div>
+        <div class="font-weight-medium mt-8 black--text" id="lblIpv6StaticAddress">Static Addresses</div>
         <v-divider class="mt-2" />
         <v-row v-for="value in ipaddressNode1" :key="value" class="mt-2">
           <v-col cols="6">{{value}}</v-col>
@@ -81,9 +81,9 @@
           </v-col>
         </v-row>
         <div class="mt-4">
-          <span class="font-weight-medium black--text">IP address</span>
+          <span class="font-weight-medium black--text" id="lblIpv6IpAdress">IP address</span>
           <div>
-            <input class="input-text" v-model="newAddressNode1" type="text" name="ipaddressNode1" />
+            <input class="input-text" v-model="newAddressNode1" type="text" name="ipaddressNode1"  id="txtIpv6Node1"/>
           </div>
         </div>
 
@@ -94,10 +94,10 @@
       </div>
     </div>
     <div class="mt-8">
-      <v-btn elevation="0" color="green">
+      <v-btn elevation="0" color="green" id="btnIpv6ApplyContinue">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()">Back to previous step</span>
+      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv6Back">Back to previous step</span>
     </div>
   </v-container>
 </template>

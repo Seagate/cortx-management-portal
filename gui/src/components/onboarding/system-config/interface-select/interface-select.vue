@@ -8,27 +8,27 @@
     ></v-img>
     <v-divider />
     <div>
-      <div class="title mt-6 green--text">Interface Selection</div>
+      <div class="title mt-6 green--text" id="lblInterface">Interface Selection</div>
     </div>
     <div class="mt-4">
       <div
         class="font-weight-regular black--text"
-      >Select an Object-Based Interface (S3) or a Network File System (NFS), or both.</div>
+       id="lblInterfaceMsg">Select an Object-Based Interface (S3) or a Network File System (NFS), or both.</div>
 
       <div
         class="mt-5 font-weight-regular black--text"
-      >Choose which interface(s) you'd like to establish. You must pick at least one of these.</div>
+       id="lblInterfaceMsgChoose">Choose which interface(s) you'd like to establish. You must pick at least one of these.</div>
       <v-divider class="mt-5" />
       <div class="mt-5">
-        <input type="checkbox" @change="s3" v-model="s3" name="s3" />
-        <span class="ml-3 font-weight-medium green--text">Object-Based Storage (S3)</span>
+        <input type="checkbox" @change="s3" v-model="s3" name="s3" id="chkInterfaceS3" />
+        <span class="ml-3 font-weight-medium green--text" id="lblInterfaceChooseStorage">Object-Based Storage (S3)</span>
         <div
           class="mt-5 font-weight-regular black--text"
-        >Start configuration for Object-Based Storage (S3).</div>
+         id="lblInterfaceConfig">Start configuration for Object-Based Storage (S3).</div>
       </div>
       <div class="mt-5">
-        <input type="checkbox" @change="nfs" v-model="nfs" name="nfs" />
-        <span class="ml-3 font-weight-medium green--text">Network File System (NFS)</span>
+        <input type="checkbox" @change="nfs" v-model="nfs" name="nfs"  id="txtInterfaceNfs"/>
+        <span class="ml-3 font-weight-medium green--text" id="lblInterfaceNFS">Network File System (NFS)</span>
         <div
           class="mt-5 font-weight-regular black--text"
         >Start configuration for Network File System (NFS).</div>
@@ -36,10 +36,10 @@
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="green">
+      <v-btn elevation="0" color="green" id="btnInterfaceContinue">
         <span class="white--text" @click="gotToNextPage()">Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()">Back to previous step</span>
+      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblInterfaceBack">Back to previous step</span>
     </div>
   </v-container>
 </template>
