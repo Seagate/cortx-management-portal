@@ -29,7 +29,7 @@ export default class Alerts extends VuexModule {
     public header: object | null = null;
     public isOnboardingDone: boolean = false;
     public queryParams: AlertQueryParam = {
-        sortBy: "created_time",
+        sortby: "created_time",
         dir: "desc",
         offset: 1,
         limit: 5
@@ -126,7 +126,7 @@ export default class Alerts extends VuexModule {
     // Set query params for Alert Table
     @Mutation
     public alertQueryParamMutation({ ...queryParams }) {
-        this.queryParams.sortBy = queryParams.sortBy;
+        this.queryParams.sortby = queryParams.sortBy;
         this.queryParams.dir = queryParams.dir;
         this.queryParams.offset = queryParams.offset;
         this.queryParams.limit = queryParams.limit;

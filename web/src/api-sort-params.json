@@ -2,10 +2,10 @@
     "/api/v1/alerts": [
         {
             "paramname": "sortby",
-            "values": "created_time"
+            "values": "created_time,severity,resolved,acknowledged"
         },
         {
-            "paramname": "sorttype",
+            "paramname": "dir",
             "values": "asc,desc"
         }
     ]

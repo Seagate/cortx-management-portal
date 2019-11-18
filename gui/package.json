@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/vuelidate": "^0.7.8",
     "axios": "0.19.0",
     "core-js": "2.6.5",
     "moment": "^2.24.0",
@@ -16,6 +17,8 @@
     "vue-native-websocket": "2.0.13",
     "vue-property-decorator": "8.2.1",
     "vue-router": "3.0.3",
+    "vuelidate": "^0.7.4",
+    "vuelidate-property-decorators": "^1.0.28",
     "vuetify": "2.0.0",
     "vuex": "3.0.1",
     "vuex-module-decorators": "0.10.1"

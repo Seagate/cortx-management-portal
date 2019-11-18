@@ -32,6 +32,9 @@ import EosNotificationsEmail from "./components/onboarding/system-config/notific
 import EosNotificationsSyslog from "./components/onboarding/system-config/notifications/notifications-syslog.vue";
 import EosInterfaceSelect from "./components/onboarding/system-config/interface-select/interface-select.vue";
 import EosAccountManagement from "./components/s3/account-management.vue";
+import EosAdminUser from "./components/preboarding/admin-user.vue";
+import EosWelcome from "./components/preboarding/welcome.vue";
+import EosLogin from "./components/preboarding/login.vue";
 
 Vue.use(Router);
 
@@ -64,7 +67,7 @@ export default new Router({
     },
     {
       path: "/dataconfig1",
-      name: "dataconfig2",
+      name: "dataconfig1",
       component: EosDataNetwork,
     },
     {
@@ -126,6 +129,21 @@ export default new Router({
       path: "/s3account",
       name: "s3account",
       component: EosAccountManagement,
+    },
+    {
+      path: "/adminuser",
+      name: "adminuser",
+      component: EosAdminUser
+    },
+    {
+      path: "/welcome",
+      name: "welcome",
+      component: EosWelcome
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: EosLogin
     }
   ],
 });
