@@ -147,6 +147,8 @@ class AlertPlugin(CsmPlugin):
                 csm_schema[const.ALERT_RESOLVED] = False 
                 csm_schema[const.ALERT_ACKNOWLEDGED] = False
                 csm_schema[const.ALERT_COMMENT] = ""
+                csm_schema[const.ALERT_HW_IDENTIFIER] = \
+                        csm_schema[const.ALERT_HW_IDENTIFIER].replace(" ", "_")
                 """ Validating the schema. """
                 validate(csm_schema, self._hw_schema)
             else:
