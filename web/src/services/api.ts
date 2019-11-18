@@ -58,7 +58,10 @@ export abstract class Api {
     public static async patch(url: string, req: Request, id: string | number) {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
-            let patchurl = base_url + url + "/" + id;
+            let patchurl = base_url + url;
+            if (id && id != "") {
+                patchurl += "/" + id;
+            }
             // Remove following code onde all the Python APIs are ready
             // -- Start --
             if (!url.startsWith("/api")) {

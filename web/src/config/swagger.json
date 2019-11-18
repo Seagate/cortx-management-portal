@@ -163,7 +163,7 @@
         ]
       }
     },
-    "/systemconfig": {
+    "/config": {
       "get": {
         "tags": [
           "Get System Config"
@@ -223,6 +223,67 @@
           }
         ]
       }
+    },
+    "/networkmanagement": {
+      "get": {
+        "tags": [
+          "Get System Config for management network settings"
+        ],
+        "summary": "Get the System Configuration for management network settings.",
+        "responses": {
+          "200": {
+            "description": "System Config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "system_config": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No Data Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        }
+      },
+      "patch": {
+        "tags": [
+          "Save System Config for management network settings"
+        ],
+        "summary": "Save the System configuration for management network settings.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "system_config",
+            "in": "body",
+            "description": "system config",
+            "schema": {
+              "$ref": "#/definitions/system_config"
+            }
+          }
+        ]
+      }
     }
   },
   "definitions": {
@@ -230,59 +291,64 @@
       "type": "object",
       "required": false,
       "properties": {
-        "system_config": {
+        "systemconfig": {
           "type": "object",
           "properties": {
-            "ipv4": {
+            "management_network": {
               "type": "object",
-              "required": false,
               "properties": {
-                "isManual": {
-                  "type": "boolean"
-                },
-                "ipAddress": {
-                  "type": "string",
-                  "example": "127.0.0.1"
-                },
-                "netmask": {
-                  "type": "string",
-                  "example": "255.255.255.0"
-                },
-                "gateway": {
-                  "type": "string",
-                  "example": "255.255.255.0"
-                }
-              }
-            },
-            "ipv6": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "isManual": {
-                  "type": "boolean"
-                },
-                "gateway": {
-                  "type": "string",
-                  "example": "255.255.255.0"
-                },
-                "static_addr": {
-                  "type": "array",
-                  "items": {
-                    "ip_address": {
-                      "type": "string"
-                    }
-                  },
-                  "example": [
-                    {
-                      "ip_address": "127.0.0.1"
+                "ipv4": {
+                  "type": "object",
+                  "required": false,
+                  "properties": {
+                    "isManual": {
+                      "type": "boolean"
                     },
-                    {
-                      "ip_address": "127.0.0.2"
+                    "ipAddress": {
+                      "type": "string",
+                      "example": "127.0.0.1"
                     },
-                    {
-                      "ip_address": "127.0.0.3"
+                    "netmask": {
+                      "type": "string",
+                      "example": "255.255.255.0"
+                    },
+                    "gateway": {
+                      "type": "string",
+                      "example": "255.255.255.0"
                     }
-                  ]
+                  }
+                },
+                "ipv6": {
+                  "type": "object",
+                  "required": false,
+                  "properties": {
+                    "isManual": {
+                      "type": "boolean"
+                    },
+                    "gateway": {
+                      "type": "string",
+                      "example": "255.255.255.0"
+                    },
+                    "static_addr": {
+                      "type": "array",
+                      "items": {
+                        "ip_address": {
+                          "type": "string"
+                        }
+                      },
+                      "example": [
+                        {
+                          "ip_address": "127.0.0.1"
+                        },
+                        {
+                          "ip_address": "127.0.0.2"
+                        },
+                        {
+                          "ip_address": "127.0.0.3"
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             },

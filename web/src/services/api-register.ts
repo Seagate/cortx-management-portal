@@ -16,7 +16,6 @@ export const version = "v1";
 
 export default {
     all_alerts: `/api/${version}/alerts`,
-    // UnComment following once Python API is ready
-    //all_system_config: `/api/${version}/systemconfig`
-    all_system_config: `/systemconfig` //remove this once Python API is ready
+    all_system_config: `/api/${version}/config`,
+    management_network: `/api/${version}/networkmanagement`
 };
