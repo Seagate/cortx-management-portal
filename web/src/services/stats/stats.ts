@@ -19,23 +19,15 @@ import apiRegister from "../api-register";
 import { Request, Response, request, response } from "express";
 
 /**
- * This is responsible for getting System Configuration data
+ * This is responsible for getting stats data
  * @param query 
  */
-export const getSystemConfig = async (query: any) => {
-    let alertData = Api.getAll(apiRegister.all_system_config, query);
+export const getStats = async (query: any, pathparam?: string) => {
+    let url = apiRegister.stats;
+    if (pathparam) {
+        url += "/" + pathparam;
+    }
+    let alertData = Api.getAll(url, query);
     let result = await alertData;
     return result;
 };
-
-/**
- * This is responsible to store System Configuration data.
- * @param req 
- * @param res 
- */
-export const saveSystemConfig = async (req: Request, res: Response) => {
-    let alertData = Api.post(apiRegister.all_system_config, req);
-    let result = await alertData;
-    return result;
-};
-
