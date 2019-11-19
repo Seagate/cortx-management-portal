@@ -258,8 +258,7 @@ class S3Client(BaseIamClient):
         if max_items:
             params['MaxItems'] = max_items
 
-        (code, body) = await self._query_iam('ListAccounts', params,
-            '/', 'POST', list_marker='Accounts')
+        (code, body) = await self._query_iam('ListAccounts', params, '/', 'POST', list_marker='Accounts')
         if code != 200:
             return self._create_error(body)
         else:
@@ -375,7 +374,7 @@ class S3Client(BaseIamClient):
         if max_items:
             params['MaxItems'] = max_items
 
-        (code, body) = await self._query_iam('ListUsers', {}, '/', 'POST', list_marker='Users')
+        (code, body) = await self._query_iam('ListUsers', params, '/', 'POST', list_marker='Users')
         if code != 200:
             return self._create_error(body)
         else:
