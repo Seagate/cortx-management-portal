@@ -35,6 +35,7 @@ import EosAccountManagement from "./components/s3/account-management.vue";
 import EosAdminUser from "./components/preboarding/admin-user.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
 import EosLogin from "./components/preboarding/login.vue";
+import UDX from "./components/udx/udx.vue";
 
 Vue.use(Router);
 
@@ -144,6 +145,11 @@ export default new Router({
       path: "/login",
       name: "login",
       component: EosLogin
+    },
+    {
+      path: "/udx",
+      name: "udx",
+      component: UDX,
     }
   ],
 });
