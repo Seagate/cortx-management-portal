@@ -50,7 +50,8 @@ export abstract class Api {
                 geturl += seperator + key + "=" + query[key];
             }
             http_agent.get(geturl, Api.handleResponse(resolve, reject)).on("error", (err: any) => {
-                reject(err);
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
             });
         });
     }
@@ -58,7 +59,10 @@ export abstract class Api {
     public static async patch(url: string, req: Request, id: string | number) {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
-            let patchurl = base_url + url + "/" + id;
+            let patchurl = base_url + url;
+            if (id && id != "") {
+                patchurl += "/" + id;
+            }
             // Remove following code onde all the Python APIs are ready
             // -- Start --
             if (!url.startsWith("/api")) {
@@ -75,7 +79,8 @@ export abstract class Api {
             }
 
             let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject)).on("error", (err: any) => {
-                reject(err);
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
             });
             httpRequest.write(requestData);
             httpRequest.end();
@@ -102,7 +107,8 @@ export abstract class Api {
             }
 
             let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject)).on("error", (err: any) => {
-                reject(err);
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
             });
             httpRequest.write(requestData);
             httpRequest.end();

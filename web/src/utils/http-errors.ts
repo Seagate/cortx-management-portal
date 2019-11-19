@@ -45,3 +45,11 @@ export class HTTP404Error extends HTTPCsmClientError {
     super(message);
   }
 }
+
+export class HTTP500Error extends HTTPCsmClientError {
+  readonly statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+
+  constructor(message: string | object = "Internal Server Error") {
+    super(message);
+  }
+}
