@@ -18,5 +18,6 @@ export default {
     all_alerts: `/api/${version}/alerts`,
     all_system_config: `/api/${version}/config`,
     management_network: `/api/${version}/networkmanagement`,
-    stats: `/api/${version}/stats`
+    stats: `/api/${version}/stats`,
+    admin_user: `/login` //TODO Change accroding to the Pyhon APIs
 };

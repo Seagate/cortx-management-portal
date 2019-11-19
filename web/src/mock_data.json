@@ -1,4 +1,8 @@
 {
+  "login": {
+    "username": "admin",
+    "password": "admin"
+  },
   "systemconfig": {
     "system_config": {
       "ipv4": {

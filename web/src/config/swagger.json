@@ -350,6 +350,92 @@
           }
         ]
       }
+    },
+    "/user/admin": {
+      "post": {
+        "tags": [
+          "Register the admin user"
+        ],
+        "summary": "Register and create profile for CSM admin user",
+        "responses": {
+          "200": {
+            "description": "Admin user created"
+          },
+          "404": {
+            "description": "No Data Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "admin user",
+            "in": "body",
+            "description": "CSM Admin User request",
+            "schema": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "admin"
+                }
+              }
+            }
+          }
+        ]      
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "CSM admin user login"
+        ],
+        "summary": "CSM admin user login",
+        "responses": {
+          "200": {
+            "description": "Admin user created"
+          },
+          "404": {
+            "description": "No Data Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "admin user",
+            "in": "body",
+            "description": "CSM Admin User request",
+            "schema": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "admin"
+                }
+              }
+            }
+          }
+        ]
+      }
     }
   },
   "definitions": {

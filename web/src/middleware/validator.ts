@@ -35,13 +35,46 @@ export const checkRequiredParams = (req: Request, res: Response, next: NextFunct
     validateGetParams(req, res, next);
   } else if (req.method == 'PATCH') {
     validatePatchParams(req, res, next);
+  }  else if (req.method == 'POST') {
+    validatePostParams(req, res, next);
   } else {
     next();
   }
 };
 
 /**
- * This method validates the parameters in payload of PUT method.
+ * This method validates the parameters in payload of POST method.
+ * This methods gets the mandatory parmeter criteria from 
+ * api-mandatory-parameters.json based on the PATH.
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+let validatePostParams = (req: Request, res: Response, next: NextFunction) => {
+  let url = req.url;
+  let path = "";
+  for (let i = 0; i < count; i++) {
+    if (url.includes(Object.keys(objectValue)[i])) {
+      path = Object.keys(objectValue)[i];
+      break;
+    }
+  }
+  let requiredParams = objectValue[path];
+  if (requiredParams) {
+    let requiredPatchParams = requiredParams.POST;
+    if (requiredPatchParams) {
+      validateParams(requiredPatchParams, req.body, req, res, next);
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+}
+
+
+/**
+ * This method validates the parameters in payload of PATCH method.
  * This methods gets the mandatory parmeter criteria from 
  * api-mandatory-parameters.json based on the PATH.
  * @param req 
