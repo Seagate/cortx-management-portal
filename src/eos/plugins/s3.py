@@ -37,13 +37,13 @@ class BaseIamClient:
     """
     Base class for IAM API operations.
     """
-    def __init__(self, access_key: str, secret_key: str, config: IamConnectionConfig, loop):
+    def __init__(self, access_key: str, secret_key: str, config: IamConnectionConfig, loop, session_token=None):
         self._loop = loop
         self._executor = ThreadPoolExecutor()
         self._config = config
-        self.iam_connection = self._create_boto_connection(access_key, secret_key, config)
+        self.iam_connection = self._create_boto_connection(access_key, secret_key, config, session_token)
 
-    def _create_boto_connection(self, access_key, secret_key, config: IamConnectionConfig):
+    def _create_boto_connection(self, access_key, secret_key, config: IamConnectionConfig, session_token=None):
         """
         Helper function that creates IAM connection for the given credentials and configuration
         :returns: an IAMConnection object
@@ -67,7 +67,8 @@ class BaseIamClient:
             port=config.port,
             is_secure=config.use_ssl,
             debug=(2 if config.debug else 0),
-            validate_certs=config.verify_ssl_cert
+            validate_certs=config.verify_ssl_cert,
+            security_token=session_token
             )
 
         if config.max_retries_num:
@@ -343,7 +344,6 @@ class S3Client(BaseIamClient):
     @Log.trace_method(Log.DEBUG, exclude_args=['user_password'])
     async def create_user_login_profile(self, user_name, user_password, require_reset=False):
         # TODO: server returns OperationNotSupported. Why??
-        raise NotImplementedError()
 
         params = {
             'UserName': user_name,
@@ -351,7 +351,7 @@ class S3Client(BaseIamClient):
             'PasswordResetRequired': require_reset
         }
 
-        (code, body) = await self._query_iam('CreateUserLoginProfile', params, '/', 'POST')
+        (code, body) = await self._query_iam('CreateLoginProfile', params, '/', 'POST')
         if code != 201:
             return self._create_error(body)
         else:
