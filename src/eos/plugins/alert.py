@@ -27,6 +27,7 @@ from csm.common.plugin import CsmPlugin
 from csm.core.blogic import const
 from jsonschema import Draft3Validator
 from jsonschema import validate
+from csm.common.errors import CsmError
 
 class AlertPlugin(CsmPlugin):
     """
@@ -122,7 +123,6 @@ class AlertPlugin(CsmPlugin):
             msg_body = json_msg_obj.load()
             sub_body = msg_body.get(const.ALERT_MESSAGE, {}).get(
                 const.ALERT_SENSOR_TYPE, {})
-            #module_type = sub_body.get("info", {})
             resource_type = sub_body.get("info", {}).get(const.ALERT_RESOURCE_TYPE,
                                                       "")
             if resource_type:
@@ -153,6 +153,8 @@ class AlertPlugin(CsmPlugin):
                 validate(csm_schema, self._hw_schema)
             else:
                 Log.error("No resource type found for alert - {%s}" %(message))
+                raise CsmError(-1, 'No resource type found for alert.')
         except Exception as e:
             Log.exception(e)
+            raise CsmError(-1, '%s' %e)
         return csm_schema
