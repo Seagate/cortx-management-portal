@@ -28,16 +28,17 @@ from boto.connection import DEFAULT_CA_CERTS_FILE
 from boto import config as boto_config
 from csm.common.log import Log
 from csm.common.errors import CsmInternalError
-from csm.core.blogic.models.s3 import S3ConnectionConfig, IamAccount,\
-                                ExtendedIamAccount, IamLoginProfile, IamUser,\
-                                IamUserListResponse, IamAccountListResponse,\
-                                IamTempCredentials, IamErrors, IamError
+from csm.core.blogic.models.s3 import (S3ConnectionConfig, IamAccount, ExtendedIamAccount,
+                                       IamLoginProfile, IamUser, IamUserListResponse,
+                                       IamAccountListResponse, IamTempCredentials,
+                                       IamErrors, IamError)
 
 
 class BaseClient:
     """
     Base class for IAM API operations.
     """
+
     def __init__(self, access_key: str, secret_key: str, config: S3ConnectionConfig, loop):
         self._loop = loop
         self._executor = ThreadPoolExecutor()
@@ -66,13 +67,13 @@ class BaseClient:
         boto_config.set('Boto', 'ca_certificates_file', ca_cert)
 
         conn = self._create_boto_connection_object(aws_access_key_id=access_key,
-            aws_secret_access_key=secret_key,
-            host=config.host,
-            port=config.port,
-            is_secure=config.use_ssl,
-            debug=(2 if config.debug else 0),
-            validate_certs=config.verify_ssl_cert
-            )
+                                                   aws_secret_access_key=secret_key,
+                                                   host=config.host,
+                                                   port=config.port,
+                                                   is_secure=config.use_ssl,
+                                                   debug=(2 if config.debug else 0),
+                                                   validate_certs=config.verify_ssl_cert
+                                                   )
 
         if config.max_retries_num:
             conn.num_retries = config.max_retries_num
@@ -134,10 +135,12 @@ class BaseClient:
             'Message': 'error_message'
         })
 
+
 class IamClient(BaseClient):
     """
     A management object that alows to perform IAM management operations
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -175,7 +178,7 @@ class IamClient(BaseClient):
 
     @Log.trace_method(Log.DEBUG)
     async def create_account(self, account_name: str,
-            account_email: str) -> Union[ExtendedIamAccount, IamError]:
+                             account_email: str) -> Union[ExtendedIamAccount, IamError]:
         """
         IAM Account creation. This operation is not present in Amazon IAM API.
         In order to perform this operation, LDAP credentials must be provided into
@@ -202,7 +205,7 @@ class IamClient(BaseClient):
 
     @Log.trace_method(Log.DEBUG, exclude_args=['account_password'])
     async def create_account_login_profile(self, account_name, account_password,
-            require_reset=False) -> Union[IamLoginProfile, IamError]:
+                                           require_reset=False) -> Union[IamLoginProfile, IamError]:
         """
         Login profile creation.
         Note that it is required to provide S3 account credentials, not LDAP ones.
@@ -226,7 +229,7 @@ class IamClient(BaseClient):
 
     @Log.trace_method(Log.DEBUG, exclude_args=['account_password'])
     async def update_account_login_profile(self, account_name, account_password,
-            require_reset=False) -> Union[bool, IamError]:
+                                           require_reset=False) -> Union[bool, IamError]:
         """
         Login profile update.
         Note that it is required to provide S3 account credentials, not LDAP ones.
@@ -248,7 +251,7 @@ class IamClient(BaseClient):
 
     @Log.trace_method(Log.DEBUG)
     async def list_accounts(self, max_items=None,
-            marker=None) -> Union[IamAccountListResponse, IamError]:
+                            marker=None) -> Union[IamAccountListResponse, IamError]:
         """
         Fetches the list of S3 accounts from the IAM server.
         Note that max_items and marker parameters are not supported yet!
@@ -263,16 +266,16 @@ class IamClient(BaseClient):
         if max_items:
             params['MaxItems'] = max_items
 
-        (code, body) = await self._query_conn('ListAccounts', params,
-            '/', 'POST', list_marker='Accounts')
+        (code, body) = await self._query_conn('ListAccounts', params, '/', 'POST',
+                                              list_marker='Accounts')
         if code != 200:
             return self._create_error(body)
         else:
             users = body['ListAccountsResponse']['ListAccountsResult']['Accounts']
             converted_accounts = []
             for raw_user in users:
-                converted_accounts.append(self._create_response(IamAccount,
-                    raw_user, self.ACCOUNT_MAPPING))
+                converted_accounts.append(self._create_response(IamAccount, raw_user,
+                                                                self.ACCOUNT_MAPPING))
 
             resp = IamAccountListResponse()
             resp.iam_accounts = converted_accounts
@@ -365,7 +368,7 @@ class IamClient(BaseClient):
 
     @Log.trace_method(Log.DEBUG)
     async def list_users(self, path_prefix=None, marker=None,
-            max_items=None) -> Union[IamUserListResponse, IamError]:
+                         max_items=None) -> Union[IamUserListResponse, IamError]:
         """
         Note that max_items and marker are not working for now!!
 
@@ -437,10 +440,12 @@ class IamClient(BaseClient):
             return None
 
     @Log.trace_method(Log.DEBUG)
-    async def update_user(self, user_name, new_path=None, new_user_name=None) -> Union[bool, IamError]:
+    async def update_user(self, user_name, new_path=None,
+                          new_user_name=None) -> Union[bool, IamError]:
         """
         Update an existing IAM user.
 
+        :param user_name: TODO: find out details about this field
         :param new_path: If not None, user's path will be set to this value
         :param new_user_name: If not None, user will be renamed accordingly
         :returns: True in case of success, IamError in case of problem
@@ -462,10 +467,12 @@ class IamClient(BaseClient):
             # TODO: our IAM server does not return the updated user information
             return True
 
+
 class S3Client(BaseClient):
     """
     A management object that operates S3 objects
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -479,8 +486,9 @@ class S3Client(BaseClient):
 
         :returns: boto.s3.bucket in case of success, S3Error otherwise
         """
-        return await self._loop.run_in_executor(self._executor, self.connection.create_bucket,
-            bucket_name)
+        return await self._loop.run_in_executor(self._executor,
+                                                self.connection.create_bucket,
+                                                bucket_name)
 
     @Log.trace_method(Log.DEBUG)
     async def get_all_buckets(self):
@@ -489,7 +497,8 @@ class S3Client(BaseClient):
     @Log.trace_method(Log.DEBUG)
     async def delete_bucket(self, bucket_name):
         return await self._loop.run_in_executor(self._executor, self.connection.delete_bucket,
-            bucket_name)
+                                                bucket_name)
+
 
 class S3BucketsCache:
     """
@@ -503,7 +512,8 @@ class S3BucketsCache:
             (runs until object is destroyed)
     """
 
-    def __init__(self, access_key_id, secret_key, config, interval=3, loop=asyncio.get_event_loop()):
+    def __init__(self, access_key_id, secret_key, config, interval=3,
+                 loop=asyncio.get_event_loop()):
         """
         Creates the cache and enables self-sustaining job
 
@@ -535,6 +545,7 @@ class S3BucketsCache:
     def __del__(self):
         """Cancels cache sustaining task when object is deleted"""
         self._sustain_cache_task.cancel()
+
 
 class S3Plugin:
     """
@@ -588,14 +599,16 @@ class S3Plugin:
         return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop())
 
     @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
-    def get_s3_buckets_cache(self, access_key, secret_key, connection_config=None, interval=3) -> S3BucketsCache:
+    def get_s3_buckets_cache(self, access_key, secret_key, connection_config=None,
+                             interval=3) -> S3BucketsCache:
         """
         Returns a buckets cache object
         """
         if not connection_config:
             raise CsmInternalError('Connection configuration must be provided')
 
-        return S3BucketsCache(access_key, secret_key, connection_config, interval, asyncio.get_event_loop())
+        return S3BucketsCache(access_key, secret_key, connection_config, interval,
+                              asyncio.get_event_loop())
 
     @Log.trace_method(Log.DEBUG)
     async def get_temp_credentials(self, account_name, password, duration=None,
@@ -607,6 +620,7 @@ class S3Plugin:
         :param duration: Session expiry time (in seconds). If set, it must be
                          greater than 900.
         :param user_name: TODO: find out details about this field
+        :param connection_config: TODO: find out details about this field
         :returns: An instance of IamTempCredentials object
         """
         iamcli = IamClient('', '', connection_config, asyncio.get_event_loop())
