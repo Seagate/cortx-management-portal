@@ -39,9 +39,9 @@ export abstract class Api {
 
             // Remove following code onde all the Python APIs are ready
             // -- Start --
-            if (!url.startsWith("/api")) {
+            /*if (!url.startsWith("/api")) {
                 geturl = mock_base_url + url;
-            }
+            }*/
             console.log("GET: " + geturl);
             // -- end --
 
@@ -93,9 +93,9 @@ export abstract class Api {
             let posturl = base_url + url + ((id) ? "/" + id : "");
             // Remove following code onde all the Python APIs are ready
             // -- Start --
-            if (!url.startsWith("/api")) {
+            /*if (!url.startsWith("/api")) {
                 posturl = mock_base_url + url + ((id) ? "/" + id : "");
-            }
+            }*/
             console.log("POST: " + posturl);
             // -- end --
             const options = {
