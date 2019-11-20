@@ -127,7 +127,6 @@ class AlertPlugin(CsmPlugin):
                                                       "")
             if resource_type:
                 module_type = resource_type.split(':')[2]
-
                 # Convert  the SSPL Schema to CSM Schema.
                 input_alert_payload = Payload(JsonMessage(message))
                 csm_alert_payload = Payload(Dict())
@@ -135,14 +134,15 @@ class AlertPlugin(CsmPlugin):
                                         csm_alert_payload)
                 csm_alert_payload.dump()
                 csm_schema = csm_alert_payload.load()
-                csm_schema[const.ALERT_TYPE] = 'hw'
+                csm_schema[const.ALERT_TYPE] = const.HW 
                 """
                 # Below mentioned fields are managed by CSM so they are not the part
                 # of mapping table
                 """
-                csm_schema[const.ALERT_ID] = int(time.time())
                 csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
                 csm_schema[const.ALERT_MODULE_NAME] = resource_type
+                csm_schema[const.ALERT_CREATED_TIME] =\
+                        int(csm_schema[const.ALERT_CREATED_TIME])
                 csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
                 csm_schema[const.ALERT_RESOLVED] = False 
                 csm_schema[const.ALERT_ACKNOWLEDGED] = False
