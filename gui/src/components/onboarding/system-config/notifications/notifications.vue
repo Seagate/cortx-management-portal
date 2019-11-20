@@ -8,34 +8,34 @@
     ></v-img>
     <v-divider />
     <div>
-      <div class="title mt-6">Notifications</div>
+      <div class="title mt-6" id="lblNotification">Notifications</div>
     </div>
     <div class="mt-4">
       <div
         class="font-weight-regular black--text"
-      >The system will send out notifications of important events that may happen throught the life of the product. It is highly recmmended that you configure at least one notification path so that you can quickly respond to any critical events that may arise in the system. You can set up notifications to be sent via email, SNMP and syslog in the following screens. You have the option to skip this step entirely, but doing so is strongly discouraged.</div>
+       id="lblNotificationMsg">The system will send out notifications of important events that may happen throught the life of the product. It is highly recmmended that you configure at least one notification path so that you can quickly respond to any critical events that may arise in the system. You can set up notifications to be sent via email, SNMP and syslog in the following screens. You have the option to skip this step entirely, but doing so is strongly discouraged.</div>
 
       <div
         class="mt-5 font-weight-regular black--text"
-      >Choose the notification options below that align best with your plans for supporting data infrastructure within your network.</div>
+      id="lblNotificationMsgChoose">Choose the notification options below that align best with your plans for supporting data infrastructure within your network.</div>
       <v-divider class="mt-5" />
       <div class="mt-5">
-        <input type="checkbox" @change="email" v-model="email" name="email" />
-        <span class="ml-3 font-weight-medium">Email</span>
+        <input type="checkbox" @change="email" v-model="email" name="email"  id="chkNotificationEmail"/>
+        <span class="ml-3 font-weight-medium" id="lblNotificationEmail">Email</span>
         <div
           class="mt-5 font-weight-regular black--text"
-        >Selecting Email will allow you to configure both secure and non-secure email servers for event notification. You can control the severity of events that you wish to receive, and you will be able to test out your notificatio settings.</div>
+         id="lblNotificationconfig">Selecting Email will allow you to configure both secure and non-secure email servers for event notification. You can control the severity of events that you wish to receive, and you will be able to test out your notificatio settings.</div>
       </div>
       <div class="mt-5">
-        <input type="checkbox" @change="syslog" v-model="syslog" name="syslog" />
+        <input type="checkbox" @change="syslog" v-model="syslog" name="syslog" id="chkNotificationSyslog" />
         <span class="ml-3 font-weight-medium">Syslog</span>
         <div
           class="mt-5 font-weight-regular black--text"
-        >Selecting Syslog will allow you to setup a syslog server destination for event notification. You can control the severity of events that you wish to receive, and you will be able to test out your notification settings.</div>
+        id="lblNotificationSyslog" >Selecting Syslog will allow you to setup a syslog server destination for event notification. You can control the severity of events that you wish to receive, and you will be able to test out your notification settings.</div>
       </div>
       <div class="mt-5">
-        <input type="checkbox" @change="skip" v-model="skip" name="skip" />
-        <span class="ml-3 font-weight-medium">Skip this step</span>
+        <input type="checkbox" @change="skip" v-model="skip" name="skip" id="chkNofiticationSkip" />
+        <span class="ml-3 font-weight-medium" id="lblNotificatonSkip">Skip this step</span>
         <div
           class="mt-5 font-weight-regular black--text"
         >If you choose to set up notification paths later, you may skip this step for now. However, skipping this step is strongly discouraged, and it is highly recommended that you set event notifications up as soon as possible to maintain the health of your system.</div>
@@ -43,10 +43,10 @@
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="green">
+      <v-btn elevation="0" color="green" id="btnNotificationContinue">
         <span class="white--text" @click="gotToNextPage()">Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()">Back to previous step</span>
+      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblNotificationBack">Back to previous step</span>
     </div>
   </v-container>
 </template>
