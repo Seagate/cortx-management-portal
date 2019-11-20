@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="mt-5 ml-5">
+  <div id="udx-reg-container" class="mt-5 ml-5">
     <v-dialog v-model="showProgressDialog" persistent width="300">
       <v-card color="success">
         <v-card-text>
@@ -22,26 +22,26 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <div v-if="!udxDevice && !isFetchingDeviceDetails">
-      <div class="udx-registration-page-title">
-        <label class="headline font-weight-bold">UDX Registration</label>
+    <div id="udx-reg-form" v-if="!udxDevice && !isFetchingDeviceDetails">
+      <div id="udx-reg-form-title-container" class="udx-reg-page-title">
+        <label id="udx-reg-form-title" class="headline font-weight-bold">UDX Registration</label>
       </div>
-      <div class="mt-4" v-if="identificationToken">
-        <label class="udx-registration-token-lbl">Your Identification Token</label>
+      <div id="udx-reg-token-container" class="mt-4" v-if="identificationToken">
+        <label id="udx-reg-token-lbl">Your Identification Token</label>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
             <v-icon class="green--text mx-2" size="20" v-on="on">mdi-help-circle-outline</v-icon>
           </template>
           <span>On your UDX web portal choose "Add Device" and then enter the identification token below.</span>
         </v-tooltip>
-        <div class="mt-1 udx-registration-token-container">
-          <label class="float-left">{{ identificationToken.substring(0,4) }}</label>
-          <label class="float-left ml-2">{{ identificationToken.substring(4,8) }}</label>
-          <label class="float-left ml-2">{{ identificationToken.substring(8,12) }}</label>
+        <div id="udx-reg-token" class="mt-1">
+          <label id="udx-reg-token-part-1" class="float-left">{{ identificationToken.substring(0,4) }}</label>
+          <label id="udx-reg-token-part-2" class="float-left ml-2">{{ identificationToken.substring(4,8) }}</label>
+          <label id="udx-reg-token-part-3" class="float-left ml-2">{{ identificationToken.substring(8,12) }}</label>
         </div>
-        <div class="mt-6">
-          <div>
-            <span class="font-weight-medium">Enter URL</span>
+        <div id="udx-reg-url-textbox-container" class="mt-6">
+          <div id="udx-reg-url-textbox-lbl-container">
+            <span id="udx-reg-url-textbox-lbl" class="font-weight-medium">Enter URL</span>
             <v-tooltip right>
               <template v-slot:activator="{ on }">
                 <v-icon class="green--text mx-2" size="20" v-on="on">mdi-help-circle-outline</v-icon>
@@ -49,9 +49,9 @@
               <span>Enter the URL provided by your UDX portal.</span>
             </v-tooltip>
           </div>
-          <input class="input-text my-2" type="text" name="url" v-model="url" />
+          <input class="input-text my-2" type="text" id="udx-reg-url-textbox" name="url" v-model="url" />
         </div>
-        <div class="mt-2">
+        <div id="udx-reg-url-submit-btn" class="mt-2">
           <v-btn color="success" @click="registerUDX()" :disabled="!url">
             <span class="white--text">Register</span>
           </v-btn>
@@ -79,11 +79,11 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div v-if="udxDevice">
-      <div class="udx-registration-page-title">
-        <label class="headline font-weight-bold">UDX registration details</label>
+    <div id="udx-device-details-container" v-if="udxDevice">
+      <div id="udx-device-details-title-container" class="udx-reg-page-title">
+        <label id="udx-device-details-title" class="headline font-weight-bold">UDX registration details</label>
       </div>
-      <table class="mt-4 udx-device-details">
+      <table id="udx-device-details" class="mt-4 udx-device-details">
         <tr>
           <td class="py-2 udx-device-detail-item-label">Name</td>
           <td class="py-2">{{ udxDevice.name }}</td>
@@ -194,15 +194,15 @@ export default class UDX extends Vue {
   font-weight: bold;
   width: 13rem;
 }
-.udx-registration-page-title {
+.udx-reg-page-title {
   height: 46px;
   border-bottom: 1px solid lightgrey;
 }
-.udx-registration-token-lbl {
+#udx-reg-token-lbl {
   font-size: 1rem;
   font-weight: bold;
 }
-.udx-registration-token-container {
+#udx-reg-token {
   height: 30px;
   font-size: 1.5rem;
   font-weight: bold;
