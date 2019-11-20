@@ -14,14 +14,7 @@
  *****************************************************************************/
 <template>
   <div id="udx-reg-container" class="mt-5 ml-5">
-    <v-dialog v-model="showProgressDialog" persistent width="300">
-      <v-card color="success">
-        <v-card-text>
-          <span class="white--text">{{ progressMsg }}</span>
-          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+    <Loader :show="showLoader" :message="loaderMessage" />
     <div id="udx-reg-form" v-if="!udxDevice && !isFetchingDeviceDetails">
       <div id="udx-reg-form-title-container" class="udx-reg-page-title">
         <label id="udx-reg-form-title" class="headline font-weight-bold">UDX Registration</label>
@@ -118,15 +111,17 @@ import { Component, Vue } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import { UDXDevice } from "../../models/udx";
+import Loader from "../widgets/loader.vue";
 
 @Component({
-  name: "eos-udx"
+  name: "eos-udx",
+  components: {Loader}
 })
-export default class UDX extends Vue {
+export default class UDXRegistration extends Vue {
   private identificationToken: string = "";
   private url: string = "";
-  private showProgressDialog: boolean = false;
-  private progressMsg: string = "";
+  private showLoader: boolean = false;
+  private loaderMessage: string = "";
   private showRegistrationSuccessDialog: boolean = false;
   private udxDevice: UDXDevice;
   private isFetchingDeviceDetails: boolean = false;
@@ -139,14 +134,14 @@ export default class UDX extends Vue {
   }
 
   public async registerUDX() {
-    this.showProgressDialog = true;
-    this.progressMsg = "Registering UDX...";
-    const res = await Api.post(apiRegister.udx_device, {
+    this.showLoader = true;
+    this.loaderMessage = "Registering UDX...";
+    await Api.post(apiRegister.udx_device, {
       url: this.url,
       pin: "0000"
     });
-    this.showProgressDialog = false;
-    this.progressMsg = "";
+    this.showLoader = false;
+    this.loaderMessage = "";
     this.showRegistrationSuccessDialog = true;
   }
 
@@ -158,24 +153,24 @@ export default class UDX extends Vue {
 
   private async getUDXRegistrationDetails() {
     this.isFetchingDeviceDetails = true;
-    this.showProgressDialog = true;
-    this.progressMsg = "Fetching UDX registration details...";
+    this.showLoader = true;
+    this.loaderMessage = "Fetching UDX registration details...";
     const res = await Api.getAll(apiRegister.udx_device);
     if (res.data && res.data.length > 0) {
       this.udxDevice = res.data[0];
     }
-    this.showProgressDialog = false;
+    this.showLoader = false;
     this.isFetchingDeviceDetails = false;
   }
 
   private async getIdentificationToken() {
-    this.showProgressDialog = true;
-    this.progressMsg = "Generating Identification Token...";
+    this.showLoader = true;
+    this.loaderMessage = "Generating Identification Token...";
 
     const res = await Api.getAll(apiRegister.udx_reg_token);
     this.identificationToken = res.data.registrationToken;
-    this.showProgressDialog = false;
-    this.progressMsg = "";
+    this.showLoader = false;
+    this.loaderMessage = "";
   }
 }
 </script>
