@@ -436,7 +436,128 @@
           }
         ]
       }
-    }
+    },
+	"/udx-device/registration-token": {
+      "get": {
+        "tags": [
+          "Get Registration token to register UDX device"
+        ],
+        "summary": "Get Registration token to register UDX device.",
+        "responses": {
+          "200": {
+            "description": "Registration token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "registrationToken": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No Data Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        }
+      }
+	},
+	"/udx-device": {
+      "get": {
+        "tags": [
+          "Get registered UDX device details"
+        ],
+        "summary": "Get registered UDX device details.",
+        "responses": {
+          "200": {
+            "description": "Registration token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "name": {
+                      "type": "string"
+                    },
+					"productID": {
+                      "type": "string"
+                    },
+					"serialNumber": {
+                      "type": "string"
+                    },
+					"type": {
+                      "type": "string"
+                    },
+					"uuid": {
+                      "type": "string"
+                    },
+					"vendorID": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No Data Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        }
+      },
+	  "post" : {
+        "tags": [
+          "Register UDX device"
+        ],
+        "summary": "Register UDX device.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "admin user",
+            "in": "body",
+            "description": "UDX device registration request",
+            "schema": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "example": "localhost:4000"
+                },
+                "pin": {
+                  "type": "string",
+                  "example": "0000"
+                }
+              }
+            }
+          }
+		]
+      }
+	}
   },
   "definitions": {
     "system_config": {
