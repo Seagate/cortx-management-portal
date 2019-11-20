@@ -37,7 +37,7 @@ class BaseIamClient:
     """
     Base class for IAM API operations.
     """
-    def __init__(self, access_key: str, secret_key: str, config: IamConnectionConfig, loop, session_token=None):
+    def __init__(self, access_key: str, secret_key: str, config: IamConnectionConfig, loop=asyncio.get_event_loop(), session_token=None):
         self._loop = loop
         self._executor = ThreadPoolExecutor()
         self._config = config
