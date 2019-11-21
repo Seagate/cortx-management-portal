@@ -27,6 +27,7 @@ from csm.common.plugin import CsmPlugin
 from csm.core.blogic import const
 from jsonschema import Draft3Validator
 from jsonschema import validate
+from csm.common.errors import CsmError
 
 class AlertPlugin(CsmPlugin):
     """
@@ -122,32 +123,48 @@ class AlertPlugin(CsmPlugin):
             msg_body = json_msg_obj.load()
             sub_body = msg_body.get(const.ALERT_MESSAGE, {}).get(
                 const.ALERT_SENSOR_TYPE, {})
-            module_type = list(sub_body.keys())[4]
-            resource_type = sub_body[module_type].get(const.ALERT_RESOURCE_TYPE,
+            resource_type = sub_body.get("info", {}).get(const.ALERT_RESOURCE_TYPE,
                                                       "")
-            module_type = resource_type.split(':')[2]
-
-            # Convert  the SSPL Schema to CSM Schema.
-            input_alert_payload = Payload(JsonMessage(message))
-            csm_alert_payload = Payload(Dict())
-            input_alert_payload.convert(self.mapping_dict.get(module_type, {}),
+            if resource_type:
+                module_type = resource_type.split(':')[2]
+                """ Convert  the SSPL Schema to CSM Schema. """
+                input_alert_payload = Payload(JsonMessage(message))
+                csm_alert_payload = Payload(Dict())
+                input_alert_payload.convert(self.mapping_dict.get(module_type, {}),
                                         csm_alert_payload)
-            csm_alert_payload.dump()
-            csm_schema = csm_alert_payload.load()
-            csm_schema[const.ALERT_TYPE] = 'hw'
-            """
-            # Below mentioned fields are managed by CSM so they are not the part
-            # of mapping table
-            """
-            csm_schema[const.ALERT_ID] = int(time.time())
-            csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
-            csm_schema[const.ALERT_MODULE_NAME] = resource_type
-            csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
-            csm_schema[const.ALERT_RESOLVED] = False 
-            csm_schema[const.ALERT_ACKNOWLEDGED] = False
-            csm_schema[const.ALERT_COMMENT] = ""
-            """ Validating the schema. """
-            validate(csm_schema, self._hw_schema)
+                csm_alert_payload.dump()
+                csm_schema = csm_alert_payload.load()
+                #TODO
+                """
+                1. Currently we are not consuming alert_type so keeping the 
+                placeholder for now.
+                2. alert_type should be derived from SSPL message's
+                info.resource_type field
+                3. Once a requirement comes for consuming alert_type, we should
+                make use of info.resource_type and derive the alert type. 
+                csm_schema[const.ALERT_TYPE] = const.HW 
+                """
+
+                """
+                Below mentioned fields are managed by CSM so they are not the part
+                of mapping table
+                """
+                csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
+                csm_schema[const.ALERT_MODULE_NAME] = resource_type
+                csm_schema[const.ALERT_CREATED_TIME] =\
+                        int(csm_schema[const.ALERT_CREATED_TIME])
+                csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
+                csm_schema[const.ALERT_RESOLVED] = False 
+                csm_schema[const.ALERT_ACKNOWLEDGED] = False
+                csm_schema[const.ALERT_COMMENT] = ""
+                csm_schema[const.ALERT_HW_IDENTIFIER] = \
+                        csm_schema[const.ALERT_HW_IDENTIFIER].replace(" ", "_")
+                """ Validating the schema. """
+                validate(csm_schema, self._hw_schema)
+            else:
+                Log.error("No resource type found for alert - {%s}" %(message))
+                raise CsmError(-1, 'No resource type found for alert.')
         except Exception as e:
             Log.exception(e)
+            raise CsmError(-1, '%s' %e)
         return csm_schema
