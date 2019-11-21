@@ -127,17 +127,27 @@ class AlertPlugin(CsmPlugin):
                                                       "")
             if resource_type:
                 module_type = resource_type.split(':')[2]
-                # Convert  the SSPL Schema to CSM Schema.
+                """ Convert  the SSPL Schema to CSM Schema. """
                 input_alert_payload = Payload(JsonMessage(message))
                 csm_alert_payload = Payload(Dict())
                 input_alert_payload.convert(self.mapping_dict.get(module_type, {}),
                                         csm_alert_payload)
                 csm_alert_payload.dump()
                 csm_schema = csm_alert_payload.load()
+                #TODO
+                """
+                1. Currently we are not consuming alert_type so keeping the 
+                placeholder for now.
+                2. alert_type should be derived from SSPL message's
+                info.resource_type field
+                3. Once a requirement comes for consuming alert_type, we should
+                make use of info.resource_type and derive the alert type. 
                 csm_schema[const.ALERT_TYPE] = const.HW 
                 """
-                # Below mentioned fields are managed by CSM so they are not the part
-                # of mapping table
+
+                """
+                Below mentioned fields are managed by CSM so they are not the part
+                of mapping table
                 """
                 csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
                 csm_schema[const.ALERT_MODULE_NAME] = resource_type
