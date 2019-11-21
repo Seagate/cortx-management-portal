@@ -27,7 +27,7 @@ from boto.connection import DEFAULT_CA_CERTS_FILE
 from boto import config as boto_config
 from csm.common.log import Log
 from csm.common.errors import CsmInternalError
-from csm.core.blogic.models.s3 import IamConnectionConfig, IamAccount,\
+from csm.core.data.models.s3 import IamConnectionConfig, IamAccount,\
                                 ExtendedIamAccount, IamLoginProfile, IamUser,\
                                 IamUserListResponse, IamAccountListResponse,\
                                 IamTempCredentials, IamErrors, IamError
@@ -126,10 +126,10 @@ class BaseIamClient:
         if 'Error' not in body:
             return None
 
-        return self._create_response(IamError, body['Error'], {
-            'Code': 'error_code',
-            'Message': 'error_message'
-        })
+        iam_error = IamError()
+        iam_error.error_code = IamErrors(body['Error']['Code'])
+        iam_error.error_message = body['Error']['Message']
+        return iam_error
 
 
 class S3Client(BaseIamClient):
@@ -236,6 +236,26 @@ class S3Client(BaseIamClient):
         }
 
         (code, body) = await self._query_iam('UpdateAccountLoginProfile', params, '/', 'POST')
+        if code != 200:
+            return self._create_error(body)
+        else:
+            return True
+
+    @Log.trace_method(Log.DEBUG)
+    async def list_account_login_profiles(self, account_name) -> Union[bool, IamError]:
+        """
+        Login profile update.
+        Note that it is required to provide S3 account credentials, not LDAP ones.
+
+        :returns: True in case of success, IamError otherwise
+        """
+
+        params = {
+            'AccountName': account_name
+        }
+
+        (code, body) = await self._query_iam('GetAccountLoginProfile', params, '/', 'POST')
+        print(body)
         if code != 200:
             return self._create_error(body)
         else:
