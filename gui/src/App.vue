@@ -17,19 +17,17 @@
     <div class="full-view" v-if="!onboardingStatus">
       <router-view></router-view>
     </div>
-    
+
     <div class="main-view" v-if="onboardingStatus">
       <headerBar />
-      <v-row class="container">
-        <v-col v-if="onboardingStatus" cols="2" class="pa-0">
+      <div class="container pa-0 ma-0">
+        <div class="d-inline-block display-nav">
           <eos-nav-bar></eos-nav-bar>
-        </v-col>
-        <v-col v-if="!onboardingStatus" cols="1" class="pa-0"></v-col>
-        <v-col cols="10" class="pa-0">
+        </div>
+        <div class="d-inline-block display-container px-2 pt-6 pb-2">
           <router-view></router-view>
-        </v-col>
-        <v-col v-if="!onboardingStatus" cols="1"></v-col>
-      </v-row>
+        </div>
+      </div>
     </div>
   </v-app>
 </template>
@@ -54,18 +52,27 @@ export default class App extends Vue {
 
 <style lang="scss" scoped>
 .full-view {
-  position: relative;  
+  position: relative;
   height: 99.9%;
   padding: 0px;
 }
 .main-view {
   position: relative;
   top: 4em;
-  height: 93%;
+  // height: 93%;
   padding: 0px;
 }
 .container {
-  height: 100.1%;
+  height: 100%;
   padding: 0px;
+}
+.display-container {
+  position: absolute;
+  left: 13.5em;
+}
+.display-nav {
+  padding-top: 0.2em;
+  height: 100%;
+  position: fixed;
 }
 </style>
