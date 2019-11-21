@@ -59,7 +59,6 @@ export default class App extends Vue {
 .main-view {
   position: relative;
   top: 4em;
-  // height: 93%;
   padding: 0px;
   background-color: #FFF;
 }

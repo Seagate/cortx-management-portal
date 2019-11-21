@@ -24,16 +24,14 @@
             disabled
             @click="onSelectedMenu(itemIndex)"
             class="pb-2 ma-0"
-            active-class="white--text"
           >
-            <!-- :to="item.path" -->
             <v-list-item-icon class="pa-2 ma-2">
               <v-img :src="require('@/assets/navigation/' + item.icon)" width="23" height="23"></v-img>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title
                 class="font-weight-medium condensed subtitle-1"
-                :class="[(itemIndex === selectedMenu) ? activeClass: inactiveClass  ]"
+                :class="[(itemIndex === selectedMenu) ? activeClass: inactiveClass]"
               >{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -58,18 +56,15 @@ export default class EosNavBar extends Vue {
       items: [
         {
           title: "Dashboard",
-          path: "/",
           icon: "dashboard-green.png"
         },
         {
           title: "Provisioning",
-          path: "/dataconfig2",
           icon: "storage-green.png"
         },
-        { title: "Settings", path: "/usersetting", icon: "settings-green.png" },
+        { title: "Settings", icon: "settings-green.png" },
         {
           title: "Maintenance",
-          path: "/notifications",
           icon: "maintenance-green.png"
         }
       ],
@@ -82,17 +77,6 @@ export default class EosNavBar extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-$black: #000000;
-$dark-grey: #454545;
-#navigationContainer {
-  position: absolute;
-  // top: 65px;
-  left: 0;
-  bottom: 0;
-  background: $black;
-  font-weight: bold;
-  width: 140px;
-}
 .menuActive {
   color: #ffffff;
 }
@@ -101,6 +85,5 @@ $dark-grey: #454545;
 }
 .border {
   background: #333333;
-  // color: #ffffff;
 }
 </style>

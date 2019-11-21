@@ -15,9 +15,8 @@
 <template>
   <v-app-bar height="70em" flat class="black pa-0 ma-0" clipped-left app>
     <span class="pa-0 ma-0">
-      <v-img :src="require('@/assets/logo-header.png/')" width="164"></v-img>
+      <v-img :src="require('@/assets/logo.png/')" width="164" class="logoPosition"></v-img>
     </span>
-    <!-- <v-divider class="mx-4 py-3 grey darken-4 font-weight-bold" vertical></v-divider> -->
     <div class="verticalLine"></div>
     <span class="font-weight-medium green--text">CLOUD STORE</span>
 
@@ -26,7 +25,7 @@
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text body-2">{{new Date().toLocaleString()}}</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 grey--text">Cloud Store</div>
+    <div class="pa-5 grey--text">Cloud Store User</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div id="alert-menu" class="pl-10 pr-3 pt-1">
       <v-menu offset-y>
@@ -50,22 +49,22 @@
             <v-list-item v-for="(item, index) in alertNotifications.alerts" :key="index">
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.critical "
+                v-if="item.severity===alertStatus.critical"
                 src="./../../assets/status/error-fault.png"
               />
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.error "
+                v-if="item.severity===alertStatus.error"
                 src="./../../assets/status//warning.png"
               />
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.warning "
+                v-if="item.severity===alertStatus.warning"
                 src="./../../assets/status/degraded.png"
               />
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.informational "
+                v-if="item.severity===alertStatus.informational"
                 src="./../../assets/status/info-alert.png"
               />
               <v-list-item-content>
@@ -169,9 +168,12 @@ export default class HeaderBar extends Vue {
 .verticalLine {
   display: inline-block;
   background-color: #454545;
-  height: 44px;
-  width: 2px;
-  margin: 16px;
+  height: 2.75em;
+  width: 0.125em;
+  margin: 1em;
+}
+.logoPosition {
+  left: -0.75em;
 }
 </style>
 
