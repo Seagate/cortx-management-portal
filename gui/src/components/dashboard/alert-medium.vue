@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="ma-5 elevation-0 mediumAlert" width="60%" tile>
+  <v-card class="elevation-0 mediumAlert" tile>
     <v-system-bar height="40em">
       <span id="title" class="text-uppercase font-weight-medium text--black">ALERTS</span>
       <v-spacer></v-spacer>
