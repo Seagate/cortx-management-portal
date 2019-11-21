@@ -488,14 +488,14 @@ class S3Plugin:
         Log.info('S3 plugin is loaded')
 
     @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
-    def get_client(self, access_key, secret_key, connection_config=None) -> S3Client:
+    def get_client(self, access_key, secret_key, connection_config=None, session_token=None) -> S3Client:
         """
         Returns a management object for S3/IAM accounts.
         """
         if not connection_config:
             raise CsmInternalError('Connection configuration must be provided')
 
-        return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop())
+        return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop(), session_token)
 
     @Log.trace_method(Log.DEBUG)
     async def get_temp_credentials(self, account_name, password, duration=None,
