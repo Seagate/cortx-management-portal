@@ -1,9 +1,9 @@
 /*****************************************************************************
- Filename:          api-register.ts
- Description:       API Register: use for maintainging single registry for API
+ Filename:          udx.ts
+ Description:       UDX Device Model
 
- Creation Date:     05/09/2019
- Author:            Sanjeevan Bhave
+ Creation Date:     08/11/2019
+ Author:            Sri Bhargav Metta
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -12,13 +12,13 @@
  or disclosure of this code, for any reason, not expressly authorized is
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
-export const version = "v1";
 
-export default {
-    all_alerts: `/api/${version}/alerts`,
-    systemconfig: `api/${version}/systemconfig`,
-    create_user: `api/${version}/user/admin`,
-    login: `api/${version}/login`,
-    udx_reg_token: `api/${version}/udx-device/registration-token`,
-    udx_device: `api/${version}/udx-device`
-};
+// Interface for CSM schema for UDX Device
+export class UDXDevice {
+    public name: string;
+    public productID: string;
+    public serialNumber: string;
+    public type: string;
+    public uuid: string;
+    public vendorID: string;
+}

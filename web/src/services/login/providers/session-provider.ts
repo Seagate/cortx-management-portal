@@ -7,6 +7,6 @@ export const getSessionKeys = async (user: string) => {
   const key = process.env.SESSION_KEY;
   // const url = `https://${coreUrl}?q=${user}`;
   // const response = await request(url);
-  console.log(`{userName:"${user}",token:"${key}"}`);
-  return JSON.parse(`{"userName":"${user}","token":"${key}"}`);
+  console.log(`{username:"${user}",token:"${key}"}`);
+  return JSON.parse(`{"username":"${user}","token":"${key}"}`);
 };

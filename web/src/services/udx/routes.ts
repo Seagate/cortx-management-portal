@@ -1,9 +1,9 @@
 /*****************************************************************************
  Filename:          routes.ts
- Description:       REST APIs to get and save System Configuration details
+ Description:       REST APIs to get udx details
 
- Creation Date:     21/08/2019
- Author:            Soniya Moholkar
+ Creation Date:     10/31/2019
+ Author:            Sri Bhargav Metta
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -13,24 +13,25 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 
-import { Request, Response, request, response } from "express";
-import { getSystemConfig, saveSystemConfig, getNetworkManagement, updateNetworkManagement } from "./on-boarding-controller";
+import { Request, Response } from "express";
+import { getUDXDevices, getIdentificationToken, registerUDX } from "./udx-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
+
 /**
- * It has all the REST APIs to get, save, update the System Configuration related details. 
+ * It has all the REST APIs to get the alert related details. 
  */
 
 export default [
   {
-    path: "/api/v1/config",
+    path: "/api/v1/udx-device/registration-token",
     method: "get",
     handler: [
       checkRequiredParams,
       async ({ query }: Request, res: Response) => {
         try {
-          const result = await getSystemConfig(query);
+          const result = await getIdentificationToken();
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -39,47 +40,32 @@ export default [
     ]
   },
   {
-    path: "/api/v1/config",
+    path: "/api/v1/udx-device",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async ({ query }: Request, res: Response) => {
+        try {
+          const result = await getUDXDevices();
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/udx-device",
     method: "post",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await saveSystemConfig(req, res);
-          res.status(HttpStatus.OK).send(result);
-        } catch (err) {
-          throw err;
-        }        
-      }
-    ]
-  },
-  {
-    path: "/api/v1/networkmanagement",
-    method: "get",
-    handler: [
-      checkRequiredParams,
-      async ({ query }: Request, res: Response) => {
-        try {
-          const result = await getNetworkManagement(query);
+          const result = await registerUDX(req);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
         }
-      }
-    ]
-  },
-  {
-    path: "/api/v1/networkmanagement",
-    method: "patch",
-    handler: [
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await updateNetworkManagement(req, res);
-          res.status(HttpStatus.OK).send(result);
-        } catch (err) {
-          throw err;
-        }        
       }
     ]
   }

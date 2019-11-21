@@ -25,7 +25,7 @@ applyMiddleware(middleware, router);
 applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);
 
-const NODE_PORT = process.env.NODE_PORT ? process.env.NODE_PORT : 3000;
+const NODE_PORT = process.env.NODE_PORT ? process.env.NODE_PORT : 8100;
 const server = http.createServer(router);
 const INCOMING_SOCKET_PORT: number = Number(process.env.INCOMING_SOCKET_PORT);
 const OUTGOING_SOCKET_PORT: number = Number(process.env.OUTGOING_SOCKET_PORT);

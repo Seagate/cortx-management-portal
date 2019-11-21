@@ -61,6 +61,7 @@ export default class App extends Vue {
   top: 4em;
   // height: 93%;
   padding: 0px;
+  background-color: #FFF;
 }
 .container {
   height: 100%;
