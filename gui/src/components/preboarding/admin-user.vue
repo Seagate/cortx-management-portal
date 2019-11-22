@@ -77,7 +77,9 @@ export default class EosAdminUser extends Vue {
       this.$store
         .dispatch("userLogin/createUserAction", queryParams)
         .then((res: any) => {
-          this.$router.push("login");
+          if (res) {
+            this.$router.push("login");
+          }
         })
         .catch(() => {
           // tslint:disable-next-line: no-console
