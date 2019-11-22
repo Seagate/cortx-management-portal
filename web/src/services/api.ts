@@ -130,6 +130,36 @@ export abstract class Api {
         });
     }
 
+    public static async delete(url: string, req: Request, resp: Response, id?: string | number) {
+        return new Promise((resolve, reject) => {
+            let deleteUrl = base_url + url + ((id) ? "/" + id : "");
+            // Remove following code onde all the Python APIs are ready
+            // -- Start --
+            if (url.startsWith("/mock")) {
+                deleteUrl = mock_base_url + url + ((id) ? "/" + id : "");
+            }
+            console.log("DELETE: " + deleteUrl);
+            // -- end --
+            const requestData = req && req.body ? JSON.stringify(req.body) : "";
+            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            const options = {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Content-Length': requestData.length,
+                    'authorization': authorization
+                }
+            }
+
+            let httpRequest = http_agent.request(deleteUrl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
+            });
+            httpRequest.write(requestData);
+            httpRequest.end();
+        });
+    }
+
     private static handleResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
         return (apiresp: any) => {
             let data = '';
