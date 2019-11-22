@@ -27,7 +27,7 @@ from boto.connection import DEFAULT_CA_CERTS_FILE
 from boto import config as boto_config
 from csm.common.log import Log
 from csm.common.errors import CsmInternalError
-from csm.core.blogic.models.s3 import IamConnectionConfig, IamAccount,\
+from csm.core.data.models.s3 import IamConnectionConfig, IamAccount,\
                                 ExtendedIamAccount, IamLoginProfile, IamUser,\
                                 IamUserListResponse, IamAccountListResponse,\
                                 IamTempCredentials, IamErrors, IamError
@@ -37,13 +37,13 @@ class BaseIamClient:
     """
     Base class for IAM API operations.
     """
-    def __init__(self, access_key: str, secret_key: str, config: IamConnectionConfig, loop):
+    def __init__(self, access_key: str, secret_key: str, config: IamConnectionConfig, loop=asyncio.get_event_loop(), session_token=None):
         self._loop = loop
         self._executor = ThreadPoolExecutor()
         self._config = config
-        self.iam_connection = self._create_boto_connection(access_key, secret_key, config)
+        self.iam_connection = self._create_boto_connection(access_key, secret_key, config, session_token)
 
-    def _create_boto_connection(self, access_key, secret_key, config: IamConnectionConfig):
+    def _create_boto_connection(self, access_key, secret_key, config: IamConnectionConfig, session_token=None):
         """
         Helper function that creates IAM connection for the given credentials and configuration
         :returns: an IAMConnection object
@@ -67,7 +67,8 @@ class BaseIamClient:
             port=config.port,
             is_secure=config.use_ssl,
             debug=(2 if config.debug else 0),
-            validate_certs=config.verify_ssl_cert
+            validate_certs=config.verify_ssl_cert,
+            security_token=session_token
             )
 
         if config.max_retries_num:
@@ -125,10 +126,10 @@ class BaseIamClient:
         if 'Error' not in body:
             return None
 
-        return self._create_response(IamError, body['Error'], {
-            'Code': 'error_code',
-            'Message': 'error_message'
-        })
+        iam_error = IamError()
+        iam_error.error_code = IamErrors(body['Error']['Code'])
+        iam_error.error_message = body['Error']['Message']
+        return iam_error
 
 
 class S3Client(BaseIamClient):
@@ -241,6 +242,26 @@ class S3Client(BaseIamClient):
             return True
 
     @Log.trace_method(Log.DEBUG)
+    async def list_account_login_profiles(self, account_name) -> Union[bool, IamError]:
+        """
+        Login profile update.
+        Note that it is required to provide S3 account credentials, not LDAP ones.
+
+        :returns: True in case of success, IamError otherwise
+        """
+
+        params = {
+            'AccountName': account_name
+        }
+
+        (code, body) = await self._query_iam('GetAccountLoginProfile', params, '/', 'POST')
+        print(body)
+        if code != 200:
+            return self._create_error(body)
+        else:
+            return True
+
+    @Log.trace_method(Log.DEBUG)
     async def list_accounts(self, max_items=None,
             marker=None) -> Union[IamAccountListResponse, IamError]:
         """
@@ -257,8 +278,7 @@ class S3Client(BaseIamClient):
         if max_items:
             params['MaxItems'] = max_items
 
-        (code, body) = await self._query_iam('ListAccounts', params,
-            '/', 'POST', list_marker='Accounts')
+        (code, body) = await self._query_iam('ListAccounts', params, '/', 'POST', list_marker='Accounts')
         if code != 200:
             return self._create_error(body)
         else:
@@ -343,7 +363,6 @@ class S3Client(BaseIamClient):
     @Log.trace_method(Log.DEBUG, exclude_args=['user_password'])
     async def create_user_login_profile(self, user_name, user_password, require_reset=False):
         # TODO: server returns OperationNotSupported. Why??
-        raise NotImplementedError()
 
         params = {
             'UserName': user_name,
@@ -351,7 +370,7 @@ class S3Client(BaseIamClient):
             'PasswordResetRequired': require_reset
         }
 
-        (code, body) = await self._query_iam('CreateUserLoginProfile', params, '/', 'POST')
+        (code, body) = await self._query_iam('CreateLoginProfile', params, '/', 'POST')
         if code != 201:
             return self._create_error(body)
         else:
@@ -375,7 +394,7 @@ class S3Client(BaseIamClient):
         if max_items:
             params['MaxItems'] = max_items
 
-        (code, body) = await self._query_iam('ListUsers', {}, '/', 'POST', list_marker='Users')
+        (code, body) = await self._query_iam('ListUsers', params, '/', 'POST', list_marker='Users')
         if code != 200:
             return self._create_error(body)
         else:
@@ -489,14 +508,14 @@ class S3Plugin:
         Log.info('S3 plugin is loaded')
 
     @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
-    def get_client(self, access_key, secret_key, connection_config=None) -> S3Client:
+    def get_client(self, access_key, secret_key, connection_config=None, session_token=None) -> S3Client:
         """
         Returns a management object for S3/IAM accounts.
         """
         if not connection_config:
             raise CsmInternalError('Connection configuration must be provided')
 
-        return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop())
+        return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop(), session_token)
 
     @Log.trace_method(Log.DEBUG)
     async def get_temp_credentials(self, account_name, password, duration=None,

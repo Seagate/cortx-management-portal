@@ -13,18 +13,29 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card height="100%" class="grey darken-3" tile>
-    <v-navigation-drawer permanent class="grey darken-3" tile floating>
-      <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link class="navtext">
-          <v-list-item-icon class="pa-0 ma-2">
-            <v-img :src="require('@/assets/navigation/'+item.icon)" width="23" height="23"></v-img>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title class="white--text">{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+  <v-card height="100%" class="black" width="12.4em" tile>
+    <v-navigation-drawer permanent class="black" tile floating>
+      <v-list nav class="pa-0 ma-0">
+        <v-list-item-group v-model="selected" active-class="border">
+          <v-list-item
+            v-for="(item, itemIndex) in items"
+            :key="item.title"
+            link
+            disabled
+            @click="onSelectedMenu(itemIndex)"
+            class="pb-2 ma-0"
+          >
+            <v-list-item-icon class="pa-2 ma-2">
+              <v-img :src="require('@/assets/navigation/' + item.icon)" width="23" height="23"></v-img>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title
+                class="font-weight-medium condensed subtitle-1"
+                :class="[(itemIndex === selectedMenu) ? activeClass: inactiveClass]"
+              >{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
   </v-card>
@@ -36,6 +47,10 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "eos-nav-bar"
 })
 export default class EosNavBar extends Vue {
+  public onSelectedMenu(itemIndex: any) {
+    this.$data.selectedMenu = itemIndex;
+  }
+
   private data() {
     return {
       items: [
@@ -43,22 +58,32 @@ export default class EosNavBar extends Vue {
           title: "Dashboard",
           icon: "dashboard-green.png"
         },
-        { title: "Provisioning", icon: "storage-green.png" },
+        {
+          title: "Provisioning",
+          icon: "storage-green.png"
+        },
         { title: "Settings", icon: "settings-green.png" },
-        { title: "Maintenance", icon: "maintenance-green.png" }
+        {
+          title: "Maintenance",
+          icon: "maintenance-green.png"
+        }
       ],
-      right: null
+      right: null,
+      selectedMenu: 0,
+      activeClass: "white--text",
+      inactiveClass: "grey--text text--darken-1"
     };
   }
 }
 </script>
 <style lang="scss" scoped>
-.navtext:first-child {
-  background-color: white !important;
-  width: 105%;
-  border-radius: 0;
+.menuActive {
+  color: #ffffff;
 }
-.navtext:first-child .white--text {
-  color: black !important;
+.defaultMenu {
+  color: #757575;
+}
+.border {
+  background: #333333;
 }
 </style>

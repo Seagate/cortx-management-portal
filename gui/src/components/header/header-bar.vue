@@ -13,19 +13,19 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-app-bar height="70em" flat class="black" app>
-    <span>
-      <img src="../../assets/headerBar.png" />
+  <v-app-bar height="70em" flat class="black pa-0 ma-0" clipped-left app>
+    <span class="pa-0 ma-0">
+      <v-img :src="require('@/assets/logo.png/')" width="164" class="logoPosition"></v-img>
     </span>
+    <div class="verticalLine"></div>
+    <span class="font-weight-medium green--text">CLOUD STORE</span>
+
     <v-spacer></v-spacer>
-    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 grey--text">
-      <v-icon dark class="pr-1 grey--text" size="20">mdi-help-circle-outline</v-icon>Help
-    </div>
+
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text body-2">{{new Date().toLocaleString()}}</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 grey--text">Username</div>
+    <div class="pa-5 grey--text">Cloud Store User</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div id="alert-menu" class="pl-10 pr-3 pt-1">
       <v-menu offset-y>
@@ -49,22 +49,22 @@
             <v-list-item v-for="(item, index) in alertNotifications.alerts" :key="index">
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.critical "
+                v-if="item.severity===alertStatus.critical"
                 src="./../../assets/status/error-fault.png"
               />
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.error "
+                v-if="item.severity===alertStatus.error"
                 src="./../../assets/status//warning.png"
               />
               <img
                 class="mr-2"
-               v-if="item.severity===alertStatus.warning "
+                v-if="item.severity===alertStatus.warning"
                 src="./../../assets/status/degraded.png"
               />
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.informational "
+                v-if="item.severity===alertStatus.informational"
                 src="./../../assets/status/info-alert.png"
               />
               <v-list-item-content>
@@ -164,6 +164,16 @@ export default class HeaderBar extends Vue {
 }
 .pointer {
   cursor: pointer;
+}
+.verticalLine {
+  display: inline-block;
+  background-color: #454545;
+  height: 2.75em;
+  width: 0.125em;
+  margin: 1em;
+}
+.logoPosition {
+  left: -0.75em;
 }
 </style>
 
