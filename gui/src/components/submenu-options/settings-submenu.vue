@@ -16,18 +16,6 @@
   <v-card width="900">
     <v-container>
       <v-row dense>
-        <!-- <v-col v-for="(item, i) in items" :key="i" cols="12">
-          <v-card class="outlined pt-2" height="140" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline" v-text="item.title"></v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn text small color="green">Manage</v-btn>
-              </v-card-actions>
-            </div>
-            <v-card-text v-text="item.template"></v-card-text>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>-->
         <v-col cols="12">
           <v-card class="outlined pt-2" height="100" flat>
             <div class="pd-5">
@@ -36,15 +24,6 @@
                 <v-btn class="text-capitalize" disabled text small color="green">Manage</v-btn>
               </v-card-actions>
             </div>
-            <!-- <v-card-text>
-              <div>
-                <p>Modal System Design</p>
-                <p>
-                  SMS:
-                  <span class="font-weight-bold">+1 555 444 333</span>
-                </p>
-              </div>
-            </v-card-text>-->
           </v-card>
           <v-divider></v-divider>
         </v-col>
@@ -62,18 +41,6 @@
                 >Manage</v-btn>
               </v-card-actions>
             </div>
-            <!-- <v-card-text>
-              <div>
-                <p>
-                  User:
-                  <span class="font-weight-bold">John Smith</span>
-                </p>
-                <p>
-                  Admin:
-                  <span class="font-weight-bold">Michael Jones</span>
-                </p>
-              </div>
-            </v-card-text>-->
           </v-card>
           <v-divider></v-divider>
         </v-col>
@@ -91,17 +58,6 @@
                 >Manage</v-btn>
               </v-card-actions>
             </div>
-            <!-- <v-card-text>
-              <div>
-                <p>Modal System Design</p>
-                <p>
-                  Registered Domain:
-                  <span
-                    class="font-weight-bold"
-                  >https://www.seagate.com/UDS/example</span>
-                </p>
-              </div>
-            </v-card-text>-->
           </v-card>
           <v-divider></v-divider>
         </v-col>
@@ -134,7 +90,6 @@
         </v-col>
         <v-col cols="12">
           <v-card class="outlined" height="50" flat>
-            <!-- <v-card-title class="title font-weight-bold d-inline">Privacy</v-card-title> -->
             <v-card-actions>
               <v-btn class="text-capitalize" text small color="green">Quit Service</v-btn>
             </v-card-actions>
@@ -143,7 +98,6 @@
         </v-col>
         <v-col cols="12">
           <v-card class="outlined" height="50" flat>
-            <!-- <v-card-title class="title font-weight-bold d-inline">Privacy</v-card-title> -->
             <v-card-actions>
               <v-btn class="text-capitalize" text small color="green">Restart Service</v-btn>
             </v-card-actions>
@@ -152,7 +106,6 @@
         </v-col>
         <v-col cols="12">
           <v-card class="outlined" height="50" flat>
-            <!-- <v-card-title class="title font-weight-bold d-inline">Privacy</v-card-title> -->
             <v-card-actions>
               <v-btn class="text-capitalize" text small color="green">About</v-btn>
             </v-card-actions>
@@ -171,33 +124,7 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 export default class SettingsSubmenu extends Vue {
   private data() {
     return {
-      items: [
-        {
-          link: "",
-          title: "Notifications",
-          template: "Subtitle"
-        },
-        {
-          link: "",
-          title: "User Settings",
-          template: "Subtitle"
-        },
-        {
-          link: "",
-          title: "UDX Settings",
-          template: "Subtitle"
-        },
-        {
-          link: "",
-          title: "Updates",
-          template: "Subtitle"
-        },
-        {
-          link: "",
-          title: "Privacy",
-          template: "Subtitle"
-        }
-      ]
+      items: []
     };
   }
 }
