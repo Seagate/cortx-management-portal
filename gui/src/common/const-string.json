@@ -12,5 +12,6 @@
     "asc": "asc",
     "critical":"critical",
     "warning":"warning",
-    "informational":"informational"
+    "informational":"informational",
+    "access_token":"access-token"
 }

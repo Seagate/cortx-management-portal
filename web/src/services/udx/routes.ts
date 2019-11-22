@@ -1,9 +1,9 @@
 /*****************************************************************************
  Filename:          routes.ts
- Description:       REST APIs to get alert details
+ Description:       REST APIs to get udx details
 
- Creation Date:     21/08/2019
- Author:            Soniya Moholkar
+ Creation Date:     10/31/2019
+ Author:            Sri Bhargav Metta
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -13,8 +13,8 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 
-import { Request, Response, request, response } from "express";
-import { getAlerts, updateAlerts } from "./alerts-controller";
+import { Request, Response } from "express";
+import { getUDXDevices, getIdentificationToken, registerUDX } from "./udx-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -25,13 +25,13 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/alerts",
+    path: "/api/v1/udx-device/registration-token",
     method: "get",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await getAlerts(req, res);
+          const result = await getIdentificationToken(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -40,18 +40,32 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts/:alert_id",
-    method: "patch",
+    path: "/api/v1/udx-device",
+    method: "get",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await updateAlerts(req, res);
-          res.status(HttpStatus.NO_CONTENT).send();
+          const result = await getUDXDevices(req, res);
+          res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
         }
-        
+      }
+    ]
+  },
+  {
+    path: "/api/v1/udx-device",
+    method: "post",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await registerUDX(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
       }
     ]
   }

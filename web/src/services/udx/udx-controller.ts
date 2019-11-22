@@ -1,10 +1,10 @@
 /*****************************************************************************
- Filename:          AlertController.ts
+ Filename:          UDXController.ts
  Description:       Gets the data from provider and process it and send back
                     to client.
 
- Creation Date:     21/08/2019
- Author:            Soniya Moholkar
+ Creation Date:     10/31/2019
+ Author:            Sri Bhargav Metta
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -16,28 +16,22 @@
 
 import { Api } from "./../api";
 import apiRegister from "./../api-register";
-import { Request, Response, request, response } from "express";
+import { Request, Response } from "express";
 
-/**
- * This method is responsible to get the alert data from provider and sends back
- * to client.
- * @param sortby 
- * @param sorttype 
- * @param pagesize 
- * @param pageno 
- * @param offset 
- * @param limit 
- */
-export const getAlerts = async (req: Request, res: Response) => {
-    let alertData = Api.getAll(apiRegister.all_alerts, req, res);
-    let result = await alertData;
+
+export const getUDXDevices = async (req: Request, res: Response) => {
+    let result = await Api.getAll(apiRegister.udx_devices, req, res);
+    return result;
+};
+
+export const getIdentificationToken = async (req: Request, res: Response) => {
+    let result = await Api.getAll(apiRegister.udx_reg_token, req, res);
     return result;
 };
 
 
-export const updateAlerts = async (req: Request, res: Response) => {
-    let alertData = Api.patch(apiRegister.all_alerts, req, res, req.params.alert_id);
-    let result = await alertData;
+export const registerUDX = async (req: Request, res: Response) => {
+    let result = await Api.post(apiRegister.udx_devices, req, res);
     return result;
 };
 

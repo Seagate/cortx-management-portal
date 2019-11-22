@@ -19,25 +19,35 @@ import apiRegister from "../api-register";
 import { Request, Response, request, response } from "express";
 
 /**
- * This method is responsible to get the alert data from provider and sends back
- * to client.
- * @param sortby 
- * @param sorttype 
- * @param pagesize 
- * @param pageno 
- * @param offset 
- * @param limit 
+ * This is responsible for getting System Configuration data
+ * @param query 
  */
-export const getSystemConfig = async (query: any) => {
-    let alertData = Api.getAll(apiRegister.all_system_config, query);
+export const getSystemConfig = async (req: Request, res: Response) => {
+    let alertData = Api.getAll(apiRegister.all_system_config, req, res);
     let result = await alertData;
     return result;
 };
 
-
+/**
+ * This is responsible to store System Configuration data.
+ * @param req 
+ * @param res 
+ */
 export const saveSystemConfig = async (req: Request, res: Response) => {
-    let alertData = Api.post(apiRegister.all_system_config, req);
+    let alertData = Api.post(apiRegister.all_system_config, req, res);
     let result = await alertData;
     return result;
 };
 
+export const getNetworkManagement = async (req: Request, res: Response) => {
+    let alertData = Api.getAll(apiRegister.management_network, req, res);
+    let result = await alertData;
+    return result;
+};
+
+
+export const updateNetworkManagement = async (req: Request, res: Response) => {
+    let alertData = Api.patch(apiRegister.management_network, req, res, "");
+    let result = await alertData;
+    return result;
+};

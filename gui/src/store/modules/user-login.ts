@@ -46,10 +46,22 @@ export default class UserLogin extends VuexModule {
         queryParams = queryParams ? queryParams : this.queryParams;
         try {
             const res = await Api.post(apiRegister.login, queryParams);
-            return res.data;
+            return res.headers;
         } catch (e) {
             // tslint:disable-next-line: no-console
             console.error("err logger: ", e);
+        }
+    }
+
+    @Action
+    public async logoutAction(queryParams: object) {
+        queryParams = queryParams ? queryParams : this.queryParams;
+        try {
+            const res = await Api.getAll(apiRegister.logout, queryParams);
+            return res.status;
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.log("err logger: ", e);
         }
     }
 }

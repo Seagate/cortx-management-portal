@@ -10,26 +10,26 @@
     <v-row>
       <v-col cols="6">
         <div class="body-2">
-          <div class="title mt-6">Management Network Settings: IPv6</div>
-          <div class="mt-6">You need to configure a single IP address for management of this system.</div>
+          <div class="title mt-6" id="lblIp6MNS">Management Network Settings: IPv6</div>
+          <div class="mt-6" id="lblIPMsg">You need to configure a single IP address for management of this system.</div>
           <v-divider class="mt-2" />
           <div class="font-weight-bold mt-6">
             Source
             <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
           </div>
           <div class="mt-4">
-            <input type="radio" name="source" value="manual" />
+            <input type="radio" name="source" value="manual" id="rbtnIp6Source" />
             <span class="ml-3 font-weight-bold">Manual</span>
-            <input class="ml-10" type="radio" disabled name="DHCP" value="DHCP" />
-            <span class="ml-3 font-weight-bold">DHCP</span>
+            <input class="ml-10" type="radio" disabled name="DHCP" value="DHCP" id="rbtnIp6Source" />
+            <span class="ml-3 font-weight-bold" id="lblIp6DHCP">DHCP</span>
           </div>
           <div class="mt-4">
-            <span class="font-weight-bold">Gateway</span>
+            <span class="font-weight-bold" id="lblIp4Gateway">Gateway</span>
             <div>
-              <input class="input-text" type="text" name="gatway" />
+              <input class="input-text" type="text" name="gatway"  id="txtIP6Gatway"/>
             </div>
           </div>
-          <div class="font-weight-bold mt-6">Static address</div>
+          <div class="font-weight-bold mt-6" id="lblIp4StaticAddress">Static address</div>
           <v-divider class="mt-2" width="300" />
           <v-row v-for="value in ipaddress" :key="value">
             <v-col cols="6">{{value}}</v-col>
@@ -44,9 +44,9 @@
             </v-col>
           </v-row>
           <div class="mt-4">
-            <span class="font-weight-bold">IP address</span>
+            <span class="font-weight-bold" id="lblIp6Adress">IP address</span>
             <div>
-              <input class="input-text" v-model="newAddress" type="text" name="ipaddress" />
+              <input class="input-text" v-model="newAddress" type="text" name="ipaddress" id="txtIP6Ipaddress" />
             </div>
           </div>
           <div
@@ -55,10 +55,10 @@
           >+ Add another static address (maximum of 4)</div>
           <v-divider class="mt-8" />
           <div class="mt-10">
-            <v-btn elevation="0" color="green" @click="$router.push('dataconfig1')">
+            <v-btn elevation="0" color="green" @click="$router.push('dataconfig1')" id="btnIp6Apply">
               <span class="white--text">Apply and continue</span>
             </v-btn>
-            <span class="green--text ml-8 pointer" @click="gotToPrevPage()">Back to previous step</span>
+            <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id=lblIp6Back>Back to previous step</span>
           </div>
         </div>
       </v-col>

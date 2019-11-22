@@ -35,115 +35,173 @@ import EosAccountManagement from "./components/s3/account-management.vue";
 import EosAdminUser from "./components/preboarding/admin-user.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
 import EosLogin from "./components/preboarding/login.vue";
+import UDXRegistration from "./components/udx/udx-registration.vue";
 
 Vue.use(Router);
 
-export default new Router({
+// Note: requiresAuth: Flag for User Logged into the system
+//       isOnboardingReq: Flag for on-boarding complete
+const router = new Router({
   routes: [
     {
       path: "/",
+      name: "login",
+      component: EosLogin,
+      meta: { requiresAuth: false, isOnboardingReq: false }
+    },
+    {
+      path: "/dashboard",
       name: "dashboard",
       component: Dashboard,
+      meta: { requiresAuth: true, isOnboardingReq: true }
     },
     {
       path: "/alertlarge",
       name: "eosAlertLarge",
       component: EosAlertLarge,
+      meta: { requiresAuth: true, isOnboardingReq: true }
     },
     {
       path: "/systemconfig1",
       name: "systemconfig1",
       component: EosNetworkSettings,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/systemconfig2",
       name: "systemconfig2",
       component: EosNetworkSettingsIpv4,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/systemconfig3",
       name: "systemconfig3",
       component: EosNetworkSettingsIpv6,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/dataconfig1",
       name: "dataconfig1",
       component: EosDataNetwork,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/dataconfig2",
       name: "dataconfig2",
       component: EosDataNetworkIpv4,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/dataconfig3",
       name: "dataconfig3",
       component: EosDataNetworkIpv6,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/dnsconfig",
       name: "dnsconfig",
       component: EosDnsSettings,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/datetime",
       name: "datetime",
       component: EosDateTime,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/usersetting",
       name: "usersetting",
       component: EosUserSetting,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/usersettinglocal",
       name: "usersettinglocal",
       component: EosUserSettingLocal,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/usersettingldap",
       name: "usersettingldap",
       component: EosUserSettingLdap,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/notifications",
       name: "notifications",
       component: EosNotifications,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/notificationsemail",
       name: "notificationsemail",
       component: EosNotificationsEmail,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/notificationssyslog",
       name: "notificationssyslog",
       component: EosNotificationsSyslog,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/interfaceselect",
       name: "interfaceselect",
       component: EosInterfaceSelect,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/s3account",
       name: "s3account",
       component: EosAccountManagement,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/adminuser",
       name: "adminuser",
-      component: EosAdminUser
+      component: EosAdminUser,
+      meta: { requiresAuth: false, isOnboardingReq: false }
     },
     {
       path: "/welcome",
       name: "welcome",
-      component: EosWelcome
+      component: EosWelcome,
+      meta: { requiresAuth: false, isOnboardingReq: false }
     },
     {
       path: "/login",
       name: "login",
-      component: EosLogin
+      component: EosLogin,
+      meta: { requiresAuth: false, isOnboardingReq: false }
+    },
+    {
+      path: "/udx-registration",
+      name: "udx-registration",
+      component: UDXRegistration,
+      meta: { requiresAuth: true, isOnboardingReq: false }
     }
   ],
 });
+
+// This code executes before any route happens
+router.beforeEach((to, from, next) => {
+  // TODO: isOnboardingReq flag handling is pending
+  if (to.meta.requiresAuth) {
+    // This route requires auth, check if logged in
+    // if not, redirect to login page.
+    const conststr = require("./common/const-string.json");
+    const token = localStorage.getItem(conststr.access_token);
+    if (!token) {
+      next({
+        path: "/login"
+      });
+    } else {
+      next();
+    }
+  } else {
+    next(); // make sure to always call next()!
+  }
+});
+
+export default router;

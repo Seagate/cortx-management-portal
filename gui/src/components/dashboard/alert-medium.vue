@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="ma-5 elevation-0 mediumAlert" width="60%" tile>
+  <v-card class="elevation-0 mediumAlert" tile>
     <v-system-bar height="40em">
       <span id="title" class="text-uppercase font-weight-medium text--black">ALERTS</span>
       <v-spacer></v-spacer>
@@ -26,30 +26,28 @@
       <v-row>
         <v-card height="6em" align="center" class="mx-auto col-3 elevation-0" tile>
           <v-card-text
-            class="ml-4 ma-auto py-0 text-center caption font-weight-medium"
+            class="ml-4 ma-auto py-0 text-center caption font-weight-bold"
           >SYSTEM HEALTH</v-card-text>
-          <v-row class="ml-n1">
-            <v-col>
-              <v-img class="mr-n12" height="14" width="14" src="@/assets/status/degraded.png" />
-            </v-col>
-            <v-col>
-              <v-card-text class="ml-n1 mt-n4">Degraded</v-card-text>
-            </v-col>
+          <v-row class="ml-12">
+            <span class="ml-7 pr-3 pt-4">
+              <v-img height="24" width="24" src="@/assets/status/healthy-icon.png" />
+            </span>
+            <span class="pt-4">Healthy</span>
           </v-row>
         </v-card>
         <v-divider vertical class="mx-4"></v-divider>
         <v-card height="6em" class="mx-auto pa-0 col-3 elevation-0" tile>
           <v-card-text
-            class="ma-auto py-0 text-center caption font-weight-medium"
+            class="ma-auto py-0 text-center caption font-weight-bold pt-2"
           >UNHEALTHY COMPONENTS</v-card-text>
-          <v-card-text class="ma-auto py-1 display-1" align="center" justify="center">1</v-card-text>
+          <v-card-text class="ma-auto py-1 display-1 pt-3" align="center" justify="center">0</v-card-text>
         </v-card>
         <v-divider vertical class="mx-4"></v-divider>
         <v-card height="6em" class="mx-auto pa-0 col-3 elevation-0" tile>
           <v-card-text
-            class="ma-auto py-0 text-center caption font-weight-medium"
+            class="ma-auto py-0 text-center caption font-weight-bold pt-2"
           >ALERTS TO ACKNOWLEDGE</v-card-text>
-          <v-card-text class="ma-auto py-1 display-1" align="center" justify="center">1</v-card-text>
+          <v-card-text class="ma-auto py-1 display-1 pt-3" align="center" justify="center">0</v-card-text>
         </v-card>
       </v-row>
     </v-container>

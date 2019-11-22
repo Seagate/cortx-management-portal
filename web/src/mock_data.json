@@ -1,5 +1,9 @@
 {
-  "systemconfig": {
+  "mocklogin": {
+    "username": "admin",
+    "password": "admin"
+  },
+  "mocksystemconfig": {
     "system_config": {
       "ipv4": {
         "isManual": true,

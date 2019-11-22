@@ -38,17 +38,13 @@ class BaseClient:
     """
     Base class for IAM API operations.
     """
-
-    def __init__(self, access_key: str, secret_key: str, config: S3ConnectionConfig, loop):
+    def __init__(self, access_key: str, secret_key: str, config: IamConnectionConfig, loop=asyncio.get_event_loop(), session_token=None):
         self._loop = loop
         self._executor = ThreadPoolExecutor()
         self._config = config
-        self.connection = self._create_boto_connection(access_key, secret_key, config)
+        self.iam_connection = self._create_boto_connection(access_key, secret_key, config, session_token)
 
-    def _create_boto_connection_object(self, **kwargs):
-        raise NotImplementedError
-
-    def _create_boto_connection(self, access_key, secret_key, config: S3ConnectionConfig):
+    def _create_boto_connection(self, access_key, secret_key, config: IamConnectionConfig, session_token=None):
         """
         Helper function that creates IAM connection for the given credentials and configuration
         :returns: an IAMConnection object
@@ -66,14 +62,15 @@ class BaseClient:
 
         boto_config.set('Boto', 'ca_certificates_file', ca_cert)
 
-        conn = self._create_boto_connection_object(aws_access_key_id=access_key,
-                                                   aws_secret_access_key=secret_key,
-                                                   host=config.host,
-                                                   port=config.port,
-                                                   is_secure=config.use_ssl,
-                                                   debug=(2 if config.debug else 0),
-                                                   validate_certs=config.verify_ssl_cert
-                                                   )
+        conn = IAMConnection(aws_access_key_id=access_key,
+                             aws_secret_access_key=secret_key,
+                             host=config.host,
+                             port=config.port,
+                             is_secure=config.use_ssl,
+                             debug=(2 if config.debug else 0),
+                             validate_certs=config.verify_ssl_cert,
+                             security_token=session_token
+                             )
 
         if config.max_retries_num:
             conn.num_retries = config.max_retries_num
@@ -130,10 +127,10 @@ class BaseClient:
         if 'Error' not in body:
             return None
 
-        return self._create_response(IamError, body['Error'], {
-            'Code': 'error_code',
-            'Message': 'error_message'
-        })
+        iam_error = IamError()
+        iam_error.error_code = IamErrors(body['Error']['Code'])
+        iam_error.error_message = body['Error']['Message']
+        return iam_error
 
 
 class IamClient(BaseClient):
@@ -250,6 +247,26 @@ class IamClient(BaseClient):
             return True
 
     @Log.trace_method(Log.DEBUG)
+    async def list_account_login_profiles(self, account_name) -> Union[bool, IamError]:
+        """
+        Login profile update.
+        Note that it is required to provide S3 account credentials, not LDAP ones.
+
+        :returns: True in case of success, IamError otherwise
+        """
+
+        params = {
+            'AccountName': account_name
+        }
+
+        (code, body) = await self._query_conn('GetAccountLoginProfile', params, '/', 'POST')
+        print(body)
+        if code != 200:
+            return self._create_error(body)
+        else:
+            return True
+
+    @Log.trace_method(Log.DEBUG)
     async def list_accounts(self, max_items=None,
                             marker=None) -> Union[IamAccountListResponse, IamError]:
         """
@@ -352,7 +369,6 @@ class IamClient(BaseClient):
     @Log.trace_method(Log.DEBUG, exclude_args=['user_password'])
     async def create_user_login_profile(self, user_name, user_password, require_reset=False):
         # TODO: server returns OperationNotSupported. Why??
-        raise NotImplementedError()
 
         params = {
             'UserName': user_name,
@@ -579,24 +595,14 @@ class S3Plugin:
         Log.info('S3 plugin is loaded')
 
     @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
-    def get_iam_client(self, access_key, secret_key, connection_config=None) -> IamClient:
+    def get_client(self, access_key, secret_key, connection_config=None, session_token=None) -> S3Client:
         """
         Returns a management object for S3/IAM accounts.
         """
         if not connection_config:
             raise CsmInternalError('Connection configuration must be provided')
 
-        return IamClient(access_key, secret_key, connection_config, asyncio.get_event_loop())
-
-    @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
-    def get_s3_client(self, access_key, secret_key, connection_config=None) -> S3Client:
-        """
-        Returns a management object for S3 objects
-        """
-        if not connection_config:
-            raise CsmInternalError('Connection configuration must be provided')
-
-        return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop())
+        return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop(), session_token)
 
     @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
     def get_s3_buckets_cache(self, access_key, secret_key, connection_config=None,

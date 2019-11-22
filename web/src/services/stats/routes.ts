@@ -1,8 +1,8 @@
 /*****************************************************************************
  Filename:          routes.ts
- Description:       REST APIs to get alert details
+ Description:       REST APIs to get stats data
 
- Creation Date:     21/08/2019
+ Creation Date:     11/06/2019
  Author:            Soniya Moholkar
 
  Do NOT modify or remove this copyright and confidentiality notice!
@@ -14,45 +14,29 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getAlerts, updateAlerts } from "./alerts-controller";
+import { getStats } from "./stats"
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
-
 /**
- * It has all the REST APIs to get the alert related details. 
+ * It has all the REST APIs to get, save, update the System Configuration related details. 
  */
 
 export default [
   {
-    path: "/api/v1/alerts",
+    path: "/api/v1/stats/:statsparam?",
     method: "get",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await getAlerts(req, res);
+          let pathparam = req.params.statsparam;
+          const result = await getStats(req, res, pathparam);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
         }
       }
     ]
-  },
-  {
-    path: "/api/v1/alerts/:alert_id",
-    method: "patch",
-    handler: [
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await updateAlerts(req, res);
-          res.status(HttpStatus.NO_CONTENT).send();
-        } catch (err) {
-          throw err;
-        }
-        
-      }
-    ]
-  }
+  }  
 ];

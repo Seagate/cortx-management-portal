@@ -20,6 +20,7 @@ import * as sortValidators from './sort-validator';
 import url from "url";
 
 let objectValue = JSON.parse(JSON.stringify(getparams));
+let count = Object.keys(objectValue).length;
 
 /**
  * This method validates the request parameters based on their mandatory criteria
@@ -34,13 +35,46 @@ export const checkRequiredParams = (req: Request, res: Response, next: NextFunct
     validateGetParams(req, res, next);
   } else if (req.method == 'PATCH') {
     validatePatchParams(req, res, next);
+  }  else if (req.method == 'POST') {
+    validatePostParams(req, res, next);
   } else {
     next();
   }
 };
 
 /**
- * This method validates the parameters in payload of PUT method.
+ * This method validates the parameters in payload of POST method.
+ * This methods gets the mandatory parmeter criteria from 
+ * api-mandatory-parameters.json based on the PATH.
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+let validatePostParams = (req: Request, res: Response, next: NextFunction) => {
+  let url = req.url;
+  let path = "";
+  for (let i = 0; i < count; i++) {
+    if (url.includes(Object.keys(objectValue)[i])) {
+      path = Object.keys(objectValue)[i];
+      break;
+    }
+  }
+  let requiredParams = objectValue[path];
+  if (requiredParams) {
+    let requiredPatchParams = requiredParams.POST;
+    if (requiredPatchParams) {
+      validateParams(requiredPatchParams, req.body, req, res, next);
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+}
+
+
+/**
+ * This method validates the parameters in payload of PATCH method.
  * This methods gets the mandatory parmeter criteria from 
  * api-mandatory-parameters.json based on the PATH.
  * @param req 
@@ -49,7 +83,6 @@ export const checkRequiredParams = (req: Request, res: Response, next: NextFunct
  */
 let validatePatchParams = (req: Request, res: Response, next: NextFunction) => {
   let url = req.url;
-  let count = Object.keys(objectValue).length;
   let path = "";
   for (let i = 0; i < count; i++) {
     if (url.includes(Object.keys(objectValue)[i])) {
@@ -79,7 +112,15 @@ let validatePatchParams = (req: Request, res: Response, next: NextFunction) => {
  * @param next 
  */
 let validateGetParams = (req: Request, res: Response, next: NextFunction) => {
-  let path = req.url.includes("?") ? req.url.substring(0, req.url.indexOf("?")) : req.url;
+  let url = req.url.includes("?") ? req.url.substring(0, req.url.indexOf("?")) : req.url;
+  let path = "";
+  for (let i = 0; i < count; i++) {
+    if (url.includes(Object.keys(objectValue)[i])) {
+      path = Object.keys(objectValue)[i];
+      break;
+    }
+  }
+
   let requiredGetParams = objectValue[path];
   if (requiredGetParams) {
     let requiredParams = requiredGetParams.GET;
@@ -103,6 +144,7 @@ let validateGetParams = (req: Request, res: Response, next: NextFunction) => {
  */
 let validateParams = (requiredParams: any, params: any, req: Request, res: Response, next: NextFunction) => {
   let validparam = true;
+  let validvalues = true;
   let validparamtype = false
   let validvalidatorparam = true;
   let count = Object.keys(requiredParams).length;
@@ -122,25 +164,36 @@ let validateParams = (requiredParams: any, params: any, req: Request, res: Respo
         queryStringParts.push(requiredParam.paramname.trim() + '=' + encodeURIComponent(requiredParam.default));
         let queryString = queryStringParts.join('&');
         req.url = url + firstSeperator + queryString;
-      } else{
+      } else {
         req.body[requiredParam.paramname.trim()] = requiredParam.default;
       }
     }
-    
+
     if (params[requiredParam.paramname.trim()]) {
-      let datatype = requiredParam.datatype;
       let requestValue = params[requiredParam.paramname.trim()];
-      if(datatype == 'boolean' && datatype == typeof requestValue){
+      if (requiredParam.values && requestValue) {
+        let paramValues = requiredParam.values.split(",");
+        if (!paramValues.includes(requestValue)) {
+          validvalues = false;
+        }
+      }
+
+      if (!validvalues) {
+        break;
+      }
+
+      let datatype = requiredParam.datatype;
+      if (datatype == 'boolean' && datatype == typeof requestValue) {
         validparamtype = true;
         break;
       }
-      
+
       requestValue = Number(params[requiredParam.paramname.trim()]);
-      
+
       if (isNaN(requestValue)) {
         requestValue = params[requiredParam.paramname.trim()];
       }
-      
+
       if (!datatype || datatype == "string") {
         datatype = "string|number";
       }
@@ -154,7 +207,7 @@ let validateParams = (requiredParams: any, params: any, req: Request, res: Respo
         }
       }
 
-      if (!validparamtype) {
+      if (!validparamtype || !validvalues) {
         break;
       } else {
         if (requiredParam.validators) {
@@ -180,11 +233,11 @@ let validateParams = (requiredParams: any, params: any, req: Request, res: Respo
       validparamtype = true;
     }
   }
-  if (validparam && validparamtype && validvalidatorparam) {
+  if (validparam && validparamtype && validvalidatorparam && validvalues) {
     next();
   } else if (!validparam) {
     throw new HTTP400Error("Missing required parameters");
-  } else if (!validparamtype || !validvalidatorparam) {
+  } else if (!validparamtype || !validvalidatorparam || !validvalues) {
     throw new HTTP400Error("Missing valid required parameters");
   } else {
     throw new HTTP400Error("Some error occurred.");

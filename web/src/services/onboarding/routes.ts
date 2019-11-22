@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getSystemConfig, saveSystemConfig } from "./on-boarding-controller";
+import { getSystemConfig, saveSystemConfig, getNetworkManagement, updateNetworkManagement } from "./on-boarding-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -24,13 +24,13 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/systemconfig",
+    path: "/api/v1/config",
     method: "get",
     handler: [
       checkRequiredParams,
-      async ({ query }: Request, res: Response) => {
+      async (req: Request, res: Response) => {
         try {
-          const result = await getSystemConfig(query);
+          const result = await getSystemConfig(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -39,13 +39,43 @@ export default [
     ]
   },
   {
-    path: "/api/v1/systemconfig",
+    path: "/api/v1/config",
     method: "post",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
           const result = await saveSystemConfig(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }        
+      }
+    ]
+  },
+  {
+    path: "/api/v1/networkmanagement",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getNetworkManagement(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/networkmanagement",
+    method: "patch",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await updateNetworkManagement(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;

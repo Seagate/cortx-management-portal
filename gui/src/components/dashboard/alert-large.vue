@@ -13,15 +13,15 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div>
-    <span
-      class="green--text ml-5 font-weight-medium text-uppercase backoverview"
-      @click="$router.push('/')"
+  <div class="pa-0">
+    <div
+      class="green--text font-weight-medium text-uppercase backoverview pa-0 ma-0"
+      @click="$router.push('/dashboard')"
     >
       <v-img height="20" width="20" src="./../../assets/move-back.png" class="backoverviewimg" />
-      <span class="pl-2 backoverviewtxt">Back to Overview</span>
-    </span>
-    <v-card class="ma-5 elevation-0 largeAlert" tile>
+      <span class="pl-2 backoverviewtxt" id="lblAlertBack">Back to Overview</span>
+    </div>
+    <v-card class="mt-2 elevation-0 largeAlert pa-0" tile>
       <v-system-bar height="40em">
         <span id="title" class="text-uppercase font-weight-medium text--black">ACTIVE ALERTS</span>
         <v-spacer></v-spacer>
@@ -155,7 +155,7 @@
                 <v-row no-gutters>
                   <v-col cols="5">
                     <div class="mx-4">{{props.item.health_recommendation}}</div>
-                    <v-btn class="ma-4" tile color="green" dark>Show on System</v-btn>
+                    <v-btn class="ma-4" tile color="green" dark id="btnAlertShow">Show on System</v-btn>
                   </v-col>
                   <v-col cols="1">
                     <v-divider class="mx-4" vertical></v-divider>
@@ -304,7 +304,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
 }
 .backoverview {
   position: relative;
-  top: 1em;
+  top: 0em;
   cursor: pointer;
 }
 .backoverviewimg {

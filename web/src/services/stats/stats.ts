@@ -14,30 +14,20 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 
-import { Api } from "./../api";
-import apiRegister from "./../api-register";
+import { Api } from "../api";
+import apiRegister from "../api-register";
 import { Request, Response, request, response } from "express";
 
 /**
- * This method is responsible to get the alert data from provider and sends back
- * to client.
- * @param sortby 
- * @param sorttype 
- * @param pagesize 
- * @param pageno 
- * @param offset 
- * @param limit 
+ * This is responsible for getting stats data
+ * @param query 
  */
-export const getAlerts = async (req: Request, res: Response) => {
-    let alertData = Api.getAll(apiRegister.all_alerts, req, res);
+export const getStats = async (req: Request, res: Response, pathparam?: string) => {
+    let url = apiRegister.stats;
+    if (pathparam) {
+        url += "/" + pathparam;
+    }
+    let alertData = Api.getAll(url, req, res);
     let result = await alertData;
     return result;
 };
-
-
-export const updateAlerts = async (req: Request, res: Response) => {
-    let alertData = Api.patch(apiRegister.all_alerts, req, res, req.params.alert_id);
-    let result = await alertData;
-    return result;
-};
-
