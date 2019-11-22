@@ -29,9 +29,9 @@ export default [
     method: "get",
     handler: [
       checkRequiredParams,
-      async ({ query }: Request, res: Response) => {
+      async (req: Request, res: Response) => {
         try {
-          const result = await getAlerts(query);
+          const result = await getAlerts(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;

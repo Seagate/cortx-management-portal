@@ -20,7 +20,17 @@ export const getSessionKey = async (user: string) => {
  * @param res 
  */
 export const getAdminUser = async (req: Request, res: Response) => {
-  let adminUser = Api.getAll(apiRegister.admin_user, "");
+  let adminUser = Api.post(apiRegister.admin_user, req, res);
+  return adminUser;
+};
+
+/**
+ * This method is to get the admin user details
+ * @param req 
+ * @param res 
+ */
+export const logout = async (req: Request, res: Response) => {
+  let adminUser = Api.getAll(apiRegister.admin_user_logout, req, res)
   return adminUser;
 };
 
@@ -30,6 +40,6 @@ export const getAdminUser = async (req: Request, res: Response) => {
  * @param res 
  */
 export const saveUser = async (req: Request, res: Response) => {
-  let adminUser = Api.post(apiRegister.admin_user, req);
+  let adminUser = Api.post(apiRegister.admin_user_create, req, res);
   return adminUser;
 };

@@ -16,22 +16,22 @@
 
 import { Api } from "./../api";
 import apiRegister from "./../api-register";
-import { Request } from "express";
+import { Request, Response } from "express";
 
 
-export const getUDXDevices = async () => {
-    let result = await Api.getAll(apiRegister.udx_devices);
+export const getUDXDevices = async (req: Request, res: Response) => {
+    let result = await Api.getAll(apiRegister.udx_devices, req, res);
     return result;
 };
 
-export const getIdentificationToken = async () => {
-    let result = await Api.getAll(apiRegister.udx_reg_token);
+export const getIdentificationToken = async (req: Request, res: Response) => {
+    let result = await Api.getAll(apiRegister.udx_reg_token, req, res);
     return result;
 };
 
 
-export const registerUDX = async (req: Request) => {
-    let result = await Api.post(apiRegister.udx_devices, req);
+export const registerUDX = async (req: Request, res: Response) => {
+    let result = await Api.post(apiRegister.udx_devices, req, res);
     return result;
 };
 

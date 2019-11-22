@@ -80,7 +80,7 @@
       </v-menu>
     </div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 white--text">Logout</div>
+    <div class="pa-5 white--text pointer" @click="logout()">Logout</div>
   </v-app-bar>
 </template>
 <script lang="ts">
@@ -111,6 +111,21 @@ export default class HeaderBar extends Vue {
 
   get alertNotifications() {
     return this.$store.state.alertNotification.socket;
+  }
+  private logout() {
+    // Invalidate session from Server, remove localStorage token and re-route to login page
+    this.$store
+      .dispatch("userLogin/logoutAction")
+      .then((res: any) => {
+        if (res === 200) {
+          localStorage.removeItem(this.$data.alertStatus.access_token);
+          this.$router.push("/login");
+        }
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("Logout Action Failed");
+      });
   }
 }
 </script>

@@ -19,6 +19,8 @@ export default {
     all_system_config: `/api/${version}/config`,
     management_network: `/api/${version}/networkmanagement`,
     stats: `/api/${version}/stats`,
-    admin_user: `/login`, //TODO Change accroding to the Pyhon APIs
+    admin_user: `/api/${version}/login`,
+    admin_user_create: `/mocklogin`,
+    admin_user_logout: `/api/${version}/logout`,
 	udx_reg_token: `/usl/v1/registrationToken`,
 	udx_devices: `/usl/v1/devices`};
