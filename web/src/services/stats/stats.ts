@@ -22,12 +22,12 @@ import { Request, Response, request, response } from "express";
  * This is responsible for getting stats data
  * @param query 
  */
-export const getStats = async (query: any, pathparam?: string) => {
+export const getStats = async (req: Request, res: Response, pathparam?: string) => {
     let url = apiRegister.stats;
     if (pathparam) {
         url += "/" + pathparam;
     }
-    let alertData = Api.getAll(url, query);
+    let alertData = Api.getAll(url, req, res);
     let result = await alertData;
     return result;
 };

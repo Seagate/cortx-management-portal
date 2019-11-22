@@ -22,8 +22,8 @@ import { Request, Response, request, response } from "express";
  * This is responsible for getting System Configuration data
  * @param query 
  */
-export const getSystemConfig = async (query: any) => {
-    let alertData = Api.getAll(apiRegister.all_system_config, query);
+export const getSystemConfig = async (req: Request, res: Response) => {
+    let alertData = Api.getAll(apiRegister.all_system_config, req, res);
     let result = await alertData;
     return result;
 };
@@ -34,20 +34,20 @@ export const getSystemConfig = async (query: any) => {
  * @param res 
  */
 export const saveSystemConfig = async (req: Request, res: Response) => {
-    let alertData = Api.post(apiRegister.all_system_config, req);
+    let alertData = Api.post(apiRegister.all_system_config, req, res);
     let result = await alertData;
     return result;
 };
 
-export const getNetworkManagement = async (query: any) => {
-    let alertData = Api.getAll(apiRegister.management_network, query);
+export const getNetworkManagement = async (req: Request, res: Response) => {
+    let alertData = Api.getAll(apiRegister.management_network, req, res);
     let result = await alertData;
     return result;
 };
 
 
 export const updateNetworkManagement = async (req: Request, res: Response) => {
-    let alertData = Api.patch(apiRegister.management_network, req, "");
+    let alertData = Api.patch(apiRegister.management_network, req, res, "");
     let result = await alertData;
     return result;
 };

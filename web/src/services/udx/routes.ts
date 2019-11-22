@@ -29,9 +29,9 @@ export default [
     method: "get",
     handler: [
       checkRequiredParams,
-      async ({ query }: Request, res: Response) => {
+      async (req: Request, res: Response) => {
         try {
-          const result = await getIdentificationToken();
+          const result = await getIdentificationToken(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -44,9 +44,9 @@ export default [
     method: "get",
     handler: [
       checkRequiredParams,
-      async ({ query }: Request, res: Response) => {
+      async (req: Request, res: Response) => {
         try {
-          const result = await getUDXDevices();
+          const result = await getUDXDevices(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -61,7 +61,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await registerUDX(req);
+          const result = await registerUDX(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;

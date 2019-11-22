@@ -14,7 +14,7 @@
  *****************************************************************************/
 import http from 'http';
 import https from 'https';
-import { Request } from "express";
+import { Request, Response } from "express";
 import HttpStatus from 'http-status-codes';
 import * as HTTPError from '../utils/http-errors';
 
@@ -33,52 +33,64 @@ var sucessCodeRegex = new RegExp('^2[0-9]*$');
 export abstract class Api {
 
     // Wrapper method to for get api
-    public static async getAll(url: string, query?: any) {
+    public static async getAll(url: string, req: Request, resp: Response) {
         return new Promise((resolve, reject) => {
             let geturl = base_url + url;
 
             // Remove following code onde all the Python APIs are ready
             // -- Start --
-            /*if (!url.startsWith("/api")) {
+            if (url.startsWith("/mock")) {
                 geturl = mock_base_url + url;
-            }*/
+            }
             console.log("GET: " + geturl);
             // -- end --
 
+            let query = req.query;
+            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
             for (const key in query) {
                 let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
                 geturl += seperator + key + "=" + query[key];
             }
-            http_agent.get(geturl, Api.handleResponse(resolve, reject)).on("error", (err: any) => {
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': authorization
+                }
+            }
+            
+            http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
             });
         });
     }
 
-    public static async patch(url: string, req: Request, id: string | number) {
+    public static async patch(url: string, req: Request, resp: Response, id: string | number) {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
             let patchurl = base_url + url;
             if (id && id != "") {
                 patchurl += "/" + id;
             }
+            
             // Remove following code onde all the Python APIs are ready
             // -- Start --
-            if (!url.startsWith("/api")) {
+            if (url.startsWith("/mock")) {
                 patchurl = mock_base_url + url + id;
             }
             console.log("PATCH: " + patchurl);
             // -- end --
+            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
             const options = {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Content-Length': requestData.length
+                    'Content-Length': requestData.length,
+                    'authorization': authorization
                 }
             }
 
-            let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject)).on("error", (err: any) => {
+            let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
             });
@@ -87,26 +99,29 @@ export abstract class Api {
         });
     }
 
-    public static async post(url: string, req: Request, id?: string | number) {
+    public static async post(url: string, req: Request, resp: Response, id?: string | number) {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
             let posturl = base_url + url + ((id) ? "/" + id : "");
             // Remove following code onde all the Python APIs are ready
             // -- Start --
-            /*if (!url.startsWith("/api")) {
+            if (url.startsWith("/mock")) {
                 posturl = mock_base_url + url + ((id) ? "/" + id : "");
-            }*/
+            }
             console.log("POST: " + posturl);
             // -- end --
+            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
             const options = {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Content-Length': requestData.length
+                    'Content-Length': requestData.length,
+                    'authorization': authorization
                 }
             }
 
-            let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject)).on("error", (err: any) => {
+            let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
+                console.log("1. "+err);
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
             });
@@ -115,24 +130,29 @@ export abstract class Api {
         });
     }
 
-    private static handleResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void): any {
-        return (resp: any) => {
+    private static handleResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
+        return (apiresp: any) => {
             let data = '';
             let response: any;
 
-            resp.on('data', (chunk: any) => {
+            console.log(apiresp.headers.token);
+            if(apiresp.headers.token){
+                resp.set("Authorization", apiresp.headers.token);    
+            }            
+
+            apiresp.on('data', (chunk: any) => {
                 data += chunk;
             });
-            resp.on('end', () => {
+            apiresp.on('end', () => {
                 try {
                     response = JSON.parse(data);
                 } catch (err) {
                     response = data;
                 }
-                if (sucessCodeRegex.test(resp.statusCode)) {
+                if (sucessCodeRegex.test(apiresp.statusCode)) {
                     resolve(response);
                 } else {
-                    let err = Api.handleError(resp.statusCode, response);
+                    let err = Api.handleError(apiresp.statusCode, response);
                     reject(err);
                 }
             });
