@@ -19,6 +19,7 @@ export default {
     systemconfig: `api/${version}/systemconfig`,
     create_user: `api/${version}/user/admin`,
     login: `api/${version}/login`,
+    logout: `/api/${version}/logout`,
     udx_reg_token: `api/${version}/udx-device/registration-token`,
     udx_device: `api/${version}/udx-device`
 };
