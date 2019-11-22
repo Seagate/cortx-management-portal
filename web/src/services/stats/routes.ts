@@ -28,10 +28,10 @@ export default [
     method: "get",
     handler: [
       checkRequiredParams,
-      async ({ query, params }: Request, res: Response) => {
+      async (req: Request, res: Response) => {
         try {
-          let pathparam = params.statsparam;
-          const result = await getStats(query, pathparam);
+          let pathparam = req.params.statsparam;
+          const result = await getStats(req, res, pathparam);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;

@@ -28,15 +28,15 @@ import { Request, Response, request, response } from "express";
  * @param offset 
  * @param limit 
  */
-export const getAlerts = async (query: any) => {
-    let alertData = Api.getAll(apiRegister.all_alerts, query);
+export const getAlerts = async (req: Request, res: Response) => {
+    let alertData = Api.getAll(apiRegister.all_alerts, req, res);
     let result = await alertData;
     return result;
 };
 
 
 export const updateAlerts = async (req: Request, res: Response) => {
-    let alertData = Api.patch(apiRegister.all_alerts, req, req.params.alert_id);
+    let alertData = Api.patch(apiRegister.all_alerts, req, res, req.params.alert_id);
     let result = await alertData;
     return result;
 };

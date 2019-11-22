@@ -28,9 +28,9 @@ export default [
     method: "get",
     handler: [
       checkRequiredParams,
-      async ({ query }: Request, res: Response) => {
+      async (req: Request, res: Response) => {
         try {
-          const result = await getSystemConfig(query);
+          const result = await getSystemConfig(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -58,9 +58,9 @@ export default [
     method: "get",
     handler: [
       checkRequiredParams,
-      async ({ query }: Request, res: Response) => {
+      async (req: Request, res: Response) => {
         try {
-          const result = await getNetworkManagement(query);
+          const result = await getNetworkManagement(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
