@@ -13,6 +13,39 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 import axios from "axios";
+import router from "../router"; // Get router object from our router.ts
+
+// Add a request interceptor
+// Set valid token into each request header
+// Note: - if welcome page no need of auth token
+//       - if create admin user page no need of auth token
+axios.interceptors.request.use((config) => {
+    const conststr = require("../common/const-string.json");
+    const token = localStorage.getItem(conststr.access_token);
+    if (token) {
+        config.headers.Authorization = token;
+    }
+
+    return config;
+}, (error) => {
+    Promise.reject(error);
+});
+
+// Handle response
+axios.interceptors.response.use((response) => {
+
+    return response;
+}, (error) => {
+    // Handle Unauthorised response. Re-route to login page if unauthorised response received.
+    if (error.response.status === 401) {
+        const conststr = require("../common/const-string.json");
+        localStorage.removeItem(conststr.access_token);
+        router.push("/login");
+
+        return Promise.reject(error);
+    }
+});
+
 
 export abstract class Api {
 

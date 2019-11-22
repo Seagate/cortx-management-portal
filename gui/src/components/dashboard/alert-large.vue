@@ -16,7 +16,7 @@
   <div class="pa-0">
     <div
       class="green--text font-weight-medium text-uppercase backoverview pa-0 ma-0"
-      @click="$router.push('/')"
+      @click="$router.push('/dashboard')"
     >
       <v-img height="20" width="20" src="./../../assets/move-back.png" class="backoverviewimg" />
       <span class="pl-2 backoverviewtxt" id="lblAlertBack">Back to Overview</span>

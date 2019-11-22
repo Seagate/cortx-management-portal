@@ -62,7 +62,8 @@ export default class EosLogin extends Vue {
   private data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      conststr: require("./../../common/const-string.json")
     };
   }
   private gotToNextPage() {
@@ -75,8 +76,12 @@ export default class EosLogin extends Vue {
       this.$store
         .dispatch("userLogin/loginAction", queryParams)
         .then((res: any) => {
-          if (res.token) {
-            this.$router.push("/");
+          if (res.authorization) {
+            localStorage.setItem(
+              this.$data.conststr.access_token,
+              res.authorization
+            );
+            this.$router.push("/dashboard");
           }
         })
         .catch(() => {
