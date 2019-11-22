@@ -20,8 +20,9 @@
           <v-list-item
             v-for="(item, itemIndex) in items"
             :key="item.title"
+            :to="item.path"
             link
-            disabled
+            :disabled="item.disabled"
             @click="onSelectedMenu(itemIndex)"
             class="pb-2 ma-0"
           >
@@ -56,16 +57,23 @@ export default class EosNavBar extends Vue {
       items: [
         {
           title: "Dashboard",
+          path: "/",
           icon: "dashboard-green.png"
         },
         {
           title: "Provisioning",
+          path: "/provisioning-submenu",
           icon: "storage-green.png"
         },
-        { title: "Settings", icon: "settings-green.png" },
+        {
+          title: "Settings",
+          path: "/settings-submenu",
+          icon: "settings-green.png"
+        },
         {
           title: "Maintenance",
-          icon: "maintenance-green.png"
+          icon: "maintenance-green.png",
+          disabled: true
         }
       ],
       right: null,

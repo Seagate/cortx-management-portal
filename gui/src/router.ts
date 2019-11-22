@@ -36,6 +36,8 @@ import EosAdminUser from "./components/preboarding/admin-user.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
 import EosLogin from "./components/preboarding/login.vue";
 import UDXRegistration from "./components/udx/udx-registration.vue";
+import SettingsSubmenu from "./components/submenu-options/settings-submenu.vue";
+import ProvisioningSubmenu from "./components/submenu-options/provisioning-submenu.vue";
 
 Vue.use(Router);
 
@@ -150,6 +152,16 @@ export default new Router({
       path: "/udx-registration",
       name: "udx-registration",
       component: UDXRegistration,
+    },
+    {
+      path: "/settings-submenu",
+      name: "settings-submenu",
+      component: SettingsSubmenu,
+    },
+    {
+      path: "/provisioning-submenu",
+      name: "provisioning-submenu",
+      component: ProvisioningSubmenu,
     }
   ],
 });
