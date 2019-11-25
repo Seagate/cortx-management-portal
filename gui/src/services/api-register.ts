@@ -21,5 +21,7 @@ export default {
     login: `api/${version}/login`,
     logout: `/api/${version}/logout`,
     udx_reg_token: `api/${version}/udx-device/registration-token`,
-    udx_device: `api/${version}/udx-device`
+    udx_device: `api/${version}/udx-device`,
+    s3_account: `/api/${version}/s3_account`,
+    s3_iam_user: `/api/${version}/s3_iam_user`
 };

@@ -31,7 +31,7 @@ import EosNotifications from "./components/onboarding/system-config/notification
 import EosNotificationsEmail from "./components/onboarding/system-config/notifications/notifications-email.vue";
 import EosNotificationsSyslog from "./components/onboarding/system-config/notifications/notifications-syslog.vue";
 import EosInterfaceSelect from "./components/onboarding/system-config/interface-select/interface-select.vue";
-import EosAccountManagement from "./components/s3/account-management.vue";
+import EosS3Management from "./components/s3/s3.vue";
 import EosAdminUser from "./components/preboarding/admin-user.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
 import EosLogin from "./components/preboarding/login.vue";
@@ -154,9 +154,9 @@ const router = new Router({
       meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
-      path: "/s3account",
-      name: "s3account",
-      component: EosAccountManagement,
+      path: "/s3",
+      name: "s3",
+      component: EosS3Management,
       meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {

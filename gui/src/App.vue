@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-app>
+  <v-app style="background-color: #FFF;">
     <div class="full-view" v-if="!onboardingStatus">
       <router-view></router-view>
     </div>
