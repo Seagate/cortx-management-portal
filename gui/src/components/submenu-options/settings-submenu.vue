@@ -119,9 +119,9 @@
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 
 @Component({
-  name: "settings-submenu"
+  name: "eos-settings-submenu"
 })
-export default class SettingsSubmenu extends Vue {
+export default class EosSettingsSubmenu extends Vue {
   private data() {
     return {
       items: []

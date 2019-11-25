@@ -46,9 +46,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "provisioning-submenu"
+  name: "eos-provisioning-submenu"
 })
-export default class ProvisioningSubmenu extends Vue {}
+export default class EosProvisioningSubmenu extends Vue {}
 </script>
 <style lang="scss" scoped>
 </style>

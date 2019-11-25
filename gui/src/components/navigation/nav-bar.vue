@@ -16,7 +16,7 @@
   <v-card height="100%" class="black" width="12.4em" tile>
     <v-navigation-drawer permanent class="black" tile floating>
       <v-list nav class="pa-0 ma-0">
-        <v-list-item-group v-model="selected" active-class="border">
+        <v-list-item-group v-model="selectedMenu" active-class="border">
           <v-list-item
             v-for="(item, itemIndex) in items"
             :key="item.title"
@@ -57,17 +57,17 @@ export default class EosNavBar extends Vue {
       items: [
         {
           title: "Dashboard",
-          path: "/",
+          path: "/dashboard",
           icon: "dashboard-green.png"
         },
         {
           title: "Provisioning",
-          path: "/provisioning-submenu",
+          path: "/eos-provisioning-submenu",
           icon: "storage-green.png"
         },
         {
           title: "Settings",
-          path: "/settings-submenu",
+          path: "/eos-settings-submenu",
           icon: "settings-green.png"
         },
         {
