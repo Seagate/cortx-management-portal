@@ -28,7 +28,7 @@ from boto.connection import DEFAULT_CA_CERTS_FILE
 from boto import config as boto_config
 from csm.common.log import Log
 from csm.common.errors import CsmInternalError
-from csm.core.blogic.models.s3 import (S3ConnectionConfig, IamAccount, ExtendedIamAccount,
+from csm.core.data.models.s3 import (S3ConnectionConfig, IamAccount, ExtendedIamAccount,
                                        IamLoginProfile, IamUser, IamUserListResponse,
                                        IamAccountListResponse, IamTempCredentials,
                                        IamErrors, IamError)
@@ -38,13 +38,16 @@ class BaseClient:
     """
     Base class for IAM API operations.
     """
-    def __init__(self, access_key: str, secret_key: str, config: IamConnectionConfig, loop=asyncio.get_event_loop(), session_token=None):
+    def __init__(self, access_key: str, secret_key: str, config: S3ConnectionConfig, loop=asyncio.get_event_loop(), session_token=None):
         self._loop = loop
         self._executor = ThreadPoolExecutor()
         self._config = config
-        self.iam_connection = self._create_boto_connection(access_key, secret_key, config, session_token)
+        self.connection = self._create_boto_connection(access_key, secret_key, config, session_token)
 
-    def _create_boto_connection(self, access_key, secret_key, config: IamConnectionConfig, session_token=None):
+    def _create_boto_connection_object(self, **kwargs):
+        raise NotImplementedError
+
+    def _create_boto_connection(self, access_key, secret_key, config: S3ConnectionConfig, session_token=None):
         """
         Helper function that creates IAM connection for the given credentials and configuration
         :returns: an IAMConnection object
@@ -62,15 +65,15 @@ class BaseClient:
 
         boto_config.set('Boto', 'ca_certificates_file', ca_cert)
 
-        conn = IAMConnection(aws_access_key_id=access_key,
-                             aws_secret_access_key=secret_key,
-                             host=config.host,
-                             port=config.port,
-                             is_secure=config.use_ssl,
-                             debug=(2 if config.debug else 0),
-                             validate_certs=config.verify_ssl_cert,
-                             security_token=session_token
-                             )
+        conn = self._create_boto_connection_object(aws_access_key_id=access_key,
+                                                   aws_secret_access_key=secret_key,
+                                                   host=config.host,
+                                                   port=config.port,
+                                                   is_secure=config.use_ssl,
+                                                   debug=(2 if config.debug else 0),
+                                                   validate_certs=config.verify_ssl_cert,
+                                                   security_token=session_token
+                                                   )
 
         if config.max_retries_num:
             conn.num_retries = config.max_retries_num
@@ -572,18 +575,18 @@ class S3Plugin:
 
     Steps to use this plugin for IAM Account management:
     1. Prepare root IAM server LDAP credentials
-    2. Call s3plugin.get_client('ldap_login', 'ldap_password', connection_config)
+    2. Call s3plugin.get_iam_client('ldap_login', 'ldap_password', connection_config)
        to retrieve the corresponding management object
     3. Perform API queries using that object
 
     Example:
-        client = s3plugin.get_client('ldap_login', 'ldap_pwd', connection_config)
+        client = s3plugin.get_iam_client('ldap_login', 'ldap_pwd', connection_config)
         account_list = await client.list_accounts()
 
     A similar sequence of steps is required for IAM User management.
     1. Prepare access and secret key of the account on behalf of which you are going to
        manage IAM Users
-    2. Call s3plugin.get_client('access_key', 'secret_ey', connection_config)
+    2. Call s3plugin.get_iam_client('access_key', 'secret_ey', connection_config)
        to retrieve the corresponding management object
     3. Perform API queries using that object
 
@@ -595,7 +598,17 @@ class S3Plugin:
         Log.info('S3 plugin is loaded')
 
     @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
-    def get_client(self, access_key, secret_key, connection_config=None, session_token=None) -> S3Client:
+    def get_iam_client(self, access_key, secret_key, connection_config=None, session_token=None) -> IamClient:
+        """
+        Returns a management object for S3/IAM accounts.
+        """
+        if not connection_config:
+            raise CsmInternalError('Connection configuration must be provided')
+
+        return IamClient(access_key, secret_key, connection_config, asyncio.get_event_loop(), session_token)
+
+    @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
+    def get_s3_client(self, access_key, secret_key, connection_config=None, session_token=None) -> S3Client:
         """
         Returns a management object for S3/IAM accounts.
         """
