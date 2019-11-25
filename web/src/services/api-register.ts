@@ -23,4 +23,7 @@ export default {
     admin_user_create: `/mocklogin`,
     admin_user_logout: `/api/${version}/logout`,
 	udx_reg_token: `/usl/v1/registrationToken`,
-	udx_devices: `/usl/v1/devices`};
+	udx_devices: `/usl/v1/devices`,
+    s3_accounts: `/api/${version}/s3_accounts`,
+    s3_iam_users: `/api/${version}/iam_users`
+};
