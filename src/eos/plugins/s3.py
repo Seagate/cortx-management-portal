@@ -19,6 +19,8 @@
 
 import asyncio
 import boto
+import boto3
+from functools import partial
 from enum import Enum
 from concurrent.futures import ThreadPoolExecutor
 from typing import Union, List
@@ -486,38 +488,44 @@ class IamClient(BaseClient):
             # TODO: our IAM server does not return the updated user information
             return True
 
-
 class S3Client(BaseClient):
     """
-    A management object that operates S3 objects
+    Class represents S3 server connection that manages buckets
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
     def _create_boto_connection_object(self, **kwargs):
-        return S3Connection(**kwargs, calling_format=OrdinaryCallingFormat())
+        """Creates S3 server connection"""
+
+        is_secure = kwargs.get('is_secure', False)
+        proto = 'https' if is_secure else 'http'
+        url = f"{proto}://{kwargs.get('host', 'localhost')}:{kwargs.get('port', '80')}"
+        s3 = boto3.resource(service_name='s3', endpoint_url=url,
+                            aws_access_key_id=kwargs['aws_access_key_id'],
+                            aws_secret_access_key=kwargs['aws_secret_access_key'])
+        return s3
 
     @Log.trace_method(Log.DEBUG)
     async def create_bucket(self, bucket_name):
         """
         Create a S3 bucket using credentials passed during client creation.
 
-        :returns: boto.s3.bucket in case of success, S3Error otherwise
+        :returns: S3.Bucket
         """
         return await self._loop.run_in_executor(self._executor,
-                                                self.connection.create_bucket,
-                                                bucket_name)
+                                                partial(self.connection.create_bucket,
+                                                        Bucket=bucket_name))
 
     @Log.trace_method(Log.DEBUG)
     async def get_all_buckets(self):
-        return await self._loop.run_in_executor(self._executor, self.connection.get_all_buckets)
+        return await self._loop.run_in_executor(self._executor, self.connection.buckets.all)
 
     @Log.trace_method(Log.DEBUG)
-    async def delete_bucket(self, bucket_name):
-        return await self._loop.run_in_executor(self._executor, self.connection.delete_bucket,
-                                                bucket_name)
+    async def get_bucket_tagging(self, bucket):
+        return await self._loop.run_in_executor(self._executor, bucket.Tagging)
 
+    @Log.trace_method(Log.DEBUG)
+    async def delete_bucket(self, bucket):
+        await self._loop.run_in_executor(self._executor, bucket.delete)
 
 class S3BucketsCache:
     """
