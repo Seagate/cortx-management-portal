@@ -22,16 +22,6 @@ export default [
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
-        // const result: any = await getAdminUser(req, res).then(user => {
-        //   return user
-        // });
-        // if (result.username == req.body.username && result.password == req.body.password) {
-        //   const userResponse = await getSessionKey(req.body.username);
-        //   res.status(HttpStatus.OK).send(userResponse);
-        // } else {
-        //   res.status(HttpStatus.UNAUTHORIZED).send();
-        // }
-        let auth_token = "";
         const result = await getAdminUser(req, res).then((response: any) =>{
           console.log(response.headers);
         });;
