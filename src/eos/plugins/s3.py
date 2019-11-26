@@ -524,6 +524,21 @@ class S3Client(BaseClient):
         return await self._loop.run_in_executor(self._executor, bucket.Tagging)
 
     @Log.trace_method(Log.DEBUG)
+    async def put_bucket_tagging(self, bucket_name, tags: dict):
+        def _run():
+            tag_set = {
+                'TagSet': [
+                    {
+                        'Key': key,
+                        'Value': tags[key]
+                    } for key in tags
+                ]
+            }
+            tagging = self.connection.BucketTagging(bucket_name)
+            return tagging.put(Tagging=tag_set)
+        return await self._loop.run_in_executor(self._executor, _run)
+
+    @Log.trace_method(Log.DEBUG)
     async def delete_bucket(self, bucket):
         await self._loop.run_in_executor(self._executor, bucket.delete)
 
