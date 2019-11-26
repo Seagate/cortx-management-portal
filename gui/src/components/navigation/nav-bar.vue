@@ -16,12 +16,13 @@
   <v-card height="100%" class="black" width="12.4em" tile>
     <v-navigation-drawer permanent class="black" tile floating>
       <v-list nav class="pa-0 ma-0">
-        <v-list-item-group v-model="selected" active-class="border">
+        <v-list-item-group v-model="selectedMenu" active-class="border">
           <v-list-item
             v-for="(item, itemIndex) in items"
             :key="item.title"
+            :to="item.path"
             link
-            disabled
+            :disabled="item.disabled"
             @click="onSelectedMenu(itemIndex)"
             class="pb-2 ma-0"
           >
@@ -56,16 +57,23 @@ export default class EosNavBar extends Vue {
       items: [
         {
           title: "Dashboard",
+          path: "/dashboard",
           icon: "dashboard-green.png"
         },
         {
           title: "Provisioning",
+          path: "/eos-provisioning-submenu",
           icon: "storage-green.png"
         },
-        { title: "Settings", icon: "settings-green.png" },
+        {
+          title: "Settings",
+          path: "/eos-settings-submenu",
+          icon: "settings-green.png"
+        },
         {
           title: "Maintenance",
-          icon: "maintenance-green.png"
+          icon: "maintenance-green.png",
+          disabled: true
         }
       ],
       right: null,
