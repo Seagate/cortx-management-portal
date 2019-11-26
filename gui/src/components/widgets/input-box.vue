@@ -14,7 +14,7 @@
  *****************************************************************************/
 <template>
   <div style="width: 20rem;">
-    <div class="font-weight-medium">
+    <div class="font-weight-medium" v-if="control.label">
       <div style="float: left;">
         <label
           v-bind:class="{ 'has-error': control.isDirty && !control.isValid }"
@@ -82,6 +82,7 @@ export default class EosInputBox extends Vue {
             this.control.isValid = false;
           }
         } else {
+          this.errorMessage = "";
           this.control.isValid = true;
         }
       }
@@ -97,12 +98,17 @@ export default class EosInputBox extends Vue {
 label.has-error {
   color: #dc1f2e;
 }
+input:focus {outline:0;}
 .input-text {
-  border: 1px solid #9e9e9e;
+  background: #FFFFFF;
+  border: 1px solid #9E9E9E;
   box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   border-radius: 4px;
-  width: 20rem;
   height: 40px;
+  width: 20rem;
+  padding-left: 16px;
 }
 input.has-error {
   border-color: #dc1f2e;
