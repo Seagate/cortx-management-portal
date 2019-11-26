@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="pa-0">
+  <div class="pa-0 col-12">
     <div
       class="green--text font-weight-medium text-uppercase backoverview pa-0 ma-0"
       @click="$router.push('/dashboard')"
