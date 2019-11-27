@@ -200,9 +200,9 @@ export abstract class Api {
         return (apiresp: any) => {
             let data = '';
             let response: any;
-
-            if(apiresp.headers.token){
-                resp.set("Authorization", apiresp.headers.token);    
+            
+            if(apiresp.headers.authorization){
+                resp.set("Authorization", apiresp.headers.authorization);    
             }            
 
             apiresp.on('data', (chunk: any) => {
