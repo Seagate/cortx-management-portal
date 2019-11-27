@@ -163,7 +163,7 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
       },
       {
         text: "Alert Severity",
-        value: "state",
+        value: "severity",
         sortable: true,
         sortDir: "desc"
       },
