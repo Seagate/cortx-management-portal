@@ -76,8 +76,16 @@
         <template v-slot:item="props">
           <tr class="font-weight-small">
             <td @click="onExpand(props)">
-              <img v-if="props.isExpanded" src="./../../assets/caret-green-down.png" />
-              <img v-if="!props.isExpanded" src="./../../assets/caret-green-right.png" />
+              <img
+                style="cursor: pointer;"
+                v-if="props.isExpanded"
+                src="./../../assets/caret-green-down.png"
+              />
+              <img
+                style="cursor: pointer;"
+                v-if="!props.isExpanded"
+                src="./../../assets/caret-green-right.png"
+              />
             </td>
             <td style="width: 9em;">{{ new Date(props.item.created_time*1000) | timeago }}</td>
             <td>
@@ -111,8 +119,12 @@
               />
             </td>
             <td>
-              <div>{{props.item.location}}</div>
-              <div>State:{{props.item.state}}</div>
+              <div v-if="props.item.location">Location: {{props.item.location}}</div>
+              <div>
+                <label v-if="props.item.state">State: {{props.item.state}}</label>
+                <label v-if="props.item.state && props.item.module_name">,&nbsp;</label>
+                <label v-if="props.item.module_name">Resource Type: {{props.item.module_name}}</label>
+              </div>
             </td>
             <td style="width: 19em;">{{props.item.description}}</td>
             <td>
@@ -144,6 +156,7 @@
                 @change="updateAlert(props.item)"
                 v-model="props.item.acknowledged"
                 class="mx-2"
+                :disabled="props.item.resolved && props.item.acknowledged"
               ></v-checkbox>
             </td>
           </tr>
@@ -155,7 +168,14 @@
                 <v-row no-gutters>
                   <v-col cols="5">
                     <div class="mx-4">{{props.item.health_recommendation}}</div>
-                    <v-btn class="ma-4" tile color="green" dark id="btnAlertShow">Show on System</v-btn>
+                    <v-btn
+                      class="ma-4"
+                      color="green"
+                      id="btnAlertShow"
+                      :disabled="props.item.resolved && props.item.acknowledged"
+                    >
+                      <span class="white--text">Show on System</span>
+                    </v-btn>
                   </v-col>
                   <v-col cols="1">
                     <v-divider class="mx-4" vertical></v-divider>
@@ -169,13 +189,18 @@
                         maxlength="255"
                         solo
                         name="input-7-4"
+                        :disabled="props.item.resolved && props.item.acknowledged"
                       ></v-textarea>
                     </div>
                   </v-col>
                   <v-col align-self="center" cols="2">
                     <div class="actbtn">
                       <v-row class="mx-3 mt-10">
-                        <v-card flat @click="updateAlert(props.item)">
+                        <v-card
+                          flat
+                          @click="updateAlert(props.item)"
+                          :disabled="props.item.resolved && props.item.acknowledged"
+                        >
                           <v-img
                             class="mr-1"
                             height="20"
@@ -183,7 +208,11 @@
                             src="./../../assets/apply-icon.png"
                           />
                         </v-card>
-                        <v-card @click="clearComment(props.item)" flat>
+                        <v-card
+                          @click="clearComment(props.item)"
+                          flat
+                          :disabled="props.item.resolved && props.item.acknowledged"
+                        >
                           <v-img
                             height="20"
                             click="(props.item)=> props.item.comment=''"
