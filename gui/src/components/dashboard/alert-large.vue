@@ -255,7 +255,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
       },
       {
         text: "Severity",
-        value: "state",
+        value: "severity",
         sortable: true,
         sortDir: "desc"
       },
