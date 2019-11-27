@@ -33,7 +33,12 @@
               <option value="celsius">English</option>
             </select>
           </div>
-          <button type="button" class="btn-primary-dark mt-10" @click="gotToNextPage()" :disabled="!loginForm.isValid">Get Started</button>
+          <button
+            type="button"
+            class="btn-primary-dark mt-10"
+            @click="gotToNextPage()"
+            :disabled="!loginForm.isValid"
+          >Get Started</button>
         </form>
       </div>
     </v-container>
@@ -50,21 +55,13 @@ import { Form, FormControl, Validator } from "../widgets/form-widget";
   components: { InputBox }
 })
 export default class EosLogin extends Vue {
-
   private loginForm: Form;
 
   constructor() {
     super();
 
     const controls: FormControl[] = [
-    new FormControl(
-        "",
-        "username",
-        "text",
-        "",
-        true,
-        "Username is required"
-      ),
+      new FormControl("", "username", "text", "", true, "Username is required"),
       new FormControl(
         "",
         "password",
@@ -79,6 +76,11 @@ export default class EosLogin extends Vue {
 
   private mounted() {
     this.$store.commit("alerts/setOnboardingFlag", false);
+  }
+  private data() {
+    return {
+      conststr: require("./../../common/const-string.json")
+    };
   }
 
   private gotToNextPage() {
@@ -115,7 +117,7 @@ export default class EosLogin extends Vue {
 }
 .btn-primary-dark {
   background: rgba(0, 0, 0, 0.2);
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
   box-sizing: border-box;
   border-radius: 4px;
   height: 40px;
@@ -127,7 +129,7 @@ export default class EosLogin extends Vue {
   font-size: 14px;
   line-height: 20px;
   text-align: center;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .btn-primary-dark:hover {
   background: rgba(255, 255, 255, 0.2);
@@ -137,11 +139,11 @@ export default class EosLogin extends Vue {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .btn-primary-dark:focus {
-  outline:0;
+  outline: 0;
 }
 .btn-primary-dark:disabled {
   opacity: 0.5;
-  border: 1px solid #9E9E9E;
-  color: #9E9E9E;
+  border: 1px solid #9e9e9e;
+  color: #9e9e9e;
 }
 </style>
