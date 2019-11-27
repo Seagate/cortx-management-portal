@@ -122,17 +122,6 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
   name: "eos-settings-submenu"
 })
 export default class EosSettingsSubmenu extends Vue {
-  // public mounted() {
-  //   this.$store.dispatch("systemConfig/showLoaderMessage", {
-  //     show: true,
-  //     message: "Loader Activated"
-  //   });
-  //   setTimeout(() => {
-  //     this.$store.dispatch("systemConfig/showLoaderMessage", {
-  //       show: false
-  //     });
-  //   }, 2000);
-  // }
   private data() {
     return {
       items: []
