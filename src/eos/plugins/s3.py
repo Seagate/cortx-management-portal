@@ -20,6 +20,7 @@
 import asyncio
 import boto
 import boto3
+from botocore.exceptions import ClientError
 from functools import partial
 from enum import Enum
 from concurrent.futures import ThreadPoolExecutor
@@ -521,7 +522,17 @@ class S3Client(BaseClient):
 
     @Log.trace_method(Log.DEBUG)
     async def get_bucket_tagging(self, bucket):
-        return await self._loop.run_in_executor(self._executor, bucket.Tagging)
+        # When the tag_set is not available ClientError is raised
+        # Need to avoid that in order to iterate over tags for all available buckets
+        try:
+            tagging = await self._loop.run_in_executor(self._executor, bucket.Tagging)
+            tags = tagging.tag_set
+        except ClientError:
+            tags = []
+        # Tags are stored in form [{'Key': <key value>, 'Value' : <actual value>}, ...]
+        # Convert to ordinary Python dict
+        res = {tag['Key'] : tag['Value'] for tag in tags}
+        return res
 
     @Log.trace_method(Log.DEBUG)
     async def put_bucket_tagging(self, bucket_name, tags: dict):
