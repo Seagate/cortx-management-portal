@@ -19,9 +19,9 @@ export default {
     all_system_config: `/api/${version}/config`,
     management_network: `/api/${version}/networkmanagement`,
     stats: `/api/${version}/stats`,
-    csm_user: `/api/${version}/user`, //TODO Change accroding to the Pyhon APIs
+    csm_user: `/api/${version}/user`, 
     admin_user: `/api/${version}/login`,
-    admin_user_create: `/mocklogin`,
+    admin_user_create: `/api/${version}/preboarding/user`,
     admin_user_logout: `/api/${version}/logout`,
 	udx_reg_token: `/usl/v1/registrationToken`,
 	udx_devices: `/usl/v1/devices`,

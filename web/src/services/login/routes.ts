@@ -41,7 +41,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/user/admin",
+    path: "/api/v1/preboarding/user",
     method: "post",
     handler: [
       checkRequiredParams,
