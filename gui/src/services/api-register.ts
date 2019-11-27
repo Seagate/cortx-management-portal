@@ -17,7 +17,7 @@ export const version = "v1";
 export default {
     all_alerts: `/api/${version}/alerts`,
     systemconfig: `api/${version}/systemconfig`,
-    create_user: `api/${version}/user/admin`,
+    create_user: `api/${version}/preboarding/user`,
     login: `api/${version}/login`,
     logout: `/api/${version}/logout`,
     udx_reg_token: `api/${version}/udx-device/registration-token`,

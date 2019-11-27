@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="elevation-0 mediumAlert" tile>
+  <v-card class="elevation-0 mediumAlert pa-0 ma-0" width="70%" tile>
     <v-system-bar height="40em">
       <span id="title" class="text-uppercase font-weight-medium text--black">ALERTS</span>
       <v-spacer></v-spacer>
@@ -26,13 +26,18 @@
       <v-row>
         <v-card height="6em" align="center" class="mx-auto col-3 elevation-0" tile>
           <v-card-text
-            class="ml-4 ma-auto py-0 text-center caption font-weight-bold"
+            class="ml-0 ma-auto py-0 text-center caption font-weight-bold col-12"
           >SYSTEM HEALTH</v-card-text>
-          <v-row class="ml-12">
-            <span class="ml-7 pr-3 pt-4">
-              <v-img height="24" width="24" src="@/assets/status/healthy-icon.png" />
-            </span>
-            <span class="pt-4">Healthy</span>
+          <v-row class="ma-auto pt-0 text-center col-12">
+            <div class="col-12">
+              <v-img
+                class="d-inline-block"
+                height="16"
+                width="16"
+                src="@/assets/status/healthy-icon.png"
+              />
+              <div class="pl-2 d-inline-block">Healthy</div>
+            </div>
           </v-row>
         </v-card>
         <v-divider vertical class="mx-4"></v-divider>
@@ -208,7 +213,7 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
   }
 }
 .mediumAlert {
-  border: 2px solid #e3e3e3;
+  border: 2px solid #e3e3e3 !important;
 }
 tbody tr {
   background-color: #ebf1e9 !important ;

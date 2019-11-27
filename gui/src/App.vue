@@ -24,7 +24,7 @@
         <div class="d-inline-block display-nav">
           <eos-nav-bar></eos-nav-bar>
         </div>
-        <div class="d-inline-block display-container px-2 pt-6 pb-2">
+        <div class="d-inline-block display-container px-2 pt-6 pb-2 col-10">
           <router-view></router-view>
         </div>
       </div>
