@@ -184,14 +184,14 @@ const router = new Router({
       meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
-      path: "/eos-settings-submenu",
-      name: "eos-settings-submenu",
+      path: "/settings-submenu",
+      name: "settings-submenu",
       component: EosSettingsSubmenu,
       meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
-      path: "/eos-provisioning-submenu",
-      name: "eos-provisioning-submenu",
+      path: "/provisioning-submenu",
+      name: "provisioning-submenu",
       component: EosProvisioningSubmenu,
       meta: { requiresAuth: true, isOnboardingReq: false }
     }

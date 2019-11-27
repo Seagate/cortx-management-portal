@@ -29,6 +29,7 @@
         </div>
       </div>
     </div>
+    <loader :show="showLoader" :message="loaderMessage" />
   </v-app>
 </template>
 
@@ -36,14 +37,23 @@
 import { Component, Vue } from "vue-property-decorator";
 import HeaderBar from "./components/header/header-bar.vue";
 import EosNavBar from "./components/navigation/nav-bar.vue";
+import Loader from "./components/widgets/loader.vue";
+
 @Component({
   name: "App",
   components: {
     headerBar: HeaderBar,
-    eosNavBar: EosNavBar
+    eosNavBar: EosNavBar,
+    loader: Loader
   }
 })
 export default class App extends Vue {
+  get showLoader() {
+    return this.$store.getters["systemConfig/showLoaderStatus"];
+  }
+  get loaderMessage() {
+    return this.$store.getters["systemConfig/loaderMessageText"];
+  }
   get onboardingStatus() {
     return this.$store.getters["alerts/onboardingStatus"];
   }
@@ -60,7 +70,7 @@ export default class App extends Vue {
   position: relative;
   top: 4em;
   padding: 0px;
-  background-color: #FFF;
+  background-color: #fff;
 }
 .container {
   height: 100%;
@@ -68,7 +78,7 @@ export default class App extends Vue {
 }
 .display-container {
   position: absolute;
-  left: 13.5em;
+  left: 9.75em;
 }
 .display-nav {
   padding-top: 0.2em;

@@ -14,15 +14,17 @@
  *****************************************************************************/
 <template>
   <v-app-bar height="70em" flat class="black pa-0 ma-0" clipped-left app>
-    <span class="pa-0 ma-0">
-      <v-img :src="require('@/assets/logo.png/')" width="164" class="logoPosition"></v-img>
+    <span class="ml-1 mr-5">
+      <v-img :src="require('@/assets/udx-logo.png/')" width="100"></v-img>
     </span>
-    <div class="verticalLine"></div>
-    <span class="font-weight-medium green--text">CLOUD STORE</span>
+    <div class="verticalLine mx-0"></div>
+    <span class="ml-4">
+      <v-img :src="require('@/assets/cloudstore.png/')"></v-img>
+    </span>
 
     <v-spacer></v-spacer>
 
-    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
+    <v-divider class="grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text body-2">{{new Date().toLocaleString()}}</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text">cloudstore</div>
