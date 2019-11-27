@@ -13,14 +13,19 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
- <v-dialog v-model="show" persistent width="300">
-    <v-card color="success">
-        <v-card-text>
-            <span class="white--text" v-if="message">{{ message }}</span>
-            <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-        </v-card-text>
-    </v-card>
-</v-dialog>
+  <v-overlay :value="show" color="rgba(0, 0, 0, 0.75)">
+    <div class="loader-container">
+      <div class="loader-header" v-if="title">
+        <label>Header</label>
+      </div>
+      <div class="loader-body">
+        <div class="loader-message" v-if="message">
+          <label>{{ message }}</label>
+        </div>
+        <v-progress-linear indeterminate color="#6EBE49" background-color="#B7B7B7" height="8px"></v-progress-linear>
+      </div>
+    </div>
+  </v-overlay>
 </template>
 
 <script lang="ts">
@@ -30,13 +35,39 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "eos-loader"
 })
 export default class EosLoader extends Vue {
+  @Prop({ required: true })
+  public show!: boolean;
 
-    @Prop({required: true})
-    public show!: boolean;
+  @Prop({ required: false })
+  public title!: string;
 
-    @Prop({required: false})
-    public message!: string;
+  @Prop({ required: false })
+  public message!: string;
 }
 </script>
 <style lang="scss" scoped>
+.loader-container {
+  background-color: #ffffff;
+  min-width: 424px;
+}
+.loader-header {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 26px;
+  border-bottom: 1px solid #9e9e9e;
+  color: #000000;
+  padding: 24px;
+}
+.loader-body {
+  padding: 24px;
+}
+.loader-message {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+  margin-bottom: 6px;
+}
 </style>

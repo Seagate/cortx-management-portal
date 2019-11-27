@@ -242,7 +242,8 @@ export default class EosIAMUserManagement extends Vue {
         true,
         "Username is required",
         new Validator(/^[a-zA-Z0-9_-]{1,64}$/, "Invalid Username"),
-        "Username can contain alphabets, numbers and can have _ or - but no spaces and should be less than 64 characters"
+        "Username can contain alphabets, numbers and can have _ " +
+          "or - but no spaces and should be less than 64 characters"
       ),
       new FormControl(
         "Path",
@@ -251,10 +252,7 @@ export default class EosIAMUserManagement extends Vue {
         "/",
         true,
         "Path is required",
-        new Validator(
-          new RegExp("^(/[^/ ]*)+/?$"),
-          "Invalid Path"
-        )
+        new Validator(new RegExp("^(/[^/ ]*)+/?$"), "Invalid Path")
       ),
       new FormControl(
         "Password",
@@ -267,7 +265,9 @@ export default class EosIAMUserManagement extends Vue {
           /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/,
           "Invalid Password"
         ),
-        "Password should be minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character"
+        "Password should be minimum eight characters, " +
+          "at least one uppercase letter, " +
+          "one lowercase letter, one number and one special character"
       ),
       new FormControl(
         "Confirm Password",

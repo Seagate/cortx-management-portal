@@ -129,8 +129,12 @@
             />
           </td>
           <td>
-            <div>{{props.item.location}}</div>
-            <div>State:{{props.item.state}}</div>
+            <div v-if="props.item.location">Location: {{props.item.location}}</div>
+            <div>
+              <label v-if="props.item.state">State: {{props.item.state}}</label>
+              <label v-if="props.item.state && props.item.module_name">,&nbsp;</label>
+              <label v-if="props.item.module_name">Resource Type: {{props.item.module_name}}</label>
+            </div>
           </td>
         </tr>
       </template>
