@@ -25,7 +25,7 @@
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text body-2">{{new Date().toLocaleString()}}</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 grey--text">Cloud Store User</div>
+    <div class="pa-5 grey--text">cloudstore</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div id="alert-menu" class="pl-10 pr-3 pt-1">
       <v-menu offset-y>
@@ -98,7 +98,7 @@ export default class HeaderBar extends Vue {
     };
   }
   public mounted() {
-    const wsUrl = "ws://" + window.location.hostname + ":8081/ws";
+    const wsUrl = "ws://" + window.location.hostname + ":8102/ws";
     Vue.use(VueNativeSock, wsUrl, {
       store,
       format: "json",

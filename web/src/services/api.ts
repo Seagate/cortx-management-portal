@@ -69,14 +69,15 @@ export abstract class Api {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
             let patchurl = base_url + url;
-            if (id && id != "") {
-                patchurl += "/" + id;
-            }
             
             // Remove following code onde all the Python APIs are ready
             // -- Start --
             if (url.startsWith("/mock")) {
-                patchurl = mock_base_url + url + id;
+                patchurl = mock_base_url + url;
+            }
+
+            if (id && id != "") {
+                patchurl += "/" + id;
             }
             console.log("PATCH: " + patchurl);
             // -- end --
@@ -91,6 +92,41 @@ export abstract class Api {
             }
 
             let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
+            });
+            httpRequest.write(requestData);
+            httpRequest.end();
+        });
+    }
+
+    public static async put(url: string, req: Request, resp: Response, id: string | number) {
+        return new Promise((resolve, reject) => {
+            const requestData = JSON.stringify(req.body);
+            let puturl = base_url + url;
+            
+            // Remove following code onde all the Python APIs are ready
+            // -- Start --
+            if (url.startsWith("/mock")) {
+                puturl = mock_base_url + url;
+            }
+
+            if (id && id != "") {
+                puturl += "/" + id;
+            }
+            console.log("put: " + puturl);
+            // -- end --
+            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            const options = {
+                method: "put",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Content-Length': requestData.length,
+                    'authorization': authorization
+                }
+            }
+
+            let httpRequest = http_agent.request(puturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
             });
@@ -130,12 +166,41 @@ export abstract class Api {
         });
     }
 
+    public static async delete(url: string, req: Request, resp: Response, id?: string | number) {
+        return new Promise((resolve, reject) => {
+            let deleteUrl = base_url + url + ((id) ? "/" + id : "");
+            // Remove following code onde all the Python APIs are ready
+            // -- Start --
+            if (url.startsWith("/mock")) {
+                deleteUrl = mock_base_url + url + ((id) ? "/" + id : "");
+            }
+            console.log("DELETE: " + deleteUrl);
+            // -- end --
+            const requestData = req && req.body ? JSON.stringify(req.body) : "";
+            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            const options = {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Content-Length': requestData.length,
+                    'authorization': authorization
+                }
+            }
+
+            let httpRequest = http_agent.request(deleteUrl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
+            });
+            httpRequest.write(requestData);
+            httpRequest.end();
+        });
+    }
+
     private static handleResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
         return (apiresp: any) => {
             let data = '';
             let response: any;
 
-            console.log(apiresp.headers.token);
             if(apiresp.headers.token){
                 resp.set("Authorization", apiresp.headers.token);    
             }            

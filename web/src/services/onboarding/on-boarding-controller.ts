@@ -1,5 +1,5 @@
 /*****************************************************************************
- Filename:          AlertController.ts
+ Filename:          on-boarding-controller.ts
  Description:       Gets the data from provider and process it and send back
                     to client.
 

@@ -31,12 +31,15 @@ let count = Object.keys(objectValue).length;
  * @param next 
  */
 export const checkRequiredParams = (req: Request, res: Response, next: NextFunction) => {
+  console.log("Validation is for URL: " + req.url);
   if (req.method == 'GET') {
     validateGetParams(req, res, next);
   } else if (req.method == 'PATCH') {
     validatePatchParams(req, res, next);
-  }  else if (req.method == 'POST') {
+  } else if (req.method == 'POST') {
     validatePostParams(req, res, next);
+  } else if (req.method == 'PUT') {
+    validatePutParams(req, res, next);
   } else {
     next();
   }
@@ -93,6 +96,36 @@ let validatePatchParams = (req: Request, res: Response, next: NextFunction) => {
   let requiredParams = objectValue[path];
   if (requiredParams) {
     let requiredPatchParams = requiredParams.PATCH;
+    if (requiredPatchParams) {
+      validateParams(requiredPatchParams, req.body, req, res, next);
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+}
+
+/**
+ * This method validates the parameters in payload of PUT method.
+ * This methods gets the mandatory parmeter criteria from 
+ * api-mandatory-parameters.json based on the PATH.
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+let validatePutParams = (req: Request, res: Response, next: NextFunction) => {
+  let url = req.url;
+  let path = "";
+  for (let i = 0; i < count; i++) {
+    if (url.includes(Object.keys(objectValue)[i])) {
+      path = Object.keys(objectValue)[i];
+      break;
+    }
+  }
+  let requiredParams = objectValue[path];
+  if (requiredParams) {
+    let requiredPatchParams = requiredParams.PUT;
     if (requiredPatchParams) {
       validateParams(requiredPatchParams, req.body, req, res, next);
     } else {
