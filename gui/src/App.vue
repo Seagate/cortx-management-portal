@@ -29,7 +29,6 @@
         </div>
       </div>
     </div>
-    <!-- <loader :show="showD" :message="showM" /> -->
     <loader :show="showLoader" :message="loaderMessage" />
   </v-app>
 </template>
@@ -49,12 +48,6 @@ import Loader from "./components/widgets/loader.vue";
   }
 })
 export default class App extends Vue {
-  // public data() {
-  //   return {
-  //     showM: "internal",
-  //     showD: true
-  //   };
-  // }
   get showLoader() {
     return this.$store.getters["systemConfig/showLoaderStatus"];
   }
