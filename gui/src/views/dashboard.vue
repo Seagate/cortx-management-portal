@@ -13,17 +13,36 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <eos-alert-medium />
+  <div>
+    <v-row>
+      <v-col cols="8">
+        <eos-alert-medium />
+      </v-col>
+      <v-col cols="4">
+        <eos-capacity-guage />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <eos-stats-medium />
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import EosAlertMedium from "./../components/dashboard/alert-medium.vue";
+import EosStatsMedium from "./../components/dashboard/stats/stats-medium.vue";
+import EosCapacityGuage from "./../components/dashboard/capacity-gauge.vue";
+import * as c3 from "c3";
 
 @Component({
   name: "eos-dashboard",
   components: {
-    eosAlertMedium: EosAlertMedium
+    eosAlertMedium: EosAlertMedium,
+    eosStatsMedium: EosStatsMedium,
+    eosCapacityGuage: EosCapacityGuage
   }
 })
 export default class Dashboard extends Vue {}

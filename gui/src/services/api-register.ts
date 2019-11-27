@@ -23,5 +23,10 @@ export default {
     udx_reg_token: `api/${version}/udx-device/registration-token`,
     udx_device: `api/${version}/udx-device`,
     s3_account: `/api/${version}/s3_account`,
-    s3_iam_user: `/api/${version}/s3_iam_user`
+    s3_iam_user: `/api/${version}/s3_iam_user`,
+    stats: `api/${version}/stats/throughput`,
+    throughput: `api/${version}/stats/throughput`,
+    latency: `api/${version}/stats/latency`,
+    iops: `api/${version}/stats/iops`,
+    capacity: `api/${version}/capacity`
 };
