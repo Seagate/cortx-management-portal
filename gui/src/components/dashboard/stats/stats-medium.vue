@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="ma-5 elevation-0 mediumAlert" width="100%" tile>
+  <v-card class="ma-0 elevation-0 mediumAlert" width="100%" tile>
     <v-system-bar height="40em">
       <span id="title" class="text-uppercase font-weight-medium text--black">PERFORMANCE</span>
       <v-spacer></v-spacer>
@@ -59,13 +59,20 @@ export default class EosStatsMedium extends Vue {
       "performanceStats/getThroughputPerformanceStats",
       queryParams
     );
+    const demoData = [
+      ["x", new Date().getTime()],
+      ["total", 0],
+      ["read", 0],
+      ["write", 0]
+    ];
+
     obj.then(
       (data) => {
       this.chart = c3.generate({
         bindto: "#chart_throughput",
         data: {
           x: "x",
-          columns: data,
+          columns: data ? data : demoData,
           type: "spline"
         },
         grid: {
@@ -136,13 +143,20 @@ export default class EosStatsMedium extends Vue {
       "performanceStats/getIopsPerformanceStats",
       queryParams
     );
+    const demoData = [
+      ["x", new Date().getTime()],
+      ["total", 0],
+      ["read", 0],
+      ["write", 0]
+    ];
+
     obj.then(
       (data) => {
       this.chartIops = c3.generate({
         bindto: "#chart_iops",
         data: {
           x: "x",
-          columns: data,
+          columns: data ? data : demoData,
           type: "spline"
         },
         grid: {
@@ -172,7 +186,7 @@ export default class EosStatsMedium extends Vue {
           },
           y: {
             label: {
-              text: "KB transferred per second",
+              text: "Ops per second",
               position: "outer-middle"
             }
           }
@@ -213,6 +227,13 @@ export default class EosStatsMedium extends Vue {
       "performanceStats/getLatencyPerformanceStats",
       queryParams
     );
+    const demoData = [
+      ["x", new Date().getTime()],
+      ["total", 0],
+      ["read", 0],
+      ["write", 0]
+    ];
+
     obj.then(
       (data) => {
       this.chartLatency = c3.generate({
@@ -220,7 +241,7 @@ export default class EosStatsMedium extends Vue {
         data: {
           x: "x",
           type: "spline",
-          columns: data
+          columns: data ? data : demoData
         },
         grid: {
           x: {

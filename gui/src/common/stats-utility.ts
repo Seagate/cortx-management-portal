@@ -33,11 +33,11 @@ export default abstract class StatsUtility {
     }
 
     // This static function is used to convert capacity api data into c3 fromat
-    public static formatCapacityData(payload: DiskCapacityDetails | null): any[][] {
+    public static formatCapacityData(payload: DiskCapacityDetails | null): [string, ...any[]][] {
         const outputFormat: [string, ...any[]][] = [["data"]];
-       // outputFormat[0].push("data");
         if (payload !== null) {
-            outputFormat[0].push(payload.usage_Percentage);
+            const percentUsage = payload.usage_Percentage.split(" ");
+            outputFormat[0].push(parseInt(percentUsage[0], 10));
         }
         return outputFormat;
     }

@@ -33,7 +33,12 @@ export default class PerformanceStats extends VuexModule {
 
     public throughputPerformanceData: PerfomanceStatsDetails | null = null;
     public latencyPerformanceData: PerfomanceStatsDetails | null = null;
-    public capacityData: DiskCapacityDetails | null = null;
+    public capacityData: DiskCapacityDetails = {
+        size: "0 GB",
+        used: "0 GB",
+        avail: "0 GB",
+        usage_Percentage: "0 %"
+    };
     public constStr = require("../../common/const-string.json");
     // Throuthput
     @Action
@@ -98,11 +103,13 @@ export default class PerformanceStats extends VuexModule {
         }
     }
 
+    // capacity
     @Action
     public async getCapacityStats(latencyParams: any) {
         try {
             const res = await Api.getAll(apiRegister.capacity, latencyParams);
             this.context.commit("setCapacityStats", res.data);
+            return StatsUtility.formatCapacityData(res.data);
         } catch (e) {
             // tslint:disable-next-line: no-console
             console.error("err logger: ", e);
@@ -114,9 +121,6 @@ export default class PerformanceStats extends VuexModule {
         this.capacityData = { ...data };
     }
 
-    get getcapacityGuageStats() {
-        return StatsUtility.formatCapacityData(this.capacityData);
-    }
     get getCapacity() {
         return this.capacityData;
     }

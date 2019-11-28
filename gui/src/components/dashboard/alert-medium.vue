@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="elevation-0 mediumAlert pa-0 ma-0" width="70%" tile>
+  <v-card class="elevation-0 mediumAlert pa-0 ma-0" tile>
     <v-system-bar height="40em">
       <span id="title" class="text-uppercase font-weight-medium text--black">ALERTS</span>
       <v-spacer></v-spacer>
@@ -60,6 +60,7 @@
       calculate-widths
       :items="alertData"
       item-key="created_time"
+      height="147"
       :items-per-page.sync="itemsPerPage"
       :footer-props="{
       'items-per-page-options': [5, 10, 15]
