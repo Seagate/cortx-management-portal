@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="ma-5 elevation-0 mediumAlert" width="100%" tile>
+  <v-card class="ma-0 elevation-0 mediumAlert" width="100%" tile>
     <v-system-bar height="40em">
       <span id="title" class="text-uppercase font-weight-medium text--black">CAPACITY</span>
       <v-spacer></v-spacer>
@@ -49,33 +49,30 @@ import * as c3 from "c3";
 })
 export default class EosCapacityGauge extends Vue {
   public created() {
-    const capacityRes = this.$store.dispatch(
-      "performanceStats/getCapacityStats"
-    );
-    const that = this;
-    capacityRes.then(() => {
-      const chart = c3.generate({
-        bindto: "#gauge_capacity",
-        data: {
-           columns: [["data", 73.36]],
-           type: "gauge"
-        },
-        gauge: {},
-        color: {
-          pattern: ["#FF0000", "#F97600", "#F6C600", "#60B044"], // the three color levels for the percentage values.
-          threshold: {
-            values: [30, 60, 90, 100]
+    const capacityRes = this.$store
+      .dispatch("performanceStats/getCapacityStats")
+      .then(
+        (capacityC3Data) => {
+        const chart = c3.generate({
+          bindto: "#gauge_capacity",
+          data: {
+            columns: capacityC3Data,
+            type: "gauge"
+          },
+          gauge: {},
+          color: {
+            pattern: ["#60B044","#60B044","#60B044","#60B044"], // the three color levels for the percentage values.
+            threshold: {
+              values: [30, 60, 90, 100]
+            }
+          },
+          size: {
+            height: 180
           }
-        },
-        size: {
-          height: 180
-        }
+        });
       });
-    });
   }
-  get gaugeCapacityC3() {
-    return this.$store.getters["performanceStats/getcapacityGuageStats"];
-  }
+
   get capacityDetails() {
     return this.$store.getters["performanceStats/getCapacity"];
   }
