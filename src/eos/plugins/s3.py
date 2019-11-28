@@ -489,6 +489,7 @@ class IamClient(BaseClient):
             # TODO: our IAM server does not return the updated user information
             return True
 
+
 class S3Client(BaseClient):
     """
     Class represents S3 server connection that manages buckets
@@ -553,52 +554,6 @@ class S3Client(BaseClient):
     async def delete_bucket(self, bucket):
         await self._loop.run_in_executor(self._executor, bucket.delete)
 
-class S3BucketsCache:
-    """
-    Class represents the self-sustaining list of buckets for particular S3 account
-
-    Attributes:
-        s3cli: S3Client object that connects cache with the S3 server
-        cache: the list of buckets for particular account
-        interval: time interval between two cache updates
-        sustain_cache_task: asyncronous task that sustains cache
-            (runs until object is destroyed)
-    """
-
-    def __init__(self, access_key_id, secret_key, config, interval=3,
-                 loop=asyncio.get_event_loop()):
-        """
-        Creates the cache and enables self-sustaining job
-
-        :param access_key_id: S3 account's of interest access key id
-        :param secret_key: S3 account's of interest secret key
-        :param config: configuration of S3 server connection
-        :param interval: time interval between two cache updates
-        "param loop: asyncio event loop for S3 client to work into
-        """
-        self._s3cli = S3Client(access_key_id, secret_key, config, loop)
-        self._cache = []
-        self._interval = interval
-        self._sustain_cache_task = loop.create_task(self._sustain_cache())
-
-    async def _sustain_cache(self):
-        """The asynchronous task that sustains buckets cache"""
-        try:
-            while True:
-                self._cache = await self._s3cli.get_all_buckets()
-                # TODO: handle error case
-                await asyncio.sleep(self._interval)
-        except asyncio.CancelledError:
-            pass
-
-    def get_cache(self):
-        """Getter for buckets cache"""
-        return self._cache
-
-    def __del__(self):
-        """Cancels cache sustaining task when object is deleted"""
-        self._sustain_cache_task.cancel()
-
 
 class S3Plugin:
     """
@@ -650,18 +605,6 @@ class S3Plugin:
             raise CsmInternalError('Connection configuration must be provided')
 
         return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop(), session_token)
-
-    @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
-    def get_s3_buckets_cache(self, access_key, secret_key, connection_config=None,
-                             interval=3) -> S3BucketsCache:
-        """
-        Returns a buckets cache object
-        """
-        if not connection_config:
-            raise CsmInternalError('Connection configuration must be provided')
-
-        return S3BucketsCache(access_key, secret_key, connection_config, interval,
-                              asyncio.get_event_loop())
 
     @Log.trace_method(Log.DEBUG)
     async def get_temp_credentials(self, account_name, password, duration=None,
