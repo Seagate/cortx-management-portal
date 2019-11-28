@@ -29,11 +29,14 @@ export default class SystemConfiguration extends VuexModule {
     public isipV4: boolean = false;
     public isipV6: boolean = false;
     public isnetworkSettingsSkip: boolean = false;
+    public showLoader: boolean = false;
+    public loaderMessage: string = "";
 
     @Mutation
     public systemConfigMutation(payload: any) {
         this.systemConfig = { ...payload };
     }
+
     @Mutation
     public setNetworkManagementSettings(networkType: any) {
         if (networkType.type === "ipV4") {
@@ -42,6 +45,11 @@ export default class SystemConfiguration extends VuexModule {
         if (networkType.type === "ipV6") {
             this.isipV6 = networkType.flag;
         }
+    }
+    @Mutation
+    public loaderConfigMutation(loaderData: any) {
+        this.showLoader = loaderData.show;
+        this.loaderMessage = loaderData.message;
     }
 
     @Action
@@ -61,6 +69,11 @@ export default class SystemConfiguration extends VuexModule {
             // tslint:disable-next-line: no-console
             console.log(e);
         }
+    }
+
+    @Action
+    public async showLoaderMessage(loaderData: any) {
+        this.context.commit("loaderConfigMutation", loaderData);
     }
 
     // Get system configuration from store
@@ -91,4 +104,11 @@ export default class SystemConfiguration extends VuexModule {
     get isipV6Status() {
         return this.isipV6;
     }
+    get showLoaderStatus() {
+        return this.showLoader;
+    }
+    get loaderMessageText() {
+        return this.loaderMessage;
+    }
+
 }

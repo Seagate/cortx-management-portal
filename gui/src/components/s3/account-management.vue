@@ -230,7 +230,8 @@ export default class EosAccountManagement extends Vue {
         true,
         "Account Name is required",
         new Validator(new RegExp("^[a-zA-Z0-9_-]*$"), "Invalid Account Name"),
-        "Account Name should be alphanumeric and can have _ or - but no spaces"
+        "Account Name should be alphanumeric " +
+          "and can have _ or - but no spaces"
       ),
       new FormControl(
         "Email Id",
@@ -255,7 +256,9 @@ export default class EosAccountManagement extends Vue {
           /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/,
           "Invalid Password"
         ),
-        "Password should be minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character"
+        "Password should be minimum eight characters, " +
+          "at least one uppercase letter, one lowercase letter, " +
+          "one number and one special character"
       ),
       new FormControl(
         "Confirm Password",

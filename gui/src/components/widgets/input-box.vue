@@ -98,10 +98,12 @@ export default class EosInputBox extends Vue {
 label.has-error {
   color: #dc1f2e;
 }
-input:focus {outline:0;}
+input:focus {
+  outline: 0;
+}
 .input-text {
-  background: #FFFFFF;
-  border: 1px solid #9E9E9E;
+  background: #ffffff;
+  border: 1px solid #9e9e9e;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

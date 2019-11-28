@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="elevation-0 mediumAlert pa-0 ma-0" width="70%" tile>
+  <v-card class="elevation-0 mediumAlert pa-0 ma-0" tile>
     <v-system-bar height="40em">
       <span id="title" class="text-uppercase font-weight-medium text--black">ALERTS</span>
       <v-spacer></v-spacer>
@@ -60,6 +60,7 @@
       calculate-widths
       :items="alertData"
       item-key="created_time"
+      height="147"
       :items-per-page.sync="itemsPerPage"
       :footer-props="{
       'items-per-page-options': [5, 10, 15]
@@ -129,8 +130,12 @@
             />
           </td>
           <td>
-            <div>{{props.item.location}}</div>
-            <div>State:{{props.item.state}}</div>
+            <div v-if="props.item.location">Location: {{props.item.location}}</div>
+            <div>
+              <label v-if="props.item.state">State: {{props.item.state}}</label>
+              <label v-if="props.item.state && props.item.module_name">,&nbsp;</label>
+              <label v-if="props.item.module_name">Resource Type: {{props.item.module_name}}</label>
+            </div>
           </td>
         </tr>
       </template>
@@ -159,7 +164,7 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
       },
       {
         text: "Alert Severity",
-        value: "state",
+        value: "severity",
         sortable: true,
         sortDir: "desc"
       },

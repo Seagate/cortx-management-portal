@@ -35,6 +35,7 @@ export default class UserLogin extends VuexModule {
         queryParams = queryParams ? queryParams : this.queryParams;
         try {
             const res = await Api.post(apiRegister.create_user, queryParams);
+            return res;
         } catch (e) {
             // tslint:disable-next-line: no-console
             console.error("err logger: ", e);

@@ -32,8 +32,8 @@ export class Form {
 
     public validate() {
         let tempIsValid: boolean = true;
-        for (let i = 0; i < this.controls.length; i++) {
-            if (!this.controls[i].isValid) {
+        for (const control of this.controls) {
+            if (!control.isValid) {
                 tempIsValid = false;
                 break;
             }
@@ -55,8 +55,8 @@ export class FormControl {
     public informationText: string;
 
     constructor(label: string, name: string, type: string,
-                value: string, isRequired: boolean = false, requiredMessage: string = "",
-                validator?: Validator, informationText?: string) {
+        value: string, isRequired: boolean = false, requiredMessage: string = "",
+        validator?: Validator, informationText?: string) {
         this.label = label;
         this.name = name;
         this.type = type;

@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card height="100%" class="black" width="12.4em" tile>
+  <v-card height="100%" class="black" width="8.750em" tile>
     <v-navigation-drawer permanent class="black" tile floating>
       <v-list nav class="pa-0 ma-0">
         <v-list-item-group v-model="selectedMenu" active-class="border">
@@ -26,12 +26,12 @@
             @click="onSelectedMenu(itemIndex)"
             class="pb-2 ma-0"
           >
-            <v-list-item-icon class="pa-2 ma-2">
+            <v-list-item-icon class="my-3 mr-2 ml-0">
               <v-img :src="require('@/assets/navigation/' + item.icon)" width="23" height="23"></v-img>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title
-                class="font-weight-medium condensed subtitle-1"
+                class="font-weight-medium condensed subtitle-2"
                 :class="[(itemIndex === selectedMenu) ? activeClass: inactiveClass]"
               >{{ item.title }}</v-list-item-title>
             </v-list-item-content>
@@ -62,12 +62,12 @@ export default class EosNavBar extends Vue {
         },
         {
           title: "Provisioning",
-          path: "/eos-provisioning-submenu",
+          path: "/provisioning-submenu",
           icon: "storage-green.png"
         },
         {
           title: "Settings",
-          path: "/eos-settings-submenu",
+          path: "/settings-submenu",
           icon: "settings-green.png"
         },
         {
