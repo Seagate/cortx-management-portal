@@ -17,7 +17,7 @@
     <v-system-bar height="40em">
       <span id="title" class="text-uppercase font-weight-medium text--black">CAPACITY</span>
       <v-spacer></v-spacer>
-      <router-link :to="'alertlarge'">
+      <router-link :to="''">
         <img src="@/assets/widget/view-slideover-off.png" id="navLargeMode" style />
       </router-link>
     </v-system-bar>
@@ -49,6 +49,10 @@ import * as c3 from "c3";
 })
 export default class EosCapacityGauge extends Vue {
   public created() {
+    const demoData = [
+      ["x", 0],
+    ];
+
     const capacityRes = this.$store
       .dispatch("performanceStats/getCapacityStats")
       .then(
@@ -56,12 +60,12 @@ export default class EosCapacityGauge extends Vue {
         const chart = c3.generate({
           bindto: "#gauge_capacity",
           data: {
-            columns: capacityC3Data,
+            columns: capacityC3Data ? capacityC3Data : demoData,
             type: "gauge"
           },
           gauge: {},
           color: {
-            pattern: ["#60B044","#60B044","#60B044","#60B044"], // the three color levels for the percentage values.
+            pattern: ["#60B044", "#60B044", "#60B044", "#60B044"], // the three color levels for the percentage values.
             threshold: {
               values: [30, 60, 90, 100]
             }
