@@ -4,7 +4,6 @@ node_modules
 dist
 web-dist
 __pycache__
-csm
 
 # local env files
 .env.local
