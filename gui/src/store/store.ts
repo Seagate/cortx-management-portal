@@ -18,6 +18,7 @@ import alertNotification from "./modules/alert-notification";
 import alerts from "./modules/alerts";
 import systemConfig from "./modules/system-configuration";
 import userLogin from "./modules/user-login";
+import bucket from "./modules/s3-bucket";
 import performanceStats from "./modules/performance-stats";
 import createUser from "./modules/create-user";
 
@@ -29,6 +30,7 @@ export default new Vuex.Store({
         alerts,
         systemConfig,
         userLogin,
+        bucket,
         performanceStats,
         createUser
     }

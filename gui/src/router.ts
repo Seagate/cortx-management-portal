@@ -31,6 +31,9 @@ import EosNotifications from "./components/onboarding/system-config/notification
 import EosNotificationsEmail from "./components/onboarding/system-config/notifications/notifications-email.vue";
 import EosNotificationsSyslog from "./components/onboarding/system-config/notifications/notifications-syslog.vue";
 import EosInterfaceSelect from "./components/onboarding/system-config/interface-select/interface-select.vue";
+import EosAccountManagement from "./components/s3/account-management.vue";
+import EosBucketCreation from "./components/s3/bucket-creation.vue";
+import EOSConfigurationSummary from "./components/s3/configuration-summary.vue";
 import EosS3Management from "./components/s3/s3.vue";
 import EosAdminUser from "./components/preboarding/admin-user.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
@@ -153,6 +156,26 @@ const router = new Router({
       name: "interfaceselect",
       component: EosInterfaceSelect,
       meta: { requiresAuth: true, isOnboardingReq: false }
+    },
+    {
+      path: "/s3account",
+      name: "s3account",
+      component: EosAccountManagement,
+      meta: { requiresAuth: false, isOnboardingReq: false }
+    },
+    {
+      path: "/s3bucketcreation",
+      name: "bucketcreation",
+      component: EosBucketCreation,
+      meta: { requiresAuth: true, isOnboardingReq: false }
+
+    },
+    {
+      path: "/bucketconfigsummary",
+      name: "bucketconfigsummary",
+      component: EOSConfigurationSummary,
+      meta: { requiresAuth: true, isOnboardingReq: false }
+
     },
     {
       path: "/s3",
