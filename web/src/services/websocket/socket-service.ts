@@ -42,6 +42,9 @@ export class SocketService {
                 console.log("logger: Sending Data over WebSocket; Data: " + event.data);
                 ws.send(event.data);
             }
+            wslistener.onerror = function (err: any) {
+                console.log("TCL: SocketService -> wslistener.onerror -> err", err);
+            }
         });
     }
 }

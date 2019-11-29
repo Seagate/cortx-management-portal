@@ -100,15 +100,14 @@ export default class HeaderBar extends Vue {
     };
   }
   public mounted() {
-    // TODO: Commented as authorization needs to be implemented 
-    // const wsUrl = "ws://" + window.location.hostname + ":8102/ws";
-    // Vue.use(VueNativeSock, wsUrl, {
-    //   store,
-    //   format: "json",
-    //   reconnection: true, // (Boolean) whether to reconnect automatically (false)
-    //   reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
-    //   reconnectionDelay: 3000 // (Number) how long to initially wait before attempting a new (1000) })
-    // });
+    const wsUrl = "ws://" + window.location.hostname + ":8102/ws";
+    Vue.use(VueNativeSock, wsUrl, {
+      store,
+      format: "json",
+      reconnection: true, // (Boolean) whether to reconnect automatically (false)
+      reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
+      reconnectionDelay: 3000 // (Number) how long to initially wait before attempting a new (1000) })
+    });
     this.$store.dispatch("alertDataAction");
   }
 
