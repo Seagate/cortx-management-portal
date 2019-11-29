@@ -81,7 +81,7 @@
             }
         ]
     },
-    "/api/v1/user/admin": {
+    "/api/v1/preboarding/user": {
         "POST": [
             {
                 "paramname": "username",
@@ -104,6 +104,15 @@
             },
             {
                 "paramname": "password",
+                "datatype": "string",
+                "required": true
+            }
+        ]
+    },
+    "/api/v1/s3/bucket": {
+        "POST": [
+            {
+                "paramname": "bucket_name",
                 "datatype": "string",
                 "required": true
             }
