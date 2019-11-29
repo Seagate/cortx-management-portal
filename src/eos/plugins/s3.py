@@ -32,25 +32,29 @@ from boto import config as boto_config
 from csm.common.log import Log
 from csm.common.errors import CsmInternalError
 from csm.core.data.models.s3 import (S3ConnectionConfig, IamAccount, ExtendedIamAccount,
-                                       IamLoginProfile, IamUser, IamUserListResponse,
-                                       IamAccountListResponse, IamTempCredentials,
-                                       IamErrors, IamError)
+                                     IamLoginProfile, IamUser, IamUserListResponse,
+                                     IamAccountListResponse, IamTempCredentials,
+                                     IamErrors, IamError)
 
 
 class BaseClient:
     """
     Base class for IAM API operations.
     """
-    def __init__(self, access_key: str, secret_key: str, config: S3ConnectionConfig, loop=asyncio.get_event_loop(), session_token=None):
+
+    def __init__(self, access_key: str, secret_key: str, config: S3ConnectionConfig,
+                 loop=asyncio.get_event_loop(), session_token=None):
         self._loop = loop
         self._executor = ThreadPoolExecutor()
         self._config = config
-        self.connection = self._create_boto_connection(access_key, secret_key, config, session_token)
+        self.connection = self._create_boto_connection(access_key, secret_key,
+                                                       config, session_token)
 
     def _create_boto_connection_object(self, **kwargs):
         raise NotImplementedError
 
-    def _create_boto_connection(self, access_key, secret_key, config: S3ConnectionConfig, session_token=None):
+    def _create_boto_connection(self, access_key, secret_key, config: S3ConnectionConfig,
+                                session_token=None):
         """
         Helper function that creates IAM connection for the given credentials and configuration
         :returns: an IAMConnection object
@@ -503,7 +507,8 @@ class S3Client(BaseClient):
         url = f"{proto}://{kwargs.get('host', 'localhost')}:{kwargs.get('port', '80')}"
         s3 = boto3.resource(service_name='s3', endpoint_url=url,
                             aws_access_key_id=kwargs['aws_access_key_id'],
-                            aws_secret_access_key=kwargs['aws_secret_access_key'])
+                            aws_secret_access_key=kwargs['aws_secret_access_key'],
+                            aws_session_token=kwargs["security_token"])
         return s3
 
     @Log.trace_method(Log.DEBUG)
@@ -516,6 +521,16 @@ class S3Client(BaseClient):
         return await self._loop.run_in_executor(self._executor,
                                                 partial(self.connection.create_bucket,
                                                         Bucket=bucket_name))
+
+    @Log.trace_method(Log.DEBUG)
+    async def delete_bucket(self, bucket_name: str):
+        bucket = await self._loop.run_in_executor(self._executor, self.connection.Bucket, bucket_name)
+        # NOTE: according to boto3 documentation all of the keys should be deleted before
+        #  bucket deletion itself
+        for key in bucket.objects.all():
+            await self._loop.run_in_executor(self._executor, key.delete)
+        
+        await self._loop.run_in_executor(self._executor, bucket.delete)
 
     @Log.trace_method(Log.DEBUG)
     async def get_all_buckets(self):
@@ -549,10 +564,6 @@ class S3Client(BaseClient):
             tagging = self.connection.BucketTagging(bucket_name)
             return tagging.put(Tagging=tag_set)
         return await self._loop.run_in_executor(self._executor, _run)
-
-    @Log.trace_method(Log.DEBUG)
-    async def delete_bucket(self, bucket):
-        await self._loop.run_in_executor(self._executor, bucket.delete)
 
 
 class S3Plugin:
@@ -594,7 +605,8 @@ class S3Plugin:
         if not connection_config:
             raise CsmInternalError('Connection configuration must be provided')
 
-        return IamClient(access_key, secret_key, connection_config, asyncio.get_event_loop(), session_token)
+        return IamClient(access_key, secret_key, connection_config,
+                         asyncio.get_event_loop(), session_token)
 
     @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
     def get_s3_client(self, access_key, secret_key, connection_config=None, session_token=None) -> S3Client:
@@ -604,7 +616,9 @@ class S3Plugin:
         if not connection_config:
             raise CsmInternalError('Connection configuration must be provided')
 
-        return S3Client(access_key, secret_key, connection_config, asyncio.get_event_loop(), session_token)
+        return S3Client(access_key, secret_key, connection_config,
+                        asyncio.get_event_loop(), session_token)
+
 
     @Log.trace_method(Log.DEBUG)
     async def get_temp_credentials(self, account_name, password, duration=None,
