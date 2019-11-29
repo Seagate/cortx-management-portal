@@ -65,4 +65,8 @@ export abstract class Api {
     public static async delete(url: string, id: string) {
         return await axios.delete(url + "/" + id);
     }
+    // Wrapper method for update api
+    public static async put(url: string, payload: object, id: string) {
+        return await axios.put(url + "/" + id, payload);
+    }
 }

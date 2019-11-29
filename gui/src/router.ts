@@ -35,6 +35,7 @@ import EosS3Management from "./components/s3/s3.vue";
 import EosAdminUser from "./components/preboarding/admin-user.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
 import EosLogin from "./components/preboarding/login.vue";
+import EosSetting from "./views/setting.vue";
 import UDXRegistration from "./components/udx/udx-registration.vue";
 import EosSettingsSubmenu from "./components/submenu-options/settings-submenu.vue";
 import EosProvisioningSubmenu from "./components/submenu-options/provisioning-submenu.vue";
@@ -175,6 +176,12 @@ const router = new Router({
       path: "/login",
       name: "login",
       component: EosLogin,
+      meta: { requiresAuth: false, isOnboardingReq: false }
+    },
+    {
+      path: "/setting",
+      name: "setting",
+      component: EosSetting,
       meta: { requiresAuth: false, isOnboardingReq: false }
     },
     {

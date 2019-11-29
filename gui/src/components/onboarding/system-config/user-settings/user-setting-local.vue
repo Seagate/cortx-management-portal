@@ -1,12 +1,12 @@
 <template>
   <v-container class="mt-6 body-2">
-    <v-img
+    <!--<v-img
       id="alert-img"
       :src="require('./../../../../assets/onboarding-wizard.png')"
       width="780px"
       height="70px"
     ></v-img>
-    <v-divider />
+    <v-divider />-->
     <div>
       <div class="title mt-6" id="lblLocalSetting">
         User Settings: Local
@@ -16,16 +16,29 @@
     <div class="mt-5">
       <span
         class="font-weight-regular"
-       id="lblLocalMsgConfig">Use the steps below to configure your system. Not all of this information is required, but it is strongly recommended. After setup, you can adjust these settings using the lazy dog button.</span>
+        id="lblLocalMsgConfig"
+      >Use the steps below to configure your system. Not all of this information is required, but it is strongly recommended. After setup, you can adjust these settings using the lazy dog button.</span>
     </div>
     <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
       <div v-if="isUserCreate">
         <v-row>
           <v-col class="pl-5">
             <div class="font-weight-medium pt-3" id="lblLocalUsrName">User Name</div>
-            <input class="input-text" type="text" name="hostname" v-model="hostname"  id="txtLocalHostname"/>
-            <div class="font-weight-medium pt-3" id="lblLocalPass">Password</div>
-            <input class="input-text" type="password" name="password" v-model="password"  id="txtLocalPass"/>
+            <input
+              class="input-text"
+              type="text"
+              name="username"
+              v-model="username"
+              id="txtLocalHostname"
+            />
+            <div class="font-weight-medium pt-3">Password</div>
+            <input
+              class="input-text"
+              type="password"
+              name="password"
+              v-model="password"
+              id="txtLocalPass"
+            />
             <div class="font-weight-medium pt-3" id="lblLocalConfirmPass">Confirm Password</div>
             <input
               class="input-text"
@@ -37,22 +50,57 @@
           </v-col>
           <v-col>
             <div class="font-weight-medium pt-3 pb-2">Interfaces</div>
-            <input type="checkbox" @change="web" v-model="web" name="web" id="chkLocalWeb" />
-            <span class="ml-3 font-weight-medium" id="lblLocalWeb">Web</span>
+            <input
+              type="checkbox"
+              @change="web"
+              v-model="checkedInterfaces"
+              name="web"
+              value="web"
+              id="chkLocalWeb"
+            />
+            <span class="ml-3 font-weight-medium">Web</span>
             <br />
-            <input type="checkbox" @change="cli" v-model="cli" name="cli"  id="chkLocalCli"/>
-            <span class="ml-3 font-weight-medium" id="lblCheckCli">CLI</span>
+            <input
+              type="checkbox"
+              @change="cli"
+              v-model="checkedInterfaces"
+              name="cli"
+              value="cli"
+              id="chkLocalCli"
+            />
+            <span class="ml-3 font-weight-medium">CLI</span>
             <br />
-            <input type="checkbox" @change="api" v-model="api" name="api"  id="chkLocalAPi"/>
-            <span class="ml-3 font-weight-medium" id="lblLocalApi">API</span>
+            <input
+              type="checkbox"
+              @change="api"
+              v-model="checkedInterfaces"
+              name="api"
+              value="api"
+              id="chkLocalAPi"
+            />
+            <span class="ml-3 font-weight-medium">API</span>
           </v-col>
           <v-col>
-            <div class="font-weight-medium pt-3 pb-2" id="lblLocalRoles">Roles</div>
-            <input type="checkbox" @change="manage" v-model="manage" name="manage" id="chkLocalManage"/>
-            <span class="ml-3 font-weight-medium" id="lblLocalManage">Manage</span>
+            <div class="font-weight-medium pt-3 pb-2">Roles</div>
+            <input
+              type="checkbox"
+              @change="manage"
+              v-model="checkedRoles"
+              name="manage"
+              value="manage"
+              id="chkLocalManage"
+            />
+            <span class="ml-3 font-weight-medium">Manage</span>
             <br />
-            <input type="checkbox" @change="monitor" v-model="monitor" name="monitor" id="chkLocalMonitor" />
-            <span class="ml-3 font-weight-medium" id="lblLocalMonitor">Monitor</span>
+            <input
+              type="checkbox"
+              @change="monitor"
+              v-model="checkedRoles"
+              name="monitor"
+              value="monitor"
+              id="chkLocalMonitor"
+            />
+            <span class="ml-3 font-weight-medium">Monitor</span>
           </v-col>
           <v-col>
             <div class="font-weight-medium pt-3" id="lblLocalTempPref">Teperature preference</div>
@@ -61,31 +109,43 @@
               id="cmdTemperature"
               class="input-text pl-1"
               style="width: 10em;"
+              v-model="temperature"
             >
               <option value="celsius">Celsius</option>
-              <option value="celsius1">Celsius</option>
             </select>
-            <div class="font-weight-medium pt-3" id="lblCheckTimout">Timeout</div>
-            <input type="number" v-model="timeout" name="timeout" class="input-text col-2" id="txtLocalTimeout" />
-            <span class="ml-3 font-weight-medium" id="lblLocalMinute">Minutes</span>
             <div class="font-weight-medium pt-3" id="lblLocalLang">Language</div>
-            <select name="language" id="cmdLanguage" class="input-text pl-1" style="width: 10em;">
+            <select
+              name="language"
+              v-model="language"
+              id="cmdLanguage"
+              class="input-text pl-1"
+              style="width: 10em;"
+            >
               <option value="English">English</option>
-              <option value="English1">English</option>
             </select>
           </v-col>
         </v-row>
       </div>
       <v-btn color="green" class="ma-5 elevation-0" id="btnLocalAddNewUser">
-        <span v-if="!isUserCreate" class="white--text" @click="createUser()" id="lblLocalAddUser">Add New User</span>
-        <span v-if="isUserCreate" class="white--text" @click="createUser()" id="lblLocalCreateUser">Create User</span>
+        <span
+          v-if="!isUserCreate"
+          class="white--text"
+          @click="addUser()"
+          id="lblLocalAddUser"
+        >Add New User</span>
+        <span
+          v-if="isUserCreate"
+          class="white--text"
+          @click="createUser()"
+          id="lblLocalCreateUser"
+        >Create User</span>
       </v-btn>
-      <span v-if="isUserCreate" class="green--text" @click="createUser()" id="lblLocalCancel">Cancel</span>
+      <span v-if="isUserCreate" class="green--text" @click="addUser()" id="lblLocalCancel">Cancel</span>
       <v-data-table
         calculate-widths
         :items="alertData"
         :single-expand="singleExpand"
-        item-key="name"
+        item-key="id"
         show-expand
         class="eos-table"
         hide-default-header
@@ -119,60 +179,91 @@
             <th class="tableheader" />
           </tr>
         </template>
-
         <template v-slot:item="props">
           <tr class="font-weight-small">
             <td @click="onExpand(props)">
               <img v-if="props.isExpanded" src="./../../../../assets/caret-green-down.png" />
               <img v-if="!props.isExpanded" src="./../../../../assets/caret-green-right.png" />
             </td>
-            <td>{{props.item.name}}</td>
-            <td>{{props.item.interfaces}}</td>
-            <td>{{props.item.roles}}</td>
+            <td>{{props.item.username}}</td>
+            <td>
+              <span
+                v-for="(interfacevalue,k) in props.item.interfaces"
+                :key="interfacevalue"
+              >{{k==0?"":","}}{{interfacevalue}}</span>
+            </td>
+            <td>
+              <span v-for="(role, i) in props.item.roles" :key="role">{{i==0?"":","}}{{role}}</span>
+            </td>
             <td>
               <img @click="onExpand(props)" src="./../../../../assets/edit-off.png" />
               <v-divider class="mx-4" light vertical inset></v-divider>
-              <img @click="onDelete(props)" src="./../../../../assets/delete-off.png" />
+              <img @click="onDelete(props.item.id)" src="./../../../../assets/delete-off.png" />
             </td>
           </tr>
         </template>
-
         <template v-slot:expanded-item="props">
-          <tr class="grey lighten-5">
+          <tr class="grey lighten-5" v-if="!isUserEdit">
             <td colspan="5">
               <div>
                 <v-row>
                   <v-col class="pl-5">
                     <div class="font-weight-medium pt-3" id="lblLocalUserName">User Name</div>
-                    <input class="input-text" type="text" name="hostname" v-model="hostname"  id="txtLocalHostnameinetrface" />
-                    <div class="font-weight-medium pt-3" id="lblLocalPassinetrface">Password</div>
-                    <input class="input-text" type="password" name="password" v-model="password"  id="txtLocalPassinetrface"/>
-                    <div class="font-weight-medium pt-3" id="lblLocalConfirmPassInetrface">Confirm Password</div>
                     <input
                       class="input-text"
-                      type="password"
-                      name="confirmPassword"
-                      v-model="confirmPassword"
-                      id="txtLocalConfiPassInterface"
+                      type="text"
+                      name="username"
+                      v-model="selectedItem.username"
+                      id="txtLocalHostnameinetrface"
                     />
                   </v-col>
                   <v-col>
-                    <div class="font-weight-medium pt-3 pb-2" >Interfaces</div>
-                    <input type="checkbox" @change="web" v-model="web" name="web" id="chkLocalWebinterface" />
+                    <div class="font-weight-medium pt-3 pb-2">Interfaces</div>
+                    <input
+                      type="checkbox"
+                      v-model="selectedItem.interfaces"
+                      name="web"
+                      value="web"
+                      d="chkLocalWebinterface"
+                    />
                     <span class="ml-3 font-weight-medium">Web</span>
                     <br />
-                    <input type="checkbox" @change="cli" v-model="cli" name="cli"  id="chkLocalCliinterface"/>
+                    <input
+                      type="checkbox"
+                      v-model="selectedItem.interfaces"
+                      name="cli"
+                      value="api"
+                      id="chkLocalCliinterface"
+                    />
                     <span class="ml-3 font-weight-medium">CLI</span>
                     <br />
-                    <input type="checkbox" @change="api" v-model="api" name="api" id="chkLocalApiInterface" />
+                    <input
+                      type="checkbox"
+                      v-model="selectedItem.interfaces"
+                      name="api"
+                      value="cli"
+                      id="chkLocalApiInterface"
+                    />
                     <span class="ml-3 font-weight-medium">API</span>
                   </v-col>
                   <v-col>
                     <div class="font-weight-medium pt-3 pb-2">Roles</div>
-                    <input type="checkbox" @change="manage" v-model="manage" name="manage" id="chkLocalManageInterface" />
+                    <input
+                      type="checkbox"
+                      v-model="selectedItem.roles"
+                      name="manage"
+                      value="manage"
+                      id="chkLocalManageInterface"
+                    />
                     <span class="ml-3 font-weight-medium">Manage</span>
                     <br />
-                    <input type="checkbox" @change="monitor" v-model="monitor" name="monitor"  id="chkLocalMoniterInterface"/>
+                    <input
+                      type="checkbox"
+                      v-model="selectedItem.roles"
+                      name="monitor"
+                      value="monitor"
+                      id="chkLocalMoniterInterface"
+                    />
                     <span class="ml-3 font-weight-medium">Monitor</span>
                   </v-col>
                   <v-col>
@@ -182,45 +273,55 @@
                       id="cmdTemperature"
                       class="input-text pl-1"
                       style="width: 10em;"
+                      v-model="selectedItem.temperature"
                     >
                       <option value="celsius">Celsius</option>
-                      <option value="celsius1">Celsius</option>
                     </select>
-                    <div class="font-weight-medium pt-3" id="lblLocalTimeoutInterface">Timeout</div>
-                    <input type="number" v-model="timeout" name="timeout" class="input-text col-2" id="txtLocalTimeoutInterface" />
-                    <span class="ml-3 font-weight-medium" id="lblLocalMinuteInterface">Minutes</span>
-                    <div class="font-weight-medium pt-3" id="lblLocalLangInterface">Language</div>
+                    <div class="font-weight-medium pt-3">Language</div>
                     <select
                       name="language"
                       id="cmdLanguage"
                       class="input-text pl-1"
                       style="width: 10em;"
+                      v-model="selectedItem.language"
                     >
                       <option value="English">English</option>
-                      <option value="English1">English</option>
                     </select>
                   </v-col>
                 </v-row>
               </div>
               <v-btn color="green" class="ma-5 elevation-0">
-                <span class="white--text" @click="editUser()" id="lblLocalApplyInterface">Apply</span>
+                <span
+                  class="white--text"
+                  @click="editUser(selectedItem)"
+                  id="lblLocalApplyInterface"
+                >Apply</span>
               </v-btn>
-              <span class="green--text" @click="editUser()" id="lblLocalCanacelInterface">Cancel</span>
+              <span
+                class="green--text"
+                @click="closeEditUser()"
+                id="lblLocalCanacelInterface"
+              >Cancel</span>
             </td>
           </tr>
         </template>
       </v-data-table>
     </v-card>
-    <div class="mt-8">
+    <!--<div class="mt-8">
       <v-btn elevation="0" color="green" id="btnLocalAppyInterface">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblLocalBackInterface">Back to previous step</span>
-    </div>
+      <span
+        class="green--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblLocalBackInterface"
+      >Back to previous step</span>
+    </div>-->
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { UserDetails } from "./../../../../models/user-Details";
 
 @Component({
   name: "eos-user-setting-local"
@@ -242,39 +343,100 @@ export default class EosUserSettingLocal extends Vue {
       this.$data.newAddressNode0 = "";
     }
   }
-  private createUser() {
+  private addUser() {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     return this.$data.isUserCreate;
   }
-  private editUser() {
-    this.$data.isUserEdit = !this.$data.isUserEdit;
-    return this.$data.isUserEdit;
+  private createUser() {
+    this.$data.isUserCreate = !this.$data.isUserCreate;
+    const queryParams: UserDetails = {
+      username: this.$data.username,
+      password: this.$data.password,
+      interfaces: this.$data.checkedInterfaces,
+      roles: this.$data.checkedRoles,
+      temperature: this.$data.temperature,
+      language: this.$data.language,
+      timeout: this.$data.timeout
+    };
+    this.$store
+      .dispatch("createUser/createCSMUserAction", queryParams)
+      .then((res: any) => {
+        this.getUserData();
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("Create User Fails");
+      });
+    return this.$data.isUserCreate;
   }
+  private editUser(selectedItem: any) {
+    this.$store
+      .dispatch("createUser/updateUserDetails", selectedItem)
+      .then((res: any) => {
+        this.getUserData();
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("Create User Fails");
+      });
+  }
+
   private onExpand(props: any) {
     if (props.isExpanded === false) {
       props.expand(props.item);
+      this.$data.selectedItem = props.item;
     } else {
       props.expand(false);
     }
   }
-  private onDelete(props: any) {
-    alert("Deleting");
-    if (props.isExpanded === false) {
-      props.expand(props.item);
-    } else {
-      props.expand(false);
-    }
+  private onDelete(id: string) {
+    this.$store
+      .dispatch("createUser/deleteUserAction", id)
+      .then(data => {
+        this.getUserData();
+      })
+      .catch(e => {
+        console.log("err logger: ", e);
+      });
+  }
+  private getUserData() {
+    this.$store
+      .dispatch("createUser/getDataAction")
+      .then(data => {
+        this.$data.alertData = data;
+      })
+      .catch(e => {
+        console.log("err logger: ", e);
+      });
+  }
+  private mounted() {
+    this.getUserData();
   }
   private data() {
     return {
       source: "manual",
       isUserCreate: false,
+      isUserEdit: false,
       page: 1, // Page counter, in sync with data table
       singleExpand: false, // Expande single row property
       itemsPerPage: 5, // Total rows per page, in sync with data table
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
       alertStatus: require("./../../../../common/const-string.json"),
+      username: "",
+      password: "",
+      confirmPassword: "",
+      web: "",
+      cli: "",
+      api: "",
+      manage: "",
+      monitor: "",
+      temperature: "",
+      language: "",
+      timeout: "",
+      checkedRoles: [],
+      checkedInterfaces: [],
+      selectedItem: {},
       alertHeader: [
         {
           text: "Username",
@@ -292,28 +454,7 @@ export default class EosUserSettingLocal extends Vue {
           sortable: false
         }
       ],
-      alertData: [
-        {
-          name: "User 1",
-          interfaces: "Web, CLI, API",
-          roles: "Manage, Monitor"
-        },
-        {
-          name: "User 2",
-          interfaces: "Web, CLI, API",
-          roles: "Manage"
-        },
-        {
-          name: "User 3",
-          interfaces: "Web, CLI",
-          roles: "Monitor"
-        },
-        {
-          name: "User 4",
-          interfaces: "CLI, API",
-          roles: "Manage, Monitor"
-        }
-      ]
+      alertData: []
     };
   }
 }

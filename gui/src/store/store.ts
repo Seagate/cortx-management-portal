@@ -19,6 +19,7 @@ import alerts from "./modules/alerts";
 import systemConfig from "./modules/system-configuration";
 import userLogin from "./modules/user-login";
 import performanceStats from "./modules/performance-stats";
+import createUser from "./modules/create-user";
 
 Vue.use(Vuex);
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
         alerts,
         systemConfig,
         userLogin,
-        performanceStats
+        performanceStats,
+        createUser
     }
 });
