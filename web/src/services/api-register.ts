@@ -27,5 +27,6 @@ export default {
 	udx_devices: `/usl/v1/devices`,
     s3_accounts: `/api/${version}/s3_accounts`,
     s3_iam_users: `/api/${version}/iam_users`,
-    s3_bucket: `/api/${version}/s3/bucket`
+    s3_bucket: `/api/${version}/s3/bucket`,
+    capacity: `/api/${version}/capacity`
 };
