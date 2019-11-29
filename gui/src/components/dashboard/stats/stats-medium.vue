@@ -41,11 +41,18 @@ export default class EosStatsMedium extends Vue {
   public chart: any;
   public chartLatency: any;
   public chartIops: any;
-
+  public ispollThroughPut: boolean = true;
+  public ispollLatency: boolean = true;
+  public ispollIops: boolean = true;
   public created() {
     this.initThrouthputStats();
     this.initLatencyStats();
     this.initIopsStats();
+  }
+  public destroyed() {
+    this.ispollThroughPut = false;
+    this.ispollLatency = false;
+    this.ispollIops = false;
   }
 
   private initThrouthputStats() {
@@ -110,25 +117,28 @@ export default class EosStatsMedium extends Vue {
       });
     });
     const that = this;
+    const throughputPoll = setInterval(() => {
+      if (that.ispollThroughPut === true) {
+        const query = {
+          id: 1,
+          from: Math.round(new Date().getTime() / 1000) - 10,
+          to: Math.round(new Date().getTime() / 1000),
+          interval: "10"
+        };
+        const res = that.$store.dispatch(
+          "performanceStats/getThroughputPerformanceStats",
+          query
+        );
 
-    setInterval(() => {
-      const query = {
-        id: 1,
-        from: Math.round(new Date().getTime() / 1000) - 10,
-        to: Math.round(new Date().getTime() / 1000),
-        interval: "10"
-      };
-      const res = that.$store.dispatch(
-        "performanceStats/getThroughputPerformanceStats",
-        query
-      );
-
-      res.then(
-        (chartData) => {
-        if (chartData) {
-          that.chart.flow({ columns: chartData });
-        }
-      });
+        res.then(
+          (chartData) => {
+          if (chartData) {
+            that.chart.flow({ columns: chartData });
+          }
+        });
+      } else {
+        clearInterval(throughputPoll);
+      }
     }, 10000);
   }
 
@@ -194,25 +204,28 @@ export default class EosStatsMedium extends Vue {
       });
     });
     const that = this;
+    const pollIops = setInterval(() => {
+      if (that.ispollIops === true) {
+        const query = {
+          id: 1,
+          from: Math.round(new Date().getTime() / 1000) - 10,
+          to: Math.round(new Date().getTime() / 1000),
+          interval: "10"
+        };
+        const res = that.$store.dispatch(
+          "performanceStats/getIopsPerformanceStats",
+          query
+        );
 
-    setInterval(() => {
-      const query = {
-        id: 1,
-        from: Math.round(new Date().getTime() / 1000) - 10,
-        to: Math.round(new Date().getTime() / 1000),
-        interval: "10"
-      };
-      const res = that.$store.dispatch(
-        "performanceStats/getIopsPerformanceStats",
-        query
-      );
-
-      res.then(
-        (chartData) => {
-        if (chartData) {
-          that.chartIops.flow({ columns: chartData });
-        }
-      });
+        res.then(
+          (chartData) => {
+          if (chartData) {
+            that.chartIops.flow({ columns: chartData });
+          }
+        });
+      } else {
+        clearInterval(pollIops);
+      }
     }, 10000);
   }
 
@@ -277,23 +290,27 @@ export default class EosStatsMedium extends Vue {
       });
     });
     const that = this;
-    setInterval(() => {
-      const query = {
-        id: 1,
-        from: Math.round(new Date().getTime() / 1000) - 10,
-        to: Math.round(new Date().getTime() / 1000),
-        interval: "10"
-      };
-      const res = that.$store.dispatch(
-        "performanceStats/getLatencyPerformanceStats",
-        query
-      );
-      res.then(
-        (data) => {
-        if (data !== undefined) {
-          that.chartLatency.flow({ columns: data });
-        }
-      });
+    const pollLatency = setInterval(() => {
+      if (that.ispollLatency === true) {
+        const query = {
+          id: 1,
+          from: Math.round(new Date().getTime() / 1000) - 10,
+          to: Math.round(new Date().getTime() / 1000),
+          interval: "10"
+        };
+        const res = that.$store.dispatch(
+          "performanceStats/getLatencyPerformanceStats",
+          query
+        );
+        res.then(
+          (data) => {
+          if (data !== undefined) {
+            that.chartLatency.flow({ columns: data });
+          }
+        });
+      } else {
+        clearInterval(pollLatency);
+      }
     }, 10000);
   }
 }

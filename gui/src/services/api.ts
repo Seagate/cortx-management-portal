@@ -39,8 +39,8 @@ axios.interceptors.response.use((response) => {
     // Handle Unauthorised response. Re-route to login page if unauthorised response received.
     if (error.response.status === 401) {
         const conststr = require("../common/const-string.json");
-        // localStorage.removeItem(conststr.access_token);
-        // router.push("/login");
+        localStorage.removeItem(conststr.access_token);
+        router.push("/login");
 
         return Promise.reject(error);
     }

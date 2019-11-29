@@ -22,5 +22,5 @@ export interface DiskCapacityDetails {
     size: string;
     used: string;
     avail: string;
-    usage_Percentage: string;
+    usage_percentage: string;
 }

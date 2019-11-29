@@ -37,7 +37,7 @@ export default class PerformanceStats extends VuexModule {
         size: "0 GB",
         used: "0 GB",
         avail: "0 GB",
-        usage_Percentage: "0 %"
+        usage_percentage: "0 %"
     };
     public constStr = require("../../common/const-string.json");
     // Throuthput
