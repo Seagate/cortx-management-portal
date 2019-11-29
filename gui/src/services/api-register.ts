@@ -25,6 +25,7 @@ export default {
     udx_device: `api/${version}/udx-device`,
     s3_account: `/api/${version}/s3_account`,
     s3_iam_user: `/api/${version}/s3_iam_user`,
+    s3_bucket: `/api/${version}/s3/bucket`,
     stats: `api/${version}/stats/throughput`,
     throughput: `api/${version}/stats/throughput`,
     latency: `api/${version}/stats/latency`,

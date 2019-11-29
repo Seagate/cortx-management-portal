@@ -19,16 +19,18 @@
     </v-tabs>
     <S3Account v-if="showAccountTab" />
     <IAMUser v-if="showIAMUserTab" />
+      <S3Bucket v-if="showBucketTab" />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import S3Account from "./account-management.vue";
 import IAMUser from "./iam-user-management.vue";
+import S3Bucket from "./bucket-creation.vue";
 
 @Component({
   name: "eos-s3-management",
-  components: { S3Account, IAMUser }
+  components: { S3Account, IAMUser, S3Bucket  }
 })
 export default class EosS3Management extends Vue {
   private showAccountTab: boolean = true;
