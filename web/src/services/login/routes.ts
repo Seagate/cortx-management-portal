@@ -31,7 +31,7 @@ export default [
   },
   {
     path: "/api/v1/logout",
-    method: "get",
+    method: "post",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {

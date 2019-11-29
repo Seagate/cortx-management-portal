@@ -30,7 +30,7 @@ export const getAdminUser = async (req: Request, res: Response) => {
  * @param res 
  */
 export const logout = async (req: Request, res: Response) => {
-  let adminUser = Api.getAll(apiRegister.admin_user_logout, req, res)
+  let adminUser = Api.post(apiRegister.admin_user_logout, req, res)
   return adminUser;
 };
 

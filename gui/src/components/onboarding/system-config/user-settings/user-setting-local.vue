@@ -103,7 +103,7 @@
             <span class="ml-3 font-weight-medium">Monitor</span>
           </v-col>
           <v-col>
-            <div class="font-weight-medium pt-3" id="lblLocalTempPref">Teperature preference</div>
+            <div class="font-weight-medium pt-3" id="lblLocalTempPref">Temperature preference</div>
             <select
               name="temperature"
               id="cmdTemperature"
@@ -267,7 +267,7 @@
                     <span class="ml-3 font-weight-medium">Monitor</span>
                   </v-col>
                   <v-col>
-                    <div class="font-weight-medium pt-3">Teperature preference</div>
+                    <div class="font-weight-medium pt-3">Temperature preference</div>
                     <select
                       name="temperature"
                       id="cmdTemperature"
@@ -356,7 +356,7 @@ export default class EosUserSettingLocal extends Vue {
       roles: this.$data.checkedRoles,
       temperature: this.$data.temperature,
       language: this.$data.language,
-      timeout: this.$data.timeout
+      timeout: 1
     };
     this.$store
       .dispatch("createUser/createCSMUserAction", queryParams)
@@ -390,14 +390,25 @@ export default class EosUserSettingLocal extends Vue {
     }
   }
   private onDelete(id: string) {
-    this.$store
-      .dispatch("createUser/deleteUserAction", id)
-      .then(data => {
-        this.getUserData();
-      })
-      .catch(e => {
-        console.log("err logger: ", e);
-      });
+    //TODO: Need to remove this check once api is properly implemented
+    if(!this.isFirstElement(id)){
+      this.$store
+        .dispatch("createUser/deleteUserAction", id)
+        .then(data => {
+          this.getUserData();
+        })
+        .catch(e => {
+          console.log("err logger: ", e);
+        });
+    }
+  }
+  //TODO: Need to remove this logic once api is properly implemented
+  private isFirstElement(id: string): boolean {
+    let isFirstElem: boolean = false;
+    if(this.$data.alertData.length > 0 && this.$data.alertData[0].id === id) {
+      isFirstElem = true;
+    }
+    return isFirstElem;
   }
   private getUserData() {
     this.$store
