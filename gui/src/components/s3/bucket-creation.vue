@@ -1,86 +1,72 @@
 <template>
-  <v-container class="mt-6 body-2">
-    <v-divider />
-    <div>
-      <div class="title mt-6">
-        S3 Configuration - Create Buckets
-        <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
-      </div>
+  <v-card class="pb-5 elevation-0" outlined tile>
+    <v-system-bar color="greay lighten-3" height="50">BUCKETS</v-system-bar>
+    <div v-if="isUserCreate">
+      <v-row>
+        <v-col class="pl-5">
+          <div class="font-weight-medium pt-3">BUCKET NAME</div>
+          <input class="input-text" type="text" name="bucketname" v-model="bucket_name" />
+        </v-col>
+      </v-row>
     </div>
-    <div class="mt-5">
-      <span
-        class="font-weight-regular"
-      >Create a bucket that is associated with the users you have just created in privious step. These user will work directly with the bucket.</span>
-    </div>
-    <v-card class="pb-5 mt-10 elevation-0" outlined tile>
-      <v-system-bar color="greay lighten-3" height="50">BUCKETS</v-system-bar>
-      <div v-if="isUserCreate">
-        <v-row>
-          <v-col class="pl-5">
-            <div class="font-weight-medium pt-3">BUCKET NAME</div>
-            <input class="input-text" type="text" name="bucketname" v-model="bucket_name" />
-          </v-col>
-        </v-row>
-      </div>
-      <v-btn color="green" class="ma-5 elevation-0">
-        <span v-if="!isUserCreate" class="white--text" @click="addBucket()">Add BUCKET</span>
-        <span v-if="isUserCreate" class="white--text" @click="createUser()">CREATE BUCKET</span>
-      </v-btn>
-      <span v-if="isUserCreate" class="green--text" @click="createUser()">Cancel</span>
-      <v-data-table
-        calculate-widths
-        :items="bucketData"
-        :single-expand="singleExpand"
-        item-key="id"
-        show-expand
-        class="eos-table"
-        hide-default-header
-      >
-        <template v-slot:header="{props}">
-          <tr>
-            <th class="tableheader" />
-            <th
-              v-for="header in alertHeader"
-              :key="header.text"
-              class="tableheader text-capitalize font-weight-medium text--black"
-              @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
+    <v-btn color="green" class="ma-5 elevation-0">
+      <span v-if="!isUserCreate" class="white--text" @click="addBucket()">Add BUCKET</span>
+      <span v-if="isUserCreate" class="white--text" @click="createUser()">CREATE BUCKET</span>
+    </v-btn>
+    <span v-if="isUserCreate" class="green--text" @click="createUser()">Cancel</span>
+    <v-data-table
+      calculate-widths
+      :items="bucketData"
+      :single-expand="singleExpand"
+      item-key="id"
+      show-expand
+      class="eos-table"
+      hide-default-header
+    >
+      <template v-slot:header="{props}">
+        <tr>
+          <th class="tableheader" />
+          <th
+            v-for="header in alertHeader"
+            :key="header.text"
+            class="tableheader text-capitalize font-weight-medium text--black"
+            @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
+          >
+            <span
+              class="headerText"
+              :class="(header.value === sortColumnName && isSortActive) ? 'active' : ''"
+            >{{ header.text }}</span>
+            <span
+              :class="(header.value === sortColumnName && isSortActive) ? 'active' : 'notActive'"
             >
-              <span
-                class="headerText"
-                :class="(header.value === sortColumnName && isSortActive) ? 'active' : ''"
-              >{{ header.text }}</span>
-              <span
-                :class="(header.value === sortColumnName && isSortActive) ? 'active' : 'notActive'"
-              >
-                <img
-                  v-if="header.sortable && header.sortDir === alertStatus.desc"
-                  src="./../../assets/table-caret-green-down.png"
-                />
-                <img
-                  v-if="header.sortable && header.sortDir === alertStatus.asc"
-                  src="./../../assets/table-caret-green-up.png"
-                />
-              </span>
-            </th>
-            <th class="tableheader" />
-          </tr>
-        </template>
+              <img
+                v-if="header.sortable && header.sortDir === alertStatus.desc"
+                src="./../../assets/table-caret-green-down.png"
+              />
+              <img
+                v-if="header.sortable && header.sortDir === alertStatus.asc"
+                src="./../../assets/table-caret-green-up.png"
+              />
+            </span>
+          </th>
+          <th class="tableheader" />
+        </tr>
+      </template>
 
-        <template v-slot:item="props">
-          <tr class="font-weight-small">
-            <td @click="onExpand(props)">
-              <img v-if="props.isExpanded" src="./../../assets/caret-green-down.png" />
-              <img v-if="!props.isExpanded" src="./../../assets/caret-green-right.png" />
-            </td>
-            <td>{{props.item.name}}</td>
-            <td>
-              <img @click="onDelete(props.item.name )" src="./../../assets/delete-off.png" />
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
-    </v-card>
-  </v-container>
+      <template v-slot:item="props">
+        <tr class="font-weight-small">
+          <td @click="onExpand(props)">
+            <img v-if="props.isExpanded" src="./../../assets/caret-green-down.png" />
+            <img v-if="!props.isExpanded" src="./../../assets/caret-green-right.png" />
+          </td>
+          <td>{{props.item.name}}</td>
+          <td>
+            <img @click="onDelete(props.item.name )" src="./../../assets/delete-off.png" />
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
@@ -105,12 +91,11 @@ export default class EosBucketCreation extends Vue {
       this.$data.newAddressNode0 = "";
     }
   }
-    private addBucket() {
+  private addBucket() {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     return this.$data.isUserCreate;
   }
   private createUser() {
-
     this.$data.isUserCreate = !this.$data.isUserCreate;
     const queryParams: Buckets = {
       bucket_name: this.$data.bucket_name
@@ -137,8 +122,8 @@ export default class EosBucketCreation extends Vue {
       props.expand(false);
     }
   }
-  private onDelete(name:string) {
-     this.$store
+  private onDelete(name: string) {
+    this.$store
       .dispatch("bucket/deleteBucketListAction", name)
       .then(data => {
         alert("Deleting");
@@ -179,9 +164,7 @@ export default class EosBucketCreation extends Vue {
           sortable: false
         }
       ],
-      bucketData: [
-        
-      ]
+      bucketData: []
     };
   }
 }
