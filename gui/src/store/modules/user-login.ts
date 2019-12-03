@@ -25,10 +25,22 @@ Vue.use(Vuex);
     namespaced: true
 })
 export default class UserLogin extends VuexModule {
+    public user: any = {};
+
     public queryParams: UserLoginQueryParam = {
         username: "",
         password: ""
     };
+
+    @Mutation
+    public setUser(user: any) {
+        this.user = user;
+    }
+
+    // Get user
+    get getUser() {
+        return this.user;
+    }
 
     @Action
     public async createUserAction(queryParams: object) {

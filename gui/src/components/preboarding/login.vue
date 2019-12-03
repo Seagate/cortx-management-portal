@@ -89,6 +89,10 @@ export default class EosLogin extends Vue {
       .dispatch("userLogin/loginAction", queryParams)
       .then((res: any) => {
         if (res.authorization) {
+          const user: any = {
+            username: queryParams.username
+          };
+          this.$store.commit("userLogin/setUser", user);
           localStorage.setItem(
             this.$data.conststr.access_token,
             res.authorization
