@@ -386,7 +386,7 @@ class IamClient(BaseClient):
             'PasswordResetRequired': require_reset
         }
 
-        (code, body) = await self._query_conn('CreateUserLoginProfile', params, '/', 'POST')
+        (code, body) = await self._query_conn('CreateLoginProfile', params, '/', 'POST')
         if code != 201:
             return self._create_error(body)
         else:
