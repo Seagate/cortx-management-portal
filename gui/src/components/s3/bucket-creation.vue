@@ -1,5 +1,6 @@
 <template>
   <v-card class="pb-5 elevation-0" outlined tile>
+    <Loader :show="showLoader" :message="loaderMessage" />
     <v-system-bar color="greay lighten-3" height="50">BUCKETS</v-system-bar>
     <div v-if="isUserCreate">
       <v-row>
@@ -25,7 +26,6 @@
     >
       <template v-slot:header="{props}">
         <tr>
-          <th class="tableheader" />
           <th
             v-for="header in alertHeader"
             :key="header.text"
@@ -55,10 +55,6 @@
 
       <template v-slot:item="props">
         <tr class="font-weight-small">
-          <td @click="onExpand(props)">
-            <img v-if="props.isExpanded" src="./../../assets/caret-green-down.png" />
-            <img v-if="!props.isExpanded" src="./../../assets/caret-green-right.png" />
-          </td>
           <td>{{props.item.name}}</td>
           <td>
             <img @click="onDelete(props.item.name )" src="./../../assets/delete-off.png" />
@@ -71,10 +67,18 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Buckets } from "./../.././././models/s3Buckets";
+import Loader from "../widgets/loader.vue";
+import InputBox from "../widgets/input-box.vue";
+import { Form, FormControl } from "../widgets/form-widget";
+
 @Component({
-  name: "eos-bucketcreation"
+  name: "eos-bucketcreation",
+  components: { Loader, InputBox }
 })
 export default class EosBucketCreation extends Vue {
+  private showLoader: boolean = false;
+  private loaderMessage: string = "";
+
   public gotToNextPage() {
     this.$router.push("bucketconfigsummary");
   }
@@ -100,12 +104,18 @@ export default class EosBucketCreation extends Vue {
     const queryParams: Buckets = {
       bucket_name: this.$data.bucket_name
     };
+    this.showLoader = true;
+    this.loaderMessage = "Creating bucket...";
     this.$store
       .dispatch("bucket/createBucketListAction", queryParams)
       .then((res: any) => {
+        this.showLoader = false;
+        this.loaderMessage = "";
         this.getUserData();
       })
       .catch(() => {
+        this.showLoader = false;
+        this.loaderMessage = "";
         // tslint:disable-next-line: no-console
         console.error("Create User Fails");
       });
@@ -134,12 +144,19 @@ export default class EosBucketCreation extends Vue {
       });
   }
   private getUserData() {
+    debugger;
+    this.showLoader = true;
+    this.loaderMessage = "Fetching buckets list...";
     this.$store
       .dispatch("bucket/getDataAction")
       .then(data => {
         this.$data.bucketData = data.buckets;
+        this.showLoader = false;
+        this.loaderMessage = "";
       })
       .catch(e => {
+        this.showLoader = false;
+        this.loaderMessage = "";
         console.log("err logger: ", e);
       });
   }

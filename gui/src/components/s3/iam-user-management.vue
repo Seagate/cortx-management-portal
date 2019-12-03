@@ -232,6 +232,16 @@ export default class EosIAMUserManagement extends Vue {
     ];
 
     this.user = new IAMUser();
+    const pathControl = new FormControl(
+      "Path",
+      "path",
+      "text",
+      "/",
+      true,
+      "Path is required",
+      new Validator(new RegExp("^(/[^/ ]*)+/?$"), "Invalid Path")
+    );
+    pathControl.isValid = true;
 
     const controls: FormControl[] = [
       new FormControl(
@@ -245,15 +255,7 @@ export default class EosIAMUserManagement extends Vue {
         "Username can contain alphabets, numbers and can have _ " +
           "or - but no spaces and should be less than 64 characters"
       ),
-      new FormControl(
-        "Path",
-        "path",
-        "text",
-        "/",
-        true,
-        "Path is required",
-        new Validator(new RegExp("^(/[^/ ]*)+/?$"), "Invalid Path")
-      ),
+      pathControl,
       new FormControl(
         "Password",
         "password",

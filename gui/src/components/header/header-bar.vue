@@ -27,7 +27,7 @@
     <v-divider class="grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text body-2">{{new Date().toLocaleString()}}</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 grey--text">cloudstore</div>
+    <div class="pa-5 grey--text">{{ username }}</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div id="alert-menu" class="pl-10 pr-3 pt-1">
       <v-menu offset-y>
@@ -94,6 +94,7 @@ import VueNativeSock from "vue-native-websocket";
   name: "HeaderBar"
 })
 export default class HeaderBar extends Vue {
+  public username: string = "";
   public data() {
     return {
       alertStatus: require("./../../common/const-string.json")
@@ -109,6 +110,7 @@ export default class HeaderBar extends Vue {
       reconnectionDelay: 3000 // (Number) how long to initially wait before attempting a new (1000) })
     });
     this.$store.dispatch("alertDataAction");
+    this.username = this.$store.getters["userLogin/getUser"].username;
   }
 
   get alertNotifications() {
