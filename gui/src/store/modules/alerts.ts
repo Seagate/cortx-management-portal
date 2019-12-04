@@ -27,7 +27,7 @@ Vue.use(Vuex);
 export default class Alerts extends VuexModule {
     public alerts: AlertObject | null = null;
     public header: object | null = null;
-    public isOnboardingDone: boolean = false;
+    public isOnboardingDone: boolean = true;
     public queryParams: AlertQueryParam = {
         sortby: "created_time",
         dir: "desc",
