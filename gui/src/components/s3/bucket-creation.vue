@@ -144,7 +144,6 @@ export default class EosBucketCreation extends Vue {
       });
   }
   private getUserData() {
-    debugger;
     this.showLoader = true;
     this.loaderMessage = "Fetching buckets list...";
     this.$store

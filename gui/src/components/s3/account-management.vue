@@ -279,8 +279,12 @@ export default class EosAccountManagement extends Vue {
   public async getAllAccounts() {
     this.showLoader = true;
     this.loaderMessage = "Fetching All S3 Accounts...";
-    const res: any = await Api.getAll(apiRegister.s3_account);
-    this.accountsList = res.data.s3_accounts;
+    try {
+      const res: any = await Api.getAll(apiRegister.s3_account);
+      this.accountsList = res.data.s3_accounts;
+    } catch (error) {
+      console.error(error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
   }
@@ -290,8 +294,12 @@ export default class EosAccountManagement extends Vue {
     this.loaderMessage = "Creating Account...";
     const tempAccount = this.createAccountForm.getModel();
     delete tempAccount.confirm_password;
-    const res = await Api.post(apiRegister.s3_account, tempAccount);
-    this.account = res.data;
+    try {
+      const res = await Api.post(apiRegister.s3_account, tempAccount);
+      this.account = res.data;
+    } catch (error) {
+      console.error(error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
     this.showAccountDetailsDialog = true;
@@ -316,7 +324,7 @@ export default class EosAccountManagement extends Vue {
   public clearCreateAccountForm() {
     this.account = new Account();
     this.createAccountForm.isValid = false;
-    this.createAccountForm.controls.forEach((control) => {
+    this.createAccountForm.controls.forEach(control => {
       control.value = "";
       control.isDirty = false;
       control.isValid = false;
@@ -326,7 +334,11 @@ export default class EosAccountManagement extends Vue {
   public async deleteAccount() {
     this.showLoader = true;
     this.loaderMessage = "Deleting Account " + this.accountToDelete;
-    await Api.delete(apiRegister.s3_account, this.accountToDelete);
+    try {
+      await Api.delete(apiRegister.s3_account, this.accountToDelete);
+    } catch (error) {
+      console.error(error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
     this.getAllAccounts();
