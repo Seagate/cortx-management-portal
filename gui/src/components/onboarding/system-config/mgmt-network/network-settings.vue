@@ -1,5 +1,5 @@
-<template>
-  <v-container class="mt-6">
+<template >
+  <v-container class="mt-6 ml-6">
     <v-img
       id="alert-img"
       :src="require('./../../../../assets/onboarding-wizard.png')"

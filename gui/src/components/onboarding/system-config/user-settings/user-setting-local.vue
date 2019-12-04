@@ -17,7 +17,7 @@
       <span
         class="font-weight-regular"
         id="lblLocalMsgConfig"
-      >Use the steps below to configure your system. Not all of this information is required, but it is strongly recommended. After setup, you can adjust these settings using the lazy dog button.</span>
+      >Use the steps below to configure your system. Not all of this information is required, but it is strongly recommended. After setup, you can adjust these settings using the lazy log button.</span>
     </div>
     <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
       <div v-if="isUserCreate">
