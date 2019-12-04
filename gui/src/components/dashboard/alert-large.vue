@@ -128,8 +128,8 @@
             </td>
             <td style="width: 19em;">{{props.item.description}}</td>
             <td>
-              <v-tooltip top max-width="18em">
-                <template v-slot:activator="{ on }">
+              <v-tooltip max-width="18em">
+                <template v-slot:activator="{ on }" >
                   <v-img
                     height="20"
                     width="20"
@@ -139,7 +139,7 @@
                     src="./../../assets/comment-icon.png"
                   />
                 </template>
-                <span>{{ props.item.comment}}</span>
+                <span class="tooltip-content">{{ props.item.comment}}</span>
               </v-tooltip>
             </td>
             <td>
@@ -201,12 +201,14 @@
                           @click="updateAlert(props.item)"
                           :disabled="props.item.resolved && props.item.acknowledged"
                         >
+                        <div>
                           <v-img
                             class="mr-1"
                             height="20"
                             width="20"
                             src="./../../assets/apply-icon.png"
                           />
+                          </div>
                         </v-card>
                         <v-card
                           @click="clearComment(props.item)"
@@ -279,6 +281,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
   }
   public data() {
     return {
+      isColaps:false,
       singleExpand: false, // Expande single row property
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
@@ -362,5 +365,8 @@ tbody tr:hover {
 tbody tr:active {
   border-top: 2px solid darkgray !important;
   border-bottom: 2px solid darkgray !important;
+}
+.tooltip-content {
+  word-wrap: break-word;
 }
 </style>
