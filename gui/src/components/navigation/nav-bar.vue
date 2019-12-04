@@ -77,7 +77,7 @@ export default class EosNavBar extends Vue {
         }
       ],
       right: null,
-      selectedMenu: 0,
+      selectedMenu: null,
       activeClass: "white--text",
       inactiveClass: "grey--text text--darken-1"
     };

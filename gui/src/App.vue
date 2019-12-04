@@ -24,7 +24,7 @@
         <div class="d-inline-block display-nav">
           <eos-nav-bar></eos-nav-bar>
         </div>
-        <div class="d-inline-block display-container px-2 pt-6 pb-2 col-10">
+        <div class="d-inline-block display-container px-2 pt-6 pb-2 mr-5">
           <router-view></router-view>
         </div>
       </div>
@@ -79,6 +79,7 @@ export default class App extends Vue {
 .display-container {
   position: absolute;
   left: 9.75em;
+  width: 90%;
 }
 .display-nav {
   padding-top: 0.2em;
