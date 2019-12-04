@@ -129,7 +129,7 @@
             <td style="width: 19em;">{{props.item.description}}</td>
             <td>
               <v-tooltip max-width="18em">
-                <template v-slot:activator="{ on }" >
+                <template v-slot:activator="{ on }">
                   <v-img
                     height="20"
                     width="20"
@@ -201,13 +201,13 @@
                           @click="updateAlert(props.item)"
                           :disabled="props.item.resolved && props.item.acknowledged"
                         >
-                        <div>
-                          <v-img
-                            class="mr-1"
-                            height="20"
-                            width="20"
-                            src="./../../assets/apply-icon.png"
-                          />
+                          <div>
+                            <v-img
+                              class="mr-1"
+                              height="20"
+                              width="20"
+                              src="./../../assets/apply-icon.png"
+                            />
                           </div>
                         </v-card>
                         <v-card
@@ -281,7 +281,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
   }
   public data() {
     return {
-      isColaps:false,
+      isColaps: false,
       singleExpand: false, // Expande single row property
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none

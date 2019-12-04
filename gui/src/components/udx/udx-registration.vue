@@ -28,9 +28,18 @@
           <span>On your UDX web portal choose "Add Device" and then enter the identification token below.</span>
         </v-tooltip>
         <div id="udx-reg-token" class="mt-1">
-          <label id="udx-reg-token-part-1" class="float-left">{{ identificationToken.substring(0,4) }}</label>
-          <label id="udx-reg-token-part-2" class="float-left ml-2">{{ identificationToken.substring(4,8) }}</label>
-          <label id="udx-reg-token-part-3" class="float-left ml-2">{{ identificationToken.substring(8,12) }}</label>
+          <label
+            id="udx-reg-token-part-1"
+            class="float-left"
+          >{{ identificationToken.substring(0,4) }}</label>
+          <label
+            id="udx-reg-token-part-2"
+            class="float-left ml-2"
+          >{{ identificationToken.substring(4,8) }}</label>
+          <label
+            id="udx-reg-token-part-3"
+            class="float-left ml-2"
+          >{{ identificationToken.substring(8,12) }}</label>
         </div>
         <div id="udx-reg-url-textbox-container" class="mt-6">
           <div id="udx-reg-url-textbox-lbl-container">
@@ -42,7 +51,13 @@
               <span>Enter the URL provided by your UDX portal.</span>
             </v-tooltip>
           </div>
-          <input class="input-text my-2" type="text" id="udx-reg-url-textbox" name="url" v-model="url" />
+          <input
+            class="input-text my-2"
+            type="text"
+            id="udx-reg-url-textbox"
+            name="url"
+            v-model="url"
+          />
         </div>
         <div id="udx-reg-url-submit-btn" class="mt-2">
           <v-btn color="success" @click="registerUDX()" :disabled="!url">
@@ -63,7 +78,9 @@
         </v-card-title>
         <v-divider />
         <v-card-text>
-          <label class="ml-3 udx-registration-success-msg">This device has been successfully registered.</label>
+          <label
+            class="ml-3 udx-registration-success-msg"
+          >This device has been successfully registered.</label>
         </v-card-text>
         <v-card-actions>
           <v-btn color="green" @click="continueAfterRegistration()" class="ma-5 elevation-0">
@@ -74,7 +91,10 @@
     </v-dialog>
     <div id="udx-device-details-container" v-if="udxDevice">
       <div id="udx-device-details-title-container" class="udx-reg-page-title">
-        <label id="udx-device-details-title" class="headline font-weight-bold">UDX registration details</label>
+        <label
+          id="udx-device-details-title"
+          class="headline font-weight-bold"
+        >UDX registration details</label>
       </div>
       <table id="udx-device-details" class="mt-4 udx-device-details">
         <tr>
@@ -115,7 +135,7 @@ import Loader from "../widgets/loader.vue";
 
 @Component({
   name: "eos-udx",
-  components: {Loader}
+  components: { Loader }
 })
 export default class UDXRegistration extends Vue {
   private identificationToken: string = "";
@@ -136,10 +156,14 @@ export default class UDXRegistration extends Vue {
   public async registerUDX() {
     this.showLoader = true;
     this.loaderMessage = "Registering UDX...";
-    await Api.post(apiRegister.udx_device, {
-      url: this.url,
-      pin: "0000"
-    });
+    try {
+      await Api.post(apiRegister.udx_device, {
+        url: this.url,
+        pin: "0000"
+      });
+    } catch (error) {
+      console.error(error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
     this.showRegistrationSuccessDialog = true;
@@ -155,9 +179,13 @@ export default class UDXRegistration extends Vue {
     this.isFetchingDeviceDetails = true;
     this.showLoader = true;
     this.loaderMessage = "Fetching UDX registration details...";
-    const res = await Api.getAll(apiRegister.udx_device);
-    if (res.data && res.data.length > 0) {
-      this.udxDevice = res.data[0];
+    try {
+      const res = await Api.getAll(apiRegister.udx_device);
+      if (res.data && res.data.length > 0) {
+        this.udxDevice = res.data[0];
+      }
+    } catch (error) {
+      console.error(error);
     }
     this.showLoader = false;
     this.isFetchingDeviceDetails = false;
@@ -166,9 +194,12 @@ export default class UDXRegistration extends Vue {
   private async getIdentificationToken() {
     this.showLoader = true;
     this.loaderMessage = "Generating Identification Token...";
-
-    const res = await Api.getAll(apiRegister.udx_reg_token);
-    this.identificationToken = res.data.registrationToken;
+    try {
+      const res = await Api.getAll(apiRegister.udx_reg_token);
+      this.identificationToken = res.data.registrationToken;
+    } catch (error) {
+      console.error(error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
   }

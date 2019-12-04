@@ -290,8 +290,12 @@ export default class EosIAMUserManagement extends Vue {
   public async getAllUsers() {
     this.showLoader = true;
     this.loaderMessage = "Fetching All IAM Users...";
-    const res: any = await Api.getAll(apiRegister.s3_iam_user);
-    this.usersList = res.data.iam_users;
+    try {
+      const res: any = await Api.getAll(apiRegister.s3_iam_user);
+      this.usersList = res.data.iam_users;
+    } catch (error) {
+      console.error(error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
   }
@@ -302,8 +306,12 @@ export default class EosIAMUserManagement extends Vue {
     const tempUser = this.createUserForm.getModel();
     tempUser.require_reset = true;
     delete tempUser.confirm_password;
-    const res: any = await Api.post(apiRegister.s3_iam_user, tempUser);
-    this.user = res.data;
+    try {
+      const res: any = await Api.post(apiRegister.s3_iam_user, tempUser);
+      this.user = res.data;
+    } catch (error) {
+      console.error(error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
     this.showUserDetailsDialog = true;
@@ -328,7 +336,7 @@ export default class EosIAMUserManagement extends Vue {
   public clearCreateUserForm() {
     this.user = new IAMUser();
     this.createUserForm.isValid = false;
-    this.createUserForm.controls.forEach((control) => {
+    this.createUserForm.controls.forEach(control => {
       control.value = "";
       control.isDirty = false;
       control.isValid = false;
@@ -339,7 +347,11 @@ export default class EosIAMUserManagement extends Vue {
     this.showLoader = true;
     this.loaderMessage = "Deleting User " + this.userToDelete;
     this.userToDelete = encodeURI(this.userToDelete);
-    await Api.delete(apiRegister.s3_iam_user, this.userToDelete);
+    try {
+      await Api.delete(apiRegister.s3_iam_user, this.userToDelete);
+    } catch (error) {
+      console.error(error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
     this.getAllUsers();

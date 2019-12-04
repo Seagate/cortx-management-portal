@@ -54,9 +54,13 @@ export default class SystemConfiguration extends VuexModule {
 
     @Action
     public async getSystemConfigAction(queryParams: object) {
-        const res = await Api.getAll(apiRegister.systemconfig, queryParams);
-        const data = res.data;
-        this.context.commit("systemConfigMutation", data);
+        try {
+            const res = await Api.getAll(apiRegister.systemconfig, queryParams);
+            const data = res.data;
+            this.context.commit("systemConfigMutation", data);
+        } catch (error) {
+            console.error(error);
+        }
     }
     @Action
     public async updateSystemConfig(payload: any): Promise<any | undefined> {
@@ -67,7 +71,7 @@ export default class SystemConfiguration extends VuexModule {
             return res;
         } catch (e) {
             // tslint:disable-next-line: no-console
-            console.log(e);
+            console.error(e);
         }
     }
 

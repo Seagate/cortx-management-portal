@@ -390,8 +390,8 @@ export default class EosUserSettingLocal extends Vue {
     }
   }
   private onDelete(id: string) {
-    //TODO: Need to remove this check once api is properly implemented
-    if(!this.isFirstElement(id)){
+    // TODO: Need to remove this check once api is properly implemented
+    if (!this.isFirstElement(id)) {
       this.$store
         .dispatch("createUser/deleteUserAction", id)
         .then(data => {
@@ -402,10 +402,10 @@ export default class EosUserSettingLocal extends Vue {
         });
     }
   }
-  //TODO: Need to remove this logic once api is properly implemented
+  // TODO: Need to remove this logic once api is properly implemented
   private isFirstElement(id: string): boolean {
     let isFirstElem: boolean = false;
-    if(this.$data.alertData.length > 0 && this.$data.alertData[0].id === id) {
+    if (this.$data.alertData.length > 0 && this.$data.alertData[0].id === id) {
       isFirstElem = true;
     }
     return isFirstElem;
