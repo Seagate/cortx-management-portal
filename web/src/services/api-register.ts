@@ -23,6 +23,7 @@ export default {
     admin_user: `/api/${version}/login`,
     admin_user_create: `/api/${version}/preboarding/user`,
     admin_user_logout: `/api/${version}/logout`,
+    udx_reg_status: `/usl/v1/system/certificates/domainCertificate`,
 	udx_reg_token: `/usl/v1/registrationToken`,
 	udx_devices: `/usl/v1/devices`,
     s3_accounts: `/api/${version}/s3_accounts`,

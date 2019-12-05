@@ -59,6 +59,7 @@ export default class SystemConfiguration extends VuexModule {
             const data = res.data;
             this.context.commit("systemConfigMutation", data);
         } catch (error) {
+            // tslint:disable-next-line: no-console
             console.error(error);
         }
     }

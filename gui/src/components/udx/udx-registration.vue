@@ -94,7 +94,7 @@
         <label
           id="udx-device-details-title"
           class="headline font-weight-bold"
-        >UDX registration details</label>
+        >UDX Registration Details</label>
       </div>
       <table id="udx-device-details" class="mt-4 udx-device-details">
         <tr>
@@ -122,6 +122,43 @@
           <td class="py-2">{{ udxDevice.vendorID }}</td>
         </tr>
       </table>
+      <v-btn color="green" @click="showConfirmUnregisterDialog = true" class="mt-5 elevation-0">
+        <span class="white--text">Deregister</span>
+      </v-btn>
+      <v-dialog v-model="showConfirmUnregisterDialog" persistent max-width="790">
+        <v-card>
+          <v-system-bar color="greay lighten-3">
+            <v-spacer></v-spacer>
+            <v-icon @click="closeConfirmUnregisterDialog('no')" style="cursor: pointer;">mdi-close</v-icon>
+          </v-system-bar>
+          <v-card-title class="title ml-3">
+            <img class="mr-2" src="./../../assets/status/warning.png" />
+            <span>Confirmation</span>
+          </v-card-title>
+          <v-divider />
+          <v-card-text>
+            <label class="ml-3 unregister-confirmation-msg">Are you sure you want to deregister?</label>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn
+              color="green"
+              @click="closeConfirmUnregisterDialog('yes')"
+              class="ma-5 elevation-0"
+            >
+              <span class="white--text">Yes</span>
+            </v-btn>
+            <v-btn
+              color="green"
+              outlined
+              @click="closeConfirmUnregisterDialog('no')"
+              class="ma-5 elevation-0"
+            >
+              <span style="text-transform: none;">No</span>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -138,17 +175,21 @@ import Loader from "../widgets/loader.vue";
   components: { Loader }
 })
 export default class UDXRegistration extends Vue {
+  private isUDXRegistered: boolean = false;
   private identificationToken: string = "";
   private url: string = "";
   private showLoader: boolean = false;
   private loaderMessage: string = "";
   private showRegistrationSuccessDialog: boolean = false;
-  private udxDevice: UDXDevice;
+  private udxDevice: UDXDevice | null;
   private isFetchingDeviceDetails: boolean = false;
+  private showConfirmUnregisterDialog: boolean = false;
 
   public async mounted() {
-    await this.getUDXRegistrationDetails();
-    if (!this.udxDevice) {
+    await this.getUDXRegistrationStatus();
+    if (this.isUDXRegistered) {
+      await this.getUDXRegistrationDetails();
+    } else {
       this.getIdentificationToken();
     }
   }
@@ -162,6 +203,7 @@ export default class UDXRegistration extends Vue {
         pin: "0000"
       });
     } catch (error) {
+      // tslint:disable-next-line: no-console
       console.error(error);
     }
     this.showLoader = false;
@@ -169,10 +211,39 @@ export default class UDXRegistration extends Vue {
     this.showRegistrationSuccessDialog = true;
   }
 
+  public unregisterUDX() {
+    this.udxDevice = null;
+    this.getIdentificationToken();
+  }
+
   public continueAfterRegistration() {
     this.identificationToken = "";
+    this.url = "";
     this.showRegistrationSuccessDialog = false;
     this.getUDXRegistrationDetails();
+  }
+
+  public closeConfirmUnregisterDialog(confirmation: string) {
+    this.showConfirmUnregisterDialog = false;
+    if (confirmation === "yes") {
+      this.unregisterUDX();
+    }
+  }
+
+  private async getUDXRegistrationStatus() {
+    this.showLoader = true;
+    this.loaderMessage = "Checking if UDX is registered...";
+    try {
+      const res = await Api.getAll(apiRegister.udx_reg_status);
+      if (res && res.data) {
+        this.isUDXRegistered = res.data.isRegistered;
+      }
+    } catch (error) {
+      // tslint:disable-next-line: no-console
+      console.error(error);
+    }
+    this.showLoader = false;
+    this.isFetchingDeviceDetails = false;
   }
 
   private async getUDXRegistrationDetails() {
@@ -185,6 +256,7 @@ export default class UDXRegistration extends Vue {
         this.udxDevice = res.data[0];
       }
     } catch (error) {
+      // tslint:disable-next-line: no-console
       console.error(error);
     }
     this.showLoader = false;
@@ -198,6 +270,7 @@ export default class UDXRegistration extends Vue {
       const res = await Api.getAll(apiRegister.udx_reg_token);
       this.identificationToken = res.data.registrationToken;
     } catch (error) {
+      // tslint:disable-next-line: no-console
       console.error(error);
     }
     this.showLoader = false;
@@ -242,5 +315,9 @@ export default class UDXRegistration extends Vue {
 }
 .cursor-pointer {
   cursor: pointer;
+}
+.unregister-confirmation-msg {
+  color: #000;
+  font-size: 16px;
 }
 </style>

@@ -53,7 +53,7 @@
       <v-btn
         v-if="!showCreateUserForm"
         color="green"
-        class="my-5 elevation-0"
+        class="mt-2 mb-4 elevation-0"
         @click="openCreateUserForm()"
       >
         <span class="white--text">Create User</span>
@@ -141,6 +141,7 @@
         class="eos-table"
         :hide-default-header="true"
         :hide-default-footer="true"
+        :disable-pagination="true"
       >
         <template v-slot:header="{props}">
           <tr>
@@ -294,6 +295,7 @@ export default class EosIAMUserManagement extends Vue {
       const res: any = await Api.getAll(apiRegister.s3_iam_user);
       this.usersList = res.data.iam_users;
     } catch (error) {
+      // tslint:disable-next-line: no-console
       console.error(error);
     }
     this.showLoader = false;
@@ -310,6 +312,7 @@ export default class EosIAMUserManagement extends Vue {
       const res: any = await Api.post(apiRegister.s3_iam_user, tempUser);
       this.user = res.data;
     } catch (error) {
+      // tslint:disable-next-line: no-console
       console.error(error);
     }
     this.showLoader = false;
@@ -336,7 +339,7 @@ export default class EosIAMUserManagement extends Vue {
   public clearCreateUserForm() {
     this.user = new IAMUser();
     this.createUserForm.isValid = false;
-    this.createUserForm.controls.forEach(control => {
+    this.createUserForm.controls.forEach((control) => {
       control.value = "";
       control.isDirty = false;
       control.isValid = false;
@@ -350,6 +353,7 @@ export default class EosIAMUserManagement extends Vue {
     try {
       await Api.delete(apiRegister.s3_iam_user, this.userToDelete);
     } catch (error) {
+      // tslint:disable-next-line: no-console
       console.error(error);
     }
     this.showLoader = false;
