@@ -108,6 +108,8 @@ export default class EosStatsMedium extends Vue {
             }
           },
           y: {
+            min: 0,
+            padding: { top: 0, bottom: 0 },
             label: {
               text: "KB transferred per second",
               position: "outer-middle"
@@ -195,6 +197,8 @@ export default class EosStatsMedium extends Vue {
             }
           },
           y: {
+            min: 0,
+            padding: { top: 0, bottom: 0 },
             label: {
               text: "Ops per second",
               position: "outer-middle"
@@ -281,6 +285,8 @@ export default class EosStatsMedium extends Vue {
             }
           },
           y: {
+            min: 0,
+            padding: { top: 0, bottom: 0 },
             label: {
               text: "Average latency (In millisecond)",
               position: "outer-middle"
