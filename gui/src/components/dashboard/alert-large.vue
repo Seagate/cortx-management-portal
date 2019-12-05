@@ -323,6 +323,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
   background-color: #e3e3e3;
   border-top: 1px solid whitesmoke;
   padding-top: 0.5em;
+  vertical-align: top;
 }
 .active {
   display: inline-block;
