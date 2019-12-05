@@ -32,3 +32,7 @@ export class IAMUser {
     public secret_key: string;
     public require_reset: boolean;
 }
+
+export class Bucket {
+    public name: string;
+}

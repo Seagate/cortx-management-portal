@@ -53,10 +53,10 @@
       <v-btn
         v-if="!showCreateAccountForm"
         color="green"
-        class="my-5 elevation-0"
+        class="mt-2 mb-4 elevation-0"
         @click="openCreateAccountForm()"
       >
-        <span class="white--text">Create S3 Account</span>
+        <span class="white--text">Create Account</span>
       </v-btn>
 
       <v-dialog v-model="showAccountDetailsDialog" persistent max-width="790">
@@ -141,6 +141,7 @@
         class="eos-table"
         :hide-default-header="true"
         :hide-default-footer="true"
+        :disable-pagination="true"
       >
         <template v-slot:header="{props}">
           <tr>
@@ -283,6 +284,7 @@ export default class EosAccountManagement extends Vue {
       const res: any = await Api.getAll(apiRegister.s3_account);
       this.accountsList = res.data.s3_accounts;
     } catch (error) {
+      // tslint:disable-next-line: no-console
       console.error(error);
     }
     this.showLoader = false;
@@ -298,6 +300,7 @@ export default class EosAccountManagement extends Vue {
       const res = await Api.post(apiRegister.s3_account, tempAccount);
       this.account = res.data;
     } catch (error) {
+      // tslint:disable-next-line: no-console
       console.error(error);
     }
     this.showLoader = false;
@@ -324,7 +327,7 @@ export default class EosAccountManagement extends Vue {
   public clearCreateAccountForm() {
     this.account = new Account();
     this.createAccountForm.isValid = false;
-    this.createAccountForm.controls.forEach(control => {
+    this.createAccountForm.controls.forEach((control) => {
       control.value = "";
       control.isDirty = false;
       control.isValid = false;
@@ -337,6 +340,7 @@ export default class EosAccountManagement extends Vue {
     try {
       await Api.delete(apiRegister.s3_account, this.accountToDelete);
     } catch (error) {
+      // tslint:disable-next-line: no-console
       console.error(error);
     }
     this.showLoader = false;

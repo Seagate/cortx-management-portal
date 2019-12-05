@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response } from "express";
-import { getUDXDevices, getIdentificationToken, registerUDX } from "./udx-controller";
+import { getUDXDevices, getIdentificationToken, registerUDX, getUDXRegistrationStatus } from "./udx-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -24,6 +24,21 @@ import HttpStatus from 'http-status-codes';
  */
 
 export default [
+  {
+    path: "/api/v1/udx-device/registration-status",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getUDXRegistrationStatus(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
   {
     path: "/api/v1/udx-device/registration-token",
     method: "get",

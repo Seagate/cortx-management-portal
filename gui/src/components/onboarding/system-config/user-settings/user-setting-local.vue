@@ -398,6 +398,7 @@ export default class EosUserSettingLocal extends Vue {
           this.getUserData();
         })
         .catch(e => {
+          // tslint:disable-next-line: no-console
           console.log("err logger: ", e);
         });
     }
@@ -417,6 +418,7 @@ export default class EosUserSettingLocal extends Vue {
         this.$data.alertData = data;
       })
       .catch(e => {
+        // tslint:disable-next-line: no-console
         console.log("err logger: ", e);
       });
   }

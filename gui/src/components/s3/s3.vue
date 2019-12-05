@@ -8,7 +8,7 @@
     </div>
     <v-tabs color="green" class="mb-2" style="border-bottom: 1px solid lightgrey;">
       <v-tab @click="switchTab('account')">
-        <label class="tab-label">S3 Account</label>
+        <label class="tab-label">Account</label>
       </v-tab>
       <v-tab @click="switchTab('iamuser')">
         <label class="tab-label">IAM User</label>
@@ -19,7 +19,7 @@
     </v-tabs>
     <S3Account v-if="showAccountTab" />
     <IAMUser v-if="showIAMUserTab" />
-      <S3Bucket v-if="showBucketTab" />
+    <S3Bucket v-if="showBucketTab" />
   </div>
 </template>
 <script lang="ts">
@@ -30,7 +30,7 @@ import S3Bucket from "./bucket-creation.vue";
 
 @Component({
   name: "eos-s3-management",
-  components: { S3Account, IAMUser, S3Bucket  }
+  components: { S3Account, IAMUser, S3Bucket }
 })
 export default class EosS3Management extends Vue {
   private showAccountTab: boolean = true;

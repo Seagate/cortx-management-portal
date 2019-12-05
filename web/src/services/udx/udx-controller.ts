@@ -35,3 +35,13 @@ export const registerUDX = async (req: Request, res: Response) => {
     return result;
 };
 
+export const getUDXRegistrationStatus = async (req: Request, res: Response) => {
+    let result;
+    try {
+        await Api.getAll(apiRegister.udx_reg_status, req, res);
+        result = {"isRegistered": true};
+    } catch(exception) {
+        result = {"isRegistered": false};
+    }
+    return result;
+};

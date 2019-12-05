@@ -1,199 +1,267 @@
 <template>
-  <v-card class="pb-5 elevation-0" outlined tile>
+  <div>
     <Loader :show="showLoader" :message="loaderMessage" />
-    <v-system-bar color="greay lighten-3" height="50">BUCKETS</v-system-bar>
-    <div v-if="isUserCreate">
-      <v-row>
-        <v-col class="pl-5">
-          <div class="font-weight-medium pt-3">BUCKET NAME</div>
-          <input class="input-text" type="text" name="bucketname" v-model="bucket_name" />
-        </v-col>
-      </v-row>
-    </div>
-    <v-btn color="green" class="ma-5 elevation-0">
-      <span v-if="!isUserCreate" class="white--text" @click="addBucket()">Add BUCKET</span>
-      <span v-if="isUserCreate" class="white--text" @click="createUser()">CREATE BUCKET</span>
-    </v-btn>
-    <span v-if="isUserCreate" class="green--text" @click="createUser()">Cancel</span>
-    <v-data-table
-      calculate-widths
-      :items="bucketData"
-      :single-expand="singleExpand"
-      item-key="id"
-      show-expand
-      class="eos-table"
-      hide-default-header
-    >
-      <template v-slot:header="{props}">
-        <tr>
-          <th
-            v-for="header in alertHeader"
-            :key="header.text"
-            class="tableheader text-capitalize font-weight-medium text--black"
-            @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
-          >
-            <span
-              class="headerText"
-              :class="(header.value === sortColumnName && isSortActive) ? 'active' : ''"
-            >{{ header.text }}</span>
-            <span
-              :class="(header.value === sortColumnName && isSortActive) ? 'active' : 'notActive'"
-            >
-              <img
-                v-if="header.sortable && header.sortDir === alertStatus.desc"
-                src="./../../assets/table-caret-green-down.png"
-              />
-              <img
-                v-if="header.sortable && header.sortDir === alertStatus.asc"
-                src="./../../assets/table-caret-green-up.png"
-              />
-            </span>
-          </th>
-          <th class="tableheader" />
-        </tr>
-      </template>
 
-      <template v-slot:item="props">
-        <tr class="font-weight-small">
-          <td>{{props.item.name}}</td>
-          <td>
-            <img @click="onDelete(props.item.name )" src="./../../assets/delete-off.png" />
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
-  </v-card>
+    <div style="width: 100%">
+      <div v-if="showCreateBucketForm">
+        <v-row>
+          <v-col class="pl-5">
+            <div class="pt-3">
+              <InputBox :form="createBucketForm" :control="createBucketForm.controls[0]" />
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-btn
+              v-if="showCreateBucketForm"
+              color="green"
+              class="mx-2"
+              @click="createBucket()"
+              :disabled="!createBucketForm.isValid"
+            >
+              <span class="white--text">Create Bucket</span>
+            </v-btn>
+            <v-btn
+              v-if="showCreateBucketForm"
+              outlined
+              color="success"
+              class="ml-5"
+              @click="closeCreateBucketForm()"
+            >
+              <span style="text-transform: none !important;">Cancel</span>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
+
+      <v-btn
+        v-if="!showCreateBucketForm"
+        color="green"
+        class="mt-2 mb-4 elevation-0"
+        @click="openCreateBucketForm()"
+      >
+        <span class="white--text">Create Bucket</span>
+      </v-btn>
+
+      <v-dialog v-model="showBucketCreateSuccessDialog" persistent max-width="790">
+        <v-card>
+          <v-system-bar color="greay lighten-3">
+            <v-spacer></v-spacer>
+            <v-icon @click="closeBucketCreateSuccessDialog()" style="cursor: pointer;">mdi-close</v-icon>
+          </v-system-bar>
+          <v-card-title class="title mt-6 ml-3">
+            <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
+            <span>Bucket created successfully.</span>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn color="green" @click="closeBucketCreateSuccessDialog()" class="ma-5 elevation-0">
+              <span class="white--text">OK</span>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="showConfirmDeleteDialog" persistent max-width="790">
+        <v-card>
+          <v-system-bar color="greay lighten-3">
+            <v-spacer></v-spacer>
+            <v-icon @click="closeConfirmDeleteDialog('no')" style="cursor: pointer;">mdi-close</v-icon>
+          </v-system-bar>
+          <v-card-title class="title ml-3">
+            <img class="mr-2" src="./../../assets/status/warning.png" />
+            <span>Confirmation</span>
+          </v-card-title>
+          <v-divider />
+          <v-card-text>
+            <label
+              class="ml-3 delete-bucket-confirmation-msg"
+            >Are you sure you want to delete the bucket?</label>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn color="green" @click="closeConfirmDeleteDialog('yes')" class="ma-5 elevation-0">
+              <span class="white--text">Yes</span>
+            </v-btn>
+            <v-btn
+              color="green"
+              outlined
+              @click="closeConfirmDeleteDialog('no')"
+              class="ma-5 elevation-0"
+            >
+              <span style="text-transform: none;">No</span>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-data-table
+        calculate-widths
+        :items="bucketsList"
+        item-key="name"
+        class="eos-table"
+        :hide-default-header="true"
+        :hide-default-footer="true"
+        :disable-pagination="true"
+      >
+        <template v-slot:header="{props}">
+          <tr>
+            <th
+              v-for="header in bucketsTableHeaderList"
+              :key="header.text"
+              class="tableheader text-capitalize font-weight-medium text--black"
+            >
+              <span class="headerText">{{ header.text }}</span>
+            </th>
+            <th class="tableheader" />
+          </tr>
+        </template>
+
+        <template v-slot:item="props">
+          <tr class="font-weight-small">
+            <td>{{props.item.name}}</td>
+            <td>
+              <img
+                @click="openConfirmDeleteDialog(props.item.name)"
+                style="cursor: pointer;"
+                src="./../../assets/delete-off.png"
+              />
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Buckets } from "./../.././././models/s3Buckets";
+import { Api } from "../../services/api";
+import apiRegister from "../../services/api-register";
 import Loader from "../widgets/loader.vue";
 import InputBox from "../widgets/input-box.vue";
-import { Form, FormControl } from "../widgets/form-widget";
+import { Form, FormControl, Validator } from "../widgets/form-widget";
 
 @Component({
   name: "eos-bucketcreation",
   components: { Loader, InputBox }
 })
 export default class EosBucketCreation extends Vue {
-  private showLoader: boolean = false;
-  private loaderMessage: string = "";
+  private showCreateBucketForm: boolean;
+  private showLoader: boolean;
+  private loaderMessage: string;
+  private showBucketCreateSuccessDialog: boolean;
+  private showConfirmDeleteDialog: boolean;
 
-  public gotToNextPage() {
-    this.$router.push("bucketconfigsummary");
+  private bucketsTableHeaderList: any[];
+  private bucketsList: Buckets[] = [];
+  private bucketToDelete: string = "";
+
+  private createBucketForm: Form;
+
+  constructor() {
+    super();
+    this.showCreateBucketForm = false;
+    this.showLoader = false;
+    this.loaderMessage = "";
+    this.showBucketCreateSuccessDialog = false;
+    this.showConfirmDeleteDialog = false;
+    this.bucketsTableHeaderList = [
+      {
+        text: "Bucket Name",
+        value: "name",
+        sortable: false
+      }
+    ];
+
+    const controls: FormControl[] = [
+      new FormControl(
+        "Bucket Name",
+        "bucket_name",
+        "text",
+        "",
+        true,
+        "Bucket Name is required",
+        new Validator(new RegExp("^[a-zA-Z0-9_-]*$"), "Invalid Bucket Name"),
+        "Bucket Name should be alphanumeric " +
+          "and can have _ or - but no spaces"
+      )
+    ];
+    this.createBucketForm = new Form(controls, false);
   }
-  public gotToPrevPage() {
-    this.$router.push("usersetting");
+
+  public mounted() {
+    this.getAllBuckets();
   }
-  private addIpAddressNode(address: string) {
-    if (
-      this.$data.ipaddressNode0.length < 4 &&
-      address !== "" &&
-      address !== undefined
-    ) {
-      this.$data.ipaddressNode0.push(address);
-      this.$data.newAddressNode0 = "";
-    }
-  }
-  private addBucket() {
-    this.$data.isUserCreate = !this.$data.isUserCreate;
-    return this.$data.isUserCreate;
-  }
-  private createUser() {
-    this.$data.isUserCreate = !this.$data.isUserCreate;
-    const queryParams: Buckets = {
-      bucket_name: this.$data.bucket_name
-    };
+
+  public async getAllBuckets() {
     this.showLoader = true;
-    this.loaderMessage = "Creating bucket...";
-    this.$store
-      .dispatch("bucket/createBucketListAction", queryParams)
-      .then((res: any) => {
-        this.showLoader = false;
-        this.loaderMessage = "";
-        this.getUserData();
-      })
-      .catch(() => {
-        this.showLoader = false;
-        this.loaderMessage = "";
-        // tslint:disable-next-line: no-console
-        console.error("Create User Fails");
-      });
-    return this.$data.isUserCreate;
+    this.loaderMessage = "Fetching All Buckets...";
+    const res: any = await Api.getAll(apiRegister.s3_bucket);
+    this.bucketsList = res.data.buckets;
+    this.showLoader = false;
+    this.loaderMessage = "";
   }
-  private editUser() {
-    this.$data.isUserEdit = !this.$data.isUserEdit;
-    return this.$data.isUserEdit;
-  }
-  private onExpand(props: any) {
-    if (props.isExpanded === false) {
-      props.expand(props.item);
-    } else {
-      props.expand(false);
-    }
-  }
-  private onDelete(name: string) {
-    this.$store
-      .dispatch("bucket/deleteBucketListAction", name)
-      .then(data => {
-        alert("Deleting");
-        this.getUserData();
-      })
-      .catch(e => {
-        console.log("err logger: ", e);
-      });
-  }
-  private getUserData() {
+
+  public async createBucket() {
     this.showLoader = true;
-    this.loaderMessage = "Fetching buckets list...";
-    this.$store
-      .dispatch("bucket/getDataAction")
-      .then(data => {
-        this.$data.bucketData = data.buckets;
-        this.showLoader = false;
-        this.loaderMessage = "";
-      })
-      .catch(e => {
-        this.showLoader = false;
-        this.loaderMessage = "";
-        console.log("err logger: ", e);
-      });
+    this.loaderMessage = "Creating Bucket...";
+    const tempBucket = this.createBucketForm.getModel();
+    const res = await Api.post(apiRegister.s3_bucket, tempBucket);
+    this.showLoader = false;
+    this.loaderMessage = "";
+    this.showBucketCreateSuccessDialog = true;
   }
-  private mounted() {
-    this.getUserData();
+
+  public closeBucketCreateSuccessDialog() {
+    this.clearCreateBucketForm();
+    this.showBucketCreateSuccessDialog = false;
+    this.showCreateBucketForm = false;
+    this.getAllBuckets();
   }
-  private data() {
-    return {
-      source: "manual",
-      isUserCreate: false,
-      page: 1, // Page counter, in sync with data table
-      singleExpand: false, // Expande single row property
-      itemsPerPage: 5, // Total rows per page, in sync with data table
-      isSortActive: false, // Set table column sorting flag to default inactive
-      sortColumnName: "", // Set sorting column name to none
-      alertStatus: require("./../../common/const-string.json"),
-      bucket_name: "",
-      alertHeader: [
-        {
-          text: "BUCKETNAME",
-          value: "username",
-          sortable: false
-        }
-      ],
-      bucketData: []
-    };
+
+  public openCreateBucketForm() {
+    this.showCreateBucketForm = true;
+  }
+
+  public closeCreateBucketForm() {
+    this.clearCreateBucketForm();
+    this.showCreateBucketForm = false;
+  }
+
+  public clearCreateBucketForm() {
+    this.createBucketForm.isValid = false;
+    this.createBucketForm.controls.forEach((control) => {
+      control.value = "";
+      control.isDirty = false;
+      control.isValid = false;
+    });
+  }
+
+  public async deleteBucket() {
+    this.showLoader = true;
+    this.loaderMessage = "Deleting bucket " + this.bucketToDelete;
+    await Api.delete(apiRegister.s3_bucket, this.bucketToDelete);
+    this.showLoader = false;
+    this.loaderMessage = "";
+    this.getAllBuckets();
+  }
+
+  public openConfirmDeleteDialog(bucketName: string) {
+    this.bucketToDelete = bucketName;
+    this.showConfirmDeleteDialog = true;
+  }
+
+  public async closeConfirmDeleteDialog(confirmation: string) {
+    this.showConfirmDeleteDialog = false;
+    if (confirmation === "yes") {
+      this.deleteBucket();
+    }
+    this.bucketToDelete = "";
   }
 }
-</script>
 </script>
 <style lang="scss" scoped>
-.input-text {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #e3e3e3;
-  width: 20em;
-  height: 2.5em;
-}
 .pointer {
   cursor: pointer;
 }
@@ -260,5 +328,9 @@ tbody tr:active {
 }
 .center {
   padding: 22px;
+}
+.delete-bucket-confirmation-msg {
+  color: #000;
+  font-size: 16px;
 }
 </style>

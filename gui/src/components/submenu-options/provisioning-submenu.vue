@@ -13,34 +13,25 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card width="900">
-    <v-container>
-      <v-row dense>
-        <v-col cols="12">
-          <v-card class="outlined pt-2" height="100" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline">S3</v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn :to="'/s3'" class="text-capitalize" text small color="green">Manage</v-btn>
-              </v-card-actions>
-            </div>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="outlined pt-2" height="100" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline">NFS</v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn class="text-capitalize" disabled text small color="green">Manage</v-btn>
-              </v-card-actions>
-            </div>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+  <div>
+    <div class="tile pa-5">
+      <div style="float: left;">
+        <label class="title font-weight-bold">S3</label>
+      </div>
+      <div style="float: right;margin-top: 2px;">
+        <v-btn :to="'/s3'" class="text-capitalize" text small color="green">Manage</v-btn>
+      </div>
+    </div>
+
+    <div class="mt-3 tile pa-5">
+      <div style="float: left;">
+        <label class="title font-weight-bold">NFS</label>
+      </div>
+      <div style="float: right;margin-top: 2px;">
+        <v-btn class="text-capitalize" disabled text small color="green">Manage</v-btn>
+      </div>
+    </div>
+  </div>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
@@ -51,4 +42,12 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class EosProvisioningSubmenu extends Vue {}
 </script>
 <style lang="scss" scoped>
+.tile {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  box-sizing: border-box;
+  border-radius: 4px;
+  height: 100px;
+  width: 700px;
+}
 </style>
