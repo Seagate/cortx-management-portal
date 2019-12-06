@@ -11,14 +11,22 @@
           <div class="mt-4">
             <span class="white--text font-weight-medium">Username</span>
             <div>
-              <InputBox :form="loginForm" :control="loginForm.controls[0]" />
+              <InputBox
+                :form="loginForm"
+                :control="loginForm.controls[0]"
+                @keyup.enter.native="handleEnterEvent()"
+              />
             </div>
           </div>
 
           <div class="mt-4">
             <span class="font-weight-medium white--text">Password</span>
             <div>
-              <InputBox :form="loginForm" :control="loginForm.controls[1]" />
+              <InputBox
+                :form="loginForm"
+                :control="loginForm.controls[1]"
+                @keyup.enter.native="handleEnterEvent()"
+              />
             </div>
           </div>
 
@@ -38,7 +46,9 @@
             class="btn-primary-dark mt-10"
             @click="gotToNextPage()"
             :disabled="!loginForm.isValid"
-          >Get Started</button>
+          >Login</button>
+          <!--TODO: This is temporary error handling for Demo-->
+          <div v-if="!isValidLogin" class="red--text mt-1">Login Failed</div>
         </form>
       </div>
     </v-container>
@@ -79,11 +89,18 @@ export default class EosLogin extends Vue {
   }
   private data() {
     return {
-      conststr: require("./../../common/const-string.json")
+      conststr: require("./../../common/const-string.json"),
+      isValidLogin: true
     };
   }
-
+  private handleEnterEvent() {
+    if (this.$data.loginForm.isValid) {
+      this.gotToNextPage();
+    }
+  }
   private gotToNextPage() {
+    // Hide login err message
+    this.$data.isValidLogin = true;
     const queryParams: UserLoginQueryParam = this.loginForm.getModel();
     this.$store
       .dispatch("userLogin/loginAction", queryParams)
@@ -101,8 +118,8 @@ export default class EosLogin extends Vue {
         }
       })
       .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("Login Action Failed");
+        // Show error message on screen
+        this.$data.isValidLogin = false;
       });
   }
 }

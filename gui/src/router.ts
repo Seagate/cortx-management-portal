@@ -42,6 +42,7 @@ import EosSetting from "./views/setting.vue";
 import UDXRegistration from "./components/udx/udx-registration.vue";
 import EosSettingsSubmenu from "./components/submenu-options/settings-submenu.vue";
 import EosProvisioningSubmenu from "./components/submenu-options/provisioning-submenu.vue";
+import EosAutoLogin from "./components/preboarding/auto-login.vue";
 
 Vue.use(Router);
 
@@ -224,6 +225,12 @@ const router = new Router({
       name: "provisioning-submenu",
       component: EosProvisioningSubmenu,
       meta: { requiresAuth: true, isOnboardingReq: false }
+    },
+    {
+      path: "/clouduser",
+      name: "clouduser",
+      component: EosAutoLogin,
+      meta: { requiresAuth: false, isOnboardingReq: false }
     }
   ],
 });
