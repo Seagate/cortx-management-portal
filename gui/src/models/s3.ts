@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 
-// Interface for CSM schema for S3 Account
+// Interface for CSM schema for S3 account
 export class Account {
     public account_name: string;
     public account_email: string;

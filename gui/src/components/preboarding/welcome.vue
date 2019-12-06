@@ -22,7 +22,7 @@
           <option value="celsius">English</option>
         </select>
       </div>
-      <v-btn class="ml-4" elevation="0" color="green">
+      <v-btn class="ml-4" elevation="0" color="udxprimary">
         <span class="white--text" @click="gotToNextPage()">Get Started</span>
       </v-btn>
     </v-container>

@@ -69,7 +69,7 @@
       </div>
     </div>
     <div class="mt-8">
-      <v-btn elevation="0" color="green" id="btnIpv4ApplyContinue">
+      <v-btn elevation="0" color="udxprimary" id="btnIpv4ApplyContinue">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv4Prevoius">Back to previous step</span>

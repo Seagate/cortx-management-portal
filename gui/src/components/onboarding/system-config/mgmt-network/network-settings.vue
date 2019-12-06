@@ -45,7 +45,7 @@
      id="lblNSMsgSkipSetting" >You can skip this step if your Management Network Settings are already complete.</div>
       <v-divider class="mt-8" />
       <div class="mt-8">
-        <v-btn @click="gotoNextPage()" elevation="0" color="green" id="btnNSContinue">
+        <v-btn @click="gotoNextPage()" elevation="0" color="udxprimary" id="btnNSContinue">
           <span class="white--text">Continue</span>
         </v-btn>
         <span class="green--text ml-8 pointer" id="lblNSBack">Back to previous step</span>

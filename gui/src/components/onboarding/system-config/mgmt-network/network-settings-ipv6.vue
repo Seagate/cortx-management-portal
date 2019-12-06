@@ -55,7 +55,7 @@
           >+ Add another static address (maximum of 4)</div>
           <v-divider class="mt-8" />
           <div class="mt-10">
-            <v-btn elevation="0" color="green" @click="$router.push('dataconfig1')" id="btnIp6Apply">
+            <v-btn elevation="0" color="udxprimary" @click="$router.push('dataconfig1')" id="btnIp6Apply">
               <span class="white--text">Apply and continue</span>
             </v-btn>
             <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id=lblIp6Back>Back to previous step</span>

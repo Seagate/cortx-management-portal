@@ -84,7 +84,7 @@
     </div>
 
     <div class="mt-8">
-      <v-btn elevation="0" color="green" id="btnEmailApply">
+      <v-btn elevation="0" color="udxprimary" id="btnEmailApply">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblEmailBack">Back to previous step</span>

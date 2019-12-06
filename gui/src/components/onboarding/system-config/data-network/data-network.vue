@@ -89,7 +89,7 @@
       >You can skip this step if your management network settings are already complete.</div>
       <v-divider class="mt-8" />
       <div class="mt-8">
-        <v-btn elevation="0" :disabled="!(isSkip || (isipV6Status || isipV4Status))" color="green" id="btnDNSContinue">
+        <v-btn elevation="0" :disabled="!(isSkip || (isipV6Status || isipV4Status))" color="udxprimary" id="btnDNSContinue">
           <span class="white--text" @click="gotToNextPage()">Continue</span>
         </v-btn>
         <span

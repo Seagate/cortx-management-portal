@@ -42,7 +42,7 @@
               >Confirm Password is not valid</p>
             </div>
           </div>
-          <v-btn elevation="0" color="green" :disabled="!isValidForm">
+          <v-btn elevation="0" color="udxprimary" :disabled="!isValidForm">
             <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
           </v-btn>
         </form>

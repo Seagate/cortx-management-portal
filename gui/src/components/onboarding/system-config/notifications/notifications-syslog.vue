@@ -36,7 +36,7 @@
     </div>
 
     <div class="mt-8">
-      <v-btn elevation="0" color="green" id="btnSysApply">
+      <v-btn elevation="0" color="udxprimary" id="btnSysApply">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblSysBack">Back to previous step</span>

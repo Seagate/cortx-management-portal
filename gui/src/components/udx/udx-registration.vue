@@ -83,7 +83,7 @@
           >This device has been successfully registered.</label>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="green" @click="continueAfterRegistration()" class="ma-5 elevation-0">
+          <v-btn color="udxprimary" @click="continueAfterRegistration()" class="ma-5 elevation-0">
             <span class="white--text">Continue</span>
           </v-btn>
         </v-card-actions>

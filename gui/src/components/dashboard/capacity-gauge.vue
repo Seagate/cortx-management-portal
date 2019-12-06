@@ -24,16 +24,16 @@
 
     <v-container>
       <div id="gauge_capacity"></div>
-      <div class="mb-4">
+      <div class="mt-2 mb-4">
         <span class="subtitle-2">Total Capacity :</span>
         <span>{{capacityDetails.size}}</span>
       </div>
       <v-divider></v-divider>
-      <div class="mt-4">
+      <div class="mt-3">
         <span class="subtitle-2">Used :</span>
         <span>{{capacityDetails.used}}</span>
       </div>
-      <div class="mt-4">
+      <div class="mt-3">
         <span class="subtitle-2">Available :</span>
         <span>{{capacityDetails.avail}}</span>
       </div>
@@ -49,21 +49,25 @@ import * as c3 from "c3";
 })
 export default class EosCapacityGauge extends Vue {
   public created() {
-    const demoData = [
-      ["x", 0],
-    ];
+    const demoData = [["x", 0]];
 
     const capacityRes = this.$store
       .dispatch("performanceStats/getCapacityStats")
-      .then(
-        (capacityC3Data) => {
+      .then(capacityC3Data => {
         const chart = c3.generate({
           bindto: "#gauge_capacity",
+          legend: {
+            show: false
+          },
           data: {
             columns: capacityC3Data ? capacityC3Data : demoData,
             type: "gauge"
           },
-          gauge: {},
+          gauge: {
+            label: {
+              show: false
+            }
+          },
           color: {
             pattern: ["#60B044", "#60B044", "#60B044", "#60B044"], // the three color levels for the percentage values.
             threshold: {

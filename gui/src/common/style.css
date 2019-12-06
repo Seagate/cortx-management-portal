@@ -1,3 +1,6 @@
-.white--text{
-    text-transform: capitalize;
-  }
+.v-btn{
+  text-transform: none;
+}
+.v-btn::first-letter {
+  text-transform: uppercase !important;
+}
