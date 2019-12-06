@@ -123,7 +123,7 @@ export default class EosStatsMedium extends Vue {
       if (that.ispollThroughPut === true) {
         const query = {
           id: 1,
-          from: Math.round(new Date().getTime() / 1000) - 10,
+          from: Math.round(new Date().getTime() / 1000) - 20,
           to: Math.round(new Date().getTime() / 1000),
           interval: "10"
         };
