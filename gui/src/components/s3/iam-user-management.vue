@@ -30,12 +30,12 @@
           <v-col>
             <v-btn
               v-if="showCreateUserForm"
-              color="green"
+              color="udxprimary"
               class="mx-2"
               @click="createUser()"
               :disabled="!createUserForm.isValid"
             >
-              <span class="white--text">Create User</span>
+              <span class="white--text">Create</span>
             </v-btn>
             <v-btn
               v-if="showCreateUserForm"
@@ -43,20 +43,18 @@
               color="success"
               class="ml-5"
               @click="closeCreateUserForm()"
-            >
-              <span style="text-transform: none !important;">Cancel</span>
-            </v-btn>
+            >Cancel</v-btn>
           </v-col>
         </v-row>
       </div>
 
       <v-btn
         v-if="!showCreateUserForm"
-        color="green"
+        color="udxprimary"
         class="mt-2 mb-4 elevation-0"
         @click="openCreateUserForm()"
       >
-        <span class="white--text">Create User</span>
+        <span class="white--text">Create</span>
       </v-btn>
 
       <v-dialog v-model="showUserDetailsDialog" persistent max-width="790">
@@ -80,7 +78,7 @@
             </v-col-->
           </v-row>
 
-          <table class="ml-7 mb-7">
+          <table class="mx-7 mb-7">
             <tr style>
               <th style="width:15rem;height:6rem;text-align: left">Username</th>
               <th style="width:24.2rem;text-align: left">User Id</th>
@@ -94,7 +92,7 @@
           </table>
 
           <v-card-actions>
-            <v-btn color="green" @click="closeUserDetailsDialog()" class="ma-5 elevation-0">
+            <v-btn color="udxprimary" @click="closeUserDetailsDialog()" class="ma-5 elevation-0">
               <span class="white--text">OK</span>
             </v-btn>
           </v-card-actions>
@@ -119,11 +117,15 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn color="green" @click="closeConfirmDeleteDialog('yes')" class="ma-5 elevation-0">
+            <v-btn
+              color="udxprimary"
+              @click="closeConfirmDeleteDialog('yes')"
+              class="ma-5 elevation-0"
+            >
               <span class="white--text">Yes</span>
             </v-btn>
             <v-btn
-              color="green"
+              color="udxprimary"
               outlined
               @click="closeConfirmDeleteDialog('no')"
               class="ma-5 elevation-0"
@@ -339,7 +341,7 @@ export default class EosIAMUserManagement extends Vue {
   public clearCreateUserForm() {
     this.user = new IAMUser();
     this.createUserForm.isValid = false;
-    this.createUserForm.controls.forEach((control) => {
+    this.createUserForm.controls.forEach(control => {
       control.value = "";
       control.isDirty = false;
       control.isValid = false;

@@ -30,7 +30,7 @@
           <v-col>
             <v-btn
               v-if="showCreateAccountForm"
-              color="green"
+              color="udxprimary"
               class="mx-2"
               @click="createAccount()"
               :disabled="!createAccountForm.isValid"
@@ -43,21 +43,17 @@
               color="success"
               class="ml-5"
               @click="closeCreateAccountForm()"
-            >
-              <span style="text-transform: none !important;">Cancel</span>
-            </v-btn>
+            >Cancel</v-btn>
           </v-col>
         </v-row>
       </div>
 
       <v-btn
         v-if="!showCreateAccountForm"
-        color="green"
-        class="mt-2 mb-4 elevation-0"
+        color="udxprimary"
+        class="mt-2 mb-4 elevation-0 white--text"
         @click="openCreateAccountForm()"
-      >
-        <span class="white--text">Create Account</span>
-      </v-btn>
+      >Create</v-btn>
 
       <v-dialog v-model="showAccountDetailsDialog" persistent max-width="790">
         <v-card>
@@ -80,7 +76,7 @@
             </v-col-->
           </v-row>
 
-          <table class="ml-7 mb-7">
+          <table class="mx-7 mb-7">
             <tr style>
               <th style="width:15rem;height:6rem;text-align: left">Account name</th>
               <th style="width:24.2rem;text-align: left">Access key</th>
@@ -94,9 +90,11 @@
           </table>
 
           <v-card-actions>
-            <v-btn color="green" @click="closeAccountDetailsDialog()" class="ma-5 elevation-0">
-              <span class="white--text">OK</span>
-            </v-btn>
+            <v-btn
+              color="udxprimary"
+              @click="closeAccountDetailsDialog()"
+              class="ma-5 elevation-0 white--text"
+            >OK</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -119,11 +117,15 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn color="green" @click="closeConfirmDeleteDialog('yes')" class="ma-5 elevation-0">
+            <v-btn
+              color="udxprimary"
+              @click="closeConfirmDeleteDialog('yes')"
+              class="ma-5 elevation-0"
+            >
               <span class="white--text">Yes</span>
             </v-btn>
             <v-btn
-              color="green"
+              color="udxprimary"
               outlined
               @click="closeConfirmDeleteDialog('no')"
               class="ma-5 elevation-0"
@@ -279,7 +281,7 @@ export default class EosAccountManagement extends Vue {
 
   public async getAllAccounts() {
     this.showLoader = true;
-    this.loaderMessage = "Fetching All S3 Accounts...";
+    this.loaderMessage = "Fetching All S3 accounts...";
     try {
       const res: any = await Api.getAll(apiRegister.s3_account);
       this.accountsList = res.data.s3_accounts;
@@ -327,7 +329,7 @@ export default class EosAccountManagement extends Vue {
   public clearCreateAccountForm() {
     this.account = new Account();
     this.createAccountForm.isValid = false;
-    this.createAccountForm.controls.forEach((control) => {
+    this.createAccountForm.controls.forEach(control => {
       control.value = "";
       control.isDirty = false;
       control.isValid = false;

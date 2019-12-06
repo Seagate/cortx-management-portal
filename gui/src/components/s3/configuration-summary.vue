@@ -24,7 +24,7 @@
     <div class="mt-3">
       <v-dialog v-model="dialog" width="700">
         <template v-slot:activator="{ on }">
-          <v-btn elevation="0" color="green" v-on="on">
+          <v-btn elevation="0" color="udxprimary" v-on="on">
             <span class="white--text" @click="gotToNextPage()">FINISH CONFIGURATION</span>
           </v-btn>
         </template>
@@ -38,7 +38,7 @@
               </div>
               <v-divider class="mt-3 mb-10" />
               <div class="font-weight-regular black--text mb-10">Message about What`s Happning</div>
-              <v-btn tile large width="10em" levation="0" color="green">
+              <v-btn tile large width="10em" levation="0" color="udxprimary">
                 <span class="white--text">ok</span>
               </v-btn>
             </v-card-text>
@@ -59,7 +59,7 @@ export default class EOSConfigurationSummary extends Vue {
     return {
       Account: [
         {
-          user: "S3 ACCOUNT CREATED",
+          user: "S3 aCCOUNT CREATED",
           accountname: "ACCOUNT NO159"
         },
         {

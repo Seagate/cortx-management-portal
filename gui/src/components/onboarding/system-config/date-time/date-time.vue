@@ -61,13 +61,13 @@
         </v-col>
       </v-row>
       <div class="mt-2">Daylight saving time adjustment is not supported.</div>
-      <v-btn elevation="0" color="green" class="mt-5"  id="btnDTSetNow">
+      <v-btn elevation="0" color="udxprimary" class="mt-5"  id="btnDTSetNow">
         <span class="white--text" @click="gotToNextPage()">Set Now</span>
       </v-btn>
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="green" id="btnDTApplyContinue">
+      <v-btn elevation="0" color="udxprimary" id="btnDTApplyContinue">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblDTBack">Back to previous step</span>

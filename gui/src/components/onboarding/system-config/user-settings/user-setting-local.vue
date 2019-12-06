@@ -39,7 +39,7 @@
               v-model="password"
               id="txtLocalPass"
             />
-            <div class="font-weight-medium pt-3" id="lblLocalConfirmPass">Confirm Password</div>
+            <div class="font-weight-medium pt-3" id="lblLocalConfirmPass">Confirm password</div>
             <input
               class="input-text"
               type="password"
@@ -126,21 +126,29 @@
           </v-col>
         </v-row>
       </div>
-      <v-btn color="green" class="ma-5 elevation-0" id="btnLocalAddNewUser">
-        <span
-          v-if="!isUserCreate"
-          class="white--text"
-          @click="addUser()"
-          id="lblLocalAddUser"
-        >Add New User</span>
-        <span
-          v-if="isUserCreate"
-          class="white--text"
-          @click="createUser()"
-          id="lblLocalCreateUser"
-        >Create User</span>
-      </v-btn>
-      <span v-if="isUserCreate" class="green--text" @click="addUser()" id="lblLocalCancel">Cancel</span>
+      <v-btn
+        v-if="!isUserCreate"
+        color="udxprimary"
+        class="ma-5 elevation-0 white--text"
+        @click="addUser()"
+        id="btnLocalAddNewUser"
+      >Add new user</v-btn>
+      <v-btn
+        v-if="isUserCreate"
+        color="udxprimary"
+        class="ma-5 elevation-0 white--text"
+        @click="createUser()"
+        id="btnLocalCreateUser"
+      >Create</v-btn>
+
+      <v-btn
+        text
+        small
+        color="udxprimary"
+        v-if="isUserCreate"
+        @click="addUser()"
+        id="lblLocalCancel"
+      >Cancel</v-btn>
       <v-data-table
         calculate-widths
         :items="alertData"
@@ -190,10 +198,10 @@
               <span
                 v-for="(interfacevalue,k) in props.item.interfaces"
                 :key="interfacevalue"
-              >{{k==0?"":","}}{{interfacevalue}}</span>
+              >{{k==0?"":", "}}{{interfacevalue}}</span>
             </td>
             <td>
-              <span v-for="(role, i) in props.item.roles" :key="role">{{i==0?"":","}}{{role}}</span>
+              <span v-for="(role, i) in props.item.roles" :key="role">{{i==0?"":", "}}{{role}}</span>
             </td>
             <td>
               <img @click="onExpand(props)" src="./../../../../assets/edit-off.png" />
@@ -208,7 +216,7 @@
               <div>
                 <v-row>
                   <v-col class="pl-5">
-                    <div class="font-weight-medium pt-3" id="lblLocalUserName">User Name</div>
+                    <div class="font-weight-medium pt-3" id="lblLocalUserName">Username</div>
                     <input
                       class="input-text"
                       type="text"
@@ -290,25 +298,26 @@
                   </v-col>
                 </v-row>
               </div>
-              <v-btn color="green" class="ma-5 elevation-0">
-                <span
-                  class="white--text"
-                  @click="editUser(selectedItem)"
-                  id="lblLocalApplyInterface"
-                >Apply</span>
-              </v-btn>
-              <span
-                class="green--text"
+              <v-btn
+                color="udxprimary"
+                class="ma-5 elevation-0 white--text"
+                @click="editUser(selectedItem)"
+                id="lblLocalApplyInterface"
+              >Apply</v-btn>
+              <v-btn
+                text
+                small
+                color="udxprimary"
                 @click="closeEditUser()"
                 id="lblLocalCanacelInterface"
-              >Cancel</span>
+              >Cancel</v-btn>
             </td>
           </tr>
         </template>
       </v-data-table>
     </v-card>
     <!--<div class="mt-8">
-      <v-btn elevation="0" color="green" id="btnLocalAppyInterface">
+      <v-btn elevation="0" color="udxprimary" id="btnLocalAppyInterface">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span

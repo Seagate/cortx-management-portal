@@ -23,7 +23,13 @@
         <v-row class="col-12 py-0">
           <v-col class="py-0">
             <div class="font-weight-medium" id="lblLDAPUserSearch">User Search Base</div>
-            <input class="input-text" type="text" name="usersearchbase" v-model="usersearchbase" id="txtLDAPUserBase"/>
+            <input
+              class="input-text"
+              type="text"
+              name="usersearchbase"
+              v-model="usersearchbase"
+              id="txtLDAPUserBase"
+            />
           </v-col>
         </v-row>
         <v-row class="col-7 pb-0">
@@ -33,13 +39,26 @@
           </v-col>
           <v-col class="pa-0">
             <div class="font-weight-medium">Port</div>
-            <input class="input-text" type="text" name="port" v-model="port" style="width:5em;"  id="txtLDAPPort"/>
+            <input
+              class="input-text"
+              type="text"
+              name="port"
+              v-model="port"
+              style="width:5em;"
+              id="txtLDAPPort"
+            />
           </v-col>
         </v-row>
         <v-row class="col-7 pb-0">
           <v-col class="py-0">
             <div class="font-weight-medium">Alt Server</div>
-            <input class="input-text" type="text" name="altserver" v-model="altserver"  id="txtLDAPaltServer"/>
+            <input
+              class="input-text"
+              type="text"
+              name="altserver"
+              v-model="altserver"
+              id="txtLDAPaltServer"
+            />
           </v-col>
           <v-col class="pa-0">
             <div class="font-weight-medium">Alt Port</div>
@@ -55,10 +74,14 @@
         </v-row>
       </div>
 
-      <v-btn color="green" class="ma-5 elevation-0" id="btnLDAPSet"> 
-        <span class="white--text" @click="setLDAP()">Set LDAP</span>
-      </v-btn>
-      <span class="green--text" @click="setLDAP()" id="lblLDAPCancel">Cancel</span>
+      <v-btn color="udxprimary" @click="setLDAP()" class="ma-5 elevation-0" id="btnLDAPSet">Set LDAP</v-btn>
+      <v-btn
+        text
+        small
+        color="udxprimary"
+        @click="setLDAP()"
+        id="lblLDAPCancel"
+      >Cancel</v-btn>
     </v-card>
 
     <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
@@ -68,9 +91,21 @@
         <v-row>
           <v-col class="pl-5">
             <div class="font-weight-medium pt-3" id="lblLDAPUserName">User Name</div>
-            <input class="input-text" type="text" name="hostname" v-model="hostname"  id="txtLDAPHostName"/>
+            <input
+              class="input-text"
+              type="text"
+              name="hostname"
+              v-model="hostname"
+              id="txtLDAPHostName"
+            />
             <div class="font-weight-medium pt-3" id="lblLDAPPass">Password</div>
-            <input class="input-text" type="password" name="password" v-model="password" id="txtLDAPPass" />
+            <input
+              class="input-text"
+              type="password"
+              name="password"
+              v-model="password"
+              id="txtLDAPPass"
+            />
             <div class="font-weight-medium pt-3" id="lblLDAPConfirmPass">Confirm Password</div>
             <input
               class="input-text"
@@ -82,25 +117,37 @@
           </v-col>
           <v-col>
             <div class="font-weight-medium pt-3 pb-2">Interfaces</div>
-            <input type="checkbox" @change="web" v-model="web" name="web"  id="chkLDAPWeb"/>
+            <input type="checkbox" @change="web" v-model="web" name="web" id="chkLDAPWeb" />
             <span class="ml-3 font-weight-medium" id="lblLDAPWeb">Web</span>
             <br />
             <input type="checkbox" @change="cli" v-model="cli" name="cli" id="chkLDAPCli" />
             <span class="ml-3 font-weight-medium" id="lblLDAPCli">CLI</span>
             <br />
-            <input type="checkbox" @change="api" v-model="api" name="api"  id="ChkLDAPApi"/>
+            <input type="checkbox" @change="api" v-model="api" name="api" id="ChkLDAPApi" />
             <span class="ml-3 font-weight-medium" id="lblLDAPAPi">API</span>
           </v-col>
           <v-col>
             <div class="font-weight-medium pt-3 pb-2" id="lblLDAPRole">Roles</div>
-            <input type="checkbox" @change="manage" v-model="manage" name="manage" id="chkLDAPManage" />
+            <input
+              type="checkbox"
+              @change="manage"
+              v-model="manage"
+              name="manage"
+              id="chkLDAPManage"
+            />
             <span class="ml-3 font-weight-medium" id="lblLDAPManage">Manage</span>
             <br />
-            <input type="checkbox" @change="monitor" v-model="monitor" name="monitor"  id="chkLDAPMonitor"/>
+            <input
+              type="checkbox"
+              @change="monitor"
+              v-model="monitor"
+              name="monitor"
+              id="chkLDAPMonitor"
+            />
             <span class="ml-3 font-weight-medium" id="lblLDAPMonitor">Monitor</span>
           </v-col>
           <v-col>
-            <div class="font-weight-medium pt-3" id="lblLDAPTempPref">Temperature preference</div>
+            <div class="font-weight-medium pt-3" id="lblLDAPTempPref">Temperature Preference</div>
             <select
               name="temperature"
               id="cmdTemperature"
@@ -111,8 +158,14 @@
               <option value="celsius1">Celsius</option>
             </select>
             <div class="font-weight-medium pt-3" id="lblLDAPTimeout">Timeout</div>
-            <input type="number" v-model="timeout" name="timeout" class="input-text col-2"  id="txtLDAPTimeout"/>
-            <span class="ml-3 font-weight-medium" id="lblLDAPMinute" >Minutes</span>
+            <input
+              type="number"
+              v-model="timeout"
+              name="timeout"
+              class="input-text col-2"
+              id="txtLDAPTimeout"
+            />
+            <span class="ml-3 font-weight-medium" id="lblLDAPMinute">Minutes</span>
             <div class="font-weight-medium pt-3" id="lblLDAPLang">Language</div>
             <select name="language" id="cmdLanguage" class="input-text pl-1" style="width: 10em;">
               <option value="English">English</option>
@@ -121,10 +174,21 @@
           </v-col>
         </v-row>
       </div>
-      <v-btn color="green" class="ma-5 elevation-0" id="btnLDAPCreateUser">
-        <span class="white--text" @click="createUser()">Create new user group</span>
-      </v-btn>
-      <span v-if="isUserCreate" class="green--text" @click="createUser()" id="lblLDAPCancel">Cancel</span>
+      <v-btn
+        color="udxprimary"
+        class="ma-5 elevation-0 white--text"
+        @click="createUser()"
+        id="btnLDAPCreateUser"
+      >Create new user group</v-btn>
+      <v-btn
+        v-if="isUserCreate"
+        class="text-capitalize"
+        text
+        small
+        color="udxprimary"
+        id="lblLDAPCancel"
+        @click="createUser()"
+      >Cancel</v-btn>
       <v-data-table
         calculate-widths
         :items="alertData"
@@ -188,9 +252,21 @@
                 <v-row>
                   <v-col class="col-4 pl-5">
                     <div class="font-weight-medium pt-3" id="lblLDAPUserName">User Name</div>
-                    <input class="input-text" type="text" name="hostname" v-model="hostname" id="txtLDAPHostName" />
+                    <input
+                      class="input-text"
+                      type="text"
+                      name="hostname"
+                      v-model="hostname"
+                      id="txtLDAPHostName"
+                    />
                     <div class="font-weight-medium pt-3" id="lblLDAPPass">Password</div>
-                    <input class="input-text" type="password" name="password" v-model="password"  id="txtLDAPPass"/>
+                    <input
+                      class="input-text"
+                      type="password"
+                      name="password"
+                      v-model="password"
+                      id="txtLDAPPass"
+                    />
                     <div class="font-weight-medium pt-3" id="lblLDAPConfirmPass">Confirm Password</div>
                     <input
                       class="input-text"
@@ -202,25 +278,58 @@
                   </v-col>
                   <v-col class="col-2">
                     <div class="font-weight-medium pt-3 pb-2">Interfaces</div>
-                    <input type="checkbox" @change="web" v-model="web" name="web"  id="chkLDAPWebInterface"/>
+                    <input
+                      type="checkbox"
+                      @change="web"
+                      v-model="web"
+                      name="web"
+                      id="chkLDAPWebInterface"
+                    />
                     <span class="ml-3 font-weight-medium">Web</span>
                     <br />
-                    <input type="checkbox" @change="cli" v-model="cli" name="cli"  id="chkLDAPCliInterface"/>
+                    <input
+                      type="checkbox"
+                      @change="cli"
+                      v-model="cli"
+                      name="cli"
+                      id="chkLDAPCliInterface"
+                    />
                     <span class="ml-3 font-weight-medium">CLI</span>
                     <br />
-                    <input type="checkbox" @change="api" v-model="api" name="api"  id="chkLDAPAPiInterface"/>
+                    <input
+                      type="checkbox"
+                      @change="api"
+                      v-model="api"
+                      name="api"
+                      id="chkLDAPAPiInterface"
+                    />
                     <span class="ml-3 font-weight-medium">API</span>
                   </v-col>
                   <v-col class="col-2">
                     <div class="font-weight-medium pt-3 pb-2">Roles</div>
-                    <input type="checkbox" @change="manage" v-model="manage" name="manage"  id="chkLDAPManageInterface"/>
+                    <input
+                      type="checkbox"
+                      @change="manage"
+                      v-model="manage"
+                      name="manage"
+                      id="chkLDAPManageInterface"
+                    />
                     <span class="ml-3 font-weight-medium">Manage</span>
                     <br />
-                    <input type="checkbox" @change="monitor" v-model="monitor" name="monitor"  id="chkLDAPMonitorInterface"/>
+                    <input
+                      type="checkbox"
+                      @change="monitor"
+                      v-model="monitor"
+                      name="monitor"
+                      id="chkLDAPMonitorInterface"
+                    />
                     <span class="ml-3 font-weight-medium">Monitor</span>
                   </v-col>
                   <v-col>
-                    <div class="font-weight-medium pt-3" id="lblLDAPTempInetrface">Teperature preference</div>
+                    <div
+                      class="font-weight-medium pt-3"
+                      id="lblLDAPTempInetrface"
+                    >Teperature preference</div>
                     <select
                       name="temperature"
                       id="cmdTemperature"
@@ -231,7 +340,13 @@
                       <option value="celsius1">Celsius</option>
                     </select>
                     <div class="font-weight-medium pt-3">Timeout</div>
-                    <input type="number" v-model="timeout" name="timeout" class="input-text col-2" id="txtLDAPTimeoutInterface" />
+                    <input
+                      type="number"
+                      v-model="timeout"
+                      name="timeout"
+                      class="input-text col-2"
+                      id="txtLDAPTimeoutInterface"
+                    />
                     <span class="ml-3 font-weight-medium" id="lblLDAPMinuteIneterface">Minutes</span>
                     <div class="font-weight-medium pt-3" id="lblLDAPLangInetrface">Language</div>
                     <select
@@ -246,10 +361,19 @@
                   </v-col>
                 </v-row>
               </div>
-              <v-btn color="green" class="ma-5 elevation-0" id="btnLDAPApplyInterface">
-                <span class="white--text" @click="editUser()">Apply</span>
-              </v-btn>
-              <span class="green--text" @click="editUser()" id="lblLDAPCancelInterface">Cancel</span>
+              <v-btn
+                color="udxprimary"
+                class="ma-5 elevation-0 white--text"
+                @click="editUser()"
+                id="btnLDAPApplyInterface"
+              >Apply</v-btn>
+              <v-btn
+                text
+                small
+                color="udxprimary"
+                @click="editUser()"
+                id="lblLDAPCancelInterface"
+              >Cancel</v-btn>
             </td>
           </tr>
         </template>
@@ -257,10 +381,14 @@
     </v-card>
 
     <div class="mt-8">
-      <v-btn elevation="0" color="green" id="btnLDAPApplyContinueInterface">
+      <v-btn elevation="0" color="udxprimary" id="btnLDAPApplyContinueInterface">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblLDAPBackInerface">Back to previous step</span>
+      <span
+        class="green--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblLDAPBackInerface"
+      >Back to previous step</span>
     </div>
   </v-container>
 </template>

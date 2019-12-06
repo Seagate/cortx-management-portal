@@ -22,7 +22,7 @@
       <div>
         <input class="input-text" type="text" name="hostname" v-model="hostname"  id="txtHostname"/>
       </div>
-      <v-btn elevation="0" class="mt-5" color="green">
+      <v-btn elevation="0" class="mt-5" color="udxprimary">
         <span class="white--text" @click="gotToNextPage()" id="btnResetHost">Reset Hostname</span>
       </v-btn>
     </div>
@@ -49,13 +49,13 @@
         :class="[$data.ipaddressNode0.length < 3 ? 'green--text':'grey--text lighten-1','pointer','mt-5']"
         @click="addIpAddressNode0(newAddressNode0)"
       >+ Add Search Domain</div>
-      <v-btn elevation="0" color="green" class="mt-3">
+      <v-btn elevation="0" color="udxprimary" class="mt-3">
         <span class="white--text" @click="gotToNextPage()" id="btnClearDns">Clear DNS</span>
       </v-btn>
     </div>
     <v-divider class="mt-8" />
     <div class="mt-8">
-      <v-btn elevation="0" color="green" id="btnApplyContinue">
+      <v-btn elevation="0" color="udxprimary" id="btnApplyContinue">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblBack">Back to previous step</span>

@@ -197,8 +197,13 @@ export default class EosBucketCreation extends Vue {
   public async getAllBuckets() {
     this.showLoader = true;
     this.loaderMessage = "Fetching All Buckets...";
-    const res: any = await Api.getAll(apiRegister.s3_bucket);
-    this.bucketsList = res.data.buckets;
+    try {
+      const res: any = await Api.getAll(apiRegister.s3_bucket);
+      this.bucketsList = res.data.buckets;
+    } catch (error) {
+      // tslint:disable-next-line: no-console
+      console.log("TCL: EosBucketCreation -> getAllBuckets -> error", error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
   }
@@ -207,7 +212,12 @@ export default class EosBucketCreation extends Vue {
     this.showLoader = true;
     this.loaderMessage = "Creating Bucket...";
     const tempBucket = this.createBucketForm.getModel();
-    const res = await Api.post(apiRegister.s3_bucket, tempBucket);
+    try {
+      const res = await Api.post(apiRegister.s3_bucket, tempBucket);
+    } catch (error) {
+      // tslint:disable-next-line: no-console
+      console.log("TCL: EosBucketCreation -> createBucket -> error", error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
     this.showBucketCreateSuccessDialog = true;
@@ -231,7 +241,7 @@ export default class EosBucketCreation extends Vue {
 
   public clearCreateBucketForm() {
     this.createBucketForm.isValid = false;
-    this.createBucketForm.controls.forEach((control) => {
+    this.createBucketForm.controls.forEach(control => {
       control.value = "";
       control.isDirty = false;
       control.isValid = false;
@@ -241,7 +251,12 @@ export default class EosBucketCreation extends Vue {
   public async deleteBucket() {
     this.showLoader = true;
     this.loaderMessage = "Deleting bucket " + this.bucketToDelete;
-    await Api.delete(apiRegister.s3_bucket, this.bucketToDelete);
+    try {
+      await Api.delete(apiRegister.s3_bucket, this.bucketToDelete);
+    } catch (error) {
+      // tslint:disable-next-line: no-console
+      console.log("TCL: EosBucketCreation -> deleteBucket -> error", error);
+    }
     this.showLoader = false;
     this.loaderMessage = "";
     this.getAllBuckets();

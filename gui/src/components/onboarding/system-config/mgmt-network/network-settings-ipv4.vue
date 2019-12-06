@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="mt-10">
-            <v-btn elevation="0" color="green" @click="gotoNextPage()" id="btnIP4Apply">
+            <v-btn elevation="0" color="udxprimary" @click="gotoNextPage()" id="btnIP4Apply">
               <span class="white--text">Apply and continue</span>
             </v-btn>
             <span

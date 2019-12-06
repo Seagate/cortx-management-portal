@@ -170,7 +170,7 @@
                     <div class="mx-4">{{props.item.health_recommendation}}</div>
                     <v-btn
                       class="ma-4"
-                      color="green"
+                      color="udxprimary"
                       id="btnAlertShow"
                       :disabled="props.item.resolved && props.item.acknowledged"
                     >
