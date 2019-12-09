@@ -18,7 +18,7 @@ export default abstract class StatsUtility {
                 }
                 if (chartType === constStr.throughput) {
                     for (let i = 0; i <= payload.list[objCount].data[1].length - 1; i++) {
-                        payload.list[objCount].data[1][i] = Math.round(payload.list[objCount].data[1][i] / 1024);
+                        payload.list[objCount].data[1][i] = Math.round(payload.list[objCount].data[1][i] / (1024 * 1024));
                     }
                 }
                 payload.list[objCount].data[1].unshift(payload.list[objCount].label);
