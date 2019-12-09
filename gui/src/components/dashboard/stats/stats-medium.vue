@@ -104,14 +104,14 @@ export default class EosStatsMedium extends Vue {
             tick: {
               fit: true,
               count: 12,
-              format: "%H:%m:%S"
+              format: "%H:%M:%S"
             }
           },
           y: {
             min: 0,
             padding: { top: 0, bottom: 0 },
             label: {
-              text: "KB transferred per second",
+              text: "MB transferred per second",
               position: "outer-middle"
             }
           }
@@ -193,7 +193,7 @@ export default class EosStatsMedium extends Vue {
             tick: {
               fit: true,
               count: 12,
-              format: "%H:%m:%S"
+              format: "%H:%M:%S"
             }
           },
           y: {
@@ -281,7 +281,7 @@ export default class EosStatsMedium extends Vue {
             tick: {
               count: 12,
               fit: true,
-              format: "%H:%m:%S"
+              format: "%H:%M:%S"
             }
           },
           y: {
