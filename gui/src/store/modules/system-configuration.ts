@@ -17,7 +17,7 @@ import Vuex from "vuex";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
-import { SystemConfigObject, ManagementNetworkSettings, DataNetworkSettings, DnsNetworkSettings } from "./../../models/system-configuration";
+import { SystemConfigObject, ManagementNetworkSettings, DataNetworkSettings, DnsNetworkSettings, DateTimeSettings } from "./../../models/system-configuration";
 
 Vue.use(Vuex);
 
@@ -81,6 +81,16 @@ export default class SystemConfiguration extends VuexModule {
             { ...payload }
 
     }
+    //NTP Mutation 
+    @Mutation
+    updateNTPSettingMutation(payload: any) {
+        if (!this.systemConfigDetails.date_time_settings) {
+            this.systemConfigDetails.date_time_settings = {} as DateTimeSettings
+        }
+        this.systemConfigDetails.date_time_settings =
+            { ...payload }
+
+    }
 
     @Mutation
     public setNetworkManagementSettings(networkType: any) {
@@ -115,7 +125,7 @@ export default class SystemConfiguration extends VuexModule {
             if (!sysConfig || !sysConfig.config_id) {
                 const res = await Api.post(apiRegister.sysconfig, this.systemConfigDetails);
                 const data = res.data;
-                this.context.commit("userConfigMutation", data);
+                this.context.commit("systemConfigDetails", data);
             }
         } catch (e) {
             // tslint:disable-next-line: no-console
@@ -182,6 +192,19 @@ export default class SystemConfiguration extends VuexModule {
             console.error(e);
         }
     }
+    // NTP setting
+    public async updateNTPSetting(payload: any) {
+        try {
+            this.context.commit("updateNTPSettingMutation", payload);
+            const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+            return res;
+
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.error(e);
+        }
+    }
+
 
     get isipV4Status() {
         return this.isipV4;

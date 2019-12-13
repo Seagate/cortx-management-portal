@@ -124,6 +124,7 @@ export interface DateTime {
 }
 
 export interface DateTimeSettings {
+    is_ntp: boolean;
     ntp: Ntp;
     date_time: DateTime;
 }
