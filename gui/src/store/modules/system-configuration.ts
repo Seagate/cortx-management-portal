@@ -17,7 +17,7 @@ import Vuex from "vuex";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
-import { SystemConfigObject, ManagementNetworkSettings, DataNetworkSettings } from "./../../models/system-configuration";
+import { SystemConfigObject, ManagementNetworkSettings, DataNetworkSettings, DnsNetworkSettings } from "./../../models/system-configuration";
 
 Vue.use(Vuex);
 
@@ -31,6 +31,11 @@ export default class SystemConfiguration extends VuexModule {
     public isnetworkSettingsSkip: boolean = false;
     public showLoader: boolean = false;
     public loaderMessage: string = "";
+
+    @Mutation
+    public systemConfigMutation(payload: any) {
+        this.systemConfigDetails = { ...payload };
+    }
     @Mutation
     public MngmtIpv4ConfigMutation(payload: any) {
         if (!this.systemConfigDetails.management_network_settings) {
@@ -66,7 +71,16 @@ export default class SystemConfiguration extends VuexModule {
         this.systemConfigDetails.data_network_settings.ipv6 =
             { ...payload }
     }
+    // DNS
+    @Mutation
+    updateDNSSettingMutation(payload: any) {
+        if (!this.systemConfigDetails.dns_network_settings) {
+            this.systemConfigDetails.dns_network_settings = {} as DnsNetworkSettings
+        }
+        this.systemConfigDetails.dns_network_settings =
+            { ...payload }
 
+    }
 
     @Mutation
     public setNetworkManagementSettings(networkType: any) {
@@ -78,27 +92,42 @@ export default class SystemConfiguration extends VuexModule {
         }
     }
 
-
     @Action
-    public async getSystemConfigAction(queryParams: object) {
+    public async getSystemConfigAction() {
         try {
-            const res = await Api.getAll(apiRegister.sysconfig, queryParams);
-            const data = res.data;
+            const res = await Api.getAll(apiRegister.sysconfig);
+            let data = {};
+            if (res.data && Array.isArray(res.data)) {
+                data = res.data[0];
+            }
             this.context.commit("systemConfigMutation", data);
+            return data;
         } catch (error) {
             // tslint:disable-next-line: no-console
             console.error(error);
         }
     }
-
+    @Action
+    public async createManagementNetworkObj() {
+        try {
+            // Create blank object for the first time.
+            const sysConfig = this.systemConfigDetails;
+            if (!sysConfig || !sysConfig.config_id) {
+                const res = await Api.post(apiRegister.sysconfig, this.systemConfigDetails);
+                const data = res.data;
+                this.context.commit("userConfigMutation", data);
+            }
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.error(e);
+        }
+    }
     @Action
     public async updateMngmtIpv4(payload: any) {
         try {
-            console.log("TCL: SystemConfiguration -> payload", payload)
             this.context.commit("MngmtIpv4ConfigMutation", payload);
-            // const res = Api.post(apiRegister.sysconfig, this.systemConfigDetails);
-            // return res;
-            return payload;
+            const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+            return res;
         } catch (e) {
             // tslint:disable-next-line: no-console
             console.error(e);
@@ -109,9 +138,8 @@ export default class SystemConfiguration extends VuexModule {
         try {
             console.log("TCL: SystemConfiguration -> payload", payload)
             this.context.commit("MngmtIpv6ConfigMutation", payload);
-            // const res = Api.post(apiRegister.sysconfig, this.systemConfigDetails);
-            // return res;
-            return payload;
+            const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+            return res;
         } catch (e) {
             // tslint:disable-next-line: no-console
             console.error(e);
@@ -122,9 +150,8 @@ export default class SystemConfiguration extends VuexModule {
     public async updateDataNetworkSettingIpv4(payload: any) {
         try {
             this.context.commit("DataNetworkSettingIpv4Mutation", payload);
-            // const res = Api.post(apiRegister.sysconfig, this.systemConfigDetails);
-            // return res;
-            return payload;
+            const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+            return res;
         } catch (e) {
             // tslint:disable-next-line: no-console
             console.error(e);
@@ -135,15 +162,26 @@ export default class SystemConfiguration extends VuexModule {
     public async updateDataNetworkSettingIpv6(payload: any) {
         try {
             this.context.commit("DataNetworkSettingIpv6Mutation", payload);
-            // const res = Api.post(apiRegister.sysconfig, this.systemConfigDetails);
-            // return res;
-            return payload;
+            const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+            return res;
         } catch (e) {
             // tslint:disable-next-line: no-console
             console.error(e);
         }
     }
+    // DNSAction
+    @Action
+    public async updateDNSSetting(payload: any) {
+        try {
+            this.context.commit("updateDNSSettingMutation", payload);
+            const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+            return res;
 
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.error(e);
+        }
+    }
 
     get isipV4Status() {
         return this.isipV4;

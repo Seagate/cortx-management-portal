@@ -43,7 +43,6 @@
         <input
           type="checkbox"
           :disabled="isSkip"
-          @change="isipV4Status"
           v-model="isipV4Status"
           name="ipv4"
           id="chkDNSisipV4Status"
@@ -58,7 +57,6 @@
         <input
           type="checkbox"
           :disabled="isSkip"
-          @change="isipV6Status"
           v-model="isipV6Status"
           name="ipv6"
           id="chkIsipV6Status"
@@ -81,7 +79,7 @@
         <span
           class="ml-3 font-weight-medium"
           id="lblSkipManagmentSetting"
-        >Skip management network settings</span>
+        >Skip data network settings</span>
       </div>
       <div
         class="mt-2"
@@ -89,7 +87,12 @@
       >You can skip this step if your management network settings are already complete.</div>
       <v-divider class="mt-8" />
       <div class="mt-8">
-        <v-btn elevation="0" :disabled="!(isSkip || (isipV6Status || isipV4Status))" color="udxprimary" id="btnDNSContinue">
+        <v-btn
+          elevation="0"
+          :disabled="!(isSkip || (isipV6Status || isipV4Status))"
+          color="udxprimary"
+          id="btnDNSContinue"
+        >
           <span class="white--text" @click="gotToNextPage()">Continue</span>
         </v-btn>
         <span
@@ -149,7 +152,14 @@ export default class EosDataNetwork extends Vue {
     }
   }
   public gotToNextPage() {
-    this.$router.push("dataconfig2");
+    if (this.isipV4Status === true) {
+      this.$router.push("dataconfig2");
+    } else if (this.isipV6Status === true) {
+      this.$router.push("dataconfig3");
+    } else if (this.isipV4Status === false && this.isipV6Status === false) {
+      this.$router.push("dnsconfig");
+    }
+    this.$router.push("");
   }
   public isSkipNetworkSettings() {
     this.$store.commit("systemConfig/setNetworkManagementSettings", {

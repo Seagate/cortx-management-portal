@@ -69,7 +69,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-// import { SystemConfig } from "./../../../../models/system-configuration";
+import { SystemConfigObject } from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-network-settings"
@@ -87,6 +87,7 @@ export default class EosNetworkSettings extends Vue {
     this.$store.commit("systemConfig/setNetworkManagementSettings", status);
   }
   public gotoNextPage() {
+    this.createManagementNetworkObj();
     if (this.isipV4Status === true) {
       this.$router.push("systemconfig2");
     } else if (this.isipV6Status === true) {
@@ -95,6 +96,21 @@ export default class EosNetworkSettings extends Vue {
       this.$router.push("dataconfig1");
     }
   }
+  public createManagementNetworkObj() {
+    this.$store
+      .dispatch("systemConfig/createManagementNetworkObj")
+      .then((res: any) => {
+        console.log(
+          "TCL: EosNetworkSettings -> createManagementNetworkObj -> res",
+          res
+        );
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("error");
+      });
+  }
+
   public get isipV4Status(): any {
     return this.$store.getters["systemConfig/isipV4Status"];
   }

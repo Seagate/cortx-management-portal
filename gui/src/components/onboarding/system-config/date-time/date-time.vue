@@ -14,9 +14,19 @@
       </div>
     </div>
     <div class="mt-4">
-      <input type="radio" name="ntp" v-model="source" value="ntp"  id="rbtnDTNtp"/>
-      <span class="ml-2 font-weight-bold black--text" id="lblNetworkTimeProto">Network Time Protocol (NTP)</span>
-      <input class="ml-6" type="radio" name="manual" value="manual" v-model="source"  id="rbtnDTManual"/>
+      <input type="radio" name="ntp" v-model="source" value="ntp" id="rbtnDTNtp" />
+      <span
+        class="ml-2 font-weight-bold black--text"
+        id="lblNetworkTimeProto"
+      >Network Time Protocol (NTP)</span>
+      <input
+        class="ml-6"
+        type="radio"
+        name="manual"
+        value="manual"
+        v-model="source"
+        id="rbtnDTManual"
+      />
       <span class="ml-2 font-weight-bold black--text" id="lblDTManual">Manual</span>
     </div>
     <div class="mt-4" v-if="source === 'ntp'">
@@ -27,27 +37,39 @@
 
       <div class="mt-5 font-weight-medium black--text" id="lblDTNtpTimeZone">NTP time zone offset</div>
       <div>
-        <select name="zone" id="cmdZone" class="input-text" >
+        <select name="zone" id="cmdZone" class="input-text">
           <option value="GMT">GMT-07:00 Mountain Time (US & Canada)</option>
         </select>
       </div>
     </div>
     <div class="mt-4" v-if="source === 'manual'">
-      <div class="font-weight-medium black--text" id="lblDTDate" >Date</div>
+      <div class="font-weight-medium black--text" id="lblDTDate">Date</div>
       <div>
-        <input class="input-text" type="date" name="date" v-model="date" id="txtDTDate"/>
+        <input class="input-text" type="date" name="date" v-model="date" id="txtDTDate" />
       </div>
       <v-row>
         <v-col class="col-1">
           <div class="mt-5 font-weight-medium black--text" id="lblDTHour">Hour</div>
           <div>
-            <input class="input-text col-12" type="number" name="date" v-model="date" id="txtDTNumber" />
+            <input
+              class="input-text col-12"
+              type="number"
+              name="date"
+              v-model="date"
+              id="txtDTNumber"
+            />
           </div>
         </v-col>
         <v-col class="col-1">
           <div class="mt-5 font-weight-medium black--text" id="lblDTMinute">Minute</div>
           <div>
-            <input class="input-text col-12" type="number" name="date" v-model="date" id="txtDTDate" />
+            <input
+              class="input-text col-12"
+              type="number"
+              name="date"
+              v-model="date"
+              id="txtDTDate"
+            />
           </div>
         </v-col>
         <v-col class="col-1">
@@ -61,16 +83,20 @@
         </v-col>
       </v-row>
       <div class="mt-2">Daylight saving time adjustment is not supported.</div>
-      <v-btn elevation="0" color="udxprimary" class="mt-5"  id="btnDTSetNow">
-        <span class="white--text" @click="gotToNextPage()">Set Now</span>
+      <v-btn elevation="0" color="udxprimary" class="mt-5" id="btnDTSetNow">
+        <span class="white--text" @click="gotToNextPage()">Set now</span>
       </v-btn>
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
       <v-btn elevation="0" color="udxprimary" id="btnDTApplyContinue">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
+        <span class="white--text" @click="gotToNextPage()">Apply and continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblDTBack">Back to previous step</span>
+      <span
+        class="green--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblDTBack"
+      >Back to previous step</span>
     </div>
   </v-container>
 </template>

@@ -20,37 +20,73 @@
     <div class="mt-4">
       <span class="font-weight-medium black--text" id="lblHostname">Hostname</span>
       <div>
-        <input class="input-text" type="text" name="hostname" v-model="hostname"  id="txtHostname"/>
+        <input class="input-text" type="text" name="hostname" v-model="hostname" id="txtHostname" />
       </div>
       <v-btn elevation="0" class="mt-5" color="udxprimary">
-        <span class="white--text" @click="gotToNextPage()" id="btnResetHost">Reset Hostname</span>
+        <span class="white--text" @click="resetHostname()" id="btnResetHost">Reset Hostname</span>
       </v-btn>
     </div>
     <v-divider class="mt-5 col-3" />
+    <v-row v-for="value in ipaddressNode0" :key="value" class="mt-2">
+      <v-col cols="6">{{value}}</v-col>
+      <v-col cols="3">
+        <v-img
+          @click="deleteIpAddressNode0(value)"
+          id="alert-img"
+          :src="require('./../../../../assets/delete-off.png')"
+          width="1em"
+          height="1em"
+        ></v-img>
+      </v-col>
+    </v-row>
     <div>
       <div class="font-weight-medium black--text" id="lblDNsServer">DNS Server</div>
       <div class="pt-4 font-weight-regular black--text" id="lblDnsServer1">DNS Server 1</div>
       <div>
-        <input class="input-text" type="text" name="hostname" v-model="hostname" id="txtHostname" />
+        <input
+          class="input-text"
+          type="text"
+          name="dnsname"
+          v-model="newAddressNode0"
+          id="txtHostname"
+        />
       </div>
       <div
-        :class="[$data.ipaddressNode0.length < 3 ? 'green--text':'grey--text lighten-1','pointer','mt-5']"
+        :class="[$data.ipaddressNode1.length < 3 ? 'green--text':'grey--text lighten-1','pointer','mt-5']"
         @click="addIpAddressNode0(newAddressNode0)"
       >+ Add another static address (maximum of 3)</div>
     </div>
     <v-divider class="mt-5 col-3" />
+    <v-row v-for="value in ipaddressNode1" :key="value" class="mt-2">
+      <v-col cols="6">{{value}}</v-col>
+      <v-col cols="3">
+        <v-img
+          @click="deleteIpAddressNode1(value)"
+          id="alert-img"
+          :src="require('./../../../../assets/delete-off.png')"
+          width="1em"
+          height="1em"
+        ></v-img>
+      </v-col>
+    </v-row>
     <div>
       <div class="font-weight-medium black--text" id="lblSearchDomains">Search Domains</div>
       <div class="pt-4 font-weight-regular black--text" id="lblSerachDomains">Search Domains 1</div>
       <div>
-        <input class="input-text" type="text" name="hostname" v-model="hostname"  id="txtHostname"/>
+        <input
+          class="input-text"
+          type="text"
+          name="search-domain"
+          v-model="newAddressNode1"
+          id="txtHostname"
+        />
       </div>
       <div
-        :class="[$data.ipaddressNode0.length < 3 ? 'green--text':'grey--text lighten-1','pointer','mt-5']"
-        @click="addIpAddressNode0(newAddressNode0)"
+        :class="[$data.ipaddressNode1.length < 3 ? 'green--text':'grey--text lighten-1','pointer','mt-5']"
+        @click="addIpAddressNode1(newAddressNode1)"
       >+ Add Search Domain</div>
       <v-btn elevation="0" color="udxprimary" class="mt-3">
-        <span class="white--text" @click="gotToNextPage()" id="btnClearDns">Clear DNS</span>
+        <span class="white--text" @click="clearDns()" id="btnClearDns">Clear DNS</span>
       </v-btn>
     </div>
     <v-divider class="mt-8" />
@@ -58,19 +94,66 @@
       <v-btn elevation="0" color="udxprimary" id="btnApplyContinue">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblBack">Back to previous step</span>
+      <span
+        class="green--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblBack"
+      >Back to previous step</span>
     </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import {
+  SystemConfigObject,
+  Ipv4Node,
+  DataNetworkIpv6,
+  DnsNetworkSettings
+} from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-dns-setting"
 })
 export default class EosDnsSetting extends Vue {
+  public resetHostname() {
+    this.$data.hostname = "";
+  }
+  public clearDns() {
+    this.$data.ipaddressNode0 = [];
+    this.$data.ipaddressNode1 = [];
+  }
   public gotToNextPage() {
+    this.updateDNSconfig();
     this.$router.push("datetime");
+  }
+  updateDNSconfig() {
+    // this.$data.ipaddressNode0.push(this.$data.newAddressNode0);
+    // this.$data.ipaddressNode1.push(this.$data.newAddressNode1);
+    const queryParams: DnsNetworkSettings = {
+      is_external_load_balancer: true,
+      fqdn_name: "vlan1.seagate.com",
+      hostname: this.$data.hostname,
+      node0: {
+        dns_servers: this.$data.ipaddressNode0,
+        search_domain: this.$data.ipaddressNode1
+      },
+      node1: {
+        dns_servers: [],
+        search_domain: []
+      }
+    };
+    this.$store
+      .dispatch("systemConfig/updateDNSSetting", queryParams)
+      .then((res: any) => {
+        console.log(
+          "TCL: EosNetworkSettingsIpv4 -> onboardingData -> res",
+          res
+        );
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("error");
+      });
   }
   public gotToPrevPage() {
     this.$router.push("dataconfig3");
@@ -85,10 +168,46 @@ export default class EosDnsSetting extends Vue {
       this.$data.newAddressNode0 = "";
     }
   }
+  private addIpAddressNode1(address: string) {
+    if (
+      this.$data.ipaddressNode1.length < 4 &&
+      address !== "" &&
+      address !== undefined
+    ) {
+      this.$data.ipaddressNode1.push(address);
+      this.$data.newAddressNode1 = "";
+    }
+  }
+  private deleteIpAddressNode0(address: string) {
+    for (
+      let addressIndex = 0;
+      addressIndex < this.$data.ipaddressNode0.length;
+      addressIndex++
+    ) {
+      if (this.$data.ipaddressNode0[addressIndex] === address) {
+        this.$data.ipaddressNode0.splice(addressIndex, 1);
+      }
+    }
+  }
+  private deleteIpAddressNode1(address: string) {
+    for (
+      let addressIndex = 0;
+      addressIndex < this.$data.ipaddressNode1.length;
+      addressIndex++
+    ) {
+      if (this.$data.ipaddressNode1[addressIndex] === address) {
+        this.$data.ipaddressNode1.splice(addressIndex, 1);
+      }
+    }
+  }
   private data() {
     return {
+      hostname: "",
       source: "manual",
-      ipaddressNode0: []
+      ipaddressNode0: [],
+      ipaddressNode1: [],
+      newAddressNode0: "",
+      newAddressNode1: ""
     };
   }
 }

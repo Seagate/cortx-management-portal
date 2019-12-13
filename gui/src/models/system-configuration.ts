@@ -133,6 +133,7 @@ export interface SystemConfigObject {
     data_network_settings: DataNetworkSettings;
     dns_network_settings: DnsNetworkSettings;
     date_time_settings: DateTimeSettings;
+    config_id: string
 }
 
 
