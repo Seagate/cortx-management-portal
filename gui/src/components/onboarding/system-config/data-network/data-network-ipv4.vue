@@ -9,14 +9,17 @@
     <v-divider />
     <div class="body-2">
       <div class="title mt-6" id="lblIpv4Dns">Data Network Settings: IPv4</div>
-      <div class="mt-2" id="lblIpv4Msg">You need to configure a single IP address for management of this system.</div>
+      <div
+        class="mt-2"
+        id="lblIpv4Msg"
+      >You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
       <div class="font-weight-bold mt-6">
         Source
         <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
       </div>
       <div class="mt-4">
-        <input type="radio" name="source" v-model="source" value="manual"  id="rbtnIpv4Source"/>
+        <input type="radio" name="source" v-model="source" value="manual" id="rbtnIpv4Source" />
         <span class="ml-2 font-weight-bold" id="lblIpv4Manual">Manual</span>
         <input class="ml-6" type="radio" disabled name="DHCP" value="DHCP" id="rbtnIpv4DHCP" />
         <span class="ml-2 font-weight-bold" id="lblIpv4Dhcp">DHCP</span>
@@ -29,19 +32,37 @@
         <div class="mt-5">
           <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
           <div>
-            <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress" id="txtIpv4Ipaddress" />
+            <input
+              class="input-text"
+              type="text"
+              name="ipaddress"
+              v-model="ipv4IpAddress"
+              id="txtIpv4Ipaddress"
+            />
           </div>
         </div>
         <div class="mt-4">
           <span class="font-weight-medium" id="lblKIpv4Netmask">Netmask</span>
           <div>
-            <input class="input-text" type="text" name="netmask" v-model="ipv4Netmask"  id="txtIpv4Ipv4netmask"/>
+            <input
+              class="input-text"
+              type="text"
+              name="netmask"
+              v-model="ipv4Netmask"
+              id="txtIpv4Ipv4netmask"
+            />
           </div>
         </div>
         <div class="mt-4">
           <span class="font-weight-medium" id="lblIpv4Gateway">Gateway</span>
           <div>
-            <input class="input-text" type="text" name="gateway" v-model="ipv4Gateway" id="txtIpv4Ipv4Gateway" />
+            <input
+              class="input-text"
+              type="text"
+              name="gateway"
+              v-model="ipv4Gateway"
+              id="txtIpv4Ipv4Gateway"
+            />
           </div>
         </div>
       </div>
@@ -51,19 +72,37 @@
         <div class="mt-5">
           <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
           <div>
-            <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress" id="txtIpv4Ipaddress" />
+            <input
+              class="input-text"
+              type="text"
+              name="ipaddress"
+              v-model="ipv4IpAddress1"
+              id="txtIpv4Ipaddress"
+            />
           </div>
         </div>
         <div class="mt-4">
           <span class="font-weight-medium" id="lblNetmask">Netmask</span>
           <div>
-            <input class="input-text" type="text" name="netmask" v-model="ipv4Netmask"  id="txtIpv4Ipv4Netmask"/>
+            <input
+              class="input-text"
+              type="text"
+              name="netmask"
+              v-model="ipv4Netmask1"
+              id="txtIpv4Ipv4Netmask"
+            />
           </div>
         </div>
         <div class="mt-4">
           <span class="font-weight-medium" id="lblGateway">Gateway</span>
           <div>
-            <input class="input-text" type="text" name="gateway" v-model="ipv4Gateway" id="txtIpv4Gatewayt" />
+            <input
+              class="input-text"
+              type="text"
+              name="gateway"
+              v-model="ipv4Gateway1"
+              id="txtIpv4Gatewayt"
+            />
           </div>
         </div>
       </div>
@@ -72,25 +111,70 @@
       <v-btn elevation="0" color="udxprimary" id="btnIpv4ApplyContinue">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv4Prevoius">Back to previous step</span>
+      <span
+        class="green--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblIpv4Prevoius"
+      >Back to previous step</span>
     </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-
+import {
+  SystemConfigObject,
+  Ipv4Node,
+  DataNetworkIpv4
+} from "./../../../../models/system-configuration";
 @Component({
   name: "eos-data-network-ipv4"
 })
 export default class EosDataNetworkIpv4 extends Vue {
   private gotToNextPage() {
+    this.updateDataNetworkconfig();
     this.$router.push("dataconfig3");
   }
   private gotToPrevPage() {
     this.$router.push("dataconfig1");
   }
+  updateDataNetworkconfig() {
+    const queryParams: DataNetworkIpv4 = {
+      is_dhcp: false,
+      node0: {
+        ip_address: this.$data.ipv4IpAddress,
+        netmask: this.$data.ipv4Netmask,
+        gateway: this.$data.ipv4Gateway
+      },
+      node1: {
+        ip_address: this.$data.ipv4IpAddress,
+        netmask: this.$data.ipv4Netmask,
+        gateway: this.$data.ipv4Gateway
+      }
+    };
+    console.log("llll", queryParams);
+
+    this.$store
+      .dispatch("systemConfig/updateDataNetworkSettingIpv4", queryParams)
+      .then((res: any) => {
+        console.log(
+          "TCL: EosNetworkSettingsIpv4 -> onboardingData -> res",
+          res
+        );
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("error");
+      });
+  }
+
   private data() {
     return {
+      ipv4IpAddress: "",
+      ipv4Netmask: "",
+      ipv4Gateway: "",
+      ipv4IpAddress1: "",
+      ipv4Netmask1: "",
+      ipv4Gateway1: "",
       source: "manual"
     };
   }

@@ -17,7 +17,7 @@ import Vuex from "vuex";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
-import SystemConfigObject from "./../../models/system-configuration";
+import { SystemConfigObject, ManagementNetworkSettings, DataNetworkSettings } from "./../../models/system-configuration";
 
 Vue.use(Vuex);
 
@@ -25,17 +25,48 @@ Vue.use(Vuex);
     namespaced: true
 })
 export default class SystemConfiguration extends VuexModule {
-    public systemConfig: SystemConfigObject = {} as SystemConfigObject;
+    public systemConfigDetails: SystemConfigObject = {} as SystemConfigObject;
     public isipV4: boolean = false;
     public isipV6: boolean = false;
     public isnetworkSettingsSkip: boolean = false;
     public showLoader: boolean = false;
     public loaderMessage: string = "";
+    @Mutation
+    public MngmtIpv4ConfigMutation(payload: any) {
+        if (!this.systemConfigDetails.management_network_settings) {
+            this.systemConfigDetails.management_network_settings = {} as ManagementNetworkSettings
+        }
+        this.systemConfigDetails.management_network_settings.ipv4 =
+            { ...payload }
+    }
 
     @Mutation
-    public systemConfigMutation(payload: any) {
-        this.systemConfig = { ...payload };
+    public MngmtIpv6ConfigMutation(payload: any) {
+        if (!this.systemConfigDetails.management_network_settings) {
+            this.systemConfigDetails.management_network_settings = {} as ManagementNetworkSettings
+        }
+        this.systemConfigDetails.management_network_settings.ipv6 =
+            { ...payload }
     }
+    // data n/w4
+    @Mutation
+    public DataNetworkSettingIpv4Mutation(payload: any) {
+        if (!this.systemConfigDetails.data_network_settings) {
+            this.systemConfigDetails.data_network_settings = {} as DataNetworkSettings
+        }
+        this.systemConfigDetails.data_network_settings.ipv4 =
+            { ...payload }
+    }
+    // data n/w6
+    @Mutation
+    public DataNetworkSettingIpv6Mutation(payload: any) {
+        if (!this.systemConfigDetails.data_network_settings) {
+            this.systemConfigDetails.data_network_settings = {} as DataNetworkSettings
+        }
+        this.systemConfigDetails.data_network_settings.ipv6 =
+            { ...payload }
+    }
+
 
     @Mutation
     public setNetworkManagementSettings(networkType: any) {
@@ -46,16 +77,12 @@ export default class SystemConfiguration extends VuexModule {
             this.isipV6 = networkType.flag;
         }
     }
-    @Mutation
-    public loaderConfigMutation(loaderData: any) {
-        this.showLoader = loaderData.show;
-        this.loaderMessage = loaderData.message;
-    }
+
 
     @Action
     public async getSystemConfigAction(queryParams: object) {
         try {
-            const res = await Api.getAll(apiRegister.systemconfig, queryParams);
+            const res = await Api.getAll(apiRegister.sysconfig, queryParams);
             const data = res.data;
             this.context.commit("systemConfigMutation", data);
         } catch (error) {
@@ -63,51 +90,77 @@ export default class SystemConfiguration extends VuexModule {
             console.error(error);
         }
     }
+
     @Action
-    public async updateSystemConfig(payload: any): Promise<any | undefined> {
+    public async updateMngmtIpv4(payload: any) {
         try {
-            const res = Api.patch(apiRegister.systemconfig,
-                { acknowledged: payload.acknowledged === "1" ? true : false, comment: payload.comment },
-                payload.id);
-            return res;
+            console.log("TCL: SystemConfiguration -> payload", payload)
+            this.context.commit("MngmtIpv4ConfigMutation", payload);
+            // const res = Api.post(apiRegister.sysconfig, this.systemConfigDetails);
+            // return res;
+            return payload;
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.error(e);
+        }
+    }
+    @Action
+    public async updateMngmtIpv6(payload: any) {
+        try {
+            console.log("TCL: SystemConfiguration -> payload", payload)
+            this.context.commit("MngmtIpv6ConfigMutation", payload);
+            // const res = Api.post(apiRegister.sysconfig, this.systemConfigDetails);
+            // return res;
+            return payload;
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.error(e);
+        }
+    }
+    //datan/w4
+    @Action
+    public async updateDataNetworkSettingIpv4(payload: any) {
+        try {
+            this.context.commit("DataNetworkSettingIpv4Mutation", payload);
+            // const res = Api.post(apiRegister.sysconfig, this.systemConfigDetails);
+            // return res;
+            return payload;
+        } catch (e) {
+            // tslint:disable-next-line: no-console
+            console.error(e);
+        }
+    }
+    // data n/w6
+    @Action
+    public async updateDataNetworkSettingIpv6(payload: any) {
+        try {
+            this.context.commit("DataNetworkSettingIpv6Mutation", payload);
+            // const res = Api.post(apiRegister.sysconfig, this.systemConfigDetails);
+            // return res;
+            return payload;
         } catch (e) {
             // tslint:disable-next-line: no-console
             console.error(e);
         }
     }
 
-    @Action
-    public async showLoaderMessage(loaderData: any) {
-        this.context.commit("loaderConfigMutation", loaderData);
-    }
 
-    // Get system configuration from store
-    get systemConfigData() {
-        return this.systemConfig.system_config;
-    }
-    get ipv4IpAddress() {
-        if (this.systemConfig.system_config) {
-            return this.systemConfig.system_config.ipv4.ipAddress;
-        }
-        return;
-    }
-    get ipv4Netmask() {
-        if (this.systemConfig.system_config) {
-            return this.systemConfig.system_config.ipv4.netmask;
-        }
-        return;
-    }
-    get ipv4Gateway() {
-        if (this.systemConfig.system_config) {
-            return this.systemConfig.system_config.ipv4.gateway;
-        }
-        return;
-    }
     get isipV4Status() {
         return this.isipV4;
     }
     get isipV6Status() {
         return this.isipV6;
+    }
+
+    // Loader Config
+    @Mutation
+    public loaderConfigMutation(loaderData: any) {
+        this.showLoader = loaderData.show;
+        this.loaderMessage = loaderData.message;
+    }
+    @Action
+    public async showLoaderMessage(loaderData: any) {
+        this.context.commit("loaderConfigMutation", loaderData);
     }
     get showLoaderStatus() {
         return this.showLoader;
@@ -115,5 +168,6 @@ export default class SystemConfiguration extends VuexModule {
     get loaderMessageText() {
         return this.loaderMessage;
     }
+
 
 }

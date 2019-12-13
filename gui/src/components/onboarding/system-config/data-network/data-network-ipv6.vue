@@ -9,7 +9,10 @@
     <v-divider />
     <div class="body-2">
       <div class="title mt-6" id="lblIpv6DNS">Data Network Settings: IPv6</div>
-      <div class="mt-2" id="lblIpv6Msg">You need to configure a single IP address for management of this system.</div>
+      <div
+        class="mt-2"
+        id="lblIpv6Msg"
+      >You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
       <div class="font-weight-bold mt-6 black--text">
         Source
@@ -29,7 +32,13 @@
         <div class="mt-5">
           <span class="font-weight-medium black--text" id="lblIpv6Gateway">Gateway</span>
           <div>
-            <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress"  id="txtIpv6IpAddress"/>
+            <input
+              class="input-text"
+              type="text"
+              name="ipaddress"
+              v-model="ipv6Gateway"
+              id="txtIpv6IpAddress"
+            />
           </div>
         </div>
         <div class="font-weight-medium mt-8 black--text" id="lblIpv6Staticaddress">Static address</div>
@@ -49,7 +58,13 @@
         <div class="mt-4">
           <span class="font-weight-medium black--text" id="lblIPv6Ipadreess">IP address</span>
           <div>
-            <input class="input-text" v-model="newAddressNode0" type="text" name="ipaddress" id="txtIpv6Ipaddress" />
+            <input
+              class="input-text"
+              v-model="newAddressNode0"
+              type="text"
+              name="ipaddress"
+              id="txtIpv6Ipaddress"
+            />
           </div>
         </div>
         <div
@@ -63,7 +78,13 @@
         <div class="mt-5">
           <span class="font-weight-medium black--text" id="lblIpv6Gateway">Gateway</span>
           <div>
-            <input class="input-text" type="text" name="ipaddressNode0" v-model="ipv4IpAddress"  id="txtIpv6IpaddressNode0"/>
+            <input
+              class="input-text"
+              type="text"
+              name="ipaddressNode0"
+              v-model="ipv6Gateway1"
+              id="txtIpv6IpaddressNode0"
+            />
           </div>
         </div>
         <div class="font-weight-medium mt-8 black--text" id="lblIpv6StaticAddress">Static Addresses</div>
@@ -83,7 +104,13 @@
         <div class="mt-4">
           <span class="font-weight-medium black--text" id="lblIpv6IpAdress">IP address</span>
           <div>
-            <input class="input-text" v-model="newAddressNode1" type="text" name="ipaddressNode1"  id="txtIpv6Node1"/>
+            <input
+              class="input-text"
+              v-model="newAddressNode1"
+              type="text"
+              name="ipaddressNode1"
+              id="txtIpv6Node1"
+            />
           </div>
         </div>
 
@@ -97,19 +124,62 @@
       <v-btn elevation="0" color="udxprimary" id="btnIpv6ApplyContinue">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv6Back">Back to previous step</span>
+      <span
+        class="green--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblIpv6Back"
+      >Back to previous step</span>
     </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import {
+  SystemConfigObject,
+  Ipv4Node,
+  DataNetworkIpv6
+} from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-data-network-ipv6"
 })
 export default class EosDataNetworkIpv6 extends Vue {
   private gotToNextPage() {
+    this.updateDataNetworkconfig();
     this.$router.push("dnsconfig");
+  }
+  updateDataNetworkconfig() {
+    this.$data.ipaddressNode0.push(this.$data.newAddressNode0);
+    this.$data.ipaddressNode1.push(this.$data.newAddressNode1);
+    const queryParams: DataNetworkIpv6 = {
+      is_auto: true,
+      node0: {
+        ip_address: this.$data.ipaddressNode0,
+        gateway: this.$data.ipv6Gateway,
+        address_label: "vlan",
+        type: "DHCP6"
+      },
+      node1: {
+        ip_address: this.$data.ipaddressNode1,
+        gateway: this.$data.ipv6Gateway1,
+        address_label: "vlan",
+        type: "DHCP6"
+      }
+    };
+    console.log("updateDataNetworkconfig", queryParams);
+
+    this.$store
+      .dispatch("systemConfig/updateDataNetworkSettingIpv6", queryParams)
+      .then((res: any) => {
+        console.log(
+          "TCL: EosNetworkSettingsIpv4 -> onboardingData -> res",
+          res
+        );
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("error");
+      });
   }
   private gotToPrevPage() {
     this.$router.push("dataconfig2");
@@ -158,6 +228,8 @@ export default class EosDataNetworkIpv6 extends Vue {
   }
   private data() {
     return {
+      ipv6Gateway: "",
+      ipv6Gateway1: "",
       source: "manual",
       ipaddressNode0: [],
       ipaddressNode1: [],

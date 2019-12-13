@@ -11,7 +11,10 @@
       <v-col cols="6">
         <div class="body-2">
           <div class="title mt-6" id="lblNetworkIP4">Management Network Settings: IPv4</div>
-          <div class="mt-6" id="lblNetworkMsg">You need to configure a single IP address for management of this system.</div>
+          <div
+            class="mt-6"
+            id="lblNetworkMsg"
+          >You need to configure a single IP address for management of this system.</div>
           <v-divider class="mt-2" />
           <div class="font-weight-bold mt-6" id="lblIp4Source">
             Source
@@ -20,26 +23,44 @@
           <div class="mt-4">
             <input type="radio" name="source" v-model="source" value="manual" />
             <span class="ml-3 font-weight-bold" id="lblIp4Manual">Manual</span>
-            <input class="ml-10" type="radio" disabled name="DHCP" value="DHCP"  id="txtIP4DHCP"/>
+            <input class="ml-10" type="radio" disabled name="DHCP" value="DHCP" id="txtIP4DHCP" />
             <span class="ml-3 font-weight-bold" id="lblIp4DHCP">DHCP</span>
           </div>
           <div>
             <div class="mt-4">
               <span class="font-weight-bold" id="lblIp4Adress">IP Address</span>
               <div>
-                <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress" id="txtIpv4IpAddress" />
+                <input
+                  class="input-text"
+                  type="text"
+                  name="ipaddress"
+                  v-model="ipv4IpAddress"
+                  id="txtIpv4IpAddress"
+                />
               </div>
             </div>
             <div class="mt-4">
               <span class="font-weight-bold" id="lblIp4Netmask">Netmask</span>
               <div>
-                <input class="input-text" type="text" name="netmask" v-model="ipv4Netmask"  id="txtIpv4Netmask"/>
+                <input
+                  class="input-text"
+                  type="text"
+                  name="netmask"
+                  v-model="ipv4Netmask"
+                  id="txtIpv4Netmask"
+                />
               </div>
             </div>
             <div class="mt-4">
               <span class="font-weight-bold" id="lblIp4Gateway">Gateway</span>
               <div>
-                <input class="input-text" type="text" name="gateway" v-model="ipv4Gateway" id="txtIP4Gateway" />
+                <input
+                  class="input-text"
+                  type="text"
+                  name="gateway"
+                  v-model="ipv4Gateway"
+                  id="txtIP4Gateway"
+                />
               </div>
             </div>
           </div>
@@ -50,7 +71,8 @@
             <span
               class="green--text ml-8 pointer"
               @click="$router.push('systemconfig1')"
-            id="lblIp4Back" >Back to previous step</span>
+              id="lblIp4Back"
+            >Back to previous step</span>
           </div>
         </div>
       </v-col>
@@ -60,7 +82,11 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { mapState } from "vuex";
-import SystemConfigObject from "./../../../../models/system-configuration";
+// import SystemConfigObject from "./../../../../models/system-configuration";
+import {
+  SystemConfigObject,
+  Ipv4
+} from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-network-settings-ipv4"
@@ -71,6 +97,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   }
 
   public gotoNextPage() {
+    this.updateIpv4Config();
     if (this.$store.getters["systemConfig/isipV6Status"] === true) {
       this.$router.push("systemconfig3");
     } else {
@@ -78,51 +105,34 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     }
   }
 
-  public beforeMount() {
-    if (this.systemConfigData) {
-      this.$data.systemConfigObject.system_config = this.systemConfigData;
-    } else {
-      this.$data.systemConfigObject.system_config = {
-        ipv4: { isManual: true }
-      };
-    }
+  public updateIpv4Config() {
+    const queryParams: Ipv4 = {
+      is_dhcp: false,
+      ip_address: this.$data.ipv4IpAddress,
+      netmask: this.$data.ipv4Netmask,
+      gateway: this.$data.ipv4Gateway
+    };
+    this.$store
+      .dispatch("systemConfig/updateMngmtIpv4", queryParams)
+      .then((res: any) => {
+        console.log(
+          "TCL: EosNetworkSettingsIpv4 -> onboardingData -> res",
+          res
+        );
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("error");
+      });
   }
   private data() {
     return {
+      ipv4IpAddress: "",
+      ipv4Netmask: "",
+      ipv4Gateway: "",
       source: "manual",
       systemConfigObject: {} as SystemConfigObject
     };
-  }
-
-  private commitData() {
-    this.$store.commit(
-      "systemConfig/systemConfigMutation",
-      this.$data.systemConfigObject
-    );
-  }
-  get ipv4IpAddress() {
-    return this.$store.getters["systemConfig/ipv4IpAddress"];
-  }
-  set ipv4IpAddress(value) {
-    this.$data.systemConfigObject.system_config.ipv4.ipAddress = value;
-    this.commitData();
-  }
-  get ipv4Netmask() {
-    return this.$store.getters["systemConfig/ipv4Netmask"];
-  }
-  set ipv4Netmask(value) {
-    this.$data.systemConfigObject.system_config.ipv4.netmask = value;
-    this.commitData();
-  }
-  get ipv4Gateway() {
-    return this.$store.getters["systemConfig/ipv4Gateway"];
-  }
-  set ipv4Gateway(value) {
-    this.$data.systemConfigObject.system_config.ipv4.gateway = value;
-    this.commitData();
-  }
-  get systemConfigData() {
-    return this.$store.getters["systemConfig/systemConfigData"];
   }
 }
 </script>

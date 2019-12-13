@@ -31,5 +31,6 @@ export default {
     throughput: `api/${version}/stats/throughput`,
     latency: `api/${version}/stats/latency`,
     iops: `api/${version}/stats/iops`,
-    capacity: `api/${version}/capacity`
+    capacity: `api/${version}/capacity`,
+    sysconfig: `api/${version}/sysconfig`,
 };
