@@ -81,6 +81,13 @@ export default class EosNetworkSettings extends Vue {
     };
   }
   public mounted() {
+    this.$store
+      .dispatch("systemConfig/getSystemConfigAction")
+      .then((res: any) => {})
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("error");
+      });
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
   public setMgmtNetworkSettingsType(status: any) {
@@ -99,12 +106,7 @@ export default class EosNetworkSettings extends Vue {
   public createManagementNetworkObj() {
     this.$store
       .dispatch("systemConfig/createManagementNetworkObj")
-      .then((res: any) => {
-        console.log(
-          "TCL: EosNetworkSettings -> createManagementNetworkObj -> res",
-          res
-        );
-      })
+      .then((res: any) => {})
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("error");

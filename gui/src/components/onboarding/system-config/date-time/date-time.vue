@@ -144,12 +144,13 @@ export default class EosDateTime extends Vue {
         clock: this.$data.clock
       }
     };
+    //.dispatch("systemConfig/updateNTPSetting", queryParams)
     this.$store
       .dispatch("systemConfig/updateNTPSetting", queryParams)
       .then((res: any) => {})
       .catch(() => {
         // tslint:disable-next-line: no-console
-        console.error("Create ");
+        console.error("error");
       });
   }
   public gotToPrevPage() {
