@@ -136,7 +136,6 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import {
   SystemConfigObject,
-  Ipv4Node,
   DataNetworkIpv6
 } from "./../../../../models/system-configuration";
 
@@ -149,8 +148,6 @@ export default class EosDataNetworkIpv6 extends Vue {
     this.$router.push("dnsconfig");
   }
   updateDataNetworkconfig() {
-    // this.$data.ipaddressNode0.push(this.$data.newAddressNode0);
-    // this.$data.ipaddressNode1.push(this.$data.newAddressNode1);
     const queryParams: DataNetworkIpv6 = {
       is_auto: true,
       node0: {
@@ -170,12 +167,7 @@ export default class EosDataNetworkIpv6 extends Vue {
 
     this.$store
       .dispatch("systemConfig/updateDataNetworkSettingIpv6", queryParams)
-      .then((res: any) => {
-        console.log(
-          "TCL: EosNetworkSettingsIpv4 -> onboardingData -> res",
-          res
-        );
-      })
+      .then((res: any) => {})
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("error");
@@ -185,16 +177,19 @@ export default class EosDataNetworkIpv6 extends Vue {
     this.managementNetworkGetter();
   }
   public managementNetworkGetter() {
-    const IPv6Data = this.$store.getters["systemConfig/systemconfig"];
-    if (IPv6Data.data_network_settings && IPv6Data.data_network_settings.ipv6) {
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    if (
+      systemconfig.data_network_settings &&
+      systemconfig.data_network_settings.ipv6
+    ) {
       this.$data.ipaddressNode0 =
-        IPv6Data.data_network_settings.ipv6.node0.ip_address;
+        systemconfig.data_network_settings.ipv6.node0.ip_address;
       this.$data.ipv6Gateway =
-        IPv6Data.data_network_settings.ipv6.node0.gateway;
+        systemconfig.data_network_settings.ipv6.node0.gateway;
       this.$data.ipaddressNode1 =
-        IPv6Data.data_network_settings.ipv6.node1.ip_address;
+        systemconfig.data_network_settings.ipv6.node1.ip_address;
       this.$data.ipv6Gateway1 =
-        IPv6Data.data_network_settings.ipv6.node1.gateway;
+        systemconfig.data_network_settings.ipv6.node1.gateway;
     }
   }
   private gotToPrevPage() {
@@ -243,7 +238,6 @@ export default class EosDataNetworkIpv6 extends Vue {
     }
   }
 
-  //return this.$store.getters["systemConfig/systemconfig"];
   private data() {
     return {
       ipv6Gateway: "",

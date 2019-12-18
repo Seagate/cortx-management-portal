@@ -82,7 +82,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { mapState } from "vuex";
-// import SystemConfigObject from "./../../../../models/system-configuration";
 import {
   SystemConfigObject,
   Ipv4
@@ -97,17 +96,17 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
   public managementNetworkGetter(): any {
-    const IPv4Data = this.$store.getters["systemConfig/systemconfig"];
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
     if (
-      IPv4Data.management_network_settings &&
-      IPv4Data.management_network_settings.ipv4
+      systemconfig.management_network_settings &&
+      systemconfig.management_network_settings.ipv4
     ) {
       this.$data.ipv4Gateway =
-        IPv4Data.management_network_settings.ipv4.gateway;
+        systemconfig.management_network_settings.ipv4.gateway;
       this.$data.ipv4Netmask =
-        IPv4Data.management_network_settings.ipv4.netmask;
+        systemconfig.management_network_settings.ipv4.netmask;
       this.$data.ipv4IpAddress =
-        IPv4Data.management_network_settings.ipv4.ip_address;
+        systemconfig.management_network_settings.ipv4.ip_address;
     }
   }
   public gotoNextPage() {
@@ -128,12 +127,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     };
     this.$store
       .dispatch("systemConfig/updateMngmtIpv4", queryParams)
-      .then((res: any) => {
-        console.log(
-          "TCL: EosNetworkSettingsIpv4 -> onboardingData -> res",
-          res
-        );
-      })
+      .then((res: any) => {})
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("error");

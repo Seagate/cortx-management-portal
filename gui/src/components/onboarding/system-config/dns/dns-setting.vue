@@ -106,8 +106,6 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import {
   SystemConfigObject,
-  Ipv4Node,
-  DataNetworkIpv6,
   DnsNetworkSettings
 } from "./../../../../models/system-configuration";
 
@@ -127,8 +125,6 @@ export default class EosDnsSetting extends Vue {
     this.$router.push("datetime");
   }
   updateDNSconfig() {
-    // this.$data.ipaddressNode0.push(this.$data.newAddressNode0);
-    // this.$data.ipaddressNode1.push(this.$data.newAddressNode1);
     const queryParams: DnsNetworkSettings = {
       is_external_load_balancer: true,
       fqdn_name: "vlan1.seagate.com",
@@ -144,12 +140,7 @@ export default class EosDnsSetting extends Vue {
     };
     this.$store
       .dispatch("systemConfig/updateDNSSetting", queryParams)
-      .then((res: any) => {
-        console.log(
-          "TCL: EosNetworkSettingsIpv4 -> onboardingData -> res",
-          res
-        );
-      })
+      .then((res: any) => {})
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("error");
@@ -204,11 +195,13 @@ export default class EosDnsSetting extends Vue {
     this.managementNetworkGetter();
   }
   public managementNetworkGetter(): any {
-    const dns = this.$store.getters["systemConfig/systemconfig"];
-    if (dns.dns_network_settings) {
-      this.$data.hostname = dns.dns_network_settings.hostname;
-      this.$data.ipaddressNode0 = dns.dns_network_settings.node0.dns_servers;
-      this.$data.ipaddressNode1 = dns.dns_network_settings.node0.search_domain;
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    if (systemconfig.dns_network_settings) {
+      this.$data.hostname = systemconfig.dns_network_settings.hostname;
+      this.$data.ipaddressNode0 =
+        systemconfig.dns_network_settings.node0.dns_servers;
+      this.$data.ipaddressNode1 =
+        systemconfig.dns_network_settings.node0.search_domain;
     }
   }
   private data() {

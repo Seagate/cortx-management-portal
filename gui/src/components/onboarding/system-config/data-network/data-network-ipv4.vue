@@ -123,7 +123,6 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import {
   SystemConfigObject,
-  Ipv4Node,
   DataNetworkIpv4
 } from "./../../../../models/system-configuration";
 @Component({
@@ -154,12 +153,7 @@ export default class EosDataNetworkIpv4 extends Vue {
 
     this.$store
       .dispatch("systemConfig/updateDataNetworkSettingIpv4", queryParams)
-      .then((res: any) => {
-        console.log(
-          "TCL: EosNetworkSettingsIpv4 -> onboardingData -> res",
-          res
-        );
-      })
+      .then((res: any) => {})
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("error");
@@ -168,26 +162,25 @@ export default class EosDataNetworkIpv4 extends Vue {
   public mounted() {
     this.managementNetworkGetter();
   }
-  // IPv4Data.management_network_settings &&
-  //  IPv4Data.management_network_settings.ipv4
   public managementNetworkGetter(): any {
-    const IPv4Data = this.$store.getters["systemConfig/systemconfig"];
-    if (IPv4Data.data_network_settings && IPv4Data.data_network_settings.ipv4) {
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    if (
+      systemconfig.data_network_settings &&
+      systemconfig.data_network_settings.ipv4
+    ) {
       this.$data.ipv4IpAddress =
-        IPv4Data.data_network_settings.ipv4.node0.ip_address;
+        systemconfig.data_network_settings.ipv4.node0.ip_address;
       this.$data.ipv4Netmask =
-        IPv4Data.data_network_settings.ipv4.node0.netmask;
+        systemconfig.data_network_settings.ipv4.node0.netmask;
       this.$data.ipv4Gateway =
-        IPv4Data.data_network_settings.ipv4.node0.gateway;
+        systemconfig.data_network_settings.ipv4.node0.gateway;
       this.$data.ipv4IpAddress1 =
-        IPv4Data.data_network_settings.ipv4.node1.ip_address;
+        systemconfig.data_network_settings.ipv4.node1.ip_address;
       this.$data.ipv4Netmask1 =
-        IPv4Data.data_network_settings.ipv4.node1.netmask;
+        systemconfig.data_network_settings.ipv4.node1.netmask;
       this.$data.ipv4Gateway1 =
-        IPv4Data.data_network_settings.ipv4.node1.gateway;
+        systemconfig.data_network_settings.ipv4.node1.gateway;
     }
-
-    //return this.$store.getters["systemConfig/systemconfig"];
   }
   private data() {
     return {
