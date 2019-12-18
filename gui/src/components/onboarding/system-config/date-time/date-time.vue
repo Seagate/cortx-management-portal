@@ -130,6 +130,18 @@ export default class EosDateTime extends Vue {
     this.setNetworkTimeProtoCall();
     this.$router.push("usersetting");
   }
+  public mounted() {
+    this.managementNetworkGetter();
+  }
+  public managementNetworkGetter() {
+    const dateTime = this.$store.getters["systemConfig/systemconfig"];
+    if (dateTime.date_time_settings) {
+      this.$data.networkserveraddress =
+        dateTime.date_time_settings.ntp.ntp_server_address;
+      this.$data.Ntptimezone =
+        dateTime.date_time_settings.ntp.ntp_timezone_offset;
+    }
+  }
   setNetworkTimeProtoCall() {
     const queryParams: DateTimeSettings = {
       is_ntp: true,

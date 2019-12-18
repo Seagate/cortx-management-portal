@@ -146,12 +146,11 @@ export default class EosDataNetworkIpv4 extends Vue {
         gateway: this.$data.ipv4Gateway
       },
       node1: {
-        ip_address: this.$data.ipv4IpAddress,
-        netmask: this.$data.ipv4Netmask,
-        gateway: this.$data.ipv4Gateway
+        ip_address: this.$data.ipv4IpAddress1,
+        netmask: this.$data.ipv4Netmask1,
+        gateway: this.$data.ipv4Gateway1
       }
     };
-    console.log("llll", queryParams);
 
     this.$store
       .dispatch("systemConfig/updateDataNetworkSettingIpv4", queryParams)
@@ -166,7 +165,28 @@ export default class EosDataNetworkIpv4 extends Vue {
         console.error("error");
       });
   }
+  public mounted() {
+    this.managementNetworkGetter();
+  }
+  public managementNetworkGetter(): any {
+    const IPv4Data = this.$store.getters["systemConfig/systemconfig"];
+    if (IPv4Data.data_network_settings.ipv4) {
+      this.$data.ipv4IpAddress =
+        IPv4Data.data_network_settings.ipv4.node0.ip_address;
+      this.$data.ipv4Netmask =
+        IPv4Data.data_network_settings.ipv4.node0.netmask;
+      this.$data.ipv4Gateway =
+        IPv4Data.data_network_settings.ipv4.node0.gateway;
+      this.$data.ipv4IpAddress1 =
+        IPv4Data.data_network_settings.ipv4.node1.ip_address;
+      this.$data.ipv4Netmask1 =
+        IPv4Data.data_network_settings.ipv4.node1.netmask;
+      this.$data.ipv4Gateway1 =
+        IPv4Data.data_network_settings.ipv4.node1.gateway;
+    }
 
+    //return this.$store.getters["systemConfig/systemconfig"];
+  }
   private data() {
     return {
       ipv4IpAddress: "",

@@ -100,10 +100,20 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     this.$router.push("dataconfig1");
   }
   public mounted() {
+    this.managementNetworkGetter();
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
+  public managementNetworkGetter(): any {
+    const IPv4Data = this.$store.getters["systemConfig/systemconfig"];
+    if (IPv4Data.management_network_settings.ipv6) {
+      this.$data.ipv6Gateway =
+        IPv4Data.management_network_settings.ipv6.gateway;
+      this.$data.staticIpList =
+        IPv4Data.management_network_settings.ipv6.ip_address;
+    }
+  }
   public updateIpv6Config() {
-    this.$data.staticIpList.push(this.$data.newAddress);
+    // this.$data.staticIpList.push(this.$data.newAddress);
     const queryParams: Ipv6 = {
       is_dhcp: false,
       ip_address: this.$data.staticIpList,
@@ -111,19 +121,10 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       address_label: "vlan",
       type: ""
     };
-    console.log(
-      "TCL: EosNetworkSettingsIpv6 -> updateIpv4Config -> queryParams",
-      queryParams
-    );
 
     this.$store
       .dispatch("systemConfig/updateMngmtIpv6", queryParams)
-      .then((res: any) => {
-        console.log(
-          "TCL: EosNetworkSettingsIpv4 -> onboardingData -> res",
-          res
-        );
-      })
+      .then((res: any) => {})
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("error");

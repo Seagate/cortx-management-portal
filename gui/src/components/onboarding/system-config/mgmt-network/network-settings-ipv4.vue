@@ -93,9 +93,20 @@ import {
 })
 export default class EosNetworkSettingsIpv4 extends Vue {
   public mounted() {
+    this.managementNetworkGetter();
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
-
+  public managementNetworkGetter(): any {
+    const IPv4Data = this.$store.getters["systemConfig/systemconfig"];
+    if (IPv4Data.management_network_settings.ipv4) {
+      this.$data.ipv4Gateway =
+        IPv4Data.management_network_settings.ipv4.gateway;
+      this.$data.ipv4Netmask =
+        IPv4Data.management_network_settings.ipv4.netmask;
+      this.$data.ipv4IpAddress =
+        IPv4Data.management_network_settings.ipv4.ip_address;
+    }
+  }
   public gotoNextPage() {
     this.updateIpv4Config();
     if (this.$store.getters["systemConfig/isipV6Status"] === true) {

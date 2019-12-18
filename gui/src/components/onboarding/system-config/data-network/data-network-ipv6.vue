@@ -149,8 +149,8 @@ export default class EosDataNetworkIpv6 extends Vue {
     this.$router.push("dnsconfig");
   }
   updateDataNetworkconfig() {
-    this.$data.ipaddressNode0.push(this.$data.newAddressNode0);
-    this.$data.ipaddressNode1.push(this.$data.newAddressNode1);
+    // this.$data.ipaddressNode0.push(this.$data.newAddressNode0);
+    // this.$data.ipaddressNode1.push(this.$data.newAddressNode1);
     const queryParams: DataNetworkIpv6 = {
       is_auto: true,
       node0: {
@@ -180,6 +180,22 @@ export default class EosDataNetworkIpv6 extends Vue {
         // tslint:disable-next-line: no-console
         console.error("error");
       });
+  }
+  public mounted() {
+    this.managementNetworkGetter();
+  }
+  public managementNetworkGetter() {
+    const IPv6Data = this.$store.getters["systemConfig/systemconfig"];
+    if (IPv6Data.data_network_settings.ipv6) {
+      this.$data.ipaddressNode0 =
+        IPv6Data.data_network_settings.ipv6.node0.ip_address;
+      this.$data.ipv6Gateway =
+        IPv6Data.data_network_settings.ipv6.node0.gateway;
+      this.$data.ipaddressNode1 =
+        IPv6Data.data_network_settings.ipv6.node1.ip_address;
+      this.$data.ipv6Gateway1 =
+        IPv6Data.data_network_settings.ipv6.node1.gateway;
+    }
   }
   private gotToPrevPage() {
     this.$router.push("dataconfig2");
@@ -226,6 +242,8 @@ export default class EosDataNetworkIpv6 extends Vue {
       }
     }
   }
+
+  //return this.$store.getters["systemConfig/systemconfig"];
   private data() {
     return {
       ipv6Gateway: "",

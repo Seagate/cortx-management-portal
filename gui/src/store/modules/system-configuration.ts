@@ -35,7 +35,6 @@ export default class SystemConfiguration extends VuexModule {
     @Mutation
     public systemConfigMutation(payload: any) {
         this.systemConfigDetails = { ...payload };
-        console.log(this.systemConfigDetails, 'gfhghhhh');
     }
     @Mutation
     public MngmtIpv4ConfigMutation(payload: any) {
@@ -107,7 +106,6 @@ export default class SystemConfiguration extends VuexModule {
     public async getSystemConfigAction() {
         try {
             const res = await Api.getAll(apiRegister.sysconfig);
-            console.log(res);
             let data = {};
             if (res.data && Array.isArray(res.data)) {
                 data = res.data[0];
@@ -198,19 +196,21 @@ export default class SystemConfiguration extends VuexModule {
     @Action
     public async updateNTPSetting(payload: any) {
         try {
-            console.log('dddddddddddddddddddddd');
             this.context.commit("updateNTPSettingMutation", payload);
             const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
             return res;
-            console.log(res, 'iiiiiiiiii');
 
         } catch (e) {
             // tslint:disable-next-line: no-console
             console.error(e);
         }
     }
-
-
+    /**
+     * sysconfig getter
+     */
+    get systemconfig() {
+        return this.systemConfigDetails;
+    }
     get isipV4Status() {
         return this.isipV4;
     }

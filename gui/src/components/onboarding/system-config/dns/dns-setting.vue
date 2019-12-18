@@ -200,6 +200,17 @@ export default class EosDnsSetting extends Vue {
       }
     }
   }
+  public mounted() {
+    this.managementNetworkGetter();
+  }
+  public managementNetworkGetter(): any {
+    const dns = this.$store.getters["systemConfig/systemconfig"];
+    if (dns.dns_network_settings) {
+      this.$data.hostname = dns.dns_network_settings.hostname;
+      this.$data.ipaddressNode0 = dns.dns_network_settings.node0.dns_servers;
+      this.$data.ipaddressNode1 = dns.dns_network_settings.node0.search_domain;
+    }
+  }
   private data() {
     return {
       hostname: "",
