@@ -104,12 +104,15 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
   public managementNetworkGetter(): any {
-    const IPv4Data = this.$store.getters["systemConfig/systemconfig"];
-    if (IPv4Data.management_network_settings.ipv6) {
+    const IPv6Data = this.$store.getters["systemConfig/systemconfig"];
+    if (
+      IPv6Data.management_network_settings &&
+      IPv6Data.management_network_settings.ipv6
+    ) {
       this.$data.ipv6Gateway =
-        IPv4Data.management_network_settings.ipv6.gateway;
+        IPv6Data.management_network_settings.ipv6.gateway;
       this.$data.staticIpList =
-        IPv4Data.management_network_settings.ipv6.ip_address;
+        IPv6Data.management_network_settings.ipv6.ip_address;
     }
   }
   public updateIpv6Config() {

@@ -98,7 +98,10 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   }
   public managementNetworkGetter(): any {
     const IPv4Data = this.$store.getters["systemConfig/systemconfig"];
-    if (IPv4Data.management_network_settings.ipv4) {
+    if (
+      IPv4Data.management_network_settings &&
+      IPv4Data.management_network_settings.ipv4
+    ) {
       this.$data.ipv4Gateway =
         IPv4Data.management_network_settings.ipv4.gateway;
       this.$data.ipv4Netmask =

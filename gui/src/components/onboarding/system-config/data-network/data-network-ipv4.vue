@@ -168,9 +168,11 @@ export default class EosDataNetworkIpv4 extends Vue {
   public mounted() {
     this.managementNetworkGetter();
   }
+  // IPv4Data.management_network_settings &&
+  //  IPv4Data.management_network_settings.ipv4
   public managementNetworkGetter(): any {
     const IPv4Data = this.$store.getters["systemConfig/systemconfig"];
-    if (IPv4Data.data_network_settings.ipv4) {
+    if (IPv4Data.data_network_settings && IPv4Data.data_network_settings.ipv4) {
       this.$data.ipv4IpAddress =
         IPv4Data.data_network_settings.ipv4.node0.ip_address;
       this.$data.ipv4Netmask =
