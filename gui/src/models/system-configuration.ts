@@ -68,6 +68,7 @@ export interface ManagementNetworkSettings {
 }
 
 export interface Ipv4Node {
+    id: number;
     ip_address: string;
     netmask: string;
     gateway: string;
@@ -75,11 +76,11 @@ export interface Ipv4Node {
 
 export interface DataNetworkIpv4 {
     is_dhcp: boolean;
-    node0: Ipv4Node;
-    node1: Ipv4Node;
+    nodes: Ipv4Node;
 }
 
 export interface DataNetworkIpv6Node {
+    id: number;
     ip_address: string[];
     gateway: string;
     address_label: string;
@@ -88,8 +89,7 @@ export interface DataNetworkIpv6Node {
 
 export interface DataNetworkIpv6 {
     is_auto: boolean;
-    node0: DataNetworkIpv6Node;
-    node1: DataNetworkIpv6Node;
+    nodes: DataNetworkIpv6Node[];
 }
 
 export interface DataNetworkSettings {
@@ -99,6 +99,7 @@ export interface DataNetworkSettings {
 }
 
 export interface DnsNetworkSettingsNode {
+    id: number;
     dns_servers: string[];
     search_domain: string[];
 }
@@ -107,8 +108,7 @@ export interface DnsNetworkSettings {
     is_external_load_balancer: boolean;
     fqdn_name: string;
     hostname: string;
-    node0: DnsNetworkSettingsNode;
-    node1: DnsNetworkSettingsNode;
+    nodes: DnsNetworkSettingsNode[];
 }
 
 export interface Ntp {

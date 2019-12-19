@@ -26,86 +26,48 @@
       </div>
     </div>
     <div class="row mt-5">
-      <div class="col-4 body-2 column">
-        <span class="font-weight-medium" id="lblIpv4Node">Node 0</span>
-        <v-divider class="mt-2" />
-        <div class="mt-5">
-          <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
-          <div>
-            <input
-              class="input-text"
-              type="text"
-              name="ipaddress"
-              v-model="ipv4IpAddress"
-              id="txtIpv4Ipaddress"
-            />
+      <template v-for="(node) in ipv4Nodes">
+        <div class="col-4 body-2 column" :key="node.id">
+          <span class="font-weight-medium" id="lblIpv4Node">Node {{node.id}}</span>
+          <v-divider class="mt-2" />
+          <div class="mt-5">
+            <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
+            <div>
+              <input
+                class="input-text"
+                type="text"
+                name="ipaddress"
+                v-model="node.ip_address"
+                id="txtIpv4Ipaddress"
+              />
+            </div>
+          </div>
+          <div class="mt-4">
+            <span class="font-weight-medium" id="lblKIpv4Netmask">Netmask</span>
+            <div>
+              <input
+                class="input-text"
+                type="text"
+                name="netmask"
+                v-model="node.netmask"
+                id="txtIpv4Ipv4netmask"
+              />
+            </div>
+          </div>
+          <div class="mt-4">
+            <span class="font-weight-medium" id="lblIpv4Gateway">Gateway</span>
+            <div>
+              <input
+                class="input-text"
+                type="text"
+                name="gateway"
+                v-model="node.gateway"
+                id="txtIpv4Ipv4Gateway"
+              />
+            </div>
           </div>
         </div>
-        <div class="mt-4">
-          <span class="font-weight-medium" id="lblKIpv4Netmask">Netmask</span>
-          <div>
-            <input
-              class="input-text"
-              type="text"
-              name="netmask"
-              v-model="ipv4Netmask"
-              id="txtIpv4Ipv4netmask"
-            />
-          </div>
-        </div>
-        <div class="mt-4">
-          <span class="font-weight-medium" id="lblIpv4Gateway">Gateway</span>
-          <div>
-            <input
-              class="input-text"
-              type="text"
-              name="gateway"
-              v-model="ipv4Gateway"
-              id="txtIpv4Ipv4Gateway"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="col-4 body-2 column">
-        <span class="font-weight-medium" id="lblNode1">Node 1</span>
-        <v-divider class="mt-2" />
-        <div class="mt-5">
-          <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
-          <div>
-            <input
-              class="input-text"
-              type="text"
-              name="ipaddress"
-              v-model="ipv4IpAddress1"
-              id="txtIpv4Ipaddress"
-            />
-          </div>
-        </div>
-        <div class="mt-4">
-          <span class="font-weight-medium" id="lblNetmask">Netmask</span>
-          <div>
-            <input
-              class="input-text"
-              type="text"
-              name="netmask"
-              v-model="ipv4Netmask1"
-              id="txtIpv4Ipv4Netmask"
-            />
-          </div>
-        </div>
-        <div class="mt-4">
-          <span class="font-weight-medium" id="lblGateway">Gateway</span>
-          <div>
-            <input
-              class="input-text"
-              type="text"
-              name="gateway"
-              v-model="ipv4Gateway1"
-              id="txtIpv4Gatewayt"
-            />
-          </div>
-        </div>
-      </div>
+      </template>
     </div>
     <div class="mt-8">
       <v-btn elevation="0" color="udxprimary" id="btnIpv4ApplyContinue">
@@ -139,16 +101,7 @@ export default class EosDataNetworkIpv4 extends Vue {
   updateDataNetworkconfig() {
     const queryParams: DataNetworkIpv4 = {
       is_dhcp: false,
-      node0: {
-        ip_address: this.$data.ipv4IpAddress,
-        netmask: this.$data.ipv4Netmask,
-        gateway: this.$data.ipv4Gateway
-      },
-      node1: {
-        ip_address: this.$data.ipv4IpAddress1,
-        netmask: this.$data.ipv4Netmask1,
-        gateway: this.$data.ipv4Gateway1
-      }
+      nodes: this.$data.ipv4Nodes
     };
 
     this.$store
@@ -168,18 +121,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       systemconfig.data_network_settings &&
       systemconfig.data_network_settings.ipv4
     ) {
-      this.$data.ipv4IpAddress =
-        systemconfig.data_network_settings.ipv4.node0.ip_address;
-      this.$data.ipv4Netmask =
-        systemconfig.data_network_settings.ipv4.node0.netmask;
-      this.$data.ipv4Gateway =
-        systemconfig.data_network_settings.ipv4.node0.gateway;
-      this.$data.ipv4IpAddress1 =
-        systemconfig.data_network_settings.ipv4.node1.ip_address;
-      this.$data.ipv4Netmask1 =
-        systemconfig.data_network_settings.ipv4.node1.netmask;
-      this.$data.ipv4Gateway1 =
-        systemconfig.data_network_settings.ipv4.node1.gateway;
+      this.$data.ipv4Nodes = systemconfig.data_network_settings.ipv4.nodes;
     }
   }
   private data() {
@@ -190,6 +132,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       ipv4IpAddress1: "",
       ipv4Netmask1: "",
       ipv4Gateway1: "",
+      ipv4Nodes: [{ id: 0 }, { id: 1 }],
       source: "manual"
     };
   }

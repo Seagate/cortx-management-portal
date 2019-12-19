@@ -129,14 +129,7 @@ export default class EosDnsSetting extends Vue {
       is_external_load_balancer: true,
       fqdn_name: "vlan1.seagate.com",
       hostname: this.$data.hostname,
-      node0: {
-        dns_servers: this.$data.ipaddressNode0,
-        search_domain: this.$data.ipaddressNode1
-      },
-      node1: {
-        dns_servers: [],
-        search_domain: []
-      }
+      nodes: this.$data.ipaddressNode0
     };
     this.$store
       .dispatch("systemConfig/updateDNSSetting", queryParams)
