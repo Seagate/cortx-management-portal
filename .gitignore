@@ -9,6 +9,9 @@ __pycache__
 .env.local
 .env.*.local
 
+# Python virtual environment
+.venv
+
 # Log files
 npm-debug.log*
 yarn-debug.log*
