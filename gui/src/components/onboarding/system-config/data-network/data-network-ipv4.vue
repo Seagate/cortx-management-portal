@@ -16,57 +16,55 @@
         <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
       </div>
       <div class="mt-4">
-        <input type="radio" name="source" v-model="source" value="manual"  id="rbtnIpv4Source"/>
+        <input type="radio" name="source" v-model="source" value="manual" id="rbtnIpv4Source" />
         <span class="ml-2 font-weight-bold" id="lblIpv4Manual">Manual</span>
         <input class="ml-6" type="radio" disabled name="DHCP" value="DHCP" id="rbtnIpv4DHCP" />
         <span class="ml-2 font-weight-bold" id="lblIpv4Dhcp">DHCP</span>
       </div>
     </div>
     <div class="row mt-5">
-      <div class="col-4 body-2 column">
-        <span class="font-weight-medium" id="lblIpv4Node">Node 0</span>
-        <v-divider class="mt-2" />
-        <div class="mt-5">
-          <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
-          <div>
-            <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress" id="txtIpv4Ipaddress" />
+      <template v-for="node in ipv4Nodes">
+        <div class="col-4 body-2 column" :key="node.id">
+          <span class="font-weight-medium" id="lblIpv4Node">Node {{ node.id }}</span>
+          <v-divider class="mt-2" />
+          <div class="mt-5">
+            <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
+            <div>
+              <input
+                class="input-text"
+                type="text"
+                name="ipaddress"
+                v-model="node.ip_address"
+                :id="node.id + 'txtDataNetworkIpv4Ipaddress'"
+              />
+            </div>
+          </div>
+          <div class="mt-4">
+            <span class="font-weight-medium" id="lblKIpv4Netmask">Netmask</span>
+            <div>
+              <input
+                class="input-text"
+                type="text"
+                name="netmask"
+                v-model="node.netmask"
+                :id="node.id + 'txtDataNetworkIpv4netmask'"
+              />
+            </div>
+          </div>
+          <div class="mt-4">
+            <span class="font-weight-medium" id="lblIpv4Gateway">Gateway</span>
+            <div>
+              <input
+                class="input-text"
+                type="text"
+                name="gateway"
+                v-model="node.gateway"
+                :id="node.id + 'txtDataNetworkIpv4gateway'"
+              />
+            </div>
           </div>
         </div>
-        <div class="mt-4">
-          <span class="font-weight-medium" id="lblKIpv4Netmask">Netmask</span>
-          <div>
-            <input class="input-text" type="text" name="netmask" v-model="ipv4Netmask"  id="txtIpv4Ipv4netmask"/>
-          </div>
-        </div>
-        <div class="mt-4">
-          <span class="font-weight-medium" id="lblIpv4Gateway">Gateway</span>
-          <div>
-            <input class="input-text" type="text" name="gateway" v-model="ipv4Gateway" id="txtIpv4Ipv4Gateway" />
-          </div>
-        </div>
-      </div>
-      <div class="col-4 body-2 column">
-        <span class="font-weight-medium" id="lblNode1">Node 1</span>
-        <v-divider class="mt-2" />
-        <div class="mt-5">
-          <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
-          <div>
-            <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress" id="txtIpv4Ipaddress" />
-          </div>
-        </div>
-        <div class="mt-4">
-          <span class="font-weight-medium" id="lblNetmask">Netmask</span>
-          <div>
-            <input class="input-text" type="text" name="netmask" v-model="ipv4Netmask"  id="txtIpv4Ipv4Netmask"/>
-          </div>
-        </div>
-        <div class="mt-4">
-          <span class="font-weight-medium" id="lblGateway">Gateway</span>
-          <div>
-            <input class="input-text" type="text" name="gateway" v-model="ipv4Gateway" id="txtIpv4Gatewayt" />
-          </div>
-        </div>
-      </div>
+      </template>
     </div>
     <div class="mt-8">
       <v-btn elevation="0" color="udxprimary" id="btnIpv4ApplyContinue">
@@ -78,19 +76,42 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-
+import { SystemConfigObject, DataNetworkIpv4 } from "./../../../../models/system-configuration";
 @Component({
   name: "eos-data-network-ipv4"
 })
 export default class EosDataNetworkIpv4 extends Vue {
   private gotToNextPage() {
+    this.updateDataNetworkconfig();
     this.$router.push("dataconfig3");
   }
   private gotToPrevPage() {
     this.$router.push("dataconfig1");
   }
+  private updateDataNetworkconfig() {
+    const queryParams: DataNetworkIpv4 = {
+      is_dhcp: false,
+      nodes: this.$data.ipv4Nodes
+    };
+    console.log("TCL: EosDataNetworkIpv4 -> updateDataNetworkconfig -> queryParams", queryParams);
+
+    this.$store.dispatch("systemConfig/updateDataNetworkSettingIpv4", queryParams);
+  }
+  public mounted() {
+    this.managementNetworkGetter();
+  }
+  public managementNetworkGetter(): any {
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    if (systemconfig.data_network_settings && systemconfig.data_network_settings.ipv4) {
+      this.$data.ipv4Nodes = systemconfig.data_network_settings.ipv4.nodes;
+    }
+  }
   private data() {
     return {
+      ipv4Nodes: [
+        { id: 0, ip_address: "", netmask: "", gateway: "" },
+        { id: 1, ip_address: "", netmask: "", gateway: "" }
+      ],
       source: "manual"
     };
   }

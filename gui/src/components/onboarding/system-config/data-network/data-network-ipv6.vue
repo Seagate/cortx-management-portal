@@ -23,75 +23,56 @@
       </div>
     </div>
     <div class="row mt-5">
-      <div class="col-4 body-2 column">
-        <span class="font-weight-medium black--text" id="lblIpv6Node0">Node 0</span>
-        <v-divider class="mt-2" />
-        <div class="mt-5">
-          <span class="font-weight-medium black--text" id="lblIpv6Gateway">Gateway</span>
-          <div>
-            <input class="input-text" type="text" name="ipaddress" v-model="ipv4IpAddress"  id="txtIpv6IpAddress"/>
+      <template v-for="node in ipv6Nodes">
+        <div class="col-4 body-2 column" :key="node.id">
+          <span class="font-weight-medium black--text" id="lblIpv6Node0">Node {{ node.id }}</span>
+          <v-divider class="mt-2" />
+          <div class="mt-5">
+            <span class="font-weight-medium black--text" id="lblIpv6Gateway">Gateway</span>
+            <div>
+              <input
+                class="input-text"
+                type="text"
+                name="gateway"
+                v-model="node.gateway"
+                :id="node.id + 'txtDataNetworkIpv6gateway'"
+              />
+            </div>
+          </div>
+          <div class="font-weight-medium mt-8 black--text" id="lblIpv6Staticaddress">Static address</div>
+          <v-divider class="mt-2" />
+          <v-row v-for="(value, i) in node.ip_address" :key="value + i" class="mt-2">
+            <v-col cols="6">{{ value }}</v-col>
+            <v-col cols="3">
+              <v-img
+                @click="deleteIpAddressNode(value, node.id)"
+                id="alert-img"
+                :src="require('./../../../../assets/delete-off.png')"
+                width="1em"
+                height="1em"
+              ></v-img>
+            </v-col>
+          </v-row>
+          <div class="mt-4">
+            <span class="font-weight-medium black--text" id="lblIPv6Ipadreess">IP address</span>
+            <div>
+              <input
+                class="input-text"
+                v-model="ipaddressNode[node.id]"
+                type="text"
+                name="ipaddress"
+                :id="node.id + 'txtDataNetworkIpv6ipaddress'"
+              />
+            </div>
+          </div>
+          <div
+            :class="[node.ip_address.length < 4 ? 'green--text' : 'grey--text lighten-1', 'pointer', 'mt-8']"
+            @click="addIpAddressNode(ipaddressNode[node.id], node.id)"
+          >
+            + Add another static address (maximum of 4)
           </div>
         </div>
-        <div class="font-weight-medium mt-8 black--text" id="lblIpv6Staticaddress">Static address</div>
-        <v-divider class="mt-2" />
-        <v-row v-for="value in ipaddressNode0" :key="value" class="mt-2">
-          <v-col cols="6">{{value}}</v-col>
-          <v-col cols="3">
-            <v-img
-              @click="deleteIpAddressNode0(value)"
-              id="alert-img"
-              :src="require('./../../../../assets/delete-off.png')"
-              width="1em"
-              height="1em"
-            ></v-img>
-          </v-col>
-        </v-row>
-        <div class="mt-4">
-          <span class="font-weight-medium black--text" id="lblIPv6Ipadreess">IP address</span>
-          <div>
-            <input class="input-text" v-model="newAddressNode0" type="text" name="ipaddress" id="txtIpv6Ipaddress" />
-          </div>
-        </div>
-        <div
-          :class="[$data.ipaddressNode0.length < 4 ? 'green--text':'grey--text lighten-1','pointer','mt-8']"
-          @click="addIpAddressNode0(newAddressNode0)"
-        >+ Add another static address (maximum of 4)</div>
-      </div>
-      <div class="col-4 body-2 column">
-        <span class="font-weight-medium black--text" id="lblIpv6Node1">Node 1</span>
-        <v-divider class="mt-2" />
-        <div class="mt-5">
-          <span class="font-weight-medium black--text" id="lblIpv6Gateway">Gateway</span>
-          <div>
-            <input class="input-text" type="text" name="ipaddressNode0" v-model="ipv4IpAddress"  id="txtIpv6IpaddressNode0"/>
-          </div>
-        </div>
-        <div class="font-weight-medium mt-8 black--text" id="lblIpv6StaticAddress">Static Addresses</div>
-        <v-divider class="mt-2" />
-        <v-row v-for="value in ipaddressNode1" :key="value" class="mt-2">
-          <v-col cols="6">{{value}}</v-col>
-          <v-col cols="3">
-            <v-img
-              @click="deleteIpAddressNode1(value)"
-              id="alert-img"
-              :src="require('./../../../../assets/delete-off.png')"
-              width="1em"
-              height="1em"
-            ></v-img>
-          </v-col>
-        </v-row>
-        <div class="mt-4">
-          <span class="font-weight-medium black--text" id="lblIpv6IpAdress">IP address</span>
-          <div>
-            <input class="input-text" v-model="newAddressNode1" type="text" name="ipaddressNode1"  id="txtIpv6Node1"/>
-          </div>
-        </div>
-
-        <div
-          :class="[$data.ipaddressNode1.length < 4?'green--text':'grey--text lighten-1','pointer','mt-8']"
-          @click="addIpAddressNode1(newAddressNode1)"
-        >+ Add another static address (maximum of 4)</div>
-      </div>
+      </template>
     </div>
     <div class="mt-8">
       <v-btn elevation="0" color="udxprimary" id="btnIpv6ApplyContinue">
@@ -103,66 +84,78 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { SystemConfigObject, DataNetworkIpv6 } from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-data-network-ipv6"
 })
 export default class EosDataNetworkIpv6 extends Vue {
   private gotToNextPage() {
+    this.updateDataNetworkconfig();
     this.$router.push("dnsconfig");
+  }
+  updateDataNetworkconfig() {
+    const queryParams: DataNetworkIpv6 = {
+      is_auto: true,
+      nodes: this.$data.ipv6Nodes
+    };
+    console.log("updateDataNetworkconfig", queryParams);
+
+    this.$store
+      .dispatch("systemConfig/updateDataNetworkSettingIpv6", queryParams)
+      .then((res: any) => {})
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("error");
+      });
+  }
+  public mounted() {
+    this.managementNetworkGetter();
+  }
+  public managementNetworkGetter() {
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    if (systemconfig.data_network_settings && systemconfig.data_network_settings.ipv6) {
+      this.$data.ipv6Nodes = systemconfig.data_network_settings.ipv6.nodes;
+    }
   }
   private gotToPrevPage() {
     this.$router.push("dataconfig2");
   }
-  private addIpAddressNode0(address: string) {
-    if (
-      this.$data.ipaddressNode0.length < 4 &&
-      address !== "" &&
-      address !== undefined
-    ) {
-      this.$data.ipaddressNode0.push(address);
-      this.$data.newAddressNode0 = "";
+  private addIpAddressNode(address: string, id: number) {
+    if (this.$data.ipv6Nodes.length < 4 && address !== "" && address !== undefined) {
+      this.$data.ipv6Nodes[id].ip_address.push(address);
+      this.$data.ipaddressNode[id] = "";
     }
   }
-  private addIpAddressNode1(address: string) {
-    if (
-      this.$data.ipaddressNode1.length < 4 &&
-      address !== "" &&
-      address !== undefined
-    ) {
-      this.$data.ipaddressNode1.push(address);
-      this.$data.newAddressNode1 = "";
-    }
-  }
-  private deleteIpAddressNode0(address: string) {
-    for (
-      let addressIndex = 0;
-      addressIndex < this.$data.ipaddressNode0.length;
-      addressIndex++
-    ) {
-      if (this.$data.ipaddressNode0[addressIndex] === address) {
-        this.$data.ipaddressNode0.splice(addressIndex, 1);
+
+  private deleteIpAddressNode(address: string, id: number) {
+    for (let addressIndex = 0; addressIndex < this.$data.ipv6Nodes[id].ip_address.length; addressIndex++) {
+      if (this.$data.ipv6Nodes[id].ip_address[addressIndex] === address) {
+        this.$data.ipv6Nodes[id].ip_address.splice(addressIndex, 1);
       }
     }
   }
-  private deleteIpAddressNode1(address: string) {
-    for (
-      let addressIndex = 0;
-      addressIndex < this.$data.ipaddressNode1.length;
-      addressIndex++
-    ) {
-      if (this.$data.ipaddressNode1[addressIndex] === address) {
-        this.$data.ipaddressNode1.splice(addressIndex, 1);
-      }
-    }
-  }
+
   private data() {
     return {
       source: "manual",
-      ipaddressNode0: [],
-      ipaddressNode1: [],
-      newAddressNode0: "",
-      newAddressNode1: ""
+      ipaddressNode: [],
+      ipv6Nodes: [
+        {
+          id: 0,
+          ip_address: [],
+          gateway: "",
+          address_label: "",
+          type: ""
+        },
+        {
+          id: 1,
+          ip_address: [],
+          gateway: "",
+          address_label: "",
+          type: ""
+        }
+      ]
     };
   }
 }

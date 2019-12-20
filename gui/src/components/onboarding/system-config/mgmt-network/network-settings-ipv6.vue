@@ -26,13 +26,13 @@
           <div class="mt-4">
             <span class="font-weight-bold" id="lblIp4Gateway">Gateway</span>
             <div>
-              <input class="input-text" type="text" name="gatway"  id="txtIP6Gatway"/>
+              <input class="input-text" type="text" name="gateway" v-model="ipv6Gateway" id="txtIP6Gatway" />
             </div>
           </div>
           <div class="font-weight-bold mt-6" id="lblIp4StaticAddress">Static address</div>
           <v-divider class="mt-2" width="300" />
-          <v-row v-for="value in ipaddress" :key="value">
-            <v-col cols="6">{{value}}</v-col>
+          <v-row v-for="(value, i) in staticIpList" :key="value + i">
+            <v-col cols="6">{{ value }}</v-col>
             <v-col cols="3">
               <v-img
                 @click="deleteIpAddress(value)"
@@ -46,19 +46,21 @@
           <div class="mt-4">
             <span class="font-weight-bold" id="lblIp6Adress">IP address</span>
             <div>
-              <input class="input-text" v-model="newAddress" type="text" name="ipaddress" id="txtIP6Ipaddress" />
+              <input class="input-text" v-model="newAddress" type="text" name="staticIpList" id="txtIP6Ipaddress" />
             </div>
           </div>
           <div
-            :class="[$data.ipaddress.length < 4?'green--text':'grey--text lighten-1','pointer','mt-8']"
+            :class="[$data.staticIpList.length < 4 ? 'green--text' : 'grey--text lighten-1', 'pointer', 'mt-8']"
             @click="addIpAddress(newAddress)"
-          >+ Add another static address (maximum of 4)</div>
+          >
+            + Add another static address (maximum of 4)
+          </div>
           <v-divider class="mt-8" />
           <div class="mt-10">
-            <v-btn elevation="0" color="udxprimary" @click="$router.push('dataconfig1')" id="btnIp6Apply">
+            <v-btn elevation="0" color="udxprimary" @click="gotoNextPage()" id="btnIp6Apply">
               <span class="white--text">Apply and continue</span>
             </v-btn>
-            <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id=lblIp6Back>Back to previous step</span>
+            <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblIp6Back">Back to previous step</span>
           </div>
         </div>
       </v-col>
@@ -67,29 +69,49 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { SystemConfigObject, Ipv6 } from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-network-settings-ipv4"
 })
 export default class EosNetworkSettingsIpv4 extends Vue {
+  public gotoNextPage() {
+    this.updateIpv6Config();
+    this.$router.push("dataconfig1");
+  }
   public mounted() {
+    this.managementNetworkGetter();
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
+  public managementNetworkGetter(): any {
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    if (systemconfig.management_network_settings && systemconfig.management_network_settings.ipv6) {
+      this.$data.ipv6Gateway = systemconfig.management_network_settings.ipv6.gateway;
+      this.$data.staticIpList = systemconfig.management_network_settings.ipv6.ip_address;
+    }
+  }
+  public updateIpv6Config() {
+    const queryParams: Ipv6 = {
+      is_dhcp: false,
+      ip_address: this.$data.staticIpList,
+      gateway: this.$data.ipv6Gateway,
+      address_label: "vlan",
+      type: ""
+    };
 
+    this.$store.dispatch("systemConfig/updateMngmtIpv6", queryParams);
+  }
   private data() {
     return {
       source: "manual",
-      ipaddress: [],
-      newAddress: ""
+      staticIpList: [],
+      newAddress: "",
+      ipv6Gateway: ""
     };
   }
   private addIpAddress(address: string) {
-    if (
-      this.$data.ipaddress.length < 4 &&
-      address !== "" &&
-      address !== undefined
-    ) {
-      this.$data.ipaddress.push(address);
+    if (this.$data.staticIpList.length < 4 && address !== "" && address !== undefined) {
+      this.$data.staticIpList.push(address);
       this.$data.newAddress = "";
     }
   }
@@ -101,13 +123,9 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     }
   }
   private deleteIpAddress(address: string) {
-    for (
-      let addressIndex = 0;
-      addressIndex < this.$data.ipaddress.length;
-      addressIndex++
-    ) {
-      if (this.$data.ipaddress[addressIndex] === address) {
-        this.$data.ipaddress.splice(addressIndex, 1);
+    for (let addressIndex = 0; addressIndex < this.$data.staticIpList.length; addressIndex++) {
+      if (this.$data.staticIpList[addressIndex] === address) {
+        this.$data.staticIpList.splice(addressIndex, 1);
       }
     }
   }
