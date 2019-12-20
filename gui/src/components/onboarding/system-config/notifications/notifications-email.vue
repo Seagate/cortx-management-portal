@@ -15,13 +15,13 @@
       <div class="mt-5">
         <span class="font-weight-medium" id="lblEmailSMTP">SMTP Server</span>
         <div>
-          <input class="input-text" type="text" name="smtpserver" v-model="smtpserver"  id="txtEmailSmtp"/>
+          <input class="input-text" type="text" name="smtpserver" v-model="smtpserver" id="txtEmailSmtp" />
         </div>
       </div>
       <div class="mt-5">
         <span class="font-weight-medium" id="lblEmailSender">Sender Email</span>
         <div>
-          <input class="input-text" type="text" name="senderemail" v-model="senderemail"  id="txtEmailsenderemail"/>
+          <input class="input-text" type="text" name="senderemail" v-model="senderemail" id="txtEmailsenderemail" />
         </div>
       </div>
       <div class="mt-5">
@@ -52,33 +52,54 @@
       <div class="mt-5">
         <span class="font-weight-medium" id="lblEmailSenderPass">Sender Password</span>
         <div>
-          <input class="input-text" type="text" name="senderpassword" v-model="senderpassword" id="txtEmailSenderPass" />
+          <input
+            class="input-text"
+            type="text"
+            name="senderpassword"
+            v-model="senderpassword"
+            id="txtEmailSenderPass"
+          />
         </div>
       </div>
       <div class="mt-5">
         <span class="font-weight-medium" id="lblEmailConfirmPass">Confirm Password</span>
         <div>
-          <input class="input-text" type="text" name="confirmpassword" v-model="confirmpassword" id="txtEmailConfirmPass" />
+          <input
+            class="input-text"
+            type="text"
+            name="confirmpassword"
+            v-model="confirmpassword"
+            id="txtEmailConfirmPass"
+          />
         </div>
       </div>
       <div class="mt-5">
         <span class="font-weight-medium" id="lblEmailAddress">Email Address</span>
         <div>
-          <input class="input-text" type="text" name="emailaddress" v-model="emailaddress"  id="txtEmailAddress"/>
+          <input class="input-text" type="text" name="emailaddress" v-model="emailaddress" id="txtEmailAddress" />
         </div>
         <div class="green--text pt-2 pointer" id="lblEmailAnotherEmail">Add another email address</div>
       </div>
       <div class="my-5">
-        <input type="checkbox" @change="weeklyEmail" v-model="weeklyEmail" name="weeklyEmail" id="chkEmailWeeklyEmail"/>
-        <span class="ml-3 font-weight-regular" id="lblEmailSummery">Get a weekly email summery of all health alerts</span>
+        <input
+          type="checkbox"
+          @change="weeklyEmail"
+          v-model="weeklyEmail"
+          name="weeklyEmail"
+          id="chkEmailWeeklyEmail"
+        />
+        <span class="ml-3 font-weight-regular" id="lblEmailSummery"
+          >Get a weekly email summery of all health alerts</span
+        >
       </div>
       <v-divider class="pt-5" />
       <div>
-        <input type="checkbox" @change="testEmail" v-model="testEmail" name="testEmail"  id="chkEmailTest"/>
+        <input type="checkbox" @change="testEmail" v-model="testEmail" name="testEmail" id="chkEmailTest" />
         <span class="ml-3 font-weight-regular" id="lblEmailNotification">Send test email notification</span>
-        <div
-          class="my-5 font-weight-regular"
-        >You will receive a test email notification when you apply these settings. If you do not receive this notification, your settings may be incorrect.</div>
+        <div class="my-5 font-weight-regular">
+          You will receive a test email notification when you apply these settings. If you do not receive this
+          notification, your settings may be incorrect.
+        </div>
       </div>
       <v-divider class="pt-5" />
     </div>

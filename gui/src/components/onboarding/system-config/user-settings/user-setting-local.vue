@@ -481,7 +481,6 @@ export default class EosUserSettingLocal extends Vue {
   }
 }
 </script>
-</script>
 <style lang="scss" scoped>
 .input-text {
   border-style: solid;

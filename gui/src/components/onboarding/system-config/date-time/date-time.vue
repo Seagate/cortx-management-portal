@@ -15,30 +15,14 @@
     </div>
     <div class="mt-4">
       <input type="radio" name="ntp" v-model="source" value="ntp" id="rbtnDTNtp" />
-      <span
-        class="ml-2 font-weight-bold black--text"
-        id="lblNetworkTimeProto"
-      >Network Time Protocol (NTP)</span>
-      <input
-        class="ml-6"
-        type="radio"
-        name="manual"
-        value="manual"
-        v-model="source"
-        id="rbtnDTManual"
-      />
+      <span class="ml-2 font-weight-bold black--text" id="lblNetworkTimeProto">Network Time Protocol (NTP)</span>
+      <input class="ml-6" type="radio" name="manual" value="manual" v-model="source" id="rbtnDTManual" />
       <span class="ml-2 font-weight-bold black--text" id="lblDTManual">Manual</span>
     </div>
     <div class="mt-4" v-if="source === 'ntp'">
       <div class="font-weight-medium black--text" id="lblDTNetworkServeradd">Network server address</div>
       <div>
-        <input
-          class="input-text"
-          type="text"
-          name="hostname"
-          v-model="networkserveraddress"
-          id="txtDTHostname"
-        />
+        <input class="input-text" type="text" name="hostname" v-model="networkserveraddress" id="txtDTHostname" />
       </div>
 
       <div class="mt-5 font-weight-medium black--text" id="lblDTNtpTimeZone">NTP time zone offset</div>
@@ -83,13 +67,7 @@
         <v-col class="col-1">
           <div class="mt-5 font-weight-medium black--text" id="lblDTClock">Clock</div>
           <div>
-            <select
-              name="clock"
-              id="cmdClock"
-              class="input-text"
-              style="width: 7em;"
-              v-model="clock"
-            >
+            <select name="clock" id="cmdClock" class="input-text" style="width: 7em;" v-model="clock">
               <option value="24hrs">24 Hrs</option>
               <option value="12hrs">12 Hrs</option>
             </select>
@@ -106,22 +84,13 @@
       <v-btn elevation="0" color="udxprimary" id="btnDTApplyContinue">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
-      <span
-        class="green--text ml-8 pointer"
-        @click="gotToPrevPage()"
-        id="lblDTBack"
-      >Back to previous step</span>
+      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblDTBack">Back to previous step</span>
     </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import {
-  SystemConfigObject,
-  DateTimeSettings,
-  Ntp,
-  DateTime
-} from "./../../../../models/system-configuration";
+import { SystemConfigObject, DateTimeSettings, Ntp, DateTime } from "./../../../../models/system-configuration";
 @Component({
   name: "eos-date-time"
 })
@@ -135,11 +104,9 @@ export default class EosDateTime extends Vue {
   }
   public managementNetworkGetter() {
     const dateTime = this.$store.getters["systemConfig/systemconfig"];
-    if (dateTime.date_time_settings) {
-      this.$data.networkserveraddress =
-        dateTime.date_time_settings.ntp.ntp_server_address;
-      this.$data.Ntptimezone =
-        dateTime.date_time_settings.ntp.ntp_timezone_offset;
+    if (dateTime.date_time_settings && dateTime.date_time_settings.ntp) {
+      this.$data.networkserveraddress = dateTime.date_time_settings.ntp.ntp_server_address;
+      this.$data.Ntptimezone = dateTime.date_time_settings.ntp.ntp_timezone_offset;
     }
   }
   setNetworkTimeProtoCall() {
@@ -156,14 +123,8 @@ export default class EosDateTime extends Vue {
         clock: this.$data.clock
       }
     };
-    //.dispatch("systemConfig/updateNTPSetting", queryParams)
-    this.$store
-      .dispatch("systemConfig/updateNTPSetting", queryParams)
-      .then((res: any) => {})
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("error");
-      });
+    console.log("TCL: EosDateTime -> setNetworkTimeProtoCall -> queryParams", queryParams);
+    this.$store.dispatch("systemConfig/updateNTPSetting", queryParams);
   }
   public gotToPrevPage() {
     this.$router.push("dnsconfig");
@@ -179,7 +140,6 @@ export default class EosDateTime extends Vue {
     this.$data.hours = localDate.getHours();
     this.$data.minute = localDate.getMinutes();
     this.$data.date = toDateInputValue();
-    console.log(this.$data.hours, this.$data.minute, this.$data.date, "lllll");
   }
   private data() {
     return {
@@ -193,7 +153,6 @@ export default class EosDateTime extends Vue {
     };
   }
 }
-</script>
 </script>
 <style lang="scss" scoped>
 .input-text {

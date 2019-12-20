@@ -11,10 +11,9 @@
       <v-col cols="6">
         <div class="body-2">
           <div class="title mt-6" id="lblNetworkIP4">Management Network Settings: IPv4</div>
-          <div
-            class="mt-6"
-            id="lblNetworkMsg"
-          >You need to configure a single IP address for management of this system.</div>
+          <div class="mt-6" id="lblNetworkMsg">
+            You need to configure a single IP address for management of this system.
+          </div>
           <v-divider class="mt-2" />
           <div class="font-weight-bold mt-6" id="lblIp4Source">
             Source
@@ -35,32 +34,20 @@
                   type="text"
                   name="ipaddress"
                   v-model="ipv4IpAddress"
-                  id="txtIpv4IpAddress"
+                  id="txtNetworkSettingsIpv4IpAddress"
                 />
               </div>
             </div>
             <div class="mt-4">
               <span class="font-weight-bold" id="lblIp4Netmask">Netmask</span>
               <div>
-                <input
-                  class="input-text"
-                  type="text"
-                  name="netmask"
-                  v-model="ipv4Netmask"
-                  id="txtIpv4Netmask"
-                />
+                <input class="input-text" type="text" name="netmask" v-model="ipv4Netmask" id="txtIpv4Netmask" />
               </div>
             </div>
             <div class="mt-4">
               <span class="font-weight-bold" id="lblIp4Gateway">Gateway</span>
               <div>
-                <input
-                  class="input-text"
-                  type="text"
-                  name="gateway"
-                  v-model="ipv4Gateway"
-                  id="txtIP4Gateway"
-                />
+                <input class="input-text" type="text" name="gateway" v-model="ipv4Gateway" id="txtIP4Gateway" />
               </div>
             </div>
           </div>
@@ -68,11 +55,9 @@
             <v-btn elevation="0" color="udxprimary" @click="gotoNextPage()" id="btnIP4Apply">
               <span class="white--text">Apply and continue</span>
             </v-btn>
-            <span
-              class="green--text ml-8 pointer"
-              @click="$router.push('systemconfig1')"
-              id="lblIp4Back"
-            >Back to previous step</span>
+            <span class="green--text ml-8 pointer" @click="$router.push('systemconfig1')" id="lblIp4Back"
+              >Back to previous step</span
+            >
           </div>
         </div>
       </v-col>
@@ -82,10 +67,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { mapState } from "vuex";
-import {
-  SystemConfigObject,
-  Ipv4
-} from "./../../../../models/system-configuration";
+import { SystemConfigObject, Ipv4 } from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-network-settings-ipv4"
@@ -97,16 +79,10 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   }
   public managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (
-      systemconfig.management_network_settings &&
-      systemconfig.management_network_settings.ipv4
-    ) {
-      this.$data.ipv4Gateway =
-        systemconfig.management_network_settings.ipv4.gateway;
-      this.$data.ipv4Netmask =
-        systemconfig.management_network_settings.ipv4.netmask;
-      this.$data.ipv4IpAddress =
-        systemconfig.management_network_settings.ipv4.ip_address;
+    if (systemconfig.management_network_settings && systemconfig.management_network_settings.ipv4) {
+      this.$data.ipv4Gateway = systemconfig.management_network_settings.ipv4.gateway;
+      this.$data.ipv4Netmask = systemconfig.management_network_settings.ipv4.netmask;
+      this.$data.ipv4IpAddress = systemconfig.management_network_settings.ipv4.ip_address;
     }
   }
   public gotoNextPage() {
@@ -125,13 +101,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       netmask: this.$data.ipv4Netmask,
       gateway: this.$data.ipv4Gateway
     };
-    this.$store
-      .dispatch("systemConfig/updateMngmtIpv4", queryParams)
-      .then((res: any) => {})
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("error");
-      });
+    this.$store.dispatch("systemConfig/updateMngmtIpv4", queryParams);
   }
   private data() {
     return {
@@ -157,5 +127,3 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   cursor: pointer;
 }
 </style>
-
-

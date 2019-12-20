@@ -9,10 +9,7 @@
     <v-divider />
     <div class="body-2">
       <div class="title mt-6" id="lblIpv4Dns">Data Network Settings: IPv4</div>
-      <div
-        class="mt-2"
-        id="lblIpv4Msg"
-      >You need to configure a single IP address for management of this system.</div>
+      <div class="mt-2" id="lblIpv4Msg">You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
       <div class="font-weight-bold mt-6">
         Source
@@ -26,9 +23,9 @@
       </div>
     </div>
     <div class="row mt-5">
-      <template v-for="(node) in ipv4Nodes">
+      <template v-for="node in ipv4Nodes">
         <div class="col-4 body-2 column" :key="node.id">
-          <span class="font-weight-medium" id="lblIpv4Node">Node {{node.id}}</span>
+          <span class="font-weight-medium" id="lblIpv4Node">Node {{ node.id }}</span>
           <v-divider class="mt-2" />
           <div class="mt-5">
             <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
@@ -38,7 +35,7 @@
                 type="text"
                 name="ipaddress"
                 v-model="node.ip_address"
-                id="txtIpv4Ipaddress"
+                :id="node.id + 'txtDataNetworkIpv4Ipaddress'"
               />
             </div>
           </div>
@@ -50,7 +47,7 @@
                 type="text"
                 name="netmask"
                 v-model="node.netmask"
-                id="txtIpv4Ipv4netmask"
+                :id="node.id + 'txtDataNetworkIpv4netmask'"
               />
             </div>
           </div>
@@ -62,7 +59,7 @@
                 type="text"
                 name="gateway"
                 v-model="node.gateway"
-                id="txtIpv4Ipv4Gateway"
+                :id="node.id + 'txtDataNetworkIpv4gateway'"
               />
             </div>
           </div>
@@ -73,20 +70,13 @@
       <v-btn elevation="0" color="udxprimary" id="btnIpv4ApplyContinue">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
-      <span
-        class="green--text ml-8 pointer"
-        @click="gotToPrevPage()"
-        id="lblIpv4Prevoius"
-      >Back to previous step</span>
+      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv4Prevoius">Back to previous step</span>
     </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import {
-  SystemConfigObject,
-  DataNetworkIpv4
-} from "./../../../../models/system-configuration";
+import { SystemConfigObject, DataNetworkIpv4 } from "./../../../../models/system-configuration";
 @Component({
   name: "eos-data-network-ipv4"
 })
@@ -98,41 +88,30 @@ export default class EosDataNetworkIpv4 extends Vue {
   private gotToPrevPage() {
     this.$router.push("dataconfig1");
   }
-  updateDataNetworkconfig() {
+  private updateDataNetworkconfig() {
     const queryParams: DataNetworkIpv4 = {
       is_dhcp: false,
       nodes: this.$data.ipv4Nodes
     };
+    console.log("TCL: EosDataNetworkIpv4 -> updateDataNetworkconfig -> queryParams", queryParams);
 
-    this.$store
-      .dispatch("systemConfig/updateDataNetworkSettingIpv4", queryParams)
-      .then((res: any) => {})
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("error");
-      });
+    this.$store.dispatch("systemConfig/updateDataNetworkSettingIpv4", queryParams);
   }
   public mounted() {
     this.managementNetworkGetter();
   }
   public managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (
-      systemconfig.data_network_settings &&
-      systemconfig.data_network_settings.ipv4
-    ) {
+    if (systemconfig.data_network_settings && systemconfig.data_network_settings.ipv4) {
       this.$data.ipv4Nodes = systemconfig.data_network_settings.ipv4.nodes;
     }
   }
   private data() {
     return {
-      ipv4IpAddress: "",
-      ipv4Netmask: "",
-      ipv4Gateway: "",
-      ipv4IpAddress1: "",
-      ipv4Netmask1: "",
-      ipv4Gateway1: "",
-      ipv4Nodes: [{ id: 0 }, { id: 1 }],
+      ipv4Nodes: [
+        { id: 0, ip_address: "", netmask: "", gateway: "" },
+        { id: 1, ip_address: "", netmask: "", gateway: "" }
+      ],
       source: "manual"
     };
   }

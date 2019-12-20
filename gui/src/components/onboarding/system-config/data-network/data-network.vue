@@ -9,64 +9,39 @@
     <v-divider />
     <div class="body-2">
       <div class="title mt-6" id="lblDns">Data Network Settings</div>
-      <div
-        class="mt-2"
-        id="lblMsg"
-      >UPDATE THIS TEXT: Use the following screens to finalize your network settings for managing the system. You can set the system to be managed in an IPv4 and IPv6 network or both. Additionally the system can be configured to utilize DNS within your network. You can skip this section entirely if your network settings are complete.</div>
-      <div
-        class="mt-6"
-      >Do you intend to use your own load balancer or the load balancer included in the system?</div>
+      <div class="mt-2" id="lblMsg">
+        UPDATE THIS TEXT: Use the following screens to finalize your network settings for managing the system. You can
+        set the system to be managed in an IPv4 and IPv6 network or both. Additionally the system can be configured to
+        utilize DNS within your network. You can skip this section entirely if your network settings are complete.
+      </div>
+      <div class="mt-6">Do you intend to use your own load balancer or the load balancer included in the system?</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input
-          type="radio"
-          name="loadbalancer"
-          v-model="loadbalancer"
-          value="internal"
-          id="rbtnLoadbalancer"
-        />
+        <input type="radio" name="loadbalancer" v-model="loadbalancer" value="internal" id="rbtnLoadbalancer" />
         <span class="ml-3 font-weight-medium" id="lblUseloadBalancer">Use the included load balancer</span>
       </div>
       <div class="mt-4">
-        <input
-          type="radio"
-          name="loadbalancer"
-          v-model="loadbalancer"
-          value="external"
-          id="rbtnLoadbalancer"
-        />
+        <input type="radio" name="loadbalancer" v-model="loadbalancer" value="external" id="rbtnLoadbalancer" />
         <span class="ml-4 font-weight-medium" id="lblUseExternalLoad">Use an external load balancer</span>
       </div>
       <div class="mt-8" id="lblChoseMsg">Chose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input
-          type="checkbox"
-          :disabled="isSkip"
-          v-model="isipV4Status"
-          name="ipv4"
-          id="chkDNSisipV4Status"
-        />
+        <input type="checkbox" :disabled="isSkip" v-model="isipV4Status" name="ipv4" id="chkDNSisipV4Status" />
         <span class="ml-3 font-weight-medium" id="lblDNsIpv4">IPv4</span>
       </div>
-      <div
-        class="mt-2"
-        id="lblDNSSetting"
-      >Selecting IPv4 will allow you to view settings assigned by DHCP or to assign static IPv4 data network for enironments that do not support DHCP.</div>
+      <div class="mt-2" id="lblDNSSetting">
+        Selecting IPv4 will allow you to view settings assigned by DHCP or to assign static IPv4 data network for
+        enironments that do not support DHCP.
+      </div>
       <div class="mt-6">
-        <input
-          type="checkbox"
-          :disabled="isSkip"
-          v-model="isipV6Status"
-          name="ipv6"
-          id="chkIsipV6Status"
-        />
+        <input type="checkbox" :disabled="isSkip" v-model="isipV6Status" name="ipv6" id="chkIsipV6Status" />
         <span class="ml-4 font-weight-medium" id="lblIpv6">IPv6</span>
       </div>
-      <div
-        class="mt-1"
-        id="lblMsg"
-      >Selecting IPv6 will allow you to view settings assigned by DHCP or to assign static IPv6 data network settings for environments that do not support DHCP.</div>
+      <div class="mt-1" id="lblMsg">
+        Selecting IPv6 will allow you to view settings assigned by DHCP or to assign static IPv6 data network settings
+        for environments that do not support DHCP.
+      </div>
       <div class="mt-6">
         <input
           type="checkbox"
@@ -76,30 +51,22 @@
           name="skip"
           id="chkDNSSkip"
         />
-        <span
-          class="ml-3 font-weight-medium"
-          id="lblSkipManagmentSetting"
-        >Skip data network settings</span>
+        <span class="ml-3 font-weight-medium" id="lblSkipManagmentSetting">Skip data network settings</span>
       </div>
-      <div
-        class="mt-2"
-        id="lblMsgSkipStep"
-      >You can skip this step if your management network settings are already complete.</div>
+      <div class="mt-2" id="lblMsgSkipStep">
+        You can skip this step if your management network settings are already complete.
+      </div>
       <v-divider class="mt-8" />
       <div class="mt-8">
         <v-btn
           elevation="0"
-          :disabled="!(isSkip || (isipV6Status || isipV4Status))"
+          :disabled="!(isSkip || isipV6Status || isipV4Status)"
           color="udxprimary"
           id="btnDNSContinue"
         >
           <span class="white--text" @click="gotToNextPage()">Continue</span>
         </v-btn>
-        <span
-          class="green--text ml-8 pointer"
-          @click="gotToPrevPage()"
-          id="lblDNSBack"
-        >Back to previous step</span>
+        <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblDNSBack">Back to previous step</span>
       </div>
     </div>
   </v-container>
