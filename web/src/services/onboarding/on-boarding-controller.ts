@@ -22,10 +22,16 @@ import { Request, Response, request, response } from "express";
  * This is responsible for getting System Configuration data
  * @param query 
  */
+export const getAllSystemConfig = async (req: Request, res: Response) => {
+    return await Api.getAll(apiRegister.all_system_config, req, res);    
+};
+
+/**
+ * This is responsible for getting System Configuration data
+ * @param query 
+ */
 export const getSystemConfig = async (req: Request, res: Response) => {
-    let alertData = Api.getAll(apiRegister.all_system_config, req, res);
-    let result = await alertData;
-    return result;
+    return await Api.get(apiRegister.all_system_config, req, res, req.params.config_id);    
 };
 
 /**
@@ -34,20 +40,9 @@ export const getSystemConfig = async (req: Request, res: Response) => {
  * @param res 
  */
 export const saveSystemConfig = async (req: Request, res: Response) => {
-    let alertData = Api.post(apiRegister.all_system_config, req, res);
-    let result = await alertData;
-    return result;
+    return await Api.post(apiRegister.all_system_config, req, res);    
 };
 
-export const getNetworkManagement = async (req: Request, res: Response) => {
-    let alertData = Api.getAll(apiRegister.management_network, req, res);
-    let result = await alertData;
-    return result;
-};
-
-
-export const updateNetworkManagement = async (req: Request, res: Response) => {
-    let alertData = Api.patch(apiRegister.management_network, req, res, "");
-    let result = await alertData;
-    return result;
+export const updateSystemConfig = async (req: Request, res: Response) => {
+    return await Api.put(apiRegister.all_system_config, req, res, req.params.config_id);    
 };

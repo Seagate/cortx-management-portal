@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getSystemConfig, saveSystemConfig, getNetworkManagement, updateNetworkManagement } from "./on-boarding-controller";
+import { getAllSystemConfig, getSystemConfig, saveSystemConfig, updateSystemConfig } from "./on-boarding-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -24,13 +24,13 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/config",
+    path: "/api/v1/sysconfig",
     method: "get",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await getSystemConfig(req, res);
+          const result = await getAllSystemConfig(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -39,7 +39,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/config",
+    path: "/api/v1/sysconfig",
     method: "post",
     handler: [
       checkRequiredParams,
@@ -54,13 +54,13 @@ export default [
     ]
   },
   {
-    path: "/api/v1/networkmanagement",
+    path: "/api/v1/sysconfig/:config_id",
     method: "get",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await getNetworkManagement(req, res);
+          const result = await getSystemConfig(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -69,13 +69,13 @@ export default [
     ]
   },
   {
-    path: "/api/v1/networkmanagement",
-    method: "patch",
+    path: "/api/v1/sysconfig/:config_id",
+    method: "put",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await updateNetworkManagement(req, res);
+          const result = await updateSystemConfig(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
