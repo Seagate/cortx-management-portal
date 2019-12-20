@@ -65,6 +65,43 @@ export abstract class Api {
         });
     }
 
+    // Wrapper method to for get api
+    public static async get(url: string, req: Request, resp: Response, id: string | number) {
+        return new Promise((resolve, reject) => {
+            let geturl = base_url + url;
+
+            // Remove following code onde all the Python APIs are ready
+            // -- Start --
+            if (url.startsWith("/mock")) {
+                geturl = mock_base_url + url;
+            }
+
+            if (id && id != "") {
+                geturl += "/" + id;
+            }
+            console.log("GET: " + geturl);
+            // -- end --
+
+            let query = req.query;
+            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            for (const key in query) {
+                let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
+                geturl += seperator + key + "=" + query[key];
+            }
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': authorization
+                }
+            }
+            
+            http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
+                let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
+            });
+        });
+    }
+
     public static async patch(url: string, req: Request, resp: Response, id: string | number) {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
