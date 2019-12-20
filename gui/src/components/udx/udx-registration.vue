@@ -23,7 +23,7 @@
         <label id="udx-reg-token-lbl">Your Identification Token</label>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
-            <v-icon class="green--text mx-2" size="20" v-on="on">mdi-help-circle-outline</v-icon>
+            <v-icon class="csmprimary--text mx-2" size="20" v-on="on">mdi-help-circle-outline</v-icon>
           </template>
           <span>On your UDX web portal choose "Add Device" and then enter the identification token below.</span>
         </v-tooltip>
@@ -46,7 +46,7 @@
             <span id="udx-reg-url-textbox-lbl" class="font-weight-medium">Enter URL</span>
             <v-tooltip right>
               <template v-slot:activator="{ on }">
-                <v-icon class="green--text mx-2" size="20" v-on="on">mdi-help-circle-outline</v-icon>
+                <v-icon class="csmprimary--text mx-2" size="20" v-on="on">mdi-help-circle-outline</v-icon>
               </template>
               <span>Enter the URL provided by your UDX portal.</span>
             </v-tooltip>
@@ -83,7 +83,7 @@
           >This device has been successfully registered.</label>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="udxprimary" @click="continueAfterRegistration()" class="ma-5 elevation-0">
+          <v-btn color="csmprimary" @click="continueAfterRegistration()" class="ma-5 elevation-0">
             <span class="white--text">Continue</span>
           </v-btn>
         </v-card-actions>
@@ -122,7 +122,7 @@
           <td class="py-2">{{ udxDevice.vendorID }}</td>
         </tr>
       </table>
-      <v-btn color="green" @click="showConfirmUnregisterDialog = true" class="mt-5 elevation-0">
+      <v-btn color="csmprimary" @click="showConfirmUnregisterDialog = true" class="mt-5 elevation-0">
         <span class="white--text">Deregister</span>
       </v-btn>
       <v-dialog v-model="showConfirmUnregisterDialog" persistent max-width="790">
@@ -142,14 +142,14 @@
 
           <v-card-actions>
             <v-btn
-              color="green"
+              color="csmprimary"
               @click="closeConfirmUnregisterDialog('yes')"
               class="ma-5 elevation-0"
             >
               <span class="white--text">Yes</span>
             </v-btn>
             <v-btn
-              color="green"
+              color="csmprimary"
               outlined
               @click="closeConfirmUnregisterDialog('no')"
               class="ma-5 elevation-0"

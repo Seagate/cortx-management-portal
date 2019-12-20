@@ -54,9 +54,7 @@ export class FormControl {
     public isValid: boolean = false;
     public informationText: string;
 
-    constructor(label: string, name: string, type: string,
-        value: string, isRequired: boolean = false, requiredMessage: string = "",
-        validator?: Validator, informationText?: string) {
+    constructor(label: string, name: string, type: string, value: string, isRequired: boolean = false, requiredMessage: string = "", validator?: Validator, informationText?: string) {
         this.label = label;
         this.name = name;
         this.type = type;

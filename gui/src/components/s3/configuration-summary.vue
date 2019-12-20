@@ -8,7 +8,7 @@
     ></v-img>
     <v-divider />
     <div>
-      <div class="title mt-6 green--text">S3 Congiguration-Summary</div>
+      <div class="title mt-6 csmprimary--text">S3 Congiguration-Summary</div>
     </div>
     <div class="mt-4">
       <div
@@ -24,21 +24,21 @@
     <div class="mt-3">
       <v-dialog v-model="dialog" width="700">
         <template v-slot:activator="{ on }">
-          <v-btn elevation="0" color="udxprimary" v-on="on">
-            <span class="white--text" @click="gotToNextPage()">FINISH CONFIGURATION</span>
+          <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" v-on="on">
+            <span class="white--text">FINISH CONFIGURATION</span>
           </v-btn>
         </template>
         <v-card height="500">
           <v-card-title class="headline grey lighten-2" primary-title></v-card-title>
           <div class="ml-10">
             <v-card-text>
-              <div class="title mt-6 green--text">
-                <v-icon class="green--text" size="20">mdi-check-circle-outline</v-icon>
+              <div class="title mt-6 csmprimary--text">
+                <v-icon class="csmprimary--text" size="20">mdi-check-circle-outline</v-icon>
                 <span>Success-Validation in Progress</span>
               </div>
               <v-divider class="mt-3 mb-10" />
               <div class="font-weight-regular black--text mb-10">Message about What`s Happning</div>
-              <v-btn tile large width="10em" levation="0" color="udxprimary">
+              <v-btn tile large width="10em" levation="0" color="csmprimary">
                 <span class="white--text">ok</span>
               </v-btn>
             </v-card-text>

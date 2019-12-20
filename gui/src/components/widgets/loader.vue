@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-overlay :value="show" color="rgba(0, 0, 0, 0.75)">
+  <v-overlay :value="show" opacity="0.75">
     <div class="loader-container">
       <div class="loader-header" v-if="title">
         <label>Header</label>
@@ -22,7 +22,12 @@
         <div class="loader-message" v-if="message">
           <label>{{ message }}</label>
         </div>
-        <v-progress-linear indeterminate color="udxprimary" background-color="#B7B7B7" height="8px"></v-progress-linear>
+        <v-progress-linear
+          indeterminate
+          color="csmprimary"
+          background-color="csmdisabled"
+          height="8px"
+        ></v-progress-linear>
       </div>
     </div>
   </v-overlay>
@@ -55,7 +60,7 @@ export default class EosLoader extends Vue {
   font-weight: bold;
   font-size: 18px;
   line-height: 26px;
-  border-bottom: 1px solid #9e9e9e;
+  border-bottom: 1px solid var(--v-csmborder-base);
   color: #000000;
   padding: 24px;
 }

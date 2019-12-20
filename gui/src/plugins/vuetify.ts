@@ -9,19 +9,22 @@ export default new Vuetify({
     iconfont: "mdi",
   },
   theme: {
+    options: {
+      customProperties: true
+    },
     themes: {
       light: {
-        udxprimary: "#6EBE49",
-        udxdisabled: "#B7B7B7",
-        udxborder: "#9E9E9E",
-        udxheader: "#E8E8E8",
-        udxtooltip: "#454545",
-        udxerror: "#DC1F2E",
-        udxwarning: "#F7A528",
-        udxsuccess: "#6EBE49",
-        udxinfo: "#00A1DD",
-        udxoverlay: "rgba(0, 0, 0, 0.75)",
+        csmprimary: "#6EBE49",
+        csmdisabled: "#B7B7B7",
+        csmborder: "#9E9E9E",
+        csmheader: "#E8E8E8",
+        csmtooltip: "#454545",
+        csmerror: "#DC1F2E",
+        csmwarning: "#F7A528",
+        csmsuccess: "#6EBE49",
+        csminfo: "#00A1DD",
+        csmoverlay: "#9E9E9E",
       },
     },
-  },
+  }
 });

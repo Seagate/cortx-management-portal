@@ -17,7 +17,6 @@
           <v-divider class="mt-2" />
           <div class="font-weight-bold mt-6" id="lblIp4Source">
             Source
-            <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
           </div>
           <div class="mt-4">
             <input type="radio" name="source" v-model="source" value="manual" />
@@ -52,10 +51,10 @@
             </div>
           </div>
           <div class="mt-10">
-            <v-btn elevation="0" color="udxprimary" @click="gotoNextPage()" id="btnIP4Apply">
+            <v-btn elevation="0" color="csmprimary" @click="gotoNextPage()" id="btnIP4Apply">
               <span class="white--text">Apply and continue</span>
             </v-btn>
-            <span class="green--text ml-8 pointer" @click="$router.push('systemconfig1')" id="lblIp4Back"
+            <span class="csmprimary--text ml-8 pointer" @click="$router.push('systemconfig1')" id="lblIp4Back"
               >Back to previous step</span
             >
           </div>

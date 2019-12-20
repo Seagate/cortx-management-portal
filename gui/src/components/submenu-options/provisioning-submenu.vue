@@ -21,7 +21,7 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">S3</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn :to="'/s3'" class="text-capitalize" text small color="udxprimary">Manage</v-btn>
+                <v-btn :to="'/s3'" text small color="csmprimary">Manage</v-btn>
               </v-card-actions>
             </div>
           </v-card>
@@ -32,7 +32,7 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">NFS</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn class="text-capitalize" disabled text small color="udxprimary">Manage</v-btn>
+                <v-btn disabled text small color="csmprimary">Manage</v-btn>
               </v-card-actions>
             </div>
           </v-card>

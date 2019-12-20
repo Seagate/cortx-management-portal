@@ -9,7 +9,7 @@
       <div class="ml-4 white--text">We will guide you through the first-time setup of your system.</div>
       <div class="ml-4 mt-1 mb-8 white--text">
         By clicking the Get Started button, you agree to the
-        <span class="green--text">EULA.</span>
+        <span class="csmprimary--text">EULA.</span>
       </div>
       <div class="ma-4 white--text mb-10">
         <span class="pr-5">Language</span>
@@ -22,8 +22,8 @@
           <option value="celsius">English</option>
         </select>
       </div>
-      <v-btn class="ml-4" elevation="0" color="udxprimary">
-        <span class="white--text" @click="gotToNextPage()">Get Started</span>
+      <v-btn class="ml-4" elevation="0" @click="gotToNextPage()" color="csmprimary">
+        <span class="white--text">Get Started</span>
       </v-btn>
     </v-container>
   </v-container>

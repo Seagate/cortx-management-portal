@@ -25,16 +25,16 @@
     <v-container>
       <div id="gauge_capacity"></div>
       <div class="mt-2 mb-4">
-        <span class="subtitle-2">Total Capacity :</span>
+        <span class="subtitle-2">Total capacity:</span>
         <span>{{capacityDetails.size}}</span>
       </div>
       <v-divider></v-divider>
       <div class="mt-3">
-        <span class="subtitle-2">Used :</span>
+        <span class="subtitle-2">Used:</span>
         <span>{{capacityDetails.used}}</span>
       </div>
       <div class="mt-3">
-        <span class="subtitle-2">Available :</span>
+        <span class="subtitle-2">Available:</span>
         <span>{{capacityDetails.avail}}</span>
       </div>
     </v-container>

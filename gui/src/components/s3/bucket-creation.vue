@@ -15,33 +15,32 @@
           <v-col>
             <v-btn
               v-if="showCreateBucketForm"
-              color="green"
+              color="csmprimary"
               class="mx-2"
               @click="createBucket()"
               :disabled="!createBucketForm.isValid"
             >
-              <span class="white--text">Create Bucket</span>
+              <span class="white--text">Create</span>
             </v-btn>
             <v-btn
               v-if="showCreateBucketForm"
-              outlined
-              color="success"
+              text
+              small
+              color="csmprimary"
               class="ml-5"
               @click="closeCreateBucketForm()"
-            >
-              <span style="text-transform: none !important;">Cancel</span>
-            </v-btn>
+            >Cancel</v-btn>
           </v-col>
         </v-row>
       </div>
 
       <v-btn
         v-if="!showCreateBucketForm"
-        color="green"
+        color="csmprimary"
         class="mt-2 mb-4 elevation-0"
         @click="openCreateBucketForm()"
       >
-        <span class="white--text">Create Bucket</span>
+        <span class="white--text">Create</span>
       </v-btn>
 
       <v-dialog v-model="showBucketCreateSuccessDialog" persistent max-width="790">
@@ -55,7 +54,11 @@
             <span>Bucket created successfully.</span>
           </v-card-title>
           <v-card-actions>
-            <v-btn color="green" @click="closeBucketCreateSuccessDialog()" class="ma-5 elevation-0">
+            <v-btn
+              color="csmprimary"
+              @click="closeBucketCreateSuccessDialog()"
+              class="ma-5 elevation-0"
+            >
               <span class="white--text">OK</span>
             </v-btn>
           </v-card-actions>
@@ -80,11 +83,15 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn color="green" @click="closeConfirmDeleteDialog('yes')" class="ma-5 elevation-0">
+            <v-btn
+              color="csmprimary"
+              @click="closeConfirmDeleteDialog('yes')"
+              class="ma-5 elevation-0"
+            >
               <span class="white--text">Yes</span>
             </v-btn>
             <v-btn
-              color="green"
+              color="csmprimary"
               outlined
               @click="closeConfirmDeleteDialog('no')"
               class="ma-5 elevation-0"
@@ -109,7 +116,7 @@
             <th
               v-for="header in bucketsTableHeaderList"
               :key="header.text"
-              class="tableheader text-capitalize font-weight-medium text--black"
+              class="tableheader font-weight-medium text--black"
             >
               <span class="headerText">{{ header.text }}</span>
             </th>
@@ -168,7 +175,7 @@ export default class EosBucketCreation extends Vue {
     this.showConfirmDeleteDialog = false;
     this.bucketsTableHeaderList = [
       {
-        text: "Bucket Name",
+        text: "Name",
         value: "name",
         sortable: false
       }
@@ -176,7 +183,7 @@ export default class EosBucketCreation extends Vue {
 
     const controls: FormControl[] = [
       new FormControl(
-        "Bucket Name",
+        "Name",
         "bucket_name",
         "text",
         "",
@@ -287,7 +294,7 @@ export default class EosBucketCreation extends Vue {
 }
 #clear {
   font-size: 14px;
-  color: green;
+  color: var(--v-csmprimary-base);
   float: right;
 }
 #title {
@@ -301,7 +308,7 @@ export default class EosBucketCreation extends Vue {
 }
 .active {
   display: inline-block;
-  color: green !important;
+  color: var(--v-csmprimary-base) !important;
 }
 .notActive {
   opacity: 0;
@@ -331,7 +338,7 @@ export default class EosBucketCreation extends Vue {
   border: 2px solid #e3e3e3;
 }
 tbody tr {
-  background-color: #ebf1e9 !important ;
+  background-color: #ffffff !important ;
 }
 tbody tr:hover {
   border-top: 2px solid darkgray !important;

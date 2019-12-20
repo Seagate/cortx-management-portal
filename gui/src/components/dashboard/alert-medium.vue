@@ -77,7 +77,7 @@
         <th
           v-for="header in alertHeader"
           :key="header.text"
-          class="tableheader text-capitalize font-weight-medium text--black"
+          class="tableheader font-weight-medium text--black"
           @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
         >
           <span
@@ -157,13 +157,13 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
     // Set Alert table default header options
     const headers = [
       {
-        text: "Active Time",
+        text: "Active time",
         value: "created_time",
         sortable: true,
         sortDir: "desc"
       },
       {
-        text: "Alert Severity",
+        text: "Alert severity",
         value: "severity",
         sortable: true,
         sortDir: "desc"
@@ -204,7 +204,7 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
 }
 .active {
   display: inline-block;
-  color: green !important;
+  color: var(--v-csmprimary-base) !important;
 }
 .notActive {
   opacity: 0;
@@ -221,7 +221,7 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
   border: 2px solid #e3e3e3 !important;
 }
 tbody tr {
-  background-color: #ebf1e9 !important ;
+  background-color: #ffffff !important ;
 }
 tbody tr:hover {
   border-top: 2px solid darkgray !important;

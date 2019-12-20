@@ -4,10 +4,7 @@
       <img src="../../assets/logo.png" />
     </div>
     <div class="body-2 ma-10">
-      <div class="ml-4 mt-4 mb-1 title black--text">
-        Admin User Configuration
-        <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
-      </div>
+      <div class="ml-4 mt-4 mb-1 title black--text">Admin User Configuration</div>
       <div class="ml-4 mb-7">Configure the username and password for the admin user of this system.</div>
       <div class="ma-4">
         <form autocomplete="off" @submit.prevent="submitForm">
@@ -28,7 +25,7 @@
           </div>
 
           <div class="mt-4 mb-6">
-            <span class="font-weight-medium">Confirm Password</span>
+            <span class="font-weight-medium">Confirm password</span>
             <div>
               <input
                 class="input-text"
@@ -39,11 +36,11 @@
               <p
                 v-if="!isConfirmPasswordValid"
                 class="red--text error-message"
-              >Confirm Password is not valid</p>
+              >Confirm password is not valid</p>
             </div>
           </div>
-          <v-btn elevation="0" color="udxprimary" :disabled="!isValidForm">
-            <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
+          <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" :disabled="!isValidForm">
+            <span class="white--text">Apply and Continue</span>
           </v-btn>
         </form>
       </div>

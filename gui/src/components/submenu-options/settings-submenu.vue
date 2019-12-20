@@ -21,7 +21,7 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">Notifications</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn class="text-capitalize" disabled text small color="udxprimary">Manage</v-btn>
+                <v-btn disabled text small color="csmprimary">Manage</v-btn>
               </v-card-actions>
             </div>
           </v-card>
@@ -32,13 +32,7 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">User</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn
-                  :to="'/usersettinglocal'"
-                  class="text-capitalize"
-                  text
-                  small
-                  color="udxprimary"
-                >Manage</v-btn>
+                <v-btn :to="'/usersettinglocal'" text small color="csmprimary">Manage</v-btn>
               </v-card-actions>
             </div>
           </v-card>
@@ -49,13 +43,7 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">UDX</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn
-                  :to="'/udx-registration'"
-                  class="text-capitalize"
-                  text
-                  small
-                  color="udxprimary"
-                >Manage</v-btn>
+                <v-btn :to="'/udx-registration'" text small color="csmprimary">Manage</v-btn>
               </v-card-actions>
             </div>
           </v-card>
@@ -66,12 +54,12 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">Updates</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn class="text-capitalize" disabled text small color="udxprimary">Manage</v-btn>
+                <v-btn disabled text small color="csmprimary">Manage</v-btn>
               </v-card-actions>
             </div>
             <v-card-text>
               <div>
-                <p>Up to Date</p>
+                <p>Up to date</p>
               </div>
             </v-card-text>
           </v-card>
@@ -82,7 +70,7 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">Privacy</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn class="text-capitalize" disabled text small color="udxprimary">Details</v-btn>
+                <v-btn disabled text small color="csmprimary">Details</v-btn>
               </v-card-actions>
             </div>
           </v-card>
@@ -91,7 +79,7 @@
         <v-col cols="12">
           <v-card class="outlined" height="50" flat>
             <v-card-actions>
-              <v-btn class="text-capitalize" text small color="udxprimary">Quit Service</v-btn>
+              <v-btn text small color="csmprimary">Quit service</v-btn>
             </v-card-actions>
           </v-card>
           <v-divider></v-divider>
@@ -99,7 +87,7 @@
         <v-col cols="12">
           <v-card class="outlined" height="50" flat>
             <v-card-actions>
-              <v-btn class="text-capitalize" text small color="udxprimary">Restart Service</v-btn>
+              <v-btn text small color="csmprimary">Restart service</v-btn>
             </v-card-actions>
           </v-card>
           <v-divider></v-divider>
@@ -107,7 +95,7 @@
         <v-col cols="12">
           <v-card class="outlined" height="50" flat>
             <v-card-actions>
-              <v-btn class="text-capitalize" text small color="udxprimary">About</v-btn>
+              <v-btn text small color="csmprimary">About</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>

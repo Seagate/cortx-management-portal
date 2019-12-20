@@ -6,7 +6,7 @@
         <label>Use this table to create IAM users that have access to the buckets you create in the next step. You can add as many as you like. The access key and secret key for each user will be shown once you click continue. You will have the oppurtunity to download a CSV at that point.</label>
       </div>
     </div>
-    <v-tabs color="udxprimary" class="mb-2" style="border-bottom: 1px solid lightgrey;">
+    <v-tabs color="csmprimary" class="mb-2" style="border-bottom: 1px solid lightgrey;">
       <v-tab @click="switchTab('account')">
         <label class="tab-label">Account</label>
       </v-tab>

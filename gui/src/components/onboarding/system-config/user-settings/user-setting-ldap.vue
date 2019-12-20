@@ -74,14 +74,8 @@
         </v-row>
       </div>
 
-      <v-btn color="udxprimary" @click="setLDAP()" class="ma-5 elevation-0" id="btnLDAPSet">Set LDAP</v-btn>
-      <v-btn
-        text
-        small
-        color="udxprimary"
-        @click="setLDAP()"
-        id="lblLDAPCancel"
-      >Cancel</v-btn>
+      <v-btn color="csmprimary" @click="setLDAP()" class="ma-5 elevation-0" id="btnLDAPSet">Set LDAP</v-btn>
+      <v-btn text small color="csmprimary" @click="setLDAP()" id="lblLDAPCancel">Cancel</v-btn>
     </v-card>
 
     <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
@@ -90,7 +84,7 @@
       <div v-if="isUserCreate">
         <v-row>
           <v-col class="pl-5">
-            <div class="font-weight-medium pt-3" id="lblLDAPUserName">User Name</div>
+            <div class="font-weight-medium pt-3" id="lblLDAPUserName">Username</div>
             <input
               class="input-text"
               type="text"
@@ -106,7 +100,7 @@
               v-model="password"
               id="txtLDAPPass"
             />
-            <div class="font-weight-medium pt-3" id="lblLDAPConfirmPass">Confirm Password</div>
+            <div class="font-weight-medium pt-3" id="lblLDAPConfirmPass">Confirm password</div>
             <input
               class="input-text"
               type="password"
@@ -175,17 +169,16 @@
         </v-row>
       </div>
       <v-btn
-        color="udxprimary"
+        color="csmprimary"
         class="ma-5 elevation-0 white--text"
         @click="createUser()"
         id="btnLDAPCreateUser"
       >Create new user group</v-btn>
       <v-btn
         v-if="isUserCreate"
-        class="text-capitalize"
         text
         small
-        color="udxprimary"
+        color="csmprimary"
         id="lblLDAPCancel"
         @click="createUser()"
       >Cancel</v-btn>
@@ -204,7 +197,7 @@
             <th
               v-for="header in alertHeader"
               :key="header.text"
-              class="tableheader text-capitalize font-weight-medium text--black"
+              class="tableheader font-weight-medium text--black"
               @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
             >
               <span
@@ -251,7 +244,7 @@
               <div>
                 <v-row>
                   <v-col class="col-4 pl-5">
-                    <div class="font-weight-medium pt-3" id="lblLDAPUserName">User Name</div>
+                    <div class="font-weight-medium pt-3" id="lblLDAPUserName">Username</div>
                     <input
                       class="input-text"
                       type="text"
@@ -267,7 +260,7 @@
                       v-model="password"
                       id="txtLDAPPass"
                     />
-                    <div class="font-weight-medium pt-3" id="lblLDAPConfirmPass">Confirm Password</div>
+                    <div class="font-weight-medium pt-3" id="lblLDAPConfirmPass">Confirm password</div>
                     <input
                       class="input-text"
                       type="password"
@@ -362,7 +355,7 @@
                 </v-row>
               </div>
               <v-btn
-                color="udxprimary"
+                color="csmprimary"
                 class="ma-5 elevation-0 white--text"
                 @click="editUser()"
                 id="btnLDAPApplyInterface"
@@ -370,7 +363,7 @@
               <v-btn
                 text
                 small
-                color="udxprimary"
+                color="csmprimary"
                 @click="editUser()"
                 id="lblLDAPCancelInterface"
               >Cancel</v-btn>
@@ -381,11 +374,16 @@
     </v-card>
 
     <div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnLDAPApplyContinueInterface">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
+      <v-btn
+        elevation="0"
+        color="csmprimary"
+        @click="gotToNextPage()"
+        id="btnLDAPApplyContinueInterface"
+      >
+        <span class="white--text">Apply and Continue</span>
       </v-btn>
       <span
-        class="green--text ml-8 pointer"
+        class="csmprimary--text ml-8 pointer"
         @click="gotToPrevPage()"
         id="lblLDAPBackInerface"
       >Back to previous step</span>
@@ -513,7 +511,7 @@ export default class EosUserSettingLdap extends Vue {
 }
 #clear {
   font-size: 14px;
-  color: green;
+  color: var(--v-csmprimary-base);
   float: right;
 }
 #title {
@@ -527,7 +525,7 @@ export default class EosUserSettingLdap extends Vue {
 }
 .active {
   display: inline-block;
-  color: green !important;
+  color: var(--v-csmprimary-base) !important;
 }
 .notActive {
   opacity: 0;
@@ -557,7 +555,7 @@ export default class EosUserSettingLdap extends Vue {
   border: 2px solid #e3e3e3;
 }
 tbody tr {
-  background-color: #ebf1e9 !important ;
+  background-color: #ffffff !important ;
 }
 tbody tr:hover {
   border-top: 2px solid darkgray !important;

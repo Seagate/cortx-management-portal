@@ -30,7 +30,7 @@
           <v-col>
             <v-btn
               v-if="showCreateUserForm"
-              color="udxprimary"
+              color="csmprimary"
               class="mx-2"
               @click="createUser()"
               :disabled="!createUserForm.isValid"
@@ -39,7 +39,8 @@
             </v-btn>
             <v-btn
               v-if="showCreateUserForm"
-              outlined
+              text
+              small
               color="success"
               class="ml-5"
               @click="closeCreateUserForm()"
@@ -50,7 +51,7 @@
 
       <v-btn
         v-if="!showCreateUserForm"
-        color="udxprimary"
+        color="csmprimary"
         class="mt-2 mb-4 elevation-0"
         @click="openCreateUserForm()"
       >
@@ -73,9 +74,6 @@
               <span>Save this information, you will not see it again.</span>
             </v-col>
             <v-spacer></v-spacer>
-            <!--v-col cols="2" class="green--text">
-              <span>export csv</span>
-            </v-col-->
           </v-row>
 
           <table class="mx-7 mb-7">
@@ -92,7 +90,7 @@
           </table>
 
           <v-card-actions>
-            <v-btn color="udxprimary" @click="closeUserDetailsDialog()" class="ma-5 elevation-0">
+            <v-btn color="csmprimary" @click="closeUserDetailsDialog()" class="ma-5 elevation-0">
               <span class="white--text">OK</span>
             </v-btn>
           </v-card-actions>
@@ -118,14 +116,14 @@
 
           <v-card-actions>
             <v-btn
-              color="udxprimary"
+              color="csmprimary"
               @click="closeConfirmDeleteDialog('yes')"
               class="ma-5 elevation-0"
             >
               <span class="white--text">Yes</span>
             </v-btn>
             <v-btn
-              color="udxprimary"
+              color="csmprimary"
               outlined
               @click="closeConfirmDeleteDialog('no')"
               class="ma-5 elevation-0"
@@ -150,7 +148,7 @@
             <th
               v-for="header in usersTableHeaderList"
               :key="header.text"
-              class="tableheader text-capitalize font-weight-medium text--black"
+              class="tableheader font-weight-medium text--black"
             >
               <span class="headerText">{{ header.text }}</span>
             </th>
@@ -275,7 +273,7 @@ export default class EosIAMUserManagement extends Vue {
           "one lowercase letter, one number and one special character"
       ),
       new FormControl(
-        "Confirm Password",
+        "Confirm password",
         "confirm_password",
         "password",
         "",
@@ -393,7 +391,7 @@ tr {
 }
 #clear {
   font-size: 14px;
-  color: green;
+  color: var(--v-csmprimary-base);
   float: right;
 }
 #title {
@@ -407,7 +405,7 @@ tr {
 }
 .active {
   display: inline-block;
-  color: green !important;
+  color: var(--v-csmprimary-base) !important;
 }
 .notActive {
   opacity: 0;
@@ -437,7 +435,7 @@ tr {
   border: 2px solid #e3e3e3;
 }
 tbody tr {
-  background-color: #ebf1e9 !important ;
+  background-color: #ffffff !important ;
 }
 tbody tr:hover {
   border-top: 2px solid darkgray !important;

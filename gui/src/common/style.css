@@ -1,6 +1,24 @@
+
+#app {
+  font-family:'Helvetica';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .v-btn{
   text-transform: none;
 }
 .v-btn::first-letter {
   text-transform: uppercase !important;
+}
+
+@font-face {
+  font-family: "myHelvetica";
+  src: url('../assets/fonts/HelveticaNeue.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "myHelvetica";
+  src: url('../assets/fonts/HelveticaNeueBd.ttf') format('truetype');
+  font-weight: bold;
 }

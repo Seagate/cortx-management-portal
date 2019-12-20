@@ -20,6 +20,11 @@
     "no-consecutive-blank-lines": false,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
+    "variable-name": {
+      "options": [
+        "allow-snake-case"
+      ]
+    },
     "quotemark": [
       true,
       "double"
@@ -28,6 +33,10 @@
       true,
       "array"
     ],
-    "arrow-parens": false
+    "arrow-parens": false,
+    "max-classes-per-file": [
+      false,
+      1
+    ]
   }
 }

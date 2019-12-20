@@ -164,7 +164,7 @@ export default class EosLogin extends Vue {
 }
 .btn-primary-dark:disabled {
   opacity: 0.5;
-  border: 1px solid #9e9e9e;
-  color: #9e9e9e;
+  border: 1px solid var(--v-csmborder-base);
+  color: var(--v-csmborder-base);
 }
 </style>

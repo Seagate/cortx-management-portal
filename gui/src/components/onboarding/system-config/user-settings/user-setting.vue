@@ -49,10 +49,10 @@
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="udxprimary" id="btnUsrSettingContinue">
-        <span class="white--text" @click="gotToNextPage()">Continue</span>
+      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnUsrSettingContinue">
+        <span class="white--text">Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblUsrSettingBack"
+      <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblUsrSettingBack"
         >Back to previous step</span
       >
     </div>

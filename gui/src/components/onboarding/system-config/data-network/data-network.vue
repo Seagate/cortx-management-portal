@@ -59,14 +59,15 @@
       <v-divider class="mt-8" />
       <div class="mt-8">
         <v-btn
+          @click="gotToNextPage()"
           elevation="0"
           :disabled="!(isSkip || isipV6Status || isipV4Status)"
-          color="udxprimary"
+          color="csmprimary"
           id="btnDNSContinue"
         >
-          <span class="white--text" @click="gotToNextPage()">Continue</span>
+          <span class="white--text">Continue</span>
         </v-btn>
-        <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblDNSBack">Back to previous step</span>
+        <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblDNSBack">Back to previous step</span>
       </div>
     </div>
   </v-container>
