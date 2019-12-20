@@ -92,7 +92,6 @@ export default class EosDataNetworkIpv4 extends Vue {
       is_dhcp: false,
       nodes: this.$data.ipv4Nodes
     };
-    console.log("TCL: EosDataNetworkIpv4 -> updateDataNetworkconfig -> queryParams", queryParams);
 
     this.$store.dispatch("systemConfig/updateDataNetworkSettingIpv4", queryParams);
   }

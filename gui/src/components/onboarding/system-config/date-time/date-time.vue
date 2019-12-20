@@ -120,7 +120,6 @@ export default class EosDateTime extends Vue {
         clock: this.$data.clock
       }
     };
-    console.log("TCL: EosDateTime -> setNetworkTimeProtoCall -> queryParams", queryParams);
     this.$store.dispatch("systemConfig/updateNTPSetting", queryParams);
   }
   public gotToPrevPage() {

@@ -126,7 +126,6 @@ export default class EosDnsSetting extends Vue {
       hostname: this.$data.hostname,
       nodes: this.$data.dnsNodes
     };
-    console.log("TCL: EosDnsSetting -> updateDNSconfig -> queryParams", queryParams);
     this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
   }
   public gotToPrevPage() {
