@@ -1,17 +1,7 @@
 <template>
   <v-container class="mt-6 body-2">
-    <!--<v-img
-      id="alert-img"
-      :src="require('./../../../../assets/onboarding-wizard.png')"
-      width="780px"
-      height="70px"
-    ></v-img>
-    <v-divider />-->
     <div>
-      <div class="title mt-6" id="lblLocalSetting">
-        User Settings: Local
-        <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
-      </div>
+      <div class="title mt-6" id="lblLocalSetting">User settings: Local</div>
     </div>
     <div class="mt-5">
       <span
@@ -23,7 +13,7 @@
       <div v-if="isUserCreate">
         <v-row>
           <v-col class="pl-5">
-            <div class="font-weight-medium pt-3" id="lblLocalUsrName">User Name</div>
+            <div class="font-weight-medium pt-3" id="lblLocalUsrName">Username</div>
             <input
               class="input-text"
               type="text"
@@ -128,14 +118,14 @@
       </div>
       <v-btn
         v-if="!isUserCreate"
-        color="udxprimary"
+        color="csmprimary"
         class="ma-5 elevation-0 white--text"
         @click="addUser()"
         id="btnLocalAddNewUser"
       >Add new user</v-btn>
       <v-btn
         v-if="isUserCreate"
-        color="udxprimary"
+        color="csmprimary"
         class="ma-5 elevation-0 white--text"
         @click="createUser()"
         id="btnLocalCreateUser"
@@ -144,7 +134,7 @@
       <v-btn
         text
         small
-        color="udxprimary"
+        color="csmprimary"
         v-if="isUserCreate"
         @click="addUser()"
         id="lblLocalCancel"
@@ -153,6 +143,7 @@
         calculate-widths
         :items="alertData"
         :single-expand="singleExpand"
+        :expanded.sync="expanded"
         item-key="id"
         show-expand
         class="eos-table"
@@ -164,7 +155,7 @@
             <th
               v-for="header in alertHeader"
               :key="header.text"
-              class="tableheader text-capitalize font-weight-medium text--black"
+              class="tableheader font-weight-medium text--black"
               @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
             >
               <span
@@ -198,15 +189,22 @@
               <span
                 v-for="(interfacevalue,k) in props.item.interfaces"
                 :key="interfacevalue"
-              >{{k==0?"":", "}}{{interfacevalue}}</span>
+              >{{k==0?"":", "}}{{interfacevalue | capitalize}}</span>
             </td>
             <td>
-              <span v-for="(role, i) in props.item.roles" :key="role">{{i==0?"":", "}}{{role}}</span>
+              <span
+                v-for="(role, i) in props.item.roles"
+                :key="role"
+              >{{i==0?"":", "}}{{role | capitalize}}</span>
             </td>
             <td>
-              <img @click="onExpand(props)" src="./../../../../assets/edit-off.png" />
+              <img class="mb-2" @click="onExpand(props)" src="./../../../../assets/edit-off.png" />
               <v-divider class="mx-4" light vertical inset></v-divider>
-              <img @click="onDelete(props.item.id)" src="./../../../../assets/delete-off.png" />
+              <img
+                class="mb-2"
+                @click="onDelete(props.item.id)"
+                src="./../../../../assets/delete-off.png"
+              />
             </td>
           </tr>
         </template>
@@ -299,7 +297,7 @@
                 </v-row>
               </div>
               <v-btn
-                color="udxprimary"
+                color="csmprimary"
                 class="ma-5 elevation-0 white--text"
                 @click="editUser(selectedItem)"
                 id="lblLocalApplyInterface"
@@ -307,8 +305,8 @@
               <v-btn
                 text
                 small
-                color="udxprimary"
-                @click="closeEditUser()"
+                color="csmprimary"
+                @click="closeEditUser(props)"
                 id="lblLocalCanacelInterface"
               >Cancel</v-btn>
             </td>
@@ -316,16 +314,6 @@
         </template>
       </v-data-table>
     </v-card>
-    <!--<div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnLocalAppyInterface">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
-      </v-btn>
-      <span
-        class="green--text ml-8 pointer"
-        @click="gotToPrevPage()"
-        id="lblLocalBackInterface"
-      >Back to previous step</span>
-    </div>-->
   </v-container>
 </template>
 <script lang="ts">
@@ -390,6 +378,10 @@ export default class EosUserSettingLocal extends Vue {
       });
   }
 
+  private closeEditUser() {
+    // props.expand(false);
+    this.$data.expanded = [];
+  }
   private onExpand(props: any) {
     if (props.isExpanded === false) {
       props.expand(props.item);
@@ -440,7 +432,7 @@ export default class EosUserSettingLocal extends Vue {
       isUserCreate: false,
       isUserEdit: false,
       page: 1, // Page counter, in sync with data table
-      singleExpand: false, // Expande single row property
+      singleExpand: true, // Expande single row property
       itemsPerPage: 5, // Total rows per page, in sync with data table
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
@@ -459,6 +451,7 @@ export default class EosUserSettingLocal extends Vue {
       checkedRoles: [],
       checkedInterfaces: [],
       selectedItem: {},
+      expanded: [],
       alertHeader: [
         {
           text: "Username",
@@ -499,7 +492,7 @@ export default class EosUserSettingLocal extends Vue {
 }
 #clear {
   font-size: 14px;
-  color: green;
+  color: var(--v-csmprimary-base);
   float: right;
 }
 #title {
@@ -513,7 +506,7 @@ export default class EosUserSettingLocal extends Vue {
 }
 .active {
   display: inline-block;
-  color: green !important;
+  color: var(--v-csmprimary-base) !important;
 }
 .notActive {
   opacity: 0;
@@ -543,7 +536,7 @@ export default class EosUserSettingLocal extends Vue {
   border: 2px solid #e3e3e3;
 }
 tbody tr {
-  background-color: #ebf1e9 !important ;
+  background-color: #ffffff !important ;
 }
 tbody tr:hover {
   border-top: 2px solid darkgray !important;

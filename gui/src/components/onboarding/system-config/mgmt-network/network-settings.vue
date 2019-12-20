@@ -48,10 +48,10 @@
       </div>
       <v-divider class="mt-8" />
       <div class="mt-8">
-        <v-btn @click="gotoNextPage()" elevation="0" color="udxprimary" id="btnNSContinue">
+        <v-btn @click="gotoNextPage()" elevation="0" color="csmprimary" id="btnNSContinue">
           <span class="white--text">Continue</span>
         </v-btn>
-        <span class="green--text ml-8 pointer" id="lblNSBack">Back to previous step</span>
+        <span class="csmprimary--text ml-8 pointer" id="lblNSBack">Back to previous step</span>
       </div>
     </div>
   </v-container>

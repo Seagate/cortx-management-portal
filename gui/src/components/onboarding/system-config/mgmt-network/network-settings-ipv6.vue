@@ -15,7 +15,6 @@
           <v-divider class="mt-2" />
           <div class="font-weight-bold mt-6">
             Source
-            <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
           </div>
           <div class="mt-4">
             <input type="radio" name="source" value="manual" id="rbtnIp6Source" />
@@ -50,17 +49,17 @@
             </div>
           </div>
           <div
-            :class="[$data.staticIpList.length < 4 ? 'green--text' : 'grey--text lighten-1', 'pointer', 'mt-8']"
+            :class="[$data.staticIpList.length < 4 ? 'csmprimary--text' : 'grey--text lighten-1', 'pointer', 'mt-8']"
             @click="addIpAddress(newAddress)"
           >
             + Add another static address (maximum of 4)
           </div>
           <v-divider class="mt-8" />
           <div class="mt-10">
-            <v-btn elevation="0" color="udxprimary" @click="gotoNextPage()" id="btnIp6Apply">
+            <v-btn elevation="0" color="csmprimary" @click="gotoNextPage()" id="btnIp6Apply">
               <span class="white--text">Apply and continue</span>
             </v-btn>
-            <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblIp6Back">Back to previous step</span>
+            <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblIp6Back">Back to previous step</span>
           </div>
         </div>
       </v-col>

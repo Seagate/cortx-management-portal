@@ -15,11 +15,11 @@
 <template>
   <v-app-bar height="70em" flat class="black pa-0 ma-0" clipped-left app>
     <span class="ml-1 mr-5">
-      <v-img :src="require('@/assets/udx-logo.png/')" width="100"></v-img>
+      <v-img :src="require('@/assets/udx-logo.svg/')" width="100"></v-img>
     </span>
     <div class="verticalLine mx-0"></div>
     <span class="ml-4">
-      <v-img :src="require('@/assets/cloudstore.png/')"></v-img>
+      <v-img :src="require('@/assets/cloudstore.svg/')"></v-img>
     </span>
 
     <v-spacer></v-spacer>
@@ -57,7 +57,7 @@
               <img
                 class="mr-2"
                 v-if="item.severity===alertStatus.error"
-                src="./../../assets/status//warning.png"
+                src="./../../assets/status/warning.png"
               />
               <img
                 class="mr-2"
@@ -76,7 +76,7 @@
             </v-list-item>
           </v-list>
           <v-card-text>
-            <div @click="$router.push('alertlarge')" class="green--text pointer">See all alerts</div>
+            <div @click="$router.push('alertlarge')" class="csmprimary--text pointer">See all alerts</div>
           </v-card-text>
         </v-card>
       </v-menu>
@@ -186,7 +186,7 @@ export default class HeaderBar extends Vue {
 }
 .verticalLine {
   display: inline-block;
-  background-color: #454545;
+  background-color: var(--v-csmtooltip-base);
   height: 2.75em;
   width: 0.125em;
   margin: 1em;

@@ -338,7 +338,7 @@ export default class EosStatsMedium extends Vue {
 }
 .active {
   display: inline-block;
-  color: green !important;
+  color: var(--v-csmprimary-base) !important;
 }
 .notActive {
   opacity: 0;
@@ -355,7 +355,7 @@ export default class EosStatsMedium extends Vue {
   border: 2px solid #e3e3e3;
 }
 tbody tr {
-  background-color: #ebf1e9 !important ;
+  background-color: #ffffff !important ;
 }
 tbody tr:hover {
   border-top: 2px solid darkgray !important;

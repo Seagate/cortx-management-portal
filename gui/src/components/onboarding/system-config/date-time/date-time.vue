@@ -8,10 +8,7 @@
     ></v-img>
     <v-divider />
     <div>
-      <div class="title mt-6" id="lblDTSetDateTime">
-        Set Date and Time
-        <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
-      </div>
+      <div class="title mt-6" id="lblDTSetDateTime">Set Date and Time</div>
     </div>
     <div class="mt-4">
       <input type="radio" name="ntp" v-model="source" value="ntp" id="rbtnDTNtp" />
@@ -75,16 +72,16 @@
         </v-col>
       </v-row>
       <div class="mt-2">Daylight saving time adjustment is not supported.</div>
-      <v-btn elevation="0" color="green" class="mt-5" id="btnDTSetNow">
+      <v-btn elevation="0" color="csmprimary" class="mt-5" id="btnDTSetNow">
         <span class="white--text" @click="setTimeZone()">Set Current Date and Time</span>
       </v-btn>
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="udxprimary" id="btnDTApplyContinue">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
+      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnDTApplyContinue">
+        <span class="white--text">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblDTBack">Back to previous step</span>
+      <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblDTBack">Back to previous step</span>
     </div>
   </v-container>
 </template>

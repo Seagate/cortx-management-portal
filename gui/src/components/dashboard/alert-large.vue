@@ -15,7 +15,7 @@
 <template>
   <div class="pa-0 col-12">
     <div
-      class="green--text font-weight-medium text-uppercase backoverview pa-0 ma-0"
+      class="csmprimary--text font-weight-medium text-uppercase backoverview pa-0 ma-0"
       @click="$router.push('/dashboard')"
     >
       <v-img height="20" width="20" src="./../../assets/move-back.png" class="backoverviewimg" />
@@ -51,7 +51,7 @@
             <th
               v-for="header in alertHeader"
               :key="header.text"
-              class="tableheader text-capitalize font-weight-medium text--black"
+              class="tableheader font-weight-medium text--black"
               @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
             >
               <span
@@ -128,7 +128,7 @@
             </td>
             <td style="width: 19em;">{{props.item.description}}</td>
             <td>
-              <v-tooltip max-width="18em">
+              <v-tooltip top max-width="18em">
                 <template v-slot:activator="{ on }">
                   <v-img
                     height="20"
@@ -170,7 +170,7 @@
                     <div class="mx-4">{{props.item.health_recommendation}}</div>
                     <v-btn
                       class="ma-4"
-                      color="udxprimary"
+                      color="csmprimary"
                       id="btnAlertShow"
                       :disabled="props.item.resolved && props.item.acknowledged"
                     >
@@ -250,7 +250,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
     // Set Alert table default header options
     const headers = [
       {
-        text: "Active Time",
+        text: "Active time",
         value: "created_time",
         sortable: true,
         sortDir: "desc"
@@ -312,7 +312,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
 }
 #clear {
   font-size: 14px;
-  color: green;
+  color: var(--v-csmprimary-base);
   float: right;
 }
 #title {
@@ -327,7 +327,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
 }
 .active {
   display: inline-block;
-  color: green !important;
+  color: var(--v-csmprimary-base) !important;
 }
 .notActive {
   opacity: 0;
@@ -357,7 +357,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
   border: 2px solid #e3e3e3;
 }
 tbody tr {
-  background-color: #ebf1e9 !important ;
+  background-color: #ffffff !important ;
 }
 tbody tr:hover {
   border-top: 2px solid darkgray !important;

@@ -11,10 +11,7 @@
       <div class="title mt-6" id="lblIpv4Dns">Data Network Settings: IPv4</div>
       <div class="mt-2" id="lblIpv4Msg">You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
-      <div class="font-weight-bold mt-6">
-        Source
-        <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
-      </div>
+      <div class="font-weight-bold mt-6">Source</div>
       <div class="mt-4">
         <input type="radio" name="source" v-model="source" value="manual" id="rbtnIpv4Source" />
         <span class="ml-2 font-weight-bold" id="lblIpv4Manual">Manual</span>
@@ -67,10 +64,12 @@
       </template>
     </div>
     <div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnIpv4ApplyContinue">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
+      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnIpv4ApplyContinue">
+        <span class="white--text">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv4Prevoius">Back to previous step</span>
+      <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv4Prevoius"
+        >Back to previous step</span
+      >
     </div>
   </v-container>
 </template>

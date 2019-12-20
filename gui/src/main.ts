@@ -25,6 +25,12 @@ Vue.filter("timeago", (date: string) => {
   return moment.default(date).fromNow();
 });
 
+Vue.filter("capitalize", (value: any) => {
+  if (!value) { return ""; }
+  value = value.toString();
+  return value.charAt(0).toUpperCase() + value.slice(1);
+});
+
 new Vue({
   router,
   store,

@@ -103,7 +103,7 @@ input:focus {
 }
 .input-text {
   background: #ffffff;
-  border: 1px solid #9e9e9e;
+  border: 1px solid var(--v-csmborder-base);
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

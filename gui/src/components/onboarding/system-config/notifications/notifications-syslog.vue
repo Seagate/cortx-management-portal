@@ -8,14 +8,17 @@
     ></v-img>
     <v-divider />
     <div class="body-2">
-      <div class="title mt-6" id="lblSysNotification">
-        Notifications: Syslog
-        <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
-      </div>
+      <div class="title mt-6" id="lblSysNotification">Notifications: Syslog</div>
       <div class="mt-5">
         <span class="font-weight-medium" id="iblSysIpAddress">SYSLOG Server IP Address</span>
         <div>
-          <input class="input-text" type="text" name="syslogipaddr" v-model="syslogipaddr" id="txtSyslogipadd" />
+          <input
+            class="input-text"
+            type="text"
+            name="syslogipaddr"
+            v-model="syslogipaddr"
+            id="txtSyslogipadd"
+          />
         </div>
       </div>
       <div class="mt-5">
@@ -32,7 +35,13 @@
       </div>
       <v-divider class="my-5" />
       <div>
-        <input type="checkbox" @change="syslognotify" v-model="syslognotify" name="syslognotify" id="chkSysLogNotify" />
+        <input
+          type="checkbox"
+          @change="syslognotify"
+          v-model="syslognotify"
+          name="syslognotify"
+          id="chkSysLogNotify"
+        />
         <span class="ml-3 font-weight-bold" id="lblSyssendLog">Send test SYSLOG notification</span>
       </div>
       <div class="my-5 font-weight-regular">
@@ -43,10 +52,14 @@
     </div>
 
     <div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnSysApply">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
+      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnSysApply">
+        <span class="white--text">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblSysBack">Back to previous step</span>
+      <span
+        class="csmprimary--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblSysBack"
+      >Back to previous step</span>
     </div>
   </v-container>
 </template>

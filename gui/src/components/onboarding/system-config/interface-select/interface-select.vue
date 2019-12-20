@@ -8,7 +8,7 @@
     ></v-img>
     <v-divider />
     <div>
-      <div class="title mt-6 green--text" id="lblInterface">Interface Selection</div>
+      <div class="title mt-6 csmprimary--text" id="lblInterface">Interface Selection</div>
     </div>
     <div class="mt-4">
       <div class="font-weight-regular black--text" id="lblInterfaceMsg">
@@ -21,7 +21,7 @@
       <v-divider class="mt-5" />
       <div class="mt-5">
         <input type="checkbox" @change="s3" v-model="s3" name="s3" id="chkInterfaceS3" />
-        <span class="ml-3 font-weight-medium green--text" id="lblInterfaceChooseStorage"
+        <span class="ml-3 font-weight-medium csmprimary--text" id="lblInterfaceChooseStorage"
           >Object-Based Storage (S3)</span
         >
         <div class="mt-5 font-weight-regular black--text" id="lblInterfaceConfig">
@@ -30,16 +30,18 @@
       </div>
       <div class="mt-5">
         <input type="checkbox" @change="nfs" v-model="nfs" name="nfs" id="txtInterfaceNfs" />
-        <span class="ml-3 font-weight-medium green--text" id="lblInterfaceNFS">Network File System (NFS)</span>
+        <span class="ml-3 font-weight-medium csmprimary--text" id="lblInterfaceNFS">Network File System (NFS)</span>
         <div class="mt-5 font-weight-regular black--text">Start configuration for Network File System (NFS).</div>
       </div>
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="udxprimary" id="btnInterfaceContinue">
-        <span class="white--text" @click="gotToNextPage()">Continue</span>
+      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnInterfaceContinue">
+        <span class="white--text">Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblInterfaceBack">Back to previous step</span>
+      <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblInterfaceBack"
+        >Back to previous step</span
+      >
     </div>
   </v-container>
 </template>

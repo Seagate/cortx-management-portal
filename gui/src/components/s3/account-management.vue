@@ -30,17 +30,18 @@
           <v-col>
             <v-btn
               v-if="showCreateAccountForm"
-              color="udxprimary"
+              color="csmprimary"
               class="mx-2"
               @click="createAccount()"
               :disabled="!createAccountForm.isValid"
             >
-              <span class="white--text">Create Account</span>
+              <span class="white--text">Create account</span>
             </v-btn>
             <v-btn
               v-if="showCreateAccountForm"
-              outlined
-              color="success"
+              text
+              small
+              color="csmprimary"
               class="ml-5"
               @click="closeCreateAccountForm()"
             >Cancel</v-btn>
@@ -50,7 +51,7 @@
 
       <v-btn
         v-if="!showCreateAccountForm"
-        color="udxprimary"
+        color="csmprimary"
         class="mt-2 mb-4 elevation-0 white--text"
         @click="openCreateAccountForm()"
       >Create</v-btn>
@@ -71,9 +72,6 @@
               <span>Save this information, you will not see it again.</span>
             </v-col>
             <v-spacer></v-spacer>
-            <!--v-col cols="2" class="green--text">
-              <span>export csv</span>
-            </v-col-->
           </v-row>
 
           <table class="mx-7 mb-7">
@@ -91,7 +89,7 @@
 
           <v-card-actions>
             <v-btn
-              color="udxprimary"
+              color="csmprimary"
               @click="closeAccountDetailsDialog()"
               class="ma-5 elevation-0 white--text"
             >OK</v-btn>
@@ -118,14 +116,14 @@
 
           <v-card-actions>
             <v-btn
-              color="udxprimary"
+              color="csmprimary"
               @click="closeConfirmDeleteDialog('yes')"
               class="ma-5 elevation-0"
             >
               <span class="white--text">Yes</span>
             </v-btn>
             <v-btn
-              color="udxprimary"
+              color="csmprimary"
               outlined
               @click="closeConfirmDeleteDialog('no')"
               class="ma-5 elevation-0"
@@ -150,7 +148,7 @@
             <th
               v-for="header in accountsTableHeaderList"
               :key="header.text"
-              class="tableheader text-capitalize font-weight-medium text--black"
+              class="tableheader font-weight-medium text--black"
             >
               <span class="headerText">{{ header.text }}</span>
             </th>
@@ -211,7 +209,7 @@ export default class EosAccountManagement extends Vue {
     this.showConfirmDeleteDialog = false;
     this.accountsTableHeaderList = [
       {
-        text: "Account Name",
+        text: "Account name",
         value: "account_name",
         sortable: false
       },
@@ -226,7 +224,7 @@ export default class EosAccountManagement extends Vue {
 
     const controls: FormControl[] = [
       new FormControl(
-        "Account Name",
+        "Account name",
         "account_name",
         "text",
         "",
@@ -264,7 +262,7 @@ export default class EosAccountManagement extends Vue {
           "one number and one special character"
       ),
       new FormControl(
-        "Confirm Password",
+        "Confirm password",
         "confirm_password",
         "password",
         "",
@@ -380,7 +378,7 @@ tr {
 }
 #clear {
   font-size: 14px;
-  color: green;
+  color: var(--v-csmprimary-base);
   float: right;
 }
 #title {
@@ -394,7 +392,7 @@ tr {
 }
 .active {
   display: inline-block;
-  color: green !important;
+  color: var(--v-csmprimary-base) !important;
 }
 .notActive {
   opacity: 0;
@@ -424,7 +422,7 @@ tr {
   border: 2px solid #e3e3e3;
 }
 tbody tr {
-  background-color: #ebf1e9 !important ;
+  background-color: #ffffff !important ;
 }
 tbody tr:hover {
   border-top: 2px solid darkgray !important;

@@ -8,10 +8,7 @@
     ></v-img>
     <v-divider />
     <div class="body-2">
-      <div class="title mt-6" id="lblEmail">
-        Notifications: Email
-        <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
-      </div>
+      <div class="title mt-6" id="lblEmail">Notifications: Email</div>
       <div class="mt-5">
         <span class="font-weight-medium" id="lblEmailSMTP">SMTP Server</span>
         <div>
@@ -62,7 +59,7 @@
         </div>
       </div>
       <div class="mt-5">
-        <span class="font-weight-medium" id="lblEmailConfirmPass">Confirm Password</span>
+        <span class="font-weight-medium" id="lblEmailConfirmPass">Confirm password</span>
         <div>
           <input
             class="input-text"
@@ -78,7 +75,7 @@
         <div>
           <input class="input-text" type="text" name="emailaddress" v-model="emailaddress" id="txtEmailAddress" />
         </div>
-        <div class="green--text pt-2 pointer" id="lblEmailAnotherEmail">Add another email address</div>
+        <div class="csmprimary--text pt-2 pointer" id="lblEmailAnotherEmail">Add another email address</div>
       </div>
       <div class="my-5">
         <input
@@ -105,10 +102,12 @@
     </div>
 
     <div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnEmailApply">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
+      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnEmailApply">
+        <span class="white--text">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblEmailBack">Back to previous step</span>
+      <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblEmailBack"
+        >Back to previous step</span
+      >
     </div>
   </v-container>
 </template>

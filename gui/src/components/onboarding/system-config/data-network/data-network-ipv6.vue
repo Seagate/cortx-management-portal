@@ -11,10 +11,7 @@
       <div class="title mt-6" id="lblIpv6DNS">Data Network Settings: IPv6</div>
       <div class="mt-2" id="lblIpv6Msg">You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
-      <div class="font-weight-bold mt-6 black--text">
-        Source
-        <v-icon class="green--text" size="20">mdi-help-circle-outline</v-icon>
-      </div>
+      <div class="font-weight-bold mt-6 black--text">Source</div>
       <div class="mt-4">
         <input type="radio" name="source" v-model="source" value="manual" id="rbtnIpv6Manual" />
         <span class="ml-2 font-weight-bold black--text" id="lblIpv6Manual">Manual</span>
@@ -66,7 +63,7 @@
             </div>
           </div>
           <div
-            :class="[node.ip_address.length < 4 ? 'green--text' : 'grey--text lighten-1', 'pointer', 'mt-8']"
+            :class="[node.ip_address.length < 4 ? 'csmprimary--text' : 'grey--text lighten-1', 'pointer', 'mt-8']"
             @click="addIpAddressNode(ipaddressNode[node.id], node.id)"
           >
             + Add another static address (maximum of 4)
@@ -75,10 +72,10 @@
       </template>
     </div>
     <div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnIpv6ApplyContinue">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
+      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnIpv6ApplyContinue">
+        <span class="white--text">Apply and Continue</span>
       </v-btn>
-      <span class="green--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv6Back">Back to previous step</span>
+      <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv6Back">Back to previous step</span>
     </div>
   </v-container>
 </template>
