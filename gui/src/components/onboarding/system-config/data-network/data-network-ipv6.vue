@@ -111,7 +111,11 @@ export default class EosDataNetworkIpv6 extends Vue {
   }
   public managementNetworkGetter() {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (systemconfig.data_network_settings && systemconfig.data_network_settings.ipv6) {
+    if (
+      systemconfig.data_network_settings &&
+      systemconfig.data_network_settings.ipv6 &&
+      systemconfig.data_network_settings.ipv6.nodes
+    ) {
       this.$data.ipv6Nodes = systemconfig.data_network_settings.ipv6.nodes;
     }
   }

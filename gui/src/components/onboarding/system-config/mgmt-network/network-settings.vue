@@ -70,7 +70,12 @@ export default class EosNetworkSettings extends Vue {
     };
   }
   public mounted() {
-    this.$store.dispatch("systemConfig/getSystemConfigAction");
+    this.$store
+      .dispatch("systemConfig/getSystemConfigAction")
+      .then(result => {
+        console.log("TCL: EosNetworkSettings -> mounted -> result", result);
+      })
+      .catch(err => {});
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
   public setMgmtNetworkSettingsType(status: any) {

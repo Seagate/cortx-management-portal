@@ -163,10 +163,10 @@ export default class EosDnsSetting extends Vue {
   }
   public managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (systemconfig.dns_network_settings) {
+    if (systemconfig.dns_network_settings && systemconfig.dns_network_settings.nodes) {
       this.$data.hostname = systemconfig.dns_network_settings.hostname;
-      this.$data.dnsServerAddress = systemconfig.dns_network_settings.node0.dns_servers;
-      this.$data.searchDomainAddress = systemconfig.dns_network_settings.node0.search_domain;
+      this.$data.dnsServerAddress = systemconfig.dns_network_settings.nodes[0].dns_servers;
+      this.$data.searchDomainAddress = systemconfig.dns_network_settings.nodes[0].search_domain;
     }
   }
   private data() {
