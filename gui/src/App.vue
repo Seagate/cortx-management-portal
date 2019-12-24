@@ -30,6 +30,7 @@
       </div>
     </div>
     <loader :show="showLoader" :message="loaderMessage" />
+    <eosMessageDialog />
   </v-app>
 </template>
 
@@ -38,13 +39,15 @@ import { Component, Vue } from "vue-property-decorator";
 import HeaderBar from "./components/header/header-bar.vue";
 import EosNavBar from "./components/navigation/nav-bar.vue";
 import Loader from "./components/widgets/loader.vue";
+import EOSMessageDialog from "./components/widgets/eos-message-dialog.vue";
 
 @Component({
   name: "App",
   components: {
     headerBar: HeaderBar,
     eosNavBar: EosNavBar,
-    loader: Loader
+    loader: Loader,
+    eosMessageDialog: EOSMessageDialog
   }
 })
 export default class App extends Vue {

@@ -19,8 +19,10 @@ import store from "./store/store";
 import vuetify from "./plugins/vuetify";
 import * as moment from "moment";
 import "@/common/style.css";
+import { errorHandler } from "./common/error-handler";
 
 Vue.config.productionTip = false;
+Vue.config.errorHandler = errorHandler;
 Vue.filter("timeago", (date: string) => {
   return moment.default(date).fromNow();
 });
