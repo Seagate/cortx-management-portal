@@ -32,5 +32,6 @@ export default {
     latency: `api/${version}/stats/latency`,
     iops: `api/${version}/stats/iops`,
     capacity: `api/${version}/capacity`,
-    sysconfig: `api/${version}/sysconfig`,
+    user_config: `api/${version}/userconfig`,
+    sysconfig: `api/${version}/sysconfig`
 };

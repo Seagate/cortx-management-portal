@@ -56,7 +56,13 @@ export default class EosInterfaceSelect extends Vue {
     // this.$router.push("notificationsemail");
   }
   public gotToPrevPage() {
-    this.$router.push("notificationssyslog");
+    if(this.$store.getters["userConfig/isSysLogSettingsStatus"] === true) {
+      this.$router.push("notificationssyslog");
+    } else if (this.$store.getters["userConfig/isEmailSettingsStatus"] === true) {
+      this.$router.push("notificationsemail");
+    } else {
+      this.$router.push("notifications");
+    }    
   }
   private data() {
     return {

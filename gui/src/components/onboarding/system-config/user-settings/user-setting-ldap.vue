@@ -14,12 +14,12 @@
       <div class="title ma-3" id="lblLDAPConfig">LDAP Configuration</div>
       <v-divider class="pa-0" />
       <div class="mt-3">
-        <v-row class="col-12 py-0">
+        <!--<v-row class="col-12 py-0">
           <v-col>
             <input type="checkbox" @change="isLdap" v-model="isLdap" name="ldap" id="chkLDAPIsldap" />
             <span class="ml-3 font-weight-medium" id="lblLDAPEnable">Enable LDAP</span>
           </v-col>
-        </v-row>
+        </v-row>-->
         <v-row class="col-12 py-0">
           <v-col class="py-0">
             <div class="font-weight-medium" id="lblLDAPUserSearch">User Search Base</div>
@@ -41,11 +41,13 @@
             <div class="font-weight-medium">Port</div>
             <input
               class="input-text"
-              type="text"
+              type="number"
               name="port"
               v-model="port"
               style="width:5em;"
               id="txtLDAPPort"
+              min=0001
+              max=65535
             />
           </v-col>
         </v-row>
@@ -64,21 +66,29 @@
             <div class="font-weight-medium">Alt Port</div>
             <input
               class="input-text"
-              type="text"
+              type="number"
               name="altport"
               v-model="altport"
               style="width:5em;"
               id="txtLDAPaltPort"
+              min=0001
+              max=65535
             />
           </v-col>
         </v-row>
       </div>
 
-      <v-btn color="csmprimary" @click="setLDAP()" class="ma-5 elevation-0" id="btnLDAPSet">Set LDAP</v-btn>
-      <v-btn text small color="csmprimary" @click="setLDAP()" id="lblLDAPCancel">Cancel</v-btn>
+      <!--<v-btn color="udxprimary" @click="setLDAP()" class="ma-5 elevation-0" id="btnLDAPSet">Set LDAP</v-btn>
+      <v-btn
+        text
+        small
+        color="udxprimary"
+        @click="setLDAP()"
+        id="lblLDAPCancel"
+      >Cancel</v-btn>-->
     </v-card>
 
-    <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
+    <!--<v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
       <div class="title ma-3" id="lblLDAPCurrentUser">Current user groups</div>
       <v-divider class="pa-0" />
       <div v-if="isUserCreate">
@@ -371,7 +381,7 @@
           </tr>
         </template>
       </v-data-table>
-    </v-card>
+    </v-card>-->
 
     <div class="mt-8">
       <v-btn
@@ -392,105 +402,147 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { Ldap } from "./../../../../models/user-config";
 
 @Component({
   name: "eos-user-setting-ldap"
 })
 export default class EosUserSettingLdap extends Vue {
+  public mounted() {
+    const ldapConfiguration = this.$store.getters["userConfig/userConfigData"];
+    console.log("TCL: EosUserSettingLdap -> mounted -> ldapConfiguration", ldapConfiguration)
+    if(ldapConfiguration && ldapConfiguration.ldap){
+      this.$data.usersearchbase = ldapConfiguration.ldap.user_search_base;
+      this.$data.server = ldapConfiguration.ldap.server;
+      this.$data.port = ldapConfiguration.ldap.port;
+      this.$data.altserver = ldapConfiguration.ldap.alt_server;
+      this.$data.altport = ldapConfiguration.ldap.alt_port;
+    }
+  }
   public gotToNextPage() {
+    this.setLDAP();
     this.$router.push("notifications");
   }
   public gotToPrevPage() {
-    this.$router.push("usersettinglocal");
-  }
-  private addIpAddressNode0(address: string) {
-    if (
-      this.$data.ipaddressNode0.length < 4 &&
-      address !== "" &&
-      address !== undefined
-    ) {
-      this.$data.ipaddressNode0.push(address);
-      this.$data.newAddressNode0 = "";
+    if (this.$store.getters["userConfig/isLocalUserStatus"] === true) {
+      this.$router.push("usersettinglocal");
+    } else {
+      this.$router.push("usersetting");
     }
   }
+
   private setLDAP() {
-    // this.$data.isUserCreate = !this.$data.isUserCreate;
-    // return this.$data.isUserCreate;
+    const queryParams: Ldap = {
+      user_search_base: this.$data.usersearchbase,
+      server: this.$data.server,
+      port: this.$data.port,
+      alt_server: this.$data.altserver,
+      alt_port: this.$data.altport
+    };
+    this.$store
+      .dispatch("userConfig/updateLdapUserConfig", queryParams)
+      .then((res: any) => {
+        console.log("TCL: EosUserSettingLdap -> setLDAP -> res", res);        
+      })
+      .catch(() => {
+        console.error("Save LDAP settings Failed");
+      });    
   }
-  private createUser() {
-    this.$data.isUserCreate = !this.$data.isUserCreate;
-    return this.$data.isUserCreate;
-  }
-  private editUser() {
-    this.$data.isUserEdit = !this.$data.isUserEdit;
-    return this.$data.isUserEdit;
-  }
-  private onExpand(props: any) {
-    if (props.isExpanded === false) {
-      props.expand(props.item);
-    } else {
-      props.expand(false);
-    }
-  }
-  private onDelete(props: any) {
-    alert("Deleting");
-    if (props.isExpanded === false) {
-      props.expand(props.item);
-    } else {
-      props.expand(false);
-    }
-  }
+
   private data() {
     return {
-      source: "manual",
-      isUserCreate: false,
-      page: 1, // Page counter, in sync with data table
-      singleExpand: false, // Expande single row property
-      itemsPerPage: 5, // Total rows per page, in sync with data table
-      isSortActive: false, // Set table column sorting flag to default inactive
-      sortColumnName: "", // Set sorting column name to none
-      alertStatus: require("./../../../../common/const-string.json"),
-      alertHeader: [
-        {
-          text: "Username",
-          value: "username",
-          sortable: false
-        },
-        {
-          text: "Interfaces",
-          value: "interfaces",
-          sortable: false
-        },
-        {
-          text: "Roles",
-          value: "roles",
-          sortable: false
-        }
-      ],
-      alertData: [
-        {
-          name: "User 1",
-          interfaces: "Web, CLI, API",
-          roles: "Manage, Monitor"
-        },
-        {
-          name: "User 2",
-          interfaces: "Web, CLI, API",
-          roles: "Manage"
-        },
-        {
-          name: "User 3",
-          interfaces: "Web, CLI",
-          roles: "Monitor"
-        },
-        {
-          name: "User 4",
-          interfaces: "CLI, API",
-          roles: "Manage, Monitor"
-        }
-      ]
+      usersearchbase: "",
+      server: "",
+      port: 80,
+      altserver: "",
+      altport: 80
     };
   }
+
+  // private addIpAddressNode0(address: string) {
+  //   if (
+  //     this.$data.ipaddressNode0.length < 4 &&
+  //     address !== "" &&
+  //     address !== undefined
+  //   ) {
+  //     this.$data.ipaddressNode0.push(address);
+  //     this.$data.newAddressNode0 = "";
+  //   }
+  // }
+  // private createUser() {
+  //   this.$data.isUserCreate = !this.$data.isUserCreate;
+  //   return this.$data.isUserCreate;
+  // }
+  // private editUser() {
+  //   this.$data.isUserEdit = !this.$data.isUserEdit;
+  //   return this.$data.isUserEdit;
+  // }
+  // private onDelete(props: any) {
+  //   alert("Deleting");
+  //   if (props.isExpanded === false) {
+  //     props.expand(props.item);
+  //   } else {
+  //     props.expand(false);
+  //   }
+  // }
+  // private onExpand(props: any) {
+  //   if (props.isExpanded === false) {
+  //     props.expand(props.item);
+  //   } else {
+  //     props.expand(false);
+  //   }
+  // }
+  // private data() {
+  //   return {
+  //     source: "manual",
+  //     isUserCreate: false,
+  //     page: 1, // Page counter, in sync with data table
+  //     singleExpand: false, // Expande single row property
+  //     itemsPerPage: 5, // Total rows per page, in sync with data table
+  //     isSortActive: false, // Set table column sorting flag to default inactive
+  //     sortColumnName: "", // Set sorting column name to none
+  //     alertStatus: require("./../../../../common/const-string.json"),
+  //     alertHeader: [
+  //       {
+  //         text: "Username",
+  //         value: "username",
+  //         sortable: false
+  //       },
+  //       {
+  //         text: "Interfaces",
+  //         value: "interfaces",
+  //         sortable: false
+  //       },
+  //       {
+  //         text: "Roles",
+  //         value: "roles",
+  //         sortable: false
+  //       }
+  //     ],
+  //     alertData: [
+  //       {
+  //         name: "User 1",
+  //         interfaces: "Web, CLI, API",
+  //         roles: "Manage, Monitor"
+  //       },
+  //       {
+  //         name: "User 2",
+  //         interfaces: "Web, CLI, API",
+  //         roles: "Manage"
+  //       },
+  //       {
+  //         name: "User 3",
+  //         interfaces: "Web, CLI",
+  //         roles: "Monitor"
+  //       },
+  //       {
+  //         name: "User 4",
+  //         interfaces: "CLI, API",
+  //         roles: "Manage, Monitor"
+  //       }
+  //     ]
+  //   };
+  // }
 }
 </script>
 <style lang="scss" scoped>

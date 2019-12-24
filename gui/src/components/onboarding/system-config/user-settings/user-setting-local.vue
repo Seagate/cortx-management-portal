@@ -314,6 +314,16 @@
         </template>
       </v-data-table>
     </v-card>
+    <div class="mt-8">
+      <v-btn elevation="0" color="udxprimary" id="btnLocalAppyInterface">
+        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
+      </v-btn>
+      <span
+        class="green--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblLocalBackInterface"
+      >Back to previous step</span>
+    </div>
   </v-container>
 </template>
 <script lang="ts">
@@ -325,7 +335,11 @@ import { UserDetails } from "./../../../../models/user-Details";
 })
 export default class EosUserSettingLocal extends Vue {
   public gotToNextPage() {
-    this.$router.push("usersettingldap");
+    if (this.$store.getters["userConfig/isLdapUserStatus"] === true) {
+      this.$router.push("usersettingldap");
+    } else {
+      this.$router.push("notifications");
+    }    
   }
   public gotToPrevPage() {
     this.$router.push("usersetting");

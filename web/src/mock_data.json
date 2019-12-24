@@ -587,5 +587,36 @@
       "timeout": "",
       "id": 43
     }
-  ]
+  ],
+  "mockuserconfig": {
+    "id": 1,
+    "email_enabled": true,
+    "syslog_enabled": true,
+    "updated_time": 78768767,
+    "created_time": 7798798,
+    "ldap": {
+      "user_search_base": "user search base updated",
+      "server": "string",
+      "port": 9001,
+      "alt_server": "string",
+      "alt_port": 9002
+    },
+    "notifications": {
+      "email": {
+        "stmp_server": "string",
+        "smtp_port": 6009,
+        "smtp_protocol": "TLS",
+        "smtp_sender_email": "aaabbbccc",
+        "smtp_sender_password": "admin",
+        "email": "abcabc.com, bcdbcd.com",
+        "weekly_email": true,
+        "send_test_mail": true
+      },
+      "syslog": {
+        "syslog_server": "string",
+        "syslog_port": "5503",
+        "send_test_syslog": true
+      }
+    }
+  }
 }

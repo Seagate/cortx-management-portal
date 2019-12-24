@@ -24,7 +24,7 @@
       </div>
       <v-divider class="mt-5" />
       <div class="mt-5">
-        <input type="checkbox" @change="email" v-model="email" name="email" id="chkNotificationEmail" />
+        <input type="checkbox" v-model="isEmailSettingsStatus" name="email" :disabled="isNotificationSettingSkipStatus" id="chkNotificationEmail"/>
         <span class="ml-3 font-weight-medium" id="lblNotificationEmail">Email</span>
         <div class="mt-5 font-weight-regular black--text" id="lblNotificationconfig">
           Selecting Email will allow you to configure both secure and non-secure email servers for event notification.
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="mt-5">
-        <input type="checkbox" @change="syslog" v-model="syslog" name="syslog" id="chkNotificationSyslog" />
+        <input type="checkbox" v-model="isSysLogSettingsStatus" name="syslog" :disabled="isNotificationSettingSkipStatus" id="chkNotificationSyslog" />
         <span class="ml-3 font-weight-medium">Syslog</span>
         <div class="mt-5 font-weight-regular black--text" id="lblNotificationSyslog">
           Selecting Syslog will allow you to setup a syslog server destination for event notification. You can control
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="mt-5">
-        <input type="checkbox" @change="skip" v-model="skip" name="skip" id="chkNofiticationSkip" />
+        <input type="checkbox" v-model="isNotificationSettingSkipStatus" name="skip" :disabled="isEmailSettingsStatus || isSysLogSettingsStatus" id="chkNofiticationSkip" />
         <span class="ml-3 font-weight-medium" id="lblNotificatonSkip">Skip this step</span>
         <div class="mt-5 font-weight-regular black--text">
           If you choose to set up notification paths later, you may skip this step for now. However, skipping this step
@@ -52,8 +52,8 @@
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnNotificationContinue">
-        <span class="white--text">Continue</span>
+      <v-btn elevation="0" color="udxprimary" id="btnNotificationContinue" :disabled="!isEmailSettingsStatus && !isSysLogSettingsStatus && !isNotificationSettingSkipStatus">
+        <span class="white--text" @click="gotToNextPage()">Continue</span>
       </v-btn>
       <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblNotificationBack"
         >Back to previous step</span
@@ -69,18 +69,62 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 })
 export default class EosNotifications extends Vue {
   public gotToNextPage() {
-    this.$router.push("notificationsemail");
+    if (this.$store.getters["userConfig/isEmailSettingsStatus"] === true) {
+      this.$router.push("notificationsemail");
+    } else if(this.$store.getters["userConfig/isSysLogSettingsStatus"] === true) {
+      this.$router.push("notificationssyslog");
+    } else {
+      this.$router.push("interfaceselect");
+    }
   }
   public gotToPrevPage() {
-    this.$router.push("usersettingldap");
+    if (this.$store.getters["userConfig/isLdapUserStatus"] === true) {
+      this.$router.push("usersettingldap");
+    } else if(this.$store.getters["userConfig/isLocalUserStatus"] === true) {
+      this.$router.push("usersettinglocal");
+    } else {
+      this.$router.push("usersetting");
+    }
   }
-  private data() {
-    return {
-      email: false,
-      syslog: false,
-      skip: false
-    };
+  public get isEmailSettingsStatus(): any {
+    return this.$store.getters["userConfig/isEmailSettingsStatus"];
   }
+  public set isEmailSettingsStatus(status: any) {
+    this.$store.commit("userConfig/setNotificationsType", {
+      type: "email",
+      flag: status
+    });
+  }
+
+  public get isSysLogSettingsStatus(): any {
+    return this.$store.getters["userConfig/isSysLogSettingsStatus"];
+  }
+
+  public set isSysLogSettingsStatus(status: any) {
+    this.$store.commit("userConfig/setNotificationsType", {
+      type: "syslog",
+      flag: status
+    });
+  }
+
+  public get isNotificationSettingSkipStatus(): any {
+    return this.$store.getters["userConfig/isNotificationSettingSkipStatus"];
+  }
+
+  public set isNotificationSettingSkipStatus(status: any) {
+    this.$store.commit("userConfig/setNotificationsType", {
+      type: "skip",
+      flag: status
+    });
+  }
+
+  // private data() {
+  //   return {
+  //     email: false,
+  //     syslog: false,
+  //     skip: false
+  //   };
+  // }
 }
 </script>
 <style lang="scss" scoped>
