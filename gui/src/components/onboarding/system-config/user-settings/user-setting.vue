@@ -22,7 +22,13 @@
       </div>
       <v-divider class="mt-5" />
       <div class="mt-5">
-        <input type="checkbox" @change="local" v-model="local" name="local" id="chkUsrSettingLocal" />
+        <input
+          type="checkbox"
+          v-model="isLocalUserStatus"
+          :disabled="isUserSettingSkipStatus"
+          name="local"
+          id="chkUsrSettingLocal"
+        />
         <span class="ml-3 font-weight-medium">Local</span>
         <div class="mt-5 font-weight-regular black--text">
           Selecting Local Users will allow you to create and manage any users that can access this system. You can
@@ -31,7 +37,13 @@
         </div>
       </div>
       <div class="mt-5">
-        <input type="checkbox" @change="ldap" v-model="ldap" name="ldap" id="chkUsrSettingLdap" />
+        <input
+          type="checkbox"
+          v-model="isLdapUserStatus"
+          name="ldap"
+          :disabled="isUserSettingSkipStatus"
+          id="chkUsrSettingLdap"
+        />
         <span class="ml-3 font-weight-medium">LDAP</span>
         <div class="mt-5 font-weight-regular black--text">
           Selecting LDAP Users will allow you to integrate this system into a network utilizing LDAP (Lightweight
@@ -40,7 +52,13 @@
         </div>
       </div>
       <div class="mt-5">
-        <input type="checkbox" @change="skip" v-model="ldap" name="skip" id="chkUsrSettingSKip" />
+        <input
+          type="checkbox"
+          v-model="isUserSettingSkipStatus"
+          :disabled="isLocalUserStatus || isLdapUserStatus"
+          name="skip"
+          id="chkUsrSettingSKip"
+        />
         <span class="ml-3 font-weight-medium">Skip this step</span>
         <div class="mt-5 font-weight-regular black--text" id="lblUsrSettingCongiLDAP">
           If you intend to configure LDAP later, you may skip to the next step.
@@ -49,8 +67,13 @@
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnUsrSettingContinue">
-        <span class="white--text">Continue</span>
+      <v-btn
+        elevation="0"
+        color="udxprimary"
+        id="btnUsrSettingContinue"
+        :disabled="!isLocalUserStatus && !isLdapUserStatus && !isUserSettingSkipStatus"
+      >
+        <span class="white--text" @click="gotToNextPage()">Continue</span>
       </v-btn>
       <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblUsrSettingBack"
         >Back to previous step</span
@@ -65,9 +88,73 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "eos-user-setting"
 })
 export default class EosUserSetting extends Vue {
-  public gotToNextPage() {
-    this.$router.push("usersettinglocal");
+  public mounted() {
+    this.$store
+      .dispatch("userConfig/getDataAction")
+      .then((res: any) => {
+        console.log("TCL: EosUserSetting -> mounted -> res", res);
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("Save LDAP settings Failed");
+      });
   }
+  public gotToNextPage() {
+    this.setUserSettings();
+    if (this.isLocalUserStatus === true) {
+      this.$router.push("usersettinglocal");
+    } else if (this.isLdapUserStatus === true) {
+      this.$router.push("usersettingldap");
+    } else if (
+      this.isLocalUserStatus === false &&
+      this.isLdapUserStatus === false
+    ) {
+      this.$router.push("notifications");
+    }
+  }
+  private setUserSettings() {
+    const queryParams = { };
+    this.$store
+      .dispatch("userConfig/createUserConfig", queryParams)
+      .then((res: any) => {
+        console.log("TCL: EosUserSetting -> setUserSettings -> res", res);                
+      })
+      .catch(() => {
+        console.error("Save user settings Failed");
+      });    
+  }
+  public get isLocalUserStatus(): any {
+    return this.$store.getters["userConfig/isLocalUserStatus"];
+  }
+  public set isLocalUserStatus(status: any) {
+    this.$store.commit("userConfig/setUser", {
+      type: "local",
+      flag: status
+    });
+  }
+
+  public get isLdapUserStatus(): any {
+    return this.$store.getters["userConfig/isLdapUserStatus"];
+  }
+
+  public set isLdapUserStatus(status: any) {
+    this.$store.commit("userConfig/setUser", {
+      type: "ldap",
+      flag: status
+    });
+  }
+
+  public get isUserSettingSkipStatus(): any {
+    return this.$store.getters["userConfig/isUserSettingSkipStatus"];
+  }
+
+  public set isUserSettingSkipStatus(status: any) {
+    this.$store.commit("userConfig/setUser", {
+      type: "skip",
+      flag: status
+    });
+  }
+
   public gotToPrevPage() {
     this.$router.push("datetime");
   }

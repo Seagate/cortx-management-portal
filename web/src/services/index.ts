@@ -7,5 +7,6 @@ import userRoutes from "./user/routes";
 import s3Routes from "./s3/routes";
 import s3BucketRoutes from "./s3/bucket/routes";
 import capacityRoutes from "./stats/capacity/routes";
+import userConfigRoutes from "./onboarding/userconfig/routes"
 
-export default [...loginRoutes, ...alertRoutes, ...systemConfigRoutes, ...statsRoutes, ...udxRoutes, ...userRoutes, ...s3Routes, ...s3BucketRoutes, ...capacityRoutes];
+export default [...loginRoutes, ...alertRoutes, ...systemConfigRoutes, ...statsRoutes, ...udxRoutes, ...userRoutes, ...s3Routes, ...s3BucketRoutes, ...capacityRoutes, ...userConfigRoutes];
