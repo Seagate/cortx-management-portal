@@ -52,7 +52,7 @@
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="udxprimary" id="btnNotificationContinue" :disabled="!isEmailSettingsStatus && !isSysLogSettingsStatus && !isNotificationSettingSkipStatus">
+      <v-btn elevation="0" color="csmprimary" id="btnNotificationContinue" :disabled="!isEmailSettingsStatus && !isSysLogSettingsStatus && !isNotificationSettingSkipStatus">
         <span class="white--text" @click="gotToNextPage()">Continue</span>
       </v-btn>
       <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblNotificationBack"
