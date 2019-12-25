@@ -52,7 +52,7 @@
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
-      <v-btn elevation="0" color="udxprimary" id="btnNotificationContinue" :disabled="!isEmailSettingsStatus && !isSysLogSettingsStatus && !isNotificationSettingSkipStatus">
+      <v-btn elevation="0" color="csmprimary" id="btnNotificationContinue" :disabled="!isEmailSettingsStatus && !isSysLogSettingsStatus && !isNotificationSettingSkipStatus">
         <span class="white--text" @click="gotToNextPage()">Continue</span>
       </v-btn>
       <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblNotificationBack"
@@ -69,50 +69,50 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 })
 export default class EosNotifications extends Vue {
   public gotToNextPage() {
-    if (this.$store.getters["userConfig/isEmailSettingsStatus"] === true) {
+    if (this.$store.getters["systemConfig/isEmailSettingsStatus"] === true) {
       this.$router.push("notificationsemail");
-    } else if(this.$store.getters["userConfig/isSysLogSettingsStatus"] === true) {
+    } else if(this.$store.getters["systemConfig/isSysLogSettingsStatus"] === true) {
       this.$router.push("notificationssyslog");
     } else {
       this.$router.push("interfaceselect");
     }
   }
   public gotToPrevPage() {
-    if (this.$store.getters["userConfig/isLdapUserStatus"] === true) {
+    if (this.$store.getters["systemConfig/isLdapUserStatus"] === true) {
       this.$router.push("usersettingldap");
-    } else if(this.$store.getters["userConfig/isLocalUserStatus"] === true) {
+    } else if(this.$store.getters["systemConfig/isLocalUserStatus"] === true) {
       this.$router.push("usersettinglocal");
     } else {
       this.$router.push("usersetting");
     }
   }
   public get isEmailSettingsStatus(): any {
-    return this.$store.getters["userConfig/isEmailSettingsStatus"];
+    return this.$store.getters["systemConfig/isEmailSettingsStatus"];
   }
   public set isEmailSettingsStatus(status: any) {
-    this.$store.commit("userConfig/setNotificationsType", {
+    this.$store.commit("systemConfig/setNotificationsType", {
       type: "email",
       flag: status
     });
   }
 
   public get isSysLogSettingsStatus(): any {
-    return this.$store.getters["userConfig/isSysLogSettingsStatus"];
+    return this.$store.getters["systemConfig/isSysLogSettingsStatus"];
   }
 
   public set isSysLogSettingsStatus(status: any) {
-    this.$store.commit("userConfig/setNotificationsType", {
+    this.$store.commit("systemConfig/setNotificationsType", {
       type: "syslog",
       flag: status
     });
   }
 
   public get isNotificationSettingSkipStatus(): any {
-    return this.$store.getters["userConfig/isNotificationSettingSkipStatus"];
+    return this.$store.getters["systemConfig/isNotificationSettingSkipStatus"];
   }
 
   public set isNotificationSettingSkipStatus(status: any) {
-    this.$store.commit("userConfig/setNotificationsType", {
+    this.$store.commit("systemConfig/setNotificationsType", {
       type: "skip",
       flag: status
     });

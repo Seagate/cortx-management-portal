@@ -51,6 +51,10 @@
             </div>
           </div>
           <div class="mt-10">
+            <p
+              v-if="!isValid"
+              class="red--text error-message"
+            >Please enter valid values.</p>
             <v-btn elevation="0" color="csmprimary" @click="gotoNextPage()" id="btnIP4Apply">
               <span class="white--text">Apply and continue</span>
             </v-btn>
@@ -85,12 +89,20 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     }
   }
   public gotoNextPage() {
-    this.updateIpv4Config();
-    if (this.$store.getters["systemConfig/isipV6Status"] === true) {
-      this.$router.push("systemconfig3");
-    } else {
-      this.$router.push("dataconfig1");
-    }
+    this.updateIpv4Config().then((res: any) => {
+      if (res) {
+          if (this.$store.getters["systemConfig/isipV6Status"] === true) {
+            this.$router.push("systemconfig3");
+          } else {
+            this.$router.push("dataconfig1");
+          }
+        } else {
+          this.$data.isValid = false;
+        }        
+    })
+    .catch(() => {
+      console.error("Save Email Notifications settings Failed");
+    });    
   }
 
   public updateIpv4Config() {
@@ -100,7 +112,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       netmask: this.$data.ipv4Netmask,
       gateway: this.$data.ipv4Gateway
     };
-    this.$store.dispatch("systemConfig/updateMngmtIpv4", queryParams);
+    return this.$store.dispatch("systemConfig/updateMngmtIpv4", queryParams);
   }
   private data() {
     return {
@@ -108,7 +120,8 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       ipv4Netmask: "",
       ipv4Gateway: "",
       source: "manual",
-      systemConfigObject: {} as SystemConfigObject
+      systemConfigObject: {} as SystemConfigObject,
+      isValid: true
     };
   }
 }

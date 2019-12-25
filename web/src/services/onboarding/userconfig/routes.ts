@@ -24,7 +24,7 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/userconfig",
+    path: "/api/v1/sysconfig",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -39,7 +39,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/userconfig",
+    path: "/api/v1/sysconfig",
     method: "post",
     handler: [
       checkRequiredParams,
@@ -54,7 +54,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/userconfig/:user_config_id",
+    path: "/api/v1/sysconfig/:user_config_id",
     method: "put",
     handler: [
       checkRequiredParams,

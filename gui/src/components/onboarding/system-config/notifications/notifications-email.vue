@@ -139,7 +139,11 @@
     </div>
 
     <div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnEmailApply" :disabled="!isValidForm">
+      <p
+        v-if="!isValid"
+        class="red--text error-message"
+      >Please enter valid values.</p>
+      <v-btn elevation="0" color="csmprimary" id="btnEmailApply" :disabled="!isValidForm">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span
@@ -152,14 +156,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Email } from "./../../../../models/user-config";
+import { Email } from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-data-network-ipv4"
 })
 export default class EosDataNetworkIpv4 extends Vue {
   public mounted(){
-    const notificationConfiguration = this.$store.getters["userConfig/userConfigData"];
+    const notificationConfiguration = this.$store.getters["systemConfig/userConfigData"];
     console.log("TCL: EosUserSettingLdap -> mounted -> notificationConfiguration", notificationConfiguration)
     if(notificationConfiguration && notificationConfiguration.notifications && notificationConfiguration.notifications.email){
       this.$data.smtpserver = notificationConfiguration.notifications.email.stmp_server;
@@ -173,12 +177,21 @@ export default class EosDataNetworkIpv4 extends Vue {
   }
   private gotToNextPage() {
     if(this.isValidForm){
-      this.setEmailNotificationSettings();
-      if(this.$store.getters["userConfig/isSysLogSettingsStatus"] === true) {
-        this.$router.push("notificationssyslog");
-      } else {
-        this.$router.push("interfaceselect");
-      }
+      this.setEmailNotificationSettings().then((res: any) => {
+        if (res) {
+            if(this.$store.getters["systemConfig/isSysLogSettingsStatus"] === true) {
+              this.$router.push("notificationssyslog");
+            } else {
+              this.$router.push("interfaceselect");
+            }
+          } else {
+            this.$data.isValid = false;
+          } 
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("error");
+      });      
     }    
   }
   private gotToPrevPage() {
@@ -195,14 +208,8 @@ export default class EosDataNetworkIpv4 extends Vue {
       weekly_email: this.$data.weeklyEmail,
       send_test_mail: this.$data.testEmail
     };
-    this.$store
-      .dispatch("userConfig/updateEmailNotificationUserConfig", queryParams)
-      .then((res: any) => {
-        console.log("TCL: EosDataNetworkIpv4 -> setEmailNotificationSettings -> res", res)        
-      })
-      .catch(() => {
-        console.error("Save Email Notifications settings Failed");
-      });    
+    return this.$store
+      .dispatch("systemConfig/updateEmailNotificationUserConfig", queryParams);
   }
   private data() {
     return {
@@ -214,7 +221,8 @@ export default class EosDataNetworkIpv4 extends Vue {
       confirmpassword: "",
       emailaddress: "",
       weeklyEmail: false,
-      testEmail: false
+      testEmail: false,
+      isValid: true
     };
   }
   get isConfirmPasswordValid() {

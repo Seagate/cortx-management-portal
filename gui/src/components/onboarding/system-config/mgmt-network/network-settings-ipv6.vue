@@ -56,6 +56,10 @@
           </div>
           <v-divider class="mt-8" />
           <div class="mt-10">
+            <p
+              v-if="!isValid"
+              class="red--text error-message"
+            >Please enter valid values.</p>
             <v-btn elevation="0" color="csmprimary" @click="gotoNextPage()" id="btnIp6Apply">
               <span class="white--text">Apply and continue</span>
             </v-btn>
@@ -75,8 +79,16 @@ import { SystemConfigObject, Ipv6 } from "./../../../../models/system-configurat
 })
 export default class EosNetworkSettingsIpv4 extends Vue {
   public gotoNextPage() {
-    this.updateIpv6Config();
-    this.$router.push("dataconfig1");
+    this.updateIpv6Config().then((res: any) => {
+      if (res) {
+          this.$router.push("dataconfig1");
+        } else {
+          this.$data.isValid = false;
+        }        
+    })
+    .catch(() => {
+      console.error("Save Email Notifications settings Failed");
+    });    
   }
   public mounted() {
     this.managementNetworkGetter();
@@ -98,14 +110,15 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       type: ""
     };
 
-    this.$store.dispatch("systemConfig/updateMngmtIpv6", queryParams);
+    return this.$store.dispatch("systemConfig/updateMngmtIpv6", queryParams);
   }
   private data() {
     return {
       source: "manual",
       staticIpList: [],
       newAddress: "",
-      ipv6Gateway: ""
+      ipv6Gateway: "",
+      isValid: true
     };
   }
   private addIpAddress(address: string) {

@@ -315,7 +315,7 @@
       </v-data-table>
     </v-card>
     <div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnLocalAppyInterface">
+      <v-btn elevation="0" color="csmprimary" id="btnLocalAppyInterface">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span
@@ -335,7 +335,7 @@ import { UserDetails } from "./../../../../models/user-Details";
 })
 export default class EosUserSettingLocal extends Vue {
   public gotToNextPage() {
-    if (this.$store.getters["userConfig/isLdapUserStatus"] === true) {
+    if (this.$store.getters["systemConfig/isLdapUserStatus"] === true) {
       this.$router.push("usersettingldap");
     } else {
       this.$router.push("notifications");

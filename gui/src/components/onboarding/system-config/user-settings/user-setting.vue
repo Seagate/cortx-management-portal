@@ -69,7 +69,7 @@
     <div class="mt-3">
       <v-btn
         elevation="0"
-        color="udxprimary"
+        color="csmprimary"
         id="btnUsrSettingContinue"
         :disabled="!isLocalUserStatus && !isLdapUserStatus && !isUserSettingSkipStatus"
       >
@@ -90,7 +90,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class EosUserSetting extends Vue {
   public mounted() {
     this.$store
-      .dispatch("userConfig/getDataAction")
+      .dispatch("systemConfig/getDataAction")
       .then((res: any) => {
         console.log("TCL: EosUserSetting -> mounted -> res", res);
       })
@@ -100,7 +100,7 @@ export default class EosUserSetting extends Vue {
       });
   }
   public gotToNextPage() {
-    this.setUserSettings();
+    //this.setUserSettings();
     if (this.isLocalUserStatus === true) {
       this.$router.push("usersettinglocal");
     } else if (this.isLdapUserStatus === true) {
@@ -115,7 +115,7 @@ export default class EosUserSetting extends Vue {
   private setUserSettings() {
     const queryParams = { };
     this.$store
-      .dispatch("userConfig/createUserConfig", queryParams)
+      .dispatch("systemConfig/createUserConfig", queryParams)
       .then((res: any) => {
         console.log("TCL: EosUserSetting -> setUserSettings -> res", res);                
       })
@@ -124,32 +124,32 @@ export default class EosUserSetting extends Vue {
       });    
   }
   public get isLocalUserStatus(): any {
-    return this.$store.getters["userConfig/isLocalUserStatus"];
+    return this.$store.getters["systemConfig/isLocalUserStatus"];
   }
   public set isLocalUserStatus(status: any) {
-    this.$store.commit("userConfig/setUser", {
+    this.$store.commit("systemConfig/setUser", {
       type: "local",
       flag: status
     });
   }
 
   public get isLdapUserStatus(): any {
-    return this.$store.getters["userConfig/isLdapUserStatus"];
+    return this.$store.getters["systemConfig/isLdapUserStatus"];
   }
 
   public set isLdapUserStatus(status: any) {
-    this.$store.commit("userConfig/setUser", {
+    this.$store.commit("systemConfig/setUser", {
       type: "ldap",
       flag: status
     });
   }
 
   public get isUserSettingSkipStatus(): any {
-    return this.$store.getters["userConfig/isUserSettingSkipStatus"];
+    return this.$store.getters["systemConfig/isUserSettingSkipStatus"];
   }
 
   public set isUserSettingSkipStatus(status: any) {
-    this.$store.commit("userConfig/setUser", {
+    this.$store.commit("systemConfig/setUser", {
       type: "skip",
       flag: status
     });

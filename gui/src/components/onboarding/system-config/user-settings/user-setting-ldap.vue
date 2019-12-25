@@ -384,6 +384,10 @@
     </v-card>-->
 
     <div class="mt-8">
+      <p
+        v-if="!isValid"
+        class="red--text error-message"
+      >Please enter valid values.</p>
       <v-btn
         elevation="0"
         color="csmprimary"
@@ -402,14 +406,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Ldap } from "./../../../../models/user-config";
+import { Ldap } from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-user-setting-ldap"
 })
 export default class EosUserSettingLdap extends Vue {
   public mounted() {
-    const ldapConfiguration = this.$store.getters["userConfig/userConfigData"];
+    const ldapConfiguration = this.$store.getters["systemConfig/userConfigData"];
     console.log("TCL: EosUserSettingLdap -> mounted -> ldapConfiguration", ldapConfiguration)
     if(ldapConfiguration && ldapConfiguration.ldap){
       this.$data.usersearchbase = ldapConfiguration.ldap.user_search_base;
@@ -420,11 +424,20 @@ export default class EosUserSettingLdap extends Vue {
     }
   }
   public gotToNextPage() {
-    this.setLDAP();
-    this.$router.push("notifications");
+    this.setLDAP().then((res: any) => {
+      if (res) {
+          this.$router.push("notifications");
+        } else {
+          this.$data.isValid = false;
+        } 
+    })
+    .catch(() => {
+      // tslint:disable-next-line: no-console
+      console.error("error");
+    });
   }
   public gotToPrevPage() {
-    if (this.$store.getters["userConfig/isLocalUserStatus"] === true) {
+    if (this.$store.getters["systemConfig/isLocalUserStatus"] === true) {
       this.$router.push("usersettinglocal");
     } else {
       this.$router.push("usersetting");
@@ -439,14 +452,8 @@ export default class EosUserSettingLdap extends Vue {
       alt_server: this.$data.altserver,
       alt_port: this.$data.altport
     };
-    this.$store
-      .dispatch("userConfig/updateLdapUserConfig", queryParams)
-      .then((res: any) => {
-        console.log("TCL: EosUserSettingLdap -> setLDAP -> res", res);        
-      })
-      .catch(() => {
-        console.error("Save LDAP settings Failed");
-      });    
+    return this.$store
+      .dispatch("systemConfig/updateLdapUserConfig", queryParams);
   }
 
   private data() {
@@ -455,7 +462,8 @@ export default class EosUserSettingLdap extends Vue {
       server: "",
       port: 80,
       altserver: "",
-      altport: 80
+      altport: 80,
+      isValid: true
     };
   }
 
