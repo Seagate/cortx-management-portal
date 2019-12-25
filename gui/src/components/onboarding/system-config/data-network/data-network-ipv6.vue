@@ -9,7 +9,10 @@
     <v-divider />
     <div class="body-2">
       <div class="title mt-6" id="lblIpv6DNS">Data Network Settings: IPv6</div>
-      <div class="mt-2" id="lblIpv6Msg">You need to configure a single IP address for management of this system.</div>
+      <div
+        class="mt-2"
+        id="lblIpv6Msg"
+      >You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
       <div class="font-weight-bold mt-6 black--text">Source</div>
       <div class="mt-4">
@@ -65,9 +68,7 @@
           <div
             :class="[node.ip_address.length < 4 ? 'csmprimary--text' : 'grey--text lighten-1', 'pointer', 'mt-8']"
             @click="addIpAddressNode(ipaddressNode[node.id], node.id)"
-          >
-            + Add another static address (maximum of 4)
-          </div>
+          >+ Add another static address (maximum of 4)</div>
         </div>
       </template>
     </div>
@@ -79,13 +80,20 @@
       <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnIpv6ApplyContinue">
         <span class="white--text">Apply and Continue</span>
       </v-btn>
-      <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv6Back">Back to previous step</span>
+      <span
+        class="csmprimary--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblIpv6Back"
+      >Back to previous step</span>
     </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { SystemConfigObject, DataNetworkIpv6 } from "./../../../../models/system-configuration";
+import {
+  SystemConfigObject,
+  DataNetworkIpv6
+} from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-data-network-ipv6"
@@ -120,22 +128,38 @@ export default class EosDataNetworkIpv6 extends Vue {
   }
   public managementNetworkGetter() {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (systemconfig.data_network_settings && systemconfig.data_network_settings.ipv6) {
+    if (
+      systemconfig.data_network_settings &&
+      systemconfig.data_network_settings.ipv6 &&
+      systemconfig.data_network_settings.ipv6.nodes
+    ) {
       this.$data.ipv6Nodes = systemconfig.data_network_settings.ipv6.nodes;
     }
   }
   private gotToPrevPage() {
-    this.$router.push("dataconfig2");
+    if (this.$store.getters["systemConfig/isDataipV4Status"] === true) {
+      this.$router.push("dataconfig2");
+    } else {
+      this.$router.push("dataconfig1");
+    }
   }
   private addIpAddressNode(address: string, id: number) {
-    if (this.$data.ipv6Nodes.length < 4 && address !== "" && address !== undefined) {
+    if (
+      this.$data.ipv6Nodes.length < 4 &&
+      address !== "" &&
+      address !== undefined
+    ) {
       this.$data.ipv6Nodes[id].ip_address.push(address);
       this.$data.ipaddressNode[id] = "";
     }
   }
 
   private deleteIpAddressNode(address: string, id: number) {
-    for (let addressIndex = 0; addressIndex < this.$data.ipv6Nodes[id].ip_address.length; addressIndex++) {
+    for (
+      let addressIndex = 0;
+      addressIndex < this.$data.ipv6Nodes[id].ip_address.length;
+      addressIndex++
+    ) {
       if (this.$data.ipv6Nodes[id].ip_address[addressIndex] === address) {
         this.$data.ipv6Nodes[id].ip_address.splice(addressIndex, 1);
       }

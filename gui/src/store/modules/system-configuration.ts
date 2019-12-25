@@ -36,6 +36,9 @@ export default class SystemConfiguration extends VuexModule {
   public isipV4: boolean = false;
   public isipV6: boolean = false;
   public isnetworkSettingsSkip: boolean = false;
+  public isDataipV4: boolean = false;
+  public isDataipV6: boolean = false;
+  public isDataNetworkSettingsSkip: boolean = false;
   public showLoader: boolean = false;
   public loaderMessage: string = "";
   public notifications: Notifications = {} as Notifications;
@@ -215,6 +218,15 @@ export default class SystemConfiguration extends VuexModule {
       this.isipV6 = networkType.flag;
     }
   }
+  @Mutation
+  public setDataNetworkSettings(networkType: any) {
+    if (networkType.type === "ipV4") {
+      this.isDataipV4 = networkType.flag;
+    }
+    if (networkType.type === "ipV6") {
+      this.isDataipV6 = networkType.flag;
+    }
+  }
 
   @Action
   public async getSystemConfigAction() {
@@ -345,11 +357,20 @@ export default class SystemConfiguration extends VuexModule {
   get systemconfig() {
     return this.systemConfigDetails;
   }
+  // Management network settings getter
   get isipV4Status() {
     return this.isipV4;
   }
   get isipV6Status() {
     return this.isipV6;
+  }
+
+  // Data network settings getter
+  get isDataipV4Status() {
+    return this.isDataipV4;
+  }
+  get isDataipV6Status() {
+    return this.isDataipV6;
   }
 
   // Loader Config

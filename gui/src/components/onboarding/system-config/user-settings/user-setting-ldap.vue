@@ -78,11 +78,11 @@
         </v-row>
       </div>
 
-      <!--<v-btn color="udxprimary" @click="setLDAP()" class="ma-5 elevation-0" id="btnLDAPSet">Set LDAP</v-btn>
+      <!--<v-btn color="csmprimary" @click="setLDAP()" class="ma-5 elevation-0" id="btnLDAPSet">Set LDAP</v-btn>
       <v-btn
         text
         small
-        color="udxprimary"
+        color="csmprimary"
         @click="setLDAP()"
         id="lblLDAPCancel"
       >Cancel</v-btn>-->

@@ -40,14 +40,18 @@
       <div class="font-weight-medium black--text" id="lblDNsServer">DNS Server</div>
       <div class="pt-4 font-weight-regular black--text" id="lblDnsServer1">DNS Server 1</div>
       <div>
-        <input class="input-text" type="text" name="dnsname" v-model="newDnsServerAddress" id="txtDnsServer" />
+        <input
+          class="input-text"
+          type="text"
+          name="dnsname"
+          v-model="newDnsServerAddress"
+          id="txtDnsServer"
+        />
       </div>
       <div
         :class="[$data.searchDomainAddress.length < 3 ? 'csmprimary--text' : 'grey--text lighten-1', 'pointer', 'mt-5']"
         @click="addDnsServerAddress(newDnsServerAddress)"
-      >
-        + Add another static address (maximum of 3)
-      </div>
+      >+ Add another static address (maximum of 3)</div>
     </div>
     <v-divider class="mt-5 col-3" />
     <v-row v-for="(value, i) in searchDomainAddress" :key="'sda' + value + i" class="mt-2">
@@ -77,9 +81,7 @@
       <div
         :class="[$data.searchDomainAddress.length < 3 ? 'csmprimary--text' : 'grey--text lighten-1', 'pointer', 'mt-5']"
         @click="addSearchDomainAddress(newSearchDomainAddress)"
-      >
-        + Add Search Domain
-      </div>
+      >+ Add Search Domain</div>
       <v-btn elevation="0" color="csmprimary" class="mt-3">
         <span class="white--text" @click="clearDns()" id="btnClearDns">Clear DNS</span>
       </v-btn>
@@ -93,13 +95,20 @@
       <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnApplyContinue">
         <span class="white--text">Apply and Continue</span>
       </v-btn>
-      <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblBack">Back to previous step</span>
+      <span
+        class="csmprimary--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblBack"
+      >Back to previous step</span>
     </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { SystemConfigObject, DnsNetworkSettings } from "./../../../../models/system-configuration";
+import {
+  SystemConfigObject,
+  DnsNetworkSettings
+} from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-dns-setting"
@@ -142,7 +151,16 @@ export default class EosDnsSetting extends Vue {
     return this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
   }
   public gotToPrevPage() {
-    this.$router.push("dataconfig3");
+    if (this.$store.getters["systemConfig/isDataipV6Status"] === true) {
+      this.$router.push("dataconfig3");
+    } else if (this.$store.getters["systemConfig/isDataipV4Status"] === true) {
+      this.$router.push("dataconfig2");
+    } else if (
+      this.$store.getters["systemConfig/isDataipV6Status"] === false &&
+      this.$store.getters["systemConfig/isDataipV4Status"] === false
+    ) {
+      this.$router.push("dataconfig1");
+    }
   }
   private addDnsServerAddress(address: string) {
     if (this.$data.dnsServerAddress.length < 4 && address) {
@@ -157,14 +175,22 @@ export default class EosDnsSetting extends Vue {
     }
   }
   private deleteDnsServerAddress(address: string) {
-    for (let addressIndex = 0; addressIndex < this.$data.dnsServerAddress.length; addressIndex++) {
+    for (
+      let addressIndex = 0;
+      addressIndex < this.$data.dnsServerAddress.length;
+      addressIndex++
+    ) {
       if (this.$data.dnsServerAddress[addressIndex] === address) {
         this.$data.dnsServerAddress.splice(addressIndex, 1);
       }
     }
   }
   private deleteSearchDomainAddress(address: string) {
-    for (let addressIndex = 0; addressIndex < this.$data.searchDomainAddress.length; addressIndex++) {
+    for (
+      let addressIndex = 0;
+      addressIndex < this.$data.searchDomainAddress.length;
+      addressIndex++
+    ) {
       if (this.$data.searchDomainAddress[addressIndex] === address) {
         this.$data.searchDomainAddress.splice(addressIndex, 1);
       }
@@ -175,10 +201,15 @@ export default class EosDnsSetting extends Vue {
   }
   public managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (systemconfig.dns_network_settings) {
+    if (
+      systemconfig.dns_network_settings &&
+      systemconfig.dns_network_settings.nodes
+    ) {
       this.$data.hostname = systemconfig.dns_network_settings.hostname;
-      this.$data.dnsServerAddress = systemconfig.dns_network_settings.node0.dns_servers;
-      this.$data.searchDomainAddress = systemconfig.dns_network_settings.node0.search_domain;
+      this.$data.dnsServerAddress =
+        systemconfig.dns_network_settings.nodes[0].dns_servers;
+      this.$data.searchDomainAddress =
+        systemconfig.dns_network_settings.nodes[0].search_domain;
     }
   }
   private data() {

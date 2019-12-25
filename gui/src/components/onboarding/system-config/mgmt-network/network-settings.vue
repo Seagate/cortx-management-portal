@@ -17,7 +17,13 @@
       <div class="mt-6">Choose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input type="checkbox" name="ipv4" :disabled="isSkip" v-model="isipV4Status" id="chkNsisipV4Status" />
+        <input
+          type="checkbox"
+          name="ipv4"
+          :disabled="isSkip"
+          v-model="isipV4Status"
+          id="chkNsisipV4Status"
+        />
         <span class="ml-3 font-weight-medium">IPv4</span>
       </div>
       <div class="mt-2">
@@ -25,7 +31,13 @@
         enironments that do not support DHCP.
       </div>
       <div class="mt-6">
-        <input type="checkbox" :disabled="isSkip" v-model="isipV6Status" name="ipv6" id="chkNsisipV6Status" />
+        <input
+          type="checkbox"
+          :disabled="isSkip"
+          v-model="isipV6Status"
+          name="ipv6"
+          id="chkNsisipV6Status"
+        />
         <span class="ml-4 font-weight-medium">IPv6</span>
       </div>
       <div class="mt-1" id="lblNsIp6Msg">
@@ -43,12 +55,19 @@
         />
         <span class="ml-3 font-weight-medium" id="lblNSSkipSetting">Skip management network settings</span>
       </div>
-      <div class="mt-2" id="lblNSMsgSkipSetting">
-        You can skip this step if your Management Network Settings are already complete.
-      </div>
+      <div
+        class="mt-2"
+        id="lblNSMsgSkipSetting"
+      >You can skip this step if your Management Network Settings are already complete.</div>
       <v-divider class="mt-8" />
       <div class="mt-8">
-        <v-btn @click="gotoNextPage()" elevation="0" color="csmprimary" id="btnNSContinue">
+        <v-btn
+          @click="gotoNextPage()"
+          :disabled="!(isSkip || isipV6Status || isipV4Status)"
+          elevation="0"
+          color="csmprimary"
+          id="btnNSContinue"
+        >
           <span class="white--text">Continue</span>
         </v-btn>
         <span class="csmprimary--text ml-8 pointer" id="lblNSBack">Back to previous step</span>

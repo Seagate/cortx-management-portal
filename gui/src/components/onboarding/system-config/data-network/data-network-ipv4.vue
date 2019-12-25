@@ -9,7 +9,10 @@
     <v-divider />
     <div class="body-2">
       <div class="title mt-6" id="lblIpv4Dns">Data Network Settings: IPv4</div>
-      <div class="mt-2" id="lblIpv4Msg">You need to configure a single IP address for management of this system.</div>
+      <div
+        class="mt-2"
+        id="lblIpv4Msg"
+      >You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
       <div class="font-weight-bold mt-6">Source</div>
       <div class="mt-4">
@@ -71,15 +74,20 @@
       <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnIpv4ApplyContinue">
         <span class="white--text">Apply and Continue</span>
       </v-btn>
-      <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblIpv4Prevoius"
-        >Back to previous step</span
-      >
+      <span
+        class="csmprimary--text ml-8 pointer"
+        @click="gotToPrevPage()"
+        id="lblIpv4Prevoius"
+      >Back to previous step</span>
     </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { SystemConfigObject, DataNetworkIpv4 } from "./../../../../models/system-configuration";
+import {
+  SystemConfigObject,
+  DataNetworkIpv4
+} from "./../../../../models/system-configuration";
 @Component({
   name: "eos-data-network-ipv4"
 })
@@ -87,7 +95,11 @@ export default class EosDataNetworkIpv4 extends Vue {
   private gotToNextPage() {
     this.updateDataNetworkconfig().then((res: any) => {
       if (res) {
-          this.$router.push("dataconfig3");
+          if (this.$store.getters["systemConfig/isDataipV6Status"] === true) {
+            this.$router.push("dataconfig3");
+          } else {
+            this.$router.push("dnsconfig");
+          }
         } else {
           this.$data.isValid = false;
         }        
@@ -112,7 +124,11 @@ export default class EosDataNetworkIpv4 extends Vue {
   }
   public managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (systemconfig.data_network_settings && systemconfig.data_network_settings.ipv4) {
+    if (
+      systemconfig.data_network_settings &&
+      systemconfig.data_network_settings.ipv4 &&
+      systemconfig.data_network_settings.ipv4.nodes
+    ) {
       this.$data.ipv4Nodes = systemconfig.data_network_settings.ipv4.nodes;
     }
   }
