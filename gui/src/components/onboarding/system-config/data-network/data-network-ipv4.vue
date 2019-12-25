@@ -92,7 +92,6 @@ export default class EosDataNetworkIpv4 extends Vue {
       is_dhcp: false,
       nodes: this.$data.ipv4Nodes
     };
-    console.log("TCL: EosDataNetworkIpv4 -> updateDataNetworkconfig -> queryParams", queryParams);
 
     this.$store.dispatch("systemConfig/updateDataNetworkSettingIpv4", queryParams);
   }
@@ -101,7 +100,11 @@ export default class EosDataNetworkIpv4 extends Vue {
   }
   public managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (systemconfig.data_network_settings && systemconfig.data_network_settings.ipv4) {
+    if (
+      systemconfig.data_network_settings &&
+      systemconfig.data_network_settings.ipv4 &&
+      systemconfig.data_network_settings.ipv4.nodes
+    ) {
       this.$data.ipv4Nodes = systemconfig.data_network_settings.ipv4.nodes;
     }
   }
