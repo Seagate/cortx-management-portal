@@ -44,6 +44,7 @@ export default class EosStatsMedium extends Vue {
   public ispollThroughPut: boolean = true;
   public ispollLatency: boolean = true;
   public ispollIops: boolean = true;
+  public milliSecondDiviser = 1000;
   public created() {
     this.initThrouthputStats();
     this.initLatencyStats();
@@ -58,10 +59,13 @@ export default class EosStatsMedium extends Vue {
   private initThrouthputStats() {
     const queryParams: any = {
       id: 1,
-      from: Math.round(new Date().getTime() / 1000) - 10800,
-      to: Math.round(new Date().getTime() / 1000),
-      interval: "10"
+      from:
+        Math.round(new Date().getTime() / this.milliSecondDiviser) -
+        process.env.VUE_APP_PREFETCH_SEC,
+      to: Math.round(new Date().getTime() / this.milliSecondDiviser),
+      interval: process.env.VUE_APP_INTERVAL
     };
+
     const obj = this.$store.dispatch(
       "performanceStats/getThroughputPerformanceStats",
       queryParams
@@ -73,8 +77,7 @@ export default class EosStatsMedium extends Vue {
       ["write", 0]
     ];
 
-    obj.then(
-      (data) => {
+    obj.then(data => {
       this.chart = c3.generate({
         bindto: "#chart_throughput",
         data: {
@@ -123,17 +126,18 @@ export default class EosStatsMedium extends Vue {
       if (that.ispollThroughPut === true) {
         const query = {
           id: 1,
-          from: Math.round(new Date().getTime() / 1000) - 20,
-          to: Math.round(new Date().getTime() / 1000),
-          interval: "10"
+          from:
+            Math.round(new Date().getTime() / this.milliSecondDiviser) -
+            process.env.VUE_APP_FROM_TO_TIME_OFFSET,
+          to: Math.round(new Date().getTime() / this.milliSecondDiviser),
+          interval: process.env.VUE_APP_INTERVAL
         };
         const res = that.$store.dispatch(
           "performanceStats/getThroughputPerformanceStats",
           query
         );
 
-        res.then(
-          (chartData) => {
+        res.then(chartData => {
           if (chartData) {
             that.chart.flow({ columns: chartData });
           }
@@ -141,15 +145,17 @@ export default class EosStatsMedium extends Vue {
       } else {
         clearInterval(throughputPoll);
       }
-    }, 10000);
+    }, process.env.VUE_APP_GUI_POLLING_INTERVAL);
   }
 
   private initIopsStats() {
     const queryParams: any = {
       id: 1,
-      from: Math.round(new Date().getTime() / 1000) - 10800,
-      to: Math.round(new Date().getTime() / 1000),
-      interval: "10"
+      from:
+        Math.round(new Date().getTime() / this.milliSecondDiviser) -
+        process.env.VUE_APP_PREFETCH_SEC,
+      to: Math.round(new Date().getTime() / this.milliSecondDiviser),
+      interval: process.env.VUE_APP_INTERVAL
     };
     const obj = this.$store.dispatch(
       "performanceStats/getIopsPerformanceStats",
@@ -162,8 +168,7 @@ export default class EosStatsMedium extends Vue {
       ["write", 0]
     ];
 
-    obj.then(
-      (data) => {
+    obj.then(data => {
       this.chartIops = c3.generate({
         bindto: "#chart_iops",
         data: {
@@ -212,17 +217,18 @@ export default class EosStatsMedium extends Vue {
       if (that.ispollIops === true) {
         const query = {
           id: 1,
-          from: Math.round(new Date().getTime() / 1000) - 10,
-          to: Math.round(new Date().getTime() / 1000),
-          interval: "10"
+          from:
+            Math.round(new Date().getTime() / this.milliSecondDiviser) -
+            process.env.VUE_APP_FROM_TO_TIME_OFFSET,
+          to: Math.round(new Date().getTime() / this.milliSecondDiviser),
+          interval: process.env.VUE_APP_INTERVAL
         };
         const res = that.$store.dispatch(
           "performanceStats/getIopsPerformanceStats",
           query
         );
 
-        res.then(
-          (chartData) => {
+        res.then(chartData => {
           if (chartData) {
             that.chartIops.flow({ columns: chartData });
           }
@@ -230,15 +236,17 @@ export default class EosStatsMedium extends Vue {
       } else {
         clearInterval(pollIops);
       }
-    }, 10000);
+    }, process.env.VUE_APP_GUI_POLLING_INTERVAL);
   }
 
   private initLatencyStats() {
     const queryParams: any = {
       id: 1,
-      from: Math.round(new Date().getTime() / 1000) - 10800,
-      to: Math.round(new Date().getTime() / 1000),
-      interval: "10"
+      from:
+        Math.round(new Date().getTime() / this.milliSecondDiviser) -
+        process.env.VUE_APP_PREFETCH_SEC,
+      to: Math.round(new Date().getTime() / this.milliSecondDiviser),
+      interval: process.env.VUE_APP_INTERVAL
     };
     const obj = this.$store.dispatch(
       "performanceStats/getLatencyPerformanceStats",
@@ -251,8 +259,7 @@ export default class EosStatsMedium extends Vue {
       ["write", 0]
     ];
 
-    obj.then(
-      (data) => {
+    obj.then(data => {
       this.chartLatency = c3.generate({
         bindto: "#chart_latency",
         data: {
@@ -300,16 +307,17 @@ export default class EosStatsMedium extends Vue {
       if (that.ispollLatency === true) {
         const query = {
           id: 1,
-          from: Math.round(new Date().getTime() / 1000) - 10,
-          to: Math.round(new Date().getTime() / 1000),
-          interval: "10"
+          from:
+            Math.round(new Date().getTime() / this.milliSecondDiviser) -
+            process.env.VUE_APP_FROM_TO_TIME_OFFSET,
+          to: Math.round(new Date().getTime() / this.milliSecondDiviser),
+          interval: process.env.VUE_APP_INTERVAL
         };
         const res = that.$store.dispatch(
           "performanceStats/getLatencyPerformanceStats",
           query
         );
-        res.then(
-          (data) => {
+        res.then(data => {
           if (data !== undefined) {
             that.chartLatency.flow({ columns: data });
           }
@@ -317,7 +325,7 @@ export default class EosStatsMedium extends Vue {
       } else {
         clearInterval(pollLatency);
       }
-    }, 10000);
+    }, process.env.VUE_APP_GUI_POLLING_INTERVAL);
   }
 }
 </script>
