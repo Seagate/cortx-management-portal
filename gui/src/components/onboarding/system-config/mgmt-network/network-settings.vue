@@ -106,7 +106,7 @@ export default class EosNetworkSettings extends Vue {
     }
   }
   public createManagementNetworkObj() {
-    this.$store.dispatch("systemConfig/createManagementNetworkObj");
+    return this.$store.dispatch("systemConfig/createManagementNetworkObj");
   }
 
   public get isipV4Status(): any {

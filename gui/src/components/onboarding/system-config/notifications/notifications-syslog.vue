@@ -24,7 +24,15 @@
       <div class="mt-5">
         <span class="font-weight-medium" id="lblSyPortNo">SYSLOG Server Port Number</span>
         <div>
-          <input class="input-text" type="number" name="syslogserverport" v-model="syslogserverport" id="txtSyslogServerPort" min=0001 max=65535/>
+          <input
+            class="input-text"
+            type="number"
+            name="syslogserverport"
+            v-model="syslogserverport"
+            id="txtSyslogServerPort"
+            min="0001"
+            max="65535"
+          />
         </div>
       </div>
       <v-divider class="my-5" />
@@ -40,6 +48,10 @@
     </div>
 
     <div class="mt-8">
+      <p
+            v-if="!isValid"
+            class="red--text error-message"
+          >Please enter valid values.</p>
       <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnSysApply">
         <span class="white--text">Apply and Continue</span>
       </v-btn>
@@ -53,27 +65,45 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Syslog } from "./../../../../models/user-config";
+import { Syslog } from "./../../../../models/system-configuration";
 
 @Component({
   name: "eos-data-network-ipv4"
 })
 export default class EosDataNetworkIpv4 extends Vue {
-  public mounted(){
-    const notificationConfiguration = this.$store.getters["userConfig/userConfigData"];
-    console.log("TCL: EosUserSettingLdap -> mounted -> notificationConfiguration", notificationConfiguration)
-    if(notificationConfiguration && notificationConfiguration.notifications && notificationConfiguration.notifications.syslog){
-      this.$data.syslogipaddr = notificationConfiguration.notifications.syslog.syslog_server;
-      this.$data.syslogserverport = notificationConfiguration.notifications.syslog.syslog_port;
-      this.$data.syslognotify = notificationConfiguration.notifications.syslog.send_test_syslog;      
+  public mounted() {
+    const notificationConfiguration = this.$store.getters[
+      "systemConfig/userConfigData"
+    ];
+    
+    if (
+      notificationConfiguration &&
+      notificationConfiguration.notifications &&
+      notificationConfiguration.notifications.syslog
+    ) {
+      this.$data.syslogipaddr =
+        notificationConfiguration.notifications.syslog.syslog_server;
+      this.$data.syslogserverport =
+        notificationConfiguration.notifications.syslog.syslog_port;
+      this.$data.syslognotify =
+        notificationConfiguration.notifications.syslog.send_test_syslog;
     }
   }
   private gotToNextPage() {
-    this.setSyslogNotificationSettings();
-    this.$router.push("interfaceselect");
+    this.setSyslogNotificationSettings()
+      .then((res: any) => {
+        if (res) {
+          this.$router.push("interfaceselect");
+        } else {
+          this.$data.isValid = false;
+        }        
+      })
+      .catch(() => {
+        console.error("Save Email Notifications settings Failed");
+      });
   }
   private gotToPrevPage() {
-    if (this.$store.getters["userConfig/isEmailSettingsStatus"] === true) {
+    if (this.$store.getters["systemConfig/isEmailSettingsStatus"] === true) {
       this.$router.push("notificationsemail");
     } else {
       this.$router.push("notifications");
@@ -83,7 +113,8 @@ export default class EosDataNetworkIpv4 extends Vue {
     return {
       syslogipaddr: "",
       syslogserverport: 80,
-      syslognotify: false
+      syslognotify: false,
+      isValid: true
     };
   }
   private setSyslogNotificationSettings() {
@@ -92,14 +123,10 @@ export default class EosDataNetworkIpv4 extends Vue {
       syslog_port: this.$data.syslogserverport,
       send_test_syslog: this.$data.syslognotify
     };
-    this.$store
-      .dispatch("userConfig/updateSyslogNotificationUserConfig", queryParams)
-      .then((res: any) => {
-        console.log("TCL: EosDataNetworkIpv4 -> setSyslogNotificationSettings -> res", res);        
-      })
-      .catch(() => {
-        console.error("Save Email Notifications settings Failed");
-      });    
+    return this.$store.dispatch(
+      "systemConfig/updateSyslogNotificationUserConfig",
+      queryParams
+    );
   }
 }
 </script>

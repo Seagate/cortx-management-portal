@@ -73,6 +73,10 @@
       </template>
     </div>
     <div class="mt-8">
+      <p
+        v-if="!isValid"
+        class="red--text error-message"
+      >Please enter valid values.</p>
       <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnIpv6ApplyContinue">
         <span class="white--text">Apply and Continue</span>
       </v-btn>
@@ -96,8 +100,17 @@ import {
 })
 export default class EosDataNetworkIpv6 extends Vue {
   private gotToNextPage() {
-    this.updateDataNetworkconfig();
-    this.$router.push("dnsconfig");
+    this.updateDataNetworkconfig().then((res: any) => {
+      if (res) {
+          this.$router.push("dnsconfig");
+        } else {
+          this.$data.isValid = false;
+        } 
+    })
+    .catch(() => {
+      // tslint:disable-next-line: no-console
+      console.error("error");
+    });    
   }
   updateDataNetworkconfig() {
     const queryParams: DataNetworkIpv6 = {
@@ -106,13 +119,9 @@ export default class EosDataNetworkIpv6 extends Vue {
     };
     console.log("updateDataNetworkconfig", queryParams);
 
-    this.$store
-      .dispatch("systemConfig/updateDataNetworkSettingIpv6", queryParams)
-      .then((res: any) => {})
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("error");
-      });
+    return this.$store
+      .dispatch("systemConfig/updateDataNetworkSettingIpv6", queryParams);
+      
   }
   public mounted() {
     this.managementNetworkGetter();
@@ -176,7 +185,8 @@ export default class EosDataNetworkIpv6 extends Vue {
           address_label: "",
           type: ""
         }
-      ]
+      ],
+      isValid: true
     };
   }
 }

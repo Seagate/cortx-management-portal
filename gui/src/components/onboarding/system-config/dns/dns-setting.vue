@@ -88,6 +88,10 @@
     </div>
     <v-divider class="mt-8" />
     <div class="mt-8">
+      <p
+        v-if="!isValid"
+        class="red--text error-message"
+      >Please enter valid values.</p>
       <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnApplyContinue">
         <span class="white--text">Apply and Continue</span>
       </v-btn>
@@ -118,8 +122,17 @@ export default class EosDnsSetting extends Vue {
     this.$data.searchDomainAddress = [];
   }
   public gotToNextPage() {
-    this.updateDNSconfig();
-    this.$router.push("datetime");
+    this.updateDNSconfig().then((res: any) => {
+      if (res) {
+          this.$router.push("datetime");
+        } else {
+          this.$data.isValid = false;
+        } 
+    })
+    .catch(() => {
+      // tslint:disable-next-line: no-console
+      console.error("error");
+    });    
   }
   public updateDNSconfig() {
     // TODO https://xd.adobe.com/view/cf8fc1fc-887f-4784-4373-b0b60a0d4a6a-b9be/screen/500095be-863f-42f2-bb2e-6aaea65ed9df/DNS
@@ -130,12 +143,12 @@ export default class EosDnsSetting extends Vue {
     this.$data.dnsNodes[0].search_domain = this.$data.searchDomainAddress;
 
     const queryParams: DnsNetworkSettings = {
-      is_external_load_balancer: true,
+      is_external_load_balancer: false,
       fqdn_name: "vlan1.seagate.com",
       hostname: this.$data.hostname,
       nodes: this.$data.dnsNodes
     };
-    this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
+    return this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
   }
   public gotToPrevPage() {
     if (this.$store.getters["systemConfig/isDataipV6Status"] === true) {
@@ -218,7 +231,8 @@ export default class EosDnsSetting extends Vue {
         }
       ],
       newDnsServerAddress: "",
-      newSearchDomainAddress: ""
+      newSearchDomainAddress: "",
+      isValid: true
     };
   }
 }

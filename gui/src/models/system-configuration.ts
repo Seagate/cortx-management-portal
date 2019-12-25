@@ -99,10 +99,42 @@ export interface DateTimeSettings {
   date_time: DateTime;
 }
 
+export interface Ldap {
+  user_search_base: string;
+  server: string;
+  port: number;
+  alt_server: string;
+  alt_port: number;
+}
+
+export interface Email {
+  stmp_server: string;
+  smtp_port: string;
+  smtp_protocol: string;
+  smtp_sender_email: string;
+  smtp_sender_password: string;
+  email: string;
+  weekly_email: boolean;
+  send_test_mail: boolean;
+}
+
+export interface Syslog {
+  syslog_server: string;
+  syslog_port: number;
+  send_test_syslog: boolean;
+}
+
+export interface Notifications {
+  email: Email;
+  syslog: Syslog;
+}
+
 export interface SystemConfigObject {
   management_network_settings: ManagementNetworkSettings;
   data_network_settings: DataNetworkSettings;
   dns_network_settings: DnsNetworkSettings;
   date_time_settings: DateTimeSettings;
   config_id: string;
+  ldap: Ldap;
+  notifications: Notifications;
 }

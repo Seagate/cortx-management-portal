@@ -335,7 +335,7 @@ import { UserDetails } from "./../../../../models/user-Details";
 })
 export default class EosUserSettingLocal extends Vue {
   public gotToNextPage() {
-    if (this.$store.getters["userConfig/isLdapUserStatus"] === true) {
+    if (this.$store.getters["systemConfig/isLdapUserStatus"] === true) {
       this.$router.push("usersettingldap");
     } else {
       this.$router.push("notifications");

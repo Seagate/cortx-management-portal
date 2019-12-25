@@ -22,7 +22,8 @@ import {
   ManagementNetworkSettings,
   DataNetworkSettings,
   DnsNetworkSettings,
-  DateTimeSettings
+  DateTimeSettings,
+  Notifications
 } from "./../../models/system-configuration";
 
 Vue.use(Vuex);
@@ -40,10 +41,125 @@ export default class SystemConfiguration extends VuexModule {
   public isDataNetworkSettingsSkip: boolean = false;
   public showLoader: boolean = false;
   public loaderMessage: string = "";
+  public notifications: Notifications = {} as Notifications;
+  public isLocalUser: boolean = false;
+  public isLdapUser: boolean = false;
+  public isUserSettingSkip: boolean = false;
+  public isEmailSettings: boolean = false;
+  public isSysLogSettings: boolean = false;
+  public isNotificationSettingSkip: boolean = false;
+
+  @Mutation
+  public userConfigLdapMutation(payload: any) {
+    this.systemConfigDetails.ldap = { ...payload };
+  }
+
+  @Mutation
+  public userConfigEmailNotificaionMutation(payload: any) {
+    if (!this.systemConfigDetails.notifications) {
+      this.systemConfigDetails.notifications = {} as Notifications;
+    }
+    this.systemConfigDetails.notifications.email = { ...payload };
+  }
+
+  @Mutation
+  public userConfigSysLogNotificaionMutation(payload: any) {
+    if (!this.systemConfigDetails.notifications) {
+      this.systemConfigDetails.notifications = {} as Notifications;
+    }
+    this.systemConfigDetails.notifications.syslog = { ...payload };
+  }
+
+  @Mutation
+  public setNotificationsType(notificationType: any) {
+    if (notificationType.type === "email") {
+      this.isEmailSettings = notificationType.flag;
+    }
+    if (notificationType.type === "syslog") {
+      this.isSysLogSettings = notificationType.flag;
+    }
+    if (notificationType.type === "skip") {
+      this.isNotificationSettingSkip = notificationType.flag;
+    }
+  }
+
+  @Mutation
+  public setUser(userType: any) {
+    if (userType.type === "local") {
+      this.isLocalUser = userType.flag;
+    }
+    if (userType.type === "ldap") {
+      this.isLdapUser = userType.flag;
+    }
+    if (userType.type === "skip") {
+      this.isUserSettingSkip = userType.flag;
+    }
+  }
+
+  /**
+   * @param queryParams {object},
+   * This action for update user config.
+   */
+  @Action
+  public async updateLdapUserConfig(payload: any) {
+    try {
+      this.context.commit("userConfigLdapMutation", payload);
+      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      if (res && res.data) {
+        const data = res.data;
+        this.context.commit("systemConfigMutation", data);
+        return res;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
+    }
+  }
+
+  /**
+   * @param queryParams {object},
+   * This action for update user config.
+   */
+  @Action
+  public async updateEmailNotificationUserConfig(payload: any) {
+    try {
+      this.context.commit("userConfigEmailNotificaionMutation", payload);
+      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      if (res && res.data) {
+        const data = res.data;
+        this.context.commit("systemConfigMutation", data);
+        return res;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
+    }
+  }
+
+  /**
+   * @param queryParams {object},
+   * This action for update user config.
+   */
+  @Action
+  public async updateSyslogNotificationUserConfig(payload: any) {
+    try {
+      this.context.commit("userConfigSysLogNotificaionMutation", payload);
+      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      if (res && res.data) {
+        const data = res.data;
+        this.context.commit("systemConfigMutation", data);
+        return res;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
+    }
+  }
 
   @Mutation
   public systemConfigMutation(payload: any) {
     this.systemConfigDetails = { ...payload };
+    // this.systemConfigDetails = { ...payload };
   }
   @Mutation
   public MngmtIpv4ConfigMutation(payload: any) {
@@ -136,6 +252,7 @@ export default class SystemConfiguration extends VuexModule {
         const res = await Api.post(apiRegister.sysconfig, this.systemConfigDetails);
         const data = res.data;
         this.context.commit("systemConfigMutation", data);
+        return res;
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -215,6 +332,28 @@ export default class SystemConfiguration extends VuexModule {
   /**
    * sysconfig getter
    */
+  // Get system configuration from store
+  get userConfigData() {
+    return this.systemConfigDetails;
+  }
+  get isLocalUserStatus() {
+    return this.isLocalUser;
+  }
+  get isLdapUserStatus() {
+    return this.isLdapUser;
+  }
+  get isUserSettingSkipStatus() {
+    return this.isUserSettingSkip;
+  }
+  get isEmailSettingsStatus() {
+    return this.isEmailSettings;
+  }
+  get isSysLogSettingsStatus() {
+    return this.isSysLogSettings;
+  }
+  get isNotificationSettingSkipStatus() {
+    return this.isNotificationSettingSkip;
+  }
   get systemconfig() {
     return this.systemConfigDetails;
   }

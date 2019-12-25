@@ -25,7 +25,7 @@
       <div class="mt-5 font-weight-medium black--text" id="lblDTNtpTimeZone">NTP time zone offset</div>
       <div>
         <select name="zone" id="cmdZone" class="input-text" v-model="Ntptimezone">
-          <option value="GMT">GMT-07:00 Mountain Time (US & Canada)</option>
+          <option value="GMT-07:00 Mountain Time (US & Canada)">GMT-07:00 Mountain Time (US & Canada)</option>
         </select>
       </div>
     </div>
@@ -78,6 +78,10 @@
     </div>
     <v-divider class="mt-8" />
     <div class="mt-3">
+      <p
+        v-if="!isValid"
+        class="red--text error-message"
+      >Please enter valid values.</p>
       <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnDTApplyContinue">
         <span class="white--text">Apply and Continue</span>
       </v-btn>
@@ -93,8 +97,17 @@ import { SystemConfigObject, DateTimeSettings, Ntp, DateTime } from "./../../../
 })
 export default class EosDateTime extends Vue {
   public gotToNextPage() {
-    this.setNetworkTimeProtoCall();
-    this.$router.push("usersetting");
+    this.setNetworkTimeProtoCall().then((res: any) => {
+      if (res) {
+          this.$router.push("usersetting");
+        } else {
+          this.$data.isValid = false;
+        } 
+    })
+    .catch(() => {
+      // tslint:disable-next-line: no-console
+      console.error("error");
+    });
   }
   public mounted() {
     this.managementNetworkGetter();
@@ -120,7 +133,7 @@ export default class EosDateTime extends Vue {
         clock: this.$data.clock
       }
     };
-    this.$store.dispatch("systemConfig/updateNTPSetting", queryParams);
+    return this.$store.dispatch("systemConfig/updateNTPSetting", queryParams);
   }
   public gotToPrevPage() {
     this.$router.push("dnsconfig");
@@ -145,7 +158,8 @@ export default class EosDateTime extends Vue {
       minute: "",
       hours: "",
       date: "",
-      clock: ""
+      clock: "",
+      isValid: true
     };
   }
 }
