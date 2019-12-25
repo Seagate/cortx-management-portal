@@ -143,7 +143,7 @@ export default class EosDnsSetting extends Vue {
     this.$data.dnsNodes[0].search_domain = this.$data.searchDomainAddress;
 
     const queryParams: DnsNetworkSettings = {
-      is_external_load_balancer: true,
+      is_external_load_balancer: false,
       fqdn_name: "vlan1.seagate.com",
       hostname: this.$data.hostname,
       nodes: this.$data.dnsNodes
