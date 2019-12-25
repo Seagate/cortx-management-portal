@@ -14,20 +14,40 @@
         set the system to be managed in an IPv4 and IPv6 network or both. Additionally the system can be configured to
         utilize DNS within your network. You can skip this section entirely if your network settings are complete.
       </div>
-      <div class="mt-6">Do you intend to use your own load balancer or the load balancer included in the system?</div>
+      <div
+        class="mt-6"
+      >Do you intend to use your own load balancer or the load balancer included in the system?</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input type="radio" name="loadbalancer" v-model="loadbalancer" value="internal" id="rbtnLoadbalancer" />
+        <input
+          type="radio"
+          name="loadbalancer"
+          v-model="loadbalancer"
+          value="internal"
+          id="rbtnLoadbalancer"
+        />
         <span class="ml-3 font-weight-medium" id="lblUseloadBalancer">Use the included load balancer</span>
       </div>
       <div class="mt-4">
-        <input type="radio" name="loadbalancer" v-model="loadbalancer" value="external" id="rbtnLoadbalancer" />
+        <input
+          type="radio"
+          name="loadbalancer"
+          v-model="loadbalancer"
+          value="external"
+          id="rbtnLoadbalancer"
+        />
         <span class="ml-4 font-weight-medium" id="lblUseExternalLoad">Use an external load balancer</span>
       </div>
       <div class="mt-8" id="lblChoseMsg">Chose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input type="checkbox" :disabled="isSkip" v-model="isipV4Status" name="ipv4" id="chkDNSisipV4Status" />
+        <input
+          type="checkbox"
+          :disabled="isSkip"
+          v-model="isDataipV4Status"
+          name="ipv4"
+          id="chkDNSisipV4Status"
+        />
         <span class="ml-3 font-weight-medium" id="lblDNsIpv4">IPv4</span>
       </div>
       <div class="mt-2" id="lblDNSSetting">
@@ -35,7 +55,13 @@
         enironments that do not support DHCP.
       </div>
       <div class="mt-6">
-        <input type="checkbox" :disabled="isSkip" v-model="isipV6Status" name="ipv6" id="chkIsipV6Status" />
+        <input
+          type="checkbox"
+          :disabled="isSkip"
+          v-model="isDataipV6Status"
+          name="ipv6"
+          id="chkIsipV6Status"
+        />
         <span class="ml-4 font-weight-medium" id="lblIpv6">IPv6</span>
       </div>
       <div class="mt-1" id="lblMsg">
@@ -46,28 +72,36 @@
         <input
           type="checkbox"
           @change="isSkipNetworkSettings()"
-          :disabled="isipV6Status && isipV4Status"
+          :disabled="isDataipV6Status || isDataipV4Status"
           v-model="isSkip"
           name="skip"
           id="chkDNSSkip"
         />
-        <span class="ml-3 font-weight-medium" id="lblSkipManagmentSetting">Skip data network settings</span>
+        <span
+          class="ml-3 font-weight-medium"
+          id="lblSkipManagmentSetting"
+        >Skip data network settings</span>
       </div>
-      <div class="mt-2" id="lblMsgSkipStep">
-        You can skip this step if your management network settings are already complete.
-      </div>
+      <div
+        class="mt-2"
+        id="lblMsgSkipStep"
+      >You can skip this step if your management network settings are already complete.</div>
       <v-divider class="mt-8" />
       <div class="mt-8">
         <v-btn
           @click="gotToNextPage()"
           elevation="0"
-          :disabled="!(isSkip || isipV6Status || isipV4Status)"
+          :disabled="!(isSkip || isDataipV6Status || isDataipV4Status)"
           color="csmprimary"
           id="btnDNSContinue"
         >
           <span class="white--text">Continue</span>
         </v-btn>
-        <span class="csmprimary--text ml-8 pointer" @click="gotToPrevPage()" id="lblDNSBack">Back to previous step</span>
+        <span
+          class="csmprimary--text ml-8 pointer"
+          @click="gotToPrevPage()"
+          id="lblDNSBack"
+        >Back to previous step</span>
       </div>
     </div>
   </v-container>
@@ -88,21 +122,21 @@ export default class EosDataNetwork extends Vue {
   public mounted() {
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
-  public get isipV4Status(): any {
-    return this.$store.getters["systemConfig/isipV4Status"];
+  public get isDataipV4Status(): any {
+    return this.$store.getters["systemConfig/isDataipV4Status"];
   }
-  public set isipV4Status(status: any) {
-    this.$store.commit("systemConfig/setNetworkManagementSettings", {
+  public set isDataipV4Status(status: any) {
+    this.$store.commit("systemConfig/setDataNetworkSettings", {
       type: "ipV4",
       flag: status
     });
   }
 
-  public get isipV6Status(): any {
-    return this.$store.getters["systemConfig/isipV6Status"];
+  public get isDataipV6Status(): any {
+    return this.$store.getters["systemConfig/isDataipV6Status"];
   }
-  public set isipV6Status(status: any) {
-    this.$store.commit("systemConfig/setNetworkManagementSettings", {
+  public set isDataipV6Status(status: any) {
+    this.$store.commit("systemConfig/setDataNetworkSettings", {
       type: "ipV6",
       flag: status
     });
@@ -120,22 +154,25 @@ export default class EosDataNetwork extends Vue {
     }
   }
   public gotToNextPage() {
-    if (this.isipV4Status === true) {
+    if (this.isDataipV4Status === true) {
       this.$router.push("dataconfig2");
-    } else if (this.isipV6Status === true) {
+    } else if (this.isDataipV6Status === true) {
       this.$router.push("dataconfig3");
-    } else if (this.isipV4Status === false && this.isipV6Status === false) {
+    } else if (
+      this.isDataipV4Status === false &&
+      this.isDataipV6Status === false
+    ) {
       this.$router.push("dnsconfig");
     }
     this.$router.push("");
   }
   public isSkipNetworkSettings() {
-    this.$store.commit("systemConfig/setNetworkManagementSettings", {
+    this.$store.commit("systemConfig/setDataNetworkSettings", {
       type: "ipV6",
       flag: false
     });
 
-    this.$store.commit("systemConfig/setNetworkManagementSettings", {
+    this.$store.commit("systemConfig/setDataNetworkSettings", {
       type: "ipV4",
       flag: false
     });

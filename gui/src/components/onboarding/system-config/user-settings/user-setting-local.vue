@@ -315,7 +315,7 @@
       </v-data-table>
     </v-card>
     <div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnLocalAppyInterface">
+      <v-btn elevation="0" color="csmprimary" id="btnLocalAppyInterface">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span

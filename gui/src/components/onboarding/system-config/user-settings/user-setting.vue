@@ -69,7 +69,7 @@
     <div class="mt-3">
       <v-btn
         elevation="0"
-        color="udxprimary"
+        color="csmprimary"
         id="btnUsrSettingContinue"
         :disabled="!isLocalUserStatus && !isLdapUserStatus && !isUserSettingSkipStatus"
       >

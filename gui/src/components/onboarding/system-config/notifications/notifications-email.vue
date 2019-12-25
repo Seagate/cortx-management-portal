@@ -139,7 +139,7 @@
     </div>
 
     <div class="mt-8">
-      <v-btn elevation="0" color="udxprimary" id="btnEmailApply" :disabled="!isValidForm">
+      <v-btn elevation="0" color="csmprimary" id="btnEmailApply" :disabled="!isValidForm">
         <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
       </v-btn>
       <span
