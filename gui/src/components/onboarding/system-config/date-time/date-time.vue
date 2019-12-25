@@ -25,7 +25,7 @@
       <div class="mt-5 font-weight-medium black--text" id="lblDTNtpTimeZone">NTP time zone offset</div>
       <div>
         <select name="zone" id="cmdZone" class="input-text" v-model="Ntptimezone">
-          <option value="GMT">GMT-07:00 Mountain Time (US & Canada)</option>
+          <option value="GMT-07:00 Mountain Time (US & Canada)">GMT-07:00 Mountain Time (US & Canada)</option>
         </select>
       </div>
     </div>
