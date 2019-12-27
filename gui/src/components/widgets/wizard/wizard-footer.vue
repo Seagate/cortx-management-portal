@@ -21,18 +21,19 @@
       color="csmprimary"
       :disabled="!isValidData"
     >
-      <span class="white--text">{{this.$props.footerObj.nextBtnText}}</span>
+      <span class="white--text">{{ this.$props.footerObj.nextBtnText }}</span>
     </v-btn>
     <span
       class="csmprimary--text ml-8 pointer"
       @click="gotoPrevPage()"
       v-if="this.$props.footerObj && this.$props.footerObj.prevBtnText"
-    >{{this.$props.footerObj.prevBtnText}}</span>
+      >{{ this.$props.footerObj.prevBtnText }}</span
+    >
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { EVENT_BUS } from "./../../../main";
+import { EventBus } from "./../../../main";
 
 @Component({
   name: "eos-wizard-footer",
@@ -40,18 +41,18 @@ import { EVENT_BUS } from "./../../../main";
     footerObj: Object
   }
 })
-// Overall: EVENT_BUS is used here to have a comunication between footer and middle component (siblings)
+// Overall: EventBus is used here to have a comunication between footer and middle component (siblings)
 // this.emit is used to have a communication between footer and wizard component (parent)
 export default class EosWizardFooter extends Vue {
   private mounted() {
     // Listen to middle components form validation event so that footer can enable or disable next button
-    EVENT_BUS.$on("validForm", (res: any) => {
+    EventBus.$on("validForm", (res: any) => {
       this.$data.isValidData = res;
     });
   }
   private destroyed() {
     // Shut off the listener
-    EVENT_BUS.$off("validForm");
+    EventBus.$off("validForm");
   }
   private data() {
     return {
@@ -59,15 +60,21 @@ export default class EosWizardFooter extends Vue {
     };
   }
   private gotoNextPage(evt: Event) {
-    const result = new Promise(
-      resolve =>
+    const result = new Promise(resolve => {
         // emit event which will trigger onNext method of middle component
         // and get a callback response (res) once its work is finished
-        EVENT_BUS.$emit("emitOnNext", resolve) // Emit event to Middle Component (sibling)
-    ).then(res => {
+      this.$store.dispatch("systemConfig/showLoaderMessage", {
+        show: true,
+        message: "Please wait"
+      });
+      EventBus.$emit("emitOnNext", resolve); // Emit event to Middle Component (sibling)
+    }).then(res => {
       if (res) {
         // Footer got message from Middle component saying;
         // its work is complete and wizard can move to next possible step
+        this.$store.dispatch("systemConfig/showLoaderMessage", {
+          show: false
+        });
         this.$emit(
           "messageFromFooter",
           this.$props.footerObj.nextComponent,

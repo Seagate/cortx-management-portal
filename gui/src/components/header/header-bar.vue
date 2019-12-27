@@ -1,17 +1,13 @@
 /*****************************************************************************
- Filename:          header-bar.vue
- Description:       Header Bar Component
-
- Creation Date:     01/08/2019
- Author:            Piyush Gupte
-
- Do NOT modify or remove this copyright and confidentiality notice!
- Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
- The code contained herein is CONFIDENTIAL to Seagate Technology, LLC.
- Portions are also trade secret. Any use, duplication, derivation, distribution
- or disclosure of this code, for any reason, not expressly authorized is
- prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
- *****************************************************************************/
+Filename: header-bar.vue Description: Header Bar Component Creation Date:
+01/08/2019 Author: Piyush Gupte Do NOT modify or remove this copyright and
+confidentiality notice! Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate
+Technology, LLC. The code contained herein is CONFIDENTIAL to Seagate
+Technology, LLC. Portions are also trade secret. Any use, duplication,
+derivation, distribution or disclosure of this code, for any reason, not
+expressly authorized is prohibited. All other rights are expressly reserved by
+Seagate Technology, LLC.
+*****************************************************************************/
 <template>
   <v-app-bar height="70em" flat class="black pa-0 ma-0" clipped-left app>
     <span class="ml-1 mr-5">
@@ -25,11 +21,19 @@
     <v-spacer></v-spacer>
 
     <v-divider class="grey darken-4" vertical></v-divider>
-    <div class="pa-5 grey--text body-2">{{new Date().toLocaleString()}}</div>
+    <div class="pa-5 grey--text body-2">{{ new Date().toLocaleString() }}</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text">{{ username }}</div>
-    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div id="alert-menu" class="pl-10 pr-3 pt-1">
+    <v-divider
+      class="mx-4 grey darken-4"
+      vertical
+      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+    ></v-divider>
+    <div
+      id="alert-menu"
+      class="pl-10 pr-3 pt-1"
+      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+    >
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <div v-on="on" class="alert-container">
@@ -40,49 +44,80 @@
               height="1em"
             ></v-img>
             <span id="alert-lbl" class="white--text">Alerts</span>
-            <div id="alert-count">{{alertNotifications.alertCount}}</div>
+            <div id="alert-count">{{ alertNotifications.alertCount }}</div>
           </div>
         </template>
-        <v-card width="20em" min-height="14em" max-height="25em" class="mx-auto elevation-0" tile>
+        <v-card
+          width="20em"
+          min-height="14em"
+          max-height="25em"
+          class="mx-auto elevation-0"
+          tile
+        >
           <v-card-text>
             <div>Alerts</div>
           </v-card-text>
-          <v-list width="18em" class="mar-center" min-height="12em" max-height="16em">
-            <v-list-item v-for="(item, index) in alertNotifications.alerts" :key="index">
+          <v-list
+            width="18em"
+            class="mar-center"
+            min-height="12em"
+            max-height="16em"
+          >
+            <v-list-item
+              v-for="(item, index) in alertNotifications.alerts"
+              :key="index"
+            >
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.critical"
+                v-if="item.severity === alertStatus.critical"
                 src="./../../assets/status/error-fault.png"
               />
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.error"
+                v-if="item.severity === alertStatus.error"
                 src="./../../assets/status/warning.png"
               />
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.warning"
+                v-if="item.severity === alertStatus.warning"
                 src="./../../assets/status/degraded.png"
               />
               <img
                 class="mr-2"
-                v-if="item.severity===alertStatus.informational"
+                v-if="item.severity === alertStatus.informational"
                 src="./../../assets/status/info-alert.png"
               />
               <v-list-item-content>
                 <v-list-item-title>State:{{ item.state }}</v-list-item-title>
-                <v-list-item-subtitle v-html="item.location"></v-list-item-subtitle>
+                <v-list-item-subtitle
+                  v-html="item.location"
+                ></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
           <v-card-text>
-            <div @click="$router.push('alertlarge')" class="csmprimary--text pointer">See all alerts</div>
+            <div
+              @click="$router.push('alertlarge')"
+              class="csmprimary--text pointer"
+            >
+              See all alerts
+            </div>
           </v-card-text>
         </v-card>
       </v-menu>
     </div>
-    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 white--text pointer" @click="logout()">Logout</div>
+    <v-divider
+      class="mx-4 grey darken-4"
+      vertical
+      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+    ></v-divider>
+    <div
+      class="pa-5 white--text pointer"
+      @click="logout()"
+      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+    >
+      Logout
+    </div>
   </v-app-bar>
 </template>
 <script lang="ts">
@@ -122,14 +157,16 @@ export default class HeaderBar extends Vue {
       .dispatch("userLogin/logoutAction")
       .then((res: any) => {
         if (res === 200) {
-          localStorage.removeItem(this.$data.alertStatus.access_token);
-          this.$router.push("/login");
+          // tslint:disable-next-line: no-console
+          console.log("Logout Success");
         }
       })
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("Logout Action Failed");
       });
+    localStorage.removeItem(this.$data.alertStatus.access_token);
+    this.$router.push("/login");
   }
 }
 </script>
@@ -195,5 +232,3 @@ export default class HeaderBar extends Vue {
   left: -0.75em;
 }
 </style>
-
-
