@@ -1,13 +1,17 @@
 /*****************************************************************************
-Filename: header-bar.vue Description: Header Bar Component Creation Date:
-01/08/2019 Author: Piyush Gupte Do NOT modify or remove this copyright and
-confidentiality notice! Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate
-Technology, LLC. The code contained herein is CONFIDENTIAL to Seagate
-Technology, LLC. Portions are also trade secret. Any use, duplication,
-derivation, distribution or disclosure of this code, for any reason, not
-expressly authorized is prohibited. All other rights are expressly reserved by
-Seagate Technology, LLC.
-*****************************************************************************/
+ Filename:          header-bar.vue
+ Description:       Header Bar Component
+
+ Creation Date:     01/08/2019
+ Author:            Piyush Gupte
+
+ Do NOT modify or remove this copyright and confidentiality notice!
+ Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
+ The code contained herein is CONFIDENTIAL to Seagate Technology, LLC.
+ Portions are also trade secret. Any use, duplication, derivation, distribution
+ or disclosure of this code, for any reason, not expressly authorized is
+ prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
+ *****************************************************************************/
 <template>
   <v-app-bar height="70em" flat class="black pa-0 ma-0" clipped-left app>
     <span class="ml-1 mr-5">
@@ -25,11 +29,19 @@ Seagate Technology, LLC.
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text">{{ username }}</div>
     <v-divider
+    <div class="pa-5 grey--text body-2">{{ new Date().toLocaleString() }}</div>
+      vertical
+      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+    <v-divider
       class="mx-4 grey darken-4"
       vertical
       v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
     ></v-divider>
     <div
+      id="alert-menu"
+      class="pl-10 pr-3 pt-1"
+      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+    >
       id="alert-menu"
       class="pl-10 pr-3 pt-1"
       v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
@@ -40,13 +52,9 @@ Seagate Technology, LLC.
             <v-img
               id="alert-img"
               :src="require('./../../assets/info-alert-white.png')"
-              width="1em"
+            <div id="alert-count">{{ alertNotifications.alertCount }}</div>
               height="1em"
             ></v-img>
-            <span id="alert-lbl" class="white--text">Alerts</span>
-            <div id="alert-count">{{ alertNotifications.alertCount }}</div>
-          </div>
-        </template>
         <v-card
           width="20em"
           min-height="14em"
@@ -54,9 +62,9 @@ Seagate Technology, LLC.
           class="mx-auto elevation-0"
           tile
         >
-          <v-card-text>
-            <div>Alerts</div>
-          </v-card-text>
+            <div id="alert-count">{{ alertNotifications.alertCount }}</div>
+          </div>
+        </template>
           <v-list
             width="18em"
             class="mar-center"
@@ -67,22 +75,57 @@ Seagate Technology, LLC.
               v-for="(item, index) in alertNotifications.alerts"
               :key="index"
             >
+          min-height="14em"
+          max-height="25em"
+                v-if="item.severity === alertStatus.critical"
+          tile
+        >
+          <v-card-text>
+            <div>Alerts</div>
+                v-if="item.severity === alertStatus.error"
+          <v-list
+            width="18em"
+            class="mar-center"
+            min-height="12em"
+                v-if="item.severity === alertStatus.warning"
+          >
+            <v-list-item
+              v-for="(item, index) in alertNotifications.alerts"
+              :key="index"
+                v-if="item.severity === alertStatus.informational"
               <img
                 class="mr-2"
                 v-if="item.severity === alertStatus.critical"
                 src="./../../assets/status/error-fault.png"
-              />
+                <v-list-item-subtitle
+                  v-html="item.location"
+                ></v-list-item-subtitle>
               <img
                 class="mr-2"
                 v-if="item.severity === alertStatus.error"
                 src="./../../assets/status/warning.png"
-              />
+            <div
+              @click="$router.push('alertlarge')"
+              class="csmprimary--text pointer"
+            >
+              See all alerts
+            </div>
               <img
                 class="mr-2"
                 v-if="item.severity === alertStatus.warning"
                 src="./../../assets/status/degraded.png"
-              />
-              <img
+    <v-divider
+      class="mx-4 grey darken-4"
+      vertical
+      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+    ></v-divider>
+    <div
+      class="pa-5 white--text pointer"
+      @click="logout()"
+      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+    >
+      Logout
+    </div>
                 class="mr-2"
                 v-if="item.severity === alertStatus.informational"
                 src="./../../assets/status/info-alert.png"
@@ -122,14 +165,16 @@ Seagate Technology, LLC.
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import store from "../../store/store";
-import VueNativeSock from "vue-native-websocket";
+          // tslint:disable-next-line: no-console
+          console.log("Logout Success");
 
 @Component({
   name: "HeaderBar"
 })
 export default class HeaderBar extends Vue {
   public username: string = "";
+    localStorage.removeItem(this.$data.alertStatus.access_token);
+    this.$router.push("/login");
   public data() {
     return {
       alertStatus: require("./../../common/const-string.json")
@@ -196,8 +241,6 @@ export default class HeaderBar extends Vue {
 
 .v-card {
   overflow: hidden;
-}
-
 .v-app-bar {
   height: 4.2em !important;
 }
