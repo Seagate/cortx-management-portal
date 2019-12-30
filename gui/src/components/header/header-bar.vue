@@ -29,19 +29,11 @@
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
     <div class="pa-5 grey--text">{{ username }}</div>
     <v-divider
-    <div class="pa-5 grey--text body-2">{{ new Date().toLocaleString() }}</div>
-      vertical
-      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
-    <v-divider
       class="mx-4 grey darken-4"
       vertical
       v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
     ></v-divider>
     <div
-      id="alert-menu"
-      class="pl-10 pr-3 pt-1"
-      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
-    >
       id="alert-menu"
       class="pl-10 pr-3 pt-1"
       v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
@@ -52,9 +44,13 @@
             <v-img
               id="alert-img"
               :src="require('./../../assets/info-alert-white.png')"
-            <div id="alert-count">{{ alertNotifications.alertCount }}</div>
+              width="1em"
               height="1em"
             ></v-img>
+            <span id="alert-lbl" class="white--text">Alerts</span>
+            <div id="alert-count">{{ alertNotifications.alertCount }}</div>
+          </div>
+        </template>
         <v-card
           width="20em"
           min-height="14em"
@@ -62,9 +58,9 @@
           class="mx-auto elevation-0"
           tile
         >
-            <div id="alert-count">{{ alertNotifications.alertCount }}</div>
-          </div>
-        </template>
+          <v-card-text>
+            <div>Alerts</div>
+          </v-card-text>
           <v-list
             width="18em"
             class="mar-center"
@@ -75,57 +71,22 @@
               v-for="(item, index) in alertNotifications.alerts"
               :key="index"
             >
-          min-height="14em"
-          max-height="25em"
-                v-if="item.severity === alertStatus.critical"
-          tile
-        >
-          <v-card-text>
-            <div>Alerts</div>
-                v-if="item.severity === alertStatus.error"
-          <v-list
-            width="18em"
-            class="mar-center"
-            min-height="12em"
-                v-if="item.severity === alertStatus.warning"
-          >
-            <v-list-item
-              v-for="(item, index) in alertNotifications.alerts"
-              :key="index"
-                v-if="item.severity === alertStatus.informational"
               <img
                 class="mr-2"
                 v-if="item.severity === alertStatus.critical"
                 src="./../../assets/status/error-fault.png"
-                <v-list-item-subtitle
-                  v-html="item.location"
-                ></v-list-item-subtitle>
+              />
               <img
                 class="mr-2"
                 v-if="item.severity === alertStatus.error"
                 src="./../../assets/status/warning.png"
-            <div
-              @click="$router.push('alertlarge')"
-              class="csmprimary--text pointer"
-            >
-              See all alerts
-            </div>
+              />
               <img
                 class="mr-2"
                 v-if="item.severity === alertStatus.warning"
                 src="./../../assets/status/degraded.png"
-    <v-divider
-      class="mx-4 grey darken-4"
-      vertical
-      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
-    ></v-divider>
-    <div
-      class="pa-5 white--text pointer"
-      @click="logout()"
-      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
-    >
-      Logout
-    </div>
+              />
+              <img
                 class="mr-2"
                 v-if="item.severity === alertStatus.informational"
                 src="./../../assets/status/info-alert.png"
@@ -165,16 +126,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-          // tslint:disable-next-line: no-console
-          console.log("Logout Success");
+import store from "../../store/store";
+import VueNativeSock from "vue-native-websocket";
 
 @Component({
   name: "HeaderBar"
 })
 export default class HeaderBar extends Vue {
   public username: string = "";
-    localStorage.removeItem(this.$data.alertStatus.access_token);
-    this.$router.push("/login");
   public data() {
     return {
       alertStatus: require("./../../common/const-string.json")
@@ -241,6 +200,8 @@ export default class HeaderBar extends Vue {
 
 .v-card {
   overflow: hidden;
+}
+
 .v-app-bar {
   height: 4.2em !important;
 }
