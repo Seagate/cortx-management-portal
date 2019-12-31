@@ -358,7 +358,7 @@ class IamClient(BaseClient):
             return True
 
     @Log.trace_method(Log.DEBUG)
-    async def create_user(self, user_name, path='/') -> Union[IamUser, IamError]:
+    async def create_user(self, user_name, path_prefix ='/') -> Union[IamUser, IamError]:
         """
         Create an IAM user.
 
@@ -366,7 +366,7 @@ class IamClient(BaseClient):
         """
         params = {
             'UserName': user_name,
-            'Path': path
+            'Path': path_prefix
         }
 
         (code, body) = await self._query_conn('CreateUser', params, '/', 'POST')
@@ -410,7 +410,7 @@ class IamClient(BaseClient):
         if max_items:
             params['MaxItems'] = max_items
 
-        (code, body) = await self._query_conn('ListUsers', {}, '/', 'POST', list_marker='Users')
+        (code, body) = await self._query_conn('ListUsers', params, '/', 'POST', list_marker='Users')
         if code != 200:
             return self._create_error(body)
         else:
