@@ -121,6 +121,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     # Copy frontend files
     mkdir -p $DIST/csm/eos/gui/
     cp -R $BASE_DIR/src/web ${DIST}/csm
+    cp -R $BASE_DIR/src/eos/gui/.env ${DIST}/csm/eos/gui/.env
 
     echo "Running Web Build"
     cd ${DIST}/csm/web/
@@ -138,6 +139,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cd $GUI_DIR
     npm install
     npm run build
+    cp -R  ${DIST}/csm/eos/gui/.env ${DIST}/csm/eos/gui/ui-dist
 
     UI_BUILD_END_TIME=$(date +%s)
 fi
