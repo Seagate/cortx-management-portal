@@ -264,9 +264,18 @@ export default class SystemConfiguration extends VuexModule {
   public setDataNetworkSettings(networkType: any) {
     if (networkType.type === "ipV4") {
       this.isDataipV4 = networkType.flag;
+      this.componentNameToSearch = "EosDataNetworkIpv4";
     }
     if (networkType.type === "ipV6") {
       this.isDataipV6 = networkType.flag;
+      this.componentNameToSearch = "EosDataNetworkIpv6";
+    }
+    const stepIndex = findStepIndexFromComponentName(
+      this.componentNameToSearch,
+      this.wizardMetadata
+    );
+    if (stepIndex !== undefined || stepIndex !== -1) {
+      this.wizardMetadata.steps[stepIndex].isByPassed = !networkType.flag;
     }
   }
   @Action

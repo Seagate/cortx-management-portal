@@ -1,34 +1,45 @@
 <template>
-  <v-container class="mt-6">
-    <v-img
-      id="alert-img"
-      :src="require('./../../../../assets/onboarding-wizard.png')"
-      width="780px"
-      height="70px"
-    ></v-img>
-    <v-divider />
-    <div class="body-2">
-      <div class="title mt-6" id="lblIpv4Dns">Data Network Settings: IPv4</div>
-      <div
-        class="mt-2"
-        id="lblIpv4Msg"
-      >You need to configure a single IP address for management of this system.</div>
+  <v-container class="mt-0 pt-0">
+    <div class="pl-4 body-2">
+      <div class="title mt-0 font-weight-bold" id="lblIpv4Dns">
+        Data network settings: IPv4
+      </div>
+      <div class="mt-6" id="lblIpv4Msg">
+        You need to configure a single IP address for management of this system.
+      </div>
       <v-divider class="mt-2" />
       <div class="font-weight-bold mt-6">Source</div>
       <div class="mt-4">
-        <input type="radio" name="source" v-model="source" value="manual" id="rbtnIpv4Source" />
+        <input
+          type="radio"
+          name="source"
+          v-model="source"
+          value="manual"
+          id="rbtnIpv4Source"
+        />
         <span class="ml-2 font-weight-bold" id="lblIpv4Manual">Manual</span>
-        <input class="ml-6" type="radio" disabled name="DHCP" value="DHCP" id="rbtnIpv4DHCP" />
+        <input
+          class="ml-6"
+          type="radio"
+          name="DHCP"
+          v-model="source"
+          value="DHCP"
+          id="rbtnIpv4DHCP"
+        />
         <span class="ml-2 font-weight-bold" id="lblIpv4Dhcp">DHCP</span>
       </div>
     </div>
     <div class="row mt-5">
       <template v-for="node in ipv4Nodes">
-        <div class="col-4 body-2 column" :key="node.id">
-          <span class="font-weight-medium" id="lblIpv4Node">Node {{ node.id }}</span>
+        <div class="col-3 body-2 column" :key="node.id">
+          <span class="font-weight-bold" id="lblIpv4Node"
+            >Node {{ node.id }}</span
+          >
           <v-divider class="mt-2" />
-          <div class="mt-5">
-            <span class="font-weight-medium" id="lblIpv4Ipaddress">IP Address</span>
+          <div class="mt-5" v-if="source == 'manual'">
+            <span class="font-weight-bold" id="lblIpv4Ipaddress"
+              >IP Address</span
+            >
             <div>
               <input
                 class="input-text"
@@ -40,7 +51,21 @@
             </div>
           </div>
           <div class="mt-4">
-            <span class="font-weight-medium" id="lblKIpv4Netmask">Netmask</span>
+            <span class="font-weight-bold" id="lblDataNetworkIpv4VIPAddress"
+              >VIP Address</span
+            >
+            <div>
+              <input
+                class="input-text"
+                type="text"
+                name="vipaddress"
+                v-model="node.vip_address"
+                :id="node.id + 'txtDataNetworkIpv4VIpAddress'"
+              />
+            </div>
+          </div>
+          <div class="mt-4">
+            <span class="font-weight-bold" id="lblKIpv4Netmask">Netmask</span>
             <div>
               <input
                 class="input-text"
@@ -52,7 +77,7 @@
             </div>
           </div>
           <div class="mt-4">
-            <span class="font-weight-medium" id="lblIpv4Gateway">Gateway</span>
+            <span class="font-weight-bold" id="lblIpv4Gateway">Gateway</span>
             <div>
               <input
                 class="input-text"
@@ -66,20 +91,7 @@
         </div>
       </template>
     </div>
-    <div class="mt-8">
-      <p
-        v-if="!isValid"
-        class="red--text error-message"
-      >Please enter valid values.</p>
-      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnIpv4ApplyContinue">
-        <span class="white--text">Apply and Continue</span>
-      </v-btn>
-      <span
-        class="csmprimary--text ml-8 pointer"
-        @click="gotToPrevPage()"
-        id="lblIpv4Prevoius"
-      >Back to previous step</span>
-    </div>
+    <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
@@ -88,55 +100,64 @@ import {
   SystemConfigObject,
   DataNetworkIpv4
 } from "./../../../../models/system-configuration";
+import { EventBus } from "./../../../../main";
+
 @Component({
   name: "eos-data-network-ipv4"
 })
 export default class EosDataNetworkIpv4 extends Vue {
-  private gotToNextPage() {
-    this.updateDataNetworkconfig().then((res: any) => {
-      if (res) {
-          if (this.$store.getters["systemConfig/isDataipV6Status"] === true) {
-            this.$router.push("dataconfig3");
-          } else {
-            this.$router.push("dnsconfig");
-          }
-        } else {
-          this.$data.isValid = false;
-        }        
-    })
-    .catch(() => {
-      console.error("Save Email Notifications settings Failed");
-    });    
-  }
-  private gotToPrevPage() {
-    this.$router.push("dataconfig1");
-  }
-  private updateDataNetworkconfig() {
+  private updateDataNetworkConfig() {
     const queryParams: DataNetworkIpv4 = {
-      is_dhcp: false,
+      is_dhcp: this.$data.source == "DHCP",
       nodes: this.$data.ipv4Nodes
     };
-    
-    return this.$store.dispatch("systemConfig/updateDataNetworkSettingIpv4", queryParams);
+
+    return this.$store.dispatch(
+      "systemConfig/updateDataNetworkSettingIpv4",
+      queryParams
+    );
   }
-  public mounted() {
-    this.managementNetworkGetter();
+  private mounted() {
+    this.dataNetworkGetter();
+    // WizardHook: Open a listener for onNext event
+    // So when wizard footer clicks on the Next Button this component can perform its own workflow
+    EventBus.$on("emitOnNext", (res: any) => {
+      this.updateDataNetworkConfig()
+        .then(result => {
+          res(true);
+        })
+        .catch(err => {});
+    });
   }
-  public managementNetworkGetter(): any {
+  private destroyed() {
+    // WizardHook: shut off on exit event listner
+    EventBus.$off("emitOnNext");
+  }
+  get isValidForm() {
+    const validate = true;
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EventBus.$emit("validForm", validate);
+    return validate;
+  }
+  private dataNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    const dataNetworkSettings = systemconfig.data_network_settings;
     if (
-      systemconfig.data_network_settings &&
-      systemconfig.data_network_settings.ipv4 &&
-      systemconfig.data_network_settings.ipv4.nodes
+      dataNetworkSettings &&
+      dataNetworkSettings.ipv4 &&
+      dataNetworkSettings.ipv4.nodes
     ) {
-      this.$data.ipv4Nodes = systemconfig.data_network_settings.ipv4.nodes;
+      this.$data.ipv4Nodes = dataNetworkSettings.ipv4.nodes;
+      this.$data.source =
+        dataNetworkSettings.ipv4.is_dhcp == true ? "DHCP" : "manual";
     }
   }
   private data() {
     return {
       ipv4Nodes: [
-        { id: 0, ip_address: "", netmask: "", gateway: "" },
-        { id: 1, ip_address: "", netmask: "", gateway: "" }
+        { id: 0, vip_address: "", ip_address: "", netmask: "", gateway: "" },
+        { id: 1, vip_address: "", ip_address: "", netmask: "", gateway: "" }
       ],
       source: "manual",
       isValid: true
