@@ -28,70 +28,70 @@
         />
         <span class="ml-2 font-weight-bold" id="lblIpv4Dhcp">DHCP</span>
       </div>
-    </div>
-    <div class="row pl-4 mt-5">
-      <template v-for="node in ipv4Nodes">
-        <div class="col-3 body-2 column" :key="node.id">
-          <span class="font-weight-bold" id="lblIpv4Node"
-            >Node {{ node.id }}</span
-          >
-          <v-divider class="mt-2" />
-          <div class="mt-5" v-if="source == 'manual'">
-            <span class="font-weight-bold" id="lblIpv4Ipaddress"
-              >IP Address</span
+      <div class="row mt-5">
+        <template v-for="node in ipv4Nodes">
+          <div class="col-3 body-2 column" :key="node.id">
+            <span class="font-weight-bold" id="lblIpv4Node"
+              >Node {{ node.id }}</span
             >
-            <div>
-              <input
-                class="input-text"
-                type="text"
-                name="ipaddress"
-                v-model="node.ip_address"
-                :id="node.id + 'txtDataNetworkIpv4Ipaddress'"
-              />
+            <v-divider class="mt-2" />
+            <div class="mt-5" v-if="source == 'manual'">
+              <span class="font-weight-bold" id="lblIpv4Ipaddress"
+                >IP Address</span
+              >
+              <div>
+                <input
+                  class="input-text"
+                  type="text"
+                  name="ipaddress"
+                  v-model="node.ip_address"
+                  :id="node.id + 'txtDataNetworkIpv4Ipaddress'"
+                />
+              </div>
+            </div>
+            <div class="mt-4">
+              <span class="font-weight-bold" id="lblDataNetworkIpv4VIPAddress"
+                >VIP Address</span
+              >
+              <div>
+                <input
+                  class="input-text"
+                  type="text"
+                  name="vipaddress"
+                  v-model="node.vip_address"
+                  :id="node.id + 'txtDataNetworkIpv4VIpAddress'"
+                />
+              </div>
+            </div>
+            <div class="mt-4">
+              <span class="font-weight-bold" id="lblKIpv4Netmask">Netmask</span>
+              <div>
+                <input
+                  class="input-text"
+                  type="text"
+                  name="netmask"
+                  v-model="node.netmask"
+                  :id="node.id + 'txtDataNetworkIpv4netmask'"
+                />
+              </div>
+            </div>
+            <div class="mt-4">
+              <span class="font-weight-bold" id="lblIpv4Gateway">Gateway</span>
+              <div>
+                <input
+                  class="input-text"
+                  type="text"
+                  name="gateway"
+                  v-model="node.gateway"
+                  :id="node.id + 'txtDataNetworkIpv4gateway'"
+                />
+              </div>
             </div>
           </div>
-          <div class="mt-4">
-            <span class="font-weight-bold" id="lblDataNetworkIpv4VIPAddress"
-              >VIP Address</span
-            >
-            <div>
-              <input
-                class="input-text"
-                type="text"
-                name="vipaddress"
-                v-model="node.vip_address"
-                :id="node.id + 'txtDataNetworkIpv4VIpAddress'"
-              />
-            </div>
-          </div>
-          <div class="mt-4">
-            <span class="font-weight-bold" id="lblKIpv4Netmask">Netmask</span>
-            <div>
-              <input
-                class="input-text"
-                type="text"
-                name="netmask"
-                v-model="node.netmask"
-                :id="node.id + 'txtDataNetworkIpv4netmask'"
-              />
-            </div>
-          </div>
-          <div class="mt-4">
-            <span class="font-weight-bold" id="lblIpv4Gateway">Gateway</span>
-            <div>
-              <input
-                class="input-text"
-                type="text"
-                name="gateway"
-                v-model="node.gateway"
-                :id="node.id + 'txtDataNetworkIpv4gateway'"
-              />
-            </div>
-          </div>
-        </div>
-      </template>
+        </template>
+      </div>
+      <span class="d-none">{{ isValidForm }}</span>
     </div>
-    <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
