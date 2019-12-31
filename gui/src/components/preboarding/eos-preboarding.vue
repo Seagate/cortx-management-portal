@@ -1,9 +1,9 @@
 /*****************************************************************************
- Filename:          App.vue
- Description:       App Component
+ Filename:          eos-preboarding.vue
+ Description:       Preboarding container component
 
- Creation Date:     01/08/2019
- Author:            Piyush Gupte
+ Creation Date:     31/12/2019
+ Author:            Sri Bhargav Metta
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -13,19 +13,15 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-app style="background-color: #FFF;">
-    <router-view></router-view>
-  </v-app>
+  <router-view></router-view>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+ <script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "App"
+  name: "eos-preboarding"
 })
-export default class App extends Vue {}
+export default class EosPreboarding extends Vue {}
 </script>
-
 <style lang="scss" scoped>
 </style>

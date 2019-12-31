@@ -84,9 +84,6 @@ export default class EosLogin extends Vue {
     this.loginForm = new Form(controls, false);
   }
 
-  private mounted() {
-    this.$store.commit("alerts/setOnboardingFlag", false);
-  }
   private data() {
     return {
       conststr: require("./../../common/const-string.json"),
@@ -114,13 +111,21 @@ export default class EosLogin extends Vue {
             this.$data.conststr.access_token,
             res.authorization
           );
-          this.$router.push("/dashboard");
+          this.navigate();
         }
       })
       .catch(() => {
         // Show error message on screen
         this.$data.isValidLogin = false;
       });
+  }
+
+  private navigate() {
+    if (this.$route.name === "normal-login") {
+      this.$router.push("/");
+    } else {
+      this.$router.push("/onboarding");
+    }
   }
 }
 </script>
