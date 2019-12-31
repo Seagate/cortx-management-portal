@@ -29,7 +29,7 @@
         <span class="ml-2 font-weight-bold" id="lblIpv4Dhcp">DHCP</span>
       </div>
     </div>
-    <div class="row mt-5">
+    <div class="row pl-4 mt-5">
       <template v-for="node in ipv4Nodes">
         <div class="col-3 body-2 column" :key="node.id">
           <span class="font-weight-bold" id="lblIpv4Node"
