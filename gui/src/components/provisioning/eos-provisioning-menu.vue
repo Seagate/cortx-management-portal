@@ -1,9 +1,9 @@
 /*****************************************************************************
- Filename:          provisioning-submenu.vue
- Description:       Provisioning Submenu
+ Filename:          eos-provisioning-menu.vue
+ Description:       Provisioning menu component.
 
- Creation Date:     22/11/2019
- Author:            Vaibhav Bhavsar
+ Creation Date:     31/12/2019
+ Author:            Sri Bhargav Metta
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -21,7 +21,7 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">S3</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn :to="'/s3'" text small color="csmprimary">Manage</v-btn>
+                <v-btn :to="'/provisioning/s3'" text small color="csmprimary">Manage</v-btn>
               </v-card-actions>
             </div>
           </v-card>
