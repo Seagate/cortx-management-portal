@@ -47,7 +47,7 @@ const router = new Router({
       path: "/onboarding",
       name: "onboarding",
       component: EosOnboarding,
-      meta: { requiresAuth: false, isOnboardingReq: false }
+      meta: { requiresAuth: true, isOnboardingReq: false }
     },
     {
       path: "/",

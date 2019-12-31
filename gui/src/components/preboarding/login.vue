@@ -30,17 +30,6 @@
             </div>
           </div>
 
-          <div class="white--text mt-4">
-            <div class="pr-5">Language</div>
-            <select
-              name="language"
-              id="cmdLanguage"
-              class="input-text pl-2 white black--text"
-              style="width: 10em;"
-            >
-              <option value="celsius">English</option>
-            </select>
-          </div>
           <button
             type="button"
             class="btn-primary-dark mt-10"

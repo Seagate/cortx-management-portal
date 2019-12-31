@@ -22,7 +22,9 @@
       <headerBar />
       <div class="container pa-0 ma-0">
         <div class="d-inline-block display-nav">
-          <eos-nav-bar></eos-nav-bar>
+          <eos-nav-bar
+            v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+          ></eos-nav-bar>
         </div>
         <div class="d-inline-block display-container px-2 pt-6 pb-2 mr-5">
           <router-view></router-view>

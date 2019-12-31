@@ -4,7 +4,7 @@
       <v-col cols="6" class="mt-0 pt-0">
         <div class="body-2">
           <div class="title mt-0" id="lblIp6MNS">
-            Management Network Settings: IPv6
+            Management network settings: IPv6
           </div>
           <div class="mt-6" id="lblIPMsg">
             You need to configure a single IP address for management of this
