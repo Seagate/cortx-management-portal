@@ -20,6 +20,7 @@
 import json
 import os
 import time
+from marshmallow import Schema, fields, ValidationError
 from csm.common.payload import Payload, Json, JsonMessage, Dict
 from csm.common.comm import AmqpComm
 from csm.common.log import Log
@@ -28,6 +29,44 @@ from csm.core.blogic import const
 from jsonschema import Draft3Validator
 from jsonschema import validate
 from csm.common.errors import CsmError
+
+class AlertSchemaValidator(Schema):
+    """
+    AlertSchemaValidator for validating the schema using marshmallow for AlertPlugin.
+    """
+    alert_uuid = fields.String(required=True, 
+                               description="uuid to identify an  alert.")
+    hw_identifier = fields.String(required=True, 
+                                  description="unique key to identify hardware." 
+                                  "Combination of site_id,node_id,rack_id,"
+                                  "resource_id,cluster_id")
+    state = fields.String(required=True, 
+                          description="State of the alert "
+                          "(e.g. missing| insertion etc.)")
+    created_time = fields.Integer(required=True, 
+                                  description="Origination time of the alert")
+    updated_time = fields.Integer(required=False, 
+                                  description="Updation time of the alert")
+    resolved = fields.Boolean(required=False, 
+                              description="Resolution status of an alert."
+                              " (e.g. True | False)")
+    acknowledged = fields.Boolean(required=False, 
+                                  description="Alert is acknowldeged by the user or not." 
+                                  "(e.g. True | False)")
+    severity = fields.String(required=True, 
+                             description="Severity of an alert.(e.g. TBD")
+    module_type = fields.String(required=False, 
+                                description="Type of the module. (e.g. PSU, FAN)")
+    module_name = fields.String(required=False, 
+                                description="Name of the module. (e.g. Fan Module 4)")
+    description = fields.String(required=False, 
+                                description="This is the id from which a "
+                                "description will be fetched (e.g. TBD)")
+    health = fields.String(required=False, 
+                           description="Describes the health of PSU, Controller, Disk etc.")
+    health_recommendation = fields.String(required=False, 
+                                          description="This is the health recommendation string.")
+    extended_info = fields.Dict( required=False, description="Extended Info")
 
 class AlertPlugin(CsmPlugin):
     """
@@ -82,15 +121,28 @@ class AlertPlugin(CsmPlugin):
            alert.
         Parameters -
         1. body - Actual alert JSON string
+        Validations performed:
+        1. Validated without resource-type
+        2. Validating with wrong resource type as per mapping dict.
+        3. Validating with wrong data type in schema.
+        4. Validating empty alert data.
+        5. Validating with all appropriate data.
         """
         if self.monitor_callback:
             try:
                 alert = self._convert_to_csm_schema(message)
-                status = self.monitor_callback(alert)
+                """Validating Schema using marshmallow"""
+                alert_validator = AlertSchemaValidator()
+                alert_data = alert_validator.load(alert,  unknown='EXCLUDE')
+                status = self.monitor_callback(alert_data)
                 if status:
                     # Acknowledge the alert so that it could be
                     # removed from the queue.
                     self.comm_client.acknowledge()
+            except ValidationError as ve:
+                # Acknowledge incase of validation error.
+                Log.exception(ve)
+                self.comm_client.acknowledge()
             except Exception as e:
                 Log.exception(e)
                 # Silently acknowledge ill-formed CSM alerts
@@ -159,11 +211,6 @@ class AlertPlugin(CsmPlugin):
                 csm_schema[const.ALERT_COMMENT] = ""
                 csm_schema[const.ALERT_HW_IDENTIFIER] = \
                         csm_schema[const.ALERT_HW_IDENTIFIER].replace(" ", "_")
-                """ Validating the schema. """
-                validate(csm_schema, self._hw_schema)
-            else:
-                Log.error("No resource type found for alert - {%s}" %(message))
-                raise CsmError(-1, 'No resource type found for alert.')
         except Exception as e:
             Log.exception(e)
             raise CsmError(-1, '%s' %e)
