@@ -27,16 +27,17 @@ Vue.filter("timeago", (date: string) => {
   return moment.default(date).fromNow();
 });
 
-export const EVENT_BUS = new Vue();
+export const EventBus = new Vue();
 Vue.filter("capitalize", (value: any) => {
-  if (!value) { return ""; }
-  value = value.toString();
-  return value.charAt(0).toUpperCase() + value.slice(1);
+  if (value) {
+    value = value.toString();
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
 });
 
 new Vue({
   router,
   store,
   vuetify,
-  render: (h) => h(App),
+  render: h => h(App)
 }).$mount("#app");

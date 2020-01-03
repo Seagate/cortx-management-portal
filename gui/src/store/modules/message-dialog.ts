@@ -19,42 +19,46 @@ import { Module, VuexModule, Mutation } from "vuex-module-decorators";
 Vue.use(Vuex);
 
 @Module({
-    namespaced: true
+  namespaced: true
 })
 export default class MessageDialog extends VuexModule {
-    public showDialog: boolean = false;
-    public title: string = "Error";
-    public message: string = "Internal error occured";
-    private timer: any;
+  public showDialog: boolean = false;
+  public title: string = "Error";
+  public message: string = "Internal error occured";
+  private timer: any;
 
-    @Mutation
-    public show(dialogPayload: any) {
-        if (this.showDialog) {
-            clearTimeout(this.timer);
-        }
-        this.title = dialogPayload.title ? dialogPayload.title : "Error";
-        this.message = dialogPayload.message ? dialogPayload.message : "Internal error occured";
-        this.showDialog = true;
-        this.timer = setTimeout(() => {
-            this.showDialog = false;
-        }, 5000);
+  @Mutation
+  public show(dialogPayload: any) {
+    if (this.showDialog) {
+      clearTimeout(this.timer);
     }
-
-    @Mutation
-    public hide() {
-        clearTimeout(this.timer);
+    if (dialogPayload) {
+      this.title = dialogPayload.title ? dialogPayload.title : "Error";
+      this.message = dialogPayload.message
+        ? dialogPayload.message
+        : "Internal error occured";
+      this.showDialog = true;
+      this.timer = setTimeout(() => {
         this.showDialog = false;
-        this.title = "Error";
-        this.message = "Internal error occured";
+      }, 5000);
     }
+  }
 
-    @Mutation
-    public setTitle(title: string) {
-        this.title = title;
-    }
+  @Mutation
+  public hide() {
+    clearTimeout(this.timer);
+    this.showDialog = false;
+    this.title = "Error";
+    this.message = "Internal error occured";
+  }
 
-    @Mutation
-    public setMessage(message: string) {
-        this.message = message;
-    }
+  @Mutation
+  public setTitle(title: string) {
+    this.title = title;
+  }
+
+  @Mutation
+  public setMessage(message: string) {
+    this.message = message;
+  }
 }

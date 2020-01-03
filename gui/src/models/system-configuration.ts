@@ -19,9 +19,7 @@
 
 export interface Ipv4 {
   is_dhcp: boolean;
-  ip_address: string;
-  netmask: string;
-  gateway: string;
+  nodes: Ipv4Node;
 }
 
 export interface Ipv6 {
@@ -37,9 +35,14 @@ export interface ManagementNetworkSettings {
   ipv6: Ipv6;
 }
 
+export interface ManagementNetworkIpv4 {
+  is_dhcp: boolean;
+  nodes: Ipv4Node;
+}
 export interface Ipv4Node {
   id: number;
   ip_address: string;
+  vip_address?: string;
   netmask: string;
   gateway: string;
 }
@@ -129,6 +132,10 @@ export interface Notifications {
   syslog: Syslog;
 }
 
+export interface WizardData {
+  current_component: string;
+}
+
 export interface SystemConfigObject {
   management_network_settings: ManagementNetworkSettings;
   data_network_settings: DataNetworkSettings;
@@ -137,4 +144,34 @@ export interface SystemConfigObject {
   config_id: string;
   ldap: Ldap;
   notifications: Notifications;
+  wizard_metadata: WizardData;
+}
+
+export interface Header {
+  state: string;
+  name: string;
+}
+
+export interface Footer {
+  nextComponent: string;
+  prevComponent: string;
+  nextBtnText: string;
+  prevBtnText: string;
+  api: string;
+}
+
+export interface Step {
+  sequence: number;
+  isSubstep: boolean;
+  component: string;
+  path: string;
+  isByPassed: boolean;
+  header?: Header;
+  footer: Footer;
+  name: string;
+}
+
+export interface WizardMetadata {
+  currentComponent: string;
+  steps: Step[];
 }
