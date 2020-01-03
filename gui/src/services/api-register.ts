@@ -24,7 +24,7 @@ export default {
     udx_reg_status: `api/${version}/udx-device/registration-status`,
     udx_reg_token: `api/${version}/udx-device/registration-token`,
     udx_device: `api/${version}/udx-device`,
-    s3_account: `/api/${version}/s3_account`,
+    s3_account: `/api/${version}/s3_accounts`,
     s3_iam_user: `/api/${version}/s3_iam_user`,
     s3_bucket: `/api/${version}/s3/bucket`,
     stats: `api/${version}/stats/throughput`,
