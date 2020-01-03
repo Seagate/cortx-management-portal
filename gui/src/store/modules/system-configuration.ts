@@ -257,8 +257,8 @@ export default class SystemConfiguration extends VuexModule {
   }
 
   @Mutation
-  public setWizardMetadata(payload: any) {
-    this.wizardMetadata = payload;
+  public setWizardCurrentComponent(payload: any) {
+    this.wizardMetadata.currentComponent = payload;
   }
   @Mutation
   public setDataNetworkSettings(networkType: any) {
@@ -280,7 +280,6 @@ export default class SystemConfiguration extends VuexModule {
   }
   @Action
   public async getSystemConfigAction() {
-    this.context.commit("setWizardMetadata", wizardConfig);
     try {
       const res = await Api.getAll(apiRegister.sysconfig);
       let data = {};
@@ -470,6 +469,11 @@ export default class SystemConfiguration extends VuexModule {
   @Action
   public async showLoaderMessage(loaderData: any) {
     this.context.commit("loaderConfigMutation", loaderData);
+    if (loaderData.show) {
+      setTimeout(() => {
+        this.context.commit("loaderConfigMutation", { show: false });
+      }, 5000);
+    }
   }
   get showLoaderStatus() {
     return this.showLoader;
