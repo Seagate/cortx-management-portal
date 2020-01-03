@@ -23,13 +23,14 @@ import EosWelcome from "./components/preboarding/welcome.vue";
 import EosLogin from "./components/preboarding/login.vue";
 import UDXRegistration from "./components/udx/udx-registration.vue";
 import EosAutoLogin from "./components/preboarding/auto-login.vue";
+import EosHomebase from "./components/onboarding/homebase.vue";
+import EosOnboarding from "./components/onboarding/system-config/onboarding.vue";
 import EosDefault from "./components/eos-default.vue";
 import EosPreboarding from "./components/preboarding/eos-preboarding.vue";
 import EosProvisioning from "./components/provisioning/eos-provisioning.vue";
 import EosProvisioningMenu from "./components/provisioning/eos-provisioning-menu.vue";
 import EosSettings from "./components/settings/eos-settings.vue";
 import EosSettingsMenu from "./components/settings/eos-settings-menu.vue";
-
 
 Vue.use(Router);
 
@@ -133,6 +134,18 @@ const router = new Router({
               meta: { requiresAuth: true, isOnboardingReq: false }
             }
           ]
+        },
+        {
+          path: "/homebase",
+          name: "homebase",
+          component: EosHomebase,
+          meta: { requiresAuth: true, isOnboardingReq: false }
+        },
+        {
+          path: "/onboarding",
+          name: "onboarding",
+          component: EosOnboarding,
+          meta: { requiresAuth: true, isOnboardingReq: false }
         }
       ]
     },
@@ -142,7 +155,7 @@ const router = new Router({
       component: EosAutoLogin,
       meta: { requiresAuth: false, isOnboardingReq: false }
     }
-  ],
+  ]
 });
 
 // This code executes before any route happens

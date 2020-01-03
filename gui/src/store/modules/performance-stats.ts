@@ -17,113 +17,121 @@ import Vuex from "vuex";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import {
-    PerfomanceStatsDetails,
-    PerformanceStatsQueryParams,
-    DiskCapacityDetails
+  PerfomanceStatsDetails,
+  PerformanceStatsQueryParams,
+  DiskCapacityDetails
 } from "./../../models/performance-stats";
-import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
+import {
+  Module,
+  VuexModule,
+  Mutation,
+  Action,
+  MutationAction
+} from "vuex-module-decorators";
 import StatsUtility from "./../../common/stats-utility";
 
 Vue.use(Vuex);
 
 @Module({
-    namespaced: true
+  namespaced: true
 })
 export default class PerformanceStats extends VuexModule {
-
-    public throughputPerformanceData: PerfomanceStatsDetails | null = null;
-    public latencyPerformanceData: PerfomanceStatsDetails | null = null;
-    public capacityData: DiskCapacityDetails = {
-        size: "0 GB",
-        used: "0 GB",
-        avail: "0 GB",
-        usage_percentage: "0 %"
-    };
-    public constStr = require("../../common/const-string.json");
-    // Throuthput
-    @Action
-    public async getThroughputPerformanceStats(queryParams: PerformanceStatsQueryParams) {
-        try {
-            const res = await Api.getAll(apiRegister.throughput, queryParams);
-
-            return StatsUtility.formatData(res.data, this.constStr.throughput);
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.error("err logger: ", e);
-        }
+  public throughputPerformanceData: PerfomanceStatsDetails | null = null;
+  public latencyPerformanceData: PerfomanceStatsDetails | null = null;
+  public capacityData: DiskCapacityDetails = {
+    size: "0 GB",
+    used: "0 GB",
+    avail: "0 GB",
+    usage_percentage: "0 %"
+  };
+  public constStr = require("../../common/const-string.json");
+  // Throuthput
+  @Action
+  public async getThroughputPerformanceStats(
+    queryParams: PerformanceStatsQueryParams
+  ) {
+    try {
+      const res = await Api.getAll(apiRegister.throughput, queryParams);
+      if (res && res.data) {
+        return StatsUtility.formatData(res.data, this.constStr.throughput);
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
     }
+  }
 
-    @Mutation
-    public setThrouthputPerformanceStats(payload: any) {
-        this.throughputPerformanceData = { ...payload };
+  @Mutation
+  public setThrouthputPerformanceStats(payload: any) {
+    this.throughputPerformanceData = { ...payload };
+  }
+
+  get getThroughputperformanceStats() {
+    if (this.throughputPerformanceData) {
+      return StatsUtility.formatData(this.throughputPerformanceData);
     }
+    return;
+  }
 
-    get getThroughputperformanceStats() {
-        if (this.throughputPerformanceData) {
-            return StatsUtility.formatData(this.throughputPerformanceData);
-        }
-        return;
+  // Latency
+  @Action
+  public async getLatencyPerformanceStats(latencyParams: any) {
+    try {
+      const res = await Api.getAll(apiRegister.latency, latencyParams);
+      if (res && res.data) {
+        return StatsUtility.formatData(res.data, this.constStr.latency);
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
     }
+  }
+  @Mutation
+  public setLatencyPerformanceStats(payload: any) {
+    this.latencyPerformanceData = { ...payload };
+  }
 
-    // Latency
-    @Action
-    public async getLatencyPerformanceStats(latencyParams: any) {
-        try {
-            const res = await Api.getAll(apiRegister.latency, latencyParams);
-
-            return StatsUtility.formatData(res.data, this.constStr.latency);
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.error("err logger: ", e);
-        }
-
+  get getLatencyperformanceStats() {
+    if (this.latencyPerformanceData) {
+      return StatsUtility.formatData(this.latencyPerformanceData);
     }
-    @Mutation
-    public setLatencyPerformanceStats(payload: any) {
-        this.latencyPerformanceData = { ...payload };
+  }
+
+  // Iops
+  @Action
+  public async getIopsPerformanceStats(latencyParams: any) {
+    try {
+      const res = await Api.getAll(apiRegister.iops, latencyParams);
+      if (res && res.data) {
+        return StatsUtility.formatData(res.data, this.constStr.iops);
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
     }
+  }
 
-    get getLatencyperformanceStats() {
-        if (this.latencyPerformanceData) {
-            return StatsUtility.formatData(this.latencyPerformanceData);
-        }
-
+  // capacity
+  @Action
+  public async getCapacityStats(latencyParams: any) {
+    try {
+      const res = await Api.getAll(apiRegister.capacity, latencyParams);
+      if (res && res.data) {
+        this.context.commit("setCapacityStats", res.data);
+        return StatsUtility.formatCapacityData(res.data);
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
     }
+  }
 
-    // Iops
-    @Action
-    public async getIopsPerformanceStats(latencyParams: any) {
-        try {
-            const res = await Api.getAll(apiRegister.iops, latencyParams);
+  @Mutation
+  public async setCapacityStats(data: DiskCapacityDetails) {
+    this.capacityData = { ...data };
+  }
 
-            return StatsUtility.formatData(res.data, this.constStr.iops);
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.error("err logger: ", e);
-        }
-    }
-
-    // capacity
-    @Action
-    public async getCapacityStats(latencyParams: any) {
-        try {
-            const res = await Api.getAll(apiRegister.capacity, latencyParams);
-            this.context.commit("setCapacityStats", res.data);
-            return StatsUtility.formatCapacityData(res.data);
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.error("err logger: ", e);
-        }
-    }
-
-    @Mutation
-    public async setCapacityStats(data: DiskCapacityDetails) {
-        this.capacityData = { ...data };
-    }
-
-    get getCapacity() {
-        return this.capacityData;
-    }
-
-
+  get getCapacity() {
+    return this.capacityData;
+  }
 }

@@ -16,23 +16,32 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
-import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
+import CommonUtils from "../../common/common-utils";
+import {
+  Module,
+  VuexModule,
+  Mutation,
+  Action,
+  MutationAction
+} from "vuex-module-decorators";
 import {
   SystemConfigObject,
   ManagementNetworkSettings,
   DataNetworkSettings,
   DnsNetworkSettings,
   DateTimeSettings,
-  Notifications
+  Notifications,
+  WizardMetadata
 } from "./../../models/system-configuration";
-
+import { wizardConfig } from "./../../models/system-config-wizard";
+const { findStepIndexFromComponentName } = CommonUtils;
 Vue.use(Vuex);
-
 @Module({
   namespaced: true
 })
 export default class SystemConfiguration extends VuexModule {
   public systemConfigDetails: SystemConfigObject = {} as SystemConfigObject;
+  public wizardMetadata: WizardMetadata = wizardConfig as WizardMetadata;
   public isipV4: boolean = false;
   public isipV6: boolean = false;
   public isnetworkSettingsSkip: boolean = false;
@@ -48,7 +57,16 @@ export default class SystemConfiguration extends VuexModule {
   public isEmailSettings: boolean = false;
   public isSysLogSettings: boolean = false;
   public isNotificationSettingSkip: boolean = false;
+  public componentNameToSearch: string = "";
+  public isOnboardingShow: boolean = false;
 
+  @Mutation
+  public setOnboardingFlag(flag: boolean) {
+    this.isOnboardingShow = flag;
+  }
+  get onboardingStatus() {
+    return this.isOnboardingShow;
+  }
   @Mutation
   public userConfigLdapMutation(payload: any) {
     this.systemConfigDetails.ldap = { ...payload };
@@ -104,7 +122,11 @@ export default class SystemConfiguration extends VuexModule {
   public async updateLdapUserConfig(payload: any) {
     try {
       this.context.commit("userConfigLdapMutation", payload);
-      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
       if (res && res.data) {
         const data = res.data;
         this.context.commit("systemConfigMutation", data);
@@ -124,7 +146,11 @@ export default class SystemConfiguration extends VuexModule {
   public async updateEmailNotificationUserConfig(payload: any) {
     try {
       this.context.commit("userConfigEmailNotificaionMutation", payload);
-      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
       if (res && res.data) {
         const data = res.data;
         this.context.commit("systemConfigMutation", data);
@@ -144,7 +170,11 @@ export default class SystemConfiguration extends VuexModule {
   public async updateSyslogNotificationUserConfig(payload: any) {
     try {
       this.context.commit("userConfigSysLogNotificaionMutation", payload);
-      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
       if (res && res.data) {
         const data = res.data;
         this.context.commit("systemConfigMutation", data);
@@ -155,11 +185,9 @@ export default class SystemConfiguration extends VuexModule {
       console.log(e);
     }
   }
-
   @Mutation
   public systemConfigMutation(payload: any) {
     this.systemConfigDetails = { ...payload };
-    // this.systemConfigDetails = { ...payload };
   }
   @Mutation
   public MngmtIpv4ConfigMutation(payload: any) {
@@ -213,10 +241,24 @@ export default class SystemConfiguration extends VuexModule {
   public setNetworkManagementSettings(networkType: any) {
     if (networkType.type === "ipV4") {
       this.isipV4 = networkType.flag;
+      this.componentNameToSearch = "EosNetworkSettingsIpv4";
     }
     if (networkType.type === "ipV6") {
       this.isipV6 = networkType.flag;
+      this.componentNameToSearch = "EosNetworkSettingsIpv6";
     }
+    const stepIndex = findStepIndexFromComponentName(
+      this.componentNameToSearch,
+      this.wizardMetadata
+    );
+    if (stepIndex !== undefined || stepIndex !== -1) {
+      this.wizardMetadata.steps[stepIndex].isByPassed = !networkType.flag;
+    }
+  }
+
+  @Mutation
+  public setWizardMetadata(payload: any) {
+    this.wizardMetadata = payload;
   }
   @Mutation
   public setDataNetworkSettings(networkType: any) {
@@ -227,17 +269,17 @@ export default class SystemConfiguration extends VuexModule {
       this.isDataipV6 = networkType.flag;
     }
   }
-
   @Action
   public async getSystemConfigAction() {
+    this.context.commit("setWizardMetadata", wizardConfig);
     try {
       const res = await Api.getAll(apiRegister.sysconfig);
       let data = {};
-      if (res.data && Array.isArray(res.data)) {
+      if (res && res.data && Array.isArray(res.data)) {
         data = res.data[0];
+        this.context.commit("systemConfigMutation", data);
+        return data;
       }
-      this.context.commit("systemConfigMutation", data);
-      return data;
     } catch (error) {
       // tslint:disable-next-line: no-console
       console.error(error);
@@ -249,10 +291,14 @@ export default class SystemConfiguration extends VuexModule {
       // Create blank object for the first time.
       const sysConfig = this.systemConfigDetails;
       if (!sysConfig || !sysConfig.config_id) {
-        const res = await Api.post(apiRegister.sysconfig, this.systemConfigDetails);
-        const data = res.data;
-        this.context.commit("systemConfigMutation", data);
-        return res;
+        const res = await Api.post(
+          apiRegister.sysconfig,
+          this.systemConfigDetails
+        );
+        if (res && res.data && Array.isArray(res.data)) {
+          const data = res.data;
+          return data;
+        }
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -263,7 +309,11 @@ export default class SystemConfiguration extends VuexModule {
   public async updateMngmtIpv4(payload: any) {
     try {
       this.context.commit("MngmtIpv4ConfigMutation", payload);
-      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
       return res;
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -274,7 +324,11 @@ export default class SystemConfiguration extends VuexModule {
   public async updateMngmtIpv6(payload: any) {
     try {
       this.context.commit("MngmtIpv6ConfigMutation", payload);
-      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
       return res;
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -286,7 +340,11 @@ export default class SystemConfiguration extends VuexModule {
   public async updateDataNetworkSettingIpv4(payload: any) {
     try {
       this.context.commit("DataNetworkSettingIpv4Mutation", payload);
-      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
       return res;
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -298,7 +356,11 @@ export default class SystemConfiguration extends VuexModule {
   public async updateDataNetworkSettingIpv6(payload: any) {
     try {
       this.context.commit("DataNetworkSettingIpv6Mutation", payload);
-      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
       return res;
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -310,7 +372,11 @@ export default class SystemConfiguration extends VuexModule {
   public async updateDNSSetting(payload: any) {
     try {
       this.context.commit("updateDNSSettingMutation", payload);
-      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
       return res;
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -322,16 +388,28 @@ export default class SystemConfiguration extends VuexModule {
   public async updateNTPSetting(payload: any) {
     try {
       this.context.commit("updateNTPSettingMutation", payload);
-      const res = await Api.put(apiRegister.sysconfig, this.systemConfigDetails, this.systemConfigDetails.config_id);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
       return res;
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error(e);
     }
   }
-  /**
-   * sysconfig getter
-   */
+  // Wizard Update
+  @Action
+  public async updateWizardMetadata(payload: any) {
+    try {
+      this.context.commit("setWizardMetadata", payload);
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error(e);
+    }
+  }
+
   // Get system configuration from store
   get userConfigData() {
     return this.systemConfigDetails;
@@ -357,20 +435,21 @@ export default class SystemConfiguration extends VuexModule {
   get systemconfig() {
     return this.systemConfigDetails;
   }
-  // Management network settings getter
   get isipV4Status() {
     return this.isipV4;
   }
   get isipV6Status() {
     return this.isipV6;
   }
-
   // Data network settings getter
   get isDataipV4Status() {
     return this.isDataipV4;
   }
   get isDataipV6Status() {
     return this.isDataipV6;
+  }
+  get wizardMetadataObject() {
+    return this.wizardMetadata;
   }
 
   // Loader Config

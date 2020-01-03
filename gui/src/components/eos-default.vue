@@ -1,23 +1,19 @@
 /*****************************************************************************
- Filename:          alert-medium.vue
- Description:       Alert Medium Component
-
- Creation Date:     01/08/2019
- Author:            Piyush Gupte
-
- Do NOT modify or remove this copyright and confidentiality notice!
- Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
- The code contained herein is CONFIDENTIAL to Seagate Technology, LLC.
- Portions are also trade secret. Any use, duplication, derivation, distribution
- or disclosure of this code, for any reason, not expressly authorized is
- prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
- *****************************************************************************/
+Filename: alert-medium.vue Description: Alert Medium Component Creation Date:
+01/08/2019 Author: Piyush Gupte Do NOT modify or remove this copyright and
+confidentiality notice! Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate
+Technology, LLC. The code contained herein is CONFIDENTIAL to Seagate
+Technology, LLC. Portions are also trade secret. Any use, duplication,
+derivation, distribution or disclosure of this code, for any reason, not
+expressly authorized is prohibited. All other rights are expressly reserved by
+Seagate Technology, LLC.
+*****************************************************************************/
 <template>
   <div class="main-view">
     <header-bar />
     <div class="container pa-0 ma-0">
       <div class="d-inline-block display-nav">
-        <eos-nav-bar></eos-nav-bar>
+        <eos-nav-bar v-if="!isRouterPathOnboading"></eos-nav-bar>
       </div>
       <div class="d-inline-block display-container px-2 pt-6 pb-2 mr-5">
         <router-view></router-view>
@@ -44,7 +40,11 @@ import EOSMessageDialog from "./widgets/eos-message-dialog.vue";
     EOSMessageDialog
   }
 })
-export default class EosDefault extends Vue {}
+export default class EosDefault extends Vue {
+  get isRouterPathOnboading() {
+    return this.$route.name === "onboarding";
+  }
+}
 </script>
 
 <style lang="scss" scoped>

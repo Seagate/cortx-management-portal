@@ -1,76 +1,105 @@
 <template>
-  <v-container class="mt-6">
-    <v-img
-      id="alert-img"
-      :src="require('./../../../../assets/onboarding-wizard.png')"
-      width="780px"
-      height="70px"
-    ></v-img>
-    <v-divider />
-    <v-row>
-      <v-col cols="6">
-        <div class="body-2">
-          <div class="title mt-6" id="lblNetworkIP4">Management Network Settings: IPv4</div>
-          <div class="mt-6" id="lblNetworkMsg">
-            You need to configure a single IP address for management of this system.
-          </div>
-          <v-divider class="mt-2" />
-          <div class="font-weight-bold mt-6" id="lblIp4Source">
-            Source
-          </div>
-          <div class="mt-4">
-            <input type="radio" name="source" v-model="source" value="manual" />
-            <span class="ml-3 font-weight-bold" id="lblIp4Manual">Manual</span>
-            <input class="ml-10" type="radio" disabled name="DHCP" value="DHCP" id="txtIP4DHCP" />
-            <span class="ml-3 font-weight-bold" id="lblIp4DHCP">DHCP</span>
-          </div>
-          <div>
-            <div class="mt-4">
-              <span class="font-weight-bold" id="lblIp4Adress">IP Address</span>
+  <v-container class="mt-0 ml-0">
+    <div class="pl-4 body-2">
+      <div class="title mt-0 font-weight-bold" id="lblNetworkIP4">
+        Management network settings: IPv4
+      </div>
+      <div class="mt-6" id="lblNetworkMsg">
+        You need to configure a single IP address for management of this system.
+      </div>
+      <v-divider class="mt-2" />
+      <div class="font-weight-bold mt-6" id="lblIp4Source">Source</div>
+      <div class="mt-4">
+        <input type="radio" name="source" v-model="source" value="manual" />
+        <span class="ml-3 font-weight-bold" id="lblIp4Manual">Manual</span>
+        <input
+          class="ml-10"
+          type="radio"
+          name="DHCP"
+          v-model="source"
+          value="DHCP"
+          id="txtIP4DHCP"
+        />
+        <!-- disabled -->
+        <span class="ml-3 font-weight-bold" id="lblIp4DHCP">DHCP</span>
+      </div>
+      <div class="row mt-5">
+        <template v-for="node in ipv4Nodes">
+          <div class="col-3 body-2 column" :key="node.id">
+            <span class="font-weight-bold" id="lblIpv4Node"
+              >Node {{ node.id }}</span
+            >
+            <v-divider class="mt-2" />
+            <div class="mt-5" v-if="source == 'manual'">
+              <span class="font-weight-bold" id="lblMngmtNetworkIpv4Ipaddress"
+                >IP Address</span
+              >
               <div>
                 <input
                   class="input-text"
                   type="text"
                   name="ipaddress"
-                  v-model="ipv4IpAddress"
-                  id="txtNetworkSettingsIpv4IpAddress"
+                  v-model="node.ip_address"
+                  :id="node.id + 'txtMngmtNetworkIpv4Ipaddress'"
                 />
               </div>
             </div>
             <div class="mt-4">
-              <span class="font-weight-bold" id="lblIp4Netmask">Netmask</span>
+              <span class="font-weight-bold" id="lblMngmtNetworkIpv4VIPAddress"
+                >VIP Address</span
+              >
               <div>
-                <input class="input-text" type="text" name="netmask" v-model="ipv4Netmask" id="txtIpv4Netmask" />
+                <input
+                  class="input-text"
+                  type="text"
+                  name="vipaddress"
+                  v-model="node.vip_address"
+                  :id="node.id + 'txtMngmtNetworkIpv4VIpAddress'"
+                />
               </div>
             </div>
             <div class="mt-4">
-              <span class="font-weight-bold" id="lblIp4Gateway">Gateway</span>
+              <span class="font-weight-bold" id="lblMngmtNetworkIpv4Netmask"
+                >Netmask</span
+              >
               <div>
-                <input class="input-text" type="text" name="gateway" v-model="ipv4Gateway" id="txtIP4Gateway" />
+                <input
+                  class="input-text"
+                  type="text"
+                  name="netmask"
+                  v-model="node.netmask"
+                  :id="node.id + 'txtMngmtNetworkIpv4netmask'"
+                />
+              </div>
+            </div>
+            <div class="mt-4">
+              <span class="font-weight-bold" id="lblIpv4Gateway">Gateway</span>
+              <div>
+                <input
+                  class="input-text"
+                  type="text"
+                  name="gateway"
+                  v-model="node.gateway"
+                  :id="node.id + 'txtDataNetworkIpv4gateway'"
+                />
               </div>
             </div>
           </div>
-          <div class="mt-10">
-            <p
-              v-if="!isValid"
-              class="red--text error-message"
-            >Please enter valid values.</p>
-            <v-btn elevation="0" color="csmprimary" @click="gotoNextPage()" id="btnIP4Apply">
-              <span class="white--text">Apply and continue</span>
-            </v-btn>
-            <span class="csmprimary--text ml-8 pointer" @click="$router.push('systemconfig1')" id="lblIp4Back"
-              >Back to previous step</span
-            >
-          </div>
-        </div>
-      </v-col>
-    </v-row>
+        </template>
+      </div>
+
+      <span class="d-none">{{ isValidForm }}</span>
+    </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { mapState } from "vuex";
-import { SystemConfigObject, Ipv4 } from "./../../../../models/system-configuration";
+import {
+  SystemConfigObject,
+  Ipv4
+} from "./../../../../models/system-configuration";
+import { EventBus } from "./../../../../main";
 
 @Component({
   name: "eos-network-settings-ipv4"
@@ -78,39 +107,43 @@ import { SystemConfigObject, Ipv4 } from "./../../../../models/system-configurat
 export default class EosNetworkSettingsIpv4 extends Vue {
   public mounted() {
     this.managementNetworkGetter();
-    this.$store.commit("alerts/setOnboardingFlag", false);
+    // WizardHook: Open a listener for onNext event
+    // So when wizard footer clicks on the Next Button this component can perform its own workflow
+    EventBus.$on("emitOnNext", (res: any) => {
+      this.updateIpv4Config()
+        .then(result => {
+          res(true);
+        })
+        .catch(err => {});
+    });
+  }
+  public destroyed() {
+    // WizardHook: shut off on exit event listener
+    EventBus.$off("emitOnNext");
+  }
+  get isValidForm() {
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EventBus.$emit("validForm", true);
+    return true;
   }
   public managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (systemconfig.management_network_settings && systemconfig.management_network_settings.ipv4) {
-      this.$data.ipv4Gateway = systemconfig.management_network_settings.ipv4.gateway;
-      this.$data.ipv4Netmask = systemconfig.management_network_settings.ipv4.netmask;
-      this.$data.ipv4IpAddress = systemconfig.management_network_settings.ipv4.ip_address;
+    const mngmtNetworkSettings = systemconfig.management_network_settings;
+    if (
+      mngmtNetworkSettings &&
+      mngmtNetworkSettings.ipv4 &&
+      mngmtNetworkSettings.ipv4.nodes
+    ) {
+      this.$data.ipv4Nodes = mngmtNetworkSettings.ipv4.nodes;
+      this.$data.source =
+        mngmtNetworkSettings.ipv4.is_dhcp == true ? "DHCP" : "manual";
     }
   }
-  public gotoNextPage() {
-    this.updateIpv4Config().then((res: any) => {
-      if (res) {
-          if (this.$store.getters["systemConfig/isipV6Status"] === true) {
-            this.$router.push("systemconfig3");
-          } else {
-            this.$router.push("dataconfig1");
-          }
-        } else {
-          this.$data.isValid = false;
-        }        
-    })
-    .catch(() => {
-      console.error("Save Email Notifications settings Failed");
-    });    
-  }
-
   public updateIpv4Config() {
     const queryParams: Ipv4 = {
-      is_dhcp: false,
-      ip_address: this.$data.ipv4IpAddress,
-      netmask: this.$data.ipv4Netmask,
-      gateway: this.$data.ipv4Gateway
+      is_dhcp: this.$data.source == "DHCP",
+      nodes: this.$data.ipv4Nodes
     };
     return this.$store.dispatch("systemConfig/updateMngmtIpv4", queryParams);
   }
@@ -121,7 +154,11 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       ipv4Gateway: "",
       source: "manual",
       systemConfigObject: {} as SystemConfigObject,
-      isValid: true
+      isValid: true,
+      ipv4Nodes: [
+        { id: 0, ip_address: "", netmask: "", gateway: "" },
+        { id: 1, ip_address: "", netmask: "", gateway: "" }
+      ]
     };
   }
 }
