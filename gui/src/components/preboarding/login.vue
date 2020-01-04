@@ -8,33 +8,50 @@
       <div class="ml-4 white--text headline my-10">EXOS Edge Login</div>
       <div class="ma-4">
         <form autocomplete="off">
-          <div class="mt-4">
-            <span class="white--text font-weight-medium">Username</span>
-            <div>
-              <InputBox
-                :form="loginForm"
-                :control="loginForm.controls[0]"
-                @keyup.enter.native="handleEnterEvent()"
-              />
-            </div>
+          <div
+            class="eos-form-group"
+            :class="{ 'eos-form-group--error': $v.loginForm.username.$error }"
+          >
+            <input
+              class="eos-form__input_text"
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              v-model.trim="loginForm.username"
+              @input="$v.loginForm.username.$touch"
+              @keyup.enter.native="handleEnterEvent()"
+            />
+            <span
+              class="eos-form-group-label eos-form-group-error-msg"
+              v-if="$v.loginForm.username.$dirty && !$v.loginForm.username.required"
+            >Username is required</span>
           </div>
-
-          <div class="mt-4">
-            <span class="font-weight-medium white--text">Password</span>
-            <div>
-              <InputBox
-                :form="loginForm"
-                :control="loginForm.controls[1]"
-                @keyup.enter.native="handleEnterEvent()"
-              />
-            </div>
+          <div
+            class="mt-4 eos-form-group"
+            :class="{ 'eos-form-group--error': $v.loginForm.password.$error }"
+          >
+            <input
+              class="eos-form__input_text"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              v-model.trim="loginForm.password"
+              @input="$v.loginForm.password.$touch"
+              @keyup.enter.native="handleEnterEvent()"
+            />
+            <span
+              class="eos-form-group-label eos-form-group-error-msg"
+              v-if="$v.loginForm.password.$dirty && !$v.loginForm.password.required"
+            >Password is required</span>
           </div>
 
           <button
             type="button"
-            class="btn-primary-dark mt-10"
+            class="eos-btn-primary-dark mt-3"
             @click="gotToNextPage()"
-            :disabled="!loginForm.isValid"
+            :disabled="$v.loginForm.$invalid"
           >Login</button>
           <!--TODO: This is temporary error handling for Demo-->
           <div v-if="!isValidLogin" class="red--text mt-1">Login Failed</div>
@@ -44,34 +61,27 @@
   </v-container>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
+import { Validations } from "vuelidate-property-decorators";
+import { required } from "vuelidate/lib/validators";
 import { UserLoginQueryParam } from "./../../models/user-login";
-import InputBox from "../widgets/input-box.vue";
-import { Form, FormControl, Validator } from "../widgets/form-widget";
 
 @Component({
-  name: "eos-login",
-  components: { InputBox }
+  name: "eos-login"
 })
 export default class EosLogin extends Vue {
-  private loginForm: Form;
+  public loginForm: UserLoginQueryParam = {
+    username: "",
+    password: ""
+  };
 
-  constructor() {
-    super();
-
-    const controls: FormControl[] = [
-      new FormControl("", "username", "text", "", true, "Username is required"),
-      new FormControl(
-        "",
-        "password",
-        "password",
-        "",
-        true,
-        "Password is required"
-      )
-    ];
-    this.loginForm = new Form(controls, false);
-  }
+  @Validations()
+  public validations = {
+    loginForm: {
+      username: { required },
+      password: { required }
+    }
+  };
 
   private data() {
     return {
@@ -79,21 +89,22 @@ export default class EosLogin extends Vue {
       isValidLogin: true
     };
   }
+
   private handleEnterEvent() {
-    if (this.$data.loginForm.isValid) {
+    if (this.$v.loginForm && !this.$v.loginForm.$invalid) {
       this.gotToNextPage();
     }
   }
+
   private gotToNextPage() {
     // Hide login err message
     this.$data.isValidLogin = true;
-    const queryParams: UserLoginQueryParam = this.loginForm.getModel();
     this.$store
-      .dispatch("userLogin/loginAction", queryParams)
+      .dispatch("userLogin/loginAction", this.loginForm)
       .then((res: any) => {
         if (res.authorization) {
           const user: any = {
-            username: queryParams.username
+            username: this.loginForm.username
           };
           this.$store.commit("userLogin/setUser", user);
           localStorage.setItem(
@@ -120,45 +131,4 @@ export default class EosLogin extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.input-text {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #e3e3e3;
-  width: 20em;
-  height: 2.5em;
-}
-.pointer {
-  cursor: pointer;
-}
-.btn-primary-dark {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid #ffffff;
-  box-sizing: border-box;
-  border-radius: 4px;
-  height: 40px;
-  min-width: 64px;
-  padding-left: 16px;
-  padding-right: 16px;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
-  color: #ffffff;
-}
-.btn-primary-dark:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-.btn-primary-dark:active {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-.btn-primary-dark:focus {
-  outline: 0;
-}
-.btn-primary-dark:disabled {
-  opacity: 0.5;
-  border: 1px solid var(--v-csmborder-base);
-  color: var(--v-csmborder-base);
-}
 </style>

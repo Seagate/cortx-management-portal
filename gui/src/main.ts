@@ -20,7 +20,9 @@ import vuetify from "./plugins/vuetify";
 import * as moment from "moment";
 import "@/common/style.css";
 import { errorHandler } from "./common/error-handler";
+import Vuelidate from "vuelidate";
 
+Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 Vue.config.errorHandler = errorHandler;
 Vue.filter("timeago", (date: string) => {
