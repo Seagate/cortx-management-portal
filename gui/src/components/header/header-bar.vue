@@ -113,12 +113,12 @@
     <v-divider
       class="mx-4 grey darken-4"
       vertical
-      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+      v-if="!isRouterPathOnboading"
     ></v-divider>
     <div
       class="pa-5 white--text pointer"
       @click="logout()"
-      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
+      v-if="!isRouterPathOnboading"
     >
       Logout
     </div>
@@ -154,6 +154,9 @@ export default class HeaderBar extends Vue {
 
   get alertNotifications() {
     return this.$store.state.alertNotification.socket;
+  }
+  get isRouterPathOnboading() {
+    return this.$route.name === "onboarding";
   }
   private logout() {
     // Invalidate session from Server, remove localStorage token and re-route to login page

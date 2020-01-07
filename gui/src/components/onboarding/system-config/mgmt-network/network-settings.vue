@@ -22,7 +22,9 @@
           v-model="isipV4Status"
           id="chkNsisipV4Status"
         />
-        <span class="ml-3 font-weight-bold">IPv4</span>
+        <label for="chkNsisipV4Status">
+          <span class="ml-3 font-weight-bold">IPv4</span>
+        </label>
       </div>
       <div class="mt-2">
         Selecting IPv4 will allow you to view settings assigned by DHCP or to
@@ -38,8 +40,10 @@
           value="skip"
           id="chkNSStatus"
         />
-        <span class="ml-3 font-weight-bold" id="lblNSSkipSetting"
-          >Skip management network settings</span
+        <label for="chkNSStatus">
+          <span class="ml-3 font-weight-bold" id="lblNSSkipSetting"
+            >Skip management network settings</span
+          ></label
         >
       </div>
       <div class="mt-2" id="lblNSMsgSkipSetting">

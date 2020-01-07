@@ -135,10 +135,13 @@
       </v-dialog>
 
       <v-data-table
-        calculate-widths
+        :headers="accountsTableHeaderList"
         :items="accountsList"
+        :expanded.sync="expanded"
+        single-expand="true"
         item-key="account_name"
         class="eos-table"
+        show-expand
         :hide-default-header="true"
         :hide-default-footer="true"
         :disable-pagination="true"
@@ -152,22 +155,63 @@
             >
               <span class="headerText">{{ header.text }}</span>
             </th>
-            <th class="tableheader" />
           </tr>
         </template>
-
-        <template v-slot:item="props">
-          <tr class="font-weight-small">
-            <td>{{props.item.account_name}}</td>
-            <td>{{props.item.account_email}}</td>
-            <td>
-              <img
-                @click="openConfirmDeleteDialog(props.item.account_name)"
-                style="cursor: pointer;"
-                src="./../../assets/delete-off.png"
-              />
-            </td>
-          </tr>
+        <template v-slot:expanded-item="props">
+          <td>
+            <div>
+              <v-row>
+                <v-col class="pl-3">
+                  <div class="font-weight-medium pt-3" id="lblS3Pass">Password</div>
+                  <input
+                    class="input-text"
+                    type="password"
+                    name="password"
+                    v-model="password"
+                    id="txtS3Pass"
+                  />
+                </v-col>
+                <v-col class="pl-5">
+                  <div class="font-weight-medium pt-3" id="lblS3confimPass">Confirm Password</div>
+                  <input
+                    class="input-text"
+                    type="password"
+                    name="confirmpass"
+                    v-model="confirmPass"
+                    id="txtS3confirmPass"
+                  />
+                </v-col>
+              </v-row>
+            </div>
+            <v-btn
+              color="csmprimary"
+              class="ma-5 elevation-0 white--text"
+              @click="editAccount(props)"
+              id="btnEditPassword"
+            >Apply</v-btn>
+            <v-btn
+              text
+              small
+              color="csmprimary"
+              @click="closeEditAccountForm ()"
+              id="btncancelEditpass"
+            >Cancel</v-btn>
+          </td>
+        </template>
+        <template v-slot:item.data-table-expand="{ item, expand, isExpanded }">
+          <div style="width: 75px;">
+            <img
+              v-on:click="expand(!isExpanded)"
+              style="cursor: pointer;"
+              src="./../../assets/edit-off.png"
+            />
+            <v-divider class="mx-3" inset vertical></v-divider>
+            <img
+              @click="openConfirmDeleteDialog(props.item.account_name)"
+              style="cursor: pointer;"
+              src="./../../assets/delete-off.png"
+            />
+          </div>
         </template>
       </v-data-table>
     </div>
@@ -187,6 +231,7 @@ import { Form, FormControl, Validator } from "../widgets/form-widget";
   components: { Loader, InputBox }
 })
 export default class EosAccountManagement extends Vue {
+  private expanded = [];
   private showCreateAccountForm: boolean;
   private showLoader: boolean;
   private loaderMessage: string;
@@ -199,9 +244,13 @@ export default class EosAccountManagement extends Vue {
   private accountToDelete: string = "";
 
   private createAccountForm: Form;
+  private password: string;
+  private confirmPass: string;
 
   constructor() {
     super();
+    this.password = "";
+    this.confirmPass = "";
     this.showCreateAccountForm = false;
     this.showLoader = false;
     this.loaderMessage = "";
@@ -217,7 +266,8 @@ export default class EosAccountManagement extends Vue {
         text: "Email",
         value: "account_email",
         sortable: false
-      }
+      },
+      { text: "", value: "data-table-expand" }
     ];
 
     this.account = new Account();
@@ -276,7 +326,6 @@ export default class EosAccountManagement extends Vue {
   public mounted() {
     this.getAllAccounts();
   }
-
   public async getAllAccounts() {
     this.showLoader = true;
     this.loaderMessage = "Fetching All S3 accounts...";
@@ -306,6 +355,28 @@ export default class EosAccountManagement extends Vue {
     this.showLoader = false;
     this.loaderMessage = "";
     this.showAccountDetailsDialog = true;
+  }
+  public async editAccount(props: any) {
+    let updateDetails = {
+      reset_access_key: true,
+      password: this.password,
+      account_email: props.item.account_email
+    };
+    this.showLoader = true;
+    this.loaderMessage = "Edit Account...";
+    try {
+      const res = await Api.patch(
+        apiRegister.s3_account,
+        updateDetails,
+        props.item.account_name
+      );
+      this.closeEditAccountForm();
+    } catch (error) {
+      // tslint:disable-next-line: no-console
+      console.error(error);
+    }
+    this.showLoader = false;
+    this.loaderMessage = "";
   }
 
   public closeAccountDetailsDialog() {
@@ -351,6 +422,9 @@ export default class EosAccountManagement extends Vue {
   public openConfirmDeleteDialog(accountName: string) {
     this.accountToDelete = accountName;
     this.showConfirmDeleteDialog = true;
+  }
+  public closeEditAccountForm() {
+    this.expanded = [];
   }
 
   public async closeConfirmDeleteDialog(confirmation: string) {
@@ -435,5 +509,13 @@ tbody tr:active {
 .delete-account-confirmation-msg {
   color: #000;
   font-size: 16px;
+}
+.input-text {
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
+  width: 20em;
+  height: 2.5em;
+  border-radius: 5px;
 }
 </style>

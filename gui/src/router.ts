@@ -16,20 +16,21 @@ import Vue from "vue";
 import Router from "vue-router";
 import Dashboard from "./views/dashboard.vue";
 import EosAlertLarge from "./components/dashboard/alert-large.vue";
-import EosAccountManagement from "./components/s3/account-management.vue";
-import EosBucketCreation from "./components/s3/bucket-creation.vue";
-import EOSConfigurationSummary from "./components/s3/configuration-summary.vue";
+import EosUserSettingLocal from "./components/onboarding/system-config/user-settings/user-setting-local.vue";
 import EosS3Management from "./components/s3/s3.vue";
 import EosAdminUser from "./components/preboarding/admin-user.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
 import EosLogin from "./components/preboarding/login.vue";
-import EosSetting from "./views/setting.vue";
 import UDXRegistration from "./components/udx/udx-registration.vue";
-import EosSettingsSubmenu from "./components/submenu-options/settings-submenu.vue";
-import EosProvisioningSubmenu from "./components/submenu-options/provisioning-submenu.vue";
 import EosAutoLogin from "./components/preboarding/auto-login.vue";
 import EosHomebase from "./components/onboarding/homebase.vue";
 import EosOnboarding from "./components/onboarding/system-config/onboarding.vue";
+import EosDefault from "./components/eos-default.vue";
+import EosPreboarding from "./components/preboarding/eos-preboarding.vue";
+import EosProvisioning from "./components/provisioning/eos-provisioning.vue";
+import EosProvisioningMenu from "./components/provisioning/eos-provisioning-menu.vue";
+import EosSettings from "./components/settings/eos-settings.vue";
+import EosSettingsMenu from "./components/settings/eos-settings-menu.vue";
 
 Vue.use(Router);
 
@@ -38,103 +39,118 @@ Vue.use(Router);
 const router = new Router({
   routes: [
     {
-      path: "/homebase",
-      name: "homebase",
-      component: EosHomebase,
-      meta: { requiresAuth: true, isOnboardingReq: false }
-    },
-    {
-      path: "/onboarding",
-      name: "onboarding",
-      component: EosOnboarding,
-      meta: { requiresAuth: true, isOnboardingReq: false }
-    },
-    {
-      path: "/",
-      name: "login",
-      component: EosLogin,
-      meta: { requiresAuth: false, isOnboardingReq: false }
-    },
-    {
-      path: "/dashboard",
-      name: "dashboard",
-      component: Dashboard,
-      meta: { requiresAuth: true, isOnboardingReq: true }
-    },
-    {
-      path: "/alertlarge",
-      name: "eosAlertLarge",
-      component: EosAlertLarge,
-      meta: { requiresAuth: true, isOnboardingReq: true }
-    },
-    {
-      path: "/s3account",
-      name: "s3account",
-      component: EosAccountManagement,
-      meta: { requiresAuth: false, isOnboardingReq: false }
-    },
-    {
-      path: "/s3bucketcreation",
-      name: "bucketcreation",
-      component: EosBucketCreation,
-      meta: { requiresAuth: true, isOnboardingReq: false }
-    },
-    {
-      path: "/bucketconfigsummary",
-      name: "bucketconfigsummary",
-      component: EOSConfigurationSummary,
-      meta: { requiresAuth: true, isOnboardingReq: false }
-    },
-    {
-      path: "/s3",
-      name: "s3",
-      component: EosS3Management,
-      meta: { requiresAuth: true, isOnboardingReq: false }
-    },
-    {
-      path: "/adminuser",
-      name: "adminuser",
-      component: EosAdminUser,
-      meta: { requiresAuth: false, isOnboardingReq: false }
-    },
-    {
-      path: "/welcome",
-      name: "welcome",
-      component: EosWelcome,
-      meta: { requiresAuth: false, isOnboardingReq: false }
+      path: "/preboarding",
+      name: "preboarding",
+      component: EosPreboarding,
+      meta: { requiresAuth: false, isOnboardingReq: false },
+      children: [
+        {
+          path: "welcome",
+          name: "welcome",
+          component: EosWelcome,
+          meta: { requiresAuth: false, isOnboardingReq: false }
+        },
+        {
+          path: "adminuser",
+          name: "adminuser",
+          component: EosAdminUser,
+          meta: { requiresAuth: false, isOnboardingReq: false }
+        },
+        {
+          path: "login",
+          name: "preboarding-login",
+          component: EosLogin,
+          meta: { requiresAuth: false, isOnboardingReq: false }
+        }
+      ]
     },
     {
       path: "/login",
-      name: "login",
+      name: "normal-login",
       component: EosLogin,
       meta: { requiresAuth: false, isOnboardingReq: false }
     },
     {
-      path: "/setting",
-      name: "setting",
-      component: EosSetting,
-      meta: { requiresAuth: false, isOnboardingReq: false }
+      path: "/",
+      component: EosDefault,
+      meta: { requiresAuth: true, isOnboardingReq: false },
+      children: [
+        {
+          path: "",
+          redirect: "dashboard"
+        },
+        {
+          path: "dashboard",
+          name: "dashboard",
+          component: Dashboard,
+          meta: { requiresAuth: true, isOnboardingReq: false }
+        },
+        {
+          path: "alertlarge",
+          name: "eosAlertLarge",
+          component: EosAlertLarge,
+          meta: { requiresAuth: true, isOnboardingReq: true }
+        },
+        {
+          path: "provisioning",
+          component: EosProvisioning,
+          meta: { requiresAuth: true, isOnboardingReq: false },
+          children: [
+            {
+              path: "",
+              name: "provisioning-menu",
+              component: EosProvisioningMenu,
+              meta: { requiresAuth: true, isOnboardingReq: false }
+            },
+            {
+              path: "s3",
+              name: "s3",
+              component: EosS3Management,
+              meta: { requiresAuth: true, isOnboardingReq: false }
+            }
+          ]
+        },
+        {
+          path: "settings",
+          component: EosSettings,
+          meta: { requiresAuth: true, isOnboardingReq: false },
+          children: [
+            {
+              path: "",
+              name: "settings-menu",
+              component: EosSettingsMenu,
+              meta: { requiresAuth: true, isOnboardingReq: false }
+            },
+            {
+              path: "usersettinglocal",
+              name: "usersettinglocal",
+              component: EosUserSettingLocal,
+              meta: { requiresAuth: true, isOnboardingReq: false }
+            },
+            {
+              path: "udx-registration",
+              name: "udx-registration",
+              component: UDXRegistration,
+              meta: { requiresAuth: true, isOnboardingReq: false }
+            }
+          ]
+        },
+        {
+          path: "/homebase",
+          name: "homebase",
+          component: EosHomebase,
+          meta: { requiresAuth: true, isOnboardingReq: false }
+        },
+        {
+          path: "/onboarding",
+          name: "onboarding",
+          component: EosOnboarding,
+          meta: { requiresAuth: true, isOnboardingReq: false }
+        }
+      ]
     },
     {
-      path: "/udx-registration",
-      name: "udx-registration",
-      component: UDXRegistration,
-      meta: { requiresAuth: true, isOnboardingReq: false }
-    },
-    {
-      path: "/settings-submenu",
-      name: "settings-submenu",
-      component: EosSettingsSubmenu,
-      meta: { requiresAuth: true, isOnboardingReq: false }
-    },
-    {
-      path: "/provisioning-submenu",
-      name: "provisioning-submenu",
-      component: EosProvisioningSubmenu,
-      meta: { requiresAuth: true, isOnboardingReq: false }
-    },
-    {
-      path: "/clouduser",
+      path: "clouduser",
       name: "clouduser",
       component: EosAutoLogin,
       meta: { requiresAuth: false, isOnboardingReq: false }
@@ -143,7 +159,7 @@ const router = new Router({
 });
 
 // This code executes before any route happens
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // TODO: isOnboardingReq flag handling is pending
   if (to.meta.requiresAuth) {
     // This route requires auth, check if logged in

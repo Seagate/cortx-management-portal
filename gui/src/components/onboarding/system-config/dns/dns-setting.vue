@@ -1,76 +1,76 @@
 <template>
-  <v-container class="mt-0 pt-0 body-2">
-    <div>
+  <v-container class="mt-0 ml-0">
+    <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblDns">
         DNS Network Settings
       </div>
-    </div>
-    <div class="mt-4">
-      <span class="font-weight-bold black--text" id="lblHostname"
-        >Hostname</span
-      >
-      <div>
-        <input
-          class="input-text"
-          type="text"
-          name="hostname"
-          v-model="hostname"
-          id="txtHostname"
-        />
-      </div>
-    </div>
-    <v-divider class="my-3 col-6" />
-    <div class="row mt-5">
-      <template v-for="node in dnsNodes">
-        <div class="col-3 body-2 column" :key="node.id">
-          <span class="font-weight-bold" id="lblIpv4Node"
-            >Node {{ node.id }}</span
-          >
-          <v-divider class="mt-2" />
-          <div class="mt-4">
-            <span class="font-weight-bold" id="lblHostname">Hostname</span>
-            <div>
-              <input
-                class="input-text"
-                type="text"
-                name="hostname"
-                v-model="node.hostname"
-                :id="node.id + 'txtDnsHostname'"
-              />
-            </div>
-          </div>
-          <div class="mt-4">
-            <div class="font-weight-bold black--text" id="lblDNsServer">
-              DNS Server
-            </div>
-            <div>
-              <textarea
-                id="txtDnsServer"
-                name="dnsname"
-                v-model="dnsServerAddress[node.id]"
-                rows="3"
-                placeholder="Enter semicolon ';' seperated values"
-                class="textarea-text"
-              ></textarea>
-            </div>
-          </div>
-          <div class="mt-4">
-            <div class="font-weight-bold black--text" id="lblSearchDomains">
-              Search Domains
-            </div>
-            <div>
-              <textarea
-                id="txtSearchDomain"
-                name="search-domain"
-                v-model="searchDomainAddress[node.id]"
-                rows="3"
-                placeholder="Enter semicolon ';' seperated values"
-                class="textarea-text"
-              ></textarea>
-            </div>
-          </div>
+      <div class="mt-4">
+        <span class="font-weight-bold black--text" id="lblHostname"
+          >Hostname</span
+        >
+        <div>
+          <input
+            class="input-text"
+            type="text"
+            name="hostname"
+            v-model="hostname"
+            id="txtHostname"
+          />
         </div>
-      </template>
+      </div>
+      <v-divider class="my-3 col-6" />
+      <div class="row mt-5">
+        <template v-for="node in dnsNodes">
+          <div class="col-3 body-2 column" :key="node.id">
+            <span class="font-weight-bold" id="lblIpv4Node"
+              >Node {{ node.id }}</span
+            >
+            <v-divider class="mt-2" />
+            <div class="mt-4">
+              <span class="font-weight-bold" id="lblHostname">Hostname</span>
+              <div>
+                <input
+                  class="input-text"
+                  type="text"
+                  name="hostname"
+                  v-model="node.hostname"
+                  :id="node.id + 'txtDnsHostname'"
+                />
+              </div>
+            </div>
+            <div class="mt-4">
+              <div class="font-weight-bold black--text" id="lblDNsServer">
+                DNS Server
+              </div>
+              <div>
+                <textarea
+                  id="txtDnsServer"
+                  name="dnsname"
+                  v-model="dnsServerAddress[node.id]"
+                  rows="3"
+                  placeholder="Enter semicolon ';' seperated values"
+                  class="textarea-text"
+                ></textarea>
+              </div>
+            </div>
+            <div class="mt-4">
+              <div class="font-weight-bold black--text" id="lblSearchDomains">
+                Search Domains
+              </div>
+              <div>
+                <textarea
+                  id="txtSearchDomain"
+                  name="search-domain"
+                  v-model="searchDomainAddress[node.id]"
+                  rows="3"
+                  placeholder="Enter semicolon ';' seperated values"
+                  class="textarea-text"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
     </div>
     <span class="d-none">{{ isValidForm }}</span>
   </v-container>

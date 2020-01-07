@@ -257,6 +257,11 @@ export default class SystemConfiguration extends VuexModule {
   }
 
   @Mutation
+  public setWizardMetadata(payload: any) {
+    this.wizardMetadata = payload;
+  }
+
+  @Mutation
   public setWizardCurrentComponent(payload: any) {
     this.wizardMetadata.currentComponent = payload;
   }
@@ -280,6 +285,7 @@ export default class SystemConfiguration extends VuexModule {
   }
   @Action
   public async getSystemConfigAction() {
+    this.context.commit("setWizardMetadata", wizardConfig);
     try {
       const res = await Api.getAll(apiRegister.sysconfig);
       let data = {};

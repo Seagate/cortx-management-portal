@@ -1,9 +1,9 @@
 /*****************************************************************************
- Filename:          settings-submenu.vue
- Description:       Settings Submenu
+ Filename:          eos-settings-menu.vue
+ Description:       Settings menu component.
 
- Creation Date:     22/11/2019
- Author:            Vaibhav Bhavsar
+ Creation Date:     31/12/2019
+ Author:            Sri Bhargav Metta
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -32,7 +32,7 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">User</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn :to="'/usersettinglocal'" text small color="csmprimary">Manage</v-btn>
+                <v-btn :to="'/settings/usersettinglocal'" text small color="csmprimary">Manage</v-btn>
               </v-card-actions>
             </div>
           </v-card>
@@ -43,7 +43,7 @@
             <div class="pd-5">
               <v-card-title class="title font-weight-bold d-inline">UDX</v-card-title>
               <v-card-actions class="d-inline float-right">
-                <v-btn :to="'/udx-registration'" text small color="csmprimary">Manage</v-btn>
+                <v-btn :to="'/settings/udx-registration'" text small color="csmprimary">Manage</v-btn>
               </v-card-actions>
             </div>
           </v-card>
@@ -107,9 +107,9 @@
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 
 @Component({
-  name: "eos-settings-submenu"
+  name: "eos-settings-menu"
 })
-export default class EosSettingsSubmenu extends Vue {}
+export default class EosSettingsMenu extends Vue {}
 </script>
 <style lang="scss" scoped>
 .card-layout {

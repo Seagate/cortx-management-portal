@@ -1,8 +1,8 @@
 /*****************************************************************************
- Filename:          form-module.ts
- Description:       Form module
+ Filename:          eos-preboarding.vue
+ Description:       Preboarding container component
 
- Creation Date:     14/12/2019
+ Creation Date:     31/12/2019
  Author:            Sri Bhargav Metta
 
  Do NOT modify or remove this copyright and confidentiality notice!
@@ -12,20 +12,16 @@
  or disclosure of this code, for any reason, not expressly authorized is
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
-import { Form } from "./form";
-import {
-    FormControl,
-    ControlValue,
-    ControlConfiguration,
-    ControlCompareWith
-} from "./form-control";
-import { ControlValidator } from "./form-control-validator";
+<template>
+  <router-view></router-view>
+</template>
+ <script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
 
-export {
-    Form,
-    FormControl,
-    ControlValue,
-    ControlValidator,
-    ControlConfiguration,
-    ControlCompareWith
-};
+@Component({
+  name: "eos-preboarding"
+})
+export default class EosPreboarding extends Vue {}
+</script>
+<style lang="scss" scoped>
+</style>

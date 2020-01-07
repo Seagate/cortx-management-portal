@@ -1,8 +1,8 @@
 /*****************************************************************************
- Filename:          form-control-components-module.vue
- Description:       Form control components module.
+ Filename:          eos-settings.vue
+ Description:       Settings container component.
 
- Creation Date:     14/12/2019
+ Creation Date:     31/12/2019
  Author:            Sri Bhargav Metta
 
  Do NOT modify or remove this copyright and confidentiality notice!
@@ -13,17 +13,15 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div></div>
+  <router-view></router-view>
 </template>
+ <script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
 
-<script>
-export const FormControlComponentsModule = {
-  name: "FormControlComponentsModule"
-};
-
-export { default as InputText } from "./input-text.vue";
-export { default as CheckBox } from "./check-box.vue";
-export { default as RadioButton } from "./radio-button.vue";
-
-export default FormControlComponentsModule;
+@Component({
+  name: "eos-settings"
+})
+export default class EosSettings extends Vue {}
 </script>
+<style lang="scss" scoped>
+</style>
