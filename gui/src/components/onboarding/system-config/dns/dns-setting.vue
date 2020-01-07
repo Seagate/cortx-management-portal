@@ -18,8 +18,8 @@
           />
         </div>
       </div>
-      <v-divider class="my-3 col-6" />
-      <div class="row mt-5">
+      <v-divider class="mt-5 pb-0 col-6" />
+      <div class="row mt-3">
         <template v-for="node in dnsNodes">
           <div class="col-3 body-2 column" :key="node.id">
             <span class="font-weight-bold" id="lblIpv4Node"

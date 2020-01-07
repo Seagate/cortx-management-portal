@@ -16,7 +16,7 @@
   <span class="wrapper">
     <span class="arrow-steps clearfix">
       <span class="step first" :class="stepClass">
-        <span>{{stepName}}</span>
+        <span :id="stepId">{{ stepName }}</span>
       </span>
     </span>
   </span>
@@ -28,7 +28,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "eos-wizard-step",
   props: {
     stepName: String,
-    stepClass: String
+    stepClass: String,
+    stepId: String
   }
 })
 export default class EosWizardStep extends Vue {}

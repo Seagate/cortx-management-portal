@@ -57,7 +57,7 @@ export const wizardConfig = {
       isByPassed: false,
       header: {
         state: "untouched",
-        name: "Data Network"
+        name: "Data network"
       },
       footer: {
         nextComponent: "EosDataNetworkIpv4",
@@ -72,7 +72,7 @@ export const wizardConfig = {
       isSubstep: true,
       component: "EosDataNetworkIpv4",
       path: "onboarding/system-config/data-network/data-network-ipv4.vue",
-      name: "Data Network IPv4",
+      name: "Data network IPv4",
       isByPassed: true,
       footer: {
         nextComponent: "EosDataNetworkIpv6",
@@ -87,7 +87,7 @@ export const wizardConfig = {
       isSubstep: true,
       component: "EosDataNetworkIpv6",
       path: "onboarding/system-config/data-network/data-network-ipv6.vue",
-      name: "Data Network IPv6",
+      name: "Data network IPv6",
       isByPassed: true,
       footer: {
         nextComponent: "EosDnsSettings",
