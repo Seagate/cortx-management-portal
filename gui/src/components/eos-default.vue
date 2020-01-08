@@ -9,6 +9,7 @@
         <router-view></router-view>
       </div>
     </div>
+    <loader :show="showLoader" :message="loaderMessage" />
     <EOSMessageDialog />
   </div>
 </template>
@@ -33,6 +34,12 @@ import EOSMessageDialog from "./widgets/eos-message-dialog.vue";
 export default class EosDefault extends Vue {
   get isRouterPathOnboading() {
     return this.$route.name === "onboarding";
+  }
+  get showLoader() {
+    return this.$store.getters["systemConfig/showLoaderStatus"];
+  }
+  get loaderMessage() {
+    return this.$store.getters["systemConfig/loaderMessageText"];
   }
 }
 </script>
