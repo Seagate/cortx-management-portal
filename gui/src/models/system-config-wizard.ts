@@ -156,7 +156,7 @@ export const wizardConfig = {
       component: "EosUserSettingLocal",
       path: "onboarding/system-config/user-settings/user-setting-local.vue",
       name: "User setting local",
-      isByPassed: false,
+      isByPassed: true,
       footer: {
         nextComponent: "EosUserSettingLdap",
         prevComponent: "EosUserSetting",
@@ -171,7 +171,7 @@ export const wizardConfig = {
       component: "EosUserSettingLdap",
       path: "onboarding/system-config/user-settings/user-setting-ldap.vue",
       name: "User setting LDAP",
-      isByPassed: false,
+      isByPassed: true,
       footer: {
         nextComponent: "EosNotifications",
         prevComponent: "EosUserSettingLocal",
@@ -204,7 +204,7 @@ export const wizardConfig = {
       component: "EosNotificationsEmail",
       path: "onboarding/system-config/notifications/notifications-email.vue",
       name: "Notifications email",
-      isByPassed: false,
+      isByPassed: true,
       footer: {
         nextComponent: "EosNotificationsSyslog",
         prevComponent: "EosNotifications",
@@ -219,7 +219,7 @@ export const wizardConfig = {
       component: "EosNotificationsSyslog",
       path: "onboarding/system-config/notifications/notifications-syslog.vue",
       name: "Notifications syslog",
-      isByPassed: false,
+      isByPassed: true,
       footer: {
         nextComponent: "interfaceselect",
         prevComponent: "EosNotificationsEmail",
