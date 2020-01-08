@@ -29,7 +29,7 @@ input:focus {
 }
 .eos-form-group {
   width: 325px;
-  min-height: 64px;
+  min-height: 88px;
 }
 .eos-form__input_text {
   background: #ffffff;
@@ -60,6 +60,9 @@ input:focus {
   line-height: 16px;
   color: rgba(0, 0, 0, 0.87);
   height: 12px;
+}
+.eos-form-group.eos-form-group--error > .eos-form-group-label {
+  color: #dc1f2e;
 }
 .eos-form-group-error-msg {
   color: #dc1f2e;
@@ -239,6 +242,68 @@ input:focus {
   background: #B7B7B7;
 }
 /* Button primary (White background) style rules --- End */
+
+/* Button secondary (White background) style rules --- Start */
+.eos-btn-secondary {
+  background: #FFFFFF;
+  border: 1px solid #6EBE49;
+  box-sizing: border-box;
+  border-radius: 4px;
+  height: 40px;
+  min-width: 64px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #6EBE49;
+}
+.eos-btn-secondary:hover {
+  color: #8ACB6B;
+  border: 1px solid #8ACB6B;
+}
+.eos-btn-secondary:active {
+  color: #4B813D;
+  border: 1px solid #4B813D;
+}
+.eos-btn-secondary:focus {
+  outline: 0;
+}
+.eos-btn-secondary:disabled {
+  color: #B7B7B7;
+  border: 1px solid #B7B7B7;
+}
+/* Button secondary (White background) style rules --- End */
+
+/* Button tertiary (White background) style rules --- Start */
+.eos-btn-tertiary {
+  background-color: transparent;
+  height: 40px;
+  min-width: 64px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #6EBE49;
+}
+.eos-btn-tertiary:hover {
+  color: #8ACB6B;
+}
+.eos-btn-tertiary:active {
+  color: #4B813D;
+}
+.eos-btn-tertiary:focus {
+  outline: 0;
+}
+.eos-btn-tertiary:disabled {
+  color: #B7B7B7;
+}
+/* Button tertiary (White background) style rules --- End */
 
 /* Button primary (Dark background) style rules --- Start */
 .eos-btn-primary-dark {

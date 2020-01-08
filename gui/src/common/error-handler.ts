@@ -15,9 +15,9 @@
 import store from "../store/store";
 
 export function errorHandler(err: any, vm: any, info: any) {
-    if(err.name === "CSMError"){
-        store.commit("messageDialog/show", {title: "CSMError", message: err.message});
-    }else{
+    if (err.name === "CSMError") {
+        store.commit("messageDialog/show", { title: "CSMError", message: err.message });
+    } else {
         store.commit("messageDialog/show");
     }
 }
