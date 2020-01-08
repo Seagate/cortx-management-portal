@@ -1,7 +1,7 @@
 <template>
   <div class="pr-4">
     <div id="s3-configuration-title-container" class="mb-4 s3-configuration-page-title">
-      <label id="s3-account-form-title" class="headline font-weight-bold">S3 configuration</label>
+      <label id="s3-account-form-title" class="headline font-weight-bold">S3 Configuration</label>
       <div class="mt-1" style="color: #454545;font-size: 14px;">
         <label>Use this table to create IAM users that have access to the buckets you create in the next step. You can add as many as you like. The access key and secret key for each user will be shown once you click continue. You will have the oppurtunity to download a CSV at that point.</label>
       </div>
@@ -11,7 +11,7 @@
         <label class="tab-label">Account</label>
       </v-tab>
       <v-tab @click="switchTab('iamuser')">
-        <label class="tab-label">IAM user</label>
+        <label class="tab-label">IAM User</label>
       </v-tab>
       <v-tab @click="switchTab('bucket')">
         <label class="tab-label">Bucket</label>

@@ -3,60 +3,126 @@
     <Loader :show="showLoader" :message="loaderMessage" />
 
     <div style="width: 100%">
-      <div v-if="showCreateUserForm">
+      <div v-if="showCreateUserForm" class="px-2">
         <v-row>
-          <v-col class="pl-5">
-            <div class="pt-3">
-              <InputBox :form="createUserForm" :control="createUserForm.controls[0]" />
-            </div>
-            <div class="pt-3">
-              <InputBox :form="createUserForm" :control="createUserForm.controls[1]" />
+          <v-col class="py-0 pr-0">
+            <div
+              class="eos-form-group"
+              :class="{ 'eos-form-group--error': $v.createUserForm.iamUser.user_name.$error }"
+            >
+              <label class="eos-form-group-label" for="userName">Username*</label>
+              <input
+                class="eos-form__input_text"
+                type="text"
+                id="userName"
+                name="userName"
+                v-model.trim="createUserForm.iamUser.user_name"
+                @input="$v.createUserForm.iamUser.user_name.$touch"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="$v.createUserForm.iamUser.user_name.$dirty && !$v.createUserForm.iamUser.user_name.required"
+                >Username is required</label>
+                <label
+                  v-else-if="$v.createUserForm.iamUser.user_name.$dirty && !$v.createUserForm.iamUser.user_name.userNameRegex"
+                >Invalid Username</label>
+              </div>
             </div>
           </v-col>
-          <v-col>
-            <div class="pt-3">
-              <InputBox :form="createUserForm" :control="createUserForm.controls[2]" />
-            </div>
-            <div class="pt-3">
-              <InputBox
-                :form="createUserForm"
-                :control="createUserForm.controls[3]"
-                :compareWithControl="createUserForm.controls[2]"
+          <v-col class="py-0 pl-0">
+            <div
+              class="eos-form-group"
+              :class="{ 'eos-form-group--error': $v.createUserForm.iamUser.password.$error }"
+            >
+              <label class="eos-form-group-label" for="userPassword">Password*</label>
+              <input
+                class="eos-form__input_text"
+                type="password"
+                id="userPassword"
+                name="userPassword"
+                v-model.trim="createUserForm.iamUser.password"
+                @input="$v.createUserForm.iamUser.password.$touch"
               />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="$v.createUserForm.iamUser.password.$dirty && !$v.createUserForm.iamUser.password.required"
+                >Password is required</label>
+                <label
+                  v-else-if="$v.createUserForm.iamUser.password.$dirty && !$v.createUserForm.iamUser.password.passwordRegex"
+                >Invalid Password</label>
+              </div>
             </div>
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
-            <v-btn
-              v-if="showCreateUserForm"
-              color="csmprimary"
-              class="mx-2"
-              @click="createUser()"
-              :disabled="!createUserForm.isValid"
+          <v-col class="py-0 pr-0">
+            <div
+              class="eos-form-group"
+              :class="{ 'eos-form-group--error': $v.createUserForm.iamUser.path.$error }"
             >
-              <span class="white--text">Create</span>
-            </v-btn>
-            <v-btn
-              v-if="showCreateUserForm"
-              text
-              small
-              color="success"
-              class="ml-5"
+              <label class="eos-form-group-label" for="userPath">Path*</label>
+              <input
+                class="eos-form__input_text"
+                type="text"
+                id="userPath"
+                name="userPath"
+                v-model.trim="createUserForm.iamUser.path"
+                @input="$v.createUserForm.iamUser.path.$touch"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="$v.createUserForm.iamUser.path.$dirty && !$v.createUserForm.iamUser.path.required"
+                >Path is required</label>
+                <label
+                  v-else-if="$v.createUserForm.iamUser.path.$dirty && !$v.createUserForm.iamUser.path.pathRegex"
+                >Invalid Path</label>
+              </div>
+            </div>
+          </v-col>
+          <v-col class="py-0 pl-0">
+            <div
+              class="eos-form-group"
+              :class="{ 'eos-form-group--error': $v.createUserForm.confirmPassword.$error }"
+            >
+              <label class="eos-form-group-label" for="confirmPassword">Confirm Password*</label>
+              <input
+                class="eos-form__input_text"
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                v-model.trim="createUserForm.confirmPassword"
+                @input="$v.createUserForm.confirmPassword.$touch"
+              />
+              <span
+                class="eos-form-group-label eos-form-group-error-msg"
+                v-if="$v.createUserForm.confirmPassword.$dirty && !$v.createUserForm.confirmPassword.sameAsPassword"
+              >Passwords do not match</span>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="pt-0">
+            <button
+              type="button"
+              class="eos-btn-primary"
+              @click="createUser()"
+              :disabled="$v.createUserForm.$invalid"
+            >Create User</button>
+            <button
+              type="button"
+              class="ml-8 eos-btn-secondary"
               @click="closeCreateUserForm()"
-            >Cancel</v-btn>
+            >Cancel</button>
           </v-col>
         </v-row>
       </div>
 
-      <v-btn
+      <button
+        type="button"
+        class="mt-2 mb-4 eos-btn-primary"
         v-if="!showCreateUserForm"
-        color="csmprimary"
-        class="mt-2 mb-4 elevation-0"
         @click="openCreateUserForm()"
-      >
-        <span class="white--text">Create</span>
-      </v-btn>
+      >Create</button>
 
       <v-dialog v-model="showUserDetailsDialog" persistent max-width="790">
         <v-card>
@@ -90,9 +156,7 @@
           </table>
 
           <v-card-actions>
-            <v-btn color="csmprimary" @click="closeUserDetailsDialog()" class="ma-5 elevation-0">
-              <span class="white--text">OK</span>
-            </v-btn>
+            <button type="button" class="ma-5 eos-btn-primary" @click="closeUserDetailsDialog()">Ok</button>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -177,18 +241,48 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { Validations } from "vuelidate-property-decorators";
+import { required, helpers, sameAs } from "vuelidate/lib/validators";
 import { IAMUser } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import Loader from "../widgets/loader.vue";
-import InputBox from "../widgets/input-box.vue";
-import { Form, FormControl, Validator } from "../widgets/form-widget";
+
+const userNameRegex = helpers.regex("userNameRegex", /^[a-zA-Z0-9_-]{1,64}$/);
+const pathRegex = helpers.regex("pathRegex", /^(\/[^/ ]*)+\/?$/);
+const passwordRegex = helpers.regex(
+  "passwordRegex",
+  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
+);
 
 @Component({
   name: "eos-iam-user-management",
-  components: { Loader, InputBox }
+  components: { Loader }
 })
 export default class EosIAMUserManagement extends Vue {
+  public createUserForm = {
+    iamUser: {
+      path: "/"
+    } as IAMUser,
+    confirmPassword: ""
+  };
+
+  @Validations()
+  public validations = {
+    createUserForm: {
+      iamUser: {
+        user_name: { required, userNameRegex },
+        path: { required, pathRegex },
+        password: { required, passwordRegex }
+      },
+      confirmPassword: {
+        sameAsPassword: sameAs(() => {
+          return this.createUserForm.iamUser.password;
+        })
+      }
+    }
+  };
+
   private showCreateUserForm: boolean;
   private showLoader: boolean;
   private loaderMessage: string;
@@ -199,8 +293,6 @@ export default class EosIAMUserManagement extends Vue {
   private usersList: IAMUser[] = [];
   private user: IAMUser;
   private userToDelete: string = "";
-
-  private createUserForm: Form;
 
   constructor() {
     super();
@@ -232,56 +324,7 @@ export default class EosIAMUserManagement extends Vue {
       }
     ];
 
-    this.user = new IAMUser();
-    const pathControl = new FormControl(
-      "Path",
-      "path",
-      "text",
-      "/",
-      true,
-      "Path is required",
-      new Validator(new RegExp("^(/[^/ ]*)+/?$"), "Invalid Path")
-    );
-    pathControl.isValid = true;
-
-    const controls: FormControl[] = [
-      new FormControl(
-        "Username",
-        "user_name",
-        "text",
-        "",
-        true,
-        "Username is required",
-        new Validator(/^[a-zA-Z0-9_-]{1,64}$/, "Invalid Username"),
-        "Username can contain alphabets, numbers and can have _ " +
-          "or - but no spaces and should be less than 64 characters"
-      ),
-      pathControl,
-      new FormControl(
-        "Password",
-        "password",
-        "password",
-        "",
-        true,
-        "Password is required",
-        new Validator(
-          /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/,
-          "Invalid Password"
-        ),
-        "Password should be minimum eight characters, " +
-          "at least one uppercase letter, " +
-          "one lowercase letter, one number and one special character"
-      ),
-      new FormControl(
-        "Confirm password",
-        "confirm_password",
-        "password",
-        "",
-        true,
-        "Confirm above Password"
-      )
-    ];
-    this.createUserForm = new Form(controls, false);
+    this.user = {} as IAMUser;
   }
 
   public mounted() {
@@ -305,9 +348,8 @@ export default class EosIAMUserManagement extends Vue {
   public async createUser() {
     this.showLoader = true;
     this.loaderMessage = "Creating User...";
-    const tempUser = this.createUserForm.getModel();
+    const tempUser = this.createUserForm.iamUser;
     tempUser.require_reset = true;
-    delete tempUser.confirm_password;
     try {
       const res: any = await Api.post(apiRegister.s3_iam_user, tempUser);
       this.user = res.data;
@@ -337,13 +379,16 @@ export default class EosIAMUserManagement extends Vue {
   }
 
   public clearCreateUserForm() {
-    this.user = new IAMUser();
-    this.createUserForm.isValid = false;
-    this.createUserForm.controls.forEach(control => {
-      control.value = "";
-      control.isDirty = false;
-      control.isValid = false;
-    });
+    this.user = {} as IAMUser;
+    this.createUserForm = {
+      iamUser: {
+        path: "/"
+      } as IAMUser,
+      confirmPassword: ""
+    };
+    if (this.$v.createUserForm) {
+      this.$v.createUserForm.$reset();
+    }
   }
 
   public async deleteUser() {
