@@ -377,3 +377,23 @@ tbody tr:hover {
     rgba(250, 250, 250, 0) 101.98%
   ) !important;
 }
+
+/* Status chips style rules --- Start */
+.eos-status-chip {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+}
+.eos-chip-ok {
+  background: #6EBE49;
+}
+.eos-chip-warning {
+  background: #F7A528;
+}
+.eos-chip-alert {
+  background: #DC1F2E;
+}
+.eos-chip-offline {
+  background: #9E9E9E;
+}
+/* Status chips style rules --- End */
