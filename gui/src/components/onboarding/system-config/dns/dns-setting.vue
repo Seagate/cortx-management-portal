@@ -1,106 +1,78 @@
 <template>
-  <v-container class="mt-6 body-2">
-    <v-img
-      id="alert-img"
-      :src="require('./../../../../assets/onboarding-wizard.png')"
-      width="780px"
-      height="70px"
-    ></v-img>
-    <v-divider />
-    <div>
-      <div class="title mt-6" id="lblDns">DNS Network Settings</div>
-    </div>
-    <div class="mt-5">
-      <span class="font-weight-bold" id="lblFqdnName">FQDN Name:</span>
-      <span class="font-weight-regular" id="lblId">vlan1.seagate.com</span>
-    </div>
-    <div class="mt-4">
-      <span class="font-weight-medium black--text" id="lblHostname">Hostname</span>
-      <div>
-        <input class="input-text" type="text" name="hostname" v-model="hostname" id="txtHostname" />
+  <v-container class="mt-0 ml-0">
+    <div class="pl-4 body-2">
+      <div class="title mt-0 font-weight-bold" id="lblDns">
+        DNS Network Settings
       </div>
-      <v-btn elevation="0" class="mt-5" color="csmprimary" @click="resetHostname()">
-        <span class="white--text" id="btnResetHost">Reset Hostname</span>
-      </v-btn>
-    </div>
-    <v-divider class="mt-5 col-3" />
-    <v-row v-for="(value, i) in dnsServerAddress" :key="'dns' + value + i" class="mt-2">
-      <v-col cols="6">{{ value }}</v-col>
-      <v-col cols="3">
-        <v-img
-          @click="deleteDnsServerAddress(value)"
-          id="alert-img"
-          :src="require('./../../../../assets/delete-off.png')"
-          width="1em"
-          height="1em"
-        ></v-img>
-      </v-col>
-    </v-row>
-    <div>
-      <div class="font-weight-medium black--text" id="lblDNsServer">DNS Server</div>
-      <div class="pt-4 font-weight-regular black--text" id="lblDnsServer1">DNS Server 1</div>
-      <div>
-        <input
-          class="input-text"
-          type="text"
-          name="dnsname"
-          v-model="newDnsServerAddress"
-          id="txtDnsServer"
-        />
+      <div class="mt-4">
+        <span class="font-weight-bold black--text" id="lblHostname"
+          >Hostname</span
+        >
+        <div>
+          <input
+            class="input-text"
+            type="text"
+            name="hostname"
+            v-model="hostname"
+            id="txtHostname"
+          />
+        </div>
       </div>
-      <div
-        :class="[$data.searchDomainAddress.length < 3 ? 'csmprimary--text' : 'grey--text lighten-1', 'pointer', 'mt-5']"
-        @click="addDnsServerAddress(newDnsServerAddress)"
-      >+ Add another static address (maximum of 3)</div>
-    </div>
-    <v-divider class="mt-5 col-3" />
-    <v-row v-for="(value, i) in searchDomainAddress" :key="'sda' + value + i" class="mt-2">
-      <v-col cols="6">{{ value }}</v-col>
-      <v-col cols="3">
-        <v-img
-          @click="deleteSearchDomainAddress(value)"
-          id="alert-img"
-          :src="require('./../../../../assets/delete-off.png')"
-          width="1em"
-          height="1em"
-        ></v-img>
-      </v-col>
-    </v-row>
-    <div>
-      <div class="font-weight-medium black--text" id="lblSearchDomains">Search Domains</div>
-      <div class="pt-4 font-weight-regular black--text" id="lblSerachDomains">Search Domains 1</div>
-      <div>
-        <input
-          class="input-text"
-          type="text"
-          name="search-domain"
-          v-model="newSearchDomainAddress"
-          id="txtSearchDomain"
-        />
+      <v-divider class="mt-5 pb-0 col-6" />
+      <div class="row mt-3">
+        <template v-for="node in dnsNodes">
+          <div class="col-3 body-2 column" :key="node.id">
+            <span class="font-weight-bold" id="lblIpv4Node"
+              >Node {{ node.id }}</span
+            >
+            <v-divider class="mt-2" />
+            <div class="mt-4">
+              <span class="font-weight-bold" id="lblHostname">Hostname</span>
+              <div>
+                <input
+                  class="input-text"
+                  type="text"
+                  name="hostname"
+                  v-model="node.hostname"
+                  :id="node.id + 'txtDnsHostname'"
+                />
+              </div>
+            </div>
+            <div class="mt-4">
+              <div class="font-weight-bold black--text" id="lblDNsServer">
+                DNS Server
+              </div>
+              <div>
+                <textarea
+                  id="txtDnsServer"
+                  name="dnsname"
+                  v-model="dnsServerAddress[node.id]"
+                  rows="3"
+                  placeholder="Enter semicolon ';' seperated values"
+                  class="textarea-text"
+                ></textarea>
+              </div>
+            </div>
+            <div class="mt-4">
+              <div class="font-weight-bold black--text" id="lblSearchDomains">
+                Search Domains
+              </div>
+              <div>
+                <textarea
+                  id="txtSearchDomain"
+                  name="search-domain"
+                  v-model="searchDomainAddress[node.id]"
+                  rows="3"
+                  placeholder="Enter semicolon ';' seperated values"
+                  class="textarea-text"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
-      <div
-        :class="[$data.searchDomainAddress.length < 3 ? 'csmprimary--text' : 'grey--text lighten-1', 'pointer', 'mt-5']"
-        @click="addSearchDomainAddress(newSearchDomainAddress)"
-      >+ Add Search Domain</div>
-      <v-btn elevation="0" color="csmprimary" class="mt-3">
-        <span class="white--text" @click="clearDns()" id="btnClearDns">Clear DNS</span>
-      </v-btn>
     </div>
-    <v-divider class="mt-8" />
-    <div class="mt-8">
-      <p
-        v-if="!isValid"
-        class="red--text error-message"
-      >Please enter valid values.</p>
-      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnApplyContinue">
-        <span class="white--text">Apply and Continue</span>
-      </v-btn>
-      <span
-        class="csmprimary--text ml-8 pointer"
-        @click="gotToPrevPage()"
-        id="lblBack"
-      >Back to previous step</span>
-    </div>
+    <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
@@ -109,38 +81,37 @@ import {
   SystemConfigObject,
   DnsNetworkSettings
 } from "./../../../../models/system-configuration";
+import { EventBus } from "./../../../../main";
 
 @Component({
   name: "eos-dns-setting"
 })
 export default class EosDnsSetting extends Vue {
-  public resetHostname() {
-    this.$data.hostname = "";
-  }
-  public clearDns() {
-    this.$data.dnsServerAddress = [];
-    this.$data.searchDomainAddress = [];
-  }
-  public gotToNextPage() {
-    this.updateDNSconfig().then((res: any) => {
-      if (res) {
-          this.$router.push("datetime");
-        } else {
-          this.$data.isValid = false;
-        } 
-    })
-    .catch(() => {
-      // tslint:disable-next-line: no-console
-      console.error("error");
-    });    
+  /**
+   * splitNodesBySemicolon
+   */
+  public splitNodesBySemicolon(nodeList: any) {
+    // Loop through the nodeList and check dnsServerAddress && searchDomainAddress with node index
+    // split with semicolon and filter out "" blank values
+    // Assign it back to node
+    // if we don't add check for empty value the function throws an error and does not return the list
+    const updatedNodes = nodeList.map((node: any, i: number) => {
+      node.dns_servers = this.$data.dnsServerAddress[i]
+        ? this.$data.dnsServerAddress[i].split(";").filter(Boolean)
+        : [];
+      node.search_domain = this.$data.searchDomainAddress[i]
+        ? this.$data.searchDomainAddress[i].split(";").filter(Boolean)
+        : [];
+      return node;
+    });
+    return updatedNodes;
   }
   public updateDNSconfig() {
     // TODO https://xd.adobe.com/view/cf8fc1fc-887f-4784-4373-b0b60a0d4a6a-b9be/screen/500095be-863f-42f2-bb2e-6aaea65ed9df/DNS
     // Check notes
     // Node 1 to show if external load balancer is selected otherwise show a single node
     // Default node selected with 0th index
-    this.$data.dnsNodes[0].dns_servers = this.$data.dnsServerAddress;
-    this.$data.dnsNodes[0].search_domain = this.$data.searchDomainAddress;
+    this.$data.dnsNodes = this.splitNodesBySemicolon(this.$data.dnsNodes);
 
     const queryParams: DnsNetworkSettings = {
       is_external_load_balancer: false,
@@ -150,66 +121,41 @@ export default class EosDnsSetting extends Vue {
     };
     return this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
   }
-  public gotToPrevPage() {
-    if (this.$store.getters["systemConfig/isDataipV6Status"] === true) {
-      this.$router.push("dataconfig3");
-    } else if (this.$store.getters["systemConfig/isDataipV4Status"] === true) {
-      this.$router.push("dataconfig2");
-    } else if (
-      this.$store.getters["systemConfig/isDataipV6Status"] === false &&
-      this.$store.getters["systemConfig/isDataipV4Status"] === false
-    ) {
-      this.$router.push("dataconfig1");
-    }
-  }
-  private addDnsServerAddress(address: string) {
-    if (this.$data.dnsServerAddress.length < 4 && address) {
-      this.$data.dnsServerAddress.push(address);
-      this.$data.newDnsServerAddress = "";
-    }
-  }
-  private addSearchDomainAddress(address: string) {
-    if (this.$data.searchDomainAddress.length < 4 && address) {
-      this.$data.searchDomainAddress.push(address);
-      this.$data.newSearchDomainAddress = "";
-    }
-  }
-  private deleteDnsServerAddress(address: string) {
-    for (
-      let addressIndex = 0;
-      addressIndex < this.$data.dnsServerAddress.length;
-      addressIndex++
-    ) {
-      if (this.$data.dnsServerAddress[addressIndex] === address) {
-        this.$data.dnsServerAddress.splice(addressIndex, 1);
-      }
-    }
-  }
-  private deleteSearchDomainAddress(address: string) {
-    for (
-      let addressIndex = 0;
-      addressIndex < this.$data.searchDomainAddress.length;
-      addressIndex++
-    ) {
-      if (this.$data.searchDomainAddress[addressIndex] === address) {
-        this.$data.searchDomainAddress.splice(addressIndex, 1);
-      }
-    }
-  }
-  public mounted() {
+  private mounted() {
     this.managementNetworkGetter();
+    // WizardHook: Open a listener for onNext event
+    // So when wizard footer clicks on the Next Button this component can perform its own workflow
+    EventBus.$on("emitOnNext", (res: any) => {
+      this.updateDNSconfig().then(result => {
+        res(true);
+      });
+    });
   }
-  public managementNetworkGetter(): any {
+  private destroyed() {
+    // WizardHook: shut off on exit event listner
+    EventBus.$off("emitOnNext");
+  }
+  get isValidForm() {
+    const validate = true;
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EventBus.$emit("validForm", validate);
+    return validate;
+  }
+  private managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
     if (
       systemconfig.dns_network_settings &&
       systemconfig.dns_network_settings.nodes
     ) {
       this.$data.hostname = systemconfig.dns_network_settings.hostname;
-      this.$data.dnsServerAddress =
-        systemconfig.dns_network_settings.nodes[0].dns_servers;
-      this.$data.searchDomainAddress =
-        systemconfig.dns_network_settings.nodes[0].search_domain;
+      this.$data.dnsNodes = systemconfig.dns_network_settings.nodes.map(
+        (node: any, i: number) => {
+          this.$data.dnsServerAddress[i] = node.dns_servers.join(";");
+          this.$data.searchDomainAddress[i] = node.search_domain.join(";");
+          return node;
+        }
+      );
     }
   }
   private data() {
@@ -221,11 +167,13 @@ export default class EosDnsSetting extends Vue {
       dnsNodes: [
         {
           id: 0,
+          hostname: "",
           dns_servers: [],
           search_domain: []
         },
         {
           id: 1,
+          hostname: "",
           dns_servers: [],
           search_domain: []
         }
@@ -244,6 +192,13 @@ export default class EosDnsSetting extends Vue {
   border-color: #e3e3e3;
   width: 20em;
   height: 2.5em;
+}
+.textarea-text {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e3e3e3;
+  width: 20em;
+  // height: 2.5em;
 }
 .pointer {
   cursor: pointer;

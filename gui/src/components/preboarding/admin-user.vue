@@ -1,48 +1,82 @@
 <template>
-  <v-container class="white" fluid>
+  <v-container class="white pa-0 ma-0" fluid>
     <div height="70em" class="pl-0 py-0 col-12 black">
       <img src="../../assets/logo.png" />
     </div>
     <div class="body-2 ma-10">
-      <div class="ml-4 mt-4 mb-1 title black--text">Admin User Configuration</div>
-      <div class="ml-4 mb-7">Configure the username and password for the admin user of this system.</div>
+      <div class="ml-4 mt-4 mb-1 title black--text">
+        Admin user configuration
+      </div>
+      <div class="ml-4 mb-7">
+        Configure the username and password for the admin user of this system.
+      </div>
       <div class="ma-4">
         <form autocomplete="off" @submit.prevent="submitForm">
           <div class="mt-4">
-            <span class="font-weight-medium">Admin Username</span>
+            <span class="font-weight-medium" id="lblAdminUsername"
+              >Admin Username</span
+            >
             <div>
-              <input class="input-text" type="text" name="username" v-model.trim="username" />
-              <p v-if="!isUserNameValid" class="red--text error-message">Username is not valid</p>
+              <input
+                class="input-text"
+                type="text"
+                name="username"
+                id="adminUsername"
+                v-model.trim="username"
+              />
+              <p v-if="!isUserNameValid" class="red--text error-message">
+                Username is not valid
+              </p>
             </div>
           </div>
 
           <div class="mt-4">
-            <span class="font-weight-medium">Password</span>
+            <span class="font-weight-medium" id="lblAdminPassword"
+              >Password</span
+            >
             <div>
-              <input class="input-text" type="password" name="password" v-model.trim="password" />
-              <p v-if="!isPasswordValid" class="red--text error-message">Password is not valid</p>
+              <input
+                class="input-text"
+                type="password"
+                name="password"
+                id="adminPassword"
+                v-model.trim="password"
+              />
+              <p v-if="!isPasswordValid" class="red--text error-message">
+                Password is not valid
+              </p>
             </div>
           </div>
 
           <div class="mt-4 mb-6">
-            <span class="font-weight-medium">Confirm password</span>
+            <span class="font-weight-medium" id="lblAdminConfirmPassword"
+              >Confirm password</span
+            >
             <div>
               <input
                 class="input-text"
                 type="password"
                 name="confirmpassword"
+                id="adminConfirmPassword"
                 v-model.trim="confirmPassword"
               />
-              <p
-                v-if="!isConfirmPasswordValid"
-                class="red--text error-message"
-              >Confirm password is not valid</p>
+              <p v-if="!isConfirmPasswordValid" class="red--text error-message">
+                Confirm password is not valid
+              </p>
             </div>
           </div>
-          <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" :disabled="!isValidForm">
-            <span class="white--text">Apply and Continue</span>
+          <v-btn
+            elevation="0"
+            color="csmprimary"
+            @click="gotToNextPage()"
+            :disabled="!isValidForm"
+          >
+            <span class="white--text">Apply and continue</span>
           </v-btn>
         </form>
+        <div v-if="!isValidResponse" class="red--text mt-2">
+          Create admin user failed
+        </div>
       </div>
     </div>
   </v-container>
@@ -62,7 +96,8 @@ export default class EosAdminUser extends Vue {
     return {
       username: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      isValidResponse: true
     };
   }
   private gotToNextPage() {
@@ -71,16 +106,21 @@ export default class EosAdminUser extends Vue {
         username: this.$data.username,
         password: this.$data.password
       };
+      this.$data.isValidResponse = true;
+
       this.$store
         .dispatch("userLogin/createUserAction", queryParams)
         .then((res: any) => {
           if (res.status === 200) {
-            this.$router.push("login");
+            this.$router.push("preboarding-login");
+          } else {
+            this.$data.isValidResponse = false;
           }
         })
         .catch(() => {
           // tslint:disable-next-line: no-console
           console.error("Create User Action Failed");
+          this.$data.isValidResponse = false;
         });
     }
   }

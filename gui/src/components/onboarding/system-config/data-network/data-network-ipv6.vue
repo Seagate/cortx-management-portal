@@ -8,7 +8,7 @@
     ></v-img>
     <v-divider />
     <div class="body-2">
-      <div class="title mt-6" id="lblIpv6DNS">Data Network Settings: IPv6</div>
+      <div class="title mt-6" id="lblIpv6DNS">Data network settings: IPv6</div>
       <div
         class="mt-2"
         id="lblIpv6Msg"

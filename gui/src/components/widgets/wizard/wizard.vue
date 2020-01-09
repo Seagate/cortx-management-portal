@@ -20,6 +20,7 @@
           v-if="!step.isByPassed"
           :stepName="step.header.name"
           :stepClass="step.header.state"
+          :stepId="step.component"
         />
       </span>
     </span>

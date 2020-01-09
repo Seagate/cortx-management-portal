@@ -24,8 +24,11 @@
             />
             <span
               class="eos-form-group-label eos-form-group-error-msg"
-              v-if="$v.loginForm.username.$dirty && !$v.loginForm.username.required"
-            >Username is required</span>
+              v-if="
+                $v.loginForm.username.$dirty && !$v.loginForm.username.required
+              "
+              >Username is required</span
+            >
           </div>
           <div
             class="eos-form-group"
@@ -43,8 +46,11 @@
             />
             <span
               class="eos-form-group-label eos-form-group-error-msg"
-              v-if="$v.loginForm.password.$dirty && !$v.loginForm.password.required"
-            >Password is required</span>
+              v-if="
+                $v.loginForm.password.$dirty && !$v.loginForm.password.required
+              "
+              >Password is required</span
+            >
           </div>
 
           <button
@@ -52,7 +58,9 @@
             class="eos-btn-primary-dark"
             @click="gotToNextPage()"
             :disabled="$v.loginForm.$invalid"
-          >Login</button>
+          >
+            Login
+          </button>
           <!--TODO: This is temporary error handling for Demo-->
           <div v-if="!isValidLogin" class="red--text mt-1">Login Failed</div>
         </form>
@@ -112,6 +120,9 @@ export default class EosLogin extends Vue {
             res.authorization
           );
           this.navigate();
+        } else {
+          // Show error message on screen
+          this.$data.isValidLogin = false;
         }
       })
       .catch(() => {
@@ -130,5 +141,4 @@ export default class EosLogin extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
