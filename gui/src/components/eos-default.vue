@@ -17,12 +17,13 @@
     <header-bar />
     <div class="container pa-0 ma-0">
       <div class="d-inline-block display-nav">
-        <eos-nav-bar v-if="!isRouterPathOnboarding"></eos-nav-bar>
+        <eos-nav-bar v-if="!isRouterPathOnboading"></eos-nav-bar>
       </div>
       <div class="d-inline-block display-container px-2 pt-6 pb-2 mr-5">
         <router-view></router-view>
       </div>
     </div>
+    <loader :show="showLoader" :message="loaderMessage" />
     <EOSMessageDialog />
   </div>
 </template>
@@ -45,8 +46,14 @@ import EOSMessageDialog from "./widgets/eos-message-dialog.vue";
   }
 })
 export default class EosDefault extends Vue {
-  get isRouterPathOnboarding() {
+  get isRouterPathOnboading() {
     return this.$route.name === "onboarding";
+  }
+  get showLoader() {
+    return this.$store.getters["systemConfig/showLoaderStatus"];
+  }
+  get loaderMessage() {
+    return this.$store.getters["systemConfig/loaderMessageText"];
   }
 }
 </script>

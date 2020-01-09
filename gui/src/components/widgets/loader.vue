@@ -26,7 +26,6 @@
           indeterminate
           color="csmprimary"
           background-color="csmdisabled"
-          height="8px"
         ></v-progress-linear>
       </div>
     </div>
@@ -53,7 +52,7 @@ export default class EosLoader extends Vue {
 <style lang="scss" scoped>
 .loader-container {
   background-color: #ffffff;
-  min-width: 424px;
+  min-width: 333px;
 }
 .loader-header {
   font-style: normal;
@@ -65,7 +64,7 @@ export default class EosLoader extends Vue {
   padding: 24px;
 }
 .loader-body {
-  padding: 24px;
+  padding: 10px;
 }
 .loader-message {
   font-style: normal;
