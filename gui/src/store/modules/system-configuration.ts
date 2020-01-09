@@ -260,13 +260,27 @@ export default class SystemConfiguration extends VuexModule {
   public setWizardMetadata(payload: any) {
     this.wizardMetadata = payload;
   }
+
+  @Mutation
+  public setWizardCurrentComponent(payload: any) {
+    this.wizardMetadata.currentComponent = payload;
+  }
   @Mutation
   public setDataNetworkSettings(networkType: any) {
     if (networkType.type === "ipV4") {
       this.isDataipV4 = networkType.flag;
+      this.componentNameToSearch = "EosDataNetworkIpv4";
     }
     if (networkType.type === "ipV6") {
       this.isDataipV6 = networkType.flag;
+      this.componentNameToSearch = "EosDataNetworkIpv6";
+    }
+    const stepIndex = findStepIndexFromComponentName(
+      this.componentNameToSearch,
+      this.wizardMetadata
+    );
+    if (stepIndex !== undefined || stepIndex !== -1) {
+      this.wizardMetadata.steps[stepIndex].isByPassed = !networkType.flag;
     }
   }
   @Action
@@ -295,9 +309,9 @@ export default class SystemConfiguration extends VuexModule {
           apiRegister.sysconfig,
           this.systemConfigDetails
         );
-        if (res && res.data && Array.isArray(res.data)) {
-          const data = res.data;
-          return data;
+        if (res && res.data) {
+          this.context.commit("systemConfigMutation", res.data);
+          return res.data;
         }
       }
     } catch (e) {
@@ -461,6 +475,11 @@ export default class SystemConfiguration extends VuexModule {
   @Action
   public async showLoaderMessage(loaderData: any) {
     this.context.commit("loaderConfigMutation", loaderData);
+    if (loaderData.show) {
+      setTimeout(() => {
+        this.context.commit("loaderConfigMutation", { show: false });
+      }, 5000);
+    }
   }
   get showLoaderStatus() {
     return this.showLoader;

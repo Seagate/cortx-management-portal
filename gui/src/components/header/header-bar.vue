@@ -1,13 +1,17 @@
 /*****************************************************************************
-Filename: header-bar.vue Description: Header Bar Component Creation Date:
-01/08/2019 Author: Piyush Gupte Do NOT modify or remove this copyright and
-confidentiality notice! Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate
-Technology, LLC. The code contained herein is CONFIDENTIAL to Seagate
-Technology, LLC. Portions are also trade secret. Any use, duplication,
-derivation, distribution or disclosure of this code, for any reason, not
-expressly authorized is prohibited. All other rights are expressly reserved by
-Seagate Technology, LLC.
-*****************************************************************************/
+ Filename:          header-bar.vue
+ Description:       Header Bar Component
+
+ Creation Date:     01/08/2019
+ Author:            Piyush Gupte
+
+ Do NOT modify or remove this copyright and confidentiality notice!
+ Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
+ The code contained herein is CONFIDENTIAL to Seagate Technology, LLC.
+ Portions are also trade secret. Any use, duplication, derivation, distribution
+ or disclosure of this code, for any reason, not expressly authorized is
+ prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
+ *****************************************************************************/
 <template>
   <v-app-bar height="70em" flat class="black pa-0 ma-0" clipped-left app>
     <span class="ml-1 mr-5">
@@ -109,12 +113,12 @@ Seagate Technology, LLC.
     <v-divider
       class="mx-4 grey darken-4"
       vertical
-      v-if="!isRouterPathOnboading"
+      v-if="!isRouterPathOnboarding"
     ></v-divider>
     <div
       class="pa-5 white--text pointer"
       @click="logout()"
-      v-if="!isRouterPathOnboading"
+      v-if="!isRouterPathOnboarding"
     >
       Logout
     </div>
@@ -151,7 +155,7 @@ export default class HeaderBar extends Vue {
   get alertNotifications() {
     return this.$store.state.alertNotification.socket;
   }
-  get isRouterPathOnboading() {
+  get isRouterPathOnboarding() {
     return this.$route.name === "onboarding";
   }
   private logout() {

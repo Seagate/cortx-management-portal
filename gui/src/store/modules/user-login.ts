@@ -16,65 +16,75 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
-import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
+import {
+  Module,
+  VuexModule,
+  Mutation,
+  Action,
+  MutationAction
+} from "vuex-module-decorators";
 import { UserLoginQueryParam } from "./../../models/user-login";
 
 Vue.use(Vuex);
 
 @Module({
-    namespaced: true
+  namespaced: true
 })
 export default class UserLogin extends VuexModule {
-    public user: any = {};
+  public user: any = {};
 
-    public queryParams: UserLoginQueryParam = {
-        username: "",
-        password: ""
-    };
+  public queryParams: UserLoginQueryParam = {
+    username: "",
+    password: ""
+  };
 
-    @Mutation
-    public setUser(user: any) {
-        this.user = user;
+  @Mutation
+  public setUser(user: any) {
+    this.user = user;
+  }
+
+  // Get user
+  get getUser() {
+    return this.user;
+  }
+
+  @Action
+  public async createUserAction(queryParams: object) {
+    queryParams = queryParams ? queryParams : this.queryParams;
+    try {
+      const res = await Api.post(apiRegister.create_user, queryParams);
+      return res;
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
     }
+  }
 
-    // Get user
-    get getUser() {
-        return this.user;
+  @Action
+  public async loginAction(queryParams: object) {
+    queryParams = queryParams ? queryParams : this.queryParams;
+    try {
+      const res = await Api.post(apiRegister.login, queryParams);
+      if (res && res.headers) {
+        return res.headers;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
     }
+  }
 
-    @Action
-    public async createUserAction(queryParams: object) {
-        queryParams = queryParams ? queryParams : this.queryParams;
-        try {
-            const res = await Api.post(apiRegister.create_user, queryParams);
-            return res;
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.error("err logger: ", e);
-        }
+  @Action
+  public async logoutAction(queryParams: object) {
+    queryParams = queryParams ? queryParams : this.queryParams;
+    try {
+      const res = await Api.post(apiRegister.logout, queryParams);
+      if (res && res.status) {
+        return res.status;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log("err logger: ", e);
     }
-
-    @Action
-    public async loginAction(queryParams: object) {
-        queryParams = queryParams ? queryParams : this.queryParams;
-        try {
-            const res = await Api.post(apiRegister.login, queryParams);
-            return res.headers;
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.error("err logger: ", e);
-        }
-    }
-
-    @Action
-    public async logoutAction(queryParams: object) {
-        queryParams = queryParams ? queryParams : this.queryParams;
-        try {
-            const res = await Api.post(apiRegister.logout, queryParams);
-            return res.status;
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.log("err logger: ", e);
-        }
-    }
+  }
 }

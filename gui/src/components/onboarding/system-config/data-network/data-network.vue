@@ -1,44 +1,19 @@
 <template>
-  <v-container class="mt-6">
-    <v-img
-      id="alert-img"
-      :src="require('./../../../../assets/onboarding-wizard.png')"
-      width="780px"
-      height="70px"
-    ></v-img>
-    <v-divider />
-    <div class="body-2">
-      <div class="title mt-6" id="lblDns">Data Network Settings</div>
-      <div class="mt-2" id="lblMsg">
-        UPDATE THIS TEXT: Use the following screens to finalize your network settings for managing the system. You can
-        set the system to be managed in an IPv4 and IPv6 network or both. Additionally the system can be configured to
-        utilize DNS within your network. You can skip this section entirely if your network settings are complete.
+  <v-container class="mt-0 ml-0">
+    <div class="pl-4 body-2">
+      <div class="title mt-0 font-weight-bold" id="lblDns">
+        Data network settings
       </div>
-      <div
-        class="mt-6"
-      >Do you intend to use your own load balancer or the load balancer included in the system?</div>
-      <v-divider class="mt-2" />
-      <div class="mt-8">
-        <input
-          type="radio"
-          name="loadbalancer"
-          v-model="loadbalancer"
-          value="internal"
-          id="rbtnLoadbalancer"
-        />
-        <span class="ml-3 font-weight-medium" id="lblUseloadBalancer">Use the included load balancer</span>
+      <div class="mt-6" id="lblMsg">
+        Use the following options to finalize your Data network settings for
+        mapping the system. You can set system to be managed in an IPv4
+        network.Additionally the system can be configured to utilize DNS within
+        your network. You can skip this section entirely if your network
+        settings are complete.
       </div>
-      <div class="mt-4">
-        <input
-          type="radio"
-          name="loadbalancer"
-          v-model="loadbalancer"
-          value="external"
-          id="rbtnLoadbalancer"
-        />
-        <span class="ml-4 font-weight-medium" id="lblUseExternalLoad">Use an external load balancer</span>
+      <div class="mt-8" id="lblChoseMsg">
+        Chose which network settings you'd like to establish.
       </div>
-      <div class="mt-8" id="lblChoseMsg">Chose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
         <input
@@ -48,25 +23,12 @@
           name="ipv4"
           id="chkDNSisipV4Status"
         />
-        <span class="ml-3 font-weight-medium" id="lblDNsIpv4">IPv4</span>
+        <span class="ml-3 font-weight-bold" id="lblDNsIpv4">IPv4</span>
       </div>
       <div class="mt-2" id="lblDNSSetting">
-        Selecting IPv4 will allow you to view settings assigned by DHCP or to assign static IPv4 data network for
-        enironments that do not support DHCP.
-      </div>
-      <div class="mt-6">
-        <input
-          type="checkbox"
-          :disabled="isSkip"
-          v-model="isDataipV6Status"
-          name="ipv6"
-          id="chkIsipV6Status"
-        />
-        <span class="ml-4 font-weight-medium" id="lblIpv6">IPv6</span>
-      </div>
-      <div class="mt-1" id="lblMsg">
-        Selecting IPv6 will allow you to view settings assigned by DHCP or to assign static IPv6 data network settings
-        for environments that do not support DHCP.
+        Selecting IPv4 will allow you to view settings assigned by DHCP or to
+        assign static IPv4 data network for environments that do not support
+        DHCP.
       </div>
       <div class="mt-6">
         <input
@@ -77,37 +39,22 @@
           name="skip"
           id="chkDNSSkip"
         />
-        <span
-          class="ml-3 font-weight-medium"
-          id="lblSkipManagmentSetting"
-        >Skip data network settings</span>
-      </div>
-      <div
-        class="mt-2"
-        id="lblMsgSkipStep"
-      >You can skip this step if your management network settings are already complete.</div>
-      <v-divider class="mt-8" />
-      <div class="mt-8">
-        <v-btn
-          @click="gotToNextPage()"
-          elevation="0"
-          :disabled="!(isSkip || isDataipV6Status || isDataipV4Status)"
-          color="csmprimary"
-          id="btnDNSContinue"
+        <span class="ml-3 font-weight-bold" id="lblSkipManagmentSetting"
+          >Skip data network settings</span
         >
-          <span class="white--text">Continue</span>
-        </v-btn>
-        <span
-          class="csmprimary--text ml-8 pointer"
-          @click="gotToPrevPage()"
-          id="lblDNSBack"
-        >Back to previous step</span>
       </div>
+      <div class="mt-2" id="lblMsgSkipStep">
+        You can skip this step if your management network settings are already
+        complete.
+      </div>
+      <v-divider class="mt-8" />
     </div>
+    <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { EventBus } from "./../../../../main";
 
 @Component({
   name: "eos-data-network"
@@ -120,7 +67,29 @@ export default class EosDataNetwork extends Vue {
     };
   }
   public mounted() {
-    this.$store.commit("alerts/setOnboardingFlag", false);
+    // WizardHook: Open a listener for onNext event
+    // So when wizard footer clicks on the Next Button this component can perform its own workflow
+    EventBus.$on("emitOnNext", (res: any) => {
+      // Replace with
+      /*this.onNext().then({
+			res(true);
+		  })*/
+      res(true);
+    });
+  }
+  public destroyed() {
+    // WizardHook: shut off on exit event listner
+    EventBus.$off("emitOnNext");
+  }
+  get isValidForm() {
+    const validate = true;
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EventBus.$emit(
+      "validForm",
+      this.isDataipV6Status || this.isDataipV4Status || this.$data.isSkip
+    );
+    return validate;
   }
   public get isDataipV4Status(): any {
     return this.$store.getters["systemConfig/isDataipV4Status"];
@@ -140,31 +109,6 @@ export default class EosDataNetwork extends Vue {
       type: "ipV6",
       flag: status
     });
-  }
-  public gotToPrevPage() {
-    if (this.$store.getters["systemConfig/isipV6Status"] === true) {
-      this.$router.push("systemconfig3");
-    } else if (this.$store.getters["systemConfig/isipV4Status"] === true) {
-      this.$router.push("systemconfig2");
-    } else if (
-      this.$store.getters["systemConfig/isipV6Status"] === false &&
-      this.$store.getters["systemConfig/isipV4Status"] === false
-    ) {
-      this.$router.push("systemconfig1");
-    }
-  }
-  public gotToNextPage() {
-    if (this.isDataipV4Status === true) {
-      this.$router.push("dataconfig2");
-    } else if (this.isDataipV6Status === true) {
-      this.$router.push("dataconfig3");
-    } else if (
-      this.isDataipV4Status === false &&
-      this.isDataipV6Status === false
-    ) {
-      this.$router.push("dnsconfig");
-    }
-    this.$router.push("");
   }
   public isSkipNetworkSettings() {
     this.$store.commit("systemConfig/setDataNetworkSettings", {
