@@ -51,7 +51,7 @@
             <th
               v-for="header in alertHeader"
               :key="header.text"
-              class="tableheader font-weight-medium text--black"
+              class="tableheader"
               @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
             >
               <span
@@ -63,19 +63,27 @@
               >
                 <img
                   v-if="header.sortable && header.sortDir === alertStatus.desc"
-                  src="./../../assets/table-caret-green-down.png"
+                  :src="require('@/assets/widget/table-sort-desc.svg/')"
+                  class="d-inline-block"
+                  style="vertical-align: bottom; margin-left: -0.3em;"
+                  height="20"
+                  width="20"
                 />
                 <img
                   v-if="header.sortable && header.sortDir === alertStatus.asc"
-                  src="./../../assets/table-caret-green-up.png"
-                />
+                  :src="require('@/assets/widget/table-sort-asc.svg/')"
+                  class="d-inline-block"
+                  style="vertical-align: bottom; margin-left: -0.3em;"
+                  height="20"
+                  width="20"
+                />                
               </span>
             </th>
           </tr>
         </template>
         <template v-slot:item="props">
           <tr class="font-weight-small">
-            <td @click="onExpand(props)">
+            <td @click="onExpand(props)" style="width: 1em;">
               <img
                 style="cursor: pointer;"
                 v-if="props.isExpanded"
@@ -88,7 +96,7 @@
               />
             </td>
             <td style="width: 9em;">{{ new Date(props.item.created_time*1000) | timeago }}</td>
-            <td>
+            <td style="width: 7em;">
               <v-img
                 height="20"
                 v-if="props.item.severity===alertStatus.critical "
@@ -142,7 +150,7 @@
                 <span class="tooltip-content">{{ props.item.comment}}</span>
               </v-tooltip>
             </td>
-            <td>
+            <td style="width: 8em;">
               <v-img
                 height="20"
                 width="20"
@@ -150,7 +158,7 @@
                 src="./../../assets/status/healthy-icon.png"
               />
             </td>
-            <td>
+            <td style="width: 10em;">
               <v-checkbox
                 type="checkbox"
                 @change="updateAlert(props.item)"
@@ -318,13 +326,6 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
 #title {
   color: black;
 }
-.tableheader {
-  height: 2.5em;
-  background-color: #e3e3e3;
-  border-top: 1px solid whitesmoke;
-  padding-top: 0.5em;
-  vertical-align: top;
-}
 .active {
   display: inline-block;
   color: var(--v-csmprimary-base) !important;
@@ -355,13 +356,6 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
 }
 .largeAlert {
   border: 2px solid #e3e3e3;
-}
-tbody tr {
-  background-color: #ffffff !important ;
-}
-tbody tr:hover {
-  border-top: 2px solid darkgray !important;
-  border-bottom: 2px solid darkgray !important;
 }
 tbody tr:active {
   border-top: 2px solid darkgray !important;

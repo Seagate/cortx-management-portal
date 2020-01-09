@@ -77,7 +77,7 @@
         <th
           v-for="header in alertHeader"
           :key="header.text"
-          class="tableheader font-weight-medium text--black"
+          class="tableheader"
           @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
         >
           <span
@@ -87,12 +87,20 @@
           <span :class="(header.value === sortColumnName && isSortActive) ? 'active' : 'notActive'">
             <img
               v-if="header.sortable && header.sortDir === alertStatus.desc"
-              src="./../../assets/table-caret-green-down.png"
+              :src="require('@/assets/widget/table-sort-desc.svg/')"
+              class="d-inline-block"
+              style="vertical-align: bottom; margin-left: -0.3em;"
+              height="20"
+              width="20"
             />
             <img
               v-if="header.sortable && header.sortDir === alertStatus.asc"
-              src="./../../assets/table-caret-green-up.png"
-            />
+              :src="require('@/assets/widget/table-sort-asc.svg/')"
+              class="d-inline-block"
+              style="vertical-align: bottom; margin-left: -0.3em;"
+              height="20"
+              width="20"
+            />            
           </span>
         </th>
       </template>
@@ -196,12 +204,6 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
 #title {
   color: black;
 }
-.tableheader {
-  height: 2.5em;
-  background-color: #e3e3e3;
-  border-top: 1px solid whitesmoke;
-  padding-top: 0.5em;
-}
 .active {
   display: inline-block;
   color: var(--v-csmprimary-base) !important;
@@ -219,12 +221,5 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
 }
 .mediumAlert {
   border: 2px solid #e3e3e3 !important;
-}
-tbody tr {
-  background-color: #ffffff !important ;
-}
-tbody tr:hover {
-  border-top: 2px solid darkgray !important;
-  border-bottom: 2px solid darkgray !important;
 }
 </style>
