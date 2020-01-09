@@ -338,12 +338,6 @@ export default class EosStatsMedium extends Vue {
 #title {
   color: black;
 }
-.tableheader {
-  height: 2.5em;
-  background-color: #e3e3e3;
-  border-top: 1px solid whitesmoke;
-  padding-top: 0.5em;
-}
 .active {
   display: inline-block;
   color: var(--v-csmprimary-base) !important;
@@ -361,12 +355,5 @@ export default class EosStatsMedium extends Vue {
 }
 .mediumAlert {
   border: 2px solid #e3e3e3;
-}
-tbody tr {
-  background-color: #ffffff !important ;
-}
-tbody tr:hover {
-  border-top: 2px solid darkgray !important;
-  border-bottom: 2px solid darkgray !important;
 }
 </style>

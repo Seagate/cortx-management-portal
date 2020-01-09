@@ -214,7 +214,7 @@
             <th
               v-for="header in accountsTableHeaderList"
               :key="header.text"
-              class="tableheader font-weight-medium text--black"
+              class="tableheader"
             >
               <span class="headerText">{{ header.text }}</span>
             </th>
@@ -544,12 +544,6 @@ tr {
 #title {
   color: black;
 }
-.tableheader {
-  height: 2.5em;
-  background-color: #e3e3e3;
-  border-top: 1px solid whitesmoke;
-  padding-top: 0.5em;
-}
 .active {
   display: inline-block;
   color: var(--v-csmprimary-base) !important;
@@ -580,13 +574,6 @@ tr {
 }
 .largeAlert {
   border: 2px solid #e3e3e3;
-}
-tbody tr {
-  background-color: #ffffff !important ;
-}
-tbody tr:hover {
-  border-top: 2px solid darkgray !important;
-  border-bottom: 2px solid darkgray !important;
 }
 tbody tr:active {
   border-top: 2px solid darkgray !important;
