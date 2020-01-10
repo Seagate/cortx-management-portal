@@ -27,6 +27,9 @@
 input:focus {
   outline: 0;
 }
+textarea:focus {
+  outline: 0;
+}
 .eos-form-group {
   width: 325px;
   min-height: 88px;
@@ -51,6 +54,30 @@ input:focus {
   border-color: #dc1f2e;
 }
 .eos-form__input_text:disabled {
+  background: rgba(0, 0, 0, 0.02);
+}
+.eos-form__input_textarea {
+  background: #ffffff;
+  border: 1px solid #9e9e9e;
+  border-radius: 4px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 100px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 5px;
+  display: inline-block;
+  width: 100%;
+  resize: none;
+}
+.eos-form__input_textarea:focus {
+  border-color: #6ebe49;
+}
+.eos-form-group.eos-form-group--error > .eos-form__input_textarea {
+  border-color: #dc1f2e;
+}
+.eos-form__input_textarea:disabled {
   background: rgba(0, 0, 0, 0.02);
 }
 .eos-form-group-label {
@@ -397,3 +424,43 @@ tbody tr:hover {
   background: #9E9E9E;
 }
 /* Status chips style rules --- End */
+
+/* Modal style rules --- Start */
+.eos-modal-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+.eos-modal {
+  width: 424px;
+  min-height: 212px;
+  background: #FFFFFF;
+  margin: auto;
+}
+.eos-modal-header {
+  height: 65px;
+  display: flex;
+  padding: 20px;
+  flex-wrap: nowrap;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 26px;
+  border-bottom: 1px solid #B7B7B7;
+}
+.eos-modal-close {
+  cursor: pointer;
+  margin-left: auto;
+}
+.eos-modal-body{
+  padding: 20px;
+}
+/* Modal style rules --- End */
