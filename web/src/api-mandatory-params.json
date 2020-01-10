@@ -117,5 +117,31 @@
                 "required": true
             }
         ]
+    },
+    "api/v1/s3_accounts": {
+        "POST": [
+            {
+                "paramname": "account_name",
+                "datatype": "string",
+                "required": true
+            },
+            {
+                "paramname": "account_email",
+                "datatype": "string",
+                "required": true
+            },
+            {
+                "paramname": "password",
+                "datatype": "string",
+                "required": true
+            }
+        ],
+        "PATCH": [
+            {
+                "paramname": "password",
+                "datatype": "string",
+                "required": true
+            }
+        ]
     }
 }
