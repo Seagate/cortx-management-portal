@@ -14,6 +14,7 @@
  *****************************************************************************/
 // mixin.js
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import { AlertQueryParam } from "../models/alert";
 
 @Component({
     name: "eos-alert-medium"
@@ -27,6 +28,7 @@ export default class AlertsMixin extends Vue {
         offset: number,
         limit: number
     ) {
+        const alertQueryParam: AlertQueryParam = {} as AlertQueryParam;
         // Check if current column is sortable
         if (sortedHeader && sortedHeader.sortable) {
             // Change sort direction in alertHeader data for current selected/sorted column
@@ -45,17 +47,29 @@ export default class AlertsMixin extends Vue {
         }
         // Set queryparams data to store; sortBy is null in case of pagination
         // For sorting sortBy should have column value
-        sortby = sortby != null ? sortby : this.queryParams.sortby;
+
+        sortby = sortby ? sortby : this.queryParams.sortby;
         const dir =
             sortedHeader != null ? sortedHeader.sortDir : this.queryParams.dir;
-        this.$store.commit("alerts/alertQueryParamMutation", {
-            sortby,
-            dir,
-            offset,
-            limit
-        });
+
+        if (this.$data.alertPageFilter) {
+            switch (this.$data.alertPageFilter) {
+                case "new":
+                    alertQueryParam.acknowledged = false;
+                    break;
+                case "active":
+                    alertQueryParam.acknowledged = true;
+                    alertQueryParam.resolved = false;
+                    break;
+            }
+        }
+        alertQueryParam.sortby = sortby;
+        alertQueryParam.dir = dir;
+        alertQueryParam.offset = offset;
+        alertQueryParam.limit = limit;
+        this.$store.commit("alerts/alertQueryParamMutation", alertQueryParam);
         // Get queryparams data from store and then dispatch to action
-        this.$store.dispatch("alerts/alertDataAction", this.queryParams);
+        this.$store.dispatch("alerts/alertDataAction", alertQueryParam);
     }
 
     // Get total_records from alert API
