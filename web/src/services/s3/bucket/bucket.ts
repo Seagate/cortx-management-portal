@@ -47,4 +47,24 @@ export const createBucket = async (req: Request, res: Response) => {
 export const deleteBucket = async (req: Request, res: Response) => {
     let bucket = Api.delete(apiRegister.s3_bucket, req, res, req.params.bucket_name);
     return bucket;
-  };
+};
+/**
+ * 
+ * @param req Update bucket policy
+ * @param res 
+ */
+export const updateBuketPolicy = async (req: Request, res: Response) => {
+    let updatePolicy = Api.put(apiRegister.bucket_policy, req, res, req.params.bucket_name);
+    let result = await updatePolicy;
+    return result;
+};
+/**
+ * 
+ * @param req get bucket policy
+ * @param res 
+ */
+export const getBucketsPolicy = async (req: Request, res: Response) => {
+    let getbucket = Api.get(apiRegister.bucket_policy, req, res, req.params.bucket_name);
+    let result = await getbucket;
+    return result;
+};

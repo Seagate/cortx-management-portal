@@ -46,8 +46,9 @@ axios.interceptors.response.use(
       localStorage.removeItem(conststr.access_token);
       router.push("/login");
 
-      return Promise.reject(error);
+      // return Promise.reject(error);
     }
+    return Promise.reject(error);
   }
 );
 
