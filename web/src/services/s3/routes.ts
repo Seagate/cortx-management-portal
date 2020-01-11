@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response } from "express";
-import { getAllAccounts, createAccount, deleteAccount, getAllIAMUsers, createIAMUser, deleteIAMUser } from "./s3-controller";
+import { getAllAccounts, createAccount, deleteAccount, getAllIAMUsers, createIAMUser, deleteIAMUser, updateAccount } from "./s3-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -46,9 +46,9 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-            console.log(req.params.name);
-            const result = await getAllAccounts(req, res);
-            res.status(HttpStatus.OK).send(result);
+          console.log(req.params.name);
+          const result = await getAllAccounts(req, res);
+          res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
         }
@@ -77,8 +77,8 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-            const result = await deleteAccount(req.params.name, req, res);
-            res.status(HttpStatus.OK).send(result);
+          const result = await deleteAccount(req.params.name, req, res);
+          res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
         }
@@ -107,9 +107,9 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-            console.log(req.params.name);
-            const result = await getAllIAMUsers(req, res);
-            res.status(HttpStatus.OK).send(result);
+          console.log(req.params.name);
+          const result = await getAllIAMUsers(req, res);
+          res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
         }
@@ -138,12 +138,27 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-            const result = await deleteIAMUser(req.params.username, req, res);
-            res.status(HttpStatus.OK).send(result);
+          const result = await deleteIAMUser(req.params.username, req, res);
+          res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
         }
       }
     ]
-  }
+  },
+  {
+    path: "/api/v1/s3_account/:account_name",
+    method: "patch",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await updateAccount(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
 ];

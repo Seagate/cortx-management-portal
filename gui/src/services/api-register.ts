@@ -1,3 +1,5 @@
+import { Bucket } from "@/models/s3";
+
 /*****************************************************************************
  Filename:          api-register.ts
  Description:       API Register: use for maintainging single registry for API
@@ -24,7 +26,7 @@ export default {
     udx_reg_status: `api/${version}/udx-device/registration-status`,
     udx_reg_token: `api/${version}/udx-device/registration-token`,
     udx_device: `api/${version}/udx-device`,
-    s3_account: `/api/${version}/s3_accounts`,
+    s3_account: `/api/${version}/s3_account`,
     s3_iam_user: `/api/${version}/s3_iam_user`,
     s3_bucket: `/api/${version}/s3/bucket`,
     stats: `api/${version}/stats/throughput`,
@@ -32,5 +34,6 @@ export default {
     latency: `api/${version}/stats/latency`,
     iops: `api/${version}/stats/iops`,
     capacity: `api/${version}/capacity`,
-    sysconfig: `api/${version}/sysconfig`
+    sysconfig: `api/${version}/sysconfig`,
+    bucket_policy: `/api/${version}/s3/bucket_policy`
 };

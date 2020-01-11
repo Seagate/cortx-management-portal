@@ -57,7 +57,7 @@
 
       <v-dialog v-model="showBucketCreateSuccessDialog" persistent max-width="790">
         <v-card>
-          <v-system-bar color="greay lighten-3">
+          <v-system-bar color="grey lighten-3">
             <v-spacer></v-spacer>
             <v-icon @click="closeBucketCreateSuccessDialog()" style="cursor: pointer;">mdi-close</v-icon>
           </v-system-bar>
@@ -106,7 +106,48 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-
+      <!---->
+      <div class="eos-modal-container" v-if="showBucketPolicyDialog">
+        <div class="eos-modal">
+          <div class="eos-modal-header">
+            <label>JSON Policy</label>
+            <img
+              class="eos-modal-close"
+              :src="require('@/assets/close-green.svg')"
+              @click="closeBucketPolicyeDialog()"
+            />
+          </div>
+          <div class="eos-modal-body">
+            <div class="eos-form-group" style="width: 100%;">
+              <label class="eos-form-group-label" for="comment">Add Your JSON Here</label>
+              <textarea
+                class="eos-form__input_textarea"
+                v-model="policyJson"
+                @input="$v.policyJson.$touch"
+              ></textarea>
+              <span
+                class="eos-form-group-label eos-form-group-error-msg red--text"
+                v-if="$v.policyJson.$dirty && !$v.policyJson.required"
+              >Policy JSON is required</span>
+              <span class="eos-form-group-label eos-form-group-error-msg red--text">{{jsonerr}}</span>
+            </div>
+            <div>
+              <button
+                type="button"
+                class="eos-btn-primary"
+                :disabled="!$v.policyJson.jsonValidator"
+                @click="updateBuketPolicy()"
+              >Create</button>
+              <button
+                type="button"
+                class="ml-8 eos-btn-secondary"
+                @click="closeBucketPolicyeDialog()"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!---->
       <v-data-table
         calculate-widths
         :items="bucketsList"
@@ -118,11 +159,7 @@
       >
         <template v-slot:header="{props}">
           <tr>
-            <th
-              v-for="header in bucketsTableHeaderList"
-              :key="header.text"
-              class="tableheader"
-            >
+            <th v-for="header in bucketsTableHeaderList" :key="header.text" class="tableheader">
               <span class="headerText">{{ header.text }}</span>
             </th>
             <th class="tableheader" />
@@ -138,6 +175,19 @@
                 style="cursor: pointer;"
                 src="./../../assets/delete-off.png"
               />
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <span style="margin-left:20px;">
+                    <img
+                      @click="openBucketPolicyDialog(props.item.name)"
+                      style="cursor: pointer;"
+                      src="./../../assets/edit-off.png"
+                      v-on="on"
+                    />
+                  </span>
+                </template>
+                <span>Bucket Policy</span>
+              </v-tooltip>
             </td>
           </tr>
         </template>
@@ -153,7 +203,6 @@ import { Bucket } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import Loader from "../widgets/loader.vue";
-
 const bucketNameRegex = helpers.regex("bucketNameRegex", /^[a-zA-Z0-9_-]*$/);
 
 @Component({
@@ -164,33 +213,28 @@ export default class EosBucketCreation extends Vue {
   public createBucketForm = {
     bucket: {} as Bucket
   };
-
-  @Validations()
-  public validations = {
-    createBucketForm: {
-      bucket: {
-        bucket_name: { required, bucketNameRegex }
-      }
-    }
-  };
-
+  private jsonvalidationMsg: any = "" || null;
   private showCreateBucketForm: boolean;
   private showLoader: boolean;
   private loaderMessage: string;
   private showBucketCreateSuccessDialog: boolean;
   private showConfirmDeleteDialog: boolean;
-
+  private showBucketPolicyDialog: boolean;
   private bucketsTableHeaderList: any[];
   private bucketsList: Bucket[] = [];
   private bucketToDelete: string = "";
-
+  private policyJson: any = "";
+  private bucketName: any = "";
   constructor() {
     super();
+    this.jsonvalidationMsg = "";
+    this.bucketName = "";
     this.showCreateBucketForm = false;
     this.showLoader = false;
     this.loaderMessage = "";
     this.showBucketCreateSuccessDialog = false;
     this.showConfirmDeleteDialog = false;
+    this.showBucketPolicyDialog = false;
     this.bucketsTableHeaderList = [
       {
         text: "Name",
@@ -199,7 +243,33 @@ export default class EosBucketCreation extends Vue {
       }
     ];
   }
-
+  @Validations()
+  public validations = {
+    createBucketForm: {
+      bucket: {
+        bucket_name: { required, bucketNameRegex }
+      }
+    },
+    policyJson: {
+      required,
+      jsonValidator: (value: any, $data: any) => {
+        let isValid = false;
+        try {
+          JSON.parse(value);
+          $data.jsonerr = "";
+          isValid = true;
+        } catch (e) {
+          $data.jsonerr = e.message;
+        }
+        return isValid;
+      }
+    }
+  };
+  data() {
+    return {
+      jsonerr: ""
+    };
+  }
   public mounted() {
     this.getAllBuckets();
   }
@@ -212,7 +282,6 @@ export default class EosBucketCreation extends Vue {
       this.bucketsList = res.data.buckets;
     } catch (error) {
       // tslint:disable-next-line: no-console
-      console.log("TCL: EosBucketCreation -> getAllBuckets -> error", error);
     }
     this.showLoader = false;
     this.loaderMessage = "";
@@ -228,7 +297,6 @@ export default class EosBucketCreation extends Vue {
       );
     } catch (error) {
       // tslint:disable-next-line: no-console
-      console.log("TCL: EosBucketCreation -> createBucket -> error", error);
     }
     this.showLoader = false;
     this.loaderMessage = "";
@@ -267,7 +335,6 @@ export default class EosBucketCreation extends Vue {
       await Api.delete(apiRegister.s3_bucket, this.bucketToDelete);
     } catch (error) {
       // tslint:disable-next-line: no-console
-      console.log("TCL: EosBucketCreation -> deleteBucket -> error", error);
     }
     this.showLoader = false;
     this.loaderMessage = "";
@@ -278,6 +345,23 @@ export default class EosBucketCreation extends Vue {
     this.bucketToDelete = bucketName;
     this.showConfirmDeleteDialog = true;
   }
+  /**
+   *
+   * get bucket policy
+   */
+  public async openBucketPolicyDialog(bucketname: any) {
+    this.bucketName = bucketname;
+    this.showBucketPolicyDialog = true;
+    try {
+      const res: any = await Api.getAll(
+        apiRegister.bucket_policy + "/" + bucketname
+      );
+      this.policyJson = JSON.stringify(res.data, null, 4);
+    } catch (error) {
+      this.policyJson = "";
+      // tslint:disable-next-line: no-console
+    }
+  }
 
   public async closeConfirmDeleteDialog(confirmation: string) {
     this.showConfirmDeleteDialog = false;
@@ -285,6 +369,28 @@ export default class EosBucketCreation extends Vue {
       this.deleteBucket();
     }
     this.bucketToDelete = "";
+  }
+  public async closeBucketPolicyeDialog() {
+    this.showBucketPolicyDialog = false;
+    this.policyJson = "";
+  }
+  public async updateBuketPolicy() {
+    let policy = JSON.parse(this.policyJson);
+    this.showLoader = true;
+    try {
+      const res = await Api.put(
+        apiRegister.bucket_policy,
+        policy,
+        this.bucketName
+      );
+    } catch (error) {
+      // tslint:disable-next-line: no-console
+      this.policyJson = "";
+    }
+    this.policyJson = "";
+    this.showBucketPolicyDialog = false;
+    this.showLoader = false;
+    this.loaderMessage = "";
   }
 }
 </script>
@@ -346,5 +452,9 @@ tbody tr:active {
 .delete-bucket-confirmation-msg {
   color: #000;
   font-size: 16px;
+}
+.textarea-text {
+  border-style: solid;
+  border-width: 1px;
 }
 </style>
