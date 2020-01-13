@@ -32,9 +32,9 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import EosAlertMedium from "./../components/dashboard/alert-medium.vue";
-import EosStatsMedium from "./../components/dashboard/stats/stats-medium.vue";
-import EosCapacityGuage from "./../components/dashboard/capacity-gauge.vue";
+import EosAlertMedium from "./../alerts/alert-medium.vue";
+import EosStatsMedium from "./stats/stats-medium.vue";
+import EosCapacityGuage from "./capacity-gauge.vue";
 import * as c3 from "c3";
 
 @Component({

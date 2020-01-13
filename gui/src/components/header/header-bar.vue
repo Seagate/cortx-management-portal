@@ -113,12 +113,12 @@
     <v-divider
       class="mx-4 grey darken-4"
       vertical
-      v-if="!isRouterPathOnboading"
+      v-if="!isRouterPathOnboarding"
     ></v-divider>
     <div
       class="pa-5 white--text pointer"
       @click="logout()"
-      v-if="!isRouterPathOnboading"
+      v-if="!isRouterPathOnboarding"
     >
       Logout
     </div>
@@ -155,7 +155,7 @@ export default class HeaderBar extends Vue {
   get alertNotifications() {
     return this.$store.state.alertNotification.socket;
   }
-  get isRouterPathOnboading() {
+  get isRouterPathOnboarding() {
     return this.$route.name === "onboarding";
   }
   private logout() {

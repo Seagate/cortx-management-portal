@@ -126,11 +126,9 @@ export default class EosDnsSetting extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      this.updateDNSconfig()
-        .then(result => {
-          res(true);
-        })
-        .catch(err => {});
+      this.updateDNSconfig().then(result => {
+        res(true);
+      });
     });
   }
   private destroyed() {

@@ -3,49 +3,61 @@
     <Loader :show="showLoader" :message="loaderMessage" />
 
     <div style="width: 100%">
-      <div v-if="showCreateBucketForm">
+      <div v-if="showCreateBucketForm" class="px-2">
         <v-row>
-          <v-col class="pl-5">
-            <div class="pt-3">
-              <InputBox :form="createBucketForm" :control="createBucketForm.controls[0]" />
+          <v-col class="py-0 pr-0">
+            <div
+              class="eos-form-group"
+              :class="{ 'eos-form-group--error': $v.createBucketForm.bucket.bucket_name.$error }"
+            >
+              <label class="eos-form-group-label" for="bucketName">Bucket Name*</label>
+              <input
+                class="eos-form__input_text"
+                type="text"
+                id="bucketName"
+                name="bucketName"
+                v-model.trim="createBucketForm.bucket.bucket_name"
+                @input="$v.createBucketForm.bucket.bucket_name.$touch"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="$v.createBucketForm.bucket.bucket_name.$dirty && !$v.createBucketForm.bucket.bucket_name.required"
+                >Bucket Name is required</label>
+                <label
+                  v-else-if="$v.createBucketForm.bucket.bucket_name.$dirty && !$v.createBucketForm.bucket.bucket_name.bucketNameRegex"
+                >Invalid Bucket Name</label>
+              </div>
             </div>
           </v-col>
         </v-row>
+
         <v-row>
           <v-col>
-            <v-btn
-              v-if="showCreateBucketForm"
-              color="csmprimary"
-              class="mx-2"
+            <button
+              type="button"
+              class="eos-btn-primary"
               @click="createBucket()"
-              :disabled="!createBucketForm.isValid"
-            >
-              <span class="white--text">Create</span>
-            </v-btn>
-            <v-btn
-              v-if="showCreateBucketForm"
-              text
-              small
-              color="csmprimary"
-              class="ml-5"
+              :disabled="$v.createBucketForm.$invalid"
+            >Create Bucket</button>
+            <button
+              type="button"
+              class="ml-8 eos-btn-secondary"
               @click="closeCreateBucketForm()"
-            >Cancel</v-btn>
+            >Cancel</button>
           </v-col>
         </v-row>
       </div>
 
-      <v-btn
+      <button
+        type="button"
+        class="mt-2 mb-4 eos-btn-primary"
         v-if="!showCreateBucketForm"
-        color="csmprimary"
-        class="mt-2 mb-4 elevation-0"
         @click="openCreateBucketForm()"
-      >
-        <span class="white--text">Create</span>
-      </v-btn>
+      >Create</button>
 
       <v-dialog v-model="showBucketCreateSuccessDialog" persistent max-width="790">
         <v-card>
-          <v-system-bar color="greay lighten-3">
+          <v-system-bar color="grey lighten-3">
             <v-spacer></v-spacer>
             <v-icon @click="closeBucketCreateSuccessDialog()" style="cursor: pointer;">mdi-close</v-icon>
           </v-system-bar>
@@ -54,13 +66,11 @@
             <span>Bucket created successfully.</span>
           </v-card-title>
           <v-card-actions>
-            <v-btn
-              color="csmprimary"
+            <button
+              type="button"
+              class="ma-5 eos-btn-primary"
               @click="closeBucketCreateSuccessDialog()"
-              class="ma-5 elevation-0"
-            >
-              <span class="white--text">OK</span>
-            </v-btn>
+            >Ok</button>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -83,25 +93,61 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn
-              color="csmprimary"
+            <button
+              type="button"
+              class="ma-5 eos-btn-primary"
               @click="closeConfirmDeleteDialog('yes')"
-              class="ma-5 elevation-0"
-            >
-              <span class="white--text">Yes</span>
-            </v-btn>
-            <v-btn
-              color="csmprimary"
-              outlined
+            >Yes</button>
+            <button
+              type="button"
+              class="ma-5 eos-btn-primary"
               @click="closeConfirmDeleteDialog('no')"
-              class="ma-5 elevation-0"
-            >
-              <span style="text-transform: none;">No</span>
-            </v-btn>
+            >No</button>
           </v-card-actions>
         </v-card>
       </v-dialog>
-
+      <!---->
+      <div class="eos-modal-container" v-if="showBucketPolicyDialog">
+        <div class="eos-modal">
+          <div class="eos-modal-header">
+            <label>JSON Policy</label>
+            <img
+              class="eos-modal-close"
+              :src="require('@/assets/close-green.svg')"
+              @click="closeBucketPolicyeDialog()"
+            />
+          </div>
+          <div class="eos-modal-body">
+            <div class="eos-form-group" style="width: 100%;">
+              <label class="eos-form-group-label" for="comment">Add Your JSON Here</label>
+              <textarea
+                class="eos-form__input_textarea"
+                v-model="policyJson"
+                @input="$v.policyJson.$touch"
+              ></textarea>
+              <span
+                class="eos-form-group-label eos-form-group-error-msg red--text"
+                v-if="$v.policyJson.$dirty && !$v.policyJson.required"
+              >Policy JSON is required</span>
+              <span class="eos-form-group-label eos-form-group-error-msg red--text">{{jsonerr}}</span>
+            </div>
+            <div>
+              <button
+                type="button"
+                class="eos-btn-primary"
+                :disabled="!$v.policyJson.jsonValidator"
+                @click="updateBuketPolicy()"
+              >Create</button>
+              <button
+                type="button"
+                class="ml-8 eos-btn-secondary"
+                @click="closeBucketPolicyeDialog()"
+              >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!---->
       <v-data-table
         calculate-widths
         :items="bucketsList"
@@ -113,11 +159,7 @@
       >
         <template v-slot:header="{props}">
           <tr>
-            <th
-              v-for="header in bucketsTableHeaderList"
-              :key="header.text"
-              class="tableheader font-weight-medium text--black"
-            >
+            <th v-for="header in bucketsTableHeaderList" :key="header.text" class="tableheader">
               <span class="headerText">{{ header.text }}</span>
             </th>
             <th class="tableheader" />
@@ -133,6 +175,19 @@
                 style="cursor: pointer;"
                 src="./../../assets/delete-off.png"
               />
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <span style="margin-left:20px;">
+                    <img
+                      @click="openBucketPolicyDialog(props.item.name)"
+                      style="cursor: pointer;"
+                      src="./../../assets/edit-off.png"
+                      v-on="on"
+                    />
+                  </span>
+                </template>
+                <span>Bucket Policy</span>
+              </v-tooltip>
             </td>
           </tr>
         </template>
@@ -142,37 +197,44 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Buckets } from "./../.././././models/s3Buckets";
+import { Validations } from "vuelidate-property-decorators";
+import { required, helpers } from "vuelidate/lib/validators";
+import { Bucket } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import Loader from "../widgets/loader.vue";
-import InputBox from "../widgets/input-box.vue";
-import { Form, FormControl, Validator } from "../widgets/form-widget";
+const bucketNameRegex = helpers.regex("bucketNameRegex", /^[a-zA-Z0-9_-]*$/);
 
 @Component({
   name: "eos-bucketcreation",
-  components: { Loader, InputBox }
+  components: { Loader }
 })
 export default class EosBucketCreation extends Vue {
+  public createBucketForm = {
+    bucket: {} as Bucket
+  };
+  private jsonvalidationMsg: any = "" || null;
   private showCreateBucketForm: boolean;
   private showLoader: boolean;
   private loaderMessage: string;
   private showBucketCreateSuccessDialog: boolean;
   private showConfirmDeleteDialog: boolean;
-
+  private showBucketPolicyDialog: boolean;
   private bucketsTableHeaderList: any[];
-  private bucketsList: Buckets[] = [];
+  private bucketsList: Bucket[] = [];
   private bucketToDelete: string = "";
-
-  private createBucketForm: Form;
-
+  private policyJson: any = "";
+  private bucketName: any = "";
   constructor() {
     super();
+    this.jsonvalidationMsg = "";
+    this.bucketName = "";
     this.showCreateBucketForm = false;
     this.showLoader = false;
     this.loaderMessage = "";
     this.showBucketCreateSuccessDialog = false;
     this.showConfirmDeleteDialog = false;
+    this.showBucketPolicyDialog = false;
     this.bucketsTableHeaderList = [
       {
         text: "Name",
@@ -180,23 +242,34 @@ export default class EosBucketCreation extends Vue {
         sortable: false
       }
     ];
-
-    const controls: FormControl[] = [
-      new FormControl(
-        "Name",
-        "bucket_name",
-        "text",
-        "",
-        true,
-        "Bucket Name is required",
-        new Validator(new RegExp("^[a-zA-Z0-9_-]*$"), "Invalid Bucket Name"),
-        "Bucket Name should be alphanumeric " +
-          "and can have _ or - but no spaces"
-      )
-    ];
-    this.createBucketForm = new Form(controls, false);
   }
-
+  @Validations()
+  public validations = {
+    createBucketForm: {
+      bucket: {
+        bucket_name: { required, bucketNameRegex }
+      }
+    },
+    policyJson: {
+      required,
+      jsonValidator: (value: any, $data: any) => {
+        let isValid = false;
+        try {
+          JSON.parse(value);
+          $data.jsonerr = "";
+          isValid = true;
+        } catch (e) {
+          $data.jsonerr = e.message;
+        }
+        return isValid;
+      }
+    }
+  };
+  data() {
+    return {
+      jsonerr: ""
+    };
+  }
   public mounted() {
     this.getAllBuckets();
   }
@@ -209,7 +282,6 @@ export default class EosBucketCreation extends Vue {
       this.bucketsList = res.data.buckets;
     } catch (error) {
       // tslint:disable-next-line: no-console
-      console.log("TCL: EosBucketCreation -> getAllBuckets -> error", error);
     }
     this.showLoader = false;
     this.loaderMessage = "";
@@ -218,12 +290,13 @@ export default class EosBucketCreation extends Vue {
   public async createBucket() {
     this.showLoader = true;
     this.loaderMessage = "Creating Bucket...";
-    const tempBucket = this.createBucketForm.getModel();
     try {
-      const res = await Api.post(apiRegister.s3_bucket, tempBucket);
+      const res = await Api.post(
+        apiRegister.s3_bucket,
+        this.createBucketForm.bucket
+      );
     } catch (error) {
       // tslint:disable-next-line: no-console
-      console.log("TCL: EosBucketCreation -> createBucket -> error", error);
     }
     this.showLoader = false;
     this.loaderMessage = "";
@@ -247,12 +320,12 @@ export default class EosBucketCreation extends Vue {
   }
 
   public clearCreateBucketForm() {
-    this.createBucketForm.isValid = false;
-    this.createBucketForm.controls.forEach(control => {
-      control.value = "";
-      control.isDirty = false;
-      control.isValid = false;
-    });
+    this.createBucketForm = {
+      bucket: {} as Bucket
+    };
+    if (this.$v.createBucketForm) {
+      this.$v.createBucketForm.$reset();
+    }
   }
 
   public async deleteBucket() {
@@ -262,7 +335,6 @@ export default class EosBucketCreation extends Vue {
       await Api.delete(apiRegister.s3_bucket, this.bucketToDelete);
     } catch (error) {
       // tslint:disable-next-line: no-console
-      console.log("TCL: EosBucketCreation -> deleteBucket -> error", error);
     }
     this.showLoader = false;
     this.loaderMessage = "";
@@ -273,6 +345,23 @@ export default class EosBucketCreation extends Vue {
     this.bucketToDelete = bucketName;
     this.showConfirmDeleteDialog = true;
   }
+  /**
+   *
+   * get bucket policy
+   */
+  public async openBucketPolicyDialog(bucketname: any) {
+    this.bucketName = bucketname;
+    this.showBucketPolicyDialog = true;
+    try {
+      const res: any = await Api.getAll(
+        apiRegister.bucket_policy + "/" + bucketname
+      );
+      this.policyJson = JSON.stringify(res.data, null, 4);
+    } catch (error) {
+      this.policyJson = "";
+      // tslint:disable-next-line: no-console
+    }
+  }
 
   public async closeConfirmDeleteDialog(confirmation: string) {
     this.showConfirmDeleteDialog = false;
@@ -280,6 +369,28 @@ export default class EosBucketCreation extends Vue {
       this.deleteBucket();
     }
     this.bucketToDelete = "";
+  }
+  public async closeBucketPolicyeDialog() {
+    this.showBucketPolicyDialog = false;
+    this.policyJson = "";
+  }
+  public async updateBuketPolicy() {
+    let policy = JSON.parse(this.policyJson);
+    this.showLoader = true;
+    try {
+      const res = await Api.put(
+        apiRegister.bucket_policy,
+        policy,
+        this.bucketName
+      );
+    } catch (error) {
+      // tslint:disable-next-line: no-console
+      this.policyJson = "";
+    }
+    this.policyJson = "";
+    this.showBucketPolicyDialog = false;
+    this.showLoader = false;
+    this.loaderMessage = "";
   }
 }
 </script>
@@ -299,12 +410,6 @@ export default class EosBucketCreation extends Vue {
 }
 #title {
   color: black;
-}
-.tableheader {
-  height: 2.5em;
-  background-color: #e3e3e3;
-  border-top: 1px solid whitesmoke;
-  padding-top: 0.5em;
 }
 .active {
   display: inline-block;
@@ -337,13 +442,6 @@ export default class EosBucketCreation extends Vue {
 .largeAlert {
   border: 2px solid #e3e3e3;
 }
-tbody tr {
-  background-color: #ffffff !important ;
-}
-tbody tr:hover {
-  border-top: 2px solid darkgray !important;
-  border-bottom: 2px solid darkgray !important;
-}
 tbody tr:active {
   border-top: 2px solid darkgray !important;
   border-bottom: 2px solid darkgray !important;
@@ -354,5 +452,9 @@ tbody tr:active {
 .delete-bucket-confirmation-msg {
   color: #000;
   font-size: 16px;
+}
+.textarea-text {
+  border-style: solid;
+  border-width: 1px;
 }
 </style>

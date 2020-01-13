@@ -20,7 +20,7 @@
               placeholder="Username"
               v-model.trim="loginForm.username"
               @input="$v.loginForm.username.$touch"
-              @keyup.enter.native="handleEnterEvent()"
+              v-on:keyup.enter="handleEnterEvent()"
             />
             <span
               class="eos-form-group-label eos-form-group-error-msg"
@@ -31,7 +31,7 @@
             >
           </div>
           <div
-            class="mt-4 eos-form-group"
+            class="eos-form-group"
             :class="{ 'eos-form-group--error': $v.loginForm.password.$error }"
           >
             <input
@@ -42,7 +42,7 @@
               placeholder="Password"
               v-model.trim="loginForm.password"
               @input="$v.loginForm.password.$touch"
-              @keyup.enter.native="handleEnterEvent()"
+              v-on:keyup.enter="handleEnterEvent()"
             />
             <span
               class="eos-form-group-label eos-form-group-error-msg"
@@ -55,7 +55,7 @@
 
           <button
             type="button"
-            class="eos-btn-primary-dark mt-3"
+            class="eos-btn-primary-dark"
             @click="gotToNextPage()"
             :disabled="$v.loginForm.$invalid"
           >

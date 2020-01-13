@@ -13,32 +13,29 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="ma-0 elevation-0 mediumAlert" width="100%" tile>
-    <v-system-bar height="40em">
-      <span id="title" class="text-uppercase font-weight-medium text--black">CAPACITY</span>
-      <v-spacer></v-spacer>
-      <router-link :to="''">
-        <img src="@/assets/widget/view-slideover-off.png" id="navLargeMode" style />
-      </router-link>
-    </v-system-bar>
-
-    <v-container>
-      <div id="gauge_capacity"></div>
-      <div class="mt-2 mb-4">
-        <span class="subtitle-2">Total capacity:</span>
-        <span>{{capacityDetails.size}}</span>
-      </div>
-      <v-divider></v-divider>
-      <div class="mt-3">
-        <span class="subtitle-2">Used:</span>
-        <span>{{capacityDetails.used}}</span>
-      </div>
-      <div class="mt-3">
-        <span class="subtitle-2">Available:</span>
-        <span>{{capacityDetails.avail}}</span>
-      </div>
-    </v-container>
-  </v-card>
+  <div class="pa-5">
+    <div style="height: 30px;">
+      <div class="eos-capacity-title">Data allocation</div>
+    </div>
+    <div id="gauge_capacity"></div>
+    <table class="mt-3">
+      <tr>
+        <td style="width: 25px;"><div style="height: 13px;width: 13px;background: #6EBE49;"></div></td>
+        <td style="width: 110px;" class="eos-capacity-title">Used</td>
+        <td>{{capacityDetails.used}}</td>
+      </tr>
+      <tr>
+        <td style="width: 25px;"><div style="height: 13px;width: 13px;background: #9E9E9E;"></div></td>
+        <td style="width: 110px;" class="eos-capacity-title">Available</td>
+        <td>{{capacityDetails.avail}}</td>
+      </tr>
+    </table>
+    <div class="mt-2 mb-2 eos-capacity-separator"></div>
+    <div>
+      <div class="eos-capacity-title">Total</div>
+      <span style="float: right;">{{capacityDetails.size}}</span>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
@@ -88,14 +85,15 @@ export default class EosCapacityGauge extends Vue {
 </script>
 <style lang="scss" scoped>
 @import "./../../../node_modules/c3/c3.min.css";
-#navLargeMode {
-  height: 1.4em;
-  width: 1.4em;
+.eos-capacity-title {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.87);
+  float: left;
 }
-#title {
-  color: black;
-}
-.mediumAlert {
-  border: 2px solid #e3e3e3;
+.eos-capacity-separator{
+  width: 100%;
+  border-top: 1px solid #E3E3E3; 
 }
 </style>

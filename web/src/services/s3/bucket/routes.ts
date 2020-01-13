@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getBuckets, createBucket, deleteBucket} from "./bucket";
+import { getBuckets, createBucket, deleteBucket, updateBuketPolicy, getBucketsPolicy } from "./bucket";
 import { checkRequiredParams } from './../../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -49,7 +49,7 @@ export default [
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
-        }        
+        }
       }
     ]
   },
@@ -60,8 +60,38 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await deleteBucket(req, res);
-        res.status(HttpStatus.OK).send(result);        
+        res.status(HttpStatus.OK).send(result);
       }
     ]
-  }
+  },
+  {
+    path: "/api/v1/s3/bucket_policy/:bucket_name",
+    method: "put",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await updateBuketPolicy(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/s3/bucket_policy/:bucket_name",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getBucketsPolicy(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
 ];

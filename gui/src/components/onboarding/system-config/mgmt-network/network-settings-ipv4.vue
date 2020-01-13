@@ -110,11 +110,9 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      this.updateIpv4Config()
-        .then(result => {
-          res(true);
-        })
-        .catch(err => {});
+      this.updateIpv4Config().then(result => {
+        res(true);
+      });
     });
   }
   public destroyed() {
@@ -137,12 +135,12 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     ) {
       this.$data.ipv4Nodes = mngmtNetworkSettings.ipv4.nodes;
       this.$data.source =
-        mngmtNetworkSettings.ipv4.is_dhcp == true ? "DHCP" : "manual";
+        mngmtNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
     }
   }
   public updateIpv4Config() {
     const queryParams: Ipv4 = {
-      is_dhcp: this.$data.source == "DHCP",
+      is_dhcp: this.$data.source === "DHCP",
       nodes: this.$data.ipv4Nodes
     };
     return this.$store.dispatch("systemConfig/updateMngmtIpv4", queryParams);

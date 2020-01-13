@@ -5,7 +5,7 @@
     </div>
     <div class="body-2 ma-10">
       <div class="ml-4 mt-4 mb-1 title black--text">
-        Admin User Configuration
+        Admin user configuration
       </div>
       <div class="ml-4 mb-7">
         Configure the username and password for the admin user of this system.
@@ -13,12 +13,15 @@
       <div class="ma-4">
         <form autocomplete="off" @submit.prevent="submitForm">
           <div class="mt-4">
-            <span class="font-weight-medium">Admin Username</span>
+            <span class="font-weight-medium" id="lblAdminUsername"
+              >Admin Username</span
+            >
             <div>
               <input
                 class="input-text"
                 type="text"
                 name="username"
+                id="adminUsername"
                 v-model.trim="username"
               />
               <p v-if="!isUserNameValid" class="red--text error-message">
@@ -28,12 +31,15 @@
           </div>
 
           <div class="mt-4">
-            <span class="font-weight-medium">Password</span>
+            <span class="font-weight-medium" id="lblAdminPassword"
+              >Password</span
+            >
             <div>
               <input
                 class="input-text"
                 type="password"
                 name="password"
+                id="adminPassword"
                 v-model.trim="password"
               />
               <p v-if="!isPasswordValid" class="red--text error-message">
@@ -43,12 +49,15 @@
           </div>
 
           <div class="mt-4 mb-6">
-            <span class="font-weight-medium">Confirm password</span>
+            <span class="font-weight-medium" id="lblAdminConfirmPassword"
+              >Confirm password</span
+            >
             <div>
               <input
                 class="input-text"
                 type="password"
                 name="confirmpassword"
+                id="adminConfirmPassword"
                 v-model.trim="confirmPassword"
               />
               <p v-if="!isConfirmPasswordValid" class="red--text error-message">
@@ -62,7 +71,7 @@
             @click="gotToNextPage()"
             :disabled="!isValidForm"
           >
-            <span class="white--text">Apply and Continue</span>
+            <span class="white--text">Apply and continue</span>
           </v-btn>
         </form>
         <div v-if="!isValidResponse" class="red--text mt-2">

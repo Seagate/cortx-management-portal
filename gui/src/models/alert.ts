@@ -67,4 +67,6 @@ export interface AlertQueryParam {
     dir: string;
     offset: number;
     limit: number;
+    resolved?: boolean;
+    acknowledged?: boolean;
 }

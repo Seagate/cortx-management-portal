@@ -30,6 +30,7 @@ from boto.s3.connection import S3Connection, OrdinaryCallingFormat
 from boto.connection import DEFAULT_CA_CERTS_FILE
 from boto import config as boto_config
 from csm.common.log import Log
+import json
 from csm.common.errors import CsmInternalError
 from csm.core.data.models.s3 import (S3ConnectionConfig, IamAccount, ExtendedIamAccount,
                                      IamLoginProfile, IamUser, IamUserListResponse,
@@ -564,6 +565,53 @@ class S3Client(BaseClient):
             tagging = self.connection.BucketTagging(bucket_name)
             return tagging.put(Tagging=tag_set)
         return await self._loop.run_in_executor(self._executor, _run)
+
+    @Log.trace_method(Log.DEBUG)
+    async def get_bucket_policy(self, bucket_name: str):
+        """
+        Fetch s3 bucket policy by given bucket details.
+
+        :param bucket_name: s3 bucket name
+        :type bucket_name: str
+        :returns: A dict of bucket policy
+        """
+        def _run():
+            bucket = self.connection.BucketPolicy(bucket_name)
+            return json.loads(bucket.policy)
+
+        return await self._loop.run_in_executor(self._executor, _run)
+
+    @Log.trace_method(Log.DEBUG)
+    async def put_bucket_policy(self, bucket_name: str, policy: dict):
+        """
+        Create or update s3 bucket policy for given bucket details.
+
+        :param bucket_name: s3 bucket name
+        :type bucket_name: str
+        :param policy: s3 bucket name
+        :type policy: dict
+        :returns:
+        """
+        def _run():
+            bucket = self.connection.BucketPolicy(bucket_name)
+            bucket_policy = json.dumps(policy)
+            return bucket.put(Bucket=bucket_name, Policy=bucket_policy)
+
+        return await self._loop.run_in_executor(self._executor, _run)
+
+    @Log.trace_method(Log.DEBUG)
+    async def delete_bucket_policy(self, bucket_name: str):
+        """
+        Delete s3 bucket policy by given bucket details.
+
+        :param bucket_name: s3 bucket name
+        :type bucket_name: str
+        :returns:
+        """
+        bucket = await self._loop.run_in_executor(self._executor,
+                                                  self.connection.BucketPolicy,
+                                                  bucket_name)
+        return await self._loop.run_in_executor(self._executor, bucket.delete)
 
 
 class S3Plugin:

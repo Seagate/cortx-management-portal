@@ -110,11 +110,9 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      this.updateIpv6Config()
-        .then(result => {
-          res(true);
-        })
-        .catch(err => {});
+      this.updateIpv6Config().then(result => {
+        res(true);
+      });
     });
   }
   public destroyed() {

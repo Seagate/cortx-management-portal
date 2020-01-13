@@ -317,9 +317,9 @@ export default class SystemConfiguration extends VuexModule {
           apiRegister.sysconfig,
           this.systemConfigDetails
         );
-        if (res && res.data && Array.isArray(res.data)) {
-          const data = res.data;
-          return data;
+        if (res && res.data) {
+          this.context.commit("systemConfigMutation", res.data);
+          return res.data;
         }
       }
     } catch (e) {
