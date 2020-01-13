@@ -173,7 +173,7 @@
               <img
                 @click="openConfirmDeleteDialog(props.item.name)"
                 style="cursor: pointer;"
-                src="./../../assets/delete-off.png"
+                src="./../../assets/actions/delete-green.svg"
               />
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
@@ -181,7 +181,7 @@
                     <img
                       @click="openBucketPolicyDialog(props.item.name)"
                       style="cursor: pointer;"
-                      src="./../../assets/edit-off.png"
+                      src="./../../assets/actions/edit-green.svg"
                       v-on="on"
                     />
                   </span>

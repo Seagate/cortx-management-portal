@@ -206,12 +206,12 @@
               >{{i==0?"":", "}}{{role | capitalize}}</span>
             </td>
             <td>
-              <img class="mb-2" @click="onExpand(props)" src="./../../../../assets/edit-off.png" />
+              <img class="mb-2" @click="onExpand(props)" src="./../../../../assets/actions/edit-green.svg" />
               <v-divider class="mx-4" light vertical inset></v-divider>
               <img
                 class="mb-2"
                 @click="onDelete(props.item.id)"
-                src="./../../../../assets/delete-off.png"
+                src="./../../../../assets/actions/delete-green.svg"
               />
             </td>
           </tr>
