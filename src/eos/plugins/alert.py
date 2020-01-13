@@ -26,8 +26,6 @@ from csm.common.comm import AmqpComm
 from csm.common.log import Log
 from csm.common.plugin import CsmPlugin
 from csm.core.blogic import const
-from jsonschema import Draft3Validator
-from jsonschema import validate
 from csm.common.errors import CsmError
 
 class AlertSchemaValidator(Schema):
@@ -36,7 +34,7 @@ class AlertSchemaValidator(Schema):
     """
     alert_uuid = fields.String(required=True, 
                                description="uuid to identify an  alert.")
-    hw_identifier = fields.String(required=True, 
+    sensor_info = fields.String(required=True, 
                                   description="unique key to identify hardware." 
                                   "Combination of site_id,node_id,rack_id,"
                                   "resource_id,cluster_id")
@@ -59,14 +57,18 @@ class AlertSchemaValidator(Schema):
                                 description="Type of the module. (e.g. PSU, FAN)")
     module_name = fields.String(required=False, 
                                 description="Name of the module. (e.g. Fan Module 4)")
-    description = fields.String(required=False, 
+    description = fields.String(required=False, allow_none = True, 
                                 description="This is the id from which a "
                                 "description will be fetched (e.g. TBD)")
-    health = fields.String(required=False, 
-                           description="Describes the health of PSU, Controller, Disk etc.")
-    health_recommendation = fields.String(required=False, 
-                                          description="This is the health recommendation string.")
+    health = fields.String(required=False, allow_none = True, 
+                           description="Describes the health of PSU, \
+                                   Controller, Disk etc.")
+    health_recommendation = fields.String(required=False, allow_none = True,
+                                          description="This is the health \
+                                                  recommendation string.")
     extended_info = fields.Dict( required=False, description="Extended Info")
+    event_details = fields.List(fields.Dict(), required = False, \
+            description = "Specific fields to display.")
 
 class AlertPlugin(CsmPlugin):
     """
@@ -78,20 +80,10 @@ class AlertPlugin(CsmPlugin):
 
     def __init__(self):
         super().__init__()
-        self.comm_client = AmqpComm()
-        self.monitor_callback = None
-        self.mapping_dict = Json(const.ALERT_MAPPING_TABLE).load()
-        self._schema = ""
-        self._hw_schema = {}
         try:
-            """ Validating the CSM Schema with Draft3Validator """
-            if os.path.isfile(const.CSM_HW_SCHEMA):
-                with open(const.CSM_HW_SCHEMA, 'r') as hw_file:
-                    self._schema = hw_file.read()
-                """ Remove tabs and newlines """
-                self._hw_schema = json.loads(' '.join(self._schema.split()))
-                """ Validate the schema """
-                Draft3Validator.check_schema(self._hw_schema)
+            self.comm_client = AmqpComm()
+            self.monitor_callback = None
+            self.mapping_dict = Json(const.ALERT_MAPPING_TABLE).load()
         except Exception as e:
             Log.exception(e)
 
@@ -209,9 +201,65 @@ class AlertPlugin(CsmPlugin):
                 csm_schema[const.ALERT_RESOLVED] = False 
                 csm_schema[const.ALERT_ACKNOWLEDGED] = False
                 csm_schema[const.ALERT_COMMENT] = ""
-                csm_schema[const.ALERT_HW_IDENTIFIER] = \
-                        csm_schema[const.ALERT_HW_IDENTIFIER].replace(" ", "_")
+                """
+                1. Event Details field is of type List and will conatin array of
+                specific info dictionary. 
+                2. Not all the fields from SSPL's specific info is consumed.
+                3. Only those values are consumed which we need to display on the
+                new Alert details UI page.
+                4. Sensor Info is of type string and contains the concatinated
+                values of site_id, node_id, rack_id, cluster_id and resource_id
+                from SSPL's info section of the alert message.
+                5. This string uniquely identifies the resource for which an
+                alert has come.
+                """
+                csm_schema[const.ALERT_EVENT_DETAILS]= []
+                csm_schema[const.ALERT_SENSOR_INFO] = \
+                    '_'.join(str(x) for x in csm_schema[const.ALERT_SENSOR_INFO].values())
+                csm_schema[const.ALERT_SENSOR_INFO] = \
+                csm_schema[const.ALERT_SENSOR_INFO].replace(" ", "_")
+                if const.ALERT_EVENTS in csm_schema:
+                    self._prepare_specific_info(csm_schema)
+                    csm_schema.pop(const.ALERT_EVENTS)
         except Exception as e:
             Log.exception(e)
             raise CsmError(-1, '%s' %e)
         return csm_schema
+
+    def _prepare_specific_info(self, csm_schema):
+        """
+        This method prepares event_details for all the alerts. event_details
+        comprises of some specific fields for each resource type like
+        health-reason, health-recommendation and other specific fields.
+        :param csm_schema : Dict containing csm alert message format
+        :return : None
+        """
+        description_dict = {}
+        if csm_schema[const.ALERT_MODULE_TYPE] == 'logical_volume' \
+            or csm_schema[const.ALERT_MODULE_TYPE] == 'volume' or \
+            csm_schema[const.ALERT_MODULE_TYPE] == 'sideplane' or \
+            csm_schema[const.ALERT_MODULE_TYPE] == 'fan':
+            for items in csm_schema[const.ALERT_EVENTS]:
+                """
+                1. For logical_volume, volume, sideplane and fan we get a list of
+                dictionaries conayining name, health-reason and
+                health-recommendaion.
+                2. For Sideplane expander we do not get name as a key instead we
+                get component-id.
+                """
+                if const.ALERT_NAME in items:
+                    description_dict[const.ALERT_NAME] = items[const.ALERT_NAME]
+                elif const.ALERT_COMPONENET_ID in items:
+                    description_dict[const.ALERT_NAME] = \
+                            items[const.ALERT_COMPONENET_ID]
+                description_dict[const.ALERT_EVENT_REASON] = \
+                    items[const.ALERT_HEALTH_REASON]
+                description_dict[const.ALERT_EVENT_RECOMMENDATION] = \
+                    items[const.ALERT_HEALTH_RECOMMENDATION]
+                csm_schema[const.ALERT_EVENT_DETAILS].append(description_dict)
+        else:
+            """
+            In all the other cases we directly map the list from the specific
+            info to event_details.
+            """
+            csm_schema[const.ALERT_EVENT_DETAILS] = csm_schema[const.ALERT_EVENTS] 
