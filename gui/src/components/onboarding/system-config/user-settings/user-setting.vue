@@ -2,7 +2,7 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblUserSetting">
-        User Settings
+        User settings
       </div>
       <div class="mt-4">
         <div class="font-weight-regular black--text" id="lblUsrSettingMsg">
@@ -83,9 +83,7 @@ export default class EosUserSetting extends Vue {
     // to send information about data validation to enable/disable wizard footer
     EVENT_BUS.$emit(
       "validForm",
-      this.isLocalUserStatus ||
-        this.isLdapUserStatus ||
-        this.$data.isSkip
+      this.isLocalUserStatus || this.isLdapUserStatus || this.$data.isSkip
     );
     return true;
   }
@@ -94,9 +92,11 @@ export default class EosUserSetting extends Vue {
     this.$store
       .dispatch("systemConfig/createUserConfig", queryParams)
       .then((res: any) => {
+        // tslint:disable-next-line: no-console
         console.log("TCL: EosUserSetting -> setUserSettings -> res", res);
       })
       .catch(() => {
+        // tslint:disable-next-line: no-console
         console.error("Save user settings Failed");
       });
   }

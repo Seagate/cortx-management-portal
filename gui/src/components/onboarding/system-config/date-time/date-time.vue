@@ -136,6 +136,19 @@ import * as moment from "moment-timezone";
   name: "eos-date-time"
 })
 export default class EosDateTime extends Vue {
+  private data() {
+    return {
+      timezoneList: [],
+      source: "ntp",
+      NtpServerAddress: "",
+      NtpTimezone: moment.tz.guess(),
+      minute: "",
+      hours: "",
+      date: "",
+      clock: "",
+      isValid: true
+    };
+  }
   public mounted() {
     this.managementNetworkGetter();
     // WizardHook: Open a listener for onNext event
@@ -167,7 +180,7 @@ export default class EosDateTime extends Vue {
         dateTime.date_time_settings.ntp.ntp_timezone_offset;
     }
   }
-  setNTP() {
+  public setNTP() {
     const queryParams: DateTimeSettings = {
       is_ntp: true,
       ntp: {
@@ -183,9 +196,9 @@ export default class EosDateTime extends Vue {
     };
     return this.$store.dispatch("systemConfig/updateNTPSetting", queryParams);
   }
-  setTimeZone() {
-    const toDateInputValue = function() {
-      var local = new Date();
+  public setTimeZone() {
+    const toDateInputValue = () => {
+      const local = new Date();
       local.setMinutes(local.getMinutes() - local.getTimezoneOffset());
       return local.toJSON().slice(0, 10);
     };
@@ -195,19 +208,7 @@ export default class EosDateTime extends Vue {
     this.$data.minute = localDate.getMinutes();
     this.$data.date = toDateInputValue();
   }
-  private data() {
-    return {
-      timezoneList: [],
-      source: "ntp",
-      NtpServerAddress: "",
-      NtpTimezone: moment.tz.guess(),
-      minute: "",
-      hours: "",
-      date: "",
-      clock: "",
-      isValid: true
-    };
-  }
+  
 }
 </script>
 <style lang="scss" scoped>

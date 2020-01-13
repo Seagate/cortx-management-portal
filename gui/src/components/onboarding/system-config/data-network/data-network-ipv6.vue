@@ -9,26 +9,46 @@
     <v-divider />
     <div class="body-2">
       <div class="title mt-6" id="lblIpv6DNS">Data network settings: IPv6</div>
-      <div
-        class="mt-2"
-        id="lblIpv6Msg"
-      >You need to configure a single IP address for management of this system.</div>
+      <div class="mt-2" id="lblIpv6Msg">
+        You need to configure a single IP address for management of this system.
+      </div>
       <v-divider class="mt-2" />
       <div class="font-weight-bold mt-6 black--text">Source</div>
       <div class="mt-4">
-        <input type="radio" name="source" v-model="source" value="manual" id="rbtnIpv6Manual" />
-        <span class="ml-2 font-weight-bold black--text" id="lblIpv6Manual">Manual</span>
-        <input class="ml-6" type="radio" disabled name="DHCP" value="DHCP" id="rbtnIpv6DHCP" />
-        <span class="ml-2 font-weight-bold black--text" id="lblIpv6Dhcp">DHCP</span>
+        <input
+          type="radio"
+          name="source"
+          v-model="source"
+          value="manual"
+          id="rbtnIpv6Manual"
+        />
+        <span class="ml-2 font-weight-bold black--text" id="lblIpv6Manual"
+          >Manual</span
+        >
+        <input
+          class="ml-6"
+          type="radio"
+          disabled
+          name="DHCP"
+          value="DHCP"
+          id="rbtnIpv6DHCP"
+        />
+        <span class="ml-2 font-weight-bold black--text" id="lblIpv6Dhcp"
+          >DHCP</span
+        >
       </div>
     </div>
     <div class="row mt-5">
       <template v-for="node in ipv6Nodes">
         <div class="col-4 body-2 column" :key="node.id">
-          <span class="font-weight-medium black--text" id="lblIpv6Node0">Node {{ node.id }}</span>
+          <span class="font-weight-medium black--text" id="lblIpv6Node0"
+            >Node {{ node.id }}</span
+          >
           <v-divider class="mt-2" />
           <div class="mt-5">
-            <span class="font-weight-medium black--text" id="lblIpv6Gateway">Gateway</span>
+            <span class="font-weight-medium black--text" id="lblIpv6Gateway"
+              >Gateway</span
+            >
             <div>
               <input
                 class="input-text"
@@ -39,9 +59,18 @@
               />
             </div>
           </div>
-          <div class="font-weight-medium mt-8 black--text" id="lblIpv6Staticaddress">Static address</div>
+          <div
+            class="font-weight-medium mt-8 black--text"
+            id="lblIpv6Staticaddress"
+          >
+            Static address
+          </div>
           <v-divider class="mt-2" />
-          <v-row v-for="(value, i) in node.ip_address" :key="value + i" class="mt-2">
+          <v-row
+            v-for="(value, i) in node.ip_address"
+            :key="value + i"
+            class="mt-2"
+          >
             <v-col cols="6">{{ value }}</v-col>
             <v-col cols="3">
               <v-img
@@ -54,7 +83,9 @@
             </v-col>
           </v-row>
           <div class="mt-4">
-            <span class="font-weight-medium black--text" id="lblIPv6Ipadreess">IP address</span>
+            <span class="font-weight-medium black--text" id="lblIPv6Ipadreess"
+              >IP address</span
+            >
             <div>
               <input
                 class="input-text"
@@ -66,25 +97,38 @@
             </div>
           </div>
           <div
-            :class="[node.ip_address.length < 4 ? 'csmprimary--text' : 'grey--text lighten-1', 'pointer', 'mt-8']"
+            :class="[
+              node.ip_address.length < 4
+                ? 'csmprimary--text'
+                : 'grey--text lighten-1',
+              'pointer',
+              'mt-8'
+            ]"
             @click="addIpAddressNode(ipaddressNode[node.id], node.id)"
-          >+ Add another static address (maximum of 4)</div>
+          >
+            + Add another static address (maximum of 4)
+          </div>
         </div>
       </template>
     </div>
     <div class="mt-8">
-      <p
-        v-if="!isValid"
-        class="red--text error-message"
-      >Please enter valid values.</p>
-      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnIpv6ApplyContinue">
+      <p v-if="!isValid" class="red--text error-message">
+        Please enter valid values.
+      </p>
+      <v-btn
+        elevation="0"
+        color="csmprimary"
+        @click="gotToNextPage()"
+        id="btnIpv6ApplyContinue"
+      >
         <span class="white--text">Apply and Continue</span>
       </v-btn>
       <span
         class="csmprimary--text ml-8 pointer"
         @click="gotToPrevPage()"
         id="lblIpv6Back"
-      >Back to previous step</span>
+        >Back to previous step</span
+      >
     </div>
   </v-container>
 </template>
@@ -100,42 +144,20 @@ import {
 })
 export default class EosDataNetworkIpv6 extends Vue {
   private gotToNextPage() {
-    this.updateDataNetworkconfig().then((res: any) => {
-      if (res) {
+    this.updateDataNetworkconfig()
+      .then((res: any) => {
+        if (res) {
           this.$router.push("dnsconfig");
         } else {
           this.$data.isValid = false;
-        } 
-    })
-    .catch(() => {
-      // tslint:disable-next-line: no-console
-      console.error("error");
-    });    
+        }
+      })
+      .catch(() => {
+        // tslint:disable-next-line: no-console
+        console.error("error");
+      });
   }
-  updateDataNetworkconfig() {
-    const queryParams: DataNetworkIpv6 = {
-      is_auto: true,
-      nodes: this.$data.ipv6Nodes
-    };
-    console.log("updateDataNetworkconfig", queryParams);
 
-    return this.$store
-      .dispatch("systemConfig/updateDataNetworkSettingIpv6", queryParams);
-      
-  }
-  public mounted() {
-    this.managementNetworkGetter();
-  }
-  public managementNetworkGetter() {
-    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (
-      systemconfig.data_network_settings &&
-      systemconfig.data_network_settings.ipv6 &&
-      systemconfig.data_network_settings.ipv6.nodes
-    ) {
-      this.$data.ipv6Nodes = systemconfig.data_network_settings.ipv6.nodes;
-    }
-  }
   private gotToPrevPage() {
     if (this.$store.getters["systemConfig/isDataipV4Status"] === true) {
       this.$router.push("dataconfig2");
@@ -188,6 +210,30 @@ export default class EosDataNetworkIpv6 extends Vue {
       ],
       isValid: true
     };
+  }
+  public updateDataNetworkconfig() {
+    const queryParams: DataNetworkIpv6 = {
+      is_auto: true,
+      nodes: this.$data.ipv6Nodes
+    };
+
+    return this.$store.dispatch(
+      "systemConfig/updateDataNetworkSettingIpv6",
+      queryParams
+    );
+  }
+  public mounted() {
+    this.managementNetworkGetter();
+  }
+  public managementNetworkGetter() {
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    if (
+      systemconfig.data_network_settings &&
+      systemconfig.data_network_settings.ipv6 &&
+      systemconfig.data_network_settings.ipv6.nodes
+    ) {
+      this.$data.ipv6Nodes = systemconfig.data_network_settings.ipv6.nodes;
+    }
   }
 }
 </script>
