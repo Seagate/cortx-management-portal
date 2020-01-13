@@ -246,6 +246,7 @@
         </v-data-table>
       </v-card>
     </div>
+    <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
@@ -269,6 +270,13 @@ export default class EosUserSettingLocal extends Vue {
   private destroyed() {
     // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
+  }
+  get isValidForm() {
+    const validate = true;
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EVENT_BUS.$emit("validForm", validate);
+    return validate;
   }
   private addUser() {
     this.$data.isUserCreate = !this.$data.isUserCreate;
