@@ -20,7 +20,7 @@
           <input
             type="checkbox"
             v-model="isLocalUserStatus"
-            :disabled="isUserSettingSkipStatus"
+            :disabled="isSkip"
             name="local"
             id="chkUsrSettingLocal"
           />

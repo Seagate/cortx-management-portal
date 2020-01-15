@@ -141,7 +141,7 @@ export default class EosDateTime extends Vue {
       timezoneList: [],
       source: "ntp",
       NtpServerAddress: "",
-      NtpTimezone: moment.tz.guess(),
+      NtpTimezone: "",
       minute: "",
       hours: "",
       date: "",
@@ -158,7 +158,15 @@ export default class EosDateTime extends Vue {
         res(true);
       });
     });
-    this.$data.timezoneList = moment.tz.names();
+    this.$data.NtpTimezone = `(GMT${moment
+      .tz(moment.tz.guess())
+      .format("Z")}) ${moment.tz.guess()}`;
+    this.$data.timezoneList = moment.tz
+      .names()
+      .map(e => {
+        return `(GMT${moment.tz(e).format("Z")}) ${e}`;
+      })
+      .sort();
   }
   public destroyed() {
     // WizardHook: shut off on exit event listener
@@ -208,7 +216,6 @@ export default class EosDateTime extends Vue {
     this.$data.minute = localDate.getMinutes();
     this.$data.date = toDateInputValue();
   }
-  
 }
 </script>
 <style lang="scss" scoped>
