@@ -230,7 +230,7 @@
               <img
                 @click="openConfirmDeleteDialog(props.item.user_name)"
                 style="cursor: pointer;"
-                src="./../../assets/delete-off.png"
+                src="./../../assets/actions/delete-green.svg"
               />
             </td>
           </tr>

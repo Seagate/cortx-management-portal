@@ -76,7 +76,7 @@
               <v-img
                 @click="deleteIpAddressNode(value, node.id)"
                 id="alert-img"
-                :src="require('./../../../../assets/delete-off.png')"
+                :src="require('./../../../../assets/actions/delete-green.svg')"
                 width="1em"
                 height="1em"
               ></v-img>

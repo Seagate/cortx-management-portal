@@ -292,13 +292,13 @@
             <img
               v-on:click="expand(!isExpanded)"
               style="cursor: pointer;"
-              src="./../../assets/edit-off.png"
+              src="./../../assets/actions/edit-green.svg"
             />
             <v-divider class="mx-3" inset vertical></v-divider>
             <img
               @click="openConfirmDeleteDialog(item.account_name)"
               style="cursor: pointer;"
-              src="./../../assets/delete-off.png"
+              src="./../../assets/actions/delete-green.svg"
             />
           </div>
         </template>
@@ -402,7 +402,7 @@ export default class EosAccountManagement extends Vue {
   }
 
   public async getAllAccounts() {
-    this.showLoader = true;
+    this.showLoader = false;
     this.loaderMessage = "Fetching All S3 accounts...";
     try {
       const res: any = await Api.getAll(apiRegister.s3_account);
