@@ -24,96 +24,12 @@
 
     <v-spacer></v-spacer>
 
-    <v-divider class="grey darken-4" vertical></v-divider>
-    <div class="pa-5 grey--text body-2">{{ new Date().toLocaleString() }}</div>
     <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 grey--text">{{ username }}</div>
+    <div class="pa-5 white--text">{{ username }}</div>
     <v-divider
       class="mx-4 grey darken-4"
       vertical
       v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
-    ></v-divider>
-    <div
-      id="alert-menu"
-      class="pl-10 pr-3 pt-1"
-      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
-    >
-      <v-menu offset-y>
-        <template v-slot:activator="{ on }">
-          <div v-on="on" class="alert-container">
-            <v-img
-              id="alert-img"
-              :src="require('./../../assets/info-alert-white.png')"
-              width="1em"
-              height="1em"
-            ></v-img>
-            <span id="alert-lbl" class="white--text">Alerts</span>
-            <div id="alert-count">{{ alertNotifications.alertCount }}</div>
-          </div>
-        </template>
-        <v-card
-          width="20em"
-          min-height="14em"
-          max-height="25em"
-          class="mx-auto elevation-0"
-          tile
-        >
-          <v-card-text>
-            <div>Alerts</div>
-          </v-card-text>
-          <v-list
-            width="18em"
-            class="mar-center"
-            min-height="12em"
-            max-height="16em"
-          >
-            <v-list-item
-              v-for="(item, index) in alertNotifications.alerts"
-              :key="index"
-            >
-              <img
-                class="mr-2"
-                v-if="item.severity === alertStatus.critical"
-                src="./../../assets/status/error-fault.png"
-              />
-              <img
-                class="mr-2"
-                v-if="item.severity === alertStatus.error"
-                src="./../../assets/status/warning.png"
-              />
-              <img
-                class="mr-2"
-                v-if="item.severity === alertStatus.warning"
-                src="./../../assets/status/degraded.png"
-              />
-              <img
-                class="mr-2"
-                v-if="item.severity === alertStatus.informational"
-                src="./../../assets/status/info-alert.png"
-              />
-              <v-list-item-content>
-                <v-list-item-title>State:{{ item.state }}</v-list-item-title>
-                <v-list-item-subtitle
-                  v-html="item.location"
-                ></v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-          <v-card-text>
-            <div
-              @click="$router.push('alertlarge')"
-              class="csmprimary--text pointer"
-            >
-              See all alerts
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-menu>
-    </div>
-    <v-divider
-      class="mx-4 grey darken-4"
-      vertical
-      v-if="!isRouterPathOnboarding"
     ></v-divider>
     <div
       class="pa-5 white--text pointer"
@@ -152,9 +68,6 @@ export default class HeaderBar extends Vue {
     this.username = this.$store.getters["userLogin/getUser"].username;
   }
 
-  get alertNotifications() {
-    return this.$store.state.alertNotification.socket;
-  }
   get isRouterPathOnboarding() {
     return this.$route.name === "onboarding";
   }
