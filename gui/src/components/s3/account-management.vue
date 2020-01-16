@@ -335,7 +335,6 @@ export default class EosAccountManagement extends Vue {
     password: "",
     confirmPassword: ""
   };
-
   @Validations()
   public validations = {
     createAccountForm: {
