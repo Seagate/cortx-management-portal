@@ -211,11 +211,7 @@
       >
         <template v-slot:header="{props}">
           <tr>
-            <th
-              v-for="header in accountsTableHeaderList"
-              :key="header.text"
-              class="tableheader"
-            >
+            <th v-for="header in accountsTableHeaderList" :key="header.text" class="tableheader">
               <span class="headerText">{{ header.text }}</span>
             </th>
           </tr>
@@ -288,7 +284,7 @@
           </td>
         </template>
         <template v-slot:item.data-table-expand="{ item, expand, isExpanded }">
-          <div style="width: 75px;">
+          <div style="width: 90px;">
             <img
               v-on:click="expand(!isExpanded)"
               style="cursor: pointer;"
@@ -339,7 +335,6 @@ export default class EosAccountManagement extends Vue {
     password: "",
     confirmPassword: ""
   };
-
   @Validations()
   public validations = {
     createAccountForm: {
@@ -435,9 +430,7 @@ export default class EosAccountManagement extends Vue {
 
   public async editAccount(props: any) {
     const updateDetails = {
-      reset_access_key: true,
-      password: this.editAccountForm.password,
-      account_email: props.item.account_email
+      password: this.editAccountForm.password
     };
     this.showLoader = true;
     this.loaderMessage = "Edit Account...";

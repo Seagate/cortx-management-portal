@@ -35,18 +35,18 @@ export const deleteAccount = async (accountName: string, req: Request, res: Resp
 };
 
 export const getAllIAMUsers = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.s3_iam_users, req, res);
+    let result = await Api.getAll(apiRegister.iam_users, req, res);
     return result;
 };
 
 export const createIAMUser = async (req: Request, res: Response) => {
-    let result = await Api.post(apiRegister.s3_iam_users, req, res);
+    let result = await Api.post(apiRegister.iam_users, req, res);
     return result;
 };
 
 export const deleteIAMUser = async (username: string, req: Request, res: Response) => {
     let tempUsername = encodeURI(username);
-    let result = await Api.delete(apiRegister.s3_iam_users, req, res, tempUsername);
+    let result = await Api.delete(apiRegister.iam_users, req, res, tempUsername);
     return result;
 };
 /**
