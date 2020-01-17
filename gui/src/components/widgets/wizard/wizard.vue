@@ -25,10 +25,13 @@
       </span>
     </span>
     <div class="pt-5">
-      <component :is="loadComponent"></component>
+      <component v-if="loadComponent" :is="loadComponent"></component>
     </div>
 
-    <eosWizardFooter :footerObj="footerObj" @messageFromFooter="messageReceivedFromFooter" />
+    <eosWizardFooter
+      :footerObj="footerObj"
+      @messageFromFooter="messageReceivedFromFooter"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -134,9 +137,11 @@ export default class EosWizard extends Vue {
     const currentComponent = JSON.parse(this.currentComponentData);
     const compPath: string = currentComponent.path;
     const compName: string = currentComponent.component;
+    if (compName) {
     const loadComponent = () =>
       import(/* webpackChunkName: [compName] */ `./../../${compPath}`);
     return loadComponent;
+  }
   }
   get footerObj() {
     const component = JSON.parse(this.currentComponentData);
@@ -145,5 +150,4 @@ export default class EosWizard extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
