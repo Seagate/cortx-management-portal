@@ -18,17 +18,26 @@
               class="input-text"
               type="text"
               name="username"
-              v-model="username"
+              v-model.trim="username"
               id="txtLocalHostname"
+              @input="$v.username.$touch"
             />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label v-if="$v.username.$dirty && !$v.username.required">Account Name is required</label>
+            </div>
             <div class="font-weight-medium pt-3">Password</div>
             <input
               class="input-text"
               type="password"
               name="password"
-              v-model="password"
+              v-model.trim="password"
+              @input="$v.password.$touch"
               id="txtLocalPass"
             />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label v-if="$v.password.$dirty && !$v.password.required">Password is required</label>
+              <label v-else-if="$v.password.$dirty && !$v.password.passwordRegex">Invalid Password</label>
+            </div>
             <div class="font-weight-medium pt-3" id="lblLocalConfirmPass">Confirm password</div>
             <input
               class="input-text"
@@ -206,7 +215,11 @@
               >{{i==0?"":", "}}{{role | capitalize}}</span>
             </td>
             <td>
-              <img class="mb-2" @click="onExpand(props)" src="./../../../../assets/actions/edit-green.svg" />
+              <img
+                class="mb-2"
+                @click="onExpand(props)"
+                src="./../../../../assets/actions/edit-green.svg"
+              />
               <v-divider class="mx-4" light vertical inset></v-divider>
               <img
                 class="mb-2"
@@ -337,6 +350,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { UserDetails } from "./../../../../models/user-Details";
+import { Validations } from "vuelidate-property-decorators";
+import { required, helpers, sameAs } from "vuelidate/lib/validators";
+const passwordRegex = helpers.regex(
+  "passwordRegex",
+  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
+);
 
 @Component({
   name: "eos-user-setting-local"
@@ -366,6 +385,39 @@ export default class EosUserSettingLocal extends Vue {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     return this.$data.isUserCreate;
   }
+  public createAccountForm = {
+    account: {} as Account,
+    confirmPassword: ""
+  };
+  @Validations()
+  public validations = {
+    username: { required },
+    password: { required, passwordRegex },
+    confirmPassword: {
+      sameAsPassword: sameAs("password")
+    }
+    // account_email: { required },
+    // password: { required, passwordRegex }
+    //  confirmPassword: {
+    //   sameAsPassword: sameAs(() => {
+    //     return this.createAccountForm.account.password;
+    //   })
+    // }
+    // confirmPassword: {
+    //   sameAsPassword: sameAs(() => {
+    //     return this.createAccountForm.account.password;
+    //   })
+    // }
+    // editAccountForm: {
+    //   password: { required, passwordRegex },
+    //   confirmPassword: {
+    //     sameAsPassword: sameAs("password")
+    //   }
+    // }
+  };
+  /**
+   * This method create csm user
+   */
   private createUser() {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     const queryParams: UserDetails = {
@@ -377,6 +429,8 @@ export default class EosUserSettingLocal extends Vue {
       language: this.$data.language,
       timeout: 1
     };
+
+    console.log("oooooooooooooo", queryParams);
     this.$store
       .dispatch("createUser/createCSMUserAction", queryParams)
       .then((res: any) => {
