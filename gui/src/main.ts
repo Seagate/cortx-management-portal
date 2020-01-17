@@ -29,7 +29,7 @@ Vue.filter("timeago", (date: string) => {
   return moment.default(date).fromNow();
 });
 
-export const EventBus = new Vue();
+export const EVENT_BUS = new Vue();
 Vue.filter("capitalize", (value: any) => {
   if (value) {
     value = value.toString();

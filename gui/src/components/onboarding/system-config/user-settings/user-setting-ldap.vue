@@ -22,7 +22,9 @@
         </v-row>-->
         <v-row class="col-12 py-0">
           <v-col class="py-0">
-            <div class="font-weight-medium" id="lblLDAPUserSearch">User Search Base</div>
+            <div class="font-weight-medium" id="lblLDAPUserSearch">
+              User Search Base
+            </div>
             <input
               class="input-text"
               type="text"
@@ -35,7 +37,13 @@
         <v-row class="col-7 pb-0">
           <v-col class="py-0">
             <div class="font-weight-medium">Server</div>
-            <input class="input-text" type="text" name="server" v-model="server" id="txtLDAPServer" />
+            <input
+              class="input-text"
+              type="text"
+              name="server"
+              v-model="server"
+              id="txtLDAPServer"
+            />
           </v-col>
           <v-col class="pa-0">
             <div class="font-weight-medium">Port</div>
@@ -80,7 +88,9 @@
     </v-card>
 
     <div class="mt-8">
-      <p v-if="!isValid" class="red--text error-message">Please enter valid values.</p>
+      <p v-if="!isValid" class="red--text error-message">
+        Please enter valid values.
+      </p>
       <v-btn
         elevation="0"
         color="csmprimary"
@@ -93,7 +103,8 @@
         class="csmprimary--text ml-8 pointer"
         @click="gotToPrevPage()"
         id="lblLDAPBackInerface"
-      >Back to previous step</span>
+        >Back to previous step</span
+      >
     </div>
   </v-container>
 </template>
@@ -109,10 +120,6 @@ export default class EosUserSettingLdap extends Vue {
     const ldapConfiguration = this.$store.getters[
       "systemConfig/userConfigData"
     ];
-    console.log(
-      "TCL: EosUserSettingLdap -> mounted -> ldapConfiguration",
-      ldapConfiguration
-    );
     if (ldapConfiguration && ldapConfiguration.ldap) {
       this.$data.usersearchbase = ldapConfiguration.ldap.user_search_base;
       this.$data.server = ldapConfiguration.ldap.server;
@@ -167,91 +174,6 @@ export default class EosUserSettingLdap extends Vue {
       isValid: true
     };
   }
-
-  // private addIpAddressNode0(address: string) {
-  //   if (
-  //     this.$data.ipaddressNode0.length < 4 &&
-  //     address !== "" &&
-  //     address !== undefined
-  //   ) {
-  //     this.$data.ipaddressNode0.push(address);
-  //     this.$data.newAddressNode0 = "";
-  //   }
-  // }
-  // private createUser() {
-  //   this.$data.isUserCreate = !this.$data.isUserCreate;
-  //   return this.$data.isUserCreate;
-  // }
-  // private editUser() {
-  //   this.$data.isUserEdit = !this.$data.isUserEdit;
-  //   return this.$data.isUserEdit;
-  // }
-  // private onDelete(props: any) {
-  //   alert("Deleting");
-  //   if (props.isExpanded === false) {
-  //     props.expand(props.item);
-  //   } else {
-  //     props.expand(false);
-  //   }
-  // }
-  // private onExpand(props: any) {
-  //   if (props.isExpanded === false) {
-  //     props.expand(props.item);
-  //   } else {
-  //     props.expand(false);
-  //   }
-  // }
-  // private data() {
-  //   return {
-  //     source: "manual",
-  //     isUserCreate: false,
-  //     page: 1, // Page counter, in sync with data table
-  //     singleExpand: false, // Expande single row property
-  //     itemsPerPage: 5, // Total rows per page, in sync with data table
-  //     isSortActive: false, // Set table column sorting flag to default inactive
-  //     sortColumnName: "", // Set sorting column name to none
-  //     alertStatus: require("./../../../../common/const-string.json"),
-  //     alertHeader: [
-  //       {
-  //         text: "Username",
-  //         value: "username",
-  //         sortable: false
-  //       },
-  //       {
-  //         text: "Interfaces",
-  //         value: "interfaces",
-  //         sortable: false
-  //       },
-  //       {
-  //         text: "Roles",
-  //         value: "roles",
-  //         sortable: false
-  //       }
-  //     ],
-  //     alertData: [
-  //       {
-  //         name: "User 1",
-  //         interfaces: "Web, CLI, API",
-  //         roles: "Manage, Monitor"
-  //       },
-  //       {
-  //         name: "User 2",
-  //         interfaces: "Web, CLI, API",
-  //         roles: "Manage"
-  //       },
-  //       {
-  //         name: "User 3",
-  //         interfaces: "Web, CLI",
-  //         roles: "Monitor"
-  //       },
-  //       {
-  //         name: "User 4",
-  //         interfaces: "CLI, API",
-  //         roles: "Manage, Monitor"
-  //       }
-  //     ]
-  //   };
-  // }
 }
 </script>
 <style lang="scss" scoped>
