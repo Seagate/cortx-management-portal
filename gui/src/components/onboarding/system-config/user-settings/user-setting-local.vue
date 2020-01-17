@@ -12,57 +12,71 @@
         <div v-if="isUserCreate">
           <v-row>
             <v-col class="pl-5">
-              <div class="font-weight-medium pt-3" id="lblLocalUsrName">Username</div>
-              <input
-                class="input-text"
-                type="text"
-                name="username"
-                v-model.trim="createAcoonunt.username"
-                id="txtLocalHostname"
-                @input="$v.createAcoonunt.username.$touch"
-              />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label
-                  v-if="$v.createAcoonunt.username.$dirty && !$v.createAcoonunt.username.required"
-                >Account Name is required</label>
+              <div
+                class="eos-form-group"
+                :class="{ 'eos-form-group--error': $v.createAccount.username.$error }"
+              >
+                <label class="eos-form-group-label" for="Username">Username*</label>
+                <input
+                  class="eos-form__input_text"
+                  type="text"
+                  name="username"
+                  v-model.trim="createAccount.username"
+                  id="txtLocalHostname"
+                  @input="$v.createAccount.username.$touch"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="$v.createAccount.username.$dirty && !$v.createAccount.username.required"
+                  >Account Name is required</label>
+                </div>
               </div>
-              <div class="font-weight-medium pt-3">Password</div>
-              <input
-                class="input-text"
-                type="password"
-                name="password"
-                v-model.trim="createAcoonunt.password"
-                @input="$v.createAcoonunt.password.$touch"
-                id="txtLocalPass"
-              />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label
-                  v-if="$v.createAcoonunt.password.$dirty && !$v.createAcoonunt.password.required"
-                >Password is required</label>
-                <label
-                  v-else-if="$v.createAcoonunt.password.$dirty && !$v.createAcoonunt.password.passwordRegex"
-                >Invalid Password</label>
+              <div
+                class="eos-form-group"
+                :class="{ 'eos-form-group--error': $v.createAccount.password.$error }"
+              >
+                <label class="eos-form-group-label" for="password">password*</label>
+                <input
+                  class="eos-form__input_text"
+                  type="password"
+                  name="password"
+                  v-model.trim="createAccount.password"
+                  @input="$v.createAccount.password.$touch"
+                  id="txtLocalPass"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="$v.createAccount.password.$dirty && !$v.createAccount.password.required"
+                  >Password is required</label>
+                  <label
+                    v-else-if="$v.createAccount.password.$dirty && !$v.createAccount.password.passwordRegex"
+                  >Invalid Password</label>
+                </div>
               </div>
-              <div class="font-weight-medium pt-3" id="lblLocalConfirmPass">Confirm password</div>
-              <input
-                class="input-text"
-                type="password"
-                name="confirmPassword"
-                v-model="createAcoonunt.confirmPassword"
-                id="txtLocalPass"
-                @input="$v.createAcoonunt.confirmPassword.$touch"
-              />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label
-                  v-if="$v.createAcoonunt.confirmPassword.$dirty && !$v.createAcoonunt.confirmPassword.sameAsPassword"
-                >Passwords do not match</label>
+              <div
+                class="eos-form-group"
+                :class="{ 'eos-form-group--error': $v.createAccount.confirmPassword.$error }"
+              >
+                <label class="eos-form-group-label" for="password">confirm Password*</label>
+                <input
+                  class="eos-form__input_text"
+                  type="password"
+                  name="confirmPassword"
+                  v-model="createAccount.confirmPassword"
+                  id="txtLocalPass"
+                  @input="$v.createAccount.confirmPassword.$touch"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="$v.createAccount.confirmPassword.$dirty && !$v.createAccount.confirmPassword.sameAsPassword"
+                  >Passwords do not match</label>
+                </div>
               </div>
             </v-col>
             <v-col>
               <div class="font-weight-medium pt-3 pb-2">Roles</div>
               <input
                 type="radio"
-                @change="manage"
                 v-model="checkedRoles"
                 name="manage"
                 value="manage"
@@ -72,7 +86,6 @@
               <br />
               <input
                 type="radio"
-                @change="monitor"
                 v-model="checkedRoles"
                 name="monitor"
                 value="monitor"
@@ -95,7 +108,7 @@
           class="ma-5 elevation-0 white--text"
           @click="createUser()"
           id="btnLocalCreateUser"
-          :disabled="$v.createAcoonunt.$invalid"
+          :disabled="$v.createAccount.$invalid"
         >Create</v-btn>
 
         <v-btn
@@ -188,19 +201,24 @@
                 <div>
                   <v-row>
                     <v-col class="pl-5">
-                      <div class="font-weight-medium pt-3" id="lblLocalUserName">Username</div>
-                      <input
-                        class="input-text"
-                        type="text"
-                        name="username"
-                        v-model="selectedItem.username"
-                        id="txtLocalHostnameinetrface"
-                        @input="$v.selectedItem.username.$touch"
-                      />
-                      <div class="eos-form-group-label eos-form-group-error-msg">
-                        <label
-                          v-if="$v.selectedItem.username.$dirty && !$v.selectedItem.username.required"
-                        >Account Name is required</label>
+                      <div
+                        class="eos-form-group"
+                        :class="{ 'eos-form-group--error': $v.selectedItem.username.$error }"
+                      >
+                        <label class="eos-form-group-label" for="Username">Username*</label>
+                        <input
+                          class="eos-form__input_text"
+                          type="text"
+                          name="username"
+                          v-model="selectedItem.username"
+                          id="txtLocalHostnameinetrface"
+                          @input="$v.selectedItem.username.$touch"
+                        />
+                        <div class="eos-form-group-label eos-form-group-error-msg">
+                          <label
+                            v-if="$v.selectedItem.username.$dirty && !$v.selectedItem.username.required"
+                          >Account Name is required</label>
+                        </div>
                       </div>
                     </v-col>
                     <v-col>
@@ -211,7 +229,7 @@
                         name="manage"
                         value="manage"
                         id="chkLocalManageInterface"
-                        checked="checked"
+                        checked
                       />
                       <span class="eos-rdb-container">Manage</span>
                       <br />
@@ -221,7 +239,6 @@
                         name="monitor"
                         value="monitor"
                         id="chkLocalMoniterInterface"
-                        checked="checked"
                       />
                       <span class="eos-rdb-container">Monitor</span>
                     </v-col>
@@ -296,7 +313,7 @@ export default class EosUserSettingLocal extends Vue {
   }
   @Validations()
   public validations = {
-    createAcoonunt: {
+    createAccount: {
       username: { required },
       password: { required, passwordRegex },
       confirmPassword: {
@@ -313,8 +330,8 @@ export default class EosUserSettingLocal extends Vue {
   private createUser() {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     const queryParams: UserDetails = {
-      username: this.$data.createAcoonunt.username,
-      password: this.$data.createAcoonunt.password,
+      username: this.$data.createAccount.username,
+      password: this.$data.createAccount.password,
       interfaces: this.$data.checkedInterfaces,
       roles: [this.$data.checkedRoles],
       temperature: this.$data.temperature,
@@ -404,7 +421,7 @@ export default class EosUserSettingLocal extends Vue {
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
       alertStatus: require("./../../../../common/const-string.json"),
-      createAcoonunt: { username: "", password: "", confirmPassword: "" },
+      createAccount: { username: "", password: "", confirmPassword: "" },
       web: "",
       cli: "",
       api: "",
@@ -413,7 +430,7 @@ export default class EosUserSettingLocal extends Vue {
       temperature: "",
       language: "",
       timeout: "",
-      checkedRoles: "",
+      checkedRoles: "manage",
       checkedInterfaces: [],
       selectedItem: {},
       expanded: [],
