@@ -1,418 +1,311 @@
 <template>
-  <v-container class="mt-6 body-2">
-    <div>
-      <div class="title mt-6" id="lblLocalSetting">User settings: Local</div>
-    </div>
-    <div class="mt-5">
-      <span
-        class="font-weight-regular"
-        id="lblLocalMsgConfig"
-      >Use this table to create CSM users that have access CSM functionality. You can add as many as you like.</span>
-    </div>
-    <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
-      <div v-if="isUserCreate">
-        <v-row>
-          <v-col class="pl-5">
-            <div class="font-weight-medium pt-3" id="lblLocalUsrName">Username</div>
-            <input
-              class="eos-form__input_text"
-              type="text"
-              name="username"
-              v-model.trim="username"
-              id="txtLocalHostname"
-              @input="$v.username.$touch"
-            />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.username.$dirty && !$v.username.required">Account Name is required</label>
-            </div>
-            <div class="font-weight-medium pt-3">Password</div>
-            <input
-              class="eos-form__input_text"
-              type="password"
-              name="password"
-              v-model.trim="password"
-              @input="$v.password.$touch"
-              id="txtLocalPass"
-            />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.password.$dirty && !$v.password.required">Password is required</label>
-              <label v-else-if="$v.password.$dirty && !$v.password.passwordRegex">Invalid Password</label>
-            </div>
-            <div class="font-weight-medium pt-3" id="lblLocalConfirmPass">Confirm password</div>
-            <input
-              class="eos-form__input_text"
-              type="password"
-              name="confirmPassword"
-              v-model="confirmPassword"
-              id="txtLocalPass"
-              @input="$v.confirmPassword.$touch"
-            />
-            <span
-              class="eos-form-group-label eos-form-group-error-msg"
-              v-if="$v.confirmPassword.$dirty && !$v.confirmPassword.sameAsPassword"
-            >Passwords do not match</span>
-          </v-col>
-          <v-col>
-            <div class="font-weight-medium pt-3 pb-2">Interfaces</div>
-            <input
-              type="checkbox"
-              @change="web"
-              v-model="checkedInterfaces"
-              name="web"
-              value="web"
-              id="chkLocalWeb"
-            />
-            <span class="ml-3 font-weight-medium">Web</span>
-            <br />
-            <input
-              type="checkbox"
-              @change="cli"
-              v-model="checkedInterfaces"
-              name="cli"
-              value="cli"
-              id="chkLocalCli"
-            />
-            <span class="ml-3 font-weight-medium">CLI</span>
-            <br />
-            <input
-              type="checkbox"
-              @change="api"
-              v-model="checkedInterfaces"
-              name="api"
-              value="api"
-              id="chkLocalAPi"
-            />
-            <span class="ml-3 font-weight-medium">API</span>
-          </v-col>
-          <v-col>
-            <div class="font-weight-medium pt-3 pb-2">Roles</div>
-            <input
-              type="checkbox"
-              @change="manage"
-              v-model="checkedRoles"
-              name="manage"
-              value="manage"
-              id="chkLocalManage"
-            />
-            <span class="ml-3 font-weight-medium">Manage</span>
-            <br />
-            <input
-              type="checkbox"
-              @change="monitor"
-              v-model="checkedRoles"
-              name="monitor"
-              value="monitor"
-              id="chkLocalMonitor"
-            />
-            <span class="ml-3 font-weight-medium">Monitor</span>
-          </v-col>
-          <v-col>
-            <div class="font-weight-medium pt-3" id="lblLocalTempPref">Temperature preference</div>
-            <select
-              name="temperature"
-              id="cmdTemperature"
-              class="input-text pl-1"
-              style="width: 10em;"
-              v-model.trim="temperature"
-              @input="$v.temperature.$touch"
-            >
-              <option value="celsius">Celsius</option>
-            </select>
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.temperature.$dirty && !$v.temperature.required">Password is required</label>
-            </div>
-            <div class="font-weight-medium pt-3" id="lblLocalLang">Language</div>
-            <select
-              name="language"
-              v-model="language"
-              id="cmdLanguage"
-              class="input-text pl-1"
-              style="width: 10em;"
-            >
-              <option value="English">English</option>
-            </select>
-          </v-col>
-        </v-row>
+  <v-container class="mt-0 ml-0">
+    <div class="pl-4 body-2">
+      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">User settings: Local</div>
+      <div class="mt-5">
+        <span class="font-weight-regular" id="lblLocalMsgConfig">
+          Use this table to create CSM users that have access CSM
+          functionality. You can add as many as you like.
+        </span>
       </div>
-      <v-btn
-        v-if="!isUserCreate"
-        color="csmprimary"
-        class="ma-5 elevation-0 white--text"
-        @click="addUser()"
-        id="btnLocalAddNewUser"
-      >Add new user</v-btn>
-      <v-btn
-        v-if="isUserCreate"
-        color="csmprimary"
-        class="ma-5 elevation-0 white--text"
-        @click="createUser()"
-        :disabled="$v.$invalid"
-        id="btnLocalCreateUser"
-      >Create</v-btn>
-
-      <v-btn
-        text
-        small
-        color="csmprimary"
-        v-if="isUserCreate"
-        @click="addUser()"
-        id="lblLocalCancel"
-      >Cancel</v-btn>
-      <v-data-table
-        calculate-widths
-        :items="alertData"
-        :single-expand="singleExpand"
-        :expanded.sync="expanded"
-        item-key="id"
-        show-expand
-        class="eos-table"
-        hide-default-header
-      >
-        <template v-slot:header="{props}">
-          <tr>
-            <th class="tableheader" />
-            <th
-              v-for="header in alertHeader"
-              :key="header.text"
-              class="tableheader"
-              @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
-            >
-              <span
-                class="headerText"
-                :class="(header.value === sortColumnName && isSortActive) ? 'active' : ''"
-              >{{ header.text }}</span>
-              <span
-                :class="(header.value === sortColumnName && isSortActive) ? 'active' : 'notActive'"
-              >
-                <img
-                  v-if="header.sortable && header.sortDir === alertStatus.desc"
-                  :src="require('@/assets/widget/table-sort-desc.svg/')"
-                  class="d-inline-block"
-                  style="vertical-align: bottom; margin-left: -0.3em;"
-                  height="20"
-                  width="20"
-                />
-                <img
-                  v-if="header.sortable && header.sortDir === alertStatus.asc"
-                  :src="require('@/assets/widget/table-sort-asc.svg/')"
-                  class="d-inline-block"
-                  style="vertical-align: bottom; margin-left: -0.3em;"
-                  height="20"
-                  width="20"
-                />
-              </span>
-            </th>
-            <th class="tableheader" />
-          </tr>
-        </template>
-        <template v-slot:item="props">
-          <tr class="font-weight-small">
-            <td @click="onExpand(props)">
-              <img v-if="props.isExpanded" src="./../../../../assets/caret-green-down.png" />
-              <img v-if="!props.isExpanded" src="./../../../../assets/caret-green-right.png" />
-            </td>
-            <td>{{props.item.username}}</td>
-            <td>
-              <span
-                v-for="(interfacevalue,k) in props.item.interfaces"
-                :key="interfacevalue"
-              >{{k==0?"":", "}}{{interfacevalue | capitalize}}</span>
-            </td>
-            <td>
-              <span
-                v-for="(role, i) in props.item.roles"
-                :key="role"
-              >{{i==0?"":", "}}{{role | capitalize}}</span>
-            </td>
-            <td>
-              <img
-                class="mb-2"
-                @click="onExpand(props)"
-                src="./../../../../assets/actions/edit-green.svg"
+      <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
+        <div v-if="isUserCreate">
+          <v-row>
+            <v-col class="pl-5">
+              <div class="font-weight-medium pt-3" id="lblLocalUsrName">Username</div>
+              <input
+                class="input-text"
+                type="text"
+                name="username"
+                v-model.trim="createAcoonunt.username"
+                id="txtLocalHostname"
+                @input="$v.createAcoonunt.username.$touch"
               />
-              <v-divider class="mx-4" light vertical inset></v-divider>
-              <img
-                class="mb-2"
-                @click="onDelete(props.item.id)"
-                src="./../../../../assets/actions/delete-green.svg"
-              />
-            </td>
-          </tr>
-        </template>
-        <template v-slot:expanded-item="props">
-          <tr class="grey lighten-5" v-if="!isUserEdit">
-            <td colspan="5">
-              <div>
-                <v-row>
-                  <v-col class="pl-5">
-                    <div class="font-weight-medium pt-3" id="lblLocalUserName">Username</div>
-                    <input
-                      class="input-text"
-                      type="text"
-                      name="username"
-                      v-model="selectedItem.username"
-                      id="txtLocalHostnameinetrface"
-                    />
-                  </v-col>
-                  <v-col>
-                    <div class="font-weight-medium pt-3 pb-2">Interfaces</div>
-                    <input
-                      type="checkbox"
-                      v-model="selectedItem.interfaces"
-                      name="web"
-                      value="web"
-                      d="chkLocalWebinterface"
-                    />
-                    <span class="ml-3 font-weight-medium">Web</span>
-                    <br />
-                    <input
-                      type="checkbox"
-                      v-model="selectedItem.interfaces"
-                      name="cli"
-                      value="api"
-                      id="chkLocalCliinterface"
-                    />
-                    <span class="ml-3 font-weight-medium">CLI</span>
-                    <br />
-                    <input
-                      type="checkbox"
-                      v-model="selectedItem.interfaces"
-                      name="api"
-                      value="cli"
-                      id="chkLocalApiInterface"
-                    />
-                    <span class="ml-3 font-weight-medium">API</span>
-                  </v-col>
-                  <v-col>
-                    <div class="font-weight-medium pt-3 pb-2">Roles</div>
-                    <input
-                      type="checkbox"
-                      v-model="selectedItem.roles"
-                      name="manage"
-                      value="manage"
-                      id="chkLocalManageInterface"
-                    />
-                    <span class="ml-3 font-weight-medium">Manage</span>
-                    <br />
-                    <input
-                      type="checkbox"
-                      v-model="selectedItem.roles"
-                      name="monitor"
-                      value="monitor"
-                      id="chkLocalMoniterInterface"
-                    />
-                    <span class="ml-3 font-weight-medium">Monitor</span>
-                  </v-col>
-                  <v-col>
-                    <div class="font-weight-medium pt-3">Temperature preference</div>
-                    <select
-                      name="temperature"
-                      id="cmdTemperature"
-                      class="input-text pl-1"
-                      style="width: 10em;"
-                      v-model="selectedItem.temperature"
-                    >
-                      <option value="celsius">Celsius</option>
-                    </select>
-                    <div class="font-weight-medium pt-3">Language</div>
-                    <select
-                      name="language"
-                      id="cmdLanguage"
-                      class="input-text pl-1"
-                      style="width: 10em;"
-                      v-model="selectedItem.language"
-                    >
-                      <option value="English">English</option>
-                    </select>
-                  </v-col>
-                </v-row>
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="$v.createAcoonunt.username.$dirty && !$v.createAcoonunt.username.required"
+                >Account Name is required</label>
               </div>
-              <v-btn
-                color="csmprimary"
-                class="ma-5 elevation-0 white--text"
-                @click="editUser(selectedItem)"
-                id="lblLocalApplyInterface"
-              >Apply</v-btn>
-              <v-btn
-                text
-                small
-                color="csmprimary"
-                @click="closeEditUser(props)"
-                id="lblLocalCanacelInterface"
-              >Cancel</v-btn>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
-    </v-card>
-    <div class="mt-8">
-      <v-btn elevation="0" color="csmprimary" id="btnLocalAppyInterface">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
-      </v-btn>
-      <span
-        class="green--text ml-8 pointer"
-        @click="gotToPrevPage()"
-        id="lblLocalBackInterface"
-      >Back to previous step</span>
+              <div class="font-weight-medium pt-3">Password</div>
+              <input
+                class="input-text"
+                type="password"
+                name="password"
+                v-model.trim="createAcoonunt.password"
+                @input="$v.createAcoonunt.password.$touch"
+                id="txtLocalPass"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="$v.createAcoonunt.password.$dirty && !$v.createAcoonunt.password.required"
+                >Password is required</label>
+                <label
+                  v-else-if="$v.createAcoonunt.password.$dirty && !$v.createAcoonunt.password.passwordRegex"
+                >Invalid Password</label>
+              </div>
+              <div class="font-weight-medium pt-3" id="lblLocalConfirmPass">Confirm password</div>
+              <input
+                class="input-text"
+                type="password"
+                name="confirmPassword"
+                v-model="createAcoonunt.confirmPassword"
+                id="txtLocalPass"
+                @input="$v.createAcoonunt.confirmPassword.$touch"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="$v.createAcoonunt.confirmPassword.$dirty && !$v.createAcoonunt.confirmPassword.sameAsPassword"
+                >Passwords do not match</label>
+              </div>
+            </v-col>
+            <v-col>
+              <div class="font-weight-medium pt-3 pb-2">Roles</div>
+              <input
+                type="radio"
+                @change="manage"
+                v-model="checkedRoles"
+                name="manage"
+                value="manage"
+                id="chkLocalManage"
+              />
+              <span class="ml-3 font-weight-medium">Manage</span>
+              <br />
+              <input
+                type="radio"
+                @change="monitor"
+                v-model="checkedRoles"
+                name="monitor"
+                value="monitor"
+                id="chkLocalMonitor"
+              />
+              <span class="ml-3 font-weight-medium">Monitor</span>
+            </v-col>
+          </v-row>
+        </div>
+        <v-btn
+          v-if="!isUserCreate"
+          color="csmprimary"
+          class="ma-5 elevation-0 white--text"
+          @click="addUser()"
+          id="btnLocalAddNewUser"
+        >Add new user</v-btn>
+        <v-btn
+          v-if="isUserCreate"
+          color="csmprimary"
+          class="ma-5 elevation-0 white--text"
+          @click="createUser()"
+          id="btnLocalCreateUser"
+          :disabled="$v.createAcoonunt.$invalid"
+        >Create</v-btn>
+
+        <v-btn
+          text
+          small
+          color="csmprimary"
+          v-if="isUserCreate"
+          @click="addUser()"
+          id="lblLocalCancel"
+        >Cancel</v-btn>
+        <v-data-table
+          calculate-widths
+          :items="alertData"
+          :single-expand="singleExpand"
+          :expanded.sync="expanded"
+          item-key="id"
+          show-expand
+          class="eos-table"
+          hide-default-header
+        >
+          <template v-slot:header="{ props }">
+            <tr>
+              <th class="tableheader" />
+              <th v-for="header in alertHeader" :key="header.text" class="tableheader">
+                <span
+                  class="headerText"
+                  :class="
+                    header.value === sortColumnName && isSortActive
+                      ? 'active'
+                      : ''
+                  "
+                >{{ header.text }}</span>
+                <span
+                  :class="
+                    header.value === sortColumnName && isSortActive
+                      ? 'active'
+                      : 'notActive'
+                  "
+                >
+                  <img
+                    v-if="
+                      header.sortable && header.sortDir === alertStatus.desc
+                    "
+                    :src="require('@/assets/widget/table-sort-desc.svg/')"
+                    class="d-inline-block"
+                    style="vertical-align: bottom; margin-left: -0.3em;"
+                    height="20"
+                    width="20"
+                  />
+                  <img
+                    v-if="header.sortable && header.sortDir === alertStatus.asc"
+                    :src="require('@/assets/widget/table-sort-asc.svg/')"
+                    class="d-inline-block"
+                    style="vertical-align: bottom; margin-left: -0.3em;"
+                    height="20"
+                    width="20"
+                  />
+                </span>
+              </th>
+              <th class="tableheader" />
+            </tr>
+          </template>
+          <template v-slot:item="props">
+            <tr class="font-weight-small">
+              <td @click="onExpand(props)">
+                <img v-if="props.isExpanded" src="./../../../../assets/caret-green-down.png" />
+                <img v-if="!props.isExpanded" src="./../../../../assets/caret-green-right.png" />
+              </td>
+              <td>{{ props.item.username }}</td>
+              <td>
+                <span
+                  v-for="(role, i) in props.item.roles"
+                  :key="role"
+                >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span>
+              </td>
+              <td>
+                <img class="mb-2" @click="onExpand(props)" src="./../../../../assets/edit-off.png" />
+                <v-divider class="mx-4" light vertical inset></v-divider>
+                <img
+                  class="mb-2"
+                  @click="onDelete(props.item.id)"
+                  src="./../../../../assets/delete-off.png"
+                />
+              </td>
+            </tr>
+          </template>
+          <template v-slot:expanded-item="props">
+            <tr class="grey lighten-5" v-if="!isUserEdit">
+              <td colspan="5">
+                <div>
+                  <v-row>
+                    <v-col class="pl-5">
+                      <div class="font-weight-medium pt-3" id="lblLocalUserName">Username</div>
+                      <input
+                        class="input-text"
+                        type="text"
+                        name="username"
+                        v-model="selectedItem.username"
+                        id="txtLocalHostnameinetrface"
+                        @input="$v.selectedItem.username.$touch"
+                      />
+                      <div class="eos-form-group-label eos-form-group-error-msg">
+                        <label
+                          v-if="$v.selectedItem.username.$dirty && !$v.selectedItem.username.required"
+                        >Account Name is required</label>
+                      </div>
+                    </v-col>
+                    <v-col>
+                      <div class="font-weight-medium pt-3 pb-2">Roles</div>
+                      <input
+                        type="radio"
+                        v-model="selectedItem.roles[0]"
+                        name="manage"
+                        value="manage"
+                        id="chkLocalManageInterface"
+                        checked="checked"
+                      />
+                      <span class="eos-rdb-container">Manage</span>
+                      <br />
+                      <input
+                        type="radio"
+                        v-model="selectedItem.roles[0]"
+                        name="monitor"
+                        value="monitor"
+                        id="chkLocalMoniterInterface"
+                        checked="checked"
+                      />
+                      <span class="eos-rdb-container">Monitor</span>
+                    </v-col>
+                  </v-row>
+                </div>
+                <v-btn
+                  color="csmprimary"
+                  class="ma-5 elevation-0 white--text"
+                  @click="editUser(selectedItem)"
+                  id="lblLocalApplyInterface"
+                  :disabled="$v.selectedItem.$invalid"
+                >Apply</v-btn>
+                <v-btn
+                  text
+                  small
+                  color="csmprimary"
+                  @click="closeEditUser(props)"
+                  id="lblLocalCanacelInterface"
+                >Cancel</v-btn>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-card>
     </div>
+    <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { UserDetails } from "./../../../../models/user-Details";
 import { Validations } from "vuelidate-property-decorators";
-import { required, helpers, sameAs } from "vuelidate/lib/validators";
+import {
+  required,
+  helpers,
+  sameAs,
+  requiredIf
+} from "vuelidate/lib/validators";
 const passwordRegex = helpers.regex(
   "passwordRegex",
   /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
 );
+import { EVENT_BUS } from "./../../../../main";
 
 @Component({
   name: "eos-user-setting-local"
 })
 export default class EosUserSettingLocal extends Vue {
-  public gotToNextPage() {
-    if (this.$store.getters["systemConfig/isLdapUserStatus"] === true) {
-      this.$router.push("usersettingldap");
-    } else {
-      this.$router.push("notifications");
-    }
+  private mounted() {
+    // WizardHook: Open a listener for onNext event
+    // So when wizard footer clicks on the Next Button this component can perform its own workflow
+    this.getUserData();
+
+    EVENT_BUS.$on("emitOnNext", (res: any) => {
+      res(true);
+    });
   }
-  public gotToPrevPage() {
-    this.$router.push("usersetting");
+  private destroyed() {
+    // WizardHook: shut off on exit event listener
+    EVENT_BUS.$off("emitOnNext");
   }
-  private addIpAddressNode0(address: string) {
-    if (
-      this.$data.ipaddressNode0.length < 4 &&
-      address !== "" &&
-      address !== undefined
-    ) {
-      this.$data.ipaddressNode0.push(address);
-      this.$data.newAddressNode0 = "";
-    }
+  get isValidForm() {
+    const validate = true;
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EVENT_BUS.$emit("validForm", validate);
+    return validate;
   }
   private addUser() {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     return this.$data.isUserCreate;
   }
-  public createAccountForm = {
-    account: {} as Account,
-    confirmPassword: ""
-  };
   @Validations()
   public validations = {
-    username: { required },
-    password: { required, passwordRegex },
-    temperature: { required },
-    confirmPassword: {
-      sameAsPassword: sameAs("password")
+    createAcoonunt: {
+      username: { required },
+      password: { required, passwordRegex },
+      confirmPassword: {
+        sameAsPassword: sameAs("password")
+      }
+    },
+    selectedItem: {
+      username: { required }
     }
-    // editAccountForm: {
-    //   password: { required, passwordRegex },
-    //   confirmPassword: {
-    //     sameAsPassword: sameAs("password")
-    //   }
-    // }
   };
   /**
    * This method create csm user
@@ -420,16 +313,14 @@ export default class EosUserSettingLocal extends Vue {
   private createUser() {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     const queryParams: UserDetails = {
-      username: this.$data.username,
-      password: this.$data.password,
+      username: this.$data.createAcoonunt.username,
+      password: this.$data.createAcoonunt.password,
       interfaces: this.$data.checkedInterfaces,
-      roles: this.$data.checkedRoles,
+      roles: [this.$data.checkedRoles],
       temperature: this.$data.temperature,
       language: this.$data.language,
       timeout: 1
     };
-
-    console.log("oooooooooooooo", queryParams);
     this.$store
       .dispatch("createUser/createCSMUserAction", queryParams)
       .then((res: any) => {
@@ -441,6 +332,9 @@ export default class EosUserSettingLocal extends Vue {
       });
     return this.$data.isUserCreate;
   }
+  /**
+   * Edit Csm User
+   */
   private editUser(selectedItem: any) {
     this.$store
       .dispatch("createUser/updateUserDetails", selectedItem)
@@ -451,6 +345,7 @@ export default class EosUserSettingLocal extends Vue {
         // tslint:disable-next-line: no-console
         console.error("Create User Fails");
       });
+    this.$data.expanded = [];
   }
 
   private closeEditUser() {
@@ -498,9 +393,6 @@ export default class EosUserSettingLocal extends Vue {
         console.log("err logger: ", e);
       });
   }
-  private mounted() {
-    this.getUserData();
-  }
   private data() {
     return {
       source: "manual",
@@ -512,9 +404,7 @@ export default class EosUserSettingLocal extends Vue {
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
       alertStatus: require("./../../../../common/const-string.json"),
-      username: "",
-      password: "",
-      confirmPassword: "",
+      createAcoonunt: { username: "", password: "", confirmPassword: "" },
       web: "",
       cli: "",
       api: "",
@@ -523,7 +413,7 @@ export default class EosUserSettingLocal extends Vue {
       temperature: "",
       language: "",
       timeout: "",
-      checkedRoles: [],
+      checkedRoles: "",
       checkedInterfaces: [],
       selectedItem: {},
       expanded: [],
@@ -531,11 +421,6 @@ export default class EosUserSettingLocal extends Vue {
         {
           text: "Username",
           value: "username",
-          sortable: false
-        },
-        {
-          text: "Interfaces",
-          value: "interfaces",
           sortable: false
         },
         {
