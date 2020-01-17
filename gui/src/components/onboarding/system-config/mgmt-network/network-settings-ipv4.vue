@@ -99,7 +99,7 @@ import {
   SystemConfigObject,
   Ipv4
 } from "./../../../../models/system-configuration";
-import { EventBus } from "./../../../../main";
+import { EVENT_BUS } from "./../../../../main";
 
 @Component({
   name: "eos-network-settings-ipv4"
@@ -109,7 +109,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     this.managementNetworkGetter();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
-    EventBus.$on("emitOnNext", (res: any) => {
+    EVENT_BUS.$on("emitOnNext", (res: any) => {
       this.updateIpv4Config().then(result => {
         res(true);
       });
@@ -117,12 +117,12 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   }
   public destroyed() {
     // WizardHook: shut off on exit event listener
-    EventBus.$off("emitOnNext");
+    EVENT_BUS.$off("emitOnNext");
   }
   get isValidForm() {
     // WizardHook: Emit event to sibling wizard footer component
     // to send information about data validation to enable/disable wizard footer
-    EventBus.$emit("validForm", true);
+    EVENT_BUS.$emit("validForm", true);
     return true;
   }
   public managementNetworkGetter(): any {

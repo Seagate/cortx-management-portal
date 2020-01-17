@@ -33,7 +33,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { EventBus } from "./../../../main";
+import { EVENT_BUS } from "./../../../main";
 
 @Component({
   name: "eos-wizard-footer",
@@ -41,18 +41,18 @@ import { EventBus } from "./../../../main";
     footerObj: Object
   }
 })
-// Overall: EventBus is used here to have a comunication between footer and middle component (siblings)
+// Overall: EVENT_BUS is used here to have a comunication between footer and middle component (siblings)
 // this.emit is used to have a communication between footer and wizard component (parent)
 export default class EosWizardFooter extends Vue {
   private mounted() {
     // Listen to middle components form validation event so that footer can enable or disable next button
-    EventBus.$on("validForm", (res: any) => {
+    EVENT_BUS.$on("validForm", (res: any) => {
       this.$data.isValidData = res;
     });
   }
   private destroyed() {
     // Shut off the listener
-    EventBus.$off("validForm");
+    EVENT_BUS.$off("validForm");
   }
   private data() {
     return {
@@ -67,7 +67,7 @@ export default class EosWizardFooter extends Vue {
         show: true,
         message: "Please wait"
       });
-      EventBus.$emit("emitOnNext", resolve); // Emit event to Middle Component (sibling)
+      EVENT_BUS.$emit("emitOnNext", resolve); // Emit event to Middle Component (sibling)
     }).then(res => {
       if (res) {
         // Footer got message from Middle component saying;

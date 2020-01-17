@@ -104,13 +104,22 @@ export default class SystemConfiguration extends VuexModule {
   @Mutation
   public setUser(userType: any) {
     if (userType.type === "local") {
+      this.componentNameToSearch = "EosUserSettingLocal";
       this.isLocalUser = userType.flag;
     }
     if (userType.type === "ldap") {
+      this.componentNameToSearch = "EosUserSettingLdap";
       this.isLdapUser = userType.flag;
     }
     if (userType.type === "skip") {
       this.isUserSettingSkip = userType.flag;
+    }
+    const stepIndex = findStepIndexFromComponentName(
+      this.componentNameToSearch,
+      this.wizardMetadata
+    );
+    if (stepIndex !== undefined || stepIndex !== -1) {
+      this.wizardMetadata.steps[stepIndex].isByPassed = !userType.flag;
     }
   }
 
@@ -285,7 +294,6 @@ export default class SystemConfiguration extends VuexModule {
   }
   @Action
   public async getSystemConfigAction() {
-    this.context.commit("setWizardMetadata", wizardConfig);
     try {
       const res = await Api.getAll(apiRegister.sysconfig);
       let data = {};
