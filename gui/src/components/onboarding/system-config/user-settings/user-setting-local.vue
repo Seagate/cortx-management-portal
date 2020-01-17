@@ -15,7 +15,7 @@
           <v-col class="pl-5">
             <div class="font-weight-medium pt-3" id="lblLocalUsrName">Username</div>
             <input
-              class="input-text"
+              class="eos-form__input_text"
               type="text"
               name="username"
               v-model.trim="username"
@@ -27,7 +27,7 @@
             </div>
             <div class="font-weight-medium pt-3">Password</div>
             <input
-              class="input-text"
+              class="eos-form__input_text"
               type="password"
               name="password"
               v-model.trim="password"
@@ -40,12 +40,17 @@
             </div>
             <div class="font-weight-medium pt-3" id="lblLocalConfirmPass">Confirm password</div>
             <input
-              class="input-text"
+              class="eos-form__input_text"
               type="password"
               name="confirmPassword"
               v-model="confirmPassword"
               id="txtLocalPass"
+              @input="$v.confirmPassword.$touch"
             />
+            <span
+              class="eos-form-group-label eos-form-group-error-msg"
+              v-if="$v.confirmPassword.$dirty && !$v.confirmPassword.sameAsPassword"
+            >Passwords do not match</span>
           </v-col>
           <v-col>
             <div class="font-weight-medium pt-3 pb-2">Interfaces</div>
@@ -108,10 +113,14 @@
               id="cmdTemperature"
               class="input-text pl-1"
               style="width: 10em;"
-              v-model="temperature"
+              v-model.trim="temperature"
+              @input="$v.temperature.$touch"
             >
               <option value="celsius">Celsius</option>
             </select>
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label v-if="$v.temperature.$dirty && !$v.temperature.required">Password is required</label>
+            </div>
             <div class="font-weight-medium pt-3" id="lblLocalLang">Language</div>
             <select
               name="language"
@@ -137,6 +146,7 @@
         color="csmprimary"
         class="ma-5 elevation-0 white--text"
         @click="createUser()"
+        :disabled="$v.$invalid"
         id="btnLocalCreateUser"
       >Create</v-btn>
 
@@ -393,21 +403,10 @@ export default class EosUserSettingLocal extends Vue {
   public validations = {
     username: { required },
     password: { required, passwordRegex },
+    temperature: { required },
     confirmPassword: {
       sameAsPassword: sameAs("password")
     }
-    // account_email: { required },
-    // password: { required, passwordRegex }
-    //  confirmPassword: {
-    //   sameAsPassword: sameAs(() => {
-    //     return this.createAccountForm.account.password;
-    //   })
-    // }
-    // confirmPassword: {
-    //   sameAsPassword: sameAs(() => {
-    //     return this.createAccountForm.account.password;
-    //   })
-    // }
     // editAccountForm: {
     //   password: { required, passwordRegex },
     //   confirmPassword: {
