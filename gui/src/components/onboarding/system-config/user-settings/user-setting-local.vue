@@ -1,66 +1,94 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">
-        User settings: Local
-      </div>
+      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">User settings: Local</div>
       <div class="mt-5">
-        <span class="font-weight-regular" id="lblLocalMsgConfig"
-          >Use this table to create CSM users that have access CSM
-          functionality. You can add as many as you like.</span
-        >
+        <span class="font-weight-regular" id="lblLocalMsgConfig">
+          Use this table to create CSM users that have access CSM
+          functionality. You can add as many as you like.
+        </span>
       </div>
       <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
         <div v-if="isUserCreate">
           <v-row>
             <v-col class="pl-5">
-              <div class="font-weight-medium pt-3" id="lblLocalUsrName">
-                Username
+              <div
+                class="eos-form-group"
+                :class="{ 'eos-form-group--error': $v.createAccount.username.$error }"
+              >
+                <label class="eos-form-group-label" for="Username">Username*</label>
+                <input
+                  class="eos-form__input_text"
+                  type="text"
+                  name="username"
+                  v-model.trim="createAccount.username"
+                  id="txtLocalHostname"
+                  @input="$v.createAccount.username.$touch"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="$v.createAccount.username.$dirty && !$v.createAccount.username.required"
+                  >Account Name is required</label>
+                </div>
               </div>
-              <input
-                class="input-text"
-                type="text"
-                name="username"
-                v-model="username"
-                id="txtLocalHostname"
-              />
-              <div class="font-weight-medium pt-3">Password</div>
-              <input
-                class="input-text"
-                type="password"
-                name="password"
-                v-model="password"
-                id="txtLocalPass"
-              />
-              <div class="font-weight-medium pt-3" id="lblLocalConfirmPass">
-                Confirm password
+              <div
+                class="eos-form-group"
+                :class="{ 'eos-form-group--error': $v.createAccount.password.$error }"
+              >
+                <label class="eos-form-group-label" for="password">password*</label>
+                <input
+                  class="eos-form__input_text"
+                  type="password"
+                  name="password"
+                  v-model.trim="createAccount.password"
+                  @input="$v.createAccount.password.$touch"
+                  id="txtLocalPass"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="$v.createAccount.password.$dirty && !$v.createAccount.password.required"
+                  >Password is required</label>
+                  <label
+                    v-else-if="$v.createAccount.password.$dirty && !$v.createAccount.password.passwordRegex"
+                  >Invalid Password</label>
+                </div>
               </div>
-              <input
-                class="input-text"
-                type="password"
-                name="confirmPassword"
-                v-model="confirmPassword"
-                id="txtLocalPass"
-              />
+              <div
+                class="eos-form-group"
+                :class="{ 'eos-form-group--error': $v.createAccount.confirmPassword.$error }"
+              >
+                <label class="eos-form-group-label" for="password">confirm Password*</label>
+                <input
+                  class="eos-form__input_text"
+                  type="password"
+                  name="confirmPassword"
+                  v-model="createAccount.confirmPassword"
+                  id="txtLocalPass"
+                  @input="$v.createAccount.confirmPassword.$touch"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="$v.createAccount.confirmPassword.$dirty && !$v.createAccount.confirmPassword.sameAsPassword"
+                  >Passwords do not match</label>
+                </div>
+              </div>
             </v-col>
             <v-col>
               <div class="font-weight-medium pt-3 pb-2">Roles</div>
               <input
-                type="checkbox"
-                @change="manage"
+                type="radio"
                 v-model="checkedRoles"
                 name="manage"
-                value="admin"
+                value="manage"
                 id="chkLocalManage"
               />
               <span class="ml-3 font-weight-medium">Manage</span>
               <br />
               <input
-                type="checkbox"
-                @change="monitor"
+                type="radio"
                 v-model="checkedRoles"
                 name="monitor"
-                value="viewer"
+                value="monitor"
                 id="chkLocalMonitor"
               />
               <span class="ml-3 font-weight-medium">Monitor</span>
@@ -73,16 +101,15 @@
           class="ma-5 elevation-0 white--text"
           @click="addUser()"
           id="btnLocalAddNewUser"
-          >Add new user</v-btn
-        >
+        >Add new user</v-btn>
         <v-btn
           v-if="isUserCreate"
           color="csmprimary"
           class="ma-5 elevation-0 white--text"
           @click="createUser()"
           id="btnLocalCreateUser"
-          >Create</v-btn
-        >
+          :disabled="$v.createAccount.$invalid"
+        >Create</v-btn>
 
         <v-btn
           text
@@ -91,8 +118,7 @@
           v-if="isUserCreate"
           @click="addUser()"
           id="lblLocalCancel"
-          >Cancel</v-btn
-        >
+        >Cancel</v-btn>
         <v-data-table
           calculate-widths
           :items="alertData"
@@ -106,11 +132,7 @@
           <template v-slot:header="{ props }">
             <tr>
               <th class="tableheader" />
-              <th
-                v-for="header in alertHeader"
-                :key="header.text"
-                class="tableheader"
-              >
+              <th v-for="header in alertHeader" :key="header.text" class="tableheader">
                 <span
                   class="headerText"
                   :class="
@@ -118,8 +140,7 @@
                       ? 'active'
                       : ''
                   "
-                  >{{ header.text }}</span
-                >
+                >{{ header.text }}</span>
                 <span
                   :class="
                     header.value === sortColumnName && isSortActive
@@ -153,27 +174,18 @@
           <template v-slot:item="props">
             <tr class="font-weight-small">
               <td @click="onExpand(props)">
-                <img
-                  v-if="props.isExpanded"
-                  src="./../../../../assets/caret-green-down.png"
-                />
-                <img
-                  v-if="!props.isExpanded"
-                  src="./../../../../assets/caret-green-right.png"
-                />
+                <img v-if="props.isExpanded" src="./../../../../assets/caret-green-down.png" />
+                <img v-if="!props.isExpanded" src="./../../../../assets/caret-green-right.png" />
               </td>
               <td>{{ props.item.username }}</td>
               <td>
-                <span v-for="(role, i) in props.item.roles" :key="role"
-                  >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span
-                >
+                <span
+                  v-for="(role, i) in props.item.roles"
+                  :key="role"
+                >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span>
               </td>
               <td>
-                <img
-                  class="mb-2"
-                  @click="onExpand(props)"
-                  src="./../../../../assets/edit-off.png"
-                />
+                <img class="mb-2" @click="onExpand(props)" src="./../../../../assets/edit-off.png" />
                 <v-divider class="mx-4" light vertical inset></v-divider>
                 <img
                   class="mb-2"
@@ -190,38 +202,45 @@
                   <v-row>
                     <v-col class="pl-5">
                       <div
-                        class="font-weight-medium pt-3"
-                        id="lblLocalUserName"
+                        class="eos-form-group"
+                        :class="{ 'eos-form-group--error': $v.selectedItem.username.$error }"
                       >
-                        Username
+                        <label class="eos-form-group-label" for="Username">Username*</label>
+                        <input
+                          class="eos-form__input_text"
+                          type="text"
+                          name="username"
+                          v-model="selectedItem.username"
+                          id="txtLocalHostnameinetrface"
+                          @input="$v.selectedItem.username.$touch"
+                        />
+                        <div class="eos-form-group-label eos-form-group-error-msg">
+                          <label
+                            v-if="$v.selectedItem.username.$dirty && !$v.selectedItem.username.required"
+                          >Account Name is required</label>
+                        </div>
                       </div>
-                      <input
-                        class="input-text"
-                        type="text"
-                        name="username"
-                        v-model="selectedItem.username"
-                        id="txtLocalHostnameinetrface"
-                      />
                     </v-col>
                     <v-col>
                       <div class="font-weight-medium pt-3 pb-2">Roles</div>
                       <input
-                        type="checkbox"
-                        v-model="selectedItem.roles"
+                        type="radio"
+                        v-model="selectedItem.roles[0]"
                         name="manage"
-                        value="admin"
+                        value="manage"
                         id="chkLocalManageInterface"
+                        checked
                       />
-                      <span class="ml-3 font-weight-medium">Manage</span>
+                      <span class="eos-rdb-container">Manage</span>
                       <br />
                       <input
-                        type="checkbox"
-                        v-model="selectedItem.roles"
+                        type="radio"
+                        v-model="selectedItem.roles[0]"
                         name="monitor"
-                        value="viewer"
+                        value="monitor"
                         id="chkLocalMoniterInterface"
                       />
-                      <span class="ml-3 font-weight-medium">Monitor</span>
+                      <span class="eos-rdb-container">Monitor</span>
                     </v-col>
                   </v-row>
                 </div>
@@ -230,16 +249,15 @@
                   class="ma-5 elevation-0 white--text"
                   @click="editUser(selectedItem)"
                   id="lblLocalApplyInterface"
-                  >Apply</v-btn
-                >
+                  :disabled="$v.selectedItem.$invalid"
+                >Apply</v-btn>
                 <v-btn
                   text
                   small
                   color="csmprimary"
                   @click="closeEditUser(props)"
                   id="lblLocalCanacelInterface"
-                  >Cancel</v-btn
-                >
+                >Cancel</v-btn>
               </td>
             </tr>
           </template>
@@ -252,6 +270,17 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { UserDetails } from "./../../../../models/user-Details";
+import { Validations } from "vuelidate-property-decorators";
+import {
+  required,
+  helpers,
+  sameAs,
+  requiredIf
+} from "vuelidate/lib/validators";
+const passwordRegex = helpers.regex(
+  "passwordRegex",
+  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
+);
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({
@@ -282,13 +311,29 @@ export default class EosUserSettingLocal extends Vue {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     return this.$data.isUserCreate;
   }
+  @Validations()
+  public validations = {
+    createAccount: {
+      username: { required },
+      password: { required, passwordRegex },
+      confirmPassword: {
+        sameAsPassword: sameAs("password")
+      }
+    },
+    selectedItem: {
+      username: { required }
+    }
+  };
+  /**
+   * This method create csm user
+   */
   private createUser() {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     const queryParams: UserDetails = {
-      username: this.$data.username,
-      password: this.$data.password,
+      username: this.$data.createAccount.username,
+      password: this.$data.createAccount.password,
       interfaces: this.$data.checkedInterfaces,
-      roles: this.$data.checkedRoles,
+      roles: [this.$data.checkedRoles],
       temperature: this.$data.temperature,
       language: this.$data.language,
       timeout: 1
@@ -304,6 +349,9 @@ export default class EosUserSettingLocal extends Vue {
       });
     return this.$data.isUserCreate;
   }
+  /**
+   * Edit Csm User
+   */
   private editUser(selectedItem: any) {
     this.$store
       .dispatch("createUser/updateUserDetails", selectedItem)
@@ -314,6 +362,7 @@ export default class EosUserSettingLocal extends Vue {
         // tslint:disable-next-line: no-console
         console.error("Create User Fails");
       });
+    this.$data.expanded = [];
   }
 
   private closeEditUser() {
@@ -372,9 +421,7 @@ export default class EosUserSettingLocal extends Vue {
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
       alertStatus: require("./../../../../common/const-string.json"),
-      username: "",
-      password: "",
-      confirmPassword: "",
+      createAccount: { username: "", password: "", confirmPassword: "" },
       web: "",
       cli: "",
       api: "",
@@ -383,7 +430,7 @@ export default class EosUserSettingLocal extends Vue {
       temperature: "",
       language: "",
       timeout: "",
-      checkedRoles: [],
+      checkedRoles: "manage",
       checkedInterfaces: [],
       selectedItem: {},
       expanded: [],

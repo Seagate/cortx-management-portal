@@ -1,25 +1,16 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblDTSetDateTime">
-        Set date and time
-      </div>
+      <div class="title mt-0 font-weight-bold" id="lblDTSetDateTime">Set date and time</div>
       <div class="mt-4">
-        <input
-          type="radio"
-          name="ntp"
-          v-model="source"
-          value="ntp"
-          id="rbtnDTNtp"
-        />
-        <span class="ml-2 font-weight-bold black--text" id="lblNetworkTimeProto"
-          >Network time protocol (NTP)</span
-        >
+        <input type="radio" name="ntp" v-model="source" value="ntp" id="rbtnDTNtp" />
+        <span
+          class="ml-2 font-weight-bold black--text"
+          id="lblNetworkTimeProto"
+        >Network time protocol (NTP)</span>
       </div>
       <div class="mt-4" v-if="source === 'ntp'">
-        <div class="font-weight-medium black--text" id="lblDTNetworkServeradd">
-          NTP server address
-        </div>
+        <div class="font-weight-medium black--text" id="lblDTNetworkServeradd">NTP server address</div>
         <div>
           <input
             class="input-text"
@@ -29,41 +20,21 @@
             id="txtDTHostname"
           />
         </div>
-        <div class="mt-5 font-weight-medium black--text" id="lblDTNtpTimeZone">
-          NTP time zone offset
-        </div>
+        <div class="mt-5 font-weight-medium black--text" id="lblDTNtpTimeZone">NTP time zone offset</div>
         <div>
-          <select
-            name="zone"
-            id="cmdZone"
-            class="input-text"
-            v-model="NtpTimezone"
-          >
-            <option
-              v-for="option in timezoneList"
-              :key="option"
-              :value="option"
-              >{{ option }}</option
-            >
+          <select name="zone" id="cmdZone" class="input-text" v-model="NtpTimezone">
+            <option v-for="option in timezoneList" :key="option" :value="option">{{ option }}</option>
           </select>
         </div>
       </div>
       <div class="mt-4" v-if="source === 'manual'">
         <div class="font-weight-medium black--text" id="lblDTDate">Date</div>
         <div>
-          <input
-            class="input-text"
-            type="date"
-            name="date"
-            v-model="date"
-            id="txtDTDate"
-          />
+          <input class="input-text" type="date" name="date" v-model="date" id="txtDTDate" />
         </div>
         <v-row>
           <v-col class="col-1">
-            <div class="mt-5 font-weight-medium black--text" id="lblDTHour">
-              Hour
-            </div>
+            <div class="mt-5 font-weight-medium black--text" id="lblDTHour">Hour</div>
             <div>
               <input
                 class="input-text col-12"
@@ -76,9 +47,7 @@
             </div>
           </v-col>
           <v-col class="col-1">
-            <div class="mt-5 font-weight-medium black--text" id="lblDTMinute">
-              Minute
-            </div>
+            <div class="mt-5 font-weight-medium black--text" id="lblDTMinute">Minute</div>
             <div>
               <input
                 class="input-text col-12"
@@ -91,9 +60,7 @@
             </div>
           </v-col>
           <v-col class="col-1">
-            <div class="mt-5 font-weight-medium black--text" id="lblDTClock">
-              Clock
-            </div>
+            <div class="mt-5 font-weight-medium black--text" id="lblDTClock">Clock</div>
             <div>
               <select
                 name="clock"
@@ -108,13 +75,9 @@
             </div>
           </v-col>
         </v-row>
-        <div class="mt-2">
-          Daylight saving time adjustment is not supported.
-        </div>
+        <div class="mt-2">Daylight saving time adjustment is not supported.</div>
         <v-btn elevation="0" color="csmprimary" class="mt-5" id="btnDTSetNow">
-          <span class="white--text" @click="setTimeZone()"
-            >Set Current Date and Time</span
-          >
+          <span class="white--text" @click="setTimeZone()">Set Current Date and Time</span>
         </v-btn>
       </div>
       <span class="d-none">{{ isValidForm }}</span>
