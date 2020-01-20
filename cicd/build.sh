@@ -101,7 +101,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
         PYINSTALLER_FILE=$TMPDIR/${PRODUCT}_csm_test.spec
         cp $BASE_DIR/jenkins/pyinstaller/product_csm_test.spec ${PYINSTALLER_FILE}
         mkdir -p $DIST/csm/test
-        cp -R $BASE_DIR/test/plans $BASE_DIR/test/args.yaml $DIST/csm/test
+        cp -R $BASE_DIR/test/plans $BASE_DIR/test/test_data $DIST/csm/test
     } || {
         PYINSTALLER_FILE=$TMPDIR/${PRODUCT}_csm.spec
         cp $BASE_DIR/jenkins/pyinstaller/product_csm.spec ${PYINSTALLER_FILE}
