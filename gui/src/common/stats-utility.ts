@@ -1,9 +1,17 @@
 import { PerfomanceStatsDetails, DiskCapacityDetails } from "./../models/performance-stats";
 export default abstract class StatsUtility {
-  public static formatData(payload: PerfomanceStatsDetails, chartType: string = ""): any[][] {
+  // This static method converts api responce into 2D array format of c3.js
+  // parameters: payload: api response data
+  //             chartType: Throughput|| Latency || IOPS
+  //             paramList: List of 2 metrics to show on the graph
+  public static formatData(payload: PerfomanceStatsDetails, chartType: string = "", paramList: string[]): any[][] {
     const c3Format: any = { ...payload };
     const outputFormat: any[][] = [];
     const constStr = require("../common/const-string.json");
+    const readIndex: number = 0;
+    const writeIndex: number = 1;
+    const totalIndex: number = 2;
+    const paramArray: string[] = ["Read", "Write", "Total"];
 
     if (c3Format.list !== undefined) {
       for (let objCount = 0; objCount <= c3Format.list.length - 1; objCount++) {
@@ -22,6 +30,27 @@ export default abstract class StatsUtility {
       }
       outputFormat.push(payload.list[0].data[0]);
       payload.list[0].data[0].unshift("x");
+    }
+    // Following loop is for recognizing the parameter to splice
+    // Which we are not going to show on the gui
+    // This logic will go once we integrate with generic stats api
+    for (let paramIndex = 0; paramIndex <= paramArray.length - 1; paramIndex++) {
+
+      if (!paramList.includes(paramArray[paramIndex])) {
+        switch (paramArray[paramIndex].toLowerCase()) {
+          case "read":
+            outputFormat.splice(readIndex, 1);
+            break;
+          case "write":
+            outputFormat.splice(writeIndex, 1);
+            break;
+          case "total":
+            outputFormat.splice(totalIndex, 1);
+            break;
+          default:
+            break;
+        }
+      }
     }
 
     return outputFormat;
