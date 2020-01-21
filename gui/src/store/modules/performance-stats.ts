@@ -36,8 +36,6 @@ Vue.use(Vuex);
   namespaced: true
 })
 export default class PerformanceStats extends VuexModule {
-  public throughputPerformanceData: PerfomanceStatsDetails | null = null;
-  public latencyPerformanceData: PerfomanceStatsDetails | null = null;
   public capacityData: DiskCapacityDetails = {
     size: "0 GB",
     used: "0 GB",
@@ -48,29 +46,20 @@ export default class PerformanceStats extends VuexModule {
   // Throuthput
   @Action
   public async getThroughputPerformanceStats(
-    queryParams: PerformanceStatsQueryParams
+    queryParams: any
   ) {
     try {
+      const { metric1, metric2 } = queryParams;
+      delete queryParams.metric1;
+      delete queryParams.metric2;
       const res = await Api.getAll(apiRegister.throughput, queryParams);
       if (res && res.data) {
-        return StatsUtility.formatData(res.data, this.constStr.throughput);
+        return StatsUtility.formatData(res.data, this.constStr.throughput, [metric1, metric2]);
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
     }
-  }
-
-  @Mutation
-  public setThrouthputPerformanceStats(payload: any) {
-    this.throughputPerformanceData = { ...payload };
-  }
-
-  get getThroughputperformanceStats() {
-    if (this.throughputPerformanceData) {
-      return StatsUtility.formatData(this.throughputPerformanceData);
-    }
-    return;
   }
 
   // Latency
@@ -79,21 +68,11 @@ export default class PerformanceStats extends VuexModule {
     try {
       const res = await Api.getAll(apiRegister.latency, latencyParams);
       if (res && res.data) {
-        return StatsUtility.formatData(res.data, this.constStr.latency);
+        return StatsUtility.formatData(res.data, this.constStr.latency, []);
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
-    }
-  }
-  @Mutation
-  public setLatencyPerformanceStats(payload: any) {
-    this.latencyPerformanceData = { ...payload };
-  }
-
-  get getLatencyperformanceStats() {
-    if (this.latencyPerformanceData) {
-      return StatsUtility.formatData(this.latencyPerformanceData);
     }
   }
 
@@ -103,7 +82,7 @@ export default class PerformanceStats extends VuexModule {
     try {
       const res = await Api.getAll(apiRegister.iops, latencyParams);
       if (res && res.data) {
-        return StatsUtility.formatData(res.data, this.constStr.iops);
+        return StatsUtility.formatData(res.data, this.constStr.iops, []);
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
