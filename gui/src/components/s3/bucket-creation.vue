@@ -198,7 +198,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
-import { required, helpers } from "vuelidate/lib/validators";
+import { required, helpers ,minLength } from "vuelidate/lib/validators";
 import { Bucket } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
@@ -247,7 +247,8 @@ export default class EosBucketCreation extends Vue {
   public validations = {
     createBucketForm: {
       bucket: {
-        bucket_name: { required, bucketNameRegex }
+        bucket_name: { required, bucketNameRegex,minLength: minLength(3) 
+ }
       }
     },
     policyJson: {
@@ -295,12 +296,13 @@ export default class EosBucketCreation extends Vue {
         apiRegister.s3_bucket,
         this.createBucketForm.bucket
       );
+      this.showBucketCreateSuccessDialog = true;
     } catch (error) {
+      this.showBucketCreateSuccessDialog = false;
       // tslint:disable-next-line: no-console
     }
     this.showLoader = false;
     this.loaderMessage = "";
-    this.showBucketCreateSuccessDialog = true;
   }
 
   public closeBucketCreateSuccessDialog() {

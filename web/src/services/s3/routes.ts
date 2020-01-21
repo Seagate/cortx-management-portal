@@ -25,7 +25,7 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/s3_account",
+    path: "/api/v1/s3_accounts",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -40,7 +40,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_account/:name",
+    path: "/api/v1/s3_accounts/:name",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -56,7 +56,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_account",
+    path: "/api/v1/s3_accounts",
     method: "post",
     handler: [
       checkRequiredParams,
@@ -71,7 +71,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_account/:name",
+    path: "/api/v1/s3_accounts/:name",
     method: "delete",
     handler: [
       checkRequiredParams,
@@ -86,7 +86,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_iam_user",
+    path: "/api/v1/iam_users",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -101,7 +101,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_iam_user/:name",
+    path: "/api/v1/iam_users/:name",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -117,7 +117,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_iam_user",
+    path: "/api/v1/iam_users",
     method: "post",
     handler: [
       checkRequiredParams,
@@ -132,7 +132,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_iam_user/:username",
+    path: "/api/v1/iam_users/:username",
     method: "delete",
     handler: [
       checkRequiredParams,
@@ -147,7 +147,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_account/:account_name",
+    path: "/api/v1/s3_accounts/:account_name",
     method: "patch",
     handler: [
       checkRequiredParams,
