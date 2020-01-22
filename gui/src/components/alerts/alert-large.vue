@@ -13,8 +13,9 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="pa-0 col-12">
-    <eos-tabs class="mt-2" :tabsInfo="tabsInfo" />
+  <div class="mt-5">
+    <eos-tabs :tabsInfo="tabsInfo" />
+    <button type="button" class="mt-3 mb-2 eos-btn-primary">Acknowledge All</button>
     <v-data-table
       calculate-widths
       :items="alertData"
@@ -66,24 +67,28 @@
               />
             </span>
           </th>
+          <th class="tableheader"></th>
         </tr>
       </template>
       <template v-slot:item="props">
-        <tr
-          class="font-weight-small"
-          style="cursor: pointer;"
-          @click="$router.push('/alerts/' + props.item.alert_uuid)"
-        >
-          <td style="width: 10%">{{ new Date(props.item.created_time*1000) | timeago }}</td>
-          <td style="width: 35%">
-            <div v-if="props.item.location">Location: {{props.item.location}}</div>
+        <tr style="color: #000000;">
+          <td style="white-space: nowrap;">{{ new Date(props.item.created_time*1000) | timeago }}</td>
+          <td>
             <div>
-              <label v-if="props.item.state">State: {{props.item.state}}</label>
-              <label v-if="props.item.state && props.item.module_name">,&nbsp;</label>
-              <label v-if="props.item.module_name">Resource Type: {{props.item.module_name}}</label>
+              <span>Resource Type: {{ props.item.module_name }} | State: {{ props.item.state }}</span>
+            </div>
+            <div>
+              <span v-if="props.item.module_type === 'logical_volume'">Volume Group: {{ props.item.volume_group }} | Volume Name: {{ props.item.name }}</span>
+              <span v-else-if="props.item.module_type === 'system'">Version: {{ props.item.version }} | Nodename: {{ props.item.name }}</span>
+              <span v-else-if="props.item.module_type === 'volume'">Size: {{ props.item.volume_size }} | Total Size: {{ props.item.volume_total_size }}</span>
+              <span v-else-if="props.item.module_type === 'current'">Sensor Name: {{ props.item.name }}</span>
+              <span v-else-if="props.item.module_type === 'psu'">Location: {{ props.item.location }}</span>
+              <span v-else-if="props.item.module_type === 'fan' || props.item.module_type === 'sideplane'">Name: {{ props.item.name }} | Location: {{ props.item.location }}</span>
+              <span v-else-if="props.item.module_type === 'disk'">Serial Number: {{ props.item.serial_number }} | Size: {{ props.item.volume_size }}</span>
+              <span v-else-if="props.item.module_type === 'controller'">Serial Number: {{ props.item.serial_number }}</span>
             </div>
           </td>
-          <td style="width: 5%">
+          <td>
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.warning"
@@ -105,7 +110,13 @@
               class="eos-status-chip eos-chip-ok"
             ></div>
           </td>
-          <td style="width: 50%">{{props.item.description}}</td>
+          <td>{{props.item.description}}</td>
+          <td>      
+            <img :src="require('@/assets/zoom-in.svg')" style="cursor: pointer;" @click="$router.push('/alerts/' + props.item.alert_uuid)" />
+            <img v-if="props.item.resolved" :src="require('@/assets/resolved-filled-default.svg')" />
+            <img v-if="props.item.comment" :src="require('@/assets/comment-filled-default.svg')" />
+            <img v-if="props.item.acknowledged" :src="require('@/assets/acknowledge-default.svg')" />
+          </td>
         </tr>
       </template>
     </v-data-table>
@@ -153,12 +164,12 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
         sortable: false
       },
       {
-        text: "Status",
+        text: "Severity",
         value: "severity",
         sortable: false
       },
       {
-        text: "Event",
+        text: "Description",
         value: "description",
         sortable: false
       }
