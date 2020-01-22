@@ -14,6 +14,7 @@
  *****************************************************************************/
 <template>
   <div>
+    <div v-if="!selectedComponent.hideHeader">
     <span v-for="step in steps" v-bind:key="step.id">
       <span v-if="step.header">
         <eosWizardStep
@@ -24,11 +25,15 @@
         />
       </span>
     </span>
+    </div>
     <div class="pt-5">
       <component :is="loadComponent"></component>
     </div>
 
-    <eosWizardFooter :footerObj="footerObj" @messageFromFooter="messageReceivedFromFooter" />
+    <eosWizardFooter
+      :footerObj="footerObj"
+      @messageFromFooter="messageReceivedFromFooter"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -56,7 +61,8 @@ export default class EosWizard extends Vue {
   }
   private data() {
     return {
-      goWhere: ""
+      goWhere: "",
+      selectedComponent: ""
     };
   }
   get steps() {
@@ -91,7 +97,6 @@ export default class EosWizard extends Vue {
           step.header.state = "current";
         }
         currentComponentData = step;
-
         return true;
       } else if (step.component === this.currentComponent && step.isByPassed) {
         if (this.$data.goWhere === "goPrev") {
@@ -121,7 +126,6 @@ export default class EosWizard extends Vue {
         }
       }
     });
-
     return JSON.stringify(currentComponentData);
   }
   // Get current component name
@@ -132,6 +136,7 @@ export default class EosWizard extends Vue {
   }
   get loadComponent() {
     const currentComponent = JSON.parse(this.currentComponentData);
+    this.$data.selectedComponent = currentComponent;
     const compPath: string = currentComponent.path;
     const compName: string = currentComponent.component;
     const loadComponent = () =>
@@ -145,5 +150,4 @@ export default class EosWizard extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -166,6 +166,7 @@ export interface Step {
   component: string;
   path: string;
   isByPassed: boolean;
+  hideHeader?: boolean;
   header?: Header;
   footer: Footer;
   name: string;
