@@ -123,7 +123,7 @@ export const wizardConfig = {
       isByPassed: false,
       header: {
         state: "untouched",
-        name: "Date and time"
+        name: "NTP"
       },
       footer: {
         nextComponent: "EosUserSetting",

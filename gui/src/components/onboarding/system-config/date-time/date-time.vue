@@ -1,28 +1,42 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblDTSetDateTime">Set date and time</div>
-      <div class="mt-4">
-        <input type="radio" name="ntp" v-model="source" value="ntp" id="rbtnDTNtp" />
-        <span
-          class="ml-2 font-weight-bold black--text"
-          id="lblNetworkTimeProto"
-        >Network time protocol (NTP)</span>
-      </div>
+      <div
+        class="title mt-0 font-weight-bold"
+        id="lblDTSetDateTime"
+      >Network time protocol(NTP) settings</div>
       <div class="mt-4" v-if="source === 'ntp'">
-        <div class="font-weight-medium black--text" id="lblDTNetworkServeradd">NTP server address</div>
-        <div>
+        <div
+          class="eos-form-group"
+          :class="{ 'eos-form-group--error': $v.setDateTime.NtpServerAddress.$error }"
+        >
+          <label
+            class="eos-form-group-label"
+            for="hostname"
+            id="lblDTNetworkServeradd"
+          >NTP server address*</label>
           <input
-            class="input-text"
+            class="eos-form__input_text"
             type="text"
             name="hostname"
-            v-model="NtpServerAddress"
+            v-model.trim="setDateTime.NtpServerAddress"
             id="txtDTHostname"
+            @input="$v.setDateTime.NtpServerAddress.$touch"
           />
+          <div class="eos-form-group-label eos-form-group-error-msg">
+            <label
+              v-if="$v.setDateTime.NtpServerAddress.$dirty && !$v.setDateTime.NtpServerAddress.required"
+            >NTP Server is required</label>
+          </div>
         </div>
-        <div class="mt-5 font-weight-medium black--text" id="lblDTNtpTimeZone">NTP time zone offset</div>
-        <div>
-          <select name="zone" id="cmdZone" class="input-text" v-model="NtpTimezone">
+        <!---->
+        <div class="eos-form-group">
+          <label
+            class="eos-form-group-label"
+            for="hostname"
+            id="lblDTNetworkServeradd"
+          >NTP time zone offset*</label>
+          <select name="zone" id="cmdZone" class="eos-form__input_text" v-model="NtpTimezone">
             <option v-for="option in timezoneList" :key="option" :value="option">{{ option }}</option>
           </select>
         </div>
@@ -94,6 +108,8 @@ import {
 } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
 import * as moment from "moment-timezone";
+import { Validations } from "vuelidate-property-decorators";
+import { required, helpers } from "vuelidate/lib/validators";
 
 @Component({
   name: "eos-date-time"
@@ -103,7 +119,9 @@ export default class EosDateTime extends Vue {
     return {
       timezoneList: [],
       source: "ntp",
-      NtpServerAddress: "",
+      setDateTime: {
+         NtpServerAddress: ""
+          },
       NtpTimezone: "",
       minute: "",
       hours: "",
@@ -112,6 +130,12 @@ export default class EosDateTime extends Vue {
       isValid: true
     };
   }
+  @Validations()
+  public validations = {
+    setDateTime: {
+      NtpServerAddress: { required }
+    }
+  };
   public mounted() {
     this.managementNetworkGetter();
     // WizardHook: Open a listener for onNext event
@@ -139,7 +163,7 @@ export default class EosDateTime extends Vue {
     const validate = true;
     // WizardHook: Emit event to sibling wizard footer component
     // to send information about data validation to enable/disable wizard footer
-    EVENT_BUS.$emit("validForm", validate);
+    EVENT_BUS.$emit("validForm", !this.$v.$invalid);
     return validate;
   }
   public managementNetworkGetter() {
@@ -155,7 +179,7 @@ export default class EosDateTime extends Vue {
     const queryParams: DateTimeSettings = {
       is_ntp: true,
       ntp: {
-        ntp_server_address: this.$data.NtpServerAddress,
+        ntp_server_address: this.$data.setDateTime.NtpServerAddress,
         ntp_timezone_offset: this.$data.NtpTimezone
       },
       date_time: {
