@@ -15,7 +15,7 @@
 <template>
   <div class="pa-5">
     <div style="height: 30px;">
-      <div class="eos-alert-title">New alerts</div>
+      <div class="eos-alert-title">New Alerts</div>
       <img
         :src="require('@/assets/zoom-in.svg')"
         class="eos-alert-navigate"
@@ -76,17 +76,12 @@
           </tr>
         </template>
         <template v-slot:item="props">
-          <tr class="font-weight-small">
-            <td style="width: 15%">{{ new Date(props.item.created_time*1000) | timeago }}</td>
-            <td style="width: 35%">
-              <div v-if="props.item.location">Location: {{props.item.location}}</div>
-              <div>
-                <label v-if="props.item.state">State: {{props.item.state}}</label>
-                <label v-if="props.item.state && props.item.module_name">,&nbsp;</label>
-                <label v-if="props.item.module_name">Resource Type: {{props.item.module_name}}</label>
-              </div>
+          <tr style="color: #000000;">
+            <td style="white-space: nowrap;">{{ new Date(props.item.created_time*1000) | timeago }}</td>
+            <td style="white-space: nowrap;">
+              <span >{{ props.item.module_type + " | " + props.item.state }}</span>
             </td>
-            <td style="width: 5%">
+            <td>
               <div
                 style="margin: auto;"
                 v-if="props.item.severity === alertStatus.warning"
@@ -108,7 +103,7 @@
                 class="eos-status-chip eos-chip-ok"
               ></div>
             </td>
-            <td style="width: 45%">{{props.item.description}}</td>
+            <td>{{props.item.description ? props.item.description : "--"}}</td>
           </tr>
         </template>
       </v-data-table>
@@ -141,12 +136,12 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
         sortable: false
       },
       {
-        text: "Status",
+        text: "Severity",
         value: "severity",
         sortable: false
       },
       {
-        text: "Event",
+        text: "Description",
         value: "description",
         sortable: false
       }
