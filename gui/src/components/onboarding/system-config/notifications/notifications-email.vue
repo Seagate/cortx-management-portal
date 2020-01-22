@@ -1,16 +1,11 @@
 <template>
-  <v-container class="mt-6">
-    <v-img
-      id="alert-img"
-      :src="require('./../../../../assets/onboarding-wizard.png')"
-      width="780px"
-      height="70px"
-    ></v-img>
-    <v-divider />
-    <div class="body-2">
-      <div class="title mt-6" id="lblEmail">Notifications: Email</div>
+  <v-container class="mt-0 ml-0">
+    <div class="pl-4 body-2">
+      <div class="title mt-0 font-weight-bold" id="lblEmail">
+        Notifications: Email
+      </div>
       <div class="mt-5">
-        <span class="font-weight-medium" id="lblEmailSMTP">SMTP Server</span>
+        <span class="font-weight-medium" id="lblEmailSMTP">SMTP server</span>
         <div>
           <input
             class="input-text"
@@ -22,7 +17,7 @@
         </div>
       </div>
       <div class="mt-5">
-        <span class="font-weight-medium" id="lblEmailSender">Sender Email</span>
+        <span class="font-weight-medium" id="lblEmailSender">Sender email</span>
         <div>
           <input
             class="input-text"
@@ -36,7 +31,9 @@
       <div class="mt-5">
         <v-row class="col-6">
           <v-col class="col-3 pa-0">
-            <span class="font-weight-medium" id="lblEmailProtocol">Protocol</span>
+            <span class="font-weight-medium" id="lblEmailProtocol"
+              >Protocol</span
+            >
             <div>
               <select
                 name="protocol"
@@ -50,7 +47,9 @@
             </div>
           </v-col>
           <v-col class="pa-0">
-            <span class="font-weight-medium" id="lblEmailSMTPPort">SMTP Port</span>
+            <span class="font-weight-medium" id="lblEmailSMTPPort"
+              >SMTP port</span
+            >
             <div>
               <input
                 class="input-text"
@@ -59,15 +58,17 @@
                 v-model="smtpport"
                 style="width: 6em;"
                 id="txtEmailIpAddress"
-                min=0001
-                max=65535
+                min="0001"
+                max="65535"
               />
             </div>
           </v-col>
         </v-row>
       </div>
       <div class="mt-5">
-        <span class="font-weight-medium" id="lblEmailSenderPass">Sender Password</span>
+        <span class="font-weight-medium" id="lblEmailSenderPass"
+          >Sender password</span
+        >
         <div>
           <input
             class="input-text"
@@ -79,7 +80,9 @@
         </div>
       </div>
       <div class="mt-5">
-        <span class="font-weight-medium" id="lblEmailConfirmPass">Confirm password</span>
+        <span class="font-weight-medium" id="lblEmailConfirmPass"
+          >Confirm password</span
+        >
         <div>
           <input
             class="input-text"
@@ -88,115 +91,93 @@
             v-model="confirmpassword"
             id="txtEmailConfirmPass"
           />
-          <p
-            v-if="!isConfirmPasswordValid"
-            class="red--text error-message"
-          >Confirm Password is not valid</p>
+          <p v-if="!isConfirmPasswordValid" class="red--text error-message">
+            Confirm password is not valid
+          </p>
         </div>
       </div>
       <div class="mt-5">
-        <span class="font-weight-medium" id="lblEmailAddress">Email Address</span>
+        <span class="font-weight-medium" id="lblEmailAddress"
+          >Receiver email addresses</span
+        >
         <div>
-          <input
-            class="input-text"
-            type="text"
+          <textarea
             name="emailaddress"
             v-model="emailaddress"
             id="txtEmailAddress"
+            rows="3"
+            placeholder="Enter semicolon ';' seperated values"
+            class="textarea-text"
           />
         </div>
-        <div class="csmprimary--text pt-2 pointer" id="lblEmailAnotherEmail">Add another email address</div>
       </div>
-      <div class="my-5">
-        <input
-          type="checkbox"
-          v-model="weeklyEmail"
-          name="weeklyEmail"
-          id="chkEmailWeeklyEmail"
-        />
-        <span
-          class="ml-3 font-weight-regular"
-          id="lblEmailSummery"
-        >Get a weekly email summery of all health alerts</span>
-      </div>
-      <v-divider class="pt-5" />
-      <div>
-        <input
-          type="checkbox"
-          v-model="testEmail"
-          name="testEmail"
-          id="chkEmailTest"
-        />
-        <span
-          class="ml-3 font-weight-regular"
-          id="lblEmailNotification"
-        >Send test email notification</span>
-        <div
-          class="my-5 font-weight-regular"
-        >You will receive a test email notification when you apply these settings. If you do not receive this notification, your settings may be incorrect.</div>
-      </div>
-      <v-divider class="pt-5" />
     </div>
 
-    <div class="mt-8">
-      <p
-        v-if="!isValid"
-        class="red--text error-message"
-      >Please enter valid values.</p>
-      <v-btn elevation="0" color="csmprimary" id="btnEmailApply" :disabled="!isValidForm">
-        <span class="white--text" @click="gotToNextPage()">Apply and Continue</span>
-      </v-btn>
-      <span
-        class="green--text ml-8 pointer"
-        @click="gotToPrevPage()"
-        id="lblEmailBack"
-      >Back to previous step</span>
-    </div>
+    <p v-if="!isValid" class="red--text error-message">
+      Please enter valid values.
+    </p>
+    <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Email } from "./../../../../models/system-configuration";
+import { EVENT_BUS } from "./../../../../main";
 
 @Component({
   name: "eos-data-network-ipv4"
 })
 export default class EosDataNetworkIpv4 extends Vue {
-  public mounted(){
-    const notificationConfiguration = this.$store.getters["systemConfig/userConfigData"];
-    console.log("TCL: EosUserSettingLdap -> mounted -> notificationConfiguration", notificationConfiguration)
-    if(notificationConfiguration && notificationConfiguration.notifications && notificationConfiguration.notifications.email){
-      this.$data.smtpserver = notificationConfiguration.notifications.email.stmp_server;
-      this.$data.senderemail = notificationConfiguration.notifications.email.smtp_sender_email;
-      this.$data.smtpport = notificationConfiguration.notifications.email.smtp_port;
-      this.$data.protocol = notificationConfiguration.notifications.email.smtp_protocol;
-      this.$data.emailaddress = notificationConfiguration.notifications.email.email;
-      this.$data.weeklyEmail = notificationConfiguration.notifications.email.weekly_email;
-      this.$data.testEmail = notificationConfiguration.notifications.email.send_test_mail;
+  public mounted() {
+    this.notificationGetter();
+    // WizardHook: Open a listener for onNext event
+    // So when wizard footer clicks on the Next Button this component can perform its own workflow
+    EVENT_BUS.$on("emitOnNext", (res: any) => {
+      this.setEmailNotificationSettings().then(result => {
+        res(true);
+      });
+    });
+  }
+  private destroyed() {
+    // WizardHook: shut off on exit event listner
+    EVENT_BUS.$off("emitOnNext");
+  }
+  get isValidForm() {
+    let validate = false;
+    if (this.isConfirmPasswordValid) {
+      validate = true;
+    }
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EVENT_BUS.$emit("validForm", validate);
+    return validate;
+  }
+  private notificationGetter(): any {
+    const notificationConfiguration = this.$store.getters[
+      "systemConfig/userConfigData"
+    ];
+    if (
+      notificationConfiguration &&
+      notificationConfiguration.notifications &&
+      notificationConfiguration.notifications.email
+    ) {
+      this.$data.smtpserver =
+        notificationConfiguration.notifications.email.stmp_server;
+      this.$data.senderemail =
+        notificationConfiguration.notifications.email.smtp_sender_email;
+      this.$data.smtpport =
+        notificationConfiguration.notifications.email.smtp_port;
+      this.$data.protocol =
+        notificationConfiguration.notifications.email.smtp_protocol;
+      this.$data.emailaddress =
+        notificationConfiguration.notifications.email.email;
+      this.$data.weeklyEmail =
+        notificationConfiguration.notifications.email.weekly_email;
+      this.$data.testEmail =
+        notificationConfiguration.notifications.email.send_test_mail;
     }
   }
-  private gotToNextPage() {
-    if(this.isValidForm){
-      this.setEmailNotificationSettings().then((res: any) => {
-        if (res) {
-            if(this.$store.getters["systemConfig/isSysLogSettingsStatus"] === true) {
-              this.$router.push("notificationssyslog");
-            } else {
-              this.$router.push("interfaceselect");
-            }
-          } else {
-            this.$data.isValid = false;
-          } 
-      })
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("error");
-      });      
-    }    
-  }
-  private gotToPrevPage() {
-    this.$router.push("notifications");
-  }
+
   private setEmailNotificationSettings() {
     const queryParams: Email = {
       stmp_server: this.$data.smtpserver,
@@ -208,8 +189,11 @@ export default class EosDataNetworkIpv4 extends Vue {
       weekly_email: this.$data.weeklyEmail,
       send_test_mail: this.$data.testEmail
     };
-    return this.$store
-      .dispatch("systemConfig/updateEmailNotificationUserConfig", queryParams);
+    console.log("TCL: EosDataNetworkIpv4 -> setEmailNotificationSettings -> queryParams", queryParams)
+    return this.$store.dispatch(
+      "systemConfig/updateEmailNotificationUserConfig",
+      queryParams
+    );
   }
   private data() {
     return {
@@ -234,14 +218,6 @@ export default class EosDataNetworkIpv4 extends Vue {
     }
     return true;
   }
-  get isValidForm() {
-    if (
-      this.isConfirmPasswordValid
-    ) {
-      return true;
-    }
-    return false;
-  }
 }
 </script>
 <style lang="scss" scoped>
@@ -254,5 +230,11 @@ export default class EosDataNetworkIpv4 extends Vue {
 }
 .pointer {
   cursor: pointer;
+}
+.textarea-text {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e3e3e3;
+  width: 20em;
 }
 </style>

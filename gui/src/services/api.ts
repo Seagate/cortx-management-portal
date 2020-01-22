@@ -26,7 +26,7 @@ axios.interceptors.request.use(
     if (token) {
       config.headers.Authorization = token;
     }
-
+    config.timeout = 10000;
     return config;
   },
   error => {
