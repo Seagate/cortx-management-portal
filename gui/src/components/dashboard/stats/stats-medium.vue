@@ -13,16 +13,13 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="ma-0 elevation-0 mediumAlert" width="100%" tile>
-    <v-system-bar height="40em">
-      <span id="title" class="eos-alert-title">Performance</span>
-      <v-spacer></v-spacer>
-      <router-link :to="'alertlarge'">
-        <img src="@/assets/widget/view-slideover-off.png" id="navLargeMode" style />
-      </router-link>
-    </v-system-bar>
+  <div class="pa-5">
+    <div style="height: 30px;">
+      <div class="eos-alert-title">Performance</div>
+      <img :src="require('@/assets/zoom-in.svg')" class="eos-alert-navigate" />
+    </div>
     <eos-line-chart />
-  </v-card>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
@@ -38,36 +35,15 @@ import EosLineChart from "./../../widgets/line-chart.vue";
 export default class EosStatsMedium extends Vue {}
 </script>
 <style lang="scss" scoped>
-#navLargeMode {
-  height: 1.4em;
-  width: 1.4em;
-}
-#title {
-  color: black;
-}
-.active {
-  display: inline-block;
-  color: var(--v-csmprimary-base) !important;
-}
-.notActive {
-  opacity: 0;
-}
-.headerText {
-  color: black;
-}
-.tableheader:hover {
-  .notActive {
-    opacity: 1;
-  }
-}
-.mediumAlert {
-  border: 2px solid #e3e3e3;
-}
 .eos-alert-title {
   font-style: normal;
   font-weight: bold;
   font-size: 18px;
   color: rgba(0, 0, 0, 0.87);
   float: left;
+}
+.eos-alert-navigate {
+  float: right;
+  cursor: pointer;
 }
 </style>

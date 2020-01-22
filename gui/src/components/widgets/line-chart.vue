@@ -150,7 +150,7 @@ export default class EosLineChart extends Vue {
           position: "bottom"
         },
         interaction: {
-          enabled: false
+          enabled: true
         },
         grid: {
           x: {
@@ -160,7 +160,6 @@ export default class EosLineChart extends Vue {
             show: true
           }
         },
-
         point: {
           show: false
         },
