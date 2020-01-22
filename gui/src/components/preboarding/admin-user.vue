@@ -13,63 +13,79 @@
       <div class="ma-4">
         <form autocomplete="off" @submit.prevent="submitForm">
           <div class="mt-4">
-            <span class="font-weight-medium" id="lblAdminUsername"
-              >Admin Username</span
-            >
+            <div
+                class="eos-form-group"
+                :class="{ 'eos-form-group--error': $v.createAccount.username.$error }"
+              >
+              <label class="eos-form-group-label" for="Username"  id="lblAdminUsername">Admin username*</label>
             <div>
+            </div>
               <input
-                class="input-text"
+                class="eos-form__input_text"
                 type="text"
                 name="username"
                 id="adminUsername"
-                v-model.trim="username"
+                v-model.trim="createAccount.username"
+                 @input="$v.createAccount.username.$touch"
               />
-              <p v-if="!isUserNameValid" class="red--text error-message">
-                Username is not valid
-              </p>
+               <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="$v.createAccount.username.$dirty && !$v.createAccount.username.required"
+                  >Username Name is required</label>
+                </div>
             </div>
           </div>
-
-          <div class="mt-4">
-            <span class="font-weight-medium" id="lblAdminPassword"
-              >Password</span
-            >
+           <div class="mt-4">
+            <div
+                class="eos-form-group"
+                :class="{ 'eos-form-group--error': $v.createAccount.password.$error }"
+              >
+              <label class="eos-form-group-label" for="password"  id="lblAdminPassword">Password*</label>
             <div>
+            </div>
               <input
-                class="input-text"
+                class="eos-form__input_text"
                 type="password"
                 name="password"
                 id="adminPassword"
-                v-model.trim="password"
+                v-model.trim="createAccount.password"
+                 @input="$v.createAccount.password.$touch"
               />
-              <p v-if="!isPasswordValid" class="red--text error-message">
-                Password is not valid
-              </p>
+               <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="$v.createAccount.password.$dirty && !$v.createAccount.password.required"
+                  >Password is required</label>
+                </div>
             </div>
           </div>
-
-          <div class="mt-4 mb-6">
-            <span class="font-weight-medium" id="lblAdminConfirmPassword"
-              >Confirm password</span
-            >
+          <div class="mt-4">
+            <div
+                class="eos-form-group"
+                :class="{ 'eos-form-group--error': $v.createAccount.confirmPassword.$error }"
+              >
+              <label class="eos-form-group-label" for="confirmPassword"  id="lblAdminPassword">Confirm password*</label>
             <div>
+            </div>
               <input
-                class="input-text"
+                class="eos-form__input_text"
                 type="password"
-                name="confirmpassword"
-                id="adminConfirmPassword"
-                v-model.trim="confirmPassword"
+                name="confirmPassword"
+                id="adminPassword"
+                v-model.trim="createAccount.confirmPassword"
+                 @input="$v.createAccount.confirmPassword.$touch"
               />
-              <p v-if="!isConfirmPasswordValid" class="red--text error-message">
-                Confirm password is not valid
-              </p>
+               <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="$v.createAccount.confirmPassword.$dirty && !$v.createAccount.confirmPassword.sameAsPassword"
+                  >Passwords do not match</label>
+                </div>
             </div>
           </div>
           <v-btn
             elevation="0"
             color="csmprimary"
             @click="gotToNextPage()"
-            :disabled="!isValidForm"
+            :disabled="$v.createAccount.$invalid"
           >
             <span class="white--text">Apply and continue</span>
           </v-btn>
@@ -84,6 +100,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { UserLoginQueryParam } from "./../../models/user-login";
+import { Validations } from "vuelidate-property-decorators";
+import { required, helpers ,sameAs } from "vuelidate/lib/validators";
 
 @Component({
   name: "eos-admin-user"
@@ -92,19 +110,29 @@ export default class EosAdminUser extends Vue {
   private mounted() {
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
+  @Validations()
+  public validations = {
+    createAccount: {
+      username: { required },
+      password: { required },
+      confirmPassword: {
+        sameAsPassword: sameAs("password")
+      }
+    }
+  };
   private data() {
     return {
+      createAccount:{
       username: "",
       password: "",
-      confirmPassword: "",
+      confirmPassword: ""},
       isValidResponse: true
     };
   }
   private gotToNextPage() {
-    if (this.isValidForm) {
       const queryParams: UserLoginQueryParam = {
-        username: this.$data.username,
-        password: this.$data.password
+        username: this.$data.createAccount.username,
+        password: this.$data.createAccount.password
       };
       this.$data.isValidResponse = true;
 
@@ -122,43 +150,17 @@ export default class EosAdminUser extends Vue {
           console.error("Create User Action Failed");
           this.$data.isValidResponse = false;
         });
-    }
-  }
-  get isValidForm() {
-    if (
-      this.isUserNameValid &&
-      this.isPasswordValid &&
-      this.isConfirmPasswordValid
-    ) {
-      return true;
-    }
-    return false;
-  }
-  get isUserNameValid() {
-    return !!this.$data.username;
-  }
-  get isPasswordValid() {
-    return !!this.$data.password;
-  }
-  get isConfirmPasswordValid() {
-    if (
-      this.$data.confirmPassword === "" ||
-      this.$data.password !== this.$data.confirmPassword
-    ) {
-      return false;
-    }
-    return true;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.input-text {
+.eos-form__input_text {
   border-style: solid;
   border-width: 1px;
   border-color: #e3e3e3;
   width: 20em;
-  height: 2.5em;
+  height: 3em;
 }
 .pointer {
   cursor: pointer;
