@@ -492,11 +492,11 @@ export default class SystemConfiguration extends VuexModule {
   @Action
   public async showLoaderMessage(loaderData: any) {
     this.context.commit("loaderConfigMutation", loaderData);
-    if (loaderData.show) {
+    /*if (loaderData.show) {
       setTimeout(() => {
         this.context.commit("loaderConfigMutation", { show: false });
       }, 5000);
-    }
+    }*/
   }
   get showLoaderStatus() {
     return this.showLoader;
