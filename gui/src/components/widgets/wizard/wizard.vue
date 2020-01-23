@@ -14,7 +14,7 @@
  *****************************************************************************/
 <template>
   <div>
-    <div v-if="!selectedComponent.hideHeader">
+    <div class="mt-3" v-if="!selectedComponent.hideHeader">
     <span v-for="step in steps" v-bind:key="step.id">
       <span v-if="step.header">
         <eosWizardStep

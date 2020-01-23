@@ -16,14 +16,15 @@
       </div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input
-          type="checkbox"
+        <label class="eos-ckb-container">
+      IPv4
+      <input  type="checkbox"
           :disabled="isSkip"
           v-model="isDataipV4Status"
           name="ipv4"
-          id="chkDNSisipV4Status"
-        />
-        <span class="ml-3 font-weight-bold" id="lblDNsIpv4">IPv4</span>
+          id="chkDNSisipV4Status" />
+      <span class="eos-ckb-tick" id="lblDNsIpv4"></span>
+    </label>
       </div>
       <div class="mt-2" id="lblDNSSetting">
         Selecting IPv4 will allow you to view settings assigned by DHCP or to
@@ -31,17 +32,16 @@
         DHCP.
       </div>
       <div class="mt-6">
-        <input
-          type="checkbox"
+          <label class="eos-ckb-container">
+       Skip data network settings
+      <input  type="checkbox"
           @change="isSkipNetworkSettings()"
           :disabled="isDataipV6Status || isDataipV4Status"
           v-model="isSkip"
           name="skip"
-          id="chkDNSSkip"
-        />
-        <span class="ml-3 font-weight-bold" id="lblSkipManagmentSetting"
-          >Skip data network settings</span
-        >
+          id="chkDNSSkip" />
+      <span class="eos-ckb-tick" id="lblSkipManagmentSetting"></span>
+    </label>
       </div>
       <div class="mt-2" id="lblMsgSkipStep">
         You can skip this step if your management network settings are already
