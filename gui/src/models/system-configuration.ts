@@ -44,14 +44,13 @@ export interface ManagementNetworkIpv4 {
 }
 export interface Ipv4Node {
   id: number;
+  netmask: string;
+  gateway: string;
   ip_address: string;
 }
 
 export interface DataNetworkIpv4 {
   is_dhcp: boolean;
-  vip_address?: string;
-  netmask: string;
-  gateway: string;
   nodes: Ipv4Node;
 }
 

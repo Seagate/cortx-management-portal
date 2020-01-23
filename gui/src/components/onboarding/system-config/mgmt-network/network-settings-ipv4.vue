@@ -179,8 +179,8 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     ipv4Nodes: {
       $each: {
         ip_address: {
-          required: requiredIf(function(form) {
-            return this.source === "manual";
+          required: requiredIf(function(this: any, form) {
+            return this.$data.source === "manual";
           }),
           ipAddress
         }
