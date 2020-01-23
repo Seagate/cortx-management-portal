@@ -1,6 +1,6 @@
 
 #app {
-  font-family:'Helvetica';
+  font-family:'myHelvetica';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -377,8 +377,7 @@ textarea:focus {
   top: 0%;
   bottom: 0%;
   border: 1px solid #ffffff;
-  border-radius: 7px 7px 0 0;  
-  font-family: "Helvetica Neue LT Std";
+  border-radius: 7px 7px 0 0;
   font-style: normal;
   font-weight: bold !important;
   font-size: 14px !important;
@@ -464,3 +463,39 @@ tbody tr:hover {
   padding: 20px;
 }
 /* Modal style rules --- End */
+
+/* Icon buttons styles --- Start */
+.eos-icon-btn {
+  height: 28px;
+  width: 28px;
+  display: inline-block;
+  cursor: pointer;
+}
+.eos-comment-filled-icon {
+  background-image: url('../assets/comment-filled-default.svg');
+}
+.eos-comment-filled-icon:hover {
+  background-image: url('../assets/comment-filled-hover.svg');
+}
+.eos-comment-filled-icon:active {
+  background-image: url('../assets/comment-filled-pressed.svg');
+}
+.eos-acknowledge-icon {
+  background-image: url('../assets/acknowledge-default.svg');
+}
+.eos-acknowledge-icon:hover {
+  background-image: url('../assets/acknowledge-hover.svg');
+}
+.eos-acknowledge-icon:active {
+  background-image: url('../assets/acknowledge-pressed.svg');
+}
+.eos-resolved-filled-icon {
+  background-image: url('../assets/resolved-filled-default.svg');
+}
+.eos-resolved-filled-icon:hover {
+  background-image: url('../assets/resolved-filled-hover.svg');
+}
+.eos-resolved-filled-icon:active {
+  background-image: url('../assets/resolved-filled-pressed.svg');
+}
+/* Icon buttons styles --- End */

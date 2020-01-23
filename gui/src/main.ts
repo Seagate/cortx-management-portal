@@ -26,7 +26,7 @@ Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 Vue.config.errorHandler = errorHandler;
 Vue.filter("timeago", (date: string) => {
-  return moment.default(date).fromNow();
+  return moment.default(date).format("DD-MM-YYYY hh:mm A");
 });
 
 export const EVENT_BUS = new Vue();

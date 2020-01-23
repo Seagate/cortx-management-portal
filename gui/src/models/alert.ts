@@ -70,3 +70,20 @@ export interface AlertQueryParam {
     resolved?: boolean;
     acknowledged?: boolean;
 }
+
+export interface AlertEventDetail {
+    name: string;
+    event_reason: string;
+    event_recommendation: string[];
+    showRecommendation: boolean;
+}
+
+export interface AlertExtendedInfo {
+    event_time?: string;
+    resource_id?: string;
+    site_id?: string;
+    node_id?: string;
+    cluster_id?: string;
+    rack_id?: string;
+    resource?: string;
+}

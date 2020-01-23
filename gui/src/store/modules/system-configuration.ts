@@ -92,12 +92,21 @@ export default class SystemConfiguration extends VuexModule {
   public setNotificationsType(notificationType: any) {
     if (notificationType.type === "email") {
       this.isEmailSettings = notificationType.flag;
+      this.componentNameToSearch = "EosNotificationsEmail";
     }
     if (notificationType.type === "syslog") {
       this.isSysLogSettings = notificationType.flag;
+      this.componentNameToSearch = "EosNotificationsSyslog";
     }
     if (notificationType.type === "skip") {
       this.isNotificationSettingSkip = notificationType.flag;
+    }
+    const stepIndex = findStepIndexFromComponentName(
+      this.componentNameToSearch,
+      this.wizardMetadata
+    );
+    if (stepIndex !== undefined || stepIndex !== -1) {
+      this.wizardMetadata.steps[stepIndex].isByPassed = !notificationType.flag;
     }
   }
 
@@ -483,11 +492,11 @@ export default class SystemConfiguration extends VuexModule {
   @Action
   public async showLoaderMessage(loaderData: any) {
     this.context.commit("loaderConfigMutation", loaderData);
-    if (loaderData.show) {
+    /*if (loaderData.show) {
       setTimeout(() => {
         this.context.commit("loaderConfigMutation", { show: false });
       }, 5000);
-    }
+    }*/
   }
   get showLoaderStatus() {
     return this.showLoader;

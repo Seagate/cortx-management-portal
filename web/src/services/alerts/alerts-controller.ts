@@ -34,9 +34,20 @@ export const getAlerts = async (req: Request, res: Response) => {
     return result;
 };
 
+export const getAlertById = async (req: Request, res: Response) => {
+    let alertData = Api.getAll(apiRegister.all_alerts + "/" + req.params.alert_id, req, res);
+    let result = await alertData;
+    return result;
+};
+
+export const updateAlert = async (req: Request, res: Response) => {
+    let alertData = Api.patch(apiRegister.all_alerts, req, res, req.params.alert_id);
+    let result = await alertData;
+    return result;
+};
 
 export const updateAlerts = async (req: Request, res: Response) => {
-    let alertData = Api.patch(apiRegister.all_alerts, req, res, req.params.alert_id);
+    let alertData = Api.patch(apiRegister.all_alerts, req, res, "");
     let result = await alertData;
     return result;
 };

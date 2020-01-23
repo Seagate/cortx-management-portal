@@ -14,8 +14,8 @@
  *****************************************************************************/
 <template>
   <div>
-    <v-row>
-      <v-col cols="8">
+    <v-row style="border-bottom: 2px solid rgba(0, 0, 0, 0.12);">
+      <v-col cols="8" style="border-right: 2px solid rgba(0, 0, 0, 0.12);">
         <eos-alert-medium />
       </v-col>
       <v-col cols="4">

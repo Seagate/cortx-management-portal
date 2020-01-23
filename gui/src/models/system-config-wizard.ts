@@ -123,7 +123,7 @@ export const wizardConfig = {
       isByPassed: false,
       header: {
         state: "untouched",
-        name: "Date and time"
+        name: "NTP"
       },
       footer: {
         nextComponent: "EosUserSetting",
@@ -221,12 +221,21 @@ export const wizardConfig = {
       name: "Notifications syslog",
       isByPassed: true,
       footer: {
-        nextComponent: "interfaceselect",
+        nextComponent: "EosOnboardingFinish",
         prevComponent: "EosNotificationsEmail",
         nextBtnText: "Apply and continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
+    },
+    {
+      sequence: 15,
+      isSubstep: false,
+      component: "EosOnboardingFinish",
+      path: "onboarding/finish.vue",
+      name: "Onboarding Finish",
+      isByPassed: false,
+      hideHeader: true
     }
   ]
 };

@@ -1,16 +1,13 @@
 <template>
-  <v-container class="mt-6">
-    <v-img
-      id="alert-img"
-      :src="require('./../../../../assets/onboarding-wizard.png')"
-      width="780px"
-      height="70px"
-    ></v-img>
-    <v-divider />
-    <div class="body-2">
-      <div class="title mt-6" id="lblSysNotification">Notifications: Syslog</div>
+  <v-container class="mt-0 ml-0">
+    <div class="pl-4 body-2">
+      <div class="title mt-0 font-weight-bold" id="lblSysNotification">
+        Notifications: Syslog
+      </div>
       <div class="mt-5">
-        <span class="font-weight-medium" id="iblSysIpAddress">SYSLOG Server IP Address</span>
+        <span class="font-weight-bold" id="iblSysIpAddress"
+          >Syslog server IP address</span
+        >
         <div>
           <input
             class="input-text"
@@ -22,7 +19,9 @@
         </div>
       </div>
       <div class="mt-5">
-        <span class="font-weight-medium" id="lblSyPortNo">SYSLOG Server Port Number</span>
+        <span class="font-weight-bold" id="lblSyPortNo"
+          >Syslog server port number</span
+        >
         <div>
           <input
             class="input-text"
@@ -37,45 +36,61 @@
       </div>
       <v-divider class="my-5" />
       <div>
-        <input type="checkbox" v-model="syslognotify" name="syslognotify" id="chkSysLogNotify" />
-        <span class="ml-3 font-weight-bold" id="lblSyssendLog">Send test SYSLOG notification</span>
+        <input
+          type="checkbox"
+          v-model="syslognotify"
+          name="syslognotify"
+          id="chkSysLogNotify"
+        />
+        <span class="ml-3 font-weight-bold" id="lblSyssendLog"
+          >Send test syslog notification</span
+        >
       </div>
       <div class="my-5 font-weight-regular">
-        You will receive a test SYSLOG notification when you apply these settings. If you do not receive this
-        notification, your settings may be incorrect.
+        You will receive a test syslog notification when you apply these
+        settings. If you do not receive this notification, your settings may be
+        incorrect.
       </div>
       <v-divider class="pt-5" />
     </div>
-
-    <div class="mt-8">
-      <p
-            v-if="!isValid"
-            class="red--text error-message"
-          >Please enter valid values.</p>
-      <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" id="btnSysApply">
-        <span class="white--text">Apply and Continue</span>
-      </v-btn>
-      <span
-        class="csmprimary--text ml-8 pointer"
-        @click="gotToPrevPage()"
-        id="lblSysBack"
-      >Back to previous step</span>
-    </div>
+    <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Syslog } from "./../../../../models/system-configuration";
+import { EVENT_BUS } from "./../../../../main";
 
 @Component({
   name: "eos-data-network-ipv4"
 })
 export default class EosDataNetworkIpv4 extends Vue {
   public mounted() {
+    this.notificationSyslogGetter();
+    // WizardHook: Open a listener for onNext event
+    // So when wizard footer clicks on the Next Button this component can perform its own workflow
+    EVENT_BUS.$on("emitOnNext", (res: any) => {
+      this.setSyslogNotificationSettings().then(result => {
+        res(true);
+      });
+    });
+  }
+  private destroyed() {
+    // WizardHook: shut off on exit event listner
+    EVENT_BUS.$off("emitOnNext");
+  }
+  get isValidForm() {
+    let validate = true;
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EVENT_BUS.$emit("validForm", validate);
+    return validate;
+  }
+  public notificationSyslogGetter() {
     const notificationConfiguration = this.$store.getters[
       "systemConfig/userConfigData"
     ];
-    
+
     if (
       notificationConfiguration &&
       notificationConfiguration.notifications &&
@@ -87,26 +102,6 @@ export default class EosDataNetworkIpv4 extends Vue {
         notificationConfiguration.notifications.syslog.syslog_port;
       this.$data.syslognotify =
         notificationConfiguration.notifications.syslog.send_test_syslog;
-    }
-  }
-  private gotToNextPage() {
-    this.setSyslogNotificationSettings()
-      .then((res: any) => {
-        if (res) {
-          this.$router.push("interfaceselect");
-        } else {
-          this.$data.isValid = false;
-        }        
-      })
-      .catch(() => {
-        console.error("Save Email Notifications settings Failed");
-      });
-  }
-  private gotToPrevPage() {
-    if (this.$store.getters["systemConfig/isEmailSettingsStatus"] === true) {
-      this.$router.push("notificationsemail");
-    } else {
-      this.$router.push("notifications");
     }
   }
   private data() {

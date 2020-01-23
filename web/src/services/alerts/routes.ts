@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getAlerts, updateAlerts } from "./alerts-controller";
+import { getAlerts, getAlertById, updateAlert, updateAlerts } from "./alerts-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -41,13 +41,45 @@ export default [
   },
   {
     path: "/api/v1/alerts/:alert_id",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getAlertById(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+        
+      }
+    ]
+  },
+  {
+    path: "/api/v1/alerts/:alert_id",
+    method: "patch",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await updateAlert(req, res);
+          res.status(HttpStatus.NO_CONTENT).send();
+        } catch (err) {
+          throw err;
+        }
+        
+      }
+    ]
+  },
+  {
+    path: "/api/v1/alerts",
     method: "patch",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
           const result = await updateAlerts(req, res);
-          res.status(HttpStatus.NO_CONTENT).send();
+          res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
         }
