@@ -8,7 +8,7 @@
       >You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
       <div class="font-weight-bold mt-6">Source</div>
-      <div class="mt-4">
+      <!-- <div class="mt-4">
         <label class="eos-rdb-container">
           Manual
           <input
@@ -24,6 +24,18 @@
           DHCP
           <input type="radio" name="DHCP" v-model="source" value="DHCP" id="rbtnIpv4DHCP" />
           <span class="eos-rdb-tick" id="lblIpv4Dhcp"></span>
+        </label>
+      </div> -->
+      <div class="mt-4">
+        <label class="eos-rdb-container">
+          Manual
+          <input type="radio" name="source" v-model="source" value="manual" />
+          <span class="eos-rdb-tick" id="lblIp4Manual"></span>
+        </label>
+        <label class="eos-rdb-container ml-10">
+          DHCP
+          <input type="radio" name="DHCP" v-model="source" value="DHCP" id="txtIP4DHCP" />
+          <span class="eos-rdb-tick" id="lblIp4DHCP"></span>
         </label>
       </div>
       <!---->
@@ -217,8 +229,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       ipAddress
     },
     ipv4VipHostname: {
-      required,
-      ipAddress
+      required
     },
     ipv4Netmask: {
       required,
@@ -268,6 +279,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       gateway: this.$data.ipv4Gateway,
       nodes: this.$data.ipv4Nodes
     };
+    console.log(queryParams, "queryParams");
     return this.$store.dispatch(
       "systemConfig/updateDataNetworkSettingIpv4",
       queryParams
@@ -293,7 +305,7 @@ export default class EosDataNetworkIpv4 extends Vue {
     const validate = true;
     // WizardHook: Emit event to sibling wizard footer component
     // to send information about data validation to enable/disable wizard footer
-    EVENT_BUS.$emit("validForm", validate);
+    EVENT_BUS.$emit("validForm", !this.$v.$invalid);
     return validate;
   }
   private dataNetworkGetter(): any {
