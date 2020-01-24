@@ -216,7 +216,7 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 import { EVENT_BUS } from "./../../../../main";
-import { hostname } from "os";
+//import { hostname } from "os";
 
 @Component({
   name: "eos-data-network-ipv4"
