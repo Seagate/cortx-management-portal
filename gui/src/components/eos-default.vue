@@ -13,15 +13,14 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="main-view">
+  <div>
     <header-bar />
-    <div class="container pa-0 ma-0">
-      <div class="d-inline-block display-nav">
-        <eos-nav-bar v-if="!isRouterPathOnboading"></eos-nav-bar>
-      </div>
-      <div class="d-inline-block display-container">
-        <router-view></router-view>
-      </div>
+    <div v-if="isRouterPathOnboading">
+      <router-view style="margin-top: 4em;"></router-view>
+    </div>
+    <div v-else>
+      <eos-nav-bar />
+      <router-view style="margin-top: 4em;margin-left: 8.750em;"></router-view>
     </div>
     <loader :show="showLoader" :message="loaderMessage" />
     <EOSMessageDialog />
@@ -59,29 +58,4 @@ export default class EosDefault extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.full-view {
-  position: relative;
-  height: 99.9%;
-  padding: 0px;
-}
-.main-view {
-  position: relative;
-  top: 4em;
-  padding: 0px;
-  background-color: #fff;
-}
-.container {
-  height: 100%;
-  padding: 0px;
-}
-.display-container {
-  position: absolute;
-  left: 9.8em;
-  width: 90%;
-}
-.display-nav {
-  padding-top: 0.2em;
-  height: 100%;
-  position: fixed;
-}
 </style>

@@ -131,8 +131,13 @@ export default class EosNavBar extends Vue {
 </script>
 <style lang="scss" scoped>
 .eos-nav {
-  height: 100%;
-  width: 140px;
+  position: fixed;
+  top: 4em;
+  left: 0;
+  bottom: 0;
+  z-index: 5;
+  width: 8.750em;
+  padding-top: 0.750em;
   background: #000000;
 }
 .eos-nav-item {
