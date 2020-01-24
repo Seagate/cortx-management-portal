@@ -251,7 +251,6 @@ export default class EosDataNetworkIpv4 extends Vue {
       }
     }
   };
-
   private data() {
     return {
       ipv4VipAddress: "",
