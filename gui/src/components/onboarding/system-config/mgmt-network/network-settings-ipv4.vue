@@ -66,7 +66,7 @@
           <div class="eos-form-group-label eos-form-group-error-msg">
             <label
               v-if="$v.ipv4VipHostname.$dirty && !$v.ipv4VipHostname.required"
-            >VIP hostname is required</label>
+            >VIP Hostname is required</label>
           </div>
         </div>
       </div>
@@ -179,7 +179,7 @@
                   @input="node.hostname.$touch"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label v-if="node.hostname.$dirty && !node.hostname.required">hostname is required</label>
+                  <label v-if="node.hostname.$dirty && !node.hostname.required">Hostname is required</label>
                 </div>
               </div>
             </div>
