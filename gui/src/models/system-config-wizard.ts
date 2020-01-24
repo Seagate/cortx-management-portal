@@ -15,7 +15,7 @@ export const wizardConfig = {
         nextComponent: "EosNetworkSettingsIpv4",
         prevComponent: "homebase",
         nextBtnText: "Continue",
-        prevBtnText: "Back to previous step",
+        prevBtnText: "",
         api: "/systemconfig"
       }
     },

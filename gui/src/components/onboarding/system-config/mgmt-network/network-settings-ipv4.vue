@@ -21,115 +21,124 @@
         </label>
       </div>
       <!---->
-      <br />
-      <div class="row mt-5 ml-1">
-        <div
-          class="eos-form-group"
-          :class="{
+      <div class="row mt-5">
+        <div class="col-4 column node-container py-0">
+          <div
+            class="eos-form-group"
+            :class="{
           'eos-form-group--error': $v.ipv4VipAddress.$error
         }"
-        >
-          <label class="eos-form-group-label" for="accountName">VIP Address*</label>
-          <input
-            class="eos-form__input_text"
-            type="text"
-            id="txtMngmtNetworkIpv4VIpAddress"
-            name="vipaddress"
-            v-model.trim="ipv4VipAddress"
-            @input="$v.ipv4VipAddress.$touch"
-          />
-          <div class="eos-form-group-label eos-form-group-error-msg">
-            <label
-              v-if="$v.ipv4VipAddress.$dirty && !$v.ipv4VipAddress.required"
-            >VIP Address is required</label>
-            <label
-              v-else-if="$v.ipv4VipAddress.$dirty && !$v.ipv4VipAddress.ipAddress"
-            >Invalid VIP Address</label>
+          >
+            <label class="eos-form-group-label" for="accountName">VIP Address*</label>
+            <input
+              class="eos-form__input_text"
+              type="text"
+              id="txtMngmtNetworkIpv4VIpAddress"
+              name="vipaddress"
+              v-model.trim="ipv4VipAddress"
+              @input="$v.ipv4VipAddress.$touch"
+            />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label
+                v-if="$v.ipv4VipAddress.$dirty && !$v.ipv4VipAddress.required"
+              >VIP Address is required</label>
+              <label
+                v-else-if="$v.ipv4VipAddress.$dirty && !$v.ipv4VipAddress.ipAddress"
+              >Invalid VIP Address</label>
+            </div>
           </div>
         </div>
         <!----->
-        <div
-          class="eos-form-group ml-6"
-          :class="{
+        <div class="col-4 column node-container py-0">
+          <div
+            class="eos-form-group"
+            :class="{
           'eos-form-group--error': $v.ipv4VipHostname.$error
         }"
-        >
-          <label class="eos-form-group-label" for="accountName">VIP Hostname*</label>
-          <input
-            class="eos-form__input_text"
-            type="text"
-            id="txtMngmtNetworkIpv4VIpHostname"
-            name="viphostname"
-            v-model.trim="ipv4VipHostname"
-            @input="$v.ipv4VipHostname.$touch"
-          />
-          <div class="eos-form-group-label eos-form-group-error-msg">
-            <label
-              v-if="$v.ipv4VipHostname.$dirty && !$v.ipv4VipHostname.required"
-            >VIP Hostname is required</label>
+          >
+            <label class="eos-form-group-label" for="accountName">VIP Hostname*</label>
+            <input
+              class="eos-form__input_text"
+              type="text"
+              id="txtMngmtNetworkIpv4VIpHostname"
+              name="viphostname"
+              v-model.trim="ipv4VipHostname"
+              @input="$v.ipv4VipHostname.$touch"
+            />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label
+                v-if="$v.ipv4VipHostname.$dirty && !$v.ipv4VipHostname.required"
+              >VIP Hostname is required</label>
+            </div>
           </div>
         </div>
       </div>
 
       <!---->
-      <div class="row mt-5 ml-1">
-        <div
-          class="eos-form-group"
-          :class="{
+      <div class="row">
+        <div class="col-4 column node-container py-0">
+          <div
+            class="eos-form-group"
+            :class="{
           'eos-form-group--error': $v.ipv4Netmask.$error
         }"
-        >
-          <label
-            class="eos-form-group-label"
-            id="lblMngmtNetworkIpv4Netmask"
-            for="accountName"
-          >Netmask*</label>
-          <input
-            class="eos-form__input_text"
-            type="text"
-            id="txtMngmtNetworkIpv4netmask"
-            name="netmask"
-            v-model.trim="ipv4Netmask"
-            @input="$v.ipv4Netmask.$touch"
-          />
-          <div class="eos-form-group-label eos-form-group-error-msg">
-            <label v-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.required">Netmask is required</label>
-            <label v-else-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.ipAddress">Invalid Netmask</label>
+          >
+            <label
+              class="eos-form-group-label"
+              id="lblMngmtNetworkIpv4Netmask"
+              for="accountName"
+            >Netmask*</label>
+            <input
+              class="eos-form__input_text"
+              type="text"
+              id="txtMngmtNetworkIpv4netmask"
+              name="netmask"
+              v-model.trim="ipv4Netmask"
+              @input="$v.ipv4Netmask.$touch"
+            />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label v-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.required">Netmask is required</label>
+              <label v-else-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.ipAddress">Invalid Netmask</label>
+            </div>
           </div>
         </div>
-        <div
-          class="eos-form-group ml-6"
-          :class="{
+        <div class="col-4 column node-container py-0">
+          <div
+            class="eos-form-group"
+            :class="{
           'eos-form-group--error': $v.ipv4Gateway.$error
         }"
-        >
-          <label
-            class="eos-form-group-label"
-            id="lblMngmtNetworkIpv4Gateway"
-            for="accountName"
-          >Gateway*</label>
-          <input
-            class="eos-form__input_text"
-            type="text"
-            id="txtMngmtNetworkIpv4Gateway"
-            name="gateway"
-            v-model.trim="ipv4Gateway"
-            @input="$v.ipv4Gateway.$touch"
-          />
-          <div class="eos-form-group-label eos-form-group-error-msg">
-            <label v-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.required">Gateway is required</label>
-            <label v-else-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.ipAddress">Invalid Gateway</label>
+          >
+            <label
+              class="eos-form-group-label"
+              id="lblMngmtNetworkIpv4Gateway"
+              for="accountName"
+            >Gateway*</label>
+            <input
+              class="eos-form__input_text"
+              type="text"
+              id="txtMngmtNetworkIpv4Gateway"
+              name="gateway"
+              v-model.trim="ipv4Gateway"
+              @input="$v.ipv4Gateway.$touch"
+            />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label v-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.required">Gateway is required</label>
+              <label v-else-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.ipAddress">Invalid Gateway</label>
+            </div>
           </div>
         </div>
       </div>
+
       <!---->
       <div class="row mt-5">
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
-          <div class="col-3 body-2 column mr-10" :key="node.id">
+          <div class="col-4 body-2 column node-container" :key="node.id">
             <span class="font-weight-bold" id="lblIpv4Node">Node {{ node.$model.id }}</span>
             <v-divider class="mt-2" />
             <div class="mt-5">
-              <div v-if="source == 'manual'"
+              <div
+                v-if="source == 'manual'"
                 class="eos-form-group"
                 :class="{
                   'eos-form-group--error': node.ip_address.$error
@@ -159,7 +168,7 @@
                   >Invalid IP address</label>
                 </div>
               </div>
-              <div 
+              <div
                 class="eos-form-group"
                 :class="{
                   'eos-form-group--error': node.hostname.$error
@@ -322,5 +331,9 @@ export default class EosNetworkSettingsIpv4 extends Vue {
 }
 .pointer {
   cursor: pointer;
+}
+
+.node-container {
+  max-width: 25em;
 }
 </style>
