@@ -123,13 +123,13 @@
         </div>
       </div>
       <!---->
-      <div class="row mt-5" v-if="source == 'manual'">
+      <div class="row mt-5">
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
           <div class="col-3 body-2 column mr-10" :key="node.id">
             <span class="font-weight-bold" id="lblIpv4Node">Node {{ node.$model.id }}</span>
             <v-divider class="mt-2" />
-            <div class="mt-5" v-if="source == 'manual'">
-              <div
+            <div class="mt-5">
+              <div v-if="source == 'manual'"
                 class="eos-form-group"
                 :class="{
                   'eos-form-group--error': node.ip_address.$error
@@ -159,7 +159,7 @@
                   >Invalid IP address</label>
                 </div>
               </div>
-              <div
+              <div 
                 class="eos-form-group"
                 :class="{
                   'eos-form-group--error': node.hostname.$error
