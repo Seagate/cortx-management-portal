@@ -22,6 +22,7 @@ export interface Ipv4 {
   vip_address?: string;
   netmask: string;
   gateway: string;
+  vip_hostname?: string;
   nodes: Ipv4Node;
 }
 
