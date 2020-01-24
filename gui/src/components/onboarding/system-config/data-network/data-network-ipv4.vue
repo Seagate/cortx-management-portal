@@ -71,9 +71,6 @@
           <label
             v-if="$v.ipv4VipHostname.$dirty && !$v.ipv4VipHostname.required"
           >Hostname required</label>
-          <!-- <label
-            v-else-if="$v.ipv4VipHostname.$dirty && !$v.ipv4VipHostname.ipAddress"
-          >Invalid Hostname</label> -->
         </div>
       </div>
      </div>
@@ -127,36 +124,29 @@
         </div>
       </div>  
         </div>
-      <div class="row mt-5"  v-if="source == 'manual'">
-        <template v-for="node in ipv4Nodes">
+      <div class="row mt-5">
+        <template v-for="node in  $v.ipv4Nodes.$each.$iter">
           <div class="col-3 body-1 column mr-10" :key="node.id">
-            <span class="font-weight-bold" id="lblIpv4Node">Node {{ node.id }}</span>
+            <span class="font-weight-bold" id="lblIpv4Node">Node {{ node.$model.id }}</span>
             <v-divider class="mt-2" />
-            <!-- <div class="mt-5">
-              <span class="font-weight-bold" id="lblIpv4Ipaddress">IP Address</span>
-              <div>
-                <input
-                  class="eos-form__input_text"
-                  type="text"
-                  name="ipaddress"
-                  v-model="node.ip_address"
-                  :id="node.id + 'txtDataNetworkIpv4Ipaddress'"
-                />
-              </div>
-            </div> -->
-             <div
+             <div v-if="source == 'manual'"
                 class="eos-form-group "
                 :class="{
-                  'eos-form-group--error': node.ip_address.$error
+                  'eos-form-group--error':  node.ip_address.$error
                 }"
               >
-        <label class="eos-form-group-label" for="accountName" id="lblIpv4Ipaddress">IP Address*</label>
+       <label
+                  class="eos-form-group-label"
+                  :id="node.$model.id + 'lblDataNetworkIpv4Ipaddress'"
+                  :for="node.$model.id + 'txtDataNetworkIpv4Ipaddress'"
+                >IP address*</label>
         <input
          class="eos-form__input_text "
                   type="text"
-                  name="ipaddress"
-                  v-model="node.ip_address"
-                  :id="node.id + 'txtDataNetworkIpv4Ipaddress'"
+                  :id="node.$model.id + 'txtDataNetworkIpv4Ipaddress'"
+                  :name="node.$model.id + 'ipaddress'"
+                  v-model.trim="node.ip_address.$model"
+                  @input="node.ip_address.$touch"
         />
        <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
@@ -175,23 +165,22 @@
                   'eos-form-group--error': node.hostname.$error
                 }"
               >
-        <label class="eos-form-group-label" for="accountName" id="lblIpv4Ipaddress">Hostname*</label>
+     <label
+                  class="eos-form-group-label"
+                  :id="node.$model.id + 'lblDataNetworkIpv4Hostname'"
+                  :for="node.$model.id + 'txtDataNetworkIpv4Hostname'"
+                >Hostname*</label>
         <input
          class="eos-form__input_text "
-                  type="text"
-                  name="hostname"
-                  v-model="node.hostname"
-                  :id="node.id + 'txtDataNetworkIpv4Ipaddress'"
+                   :id="node.$model.id + 'txtDataNetworkIpv4hostname'"
+                  :name="node.$model.id + 'ipaddress'"
+                  v-model.trim="node.hostname.$model"
+                  @input="node.hostname.$touch"
         />
-       <div class="eos-form-group-label eos-form-group-error-msg">
+      <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
                     v-if="node.hostname.$dirty && !node.hostname.required"
-                  >IP address is required</label>
-                  <!-- <label
-                    v-else-if="
-                      node.hostname.$dirty && !node.hostname.ipAddress
-                    "
-                  >Invalid IP address</label> -->
+                  >Hostname is required</label>
                 </div>
       </div>
            
@@ -217,6 +206,7 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 import { EVENT_BUS } from "./../../../../main";
+import { hostname } from "os";
 
 @Component({
   name: "eos-data-network-ipv4"
@@ -247,6 +237,11 @@ export default class EosDataNetworkIpv4 extends Vue {
             return this.$data.source === "manual";
           }),
           ipAddress
+        },
+         hostname: {
+          required: requiredIf(function(this: any, form) {
+            return this.$data.source === "manual";
+          }),
         }
       }
     }
@@ -275,7 +270,6 @@ export default class EosDataNetworkIpv4 extends Vue {
       gateway: this.$data.ipv4Gateway,
       nodes: this.$data.ipv4Nodes
     };
-    console.log(queryParams, "queryParams");
     return this.$store.dispatch(
       "systemConfig/updateDataNetworkSettingIpv4",
       queryParams
