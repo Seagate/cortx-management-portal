@@ -13,32 +13,21 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-app-bar height="70em" flat class="black pa-0 ma-0" clipped-left app>
-    <span class="ml-1 mr-5">
-      <v-img :src="require('@/assets/udx-logo.svg/')" width="100"></v-img>
-    </span>
-    <div class="verticalLine mx-0"></div>
-    <span class="ml-4">
-      <v-img :src="require('@/assets/cloudstore.svg/')"></v-img>
-    </span>
-
-    <v-spacer></v-spacer>
-
-    <v-divider class="mx-4 grey darken-4" vertical></v-divider>
-    <div class="pa-5 white--text">{{ username }}</div>
-    <v-divider
-      class="mx-4 grey darken-4"
-      vertical
-      v-if="!$route.path.toLocaleString().startsWith('/onboarding')"
-    ></v-divider>
-    <div
-      class="pa-5 white--text pointer"
-      @click="logout()"
-      v-if="!isRouterPathOnboarding"
-    >
-      Logout
+  <div class="eos-header-container">
+    <div class="eos-header">
+      <img style="margin-left: 1.875em;" :src="require('@/assets/udx-logo.svg/')" />
+      <div class="eos-logo-separator"></div>
+      <img :src="require('@/assets/cloudstore.svg/')" />
+      <div class="eos-header-right-aligned-items">
+        <div style="padding-top: 1.125em;">
+          <label class="eos-username-label">{{ username }}</label>
+        </div>
+        <div class="eos-logout-icon-container" @click="logout()" v-if="!isRouterPathOnboarding">
+          <img :src="require('@/assets/logout.svg/')" />
+        </div>
+      </div>
     </div>
-  </v-app-bar>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
@@ -92,63 +81,38 @@ export default class HeaderBar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.alert-container {
+.eos-header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+}
+.eos-header {
+  display: flex;
+  flex-wrap: nowrap;
+  background-color: #000000;
+  height: 4em;
+}
+.eos-logo-separator {
+  margin: 1em 1.206em 1em 1.206em;
+  border: 1px solid #454545;
+}
+.eos-username-label {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #FFFFFF;
+}
+.eos-header-right-aligned-items {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.eos-logout-icon-container {
+  padding: 1.125em 1.5em 1.125em 1.5em;
   cursor: pointer;
-  color: white;
-
-  #alert-img {
-    position: relative;
-    top: 1.1em;
-    right: 1.2em;
-  }
-
-  #alert-count {
-    background-color: red;
-    color: white;
-    display: inline-block;
-    margin-left: 0.2em;
-    min-width: 1em;
-    min-height: 1em;
-    text-align: center;
-    padding: 0 0.2em 0 0.2em;
-  }
-}
-
-.v-card {
-  overflow: hidden;
-}
-
-.v-app-bar {
-  height: 4.2em !important;
-}
-.v-list {
-  border: 1px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.12) !important;
-  margin: auto;
-  overflow-y: auto !important;
-
-  .v-list-item {
-    border-bottom: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: rgba(0, 0, 0, 0.12) !important;
-  }
-
-  .v-list-item:last-child {
-    border-bottom: 0px;
-  }
-}
-.pointer {
-  cursor: pointer;
-}
-.verticalLine {
-  display: inline-block;
-  background-color: var(--v-csmtooltip-base);
-  height: 2.75em;
-  width: 0.125em;
-  margin: 1em;
-}
-.logoPosition {
-  left: -0.75em;
 }
 </style>
