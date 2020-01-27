@@ -42,7 +42,8 @@
                 class="input-text pl-1"
                 style="width: 10em;"
               >
-                <option value="TLS">TLS</option>
+                <option value="TLS">SSL/TLS</option>
+                <option value="STARTTLS">STARTTLS</option>
               </select>
             </div>
           </v-col>
@@ -91,7 +92,10 @@
             v-model="confirmpassword"
             id="txtEmailConfirmPass"
           />
-          <p v-if="!isConfirmPasswordValid" class="red--text error-message">
+          <p
+            v-if="!isConfirmPasswordValid && confirmpassword !== ''"
+            class="red--text error-message"
+          >
             Confirm password is not valid
           </p>
         </div>
@@ -111,6 +115,13 @@
           />
         </div>
       </div>
+      <button
+        type="button"
+        class="eos-btn-primary mt-5 "
+        :disabled="!isConfirmPasswordValid"
+      >
+        Send test email
+      </button>
     </div>
 
     <p v-if="!isValid" class="red--text error-message">
@@ -189,7 +200,6 @@ export default class EosDataNetworkIpv4 extends Vue {
       weekly_email: this.$data.weeklyEmail,
       send_test_mail: this.$data.testEmail
     };
-    console.log("TCL: EosDataNetworkIpv4 -> setEmailNotificationSettings -> queryParams", queryParams)
     return this.$store.dispatch(
       "systemConfig/updateEmailNotificationUserConfig",
       queryParams
@@ -211,12 +221,12 @@ export default class EosDataNetworkIpv4 extends Vue {
   }
   get isConfirmPasswordValid() {
     if (
-      this.$data.confirmpassword === "" ||
-      this.$data.senderpassword !== this.$data.confirmpassword
+      this.$data.confirmpassword &&
+      this.$data.senderpassword === this.$data.confirmpassword
     ) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 }
 </script>
