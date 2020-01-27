@@ -21,7 +21,7 @@
         </label>
       </div>
 
-      <!---->
+      <!-- vip adrees block-->
 
       <div class="row mt-5">
         <div class="col-4 column node-container py-0">
@@ -75,7 +75,7 @@
         </div>
       </div>
 
-      <!--  -->
+      <!-- vip adress block close -->
 
       <div class="row">
         <div class="col-4 column node-container py-0">
@@ -132,7 +132,7 @@
         </div>
       </div>
 
-      <!--  -->
+      <!-- node block -->
 
       <div class="row mt-5">
         <template v-for="node in  $v.ipv4Nodes.$each.$iter">
