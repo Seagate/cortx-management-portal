@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="pt-1">
+  <div class="pt-1 onboarding-container">
     <eosWizard :configData="systemConfigData" :sortBy="'sequence'" />
   </div>
 </template>
@@ -38,4 +38,8 @@ export default class EosOnboarding extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.onboarding-container{
+  margin-left: 8.750em;
+}
+</style>

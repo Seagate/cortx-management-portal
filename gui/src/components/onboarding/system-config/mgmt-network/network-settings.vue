@@ -15,36 +15,31 @@
       </div>
       <v-divider class="mt-2" />
       <div class="mt-8">
-        <input
-          type="checkbox"
-          name="ipv4"
+       <label class="eos-ckb-container" for="chkNsisipV4Status">
+        IPv4
+      <input type="checkbox" name="ipv4"
           :disabled="isSkip"
           v-model="isipV4Status"
-          id="chkNsisipV4Status"
-        />
-        <label for="chkNsisipV4Status">
-          <span class="ml-3 font-weight-bold">IPv4</span>
-        </label>
-      </div>
+          id="chkNsisipV4Status" />
+      <span class="eos-ckb-tick"></span>
+    </label>
+    </div>
       <div class="mt-2">
         Selecting IPv4 will allow you to view settings assigned by DHCP or to
         assign static IPv4 data network for environments that do not support
         DHCP.
       </div>
+      
       <div class="mt-6">
-        <input
-          type="checkbox"
-          name="skip"
+           <label class="eos-ckb-container" for="chkNSStatus">
+        Skip management network settings
+      <input type="checkbox" name="skip"
           v-model="isSkip"
           :disabled="isipV6Status || isipV4Status"
           value="skip"
-          id="chkNSStatus"
-        />
-        <label for="chkNSStatus">
-          <span class="ml-3 font-weight-bold" id="lblNSSkipSetting"
-            >Skip management network settings</span
-          ></label
-        >
+          id="chkNSStatus" />
+      <span class="eos-ckb-tick" id="lblNSSkipSetting"></span>
+    </label>
       </div>
       <div class="mt-2" id="lblNSMsgSkipSetting">
         You can skip this step if your management network settings are already

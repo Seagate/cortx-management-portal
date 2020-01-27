@@ -14,7 +14,7 @@
  *****************************************************************************/
 <template>
   <div>
-    <div v-if="!selectedComponent.hideHeader">
+    <div class="mt-3" v-if="!selectedComponent.hideHeader">
     <span v-for="step in steps" v-bind:key="step.id">
       <span v-if="step.header">
         <eosWizardStep
@@ -27,7 +27,7 @@
     </span>
     </div>
     <div class="pt-5">
-      <component :is="loadComponent"></component>
+      <component v-if="loadComponent" :is="loadComponent"></component>
     </div>
 
     <eosWizardFooter
@@ -139,9 +139,11 @@ export default class EosWizard extends Vue {
     this.$data.selectedComponent = currentComponent;
     const compPath: string = currentComponent.path;
     const compName: string = currentComponent.component;
+    if (compName) {
     const loadComponent = () =>
       import(/* webpackChunkName: [compName] */ `./../../${compPath}`);
     return loadComponent;
+  }
   }
   get footerObj() {
     const component = JSON.parse(this.currentComponentData);
