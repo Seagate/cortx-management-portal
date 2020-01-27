@@ -20,55 +20,58 @@
 import json
 import os
 import time
-from marshmallow import Schema, fields, ValidationError
-from csm.common.payload import Payload, Json, JsonMessage, Dict
 from csm.common.comm import AmqpComm
+from csm.common.errors import CsmError
 from csm.common.log import Log
+from csm.common.payload import Payload, Json, JsonMessage, Dict
 from csm.common.plugin import CsmPlugin
 from csm.core.blogic import const
-from csm.common.errors import CsmError
+from marshmallow import Schema, fields, ValidationError
 
 class AlertSchemaValidator(Schema):
     """
     AlertSchemaValidator for validating the schema using marshmallow for AlertPlugin.
     """
-    alert_uuid = fields.String(required=True, 
+    alert_uuid = fields.String(required=True,
                                description="uuid to identify an  alert.")
-    sensor_info = fields.String(required=True, 
-                                  description="unique key to identify hardware." 
-                                  "Combination of site_id,node_id,rack_id,"
-                                  "resource_id,cluster_id")
-    state = fields.String(required=True, 
+    sensor_info = fields.String(required=True,
+                                description="unique key to identify hardware."
+                                            "Combination of site_id,node_id,rack_id,"
+                                            "resource_id,cluster_id")
+    state = fields.String(required=True,
                           description="State of the alert "
-                          "(e.g. missing| insertion etc.)")
-    created_time = fields.Integer(required=True, 
+                                      "(e.g. missing| insertion etc.)")
+    created_time = fields.Integer(required=True,
                                   description="Origination time of the alert")
-    updated_time = fields.Integer(required=False, 
+    updated_time = fields.Integer(required=False,
                                   description="Updation time of the alert")
-    resolved = fields.Boolean(required=False, 
+    resolved = fields.Boolean(required=False,
                               description="Resolution status of an alert."
-                              " (e.g. True | False)")
-    acknowledged = fields.Boolean(required=False, 
-                                  description="Alert is acknowldeged by the user or not." 
-                                  "(e.g. True | False)")
-    severity = fields.String(required=True, 
+                                          " (e.g. True | False)")
+    acknowledged = fields.Boolean(required=False,
+                                  description="Alert is acknowldeged by the user or not."
+                                              "(e.g. True | False)")
+    severity = fields.String(required=True,
                              description="Severity of an alert.(e.g. TBD")
-    module_type = fields.String(required=False, 
+    module_type = fields.String(required=False,
                                 description="Type of the module. (e.g. PSU, FAN)")
-    module_name = fields.String(required=False, 
+    module_name = fields.String(required=False,
                                 description="Name of the module. (e.g. Fan Module 4)")
-    description = fields.String(required=False, allow_none = True, 
+    description = fields.String(required=False, allow_none=True,
                                 description="This is the id from which a "
-                                "description will be fetched (e.g. TBD)")
-    health = fields.String(required=False, allow_none = True, 
+                                            "description will be fetched (e.g. TBD)")
+    health = fields.String(required=False, allow_none=True,
                            description="Describes the health of PSU, \
                                    Controller, Disk etc.")
-    health_recommendation = fields.String(required=False, allow_none = True,
+    health_recommendation = fields.String(required=False, allow_none=True,
                                           description="This is the health \
                                                   recommendation string.")
-    extended_info = fields.Dict( required=False, description="Extended Info")
-    event_details = fields.List(fields.Dict(), required = False, \
+    extended_info = fields.String(required=False, description="Extended Info")
+    event_details = fields.String(required = False, \
             description = "Specific fields to display.")
+    name = fields.String(required=False, allow_none=True, \
+        description= "Name for specific modules.")
+    durable_id = fields.String(required=False, description="Durable Id")
 
 class AlertPlugin(CsmPlugin):
     """
@@ -125,7 +128,7 @@ class AlertPlugin(CsmPlugin):
                 alert = self._convert_to_csm_schema(message)
                 """Validating Schema using marshmallow"""
                 alert_validator = AlertSchemaValidator()
-                alert_data = alert_validator.load(alert,  unknown='EXCLUDE')
+                alert_data = alert_validator.load(alert, unknown='EXCLUDE')
                 status = self.monitor_callback(alert_data)
                 if status:
                     # Acknowledge the alert so that it could be
@@ -168,17 +171,17 @@ class AlertPlugin(CsmPlugin):
             sub_body = msg_body.get(const.ALERT_MESSAGE, {}).get(
                 const.ALERT_SENSOR_TYPE, {})
             resource_type = sub_body.get("info", {}).get(const.ALERT_RESOURCE_TYPE,
-                                                      "")
+                                                         "")
             if resource_type:
                 module_type = resource_type.split(':')[2]
                 """ Convert  the SSPL Schema to CSM Schema. """
                 input_alert_payload = Payload(JsonMessage(message))
                 csm_alert_payload = Payload(Dict())
                 input_alert_payload.convert(self.mapping_dict.get(module_type, {}),
-                                        csm_alert_payload)
+                                            csm_alert_payload)
                 csm_alert_payload.dump()
                 csm_schema = csm_alert_payload.load()
-                #TODO
+                # TODO
                 """
                 1. Currently we are not consuming alert_type so keeping the 
                 placeholder for now.
@@ -195,10 +198,10 @@ class AlertPlugin(CsmPlugin):
                 """
                 csm_schema[const.ALERT_MODULE_TYPE] = f'{module_type}'
                 csm_schema[const.ALERT_MODULE_NAME] = resource_type
-                csm_schema[const.ALERT_CREATED_TIME] =\
-                        int(csm_schema[const.ALERT_CREATED_TIME])
+                csm_schema[const.ALERT_CREATED_TIME] = \
+                    int(csm_schema[const.ALERT_CREATED_TIME])
                 csm_schema[const.ALERT_UPDATED_TIME] = int(time.time())
-                csm_schema[const.ALERT_RESOLVED] = False 
+                csm_schema[const.ALERT_RESOLVED] = False
                 csm_schema[const.ALERT_ACKNOWLEDGED] = False
                 csm_schema[const.ALERT_COMMENT] = ""
                 """
@@ -213,17 +216,21 @@ class AlertPlugin(CsmPlugin):
                 5. This string uniquely identifies the resource for which an
                 alert has come.
                 """
-                csm_schema[const.ALERT_EVENT_DETAILS]= []
                 csm_schema[const.ALERT_SENSOR_INFO] = \
                     '_'.join(str(x) for x in csm_schema[const.ALERT_SENSOR_INFO].values())
                 csm_schema[const.ALERT_SENSOR_INFO] = \
-                csm_schema[const.ALERT_SENSOR_INFO].replace(" ", "_")
+                    csm_schema[const.ALERT_SENSOR_INFO].replace(" ", "_")
                 if const.ALERT_EVENTS in csm_schema:
+                    csm_schema[const.ALERT_EVENT_DETAILS]= []
                     self._prepare_specific_info(csm_schema)
-                    csm_schema.pop(const.ALERT_EVENTS)
+                    csm_schema.pop(const.ALERT_EVENTS) 
+                    csm_schema[const.ALERT_EVENT_DETAILS] = \
+                    str(csm_schema.get(const.ALERT_EVENT_DETAILS))
+                csm_schema[const.ALERT_EXTENDED_INFO] = \
+                    str(csm_schema.get(const.ALERT_EXTENDED_INFO))
         except Exception as e:
             Log.exception(e)
-            raise CsmError(-1, '%s' %e)
+            raise CsmError(-1, '%s' % e)
         return csm_schema
 
     def _prepare_specific_info(self, csm_schema):
@@ -235,10 +242,10 @@ class AlertPlugin(CsmPlugin):
         :return : None
         """
         description_dict = {}
-        if csm_schema[const.ALERT_MODULE_TYPE] == 'logical_volume' \
-            or csm_schema[const.ALERT_MODULE_TYPE] == 'volume' or \
-            csm_schema[const.ALERT_MODULE_TYPE] == 'sideplane' or \
-            csm_schema[const.ALERT_MODULE_TYPE] == 'fan':
+        if csm_schema[const.ALERT_MODULE_TYPE] in (const.ALERT_LOGICAL_VOLUME,
+                                                   const.ALERT_VOLUME,
+                                                   const.ALERT_SIDEPLANE,
+                                                   const.ALERT_FAN):
             for items in csm_schema[const.ALERT_EVENTS]:
                 """
                 1. For logical_volume, volume, sideplane and fan we get a list of
@@ -251,7 +258,7 @@ class AlertPlugin(CsmPlugin):
                     description_dict[const.ALERT_NAME] = items[const.ALERT_NAME]
                 elif const.ALERT_COMPONENET_ID in items:
                     description_dict[const.ALERT_NAME] = \
-                            items[const.ALERT_COMPONENET_ID]
+                        items[const.ALERT_COMPONENET_ID]
                 description_dict[const.ALERT_EVENT_REASON] = \
                     items[const.ALERT_HEALTH_REASON]
                 description_dict[const.ALERT_EVENT_RECOMMENDATION] = \
@@ -262,4 +269,4 @@ class AlertPlugin(CsmPlugin):
             In all the other cases we directly map the list from the specific
             info to event_details.
             """
-            csm_schema[const.ALERT_EVENT_DETAILS] = csm_schema[const.ALERT_EVENTS] 
+            csm_schema[const.ALERT_EVENT_DETAILS] = csm_schema[const.ALERT_EVENTS]
