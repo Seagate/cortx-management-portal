@@ -1,5 +1,5 @@
 export const wizardConfig = {
-  currentComponent: "EosDnsSettings",
+  currentComponent: "EosNetworkSettings",
   steps: [
     {
       sequence: 1,
