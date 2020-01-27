@@ -10,9 +10,9 @@
           happen throughout the life of the product. It is highly recommended
           that you configure at least one notification path so that you can
           quickly respond to any critical events that may arise in the system.
-          You can set up notifications to be sent via email, SNMP and syslog in
-          the following screens. You have the option to skip this step entirely,
-          but doing so is strongly discouraged.
+          You can set up notifications to be sent via email, SNMP in the
+          following screens. You have the option to skip this step entirely, but
+          doing so is strongly discouraged.
         </div>
 
         <div
@@ -42,25 +42,6 @@
             non-secure email servers for event notification. You can control the
             severity of events that you wish to receive, and you will be able to
             test out your notification settings.
-          </div>
-        </div>
-        <div class="mt-5">
-          <input
-            type="checkbox"
-            v-model="isSysLogSettingsStatus"
-            name="syslog"
-            :disabled="isSkip"
-            id="chkNotificationSyslog"
-          />
-          <span class="ml-3 font-weight-bold">Syslog</span>
-          <div
-            class="mt-5 font-weight-regular black--text"
-            id="lblNotificationSyslog"
-          >
-            Selecting Syslog will allow you to setup a syslog server destination
-            for event notification. You can control the severity of events that
-            you wish to receive, and you will be able to test out your
-            notification settings.
           </div>
         </div>
         <div class="mt-5">

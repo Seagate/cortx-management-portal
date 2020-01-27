@@ -6,13 +6,15 @@
           <div class="eos-modal-header">
             <label>Success</label>
           </div>
-          <div class="eos-modal-body">
-            <div class="title">
+          <div class="eos-modal-body ">
+            <div class="title title-container">
               <img
-                class="mr-2"
+                class="mr-2 success-img"
                 :src="require('@/assets/status/healthy-icon.png')"
               />
-              <span>Onboarding has been successfully completed.</span>
+              <span class="finish-text"
+                >Onboarding has been successfully completed.</span
+              >
             </div>
             <div class="mt-8 nav-btn">
               <button
@@ -21,13 +23,6 @@
                 @click="$router.push('/dashboard')"
               >
                 Go to dashboard
-              </button>
-              <button
-                type="button"
-                class="ml-6 eos-btn-secondary"
-                @click="logout()"
-              >
-                Logout
               </button>
             </div>
           </div>
@@ -70,10 +65,21 @@ export default class EosOnboardingFinish extends Vue {
 
 <style lang="scss" scoped>
 .eos-modal-onboarding {
-  width: 550px;
+  width: 500px;
   min-height: 214px;
 }
 .nav-btn {
   text-align: right;
+}
+.finish-text {
+  vertical-align: center;
+  float: left;
+}
+.success-img {
+  margin-top: 3px;
+  float: left;
+}
+.title-container{
+  height: 30px
 }
 </style>
