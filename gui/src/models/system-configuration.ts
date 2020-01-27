@@ -79,14 +79,13 @@ export interface DataNetworkSettings {
 
 export interface DnsNetworkSettingsNode {
   id: number;
-  dns_servers: string[];
-  search_domain: string[];
+  hostname: string;
 }
 
 export interface DnsNetworkSettings {
-  is_external_load_balancer: boolean;
-  fqdn_name: string;
   hostname: string;
+  dns_servers: string[];
+  search_domain: string[];
   nodes: DnsNetworkSettingsNode[];
 }
 

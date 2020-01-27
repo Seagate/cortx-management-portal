@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="mt-8">
+  <div class="mt-8 mb-5">
     <v-btn
       @click="gotoNextPage()"
       v-if="this.$props.footerObj && this.$props.footerObj.nextBtnText"
