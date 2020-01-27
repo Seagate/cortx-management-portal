@@ -1,5 +1,5 @@
 <template>
-  <div class="pr-4">
+  <div>
     <div id="s3-configuration-title-container" class="mb-4 s3-configuration-page-title">
       <label id="s3-account-form-title" class="headline font-weight-bold">S3 Configuration</label>
       <div class="mt-1" style="color: #454545;font-size: 14px;">
