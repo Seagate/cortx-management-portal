@@ -185,7 +185,6 @@ export default class EosDnsSetting extends Vue {
       dns_servers: dnsServers,
       search_domain: searchDomains
     };
-    console.log(queryParams,'hhhhh');
     return this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
   }
   private mounted() {
