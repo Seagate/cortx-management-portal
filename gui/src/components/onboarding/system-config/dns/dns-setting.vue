@@ -76,7 +76,6 @@
         </div>
       </div>
     </div>
-
     <!-- node block -->
     <div class="row ma-0 mt-3">
       <template v-for="node in  $v.dnsNodes.$each.$iter">
