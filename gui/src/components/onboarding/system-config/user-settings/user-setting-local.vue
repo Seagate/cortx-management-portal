@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-0 ml-0">
+  <v-container>
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblLocalSetting">User settings: Local</div>
       <div class="mt-5">

@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="mt-5">
+  <div class="eos-p-2">
     <eos-tabs :tabsInfo="tabsInfo" />
     <button type="button" class="mt-3 mb-2 eos-btn-primary">Acknowledge All</button>
     <v-data-table

@@ -13,33 +13,16 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card width="900" flat class="card-layout">
-    <v-container class="pl-0 pt-0">
-      <v-row dense>
-        <v-col cols="12">
-          <v-card class="outlined pt-2" height="100" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline">S3</v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn :to="'/provisioning/s3'" text small color="csmprimary">Manage</v-btn>
-              </v-card-actions>
-            </div>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="outlined pt-2" height="100" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline">NFS</v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn disabled text small color="csmprimary">Manage</v-btn>
-              </v-card-actions>
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+  <div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">S3</label>
+      <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/provisioning/s3')">Manage</button>
+    </div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">NFS</label>
+      <button type="button" class="eos-btn-tertiary eos-float-r" disabled>Manage</button>
+    </div>
+  </div>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
@@ -50,7 +33,14 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class EosProvisioningSubmenu extends Vue {}
 </script>
 <style lang="scss" scoped>
-.card-layout {
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
+.eos-menu-card-layout {
+  height: 6.250em;
+  width: 56.250em;
+  padding-left: 1em;
+  padding-top: 0.500em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.eos-menu-card-title {
+  margin-top: 0.313em;
 }
 </style>
