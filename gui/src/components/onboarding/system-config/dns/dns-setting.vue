@@ -25,7 +25,7 @@
           </div>
         </div>
       </div>
-      <div class="row mt-4">
+      <div class="row ">
         <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
@@ -83,7 +83,7 @@
         <div class="col-3 body-1 column node-container" :key="node.id">
           <span class="font-weight-bold" id="lblIpv4Node">Node {{ node.id }}</span>
           <v-divider class="mt-2" />
-          <div class="eos-form-group">
+          <div class="eos-form-group mt-5">
             <div
               class="eos-form-group"
               :class="{
