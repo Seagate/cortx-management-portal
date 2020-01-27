@@ -31,7 +31,7 @@
           'eos-form-group--error': $v.ipv4VipAddress.$error
         }"
           >
-            <label class="eos-form-group-label" for="accountName">VIP Address*</label>
+            <label class="eos-form-group-label" for="accountName">VIP address*</label>
             <input
               class="eos-form__input_text"
               type="text"
@@ -57,7 +57,7 @@
           'eos-form-group--error': $v.ipv4VipHostname.$error
         }"
           >
-            <label class="eos-form-group-label ml-" for="accountName">VIP Hostname*</label>
+            <label class="eos-form-group-label ml-" for="accountName">VIP hostname*</label>
             <input
               class="eos-form__input_text"
               type="text"

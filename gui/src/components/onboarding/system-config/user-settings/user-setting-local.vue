@@ -35,7 +35,7 @@
                 class="eos-form-group"
                 :class="{ 'eos-form-group--error': $v.createAccount.password.$error }"
               >
-                <label class="eos-form-group-label" for="password">password*</label>
+                <label class="eos-form-group-label" for="password">Password*</label>
                 <input
                   class="eos-form__input_text"
                   type="password"
@@ -57,7 +57,7 @@
                 class="eos-form-group"
                 :class="{ 'eos-form-group--error': $v.createAccount.confirmPassword.$error }"
               >
-                <label class="eos-form-group-label" for="password">confirm Password*</label>
+                <label class="eos-form-group-label" for="password">Confirm password*</label>
                 <input
                   class="eos-form__input_text"
                   type="password"
