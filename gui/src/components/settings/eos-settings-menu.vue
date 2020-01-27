@@ -13,95 +13,40 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card width="900" flat class="card-layout">
-    <v-container class="pl-0 pt-0">
-      <v-row dense>
-        <v-col cols="12">
-          <v-card class="outlined pt-2" height="100" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline">Notifications</v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn disabled text small color="csmprimary">Manage</v-btn>
-              </v-card-actions>
-            </div>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="outlined pt-2" height="100" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline">User</v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn :to="'/settings/usersettinglocal'" text small color="csmprimary">Manage</v-btn>
-              </v-card-actions>
-            </div>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="outlined pt-2" height="100" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline">UDX</v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn :to="'/settings/udx-registration'" text small color="csmprimary">Manage</v-btn>
-              </v-card-actions>
-            </div>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="outlined pt-2" height="100" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline">Updates</v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn disabled text small color="csmprimary">Manage</v-btn>
-              </v-card-actions>
-            </div>
-            <v-card-text>
-              <div>
-                <p>Up to date</p>
-              </div>
-            </v-card-text>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="outlined pt-2" height="90" flat>
-            <div class="pd-5">
-              <v-card-title class="title font-weight-bold d-inline">Privacy</v-card-title>
-              <v-card-actions class="d-inline float-right">
-                <v-btn disabled text small color="csmprimary">Details</v-btn>
-              </v-card-actions>
-            </div>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="outlined" height="50" flat>
-            <v-card-actions>
-              <v-btn text small color="csmprimary">Quit service</v-btn>
-            </v-card-actions>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="outlined" height="50" flat>
-            <v-card-actions>
-              <v-btn text small color="csmprimary">Restart service</v-btn>
-            </v-card-actions>
-          </v-card>
-          <v-divider></v-divider>
-        </v-col>
-        <v-col cols="12">
-          <v-card class="outlined" height="50" flat>
-            <v-card-actions>
-              <v-btn text small color="csmprimary">About</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+  <div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Notifications</label>
+      <button type="button" class="eos-btn-tertiary eos-float-r" disabled>Manage</button>
+    </div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">User</label>
+      <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/settings/usersettinglocal')">Manage</button>
+    </div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">UDX</label>
+      <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/settings/udx-registration')">Manage</button>
+    </div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Updates</label>
+      <button type="button" class="eos-btn-tertiary eos-float-r" disabled>Manage</button>
+      <div style="margin-top: 3em;">
+        <label class="eos-text-sm">Up to date</label>
+      </div>
+    </div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Privacy</label>
+      <button type="button" class="eos-btn-tertiary eos-float-r" disabled>Manage</button>
+    </div>
+    <div class="eos-wrap-height-menu-card-layout">
+      <button type="button" class="eos-btn-tertiary">Quit Service</button>
+    </div>
+    <div class="eos-wrap-height-menu-card-layout">
+      <button type="button" class="eos-btn-tertiary">Restart Service</button>
+    </div>
+    <div class="eos-wrap-height-menu-card-layout">
+      <button type="button" class="eos-btn-tertiary">About</button>
+    </div>
+  </div>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
@@ -112,7 +57,20 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 export default class EosSettingsMenu extends Vue {}
 </script>
 <style lang="scss" scoped>
-.card-layout {
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
+.eos-menu-card-layout {
+  height: 6.250em;
+  width: 56.250em;
+  padding-left: 1em;
+  padding-top: 0.500em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.eos-wrap-height-menu-card-layout {
+  width: 56.250em;
+  padding-top: 0.500em;
+  padding-bottom: 0.500em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.eos-menu-card-title {
+  margin-top: 0.313em;
 }
 </style>

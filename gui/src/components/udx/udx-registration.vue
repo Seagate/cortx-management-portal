@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div id="udx-reg-container" class="mt-5 ml-5">
+  <div id="udx-reg-container">
     <Loader :show="showLoader" :message="loaderMessage" />
     <div id="udx-reg-form" v-if="!udxDevice && !isFetchingDeviceDetails">
       <div id="udx-reg-form-title-container" class="udx-reg-page-title">

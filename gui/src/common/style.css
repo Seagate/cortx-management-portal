@@ -23,6 +23,41 @@
   font-weight: bold;
 }
 
+.eos-p-1 {
+  padding: 1em;
+}
+
+.eos-p-2 {
+  padding: 2em;
+}
+
+.eos-text-sm {
+  font-style: normal;
+  font-size: 0.750em;
+}
+
+.eos-text-md {
+  font-style: normal;
+  font-size: 0.875em;
+}
+
+.eos-text-lg {
+  font-style: normal;
+  font-size: 1.125em;
+}
+
+.eos-text-bold {
+  font-weight: bold;
+}
+
+.eos-float-l {
+  float: left;
+}
+
+.eos-float-r {
+  float: right;
+}
+
 /* Textbox style rules --- Start */
 input:focus {
   outline: 0;

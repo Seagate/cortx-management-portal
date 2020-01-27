@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <router-view></router-view>
+  <router-view class="eos-p-2"></router-view>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
