@@ -315,7 +315,6 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       nodes: this.$data.ipv4Nodes,
       vip_hostname: this.$data.ipv4VipHostname
     };
-    console.log(queryParams, "queryParams");
     return this.$store.dispatch("systemConfig/updateMngmtIpv4", queryParams);
   }
 }
