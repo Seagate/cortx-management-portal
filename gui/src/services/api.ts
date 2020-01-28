@@ -58,11 +58,9 @@ export abstract class Api {
     return await axios.get(url, { params: queryParams });
   }
   // Wrapper method for update api
-  public static async patch(url: string, payload: object, id: number) {
-    if (!id) {
-      return;
-    }
-    return await axios.patch(url + "/" + id, payload);
+  public static async patch(url: string, payload: object, id?: string) {
+    const tempURL = id ? url + "/" + id : url;
+    return await axios.patch(tempURL, payload);
   }
   // Wrapper method for post api
   public static async post(url: string, payload: object) {

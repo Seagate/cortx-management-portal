@@ -41,7 +41,7 @@ interface ExtendedInfo {
 
 interface Alert {
     id: number;
-    alert_uuid: number;
+    alert_uuid: string;
     status: string;
     type: string;
     enclosure_id: number;

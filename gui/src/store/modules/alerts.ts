@@ -95,6 +95,23 @@ export default class Alerts extends VuexModule {
         }
     }
 
+    @Action
+    public async acknowledgeAll(): Promise<any | undefined> {
+        const currentPageAlertIds: string[] = [];
+        if(this.alerts){
+            this.alerts.alerts.forEach((alert) => {
+                currentPageAlertIds.push(alert.alert_uuid);
+            });
+            try {
+                const res = Api.patch(apiRegister.all_alerts, currentPageAlertIds);
+                return res;
+            } catch (e) {
+                // tslint:disable-next-line: no-console
+                console.log(e);
+            }
+        }
+    }
+
     get alertTotalRecordCount() {
         if (this.alerts) {
             return this.alerts.total_records;
