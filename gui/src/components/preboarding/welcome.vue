@@ -15,19 +15,43 @@
         By clicking the Get Started button, you agree to the
         <span class="csmprimary--text">EULA.</span>
       </div>
-      <v-btn class=" ml-4" outlined dark elevation="0" @click="gotToNextPage()">
+      <v-btn
+        class=" ml-4"
+        outlined
+        dark
+        elevation="0"
+        @click="showLicenseAgreement = true"
+      >
         <span>Get Started</span>
       </v-btn>
+      <LicenseAgreement
+        @accepted="licenseAcceptedOrClosed"
+        v-if="showLicenseAgreement"
+      ></LicenseAgreement>
     </v-container>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import LicenseAgreement from "./license-agreement.vue";
 
 @Component({
-  name: "eos-welcome"
+  name: "eos-welcome",
+  components: { LicenseAgreement }
 })
 export default class EosWelcome extends Vue {
+  private data() {
+    return {
+      showLicenseAgreement: false
+    };
+  }
+  private licenseAcceptedOrClosed(status: boolean) {
+    if (status) {
+      this.gotToNextPage();
+    } else {
+      this.$data.showLicenseAgreement = false;
+    }
+  }
   public mounted() {
     this.$store.commit("alerts/setOnboardingFlag", false);
   }
