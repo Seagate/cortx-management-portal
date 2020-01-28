@@ -15,7 +15,7 @@
 <template>
   <div class="eos-p-2">
     <eos-tabs :tabsInfo="tabsInfo" />
-    <button type="button" class="mt-3 mb-2 eos-btn-primary">Acknowledge All</button>
+    <button type="button" class="mt-3 mb-2 eos-btn-primary" v-if="tabsInfo.selectedTab === 1">Acknowledge All</button>
     <v-data-table
       calculate-widths
       :items="alertData"
@@ -110,7 +110,7 @@
               class="eos-status-chip eos-chip-ok"
             ></div>
           </td>
-          <td>{{props.item.description}}</td>
+          <td>{{props.item.description ? props.item.description : "--"}}</td>
           <td>      
             <img :src="require('@/assets/zoom-in.svg')" style="cursor: pointer;" @click="$router.push('/alerts/' + props.item.alert_uuid)" />
             <img v-if="props.item.resolved" :src="require('@/assets/resolved-filled-default.svg')" />
@@ -187,18 +187,20 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
     };
   }
 
-  public updateAlert(value: any) {
-    this.$store.dispatch("alerts/updateAlert", value);
-  }
-  public clearComment(item: any) {
-    item.comment = "";
-  }
-  public onExpand(props: any) {
-    if (props.isExpanded === false) {
-      props.expand(props.item);
-    } else {
-      props.expand(false);
-    }
+  public async acknowledgeAll(){
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: true,
+      message: "Acknowledging Alerts..."
+    });
+    try {
+      await this.$store.dispatch("alerts/acknowledgeAll");
+      this.$store.commit("alerts/setPage", 1);
+      this.onSortPaginate("", null, this.page, this.itemsPerPage);
+    } catch (e) {}
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: false,
+      message: ""
+    });
   }
 }
 </script>

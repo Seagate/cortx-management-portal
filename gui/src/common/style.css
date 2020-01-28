@@ -58,6 +58,10 @@
   float: right;
 }
 
+.eos-cursor-pointer {
+  cursor: pointer;
+}
+
 /* Textbox style rules --- Start */
 input:focus {
   outline: 0;
@@ -506,6 +510,15 @@ tbody tr:hover {
   display: inline-block;
   cursor: pointer;
 }
+.eos-comment-icon {
+  background-image: url('../assets/comment-default.svg');
+}
+.eos-comment-icon:hover {
+  background-image: url('../assets/comment-hover.svg');
+}
+.eos-comment-icon:active {
+  background-image: url('../assets/comment-pressed.svg');
+}
 .eos-comment-filled-icon {
   background-image: url('../assets/comment-filled-default.svg');
 }
@@ -523,6 +536,15 @@ tbody tr:hover {
 }
 .eos-acknowledge-icon:active {
   background-image: url('../assets/acknowledge-pressed.svg');
+}
+.eos-resolved-icon {
+  background-image: url('../assets/resolved-default.svg');
+}
+.eos-resolved-icon:hover {
+  background-image: url('../assets/resolved-hover.svg');
+}
+.eos-resolved-icon:active {
+  background-image: url('../assets/resolved-pressed.svg');
 }
 .eos-resolved-filled-icon {
   background-image: url('../assets/resolved-filled-default.svg');
