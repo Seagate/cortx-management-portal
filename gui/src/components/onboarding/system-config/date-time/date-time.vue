@@ -120,8 +120,8 @@ export default class EosDateTime extends Vue {
       timezoneList: [],
       source: "ntp",
       setDateTime: {
-         NtpServerAddress: ""
-          },
+        NtpServerAddress: ""
+      },
       NtpTimezone: "",
       minute: "",
       hours: "",
@@ -168,8 +168,12 @@ export default class EosDateTime extends Vue {
   }
   public managementNetworkGetter() {
     const dateTime = this.$store.getters["systemConfig/systemconfig"];
-    if (dateTime.date_time_settings && dateTime.date_time_settings.ntp) {
-      this.$data.NtpServerAddress =
+    if (
+      dateTime &&
+      dateTime.date_time_settings &&
+      dateTime.date_time_settings.ntp
+    ) {
+      this.$data.setDateTime.NtpServerAddress =
         dateTime.date_time_settings.ntp.ntp_server_address;
       this.$data.NtpTimezone =
         dateTime.date_time_settings.ntp.ntp_timezone_offset;

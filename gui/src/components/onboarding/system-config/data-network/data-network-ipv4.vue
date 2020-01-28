@@ -274,7 +274,6 @@ export default class EosDataNetworkIpv4 extends Vue {
       gateway: this.$data.ipv4Gateway,
       nodes: this.$data.ipv4Nodes
     };
-    console.log(queryParams, "queryParams");
     return this.$store.dispatch(
       "systemConfig/updateDataNetworkSettingIpv4",
       queryParams
@@ -315,7 +314,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       this.$data.source =
         dataNetworkSettings.ipv4.is_dhcp == true ? "DHCP" : "manual";
       this.$data.ipv4VipAddress = dataNetworkSettings.ipv4.vip_address;
-      this.$data.ipv4VipAddress = dataNetworkSettings.ipv4.vip_hostname;
+      this.$data.ipv4VipHostname = dataNetworkSettings.ipv4.vip_hostname;
       this.$data.ipv4Netmask = dataNetworkSettings.ipv4.netmask;
       this.$data.ipv4Gateway = dataNetworkSettings.ipv4.gateway;
     }

@@ -25,7 +25,7 @@
           </div>
         </div>
       </div>
-      <div class="row ">
+      <div class="row">
         <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
@@ -151,32 +151,15 @@ export default class EosDnsSetting extends Vue {
       }
     }
   };
-  /**
-   * splitNodesBySemicolon
-   */
-  public splitNodesBySemicolon(nodeList: any) {
-    // Loop through the nodeList and check dnsServerAddress && searchDomainAddress with node index
-    // split with semicolon and filter out "" blank values
-    // Assign it back to node
-    // if we don't add check for empty value the function throws an error and does not return the list
-    const updatedNodes = nodeList.map((node: any, i: number) => {
-      node.dns_servers = this.$data.dnsServerAddress[i]
-        ? this.$data.dnsServerAddress[i].split(";").filter(Boolean)
-        : [];
-      node.search_domain = this.$data.searchDomainAddress[i]
-        ? this.$data.searchDomainAddress[i].split(";").filter(Boolean)
-        : [];
-      return node;
-    });
-    return updatedNodes;
-  }
 
   public splitByComma(str: string) {
     return str.split(",").filter(Boolean);
   }
   public updateDNSconfig() {
-    const dnsServers = this.splitByComma(this.$data.dnsServerAddress);
-    const searchDomains = this.splitByComma(this.$data.searchDomainAddress);
+    const dnsServers = this.splitByComma(`${this.$data.dnsServerAddress}`);
+    const searchDomains = this.splitByComma(
+      `${this.$data.searchDomainAddress}`
+    );
 
     const queryParams: DnsNetworkSettings = {
       hostname: this.$data.hostname,
@@ -214,7 +197,11 @@ export default class EosDnsSetting extends Vue {
       systemconfig.dns_network_settings.nodes
     ) {
       this.$data.hostname = systemconfig.dns_network_settings.hostname;
-
+      this.$data.dnsServerAddress =
+        systemconfig.dns_network_settings.dns_servers;
+      this.$data.searchDomainAddress =
+        systemconfig.dns_network_settings.search_domain;
+      this.$data.dnsNodes = systemconfig.dns_network_settings.nodes;
     }
   }
   private data() {
