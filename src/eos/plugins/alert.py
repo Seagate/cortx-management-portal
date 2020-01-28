@@ -69,8 +69,22 @@ class AlertSchemaValidator(Schema):
     extended_info = fields.String(required=False, description="Extended Info")
     event_details = fields.String(required = False, \
             description = "Specific fields to display.")
-    name = fields.String(required=False, allow_none=True, \
-        description= "Name for specific modules.")
+    name = fields.String(required = False, allow_none = True, description = \
+            "Name for specific modules.")
+    serial_number = fields.String(required = False, allow_none = True, \
+            description = "Serial number of the resource.")
+    volume_group = fields.String(required = False, allow_none = True, \
+                        description = "Disk volume group.")
+    volume_size = fields.String(required = False, allow_none = True, \
+                        description = "Disk size.")
+    volume_total_size = fields.String(required = False, allow_none = True, \
+                        description = "Disk total size.")
+    version = fields.String(required = False, allow_none = True, \
+                        description = "Version information for resources.")
+    location = fields.String(required = False, allow_none = True, \
+                        description = "Location of the resources.")
+    disk_slot = fields.Integer(required=False, allow_none = True, \
+            description="Slot number of the disk.")
     durable_id = fields.String(required=False, description="Durable Id")
 
 class AlertPlugin(CsmPlugin):
@@ -176,7 +190,7 @@ class AlertPlugin(CsmPlugin):
                 module_type = resource_type.split(':')[2]
                 """ Convert  the SSPL Schema to CSM Schema. """
                 input_alert_payload = Payload(JsonMessage(message))
-                csm_alert_payload = Payload(Dict())
+                csm_alert_payload = Payload(Dict(dict()))
                 input_alert_payload.convert(self.mapping_dict.get(module_type, {}),
                                             csm_alert_payload)
                 csm_alert_payload.dump()
@@ -221,13 +235,13 @@ class AlertPlugin(CsmPlugin):
                 csm_schema[const.ALERT_SENSOR_INFO] = \
                     csm_schema[const.ALERT_SENSOR_INFO].replace(" ", "_")
                 if const.ALERT_EVENTS in csm_schema:
-                    csm_schema[const.ALERT_EVENT_DETAILS]= []
+                    csm_schema[const.ALERT_EVENT_DETAILS] = []
                     self._prepare_specific_info(csm_schema)
-                    csm_schema.pop(const.ALERT_EVENTS) 
+                    csm_schema.pop(const.ALERT_EVENTS)
                     csm_schema[const.ALERT_EVENT_DETAILS] = \
-                    str(csm_schema.get(const.ALERT_EVENT_DETAILS))
+                            str(csm_schema[const.ALERT_EVENT_DETAILS])
                 csm_schema[const.ALERT_EXTENDED_INFO] = \
-                    str(csm_schema.get(const.ALERT_EXTENDED_INFO))
+                        str(csm_schema[const.ALERT_EXTENDED_INFO])
         except Exception as e:
             Log.exception(e)
             raise CsmError(-1, '%s' % e)
@@ -241,12 +255,12 @@ class AlertPlugin(CsmPlugin):
         :param csm_schema : Dict containing csm alert message format
         :return : None
         """
-        description_dict = {}
         if csm_schema[const.ALERT_MODULE_TYPE] in (const.ALERT_LOGICAL_VOLUME,
                                                    const.ALERT_VOLUME,
                                                    const.ALERT_SIDEPLANE,
                                                    const.ALERT_FAN):
             for items in csm_schema[const.ALERT_EVENTS]:
+                description_dict = {}
                 """
                 1. For logical_volume, volume, sideplane and fan we get a list of
                 dictionaries conayining name, health-reason and
@@ -264,9 +278,3 @@ class AlertPlugin(CsmPlugin):
                 description_dict[const.ALERT_EVENT_RECOMMENDATION] = \
                     items[const.ALERT_HEALTH_RECOMMENDATION]
                 csm_schema[const.ALERT_EVENT_DETAILS].append(description_dict)
-        else:
-            """
-            In all the other cases we directly map the list from the specific
-            info to event_details.
-            """
-            csm_schema[const.ALERT_EVENT_DETAILS] = csm_schema[const.ALERT_EVENTS]
