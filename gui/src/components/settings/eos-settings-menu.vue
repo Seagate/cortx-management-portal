@@ -38,10 +38,10 @@
       <button type="button" class="eos-btn-tertiary eos-float-r" disabled>Manage</button>
     </div>
     <div class="eos-wrap-height-menu-card-layout">
-      <button type="button" class="eos-btn-tertiary">Quit Service</button>
+      <button type="button" class="eos-btn-tertiary">Quit service</button>
     </div>
     <div class="eos-wrap-height-menu-card-layout">
-      <button type="button" class="eos-btn-tertiary">Restart Service</button>
+      <button type="button" class="eos-btn-tertiary">Restart service</button>
     </div>
     <div class="eos-wrap-height-menu-card-layout">
       <button type="button" class="eos-btn-tertiary">About</button>

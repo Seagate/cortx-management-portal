@@ -8,12 +8,12 @@
     ></v-img>
     <v-divider />
     <div>
-      <div class="title mt-6 csmprimary--text">S3 Congiguration-Summary</div>
+      <div class="title mt-6 csmprimary--text">S3 configuration-summary</div>
     </div>
     <div class="mt-4">
       <div
         class="font-weight-regular black--text"
-      >This is summary of initial configuration. You can create an additional S3 account and add additional IAM Users of Buckets by visiting TDB...</div>
+      >This is summary of initial configuration. You can create an additional S3 account and add additional IAM users of Buckets.</div>
       <v-divider class="mt-5" />
       <v-row v-for="item in Account" :key="item.name">
         <v-col class="pl-5 col-3">{{item.user}}</v-col>
@@ -25,7 +25,7 @@
       <v-dialog v-model="dialog" width="700">
         <template v-slot:activator="{ on }">
           <v-btn elevation="0" color="csmprimary" @click="gotToNextPage()" v-on="on">
-            <span class="white--text">FINISH CONFIGURATION</span>
+            <span class="white--text">Finish configuration</span>
           </v-btn>
         </template>
         <v-card height="500">
@@ -34,12 +34,12 @@
             <v-card-text>
               <div class="title mt-6 csmprimary--text">
                 <v-icon class="csmprimary--text" size="20">mdi-check-circle-outline</v-icon>
-                <span>Success-Validation in Progress</span>
+                <span>Success-validation in progress</span>
               </div>
               <v-divider class="mt-3 mb-10" />
               <div class="font-weight-regular black--text mb-10">Message about What`s Happning</div>
               <v-btn tile large width="10em" levation="0" color="csmprimary">
-                <span class="white--text">ok</span>
+                <span class="white--text">Ok</span>
               </v-btn>
             </v-card-text>
           </div>
@@ -59,7 +59,7 @@ export default class EOSConfigurationSummary extends Vue {
     return {
       Account: [
         {
-          user: "S3 aCCOUNT CREATED",
+          user: "S3 ACCOUNT CREATED",
           accountname: "ACCOUNT NO159"
         },
         {
@@ -75,7 +75,7 @@ export default class EOSConfigurationSummary extends Vue {
   }
 }
 </script>
-</script>
+
 <style lang="scss" scoped>
 table {
   font-size: 12px;

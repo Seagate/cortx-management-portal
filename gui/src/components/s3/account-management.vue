@@ -1,7 +1,6 @@
 <template>
   <div>
     <Loader :show="showLoader" :message="loaderMessage" />
-
     <div style="width: 100%">
       <div v-if="showCreateAccountForm" class="px-2">
         <v-row>
@@ -10,7 +9,7 @@
               class="eos-form-group"
               :class="{ 'eos-form-group--error': $v.createAccountForm.account.account_name.$error }"
             >
-              <label class="eos-form-group-label" for="accountName">Account Name*</label>
+              <label class="eos-form-group-label" for="accountName">Account name*</label>
               <input
                 class="eos-form__input_text"
                 type="text"
@@ -22,10 +21,10 @@
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
                   v-if="$v.createAccountForm.account.account_name.$dirty && !$v.createAccountForm.account.account_name.required"
-                >Account Name is required</label>
+                >Account name is required</label>
                 <label
                   v-else-if="$v.createAccountForm.account.account_name.$dirty && !$v.createAccountForm.account.account_name.accountNameRegex"
-                >Invalid Account Name</label>
+                >Invalid account name</label>
               </div>
             </div>
           </v-col>
@@ -49,7 +48,7 @@
                 >Password is required</label>
                 <label
                   v-else-if="$v.createAccountForm.account.password.$dirty && !$v.createAccountForm.account.password.passwordRegex"
-                >Invalid Password</label>
+                >Invalid password</label>
               </div>
             </div>
           </v-col>
@@ -60,7 +59,7 @@
               class="eos-form-group"
               :class="{ 'eos-form-group--error': $v.createAccountForm.account.account_email.$error }"
             >
-              <label class="eos-form-group-label" for="accountEmail">Email Id*</label>
+              <label class="eos-form-group-label" for="accountEmail">Email id*</label>
               <input
                 class="eos-form__input_text"
                 type="text"
@@ -72,10 +71,10 @@
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
                   v-if="$v.createAccountForm.account.account_email.$dirty && !$v.createAccountForm.account.account_email.required"
-                >Email Id is required</label>
+                >Email id is required</label>
                 <label
                   v-else-if="$v.createAccountForm.account.account_email.$dirty && !$v.createAccountForm.account.account_email.accountEmailRegex"
-                >Invalid Email Id</label>
+                >Invalid email id</label>
               </div>
             </div>
           </v-col>
@@ -84,7 +83,7 @@
               class="eos-form-group"
               :class="{ 'eos-form-group--error': $v.createAccountForm.confirmPassword.$error }"
             >
-              <label class="eos-form-group-label" for="confirmPassword">Confirm Password*</label>
+              <label class="eos-form-group-label" for="confirmPassword">Confirm password*</label>
               <input
                 class="eos-form__input_text"
                 type="password"
@@ -107,7 +106,7 @@
               class="eos-btn-primary"
               @click="createAccount()"
               :disabled="$v.createAccountForm.$invalid"
-            >Create Account</button>
+            >Create account</button>
             <button
               type="button"
               class="ml-8 eos-btn-secondary"
@@ -132,7 +131,7 @@
           </v-system-bar>
           <v-card-title class="title mt-6 ml-3">
             <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
-            <span>Account Created: Access Key and Secret</span>
+            <span>Account created: access key and secret</span>
           </v-card-title>
           <v-divider />
           <v-row class="mx-4">
@@ -239,7 +238,7 @@
                     >Password is required</label>
                     <label
                       v-else-if="$v.editAccountForm.password.$dirty && !$v.editAccountForm.password.passwordRegex"
-                    >Invalid Password</label>
+                    >Invalid password</label>
                   </div>
                 </div>
               </v-col>
@@ -248,7 +247,7 @@
                   class="eos-form-group"
                   :class="{ 'eos-form-group--error': $v.editAccountForm.confirmPassword.$error }"
                 >
-                  <label class="eos-form-group-label" for="confirmPasswordEdit">Confirm Password*</label>
+                  <label class="eos-form-group-label" for="confirmPasswordEdit">Confirm password*</label>
                   <input
                     class="eos-form__input_text"
                     type="password"
@@ -335,6 +334,7 @@ export default class EosAccountManagement extends Vue {
     password: "",
     confirmPassword: ""
   };
+
   @Validations()
   public validations = {
     createAccountForm: {
@@ -398,7 +398,7 @@ export default class EosAccountManagement extends Vue {
 
   public async getAllAccounts() {
     this.showLoader = false;
-    this.loaderMessage = "Fetching All S3 accounts...";
+    this.loaderMessage = "Fetching all S3 accounts...";
     try {
       const res: any = await Api.getAll(apiRegister.s3_account);
       this.accountsList = res.data.s3_accounts;
@@ -412,7 +412,7 @@ export default class EosAccountManagement extends Vue {
 
   public async createAccount() {
     this.showLoader = true;
-    this.loaderMessage = "Creating Account...";
+    this.loaderMessage = "Creating account...";
     try {
       const res = await Api.post(
         apiRegister.s3_account,
@@ -433,7 +433,7 @@ export default class EosAccountManagement extends Vue {
       password: this.editAccountForm.password
     };
     this.showLoader = true;
-    this.loaderMessage = "Edit Account...";
+    this.loaderMessage = "Edit account...";
     try {
       const res = await Api.patch(
         apiRegister.s3_account,
@@ -478,7 +478,7 @@ export default class EosAccountManagement extends Vue {
 
   public async deleteAccount() {
     this.showLoader = true;
-    this.loaderMessage = "Deleting Account " + this.accountToDelete;
+    this.loaderMessage = "Deleting account " + this.accountToDelete;
     try {
       await Api.delete(apiRegister.s3_account, this.accountToDelete);
     } catch (error) {
@@ -524,7 +524,6 @@ tr {
   border-width: 1px !important;
   border-color: #e3e3e3 !important;
 }
-
 .actbtn {
   position: absolute;
   float: left;

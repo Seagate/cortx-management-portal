@@ -80,9 +80,9 @@
     <div class="row ma-0 mt-3">
       <template v-for="node in  $v.dnsNodes.$each.$iter">
         <div class="col-3 body-1 column node-container" :key="node.id">
-          <span class="font-weight-bold" id="lblIpv4Node">Node {{ node.id }}</span>
+          <span class="font-weight-bold" id="lblIpv4Node">Node {{ node.$model.id }}</span>
           <v-divider class="mt-2" />
-          <div class="eos-form-group mt-5">
+          <div class="eos-form-group mt-0">
             <div
               class="eos-form-group"
               :class="{

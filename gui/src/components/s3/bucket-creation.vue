@@ -1,7 +1,6 @@
 <template>
   <div>
     <Loader :show="showLoader" :message="loaderMessage" />
-
     <div style="width: 100%">
       <div v-if="showCreateBucketForm" class="px-2">
         <v-row>
@@ -10,7 +9,7 @@
               class="eos-form-group"
               :class="{ 'eos-form-group--error': $v.createBucketForm.bucket.bucket_name.$error }"
             >
-              <label class="eos-form-group-label" for="bucketName">Bucket Name*</label>
+              <label class="eos-form-group-label" for="bucketName">Bucket name*</label>
               <input
                 class="eos-form__input_text"
                 type="text"
@@ -22,10 +21,10 @@
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
                   v-if="$v.createBucketForm.bucket.bucket_name.$dirty && !$v.createBucketForm.bucket.bucket_name.required"
-                >Bucket Name is required</label>
+                >Bucket name is required</label>
                 <label
                   v-else-if="$v.createBucketForm.bucket.bucket_name.$dirty && !$v.createBucketForm.bucket.bucket_name.bucketNameRegex"
-                >Invalid Bucket Name</label>
+                >Invalid bucket name</label>
               </div>
             </div>
           </v-col>
@@ -38,7 +37,7 @@
               class="eos-btn-primary"
               @click="createBucket()"
               :disabled="$v.createBucketForm.$invalid"
-            >Create Bucket</button>
+            >Create bucket</button>
             <button
               type="button"
               class="ml-8 eos-btn-secondary"
@@ -106,11 +105,11 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <!---->
+
       <div class="eos-modal-container" v-if="showBucketPolicyDialog">
         <div class="eos-modal">
           <div class="eos-modal-header">
-            <label>JSON Policy</label>
+            <label>JSON policy</label>
             <img
               class="eos-modal-close"
               :src="require('@/assets/close-green.svg')"
@@ -119,7 +118,7 @@
           </div>
           <div class="eos-modal-body">
             <div class="eos-form-group" style="width: 100%;">
-              <label class="eos-form-group-label" for="comment">Add Your JSON Here</label>
+              <label class="eos-form-group-label" for="comment">Add your JSON here</label>
               <textarea
                 class="eos-form__input_textarea"
                 v-model="policyJson"
@@ -147,7 +146,7 @@
           </div>
         </div>
       </div>
-      <!---->
+
       <v-data-table
         calculate-widths
         :items="bucketsList"
@@ -186,7 +185,7 @@
                     />
                   </span>
                 </template>
-                <span>Bucket Policy</span>
+                <span>Bucket policy</span>
               </v-tooltip>
             </td>
           </tr>
@@ -198,7 +197,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
-import { required, helpers ,minLength } from "vuelidate/lib/validators";
+import { required, helpers, minLength } from "vuelidate/lib/validators";
 import { Bucket } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
@@ -247,8 +246,7 @@ export default class EosBucketCreation extends Vue {
   public validations = {
     createBucketForm: {
       bucket: {
-        bucket_name: { required, bucketNameRegex,minLength: minLength(3) 
- }
+        bucket_name: { required, bucketNameRegex, minLength: minLength(3) }
       }
     },
     policyJson: {
@@ -277,7 +275,7 @@ export default class EosBucketCreation extends Vue {
 
   public async getAllBuckets() {
     this.showLoader = true;
-    this.loaderMessage = "Fetching All Buckets...";
+    this.loaderMessage = "Fetching all buckets...";
     try {
       const res: any = await Api.getAll(apiRegister.s3_bucket);
       this.bucketsList = res.data.buckets;
@@ -290,7 +288,7 @@ export default class EosBucketCreation extends Vue {
 
   public async createBucket() {
     this.showLoader = true;
-    this.loaderMessage = "Creating Bucket...";
+    this.loaderMessage = "Creating bucket...";
     try {
       const res = await Api.post(
         apiRegister.s3_bucket,
@@ -400,7 +398,6 @@ export default class EosBucketCreation extends Vue {
 .pointer {
   cursor: pointer;
 }
-
 .actbtn {
   position: absolute;
   float: left;

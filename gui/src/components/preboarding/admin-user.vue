@@ -4,8 +4,8 @@
       <img src="../../assets/logo.png" />
     </div>
     <div class="body-2 ma-10">
-      <div class="ml-4 mt-4 mb-1 title black--text">
-        Admin user configuration
+      <div class="ml-4 mt-4 mb-1 black--text font-weight-bold" style="font-size: 18px">
+        Admin User Configuration
       </div>
       <div class="ml-4 mb-7">
         Configure the username and password for the admin user of this system.

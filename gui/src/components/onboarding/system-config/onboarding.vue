@@ -1,6 +1,6 @@
 /*****************************************************************************
- Filename:          wizard.vue
- Description:       Wizard Component to manage Onboarding Steps
+ Filename:          onboarding.vue
+ Description:       Onboarding component to show Wizard Component
 
  Creation Date:     10/12/2019
  Author:            Sanjeevan Bhave
@@ -39,7 +39,7 @@ export default class EosOnboarding extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.onboarding-container{
-  margin-left: 8.750em;
+.onboarding-container {
+  margin-left: 8.75em;
 }
 </style>

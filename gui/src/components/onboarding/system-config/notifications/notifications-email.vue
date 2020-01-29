@@ -2,7 +2,12 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblEmail">Notifications: Email</div>
-      <div class="row">
+      <div
+        class="mt-6"
+        id="lblEmailMsg"
+      >Selecting email will allow you to configure both secure and non-secure email servers for event notification. You can control the severity of events that you wish to receive, and you will be able to test out your notification settings.</div>
+      <v-divider class="mt-2" />
+      <div class="row mt-5">
         <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
@@ -21,7 +26,7 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.smtpserver.$dirty && !$v.smtpserver.required">SMTP server is required</label>
-              <label v-else-if="$v.smtpserver.$dirty && !$v.smtpserver.ipAddress">SMTP serverAddress</label>
+              <label v-else-if="$v.smtpserver.$dirty && !$v.smtpserver.ipAddress">SMTP server address</label>
             </div>
           </div>
         </div>
@@ -46,7 +51,7 @@
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
                 v-if="$v.senderemail.$dirty && !$v.senderemail.required"
-              >Senderemail is required</label>
+              >Sender email is required</label>
               <label v-if="$v.senderemail.$dirty && !$v.senderemail.email">Email id not valid</label>
             </div>
           </div>
@@ -120,7 +125,7 @@
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.required"
-              >senderpassword is required</label>
+              >Sender password is required</label>
               <label
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.minLength"
               >Minimum 4 charactor required</label>
@@ -152,7 +157,7 @@
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
                 v-if="$v.confirmpassword.$dirty && !$v.confirmpassword.sameAsPassword"
-              >Confirmpassword do not match</label>
+              >Confirm password do not match</label>
             </div>
           </div>
         </div>

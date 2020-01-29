@@ -1,9 +1,7 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblDns">
-        Data network settings
-      </div>
+      <div class="title mt-0 font-weight-bold" id="lblDns">Data network settings</div>
       <div class="mt-6" id="lblMsg">
         Use the following options to finalize your Data network settings for
         mapping the system. You can set system to be managed in an IPv4
@@ -11,20 +9,20 @@
         your network. You can skip this section entirely if your network
         settings are complete.
       </div>
-      <div class="mt-8" id="lblChoseMsg">
-        Chose which network settings you'd like to establish.
-      </div>
+      <div class="mt-8" id="lblChoseMsg">Chose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-8">
         <label class="eos-ckb-container">
-      IPv4
-      <input  type="checkbox"
-          :disabled="isSkip"
-          v-model="isDataipV4Status"
-          name="ipv4"
-          id="chkDNSisipV4Status" />
-      <span class="eos-ckb-tick" id="lblDNsIpv4"></span>
-    </label>
+          IPv4
+          <input
+            type="checkbox"
+            :disabled="isSkip"
+            v-model="isDataipV4Status"
+            name="ipv4"
+            id="chkDNSisipV4Status"
+          />
+          <span class="eos-ckb-tick" id="lblDNsIpv4"></span>
+        </label>
       </div>
       <div class="mt-2" id="lblDNSSetting">
         Selecting IPv4 will allow you to view settings assigned by DHCP or to
@@ -32,16 +30,18 @@
         DHCP.
       </div>
       <div class="mt-6">
-          <label class="eos-ckb-container">
-       Skip data network settings
-      <input  type="checkbox"
-          @change="isSkipNetworkSettings()"
-          :disabled="isDataipV6Status || isDataipV4Status"
-          v-model="isSkip"
-          name="skip"
-          id="chkDNSSkip" />
-      <span class="eos-ckb-tick" id="lblSkipManagmentSetting"></span>
-    </label>
+        <label class="eos-ckb-container">
+          Skip data network settings
+          <input
+            type="checkbox"
+            @change="isSkipNetworkSettings()"
+            :disabled="isDataipV6Status || isDataipV4Status"
+            v-model="isSkip"
+            name="skip"
+            id="chkDNSSkip"
+          />
+          <span class="eos-ckb-tick" id="lblSkipManagmentSetting"></span>
+        </label>
       </div>
       <div class="mt-2" id="lblMsgSkipStep">
         You can skip this step if your management network settings are already

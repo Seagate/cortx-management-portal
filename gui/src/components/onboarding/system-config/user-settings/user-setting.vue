@@ -1,9 +1,7 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblUserSetting">
-        User settings
-      </div>
+      <div class="title mt-0 font-weight-bold" id="lblUserSetting">User settings</div>
       <div class="mt-4">
         <div class="font-weight-regular black--text" id="lblUsrSettingMsg">
           You have already set up a user for managing this system. Use the
@@ -17,15 +15,18 @@
         </div>
         <v-divider class="mt-5" />
         <div class="mt-5">
-          <input
-            type="checkbox"
-            v-model="isLocalUserStatus"
-            :disabled="isSkip"
-            name="local"
-            id="chkUsrSettingLocal"
-          />
-          <span class="ml-3 font-weight-bold">Local</span>
-          <div class="mt-5 font-weight-regular black--text">
+          <label class="eos-ckb-container" for="chkUsrSettingLocal">
+            Local
+            <input
+              type="checkbox"
+              v-model="isLocalUserStatus"
+              :disabled="isSkip"
+              name="local"
+              id="chkUsrSettingLocal"
+            />
+            <span class="eos-ckb-tick"></span>           
+          </label>
+          <div class="mt-2 font-weight-regular black--text">
             Selecting Local Users will allow you to create and manage any users
             that can access this system. You can control which users have access
             to make configuration changes to the system, control which users can
@@ -34,20 +35,21 @@
           </div>
         </div>
         <div class="mt-5">
-          <input
-            type="checkbox"
-            v-model="isSkip"
-            :disabled="isLocalUserStatus || isLdapUserStatus"
-            name="skip"
-            id="chkUsrSettingSkip"
-          />
-          <span class="ml-3 font-weight-bold">Skip this step</span>
+          <label class="eos-ckb-container" for="chkUsrSettingSkip">
+            Skip this step
+            <input
+              type="checkbox"
+              v-model="isSkip"
+              :disabled="isLocalUserStatus || isLdapUserStatus"
+              name="skip"
+              id="chkUsrSettingSkip"
+            />
+            <span class="eos-ckb-tick"></span>
+          </label>
           <div
-            class="mt-5 font-weight-regular black--text"
+            class="mt-2 font-weight-regular black--text"
             id="lblUsrSettingConfigSkip"
-          >
-            If you intend to configure later, you may skip to the next step.
-          </div>
+          >If you intend to configure later, you may skip to the next step.</div>
         </div>
       </div>
     </div>
