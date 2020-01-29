@@ -43,7 +43,7 @@
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
                 v-if="$v.ipv4VipAddress.$dirty && !$v.ipv4VipAddress.required"
-              >VIP Address is required</label>
+              >VIP address is required</label>
               <label
                 v-else-if="$v.ipv4VipAddress.$dirty && !$v.ipv4VipAddress.ipAddress"
               >Invalid VIP Address</label>
@@ -100,7 +100,7 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.required">Netmask is required</label>
-              <label v-else-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.ipAddress">Invalid Netmask</label>
+              <label v-else-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.ipAddress">Invalid netmask</label>
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.required">Gateway is required</label>
-              <label v-else-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.ipAddress">Invalid Gateway</label>
+              <label v-else-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.ipAddress">Invalid gateway</label>
             </div>
           </div>
         </div>

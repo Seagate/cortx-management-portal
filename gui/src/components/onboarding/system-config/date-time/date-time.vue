@@ -4,7 +4,7 @@
       <div
         class="title mt-0 font-weight-bold"
         id="lblDTSetDateTime"
-      >Network time protocol(NTP) settings</div>
+      >Network time protocol (NTP) settings</div>
       <div class="mt-4" v-if="source === 'ntp'">
         <div
           class="eos-form-group"
@@ -26,7 +26,7 @@
           <div class="eos-form-group-label eos-form-group-error-msg">
             <label
               v-if="$v.setDateTime.NtpServerAddress.$dirty && !$v.setDateTime.NtpServerAddress.required"
-            >NTP Server is required</label>
+            >NTP server is required</label>
           </div>
         </div>
         <!---->
@@ -91,7 +91,7 @@
         </v-row>
         <div class="mt-2">Daylight saving time adjustment is not supported.</div>
         <v-btn elevation="0" color="csmprimary" class="mt-5" id="btnDTSetNow">
-          <span class="white--text" @click="setTimeZone()">Set Current Date and Time</span>
+          <span class="white--text" @click="setTimeZone()">Set current date and time</span>
         </v-btn>
       </div>
       <span class="d-none">{{ isValidForm }}</span>

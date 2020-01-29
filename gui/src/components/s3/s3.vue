@@ -11,7 +11,7 @@
         <label class="tab-label">Account</label>
       </v-tab>
       <v-tab @click="switchTab('iamuser')">
-        <label class="tab-label">IAM User</label>
+        <label class="tab-label">IAM user</label>
       </v-tab>
       <v-tab @click="switchTab('bucket')">
         <label class="tab-label">Bucket</label>

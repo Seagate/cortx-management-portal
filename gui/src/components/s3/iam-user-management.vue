@@ -1,7 +1,6 @@
 <template>
   <div>
     <Loader :show="showLoader" :message="loaderMessage" />
-
     <div style="width: 100%">
       <div v-if="showCreateUserForm" class="px-2">
         <v-row>
@@ -25,7 +24,7 @@
                 >Username is required</label>
                 <label
                   v-else-if="$v.createUserForm.iamUser.user_name.$dirty && !$v.createUserForm.iamUser.user_name.userNameRegex"
-                >Invalid Username</label>
+                >Invalid username</label>
               </div>
             </div>
           </v-col>
@@ -49,7 +48,7 @@
                 >Password is required</label>
                 <label
                   v-else-if="$v.createUserForm.iamUser.password.$dirty && !$v.createUserForm.iamUser.password.passwordRegex"
-                >Invalid Password</label>
+                >Invalid password</label>
               </div>
             </div>
           </v-col>
@@ -75,7 +74,7 @@
                 >Path is required</label>
                 <label
                   v-else-if="$v.createUserForm.iamUser.path.$dirty && !$v.createUserForm.iamUser.path.pathRegex"
-                >Invalid Path</label>
+                >Invalid path</label>
               </div>
             </div>
           </v-col>
@@ -84,7 +83,7 @@
               class="eos-form-group"
               :class="{ 'eos-form-group--error': $v.createUserForm.confirmPassword.$error }"
             >
-              <label class="eos-form-group-label" for="confirmPassword">Confirm Password*</label>
+              <label class="eos-form-group-label" for="confirmPassword">Confirm password*</label>
               <input
                 class="eos-form__input_text"
                 type="password"
@@ -107,7 +106,7 @@
               class="eos-btn-primary"
               @click="createUser()"
               :disabled="$v.createUserForm.$invalid"
-            >Create User</button>
+            >Create user</button>
             <button
               type="button"
               class="ml-8 eos-btn-secondary"
@@ -132,7 +131,7 @@
           </v-system-bar>
           <v-card-title class="title mt-6 ml-3">
             <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
-            <span>User Created: Access Key and Secret</span>
+            <span>User created: access key and secret</span>
           </v-card-title>
           <v-divider />
           <v-row class="mx-4">
@@ -145,7 +144,7 @@
           <table class="mx-7 mb-7">
             <tr style>
               <th style="width:15rem;height:6rem;text-align: left">Username</th>
-              <th style="width:24.2rem;text-align: left">User Id</th>
+              <th style="width:24.2rem;text-align: left">User id</th>
               <th style="width:5rem;text-align: left">ARN</th>
             </tr>
             <tr>
@@ -209,11 +208,7 @@
       >
         <template v-slot:header="{props}">
           <tr>
-            <th
-              v-for="header in usersTableHeaderList"
-              :key="header.text"
-              class="tableheader"
-            >
+            <th v-for="header in usersTableHeaderList" :key="header.text" class="tableheader">
               <span class="headerText">{{ header.text }}</span>
             </th>
             <th class="tableheader" />
@@ -308,7 +303,7 @@ export default class EosIAMUserManagement extends Vue {
         sortable: false
       },
       {
-        text: "User Id",
+        text: "User id",
         value: "user_id",
         sortable: false
       },
@@ -333,7 +328,7 @@ export default class EosIAMUserManagement extends Vue {
 
   public async getAllUsers() {
     this.showLoader = true;
-    this.loaderMessage = "Fetching All IAM Users...";
+    this.loaderMessage = "Fetching all IAM users...";
     try {
       const res: any = await Api.getAll(apiRegister.s3_iam_user);
       this.usersList = res.data.iam_users;
@@ -347,7 +342,7 @@ export default class EosIAMUserManagement extends Vue {
 
   public async createUser() {
     this.showLoader = true;
-    this.loaderMessage = "Creating User...";
+    this.loaderMessage = "Creating user...";
     const tempUser = this.createUserForm.iamUser;
     tempUser.require_reset = true;
     try {
@@ -393,7 +388,7 @@ export default class EosIAMUserManagement extends Vue {
 
   public async deleteUser() {
     this.showLoader = true;
-    this.loaderMessage = "Deleting User " + this.userToDelete;
+    this.loaderMessage = "Deleting user " + this.userToDelete;
     this.userToDelete = encodeURI(this.userToDelete);
     try {
       await Api.delete(apiRegister.s3_iam_user, this.userToDelete);
@@ -429,7 +424,6 @@ tr {
   border-width: 1px !important;
   border-color: #e3e3e3 !important;
 }
-
 .actbtn {
   position: absolute;
   float: left;

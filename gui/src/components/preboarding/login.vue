@@ -62,7 +62,7 @@
             Login
           </button>
           <!--TODO: This is temporary error handling for Demo-->
-          <div v-if="!isValidLogin" class="red--text mt-1">Login Failed</div>
+          <div v-if="!isValidLogin" class="red--text mt-1">Login failed !</div>
         </form>
       </div>
     </v-container>

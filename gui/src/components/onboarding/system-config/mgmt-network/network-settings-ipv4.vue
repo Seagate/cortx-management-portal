@@ -20,7 +20,7 @@
           <span class="eos-rdb-tick" id="lblIp4DHCP"></span>
         </label>
       </div>
-      <!---->
+
       <div class="row mt-5">
         <div class="col-4 column node-container py-0">
           <div
@@ -41,14 +41,14 @@
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
                 v-if="$v.ipv4VipAddress.$dirty && !$v.ipv4VipAddress.required"
-              >VIP Address is required</label>
+              >VIP address is required</label>
               <label
                 v-else-if="$v.ipv4VipAddress.$dirty && !$v.ipv4VipAddress.ipAddress"
-              >Invalid VIP Address</label>
+              >Invalid VIP address</label>
             </div>
           </div>
         </div>
-        <!----->
+
         <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
@@ -68,13 +68,12 @@
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
                 v-if="$v.ipv4VipHostname.$dirty && !$v.ipv4VipHostname.required"
-              >VIP Hostname is required</label>
+              >VIP hostname is required</label>
             </div>
           </div>
         </div>
       </div>
-
-      <!---->
+      
       <div class="row">
         <div class="col-4 column node-container py-0">
           <div
@@ -98,7 +97,7 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.required">Netmask is required</label>
-              <label v-else-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.ipAddress">Invalid Netmask</label>
+              <label v-else-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.ipAddress">Invalid netmask</label>
             </div>
           </div>
         </div>
@@ -124,19 +123,18 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.required">Gateway is required</label>
-              <label v-else-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.ipAddress">Invalid Gateway</label>
+              <label v-else-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.ipAddress">Invalid gateway</label>
             </div>
           </div>
         </div>
       </div>
-
-      <!---->
+      
       <div class="row mt-5">
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
           <div class="col-4 body-2 column node-container" :key="node.id">
             <span class="font-weight-bold" id="lblIpv4Node">Node {{ node.$model.id }}</span>
             <v-divider class="mt-2" />
-            <div class="mt-5">
+            <div class="mt-0">
               <div
                 v-if="source == 'manual'"
                 class="eos-form-group"

@@ -1,9 +1,7 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblNotification">
-        Notifications
-      </div>
+      <div class="title mt-0 font-weight-bold" id="lblNotification">Notifications</div>
       <div class="mt-4">
         <div class="font-weight-regular black--text" id="lblNotificationMsg">
           The system will send out notifications of important events that may
@@ -15,29 +13,24 @@
           doing so is strongly discouraged.
         </div>
 
-        <div
-          class="mt-5 font-weight-regular black--text"
-          id="lblNotificationMsgChoose"
-        >
+        <div class="mt-5 font-weight-regular black--text" id="lblNotificationMsgChoose">
           Choose the notification options below that align best with your plans
           for supporting data infrastructure within your network.
         </div>
         <v-divider class="mt-5" />
         <div class="mt-5">
-          <input
-            type="checkbox"
-            v-model="isEmailSettingsStatus"
-            name="email"
-            :disabled="isSkip"
-            id="chkNotificationEmail"
-          />
-          <span class="ml-3 font-weight-bold" id="lblNotificationEmail"
-            >Email</span
-          >
-          <div
-            class="mt-5 font-weight-regular black--text"
-            id="lblNotificationConfig"
-          >
+          <label class="eos-ckb-container" for="chkNotificationEmail">
+            Email
+            <input
+              type="checkbox"
+              v-model="isEmailSettingsStatus"
+              name="email"
+              :disabled="isSkip"
+              id="chkNotificationEmail"
+            />
+            <span class="eos-ckb-tick"></span>
+          </label>
+          <div class="mt-2 font-weight-regular black--text" id="lblNotificationConfig">
             Selecting Email will allow you to configure both secure and
             non-secure email servers for event notification. You can control the
             severity of events that you wish to receive, and you will be able to
@@ -45,17 +38,18 @@
           </div>
         </div>
         <div class="mt-5">
-          <input
-            type="checkbox"
-            v-model="isSkip"
-            name="skip"
-            :disabled="isEmailSettingsStatus || isSysLogSettingsStatus"
-            id="chkNotificationSkip"
-          />
-          <span class="ml-3 font-weight-bold" id="lblNotificationSkip"
-            >Skip this step</span
-          >
-          <div class="mt-5 font-weight-regular black--text">
+          <label class="eos-ckb-container" for="chkNotificationSkip">
+            Skip this step
+            <input
+              type="checkbox"
+              v-model="isSkip"
+              name="skip"
+              :disabled="isEmailSettingsStatus || isSysLogSettingsStatus"
+              id="chkNotificationSkip"
+            />
+            <span class="eos-ckb-tick"></span>
+          </label>
+          <div class="mt-2 font-weight-regular black--text">
             If you choose to set up notification paths later, you may skip this
             step for now. However, skipping this step is strongly discouraged,
             and it is highly recommended that you set event notifications up as

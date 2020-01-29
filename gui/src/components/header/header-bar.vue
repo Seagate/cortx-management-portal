@@ -19,7 +19,7 @@
       <div class="eos-logo-separator"></div>
       <img :src="require('@/assets/cloudstore.svg/')" />
       <div class="eos-header-right-aligned-items">
-        <div style="padding-top: 1.125em;">
+        <div style="padding-top: 1.125em;" class="pr-1">
           <label class="eos-username-label">{{ username }}</label>
         </div>
         <div class="eos-logout-icon-container" @click="logout()" v-if="!isRouterPathOnboarding">

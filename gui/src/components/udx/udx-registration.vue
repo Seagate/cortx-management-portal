@@ -17,10 +17,10 @@
     <Loader :show="showLoader" :message="loaderMessage" />
     <div id="udx-reg-form" v-if="!udxDevice && !isFetchingDeviceDetails">
       <div id="udx-reg-form-title-container" class="udx-reg-page-title">
-        <label id="udx-reg-form-title" class="headline font-weight-bold">UDX Registration</label>
+        <label id="udx-reg-form-title" class="headline font-weight-bold">UDX registration</label>
       </div>
       <div id="udx-reg-token-container" class="mt-4" v-if="identificationToken">
-        <label id="udx-reg-token-lbl">Your Identification Token</label>
+        <label id="udx-reg-token-lbl">Your identification token</label>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
             <v-icon class="csmprimary--text mx-2" size="20" v-on="on">mdi-help-circle-outline</v-icon>
@@ -94,7 +94,7 @@
         <label
           id="udx-device-details-title"
           class="headline font-weight-bold"
-        >UDX Registration Details</label>
+        >UDX registration details</label>
       </div>
       <table id="udx-device-details" class="mt-4 udx-device-details">
         <tr>
@@ -106,7 +106,7 @@
           <td class="py-2">{{ udxDevice.productID }}</td>
         </tr>
         <tr>
-          <td class="py-2 udx-device-detail-item-label">Serial Number</td>
+          <td class="py-2 udx-device-detail-item-label">Serial number</td>
           <td class="py-2">{{ udxDevice.serialNumber }}</td>
         </tr>
         <tr>
@@ -122,7 +122,11 @@
           <td class="py-2">{{ udxDevice.vendorID }}</td>
         </tr>
       </table>
-      <v-btn color="csmprimary" @click="showConfirmUnregisterDialog = true" class="mt-5 elevation-0">
+      <v-btn
+        color="csmprimary"
+        @click="showConfirmUnregisterDialog = true"
+        class="mt-5 elevation-0"
+      >
         <span class="white--text">Deregister</span>
       </v-btn>
       <v-dialog v-model="showConfirmUnregisterDialog" persistent max-width="790">
@@ -265,7 +269,7 @@ export default class UDXRegistration extends Vue {
 
   private async getIdentificationToken() {
     this.showLoader = true;
-    this.loaderMessage = "Generating Identification Token...";
+    this.loaderMessage = "Generating identification token...";
     try {
       const res = await Api.getAll(apiRegister.udx_reg_token);
       this.identificationToken = res.data.registrationToken;

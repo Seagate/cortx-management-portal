@@ -22,11 +22,7 @@
         <div class="loader-message" v-if="message">
           <label>{{ message }}</label>
         </div>
-        <v-progress-linear
-          indeterminate
-          color="csmprimary"
-          background-color="csmdisabled"
-        ></v-progress-linear>
+        <v-progress-linear indeterminate color="csmprimary" background-color="csmdisabled"></v-progress-linear>
       </div>
     </div>
   </v-overlay>
