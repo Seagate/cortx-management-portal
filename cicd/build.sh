@@ -86,6 +86,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
 
     CONF=$BASE_DIR/src/conf/
     cp -R $BASE_DIR/schema $DIST/csm/
+    cp -R $BASE_DIR/templates $DIST/csm/
     mkdir -p  $DIST/csm/cli/
     cp -R $BASE_DIR/src/cli/schema $DIST/csm/cli/
 
