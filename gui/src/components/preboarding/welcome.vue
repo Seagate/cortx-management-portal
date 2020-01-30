@@ -15,15 +15,13 @@
         By clicking the "Get Started" button, you agree to the
         <span class="csmprimary--text">EULA.</span>
       </div>
-      <v-btn
-        class=" ml-4"
-        outlined
-        dark
-        elevation="0"
+      <button
+        type="button"
+        class="eos-btn-primary-dark ml-4"
         @click="showLicenseAgreement = true"
       >
-        <span>Get Started</span>
-      </v-btn>
+        Get Started
+      </button>
       <LicenseAgreement
         @accepted="licenseAcceptedOrClosed"
         v-if="showLicenseAgreement"
@@ -40,6 +38,9 @@ import LicenseAgreement from "./license-agreement.vue";
   components: { LicenseAgreement }
 })
 export default class EosWelcome extends Vue {
+  public mounted() {
+    this.$store.commit("alerts/setOnboardingFlag", false);
+  }
   private data() {
     return {
       showLicenseAgreement: false
@@ -51,9 +52,6 @@ export default class EosWelcome extends Vue {
     } else {
       this.$data.showLicenseAgreement = false;
     }
-  }
-  public mounted() {
-    this.$store.commit("alerts/setOnboardingFlag", false);
   }
   private gotToNextPage() {
     this.$router.push("adminuser");

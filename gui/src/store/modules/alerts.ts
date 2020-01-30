@@ -98,7 +98,7 @@ export default class Alerts extends VuexModule {
     @Action
     public async acknowledgeAll(): Promise<any | undefined> {
         const currentPageAlertIds: string[] = [];
-        if(this.alerts){
+        if (this.alerts) {
             this.alerts.alerts.forEach((alert) => {
                 currentPageAlertIds.push(alert.alert_uuid);
             });

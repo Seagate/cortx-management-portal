@@ -143,6 +143,30 @@ import {
   name: "eos-data-network-ipv6"
 })
 export default class EosDataNetworkIpv6 extends Vue {
+  public updateDataNetworkconfig() {
+    const queryParams: DataNetworkIpv6 = {
+      is_auto: true,
+      nodes: this.$data.ipv6Nodes
+    };
+
+    return this.$store.dispatch(
+      "systemConfig/updateDataNetworkSettingIpv6",
+      queryParams
+    );
+  }
+  public mounted() {
+    this.managementNetworkGetter();
+  }
+  public managementNetworkGetter() {
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    if (
+      systemconfig.data_network_settings &&
+      systemconfig.data_network_settings.ipv6 &&
+      systemconfig.data_network_settings.ipv6.nodes
+    ) {
+      this.$data.ipv6Nodes = systemconfig.data_network_settings.ipv6.nodes;
+    }
+  }
   private gotToNextPage() {
     this.updateDataNetworkconfig()
       .then((res: any) => {
@@ -210,30 +234,6 @@ export default class EosDataNetworkIpv6 extends Vue {
       ],
       isValid: true
     };
-  }
-  public updateDataNetworkconfig() {
-    const queryParams: DataNetworkIpv6 = {
-      is_auto: true,
-      nodes: this.$data.ipv6Nodes
-    };
-
-    return this.$store.dispatch(
-      "systemConfig/updateDataNetworkSettingIpv6",
-      queryParams
-    );
-  }
-  public mounted() {
-    this.managementNetworkGetter();
-  }
-  public managementNetworkGetter() {
-    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    if (
-      systemconfig.data_network_settings &&
-      systemconfig.data_network_settings.ipv6 &&
-      systemconfig.data_network_settings.ipv6.nodes
-    ) {
-      this.$data.ipv6Nodes = systemconfig.data_network_settings.ipv6.nodes;
-    }
   }
 }
 </script>

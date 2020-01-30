@@ -317,6 +317,7 @@ const accountEmailRegex = helpers.regex(
 );
 const passwordRegex = helpers.regex(
   "passwordRegex",
+  // tslint:disable-next-line
   /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
 );
 

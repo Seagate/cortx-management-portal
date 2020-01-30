@@ -251,22 +251,6 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       }
     }
   };
-  private data() {
-    return {
-      ipv4VipAddress: "",
-      ipv4Netmask: "",
-      ipv4Gateway: "",
-      ipv4VipHostname: "",
-      source: "manual",
-      systemConfigObject: {} as SystemConfigObject,
-      isValid: true,
-      ipv4Nodes: [
-        { id: 0, ip_address: "", hostname: "" },
-        { id: 1, ip_address: "", hostname: "" }
-      ]
-    };
-  }
-
   public mounted() {
     this.managementNetworkGetter();
     // WizardHook: Open a listener for onNext event
@@ -280,12 +264,6 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   public destroyed() {
     // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
-  }
-  get isValidForm() {
-    // WizardHook: Emit event to sibling wizard footer component
-    // to send information about data validation to enable/disable wizard footer
-    EVENT_BUS.$emit("validForm", !this.$v.$invalid);
-    return true;
   }
   public managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
@@ -314,6 +292,28 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       vip_hostname: this.$data.ipv4VipHostname
     };
     return this.$store.dispatch("systemConfig/updateMngmtIpv4", queryParams);
+  }
+  private data() {
+    return {
+      ipv4VipAddress: "",
+      ipv4Netmask: "",
+      ipv4Gateway: "",
+      ipv4VipHostname: "",
+      source: "manual",
+      systemConfigObject: {} as SystemConfigObject,
+      isValid: true,
+      ipv4Nodes: [
+        { id: 0, ip_address: "", hostname: "" },
+        { id: 1, ip_address: "", hostname: "" }
+      ]
+    };
+  }
+
+  get isValidForm() {
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EVENT_BUS.$emit("validForm", !this.$v.$invalid);
+    return true;
   }
 }
 </script>

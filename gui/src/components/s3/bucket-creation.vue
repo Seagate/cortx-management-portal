@@ -212,36 +212,6 @@ export default class EosBucketCreation extends Vue {
   public createBucketForm = {
     bucket: {} as Bucket
   };
-  private jsonvalidationMsg: any = "" || null;
-  private showCreateBucketForm: boolean;
-  private showLoader: boolean;
-  private loaderMessage: string;
-  private showBucketCreateSuccessDialog: boolean;
-  private showConfirmDeleteDialog: boolean;
-  private showBucketPolicyDialog: boolean;
-  private bucketsTableHeaderList: any[];
-  private bucketsList: Bucket[] = [];
-  private bucketToDelete: string = "";
-  private policyJson: any = "";
-  private bucketName: any = "";
-  constructor() {
-    super();
-    this.jsonvalidationMsg = "";
-    this.bucketName = "";
-    this.showCreateBucketForm = false;
-    this.showLoader = false;
-    this.loaderMessage = "";
-    this.showBucketCreateSuccessDialog = false;
-    this.showConfirmDeleteDialog = false;
-    this.showBucketPolicyDialog = false;
-    this.bucketsTableHeaderList = [
-      {
-        text: "Name",
-        value: "name",
-        sortable: false
-      }
-    ];
-  }
   @Validations()
   public validations = {
     createBucketForm: {
@@ -264,11 +234,45 @@ export default class EosBucketCreation extends Vue {
       }
     }
   };
-  data() {
+
+  private jsonvalidationMsg: any = "" || null;
+  private showCreateBucketForm: boolean;
+  private showLoader: boolean;
+  private loaderMessage: string;
+  private showBucketCreateSuccessDialog: boolean;
+  private showConfirmDeleteDialog: boolean;
+  private showBucketPolicyDialog: boolean;
+  private bucketsTableHeaderList: any[];
+  private bucketsList: Bucket[] = [];
+  private bucketToDelete: string = "";
+  private policyJson: any = "";
+  private bucketName: any = "";
+
+  constructor() {
+    super();
+    this.jsonvalidationMsg = "";
+    this.bucketName = "";
+    this.showCreateBucketForm = false;
+    this.showLoader = false;
+    this.loaderMessage = "";
+    this.showBucketCreateSuccessDialog = false;
+    this.showConfirmDeleteDialog = false;
+    this.showBucketPolicyDialog = false;
+    this.bucketsTableHeaderList = [
+      {
+        text: "Name",
+        value: "name",
+        sortable: false
+      }
+    ];
+  }
+
+  public data() {
     return {
       jsonerr: ""
     };
   }
+
   public mounted() {
     this.getAllBuckets();
   }
@@ -375,7 +379,7 @@ export default class EosBucketCreation extends Vue {
     this.policyJson = "";
   }
   public async updateBuketPolicy() {
-    let policy = JSON.parse(this.policyJson);
+    const policy = JSON.parse(this.policyJson);
     this.showLoader = true;
     try {
       const res = await Api.put(

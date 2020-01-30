@@ -267,7 +267,7 @@ export default class EosDataNetworkIpv4 extends Vue {
   }
   private updateDataNetworkConfig() {
     const queryParams: DataNetworkIpv4 = {
-      is_dhcp: this.$data.source == "DHCP",
+      is_dhcp: this.$data.source === "DHCP",
       vip_address: this.$data.ipv4VipAddress,
       vip_hostname: this.$data.ipv4VipHostname,
       netmask: this.$data.ipv4Netmask,
@@ -287,8 +287,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       this.updateDataNetworkConfig()
         .then(result => {
           res(true);
-        })
-        .catch(err => {});
+        });
     });
   }
   private destroyed() {
@@ -312,7 +311,7 @@ export default class EosDataNetworkIpv4 extends Vue {
     ) {
       this.$data.ipv4Nodes = dataNetworkSettings.ipv4.nodes;
       this.$data.source =
-        dataNetworkSettings.ipv4.is_dhcp == true ? "DHCP" : "manual";
+        dataNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
       this.$data.ipv4VipAddress = dataNetworkSettings.ipv4.vip_address;
       this.$data.ipv4VipHostname = dataNetworkSettings.ipv4.vip_hostname;
       this.$data.ipv4Netmask = dataNetworkSettings.ipv4.netmask;

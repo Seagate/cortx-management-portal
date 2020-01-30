@@ -141,7 +141,7 @@ export default class EosWizard extends Vue {
     const compName: string = currentComponent.component;
     if (compName) {
     const loadComponent = () =>
-      import(/* webpackChunkName: [compName] */ `./../../${compPath}`);
+      import(/* webpackChunkName: "compName" */ `./../../${compPath}`);
     return loadComponent;
   }
   }
