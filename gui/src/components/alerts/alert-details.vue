@@ -20,28 +20,27 @@
     </div>
     <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);" class="mt-4 mb-3">
       <div style="height: 30px;">
-        <div style="float: left;" v-if="alert && alertExtendedInfo">
-          <label class="eos-alert-detail-title">Id: </label>
+        <div class="eos-float-l" v-if="alert && alertExtendedInfo">
+          <label class="eos-text-lg eos-text-bold">Id:&nbsp;</label>
           <label>{{ alertExtendedInfo.resource_id }}</label>
-          <label class="eos-alert-detail-title"> | Name: </label>
+          <label class="eos-text-lg eos-text-bold">&nbsp;| Name:&nbsp;</label>
           <label>{{ alert.module_type }}</label>
         </div>
-        <div style="float: right;">
+        <div class="eos-float-r">
           <div class="eos-icon-btn eos-comment-icon"></div>
           <div class="eos-icon-btn eos-acknowledge-icon ml-5" @click="acknowledgeAlert()"></div>
-          <div class="eos-icon-btn eos-resolved-icon ml-5"></div>
         </div>
       </div>
-      <div style="font-size: 14px;font-weight: bold;">
+      <div class="eos-text-md eos-text-bold">
         <div>
           <label>Cluster {{ alertExtendedInfo.cluster_id }}</label>
-          <label> | Site {{ alertExtendedInfo.site_id }}</label>
-          <label> | Rack {{ alertExtendedInfo.rack_id }}</label>
-          <label> | Node {{ alertExtendedInfo.node_id }}</label>
+          <label>&nbsp;| Site {{ alertExtendedInfo.site_id }}</label>
+          <label>&nbsp;| Rack {{ alertExtendedInfo.rack_id }}</label>
+          <label>&nbsp;| Node {{ alertExtendedInfo.node_id }}</label>
         </div>
         <div>
           <label>Resource Type: {{ alertExtendedInfo.resource_type }}</label>
-          <label> | State: {{ alert.state }}</label>
+          <label>&nbsp;| State: {{ alert.state }}</label>
         </div>
         <div>
           <span
@@ -73,20 +72,20 @@
         <div class="eos-float-l">
           <img
             v-if="alert.resolved"
-            style="float: left;"
+            class="eos-float-l"
             :src="require('@/assets/resolved-filled-default.svg')"
           />
-          <img v-else style="float: left;" :src="require('@/assets/resolved-filled-disabled.svg')" />
+          <img v-else class="eos-float-l" :src="require('@/assets/resolved-filled-disabled.svg')" />
           <label
             :class="alert.resolved ? '' : 'eos-alert-status-chip-disabled'"
             style="float: left;"
           >Resolved |</label>
           <img
             v-if="alert.acknowledged"
-            style="float: left;"
+            class="eos-float-l"
             :src="require('@/assets/acknowledge-default.svg')"
           />
-          <img v-else style="float: left;" :src="require('@/assets/acknowledge-disabled.svg')" />
+          <img v-else class="eos-float-l" :src="require('@/assets/acknowledge-disabled.svg')" />
           <label
             :class="alert.acknowledged ? '' : 'eos-alert-status-chip-disabled'"
             style="float: left;"
@@ -174,38 +173,45 @@ export default class EosAlertDetails extends Vue {
   public async mounted() {
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
-      message: "Fetching Alert details..."
+      message: "Fetching alert details..."
     });
-    try {
-      const res = await Api.getAll(
-        apiRegister.all_alerts + "/" + this.$route.params["alert_id"]
-      );
-      this.alert = res.data;
-      if (this.alert["event_details"]) {
-        const tempAlertEventDetailsJSONString = this.alert["event_details"]
-          .split("'")
-          .join('"');
-        const tempAlertEventDetails = JSON.parse(
-          tempAlertEventDetailsJSONString
-        );
-        tempAlertEventDetails.forEach((event_detail: any) => {
-          const alertEventDetail: AlertEventDetail = {
-            name: event_detail.name,
-            event_reason: event_detail.event_reason,
-            event_recommendation: event_detail.event_recommendation.split("-"),
-            showRecommendation: false
-          };
-          this.alertEventDetails.push(alertEventDetail);
-        });
+    const res = await Api.getAll(
+      apiRegister.all_alerts + "/" + this.$route.params.alert_id
+    );
+    if (res.data) {
+      try {
+        this.alert = res.data;
+        if (this.alert.event_details) {
+          const tempAlertEventDetailsJSONString = this.alert.event_details
+            .split("'")
+            .join("\"");
+          const tempAlertEventDetails = JSON.parse(
+            tempAlertEventDetailsJSONString
+          );
+          tempAlertEventDetails.forEach((event_detail: any) => {
+            const alertEventDetail: AlertEventDetail = {
+              name: event_detail.name,
+              event_reason: event_detail.event_reason,
+              event_recommendation: event_detail.event_recommendation.split(
+                "-"
+              ),
+              showRecommendation: false
+            };
+            this.alertEventDetails.push(alertEventDetail);
+          });
+        }
+        if (this.alert.extended_info) {
+          const tempAlertExtendedInfoJSONString = this.alert.extended_info
+            .split("'")
+            .join("\"");
+          this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
+          this.alertExtendedInfo = this.alertDetails.info;
+        }
+      } catch (e) {
+        // tslint:disable-next-line: no-console
+        console.log(e);
       }
-      if (this.alert["extended_info"]) {
-        const tempAlertExtendedInfoJSONString = this.alert["extended_info"]
-          .split("'")
-          .join('"');
-        this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
-        this.alertExtendedInfo = this.alertDetails["info"];
-      }
-    } catch (e) {}
+    }
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: false,
       message: ""
@@ -216,37 +222,19 @@ export default class EosAlertDetails extends Vue {
     if (!this.alert.acknowledged) {
       this.$store.dispatch("systemConfig/showLoaderMessage", {
         show: true,
-        message: "Acknowledging Alert..."
+        message: "Acknowledging alert..."
       });
       try {
         await Api.patch(
           apiRegister.all_alerts,
           { acknowledged: true },
-          this.$route.params["alert_id"]
+          this.$route.params.alert_id
         );
         this.alert.acknowledged = true;
-      } catch (e) {}
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: false,
-        message: ""
-      });
-    }
-  }
-
-  public async resolveAlert() {
-    if (!this.alert.resolved) {
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: true,
-        message: "Resolving Alert..."
-      });
-      try {
-        await Api.patch(
-          apiRegister.all_alerts,
-          { resolved: true },
-          this.$route.params["alert_id"]
-        );
-        this.alert.resolved = true;
-      } catch (e) {}
+      } catch (e) {
+        // tslint:disable-next-line: no-console
+        console.log(e);
+      }
       this.$store.dispatch("systemConfig/showLoaderMessage", {
         show: false,
         message: ""
@@ -266,13 +254,6 @@ export default class EosAlertDetails extends Vue {
   font-weight: bold;
   font-size: 14px;
   line-height: 22px;
-}
-.eos-alert-detail-title {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 26px;
-  color: rgba(0, 0, 0, 0.87);
 }
 .eos-alert-status-chip-disabled {
   color: #b7b7b7;
