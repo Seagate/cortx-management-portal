@@ -54,44 +54,72 @@ axios.interceptors.response.use(
 export abstract class Api {
   // Wrapper method to for get api
   public static async getAll(url: string, queryParams?: object): Promise<ApiResponse> {
-    const apiResponse: ApiResponse = {} as ApiResponse;
     return await axios.get(url, { params: queryParams })
       .then((response) => {
-        apiResponse.data = response.data;
-        apiResponse.status = response.status;
-        apiResponse.statusText = response.statusText;
-        return Promise.resolve(apiResponse);
+        return Promise.resolve(this.buildSuccessResponse(response));
       }).catch((error) => {
-        apiResponse.status = error.response.status;
-        apiResponse.statusText = error.response.statusText;
-        apiResponse.error = {
-          name: "Error: " + error.response.status,
-          message: error.response.statusText
-        };
-        return Promise.reject(apiResponse);
+        return Promise.reject(this.buildErrorResponse(error.response));
       });
   }
   // Wrapper method for update api
   public static async patch(url: string, payload: object, id?: string) {
     const tempURL = id ? url + "/" + id : url;
-    return await axios.patch(tempURL, payload);
+    return await axios.patch(tempURL, payload)
+      .then((response) => {
+        return Promise.resolve(this.buildSuccessResponse(response));
+      }).catch((error) => {
+        return Promise.reject(this.buildErrorResponse(error.response));
+      });
   }
   // Wrapper method for post api
   public static async post(url: string, payload: object) {
-    return await axios.post(url, payload);
+    return await axios.post(url, payload)
+      .then((response) => {
+        return Promise.resolve(this.buildSuccessResponse(response));
+      }).catch((error) => {
+        return Promise.reject(this.buildErrorResponse(error.response));
+      });
   }
   // Wrapper method for post api
   public static async delete(url: string, id: string) {
-    if (!id) {
-      return;
-    }
-    return await axios.delete(url + "/" + id);
+    const tempURL = id ? url + "/" + id : url;
+    return await axios.delete(tempURL)
+      .then((response) => {
+        return Promise.resolve(this.buildSuccessResponse(response));
+      }).catch((error) => {
+        return Promise.reject(this.buildErrorResponse(error.response));
+      });
   }
   // Wrapper method for update api
   public static async put(url: string, payload: object, id: string) {
-    if (!id) {
-      return;
-    }
-    return await axios.put(url + "/" + id, payload);
+    const tempURL = id ? url + "/" + id : url;
+    return await axios.put(tempURL, payload)
+      .then((response) => {
+        return Promise.resolve(this.buildSuccessResponse(response));
+      }).catch((error) => {
+        return Promise.reject(this.buildErrorResponse(error.response));
+      });
+  }
+
+  private static buildSuccessResponse(response: any): ApiResponse {
+    const apiResponse: ApiResponse = {
+      data: response.data,
+      headers: response.headers,
+      status: response.status,
+      statusText: response.statusText
+    };
+    return apiResponse;
+  }
+
+  private static buildErrorResponse(response: any): ApiResponse {
+    const apiResponse: ApiResponse = {
+      status: response.status,
+      statusText: response.statusText,
+      error: {
+        name: "Error: " + response.status,
+        message: response.statusText
+      }
+    };
+    return apiResponse;
   }
 }

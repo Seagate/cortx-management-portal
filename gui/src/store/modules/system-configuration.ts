@@ -48,7 +48,7 @@ export default class SystemConfiguration extends VuexModule {
   public isDataipV4: boolean = false;
   public isDataipV6: boolean = false;
   public isDataNetworkSettingsSkip: boolean = false;
-  public showLoader: boolean = false;
+  public loaderShow: boolean = false;
   public loaderMessage: string = "";
   public notifications: Notifications = {} as Notifications;
   public isLocalUser: boolean = false;
@@ -486,20 +486,29 @@ export default class SystemConfiguration extends VuexModule {
   // Loader Config
   @Mutation
   public loaderConfigMutation(loaderData: any) {
-    this.showLoader = loaderData.show;
+    this.loaderShow = loaderData.show;
     this.loaderMessage = loaderData.message;
   }
   @Action
   public async showLoaderMessage(loaderData: any) {
     this.context.commit("loaderConfigMutation", loaderData);
-    /*if (loaderData.show) {
-      setTimeout(() => {
-        this.context.commit("loaderConfigMutation", { show: false });
-      }, 5000);
-    }*/
+  }
+  @Action
+  public async showLoader(message: string) {
+    this.context.commit("loaderConfigMutation", {
+      show: true,
+      message
+    });
+  }
+  @Action
+  public async hideLoader() {
+    this.context.commit("loaderConfigMutation", {
+      show: false,
+      message: ""
+    });
   }
   get showLoaderStatus() {
-    return this.showLoader;
+    return this.loaderShow;
   }
   get loaderMessageText() {
     return this.loaderMessage;

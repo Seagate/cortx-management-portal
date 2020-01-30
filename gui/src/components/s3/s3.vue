@@ -6,50 +6,51 @@
         <label>Use this table to create IAM users that have access to the buckets you create in the next step. You can add as many as you like. The access key and secret key for each user will be shown once you click continue. You will have the oppurtunity to download a CSV at that point.</label>
       </div>
     </div>
-    <v-tabs color="csmprimary" class="mb-2" style="border-bottom: 1px solid lightgrey;">
-      <v-tab @click="switchTab('account')">
-        <label class="tab-label">Account</label>
-      </v-tab>
-      <v-tab @click="switchTab('iamuser')">
-        <label class="tab-label">IAM user</label>
-      </v-tab>
-      <v-tab @click="switchTab('bucket')">
-        <label class="tab-label">Bucket</label>
-      </v-tab>
-    </v-tabs>
+    <eos-tabs :tabsInfo="tabsInfo" />
     <S3Account v-if="showAccountTab" />
     <IAMUser v-if="showIAMUserTab" />
     <S3Bucket v-if="showBucketTab" />
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import EosTabs, { TabsInfo } from "../widgets/eos-tabs.vue";
 import S3Account from "./account-management.vue";
 import IAMUser from "./iam-user-management.vue";
 import S3Bucket from "./bucket-creation.vue";
 
 @Component({
   name: "eos-s3-management",
-  components: { S3Account, IAMUser, S3Bucket }
+  components: { EosTabs, S3Account, IAMUser, S3Bucket }
 })
 export default class EosS3Management extends Vue {
+  public tabsInfo: TabsInfo = {
+    tabs: [
+      { id: 1, label: "Account" },
+      { id: 2, label: "IAM user" },
+      { id: 3, label: "Bucket" }
+    ],
+    selectedTab: 1
+  };
+
   private showAccountTab: boolean = true;
   private showIAMUserTab: boolean = false;
   private showBucketTab: boolean = false;
 
-  public switchTab(tab: string) {
-    switch (tab) {
-      case "account":
+  @Watch("tabsInfo.selectedTab")
+  public onPropertyChanged(value: number, oldValue: number) {
+    switch (value) {
+      case 1:
         this.showAccountTab = true;
         this.showIAMUserTab = false;
         this.showBucketTab = false;
         break;
-      case "iamuser":
+      case 2:
         this.showAccountTab = false;
         this.showIAMUserTab = true;
         this.showBucketTab = false;
         break;
-      case "bucket":
+      case 3:
         this.showAccountTab = false;
         this.showIAMUserTab = false;
         this.showBucketTab = true;
