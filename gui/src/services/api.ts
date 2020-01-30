@@ -14,6 +14,7 @@
  *****************************************************************************/
 import axios from "axios";
 import router from "../router"; // Get router object from our router.ts
+import { ApiResponse } from "./api-model";
 
 // Add a request interceptor
 // Set valid token into each request header
@@ -45,8 +46,6 @@ axios.interceptors.response.use(
       const conststr = require("../common/const-string.json");
       localStorage.removeItem(conststr.access_token);
       router.push("/login");
-
-      // return Promise.reject(error);
     }
     return Promise.reject(error);
   }
@@ -54,8 +53,23 @@ axios.interceptors.response.use(
 
 export abstract class Api {
   // Wrapper method to for get api
-  public static async getAll(url: string, queryParams?: object) {
-    return await axios.get(url, { params: queryParams });
+  public static async getAll(url: string, queryParams?: object): Promise<ApiResponse> {
+    const apiResponse: ApiResponse = {} as ApiResponse;
+    return await axios.get(url, { params: queryParams })
+      .then((response) => {
+        apiResponse.data = response.data;
+        apiResponse.status = response.status;
+        apiResponse.statusText = response.statusText;
+        return Promise.resolve(apiResponse);
+      }).catch((error) => {
+        apiResponse.status = error.response.status;
+        apiResponse.statusText = error.response.statusText;
+        apiResponse.error = {
+          name: "Error: " + error.response.status,
+          message: error.response.statusText
+        };
+        return Promise.reject(apiResponse);
+      });
   }
   // Wrapper method for update api
   public static async patch(url: string, payload: object, id?: string) {
