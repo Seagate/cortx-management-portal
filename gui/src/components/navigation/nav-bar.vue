@@ -93,34 +93,34 @@ export default class EosNavBar extends Vue {
     {
       title: "Dashboard",
       path: "/dashboard",
-      iconDefault: require('@/assets/navigation/dashboard-grey.svg'),
-      iconActive: require('@/assets/navigation/dashboard-white.svg')
+      iconDefault: require("@/assets/navigation/dashboard-grey.svg"),
+      iconActive: require("@/assets/navigation/dashboard-white.svg")
     },
     {
       title: "Provisioning",
       path: "/provisioning",
-      iconDefault: require('@/assets/navigation/provisioning-grey.svg'),
-      iconActive: require('@/assets/navigation/provisioning-white.svg')
+      iconDefault: require("@/assets/navigation/provisioning-grey.svg"),
+      iconActive: require("@/assets/navigation/provisioning-white.svg")
     },
     {
       title: "Settings",
       path: "/settings",
-      iconDefault: require('@/assets/navigation/settings-grey.svg'),
-      iconActive: require('@/assets/navigation/settings-white.svg')
+      iconDefault: require("@/assets/navigation/settings-grey.svg"),
+      iconActive: require("@/assets/navigation/settings-white.svg")
     },
     {
       title: "Maintenance",
       path: "/maintenance",
-      iconDefault: require('@/assets/navigation/maintenance-grey.svg'),
-      iconActive: require('@/assets/navigation/maintenance-white.svg')
+      iconDefault: require("@/assets/navigation/maintenance-grey.svg"),
+      iconActive: require("@/assets/navigation/maintenance-white.svg")
     },
     {
       title: "Alerts",
       path: "/alerts",
-      iconDefault: require('@/assets/navigation/alerts-grey.svg'),
-      iconActive: require('@/assets/navigation/alerts-white.svg'),
-      iconDefaultWithNotification: require('@/assets/navigation/alerts-dot-grey.svg'),
-      iconActiveWithNotification: require('@/assets/navigation/alerts-dot-white.svg')
+      iconDefault: require("@/assets/navigation/alerts-grey.svg"),
+      iconActive: require("@/assets/navigation/alerts-white.svg"),
+      iconDefaultWithNotification: require("@/assets/navigation/alerts-dot-grey.svg"),
+      iconActiveWithNotification: require("@/assets/navigation/alerts-dot-white.svg")
     }
   ];
 

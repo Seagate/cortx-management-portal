@@ -247,6 +247,7 @@ const userNameRegex = helpers.regex("userNameRegex", /^[a-zA-Z0-9_-]{1,64}$/);
 const pathRegex = helpers.regex("pathRegex", /^(\/[^/ ]*)+\/?$/);
 const passwordRegex = helpers.regex(
   "passwordRegex",
+  // tslint:disable-next-line
   /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
 );
 

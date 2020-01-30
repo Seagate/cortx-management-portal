@@ -75,17 +75,6 @@ export default class EosDataNetworkIpv4 extends Vue {
       });
     });
   }
-  private destroyed() {
-    // WizardHook: shut off on exit event listner
-    EVENT_BUS.$off("emitOnNext");
-  }
-  get isValidForm() {
-    let validate = true;
-    // WizardHook: Emit event to sibling wizard footer component
-    // to send information about data validation to enable/disable wizard footer
-    EVENT_BUS.$emit("validForm", validate);
-    return validate;
-  }
   public notificationSyslogGetter() {
     const notificationConfiguration = this.$store.getters[
       "systemConfig/userConfigData"
@@ -103,6 +92,17 @@ export default class EosDataNetworkIpv4 extends Vue {
       this.$data.syslognotify =
         notificationConfiguration.notifications.syslog.send_test_syslog;
     }
+  }
+  private destroyed() {
+    // WizardHook: shut off on exit event listner
+    EVENT_BUS.$off("emitOnNext");
+  }
+  get isValidForm() {
+    const validate = true;
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EVENT_BUS.$emit("validForm", validate);
+    return validate;
   }
   private data() {
     return {

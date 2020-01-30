@@ -310,8 +310,8 @@ export default class EosDataNetworkIpv4 extends Vue {
       smtp_sender_email: this.$data.senderemail,
       smtp_sender_password: this.$data.senderpassword,
       email: this.$data.emailaddress
-      //weekly_email: this.$data.weeklyEmail,
-      //send_test_mail: this.$data.testEmail
+      // weekly_email: this.$data.weeklyEmail,
+      // send_test_mail: this.$data.testEmail
     };
 
     return this.$store.dispatch(

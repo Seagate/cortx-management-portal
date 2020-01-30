@@ -279,6 +279,7 @@ import {
 } from "vuelidate/lib/validators";
 const passwordRegex = helpers.regex(
   "passwordRegex",
+  // tslint:disable-next-line
   /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
 );
 import { EVENT_BUS } from "./../../../../main";
@@ -287,6 +288,19 @@ import { EVENT_BUS } from "./../../../../main";
   name: "eos-user-setting-local"
 })
 export default class EosUserSettingLocal extends Vue {
+  @Validations()
+  public validations = {
+    createAccount: {
+      username: { required },
+      password: { required, passwordRegex },
+      confirmPassword: {
+        sameAsPassword: sameAs("password")
+      }
+    },
+    selectedItem: {
+      username: { required }
+    }
+  };
   private mounted() {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
@@ -311,19 +325,6 @@ export default class EosUserSettingLocal extends Vue {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     return this.$data.isUserCreate;
   }
-  @Validations()
-  public validations = {
-    createAccount: {
-      username: { required },
-      password: { required, passwordRegex },
-      confirmPassword: {
-        sameAsPassword: sameAs("password")
-      }
-    },
-    selectedItem: {
-      username: { required }
-    }
-  };
   /**
    * This method create csm user
    */

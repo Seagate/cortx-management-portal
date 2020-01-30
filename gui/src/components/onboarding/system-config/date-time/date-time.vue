@@ -115,21 +115,6 @@ import { required, helpers } from "vuelidate/lib/validators";
   name: "eos-date-time"
 })
 export default class EosDateTime extends Vue {
-  private data() {
-    return {
-      timezoneList: [],
-      source: "ntp",
-      setDateTime: {
-        NtpServerAddress: ""
-      },
-      NtpTimezone: "",
-      minute: "",
-      hours: "",
-      date: "",
-      clock: "",
-      isValid: true
-    };
-  }
   @Validations()
   public validations = {
     setDateTime: {
@@ -206,6 +191,21 @@ export default class EosDateTime extends Vue {
     this.$data.hours = localDate.getHours();
     this.$data.minute = localDate.getMinutes();
     this.$data.date = toDateInputValue();
+  }
+  private data() {
+    return {
+      timezoneList: [],
+      source: "ntp",
+      setDateTime: {
+        NtpServerAddress: ""
+      },
+      NtpTimezone: "",
+      minute: "",
+      hours: "",
+      date: "",
+      clock: "",
+      isValid: true
+    };
   }
 }
 </script>

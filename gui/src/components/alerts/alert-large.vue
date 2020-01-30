@@ -187,16 +187,19 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
     };
   }
 
-  public async acknowledgeAll(){
+  public async acknowledgeAll() {
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
-      message: "Acknowledging Alerts..."
+      message: "Acknowledging alerts..."
     });
     try {
       await this.$store.dispatch("alerts/acknowledgeAll");
       this.$store.commit("alerts/setPage", 1);
       this.onSortPaginate("", null, this.page, this.itemsPerPage);
-    } catch (e) {}
+    } catch (e) {
+        // tslint:disable-next-line: no-console
+        console.log(e);
+    }
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: false,
       message: ""
