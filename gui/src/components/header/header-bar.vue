@@ -15,14 +15,21 @@
 <template>
   <div class="eos-header-container">
     <div class="eos-header">
-      <img style="margin-left: 1.875em;" :src="require('@/assets/udx-logo.svg/')" />
+      <img
+        style="margin-left: 1.875em;"
+        :src="require('@/assets/udx-logo.svg/')"
+      />
       <div class="eos-logo-separator"></div>
       <img :src="require('@/assets/cloudstore.svg/')" />
       <div class="eos-header-right-aligned-items">
         <div style="padding-top: 1.125em;" class="pr-2">
           <label class="eos-username-label">{{ username }}</label>
         </div>
-        <div class="eos-logout-icon-container" @click="logout()" v-if="!isRouterPathOnboarding">
+        <div
+          class="eos-logout-icon-container"
+          @click="logout()"
+          v-if="!isRouterPathOnboarding"
+        >
           <img :src="require('@/assets/logout.svg/')" />
         </div>
       </div>
@@ -74,6 +81,7 @@ export default class HeaderBar extends Vue {
         // tslint:disable-next-line: no-console
         console.error("Logout Action Failed");
       });
+    this.$store.commit("userLogin/setUserPermissions", {});
     localStorage.removeItem(this.$data.alertStatus.access_token);
     this.$router.push("/login");
   }
@@ -104,7 +112,7 @@ export default class HeaderBar extends Vue {
   font-size: 14px;
   line-height: 20px;
   text-align: center;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .eos-header-right-aligned-items {
   margin-left: auto;

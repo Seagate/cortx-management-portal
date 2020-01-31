@@ -71,3 +71,11 @@ export const deleteUser = async (req: Request, res: Response) => {
   let adminUser = Api.delete(apiRegister.csm_user, req, res, req.params.user_id);
   return adminUser;
 };
+/**
+ * This is responsible for getting user permissions
+ * @param req 
+ * @param res
+ */
+export const getUserPermissions = async (req: Request, res: Response) => {
+  return await Api.getAll(apiRegister.user_permissions, req, res);
+};

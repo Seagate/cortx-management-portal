@@ -24,7 +24,7 @@ import {
   MutationAction
 } from "vuex-module-decorators";
 import { UserLoginQueryParam } from "./../../models/user-login";
-
+// import { userPermissions } from "./../../models/user-permissions";
 Vue.use(Vuex);
 
 @Module({
@@ -32,6 +32,7 @@ Vue.use(Vuex);
 })
 export default class UserLogin extends VuexModule {
   public user: any = {};
+  public userPermissions: any = {};
 
   public queryParams: UserLoginQueryParam = {
     username: "",
@@ -42,10 +43,21 @@ export default class UserLogin extends VuexModule {
   public setUser(user: any) {
     this.user = user;
   }
+  @Mutation
+  public setUserPermissions(permissions: any) {
+    this.userPermissions = permissions;
+  }
 
   // Get user
   get getUser() {
     return this.user;
+  }
+
+  get getUserPermissions() {
+    // if (Object.entries(this.userPermissions).length === 0) {
+    //   this.context.dispatch("getUserPermissionsAction");
+    // }
+    return this.userPermissions;
   }
 
   @Action
@@ -85,6 +97,19 @@ export default class UserLogin extends VuexModule {
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.log("err logger: ", e);
+    }
+  }
+  @Action
+  public async getUserPermissionsAction() {
+    try {
+      const res = await Api.getAll(apiRegister.user_permissions);
+      if (res && res.data && res.data.permissions) {
+        this.context.commit("setUserPermissions", res.data.permissions);
+        return res.data.permissions;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
     }
   }
 }

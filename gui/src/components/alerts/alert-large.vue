@@ -27,7 +27,7 @@
       :single-expand="singleExpand"
       item-key="created_time"
       show-expand
-      class="mt-2 eos-table"
+      class="eos-table"
       :items-per-page.sync="itemsPerPage"
       :footer-props="{
         'items-per-page-options': [5, 10, 15]

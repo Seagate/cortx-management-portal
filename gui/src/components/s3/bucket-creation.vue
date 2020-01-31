@@ -5,9 +5,14 @@
         <v-col class="py-0 pr-0">
           <div
             class="eos-form-group"
-            :class="{ 'eos-form-group--error': $v.createBucketForm.bucket.bucket_name.$error }"
+            :class="{
+              'eos-form-group--error':
+                $v.createBucketForm.bucket.bucket_name.$error
+            }"
           >
-            <label class="eos-form-group-label" for="bucketName">Bucket name*</label>
+            <label class="eos-form-group-label" for="bucketName"
+              >Bucket name*</label
+            >
             <input
               class="eos-form__input_text"
               type="text"
@@ -18,11 +23,19 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
-                v-if="$v.createBucketForm.bucket.bucket_name.$dirty && !$v.createBucketForm.bucket.bucket_name.required"
-              >Bucket name is required</label>
+                v-if="
+                  $v.createBucketForm.bucket.bucket_name.$dirty &&
+                    !$v.createBucketForm.bucket.bucket_name.required
+                "
+                >Bucket name is required</label
+              >
               <label
-                v-else-if="$v.createBucketForm.bucket.bucket_name.$dirty && !$v.createBucketForm.bucket.bucket_name.bucketNameRegex"
-              >Invalid bucket name</label>
+                v-else-if="
+                  $v.createBucketForm.bucket.bucket_name.$dirty &&
+                    !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
+                "
+                >Invalid bucket name</label
+              >
             </div>
           </div>
         </v-col>
@@ -35,28 +48,44 @@
             class="eos-btn-primary"
             @click="createBucket()"
             :disabled="$v.createBucketForm.$invalid"
-          >Create bucket</button>
+          >
+            Create bucket
+          </button>
           <button
             type="button"
             class="ml-8 eos-btn-secondary"
             @click="closeCreateBucketForm()"
-          >Cancel</button>
+          >
+            Cancel
+          </button>
         </v-col>
       </v-row>
     </div>
-
-    <button
-      type="button"
-      class="mt-2 mb-2 eos-btn-primary"
-      v-if="!showCreateBucketForm"
-      @click="openCreateBucketForm()"
-    >Create</button>
-
-    <v-dialog v-model="showBucketCreateSuccessDialog" persistent max-width="790">
+    <eos-has-access
+      :to="$eosUserPermissions.s3buckets + $eosUserPermissions.create"
+    >
+      <button
+        type="button"
+        class="mt-2 mb-2 eos-btn-primary"
+        v-if="!showCreateBucketForm"
+        @click="openCreateBucketForm()"
+      >
+        Create
+      </button>
+    </eos-has-access>
+    <v-dialog
+      v-model="showBucketCreateSuccessDialog"
+      persistent
+      max-width="790"
+    >
       <v-card>
         <v-system-bar color="grey lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="closeBucketCreateSuccessDialog()" style="cursor: pointer;">mdi-close</v-icon>
+          <v-icon
+            @click="closeBucketCreateSuccessDialog()"
+            style="cursor: pointer;"
+            >mdi-close</v-icon
+          >
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
@@ -67,7 +96,9 @@
             type="button"
             class="ma-5 eos-btn-primary"
             @click="closeBucketCreateSuccessDialog()"
-          >Ok</button>
+          >
+            Ok
+          </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -76,7 +107,11 @@
       <v-card>
         <v-system-bar color="greay lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="closeConfirmDeleteDialog('no')" style="cursor: pointer;">mdi-close</v-icon>
+          <v-icon
+            @click="closeConfirmDeleteDialog('no')"
+            style="cursor: pointer;"
+            >mdi-close</v-icon
+          >
         </v-system-bar>
         <v-card-title class="title ml-3">
           <img class="mr-2" src="./../../assets/status/warning.png" />
@@ -84,9 +119,9 @@
         </v-card-title>
         <v-divider />
         <v-card-text>
-          <label
-            class="ml-3 delete-bucket-confirmation-msg"
-          >Are you sure you want to delete the bucket?</label>
+          <label class="ml-3 delete-bucket-confirmation-msg"
+            >Are you sure you want to delete the bucket?</label
+          >
         </v-card-text>
 
         <v-card-actions>
@@ -94,12 +129,16 @@
             type="button"
             class="ma-5 eos-btn-primary"
             @click="closeConfirmDeleteDialog('yes')"
-          >Yes</button>
+          >
+            Yes
+          </button>
           <button
             type="button"
             class="ma-5 eos-btn-primary"
             @click="closeConfirmDeleteDialog('no')"
-          >No</button>
+          >
+            No
+          </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -116,7 +155,9 @@
         </div>
         <div class="eos-modal-body">
           <div class="eos-form-group" style="width: 100%;">
-            <label class="eos-form-group-label" for="comment">Add your JSON here</label>
+            <label class="eos-form-group-label" for="comment"
+              >Add your JSON here</label
+            >
             <textarea
               class="eos-form__input_textarea"
               v-model="policyJson"
@@ -125,8 +166,12 @@
             <span
               class="eos-form-group-label eos-form-group-error-msg red--text"
               v-if="$v.policyJson.$dirty && !$v.policyJson.required"
-            >Policy JSON is required</span>
-            <span class="eos-form-group-label eos-form-group-error-msg red--text">{{jsonerr}}</span>
+              >Policy JSON is required</span
+            >
+            <span
+              class="eos-form-group-label eos-form-group-error-msg red--text"
+              >{{ jsonerr }}</span
+            >
           </div>
           <div>
             <button
@@ -134,53 +179,64 @@
               class="eos-btn-primary"
               :disabled="!$v.policyJson.jsonValidator"
               @click="updateBuketPolicy()"
-            >Create</button>
+            >
+              Create
+            </button>
             <button
               type="button"
               class="ml-8 eos-btn-secondary"
               @click="closeBucketPolicyeDialog()"
-            >Cancel</button>
+            >
+              Cancel
+            </button>
           </div>
         </div>
       </div>
     </div>
-
-    <v-data-table
-      calculate-widths
-      :items="bucketsList"
-      item-key="name"
-      class="eos-table"
-      :hide-default-header="true"
-      :hide-default-footer="true"
-      :disable-pagination="true"
+    <eos-has-access
+      :to="$eosUserPermissions.s3buckets + $eosUserPermissions.list"
     >
-      <template v-slot:header="{}">
-        <tr>
-          <th v-for="header in bucketsTableHeaderList" :key="header.text" class="tableheader">
-            <span>{{ header.text }}</span>
-          </th>
-          <th class="tableheader" />
-        </tr>
-      </template>
+      <v-data-table
+        calculate-widths
+        :items="bucketsList"
+        item-key="name"
+        class="eos-table"
+        :hide-default-header="true"
+        :hide-default-footer="true"
+        :disable-pagination="true"
+      >
+        <template v-slot:header="{}">
+          <tr>
+            <th
+              v-for="header in bucketsTableHeaderList"
+              :key="header.text"
+              class="tableheader"
+            >
+              <span>{{ header.text }}</span>
+            </th>
+            <th class="tableheader" />
+          </tr>
+        </template>
 
-      <template v-slot:item="props">
-        <tr>
-          <td>{{props.item.name}}</td>
-          <td>
-            <img
-              @click="openBucketPolicyDialog(props.item.name)"
-              class="eos-cursor-pointer"
-              src="@/assets/actions/edit-green.svg"
-            />
-            <img
-              @click="openConfirmDeleteDialog(props.item.name)"
-              class="eos-cursor-pointer ml-5"
-              src="@/assets/actions/delete-green.svg"
-            />
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
+        <template v-slot:item="props">
+          <tr>
+            <td>{{ props.item.name }}</td>
+            <td>
+              <img
+                @click="openBucketPolicyDialog(props.item.name)"
+                class="eos-cursor-pointer"
+                src="@/assets/actions/edit-green.svg"
+              />
+              <img
+                @click="openConfirmDeleteDialog(props.item.name)"
+                class="eos-cursor-pointer ml-5"
+                src="@/assets/actions/delete-green.svg"
+              />
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
+    </eos-has-access>
   </div>
 </template>
 <script lang="ts">
@@ -194,7 +250,7 @@ import apiRegister from "../../services/api-register";
 const bucketNameRegex = helpers.regex("bucketNameRegex", /^[a-zA-Z0-9_-]*$/);
 
 @Component({
-  name: "eos-bucketcreation"
+  name: "eos-bucket-creation"
 })
 export default class EosBucketCreation extends Vue {
   public createBucketForm = {

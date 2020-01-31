@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 import { Request, Response, request, response } from "express";
-import { getUsers, getUserById, saveUser, deleteUser, updateUser } from "./user-controller";
+import { getUsers, getUserById, saveUser, deleteUser, updateUser, getUserPermissions} from "./user-controller";
 import { checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
@@ -70,6 +70,17 @@ export default [
       async (req: Request, res: Response) => {
         const result = await deleteUser(req, res);
         res.status(HttpStatus.OK).send(result);        
+      }
+    ]
+  },
+  {
+    path: "/api/v1/permissions",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        const result = await getUserPermissions(req, res);
+        res.status(HttpStatus.OK).send(result);
       }
     ]
   }

@@ -15,20 +15,20 @@
 export const version = "v1";
 
 export default {
-    all_alerts: `/api/${version}/alerts`,
-    all_system_config: `/api/${version}/sysconfig`,
-    stats: `/api/${version}/stats`,
-    csm_user: `/api/${version}/user`,
-    admin_user: `/api/${version}/login`,
-    admin_user_create: `/api/${version}/preboarding/user`,
-    admin_user_logout: `/api/${version}/logout`,
-    udx_reg_status: `/usl/v1/system/certificates/domainCertificate`,
-    udx_reg_token: `/usl/v1/registrationToken`,
-    udx_devices: `/usl/v1/devices`,
-    s3_accounts: `/api/${version}/s3_accounts`,
-    iam_users: `/api/${version}/iam_users`,
-    s3_bucket: `/api/${version}/s3/bucket`,
-    capacity: `/api/${version}/capacity`,
-    bucket_policy: `/api/${version}/s3/bucket_policy`
+  all_alerts: `/api/${version}/alerts`,
+  all_system_config: `/api/${version}/sysconfig`,
+  stats: `/api/${version}/stats`,
+  csm_user: `/api/${version}/csm/users`,
+  admin_user: `/api/${version}/login`,
+  admin_user_create: `/api/${version}/preboarding/user`,
+  admin_user_logout: `/api/${version}/logout`,
+  udx_reg_status: `/usl/v1/system/certificates/domainCertificate`,
+  udx_reg_token: `/usl/v1/registrationToken`,
+  udx_devices: `/usl/v1/devices`,
+  s3_accounts: `/api/${version}/s3_accounts`,
+  iam_users: `/api/${version}/iam_users`,
+  s3_bucket: `/api/${version}/s3/bucket`,
+  capacity: `/api/${version}/capacity`,
+  bucket_policy: `/api/${version}/s3/bucket_policy`,
+  user_permissions: `/api/${version}/permissions`
 };
-

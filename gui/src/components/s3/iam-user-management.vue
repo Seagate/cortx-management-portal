@@ -5,7 +5,10 @@
         <v-col class="py-0 pr-0">
           <div
             class="eos-form-group"
-            :class="{ 'eos-form-group--error': $v.createUserForm.iamUser.user_name.$error }"
+            :class="{
+              'eos-form-group--error':
+                $v.createUserForm.iamUser.user_name.$error
+            }"
           >
             <label class="eos-form-group-label" for="userName">Username*</label>
             <input
@@ -18,20 +21,32 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
-                v-if="$v.createUserForm.iamUser.user_name.$dirty && !$v.createUserForm.iamUser.user_name.required"
-              >Username is required</label>
+                v-if="
+                  $v.createUserForm.iamUser.user_name.$dirty &&
+                    !$v.createUserForm.iamUser.user_name.required
+                "
+                >Username is required</label
+              >
               <label
-                v-else-if="$v.createUserForm.iamUser.user_name.$dirty && !$v.createUserForm.iamUser.user_name.userNameRegex"
-              >Invalid username</label>
+                v-else-if="
+                  $v.createUserForm.iamUser.user_name.$dirty &&
+                    !$v.createUserForm.iamUser.user_name.userNameRegex
+                "
+                >Invalid username</label
+              >
             </div>
           </div>
         </v-col>
         <v-col class="py-0 pl-0">
           <div
             class="eos-form-group"
-            :class="{ 'eos-form-group--error': $v.createUserForm.iamUser.password.$error }"
+            :class="{
+              'eos-form-group--error': $v.createUserForm.iamUser.password.$error
+            }"
           >
-            <label class="eos-form-group-label" for="userPassword">Password*</label>
+            <label class="eos-form-group-label" for="userPassword"
+              >Password*</label
+            >
             <input
               class="eos-form__input_text"
               type="password"
@@ -42,11 +57,19 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
-                v-if="$v.createUserForm.iamUser.password.$dirty && !$v.createUserForm.iamUser.password.required"
-              >Password is required</label>
+                v-if="
+                  $v.createUserForm.iamUser.password.$dirty &&
+                    !$v.createUserForm.iamUser.password.required
+                "
+                >Password is required</label
+              >
               <label
-                v-else-if="$v.createUserForm.iamUser.password.$dirty && !$v.createUserForm.iamUser.password.passwordRegex"
-              >Invalid password</label>
+                v-else-if="
+                  $v.createUserForm.iamUser.password.$dirty &&
+                    !$v.createUserForm.iamUser.password.passwordRegex
+                "
+                >Invalid password</label
+              >
             </div>
           </div>
         </v-col>
@@ -55,7 +78,9 @@
         <v-col class="py-0 pr-0">
           <div
             class="eos-form-group"
-            :class="{ 'eos-form-group--error': $v.createUserForm.iamUser.path.$error }"
+            :class="{
+              'eos-form-group--error': $v.createUserForm.iamUser.path.$error
+            }"
           >
             <label class="eos-form-group-label" for="userPath">Path*</label>
             <input
@@ -68,20 +93,32 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
-                v-if="$v.createUserForm.iamUser.path.$dirty && !$v.createUserForm.iamUser.path.required"
-              >Path is required</label>
+                v-if="
+                  $v.createUserForm.iamUser.path.$dirty &&
+                    !$v.createUserForm.iamUser.path.required
+                "
+                >Path is required</label
+              >
               <label
-                v-else-if="$v.createUserForm.iamUser.path.$dirty && !$v.createUserForm.iamUser.path.pathRegex"
-              >Invalid path</label>
+                v-else-if="
+                  $v.createUserForm.iamUser.path.$dirty &&
+                    !$v.createUserForm.iamUser.path.pathRegex
+                "
+                >Invalid path</label
+              >
             </div>
           </div>
         </v-col>
         <v-col class="py-0 pl-0">
           <div
             class="eos-form-group"
-            :class="{ 'eos-form-group--error': $v.createUserForm.confirmPassword.$error }"
+            :class="{
+              'eos-form-group--error': $v.createUserForm.confirmPassword.$error
+            }"
           >
-            <label class="eos-form-group-label" for="confirmPassword">Confirm password*</label>
+            <label class="eos-form-group-label" for="confirmPassword"
+              >Confirm password*</label
+            >
             <input
               class="eos-form__input_text"
               type="password"
@@ -92,8 +129,12 @@
             />
             <span
               class="eos-form-group-label eos-form-group-error-msg"
-              v-if="$v.createUserForm.confirmPassword.$dirty && !$v.createUserForm.confirmPassword.sameAsPassword"
-            >Passwords do not match</span>
+              v-if="
+                $v.createUserForm.confirmPassword.$dirty &&
+                  !$v.createUserForm.confirmPassword.sameAsPassword
+              "
+              >Passwords do not match</span
+            >
           </div>
         </v-col>
       </v-row>
@@ -104,24 +145,38 @@
             class="eos-btn-primary"
             @click="createUser()"
             :disabled="$v.createUserForm.$invalid"
-          >Create user</button>
-          <button type="button" class="ml-8 eos-btn-secondary" @click="closeCreateUserForm()">Cancel</button>
+          >
+            Create user
+          </button>
+          <button
+            type="button"
+            class="ml-8 eos-btn-secondary"
+            @click="closeCreateUserForm()"
+          >
+            Cancel
+          </button>
         </v-col>
       </v-row>
     </div>
-
-    <button
-      type="button"
-      class="mt-2 mb-2 eos-btn-primary"
-      v-if="!showCreateUserForm"
-      @click="openCreateUserForm()"
-    >Create</button>
-
+    <eos-has-access
+      :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.create"
+    >
+      <button
+        type="button"
+        class="mt-2 mb-2 eos-btn-primary"
+        v-if="!showCreateUserForm"
+        @click="openCreateUserForm()"
+      >
+        Create
+      </button>
+    </eos-has-access>
     <v-dialog v-model="showUserDetailsDialog" persistent max-width="790">
       <v-card>
         <v-system-bar color="greay lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="closeUserDetailsDialog()" style="cursor: pointer;">mdi-close</v-icon>
+          <v-icon @click="closeUserDetailsDialog()" style="cursor: pointer;"
+            >mdi-close</v-icon
+          >
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
@@ -142,14 +197,22 @@
             <th style="width:5rem;text-align: left">ARN</th>
           </tr>
           <tr>
-            <td style="width:15rem;height:2rem;text-align: left">{{ user.user_name }}</td>
+            <td style="width:15rem;height:2rem;text-align: left">
+              {{ user.user_name }}
+            </td>
             <td>{{ user.user_id }}</td>
             <td>{{ user.arn }}</td>
           </tr>
         </table>
 
         <v-card-actions>
-          <button type="button" class="ma-5 eos-btn-primary" @click="closeUserDetailsDialog()">Ok</button>
+          <button
+            type="button"
+            class="ma-5 eos-btn-primary"
+            @click="closeUserDetailsDialog()"
+          >
+            Ok
+          </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -158,7 +221,11 @@
       <v-card>
         <v-system-bar color="greay lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="closeConfirmDeleteDialog('no')" style="cursor: pointer;">mdi-close</v-icon>
+          <v-icon
+            @click="closeConfirmDeleteDialog('no')"
+            style="cursor: pointer;"
+            >mdi-close</v-icon
+          >
         </v-system-bar>
         <v-card-title class="title ml-3">
           <img class="mr-2" src="./../../assets/status/warning.png" />
@@ -166,7 +233,9 @@
         </v-card-title>
         <v-divider />
         <v-card-text>
-          <label class="ml-3 delete-user-confirmation-msg">Are you sure you want to delete the user?</label>
+          <label class="ml-3 delete-user-confirmation-msg"
+            >Are you sure you want to delete the user?</label
+          >
         </v-card-text>
 
         <v-card-actions>
@@ -188,41 +257,52 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <v-data-table
-      calculate-widths
-      :items="usersList"
-      item-key="user_name"
-      class="eos-table"
-      :hide-default-header="true"
-      :hide-default-footer="true"
-      :disable-pagination="true"
+    <eos-has-access
+      :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
     >
-      <template v-slot:header="{}">
-        <tr>
-          <th v-for="header in usersTableHeaderList" :key="header.text" class="tableheader">
-            <span>{{ header.text }}</span>
-          </th>
-          <th class="tableheader" />
-        </tr>
-      </template>
+      <v-data-table
+        calculate-widths
+        :items="usersList"
+        item-key="user_name"
+        class="eos-table"
+        :hide-default-header="true"
+        :hide-default-footer="true"
+        :disable-pagination="true"
+      >
+        <template v-slot:header="{}">
+          <tr>
+            <th
+              v-for="header in usersTableHeaderList"
+              :key="header.text"
+              class="tableheader"
+            >
+              <span>{{ header.text }}</span>
+            </th>
+            <th class="tableheader" />
+          </tr>
+        </template>
 
-      <template v-slot:item="props">
-        <tr>
-          <td>{{props.item.user_name}}</td>
-          <td>{{props.item.user_id}}</td>
-          <td>{{props.item.arn}}</td>
-          <td>{{props.item.path}}</td>
-          <td>
-            <img
-              @click="openConfirmDeleteDialog(props.item.user_name)"
-              style="cursor: pointer;"
-              src="./../../assets/actions/delete-green.svg"
-            />
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
+        <template v-slot:item="props">
+          <tr>
+            <td>{{ props.item.user_name }}</td>
+            <td>{{ props.item.user_id }}</td>
+            <td>{{ props.item.arn }}</td>
+            <td>{{ props.item.path }}</td>
+            <eos-has-access
+              :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.delete"
+            >
+              <td>
+                <img
+                  @click="openConfirmDeleteDialog(props.item.user_name)"
+                  style="cursor: pointer;"
+                  src="./../../assets/actions/delete-green.svg"
+                />
+              </td>
+            </eos-has-access>
+          </tr>
+        </template>
+      </v-data-table>
+    </eos-has-access>
   </div>
 </template>
 <script lang="ts">
@@ -377,7 +457,10 @@ export default class EosIAMUserManagement extends Vue {
   }
 
   private async deleteUser() {
-    this.$store.dispatch("systemConfig/showLoader", "Deleting user " + this.userToDelete);
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Deleting user " + this.userToDelete
+    );
     this.userToDelete = encodeURI(this.userToDelete);
     await Api.delete(apiRegister.s3_iam_user, this.userToDelete);
     this.$store.dispatch("systemConfig/hideLoader");
