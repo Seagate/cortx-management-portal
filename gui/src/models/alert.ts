@@ -69,6 +69,7 @@ export interface AlertQueryParam {
     limit: number;
     resolved?: boolean;
     acknowledged?: boolean;
+    show_all?: boolean;
 }
 
 export interface AlertEventDetail {

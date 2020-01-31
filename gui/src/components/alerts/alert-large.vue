@@ -15,7 +15,12 @@
 <template>
   <div class="eos-p-2">
     <eos-tabs :tabsInfo="tabsInfo" />
-    <button type="button" class="mt-3 mb-2 eos-btn-primary" v-if="tabsInfo.selectedTab === 1">Acknowledge All</button>
+    <button
+      type="button"
+      class="mt-3 mb-2 eos-btn-primary"
+      v-if="tabsInfo.selectedTab === 1"
+      @click="acknowledgeAll()"
+    >Acknowledge all</button>
     <v-data-table
       calculate-widths
       :items="alertData"
@@ -75,17 +80,33 @@
           <td style="white-space: nowrap;">{{ new Date(props.item.created_time*1000) | timeago }}</td>
           <td>
             <div>
-              <span>Resource Type: {{ props.item.module_name }} | State: {{ props.item.state }}</span>
+              <span>Resource type: {{ props.item.module_name }} | State: {{ props.item.state }}</span>
             </div>
             <div>
-              <span v-if="props.item.module_type === 'logical_volume'">Volume Group: {{ props.item.volume_group }} | Volume Name: {{ props.item.name }}</span>
-              <span v-else-if="props.item.module_type === 'system'">Version: {{ props.item.version }} | Nodename: {{ props.item.name }}</span>
-              <span v-else-if="props.item.module_type === 'volume'">Size: {{ props.item.volume_size }} | Total Size: {{ props.item.volume_total_size }}</span>
-              <span v-else-if="props.item.module_type === 'current'">Sensor Name: {{ props.item.name }}</span>
-              <span v-else-if="props.item.module_type === 'psu'">Location: {{ props.item.location }}</span>
-              <span v-else-if="props.item.module_type === 'fan' || props.item.module_type === 'sideplane'">Name: {{ props.item.name }} | Location: {{ props.item.location }}</span>
-              <span v-else-if="props.item.module_type === 'disk'">Serial Number: {{ props.item.serial_number }} | Size: {{ props.item.volume_size }}</span>
-              <span v-else-if="props.item.module_type === 'controller'">Serial Number: {{ props.item.serial_number }}</span>
+              <span
+                v-if="props.item.module_type === 'logical_volume'"
+              >Volume group: {{ props.item.volume_group }} | Volume name: {{ props.item.name }}</span>
+              <span
+                v-else-if="props.item.module_type === 'system'"
+              >Version: {{ props.item.version }} | Nodename: {{ props.item.name }}</span>
+              <span
+                v-else-if="props.item.module_type === 'volume'"
+              >Size: {{ props.item.volume_size }} | Total size: {{ props.item.volume_total_size }}</span>
+              <span
+                v-else-if="props.item.module_type === 'current'"
+              >Sensor name: {{ props.item.name }}</span>
+              <span
+                v-else-if="props.item.module_name === 'enclosure:fru:psu'"
+              >Location: {{ props.item.location }}</span>
+              <span
+                v-else-if="props.item.module_name === 'enclosure:fru:fan' || props.item.module_type === 'enclosure:fru:sideplane'"
+              >Name: {{ props.item.name }} | Location: {{ props.item.location }}</span>
+              <span
+                v-else-if="props.item.module_name === 'enclosure:fru:disk'"
+              >Serial number: {{ props.item.serial_number }} | Size: {{ props.item.volume_size }}</span>
+              <span
+                v-else-if="props.item.module_type === 'controller'"
+              >Serial number: {{ props.item.serial_number }}</span>
             </div>
           </td>
           <td>
@@ -111,8 +132,12 @@
             ></div>
           </td>
           <td>{{props.item.description ? props.item.description : "--"}}</td>
-          <td>      
-            <img :src="require('@/assets/zoom-in.svg')" style="cursor: pointer;" @click="$router.push('/alerts/' + props.item.alert_uuid)" />
+          <td>
+            <img
+              :src="require('@/assets/zoom-in.svg')"
+              style="cursor: pointer;"
+              @click="$router.push('/alerts/' + props.item.alert_uuid)"
+            />
             <img v-if="props.item.resolved" :src="require('@/assets/resolved-filled-default.svg')" />
             <img v-if="props.item.comment" :src="require('@/assets/comment-filled-default.svg')" />
             <img v-if="props.item.acknowledged" :src="require('@/assets/acknowledge-default.svg')" />
@@ -133,16 +158,28 @@ import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
   components: { EosTabs }
 })
 export default class EosAlertLarge extends Mixins(AlertsMixin) {
-  public alertPageFilter: "new" | "active" = "new";
-
   public tabsInfo: TabsInfo = {
-    tabs: [{ id: 1, label: "New Alerts" }, { id: 2, label: "Active Alerts" }],
+    tabs: [
+      { id: 1, label: "New alerts" },
+      { id: 2, label: "Active alerts" },
+      { id: 3, label: "Alert history" }
+    ],
     selectedTab: 1
   };
 
   @Watch("tabsInfo.selectedTab")
   public onPropertyChanged(value: number, oldValue: number) {
-    this.alertPageFilter = value === 1 ? "new" : "active";
+    switch (value) {
+      case 1:
+        this.alertPageFilter = "new";
+        break;
+      case 2:
+        this.alertPageFilter = "active";
+        break;
+      case 3:
+        this.alertPageFilter = "history";
+        break;
+    }
     this.onSortPaginate("", null, this.page, this.itemsPerPage);
   }
 
@@ -192,13 +229,17 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
       show: true,
       message: "Acknowledging alerts..."
     });
+    const currentPageAlertIds: string[] = [];
+    this.alertData.forEach((alert: any) => {
+        currentPageAlertIds.push(alert.alert_uuid);
+    });
     try {
-      await this.$store.dispatch("alerts/acknowledgeAll");
+      await this.$store.dispatch("alerts/acknowledgeAll", currentPageAlertIds);
       this.$store.commit("alerts/setPage", 1);
-      this.onSortPaginate("", null, this.page, this.itemsPerPage);
+      await this.onSortPaginate("", null, this.page, this.itemsPerPage);
     } catch (e) {
-        // tslint:disable-next-line: no-console
-        console.log(e);
+      // tslint:disable-next-line: no-console
+      console.log(e);
     }
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: false,
