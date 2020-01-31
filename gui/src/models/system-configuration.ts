@@ -116,7 +116,7 @@ export interface Ldap {
 }
 
 export interface Email {
-  stmp_server: string;
+  smtp_server: string;
   smtp_port: string;
   smtp_protocol: string;
   smtp_sender_email: string;
