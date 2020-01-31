@@ -120,7 +120,7 @@ import AlertsMixin from "./../../mixins/alerts";
 export default class EosAlertMedium extends Mixins(AlertsMixin) {
   public mounted() {
     // Call action to get all alert data
-    this.$store.dispatch("alerts/alertDataAction");
+    this.onSortPaginate("", null, this.page, this.itemsPerPage);
     this.$store.commit("alerts/setOnboardingFlag", true);
     // Set Alert table default header options
     const headers = [

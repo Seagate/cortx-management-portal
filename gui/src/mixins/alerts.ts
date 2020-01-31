@@ -20,9 +20,10 @@ import { AlertQueryParam } from "../models/alert";
     name: "eos-alert-medium"
 })
 export default class AlertsMixin extends Vue {
+    public alertPageFilter: "new" | "active" | "history" = "new";
 
     // Column sort handler
-    public onSortPaginate(
+    public async onSortPaginate(
         sortby: string,
         sortedHeader: any,
         offset: number,
@@ -56,10 +57,16 @@ export default class AlertsMixin extends Vue {
             switch (this.$data.alertPageFilter) {
                 case "new":
                     alertQueryParam.acknowledged = false;
+                    alertQueryParam.resolved = false;
                     break;
                 case "active":
                     alertQueryParam.acknowledged = true;
                     alertQueryParam.resolved = false;
+                    break;
+                case "history":
+                    alertQueryParam.acknowledged = true;
+                    alertQueryParam.resolved = true;
+                    alertQueryParam.show_all = true;
                     break;
             }
         }
@@ -69,7 +76,12 @@ export default class AlertsMixin extends Vue {
         alertQueryParam.limit = limit;
         this.$store.commit("alerts/alertQueryParamMutation", alertQueryParam);
         // Get queryparams data from store and then dispatch to action
-        this.$store.dispatch("alerts/alertDataAction", alertQueryParam);
+        this.$store.dispatch(
+            "systemConfig/showLoader",
+            "Fetching alerts..."
+        );
+        await this.$store.dispatch("alerts/alertDataAction", alertQueryParam);
+        this.$store.dispatch("systemConfig/hideLoader");
     }
 
     // Get total_records from alert API

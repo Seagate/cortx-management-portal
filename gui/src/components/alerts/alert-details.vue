@@ -39,30 +39,30 @@
           <label>&nbsp;| Node {{ alertExtendedInfo.node_id }}</label>
         </div>
         <div>
-          <label>Resource Type: {{ alertExtendedInfo.resource_type }}</label>
+          <label>Resource type: {{ alertExtendedInfo.resource_type }}</label>
           <label>&nbsp;| State: {{ alert.state }}</label>
         </div>
         <div>
           <span
             v-if="alert.module_type === 'logical_volume'"
-          >Volume Group: {{ alert.volume_group }} | Volume Name: {{ alert.name }}</span>
+          >Volume group: {{ alert.volume_group }} | Volume name: {{ alert.name }}</span>
           <span
             v-else-if="alert.module_type === 'system'"
           >Version: {{ alert.version }} | Nodename: {{ alert.name }}</span>
           <span
             v-else-if="alert.module_type === 'volume'"
-          >Size: {{ alert.volume_size }} | Total Size: {{ alert.volume_total_size }}</span>
-          <span v-else-if="alert.module_type === 'current'">Sensor Name: {{ alert.name }}</span>
-          <span v-else-if="alert.module_type === 'psu'">Location: {{ alert.location }}</span>
+          >Size: {{ alert.volume_size }} | Total size: {{ alert.volume_total_size }}</span>
+          <span v-else-if="alert.module_type === 'current'">Sensor name: {{ alert.name }}</span>
+          <span v-else-if="alert.module_name === 'enclosure:fru:psu'">Location: {{ alert.location }}</span>
           <span
-            v-else-if="alert.module_type === 'fan' || alert.module_type === 'sideplane'"
+            v-else-if="alert.module_name === 'enclosure:fru:fan' || alert.module_name === 'enclosure:fru:sideplane'"
           >Name: {{ alert.name }} | Location: {{ alert.location }}</span>
           <span
-            v-else-if="alert.module_type === 'disk'"
-          >Serial Number: {{ alert.serial_number }} | Size: {{ alert.volume_size }}</span>
+            v-else-if="alert.module_name === 'enclosure:fru:disk'"
+          >Serial number: {{ alert.serial_number }} | Size: {{ alert.volume_size }}</span>
           <span
             v-else-if="alert.module_type === 'controller'"
-          >Serial Number: {{ alert.serial_number }}</span>
+          >Serial number: {{ alert.serial_number }}</span>
         </div>
       </div>
       <div class="mt-3">
@@ -104,30 +104,30 @@
       <div
         v-for="(event_detail, i) in alertEventDetails"
         v-bind:key="'event_detail_' + i"
-        class="mb-2"
-        style="border: 1px solid #E8E8E8;"
       >
-        <div class="pa-2" style="background: #E8E8E8;">
-          <label>Name:</label>
-          <label>{{ event_detail.name }}</label>
-        </div>
-        <div class="pa-2">
-          <label>Reason:</label>
-          <label>{{ event_detail.event_reason }}</label>
-          <span
-            @click="event_detail.showRecommendation = !event_detail.showRecommendation"
-            style="color: #6EBE49;cursor: pointer;font-size: 12px;"
-          >Recommendations</span>
-        </div>
-        <div class="pa-2" v-if="event_detail.showRecommendation">
-          <label>Recommendations:</label>
-          <div>
-            <ul
-              v-for="(recommendation, index) in event_detail.event_recommendation"
-              v-bind:key="index"
-            >
-              <li v-if="recommendation">{{ recommendation }}</li>
-            </ul>
+        <div class="mb-2" style="border: 1px solid #E8E8E8;" v-if="event_detail.event_reason">
+          <div class="pa-2" style="background: #E8E8E8;">
+            <label>Name: </label>
+            <label>{{ event_detail.name }}</label>
+          </div>
+          <div class="pa-2">
+            <label>Reason: {{ event_detail.event_reason }}</label>
+            <span
+              v-if="event_detail.event_recommendation.length > 0"
+              @click="event_detail.showRecommendation = !event_detail.showRecommendation"
+              style="color: #6EBE49;cursor: pointer;font-size: 12px;"
+            >Recommendations</span>
+          </div>
+          <div class="pa-2" v-if="event_detail.showRecommendation">
+            <label>Recommendations:</label>
+            <div>
+              <ul
+                v-for="(recommendation, index) in event_detail.event_recommendation"
+                v-bind:key="index"
+              >
+                <li v-if="recommendation">{{ recommendation }}</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -179,15 +179,24 @@ export default class EosAlertDetails extends Vue {
       apiRegister.all_alerts + "/" + this.$route.params.alert_id
     );
     if (res.data) {
+      this.alert = res.data;
       try {
-        this.alert = res.data;
+        if (this.alert.extended_info) {
+          const tempAlertExtendedInfoJSONString = this.alert.extended_info
+            .split("'")
+            .join("\"");
+          this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
+          this.alertExtendedInfo = this.alertDetails.info;
+        }
+
+        let tempAlertEventDetails = [];
         if (this.alert.event_details) {
           const tempAlertEventDetailsJSONString = this.alert.event_details
             .split("'")
             .join("\"");
-          const tempAlertEventDetails = JSON.parse(
-            tempAlertEventDetailsJSONString
-          );
+          tempAlertEventDetails = JSON.parse(tempAlertEventDetailsJSONString);
+        }
+        if (tempAlertEventDetails.length > 0) {
           tempAlertEventDetails.forEach((event_detail: any) => {
             const alertEventDetail: AlertEventDetail = {
               name: event_detail.name,
@@ -199,13 +208,17 @@ export default class EosAlertDetails extends Vue {
             };
             this.alertEventDetails.push(alertEventDetail);
           });
-        }
-        if (this.alert.extended_info) {
-          const tempAlertExtendedInfoJSONString = this.alert.extended_info
-            .split("'")
-            .join("\"");
-          this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
-          this.alertExtendedInfo = this.alertDetails.info;
+        } else {
+          this.alertEventDetails.push({
+            name: this.alertExtendedInfo.resource_id
+              ? this.alertExtendedInfo.resource_id
+              : "",
+            event_reason: this.alert.description,
+            event_recommendation: this.alert.health_recommendation
+              ? this.alert.health_recommendation.split("-")
+              : [],
+            showRecommendation: false
+          });
         }
       } catch (e) {
         // tslint:disable-next-line: no-console
