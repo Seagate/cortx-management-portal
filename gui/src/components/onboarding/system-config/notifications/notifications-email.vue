@@ -286,7 +286,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       notificationConfiguration.notifications.email
     ) {
       this.$data.smtpserver =
-        notificationConfiguration.notifications.email.stmp_server;
+        notificationConfiguration.notifications.email.smtp_server;
       this.$data.senderemail =
         notificationConfiguration.notifications.email.smtp_sender_email;
       this.$data.smtpport =
@@ -304,7 +304,7 @@ export default class EosDataNetworkIpv4 extends Vue {
 
   private setEmailNotificationSettings() {
     const queryParams: Email = {
-      stmp_server: this.$data.smtpserver,
+      smtp_server: this.$data.smtpserver,
       smtp_port: this.$data.smtpport,
       smtp_protocol: this.$data.protocol,
       smtp_sender_email: this.$data.senderemail,
