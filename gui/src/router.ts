@@ -32,7 +32,10 @@ import EosProvisioning from "./components/provisioning/eos-provisioning.vue";
 import EosProvisioningMenu from "./components/provisioning/eos-provisioning-menu.vue";
 import EosSettings from "./components/settings/eos-settings.vue";
 import EosSettingsMenu from "./components/settings/eos-settings-menu.vue";
-
+import EosUnauthorizedAccess from "./components/security/403.vue";
+import EosNotFound from "./components/security/404.vue";
+import { userPermissions } from "./common/user-permissions-map";
+import store from "./store/store";
 Vue.use(Router);
 
 // Note: requiresAuth: Flag for User Logged into the system
@@ -84,19 +87,31 @@ const router = new Router({
           path: "dashboard",
           name: "dashboard",
           component: Dashboard,
-          meta: { requiresAuth: true, isOnboardingReq: false }
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: false,
+            requiredAccess: userPermissions.alerts + userPermissions.list
+          }
         },
         {
           path: "alerts",
           name: "alerts-large",
           component: EosAlertLarge,
-          meta: { requiresAuth: true, isOnboardingReq: true }
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: true,
+            requiredAccess: userPermissions.alerts + userPermissions.list
+          }
         },
         {
           path: "alerts/:alert_id",
           name: "alert-detail",
           component: EosAlertDetails,
-          meta: { requiresAuth: true, isOnboardingReq: true }
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: true,
+            requiredAccess: userPermissions.alerts + userPermissions.list
+          }
         },
         {
           path: "provisioning",
@@ -113,26 +128,43 @@ const router = new Router({
               path: "s3",
               name: "s3",
               component: EosS3Management,
-              meta: { requiresAuth: true, isOnboardingReq: false }
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess:
+                  userPermissions.s3accounts + userPermissions.list
+              }
             }
           ]
         },
         {
           path: "settings",
           component: EosSettings,
-          meta: { requiresAuth: true, isOnboardingReq: false },
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: false,
+            requiredAccess: userPermissions.users + userPermissions.list
+          },
           children: [
             {
               path: "",
               name: "settings-menu",
               component: EosSettingsMenu,
-              meta: { requiresAuth: true, isOnboardingReq: false }
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
             },
             {
               path: "usersettinglocal",
               name: "usersettinglocal",
               component: EosUserSettingLocal,
-              meta: { requiresAuth: true, isOnboardingReq: false }
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
             },
             {
               path: "udx-registration",
@@ -146,22 +178,37 @@ const router = new Router({
           path: "/homebase",
           name: "homebase",
           component: EosHomebase,
-          meta: { requiresAuth: true, isOnboardingReq: false }
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: false,
+            requiredAccess: userPermissions.sysconfig + userPermissions.list
+          }
         },
         {
           path: "/onboarding",
           name: "onboarding",
           component: EosOnboarding,
-          meta: { requiresAuth: true, isOnboardingReq: false }
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: false,
+            requiredAccess: userPermissions.sysconfig + userPermissions.list
+          }
+        },
+        {
+          path: "403",
+          name: "403",
+          component: EosUnauthorizedAccess,
+          meta: { requiresAuth: false, isOnboardingReq: false }
+        },
+        {
+          path: "clouduser",
+          name: "clouduser",
+          component: EosAutoLogin,
+          meta: { requiresAuth: false, isOnboardingReq: false }
         }
       ]
     },
-    {
-      path: "clouduser",
-      name: "clouduser",
-      component: EosAutoLogin,
-      meta: { requiresAuth: false, isOnboardingReq: false }
-    }
+    { path: "*", component: EosNotFound }
   ]
 });
 
@@ -178,7 +225,24 @@ router.beforeEach(async (to, from, next) => {
         path: "/login"
       });
     } else {
-      next();
+      try {
+        await store.dispatch("userLogin/getUserPermissionsAction");
+      } catch (error) {
+        // tslint:disable-next-line: no-console
+        console.log("getUserPermissionsAction failed", error);
+      }
+      const routerApp: any = router.app.$root;
+      if (
+        to.meta.requiredAccess &&
+        // tslint:disable-next-line
+        !routerApp.$hasAccessToCsm(to.meta.requiredAccess)
+      ) {
+        next({
+          path: "/403"
+        });
+      } else {
+        next();
+      }
     }
   } else {
     next(); // make sure to always call next()!

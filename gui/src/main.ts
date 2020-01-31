@@ -21,6 +21,8 @@ import * as moment from "moment";
 import "@/common/style.css";
 import { errorHandler } from "./common/error-handler";
 import Vuelidate from "vuelidate";
+import EosHasAccess from "./components/security/has-access.vue";
+import { userPermissions as userPermissionsMap } from "./common/user-permissions-map";
 
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
@@ -36,6 +38,26 @@ Vue.filter("capitalize", (value: any) => {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 });
+
+Vue.prototype.$hasAccessToCsm = function(role: string) {
+  if (!role) {
+    return false;
+  }
+  const [resource, action] = role.split(":");
+  const userPermissions = this.$store.getters["userLogin/getUserPermissions"];
+  if (
+    userPermissions &&
+    userPermissions[resource] &&
+    userPermissions[resource][action]
+  ) {
+    return true;
+  }
+  return false;
+};
+
+Vue.component("eos-has-access", EosHasAccess);
+
+Vue.prototype.$eosUserPermissions = userPermissionsMap;
 
 new Vue({
   router,

@@ -1,11 +1,13 @@
 <template>
   <v-container>
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">User settings: Local</div>
+      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">
+        User settings: Local
+      </div>
       <div class="mt-5">
         <span class="font-weight-regular" id="lblLocalMsgConfig">
-          Use this table to create CSM users that have access CSM
-          functionality. You can add as many as you like.
+          Use this table to create CSM users that have access CSM functionality.
+          You can add as many as you like.
         </span>
       </div>
       <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
@@ -14,9 +16,13 @@
             <v-col class="pl-5">
               <div
                 class="eos-form-group"
-                :class="{ 'eos-form-group--error': $v.createAccount.username.$error }"
+                :class="{
+                  'eos-form-group--error': $v.createAccount.username.$error
+                }"
               >
-                <label class="eos-form-group-label" for="Username">Username*</label>
+                <label class="eos-form-group-label" for="Username"
+                  >Username*</label
+                >
                 <input
                   class="eos-form__input_text"
                   type="text"
@@ -27,15 +33,23 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                    v-if="$v.createAccount.username.$dirty && !$v.createAccount.username.required"
-                  >Account Name is required</label>
+                    v-if="
+                      $v.createAccount.username.$dirty &&
+                        !$v.createAccount.username.required
+                    "
+                    >Account Name is required</label
+                  >
                 </div>
               </div>
               <div
                 class="eos-form-group"
-                :class="{ 'eos-form-group--error': $v.createAccount.password.$error }"
+                :class="{
+                  'eos-form-group--error': $v.createAccount.password.$error
+                }"
               >
-                <label class="eos-form-group-label" for="password">Password*</label>
+                <label class="eos-form-group-label" for="password"
+                  >Password*</label
+                >
                 <input
                   class="eos-form__input_text"
                   type="password"
@@ -46,18 +60,31 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                    v-if="$v.createAccount.password.$dirty && !$v.createAccount.password.required"
-                  >Password is required</label>
+                    v-if="
+                      $v.createAccount.password.$dirty &&
+                        !$v.createAccount.password.required
+                    "
+                    >Password is required</label
+                  >
                   <label
-                    v-else-if="$v.createAccount.password.$dirty && !$v.createAccount.password.passwordRegex"
-                  >Invalid Password</label>
+                    v-else-if="
+                      $v.createAccount.password.$dirty &&
+                        !$v.createAccount.password.passwordRegex
+                    "
+                    >Invalid password</label
+                  >
                 </div>
               </div>
               <div
                 class="eos-form-group"
-                :class="{ 'eos-form-group--error': $v.createAccount.confirmPassword.$error }"
+                :class="{
+                  'eos-form-group--error':
+                    $v.createAccount.confirmPassword.$error
+                }"
               >
-                <label class="eos-form-group-label" for="password">Confirm password*</label>
+                <label class="eos-form-group-label" for="password"
+                  >Confirm password*</label
+                >
                 <input
                   class="eos-form__input_text"
                   type="password"
@@ -68,200 +95,257 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                    v-if="$v.createAccount.confirmPassword.$dirty && !$v.createAccount.confirmPassword.sameAsPassword"
-                  >Passwords do not match</label>
+                    v-if="
+                      $v.createAccount.confirmPassword.$dirty &&
+                        !$v.createAccount.confirmPassword.sameAsPassword
+                    "
+                    >Passwords do not match</label
+                  >
                 </div>
               </div>
             </v-col>
             <v-col>
-              <div class="font-weight-medium pt-3 pb-2">Roles</div>
-              <input
-                type="radio"
-                v-model="checkedRoles"
-                name="manage"
-                value="manage"
-                id="chkLocalManage"
-              />
-              <span class="ml-3 font-weight-medium">Manage</span>
+              <div class="mb-3">Roles</div>
+              <label class="eos-rdb-container">
+                Manage
+                <input
+                  type="radio"
+                  v-model="checkedRoles"
+                  name="manage"
+                  value="manage"
+                  id="chkLocalManage"
+                />
+                <span class="eos-rdb-tick" id="lblLocalManage"></span>
+              </label>
               <br />
-              <input
-                type="radio"
-                v-model="checkedRoles"
-                name="monitor"
-                value="monitor"
-                id="chkLocalMonitor"
-              />
-              <span class="ml-3 font-weight-medium">Monitor</span>
+              <label class="eos-rdb-container mt-2">
+                Monitor
+                <input
+                  type="radio"
+                  v-model="checkedRoles"
+                  name="monitor"
+                  value="monitor"
+                  id="chkLocalMonitor"
+                />
+                <span class="eos-rdb-tick" id="lblLocalMonitor"></span>
+              </label>
             </v-col>
           </v-row>
         </div>
-        <v-btn
-          v-if="!isUserCreate"
-          color="csmprimary"
-          class="ma-5 elevation-0 white--text"
-          @click="addUser()"
-          id="btnLocalAddNewUser"
-        >Add new user</v-btn>
-        <v-btn
-          v-if="isUserCreate"
-          color="csmprimary"
-          class="ma-5 elevation-0 white--text"
-          @click="createUser()"
-          id="btnLocalCreateUser"
-          :disabled="$v.createAccount.$invalid"
-        >Create</v-btn>
-
-        <v-btn
-          text
-          small
-          color="csmprimary"
-          v-if="isUserCreate"
-          @click="addUser()"
-          id="lblLocalCancel"
-        >Cancel</v-btn>
-        <v-data-table
-          calculate-widths
-          :items="alertData"
-          :single-expand="singleExpand"
-          :expanded.sync="expanded"
-          item-key="id"
-          show-expand
-          class="eos-table"
-          hide-default-header
+        <eos-has-access
+          :to="$eosUserPermissions.users + $eosUserPermissions.create"
         >
-          <template v-slot:header="{ props }">
-            <tr>
-              <th class="tableheader" />
-              <th v-for="header in alertHeader" :key="header.text" class="tableheader">
-                <span
-                  class="headerText"
-                  :class="
-                    header.value === sortColumnName && isSortActive
-                      ? 'active'
-                      : ''
-                  "
-                >{{ header.text }}</span>
-                <span
-                  :class="
-                    header.value === sortColumnName && isSortActive
-                      ? 'active'
-                      : 'notActive'
-                  "
+          <v-btn
+            v-if="!isUserCreate"
+            color="csmprimary"
+            class="ma-5 elevation-0 white--text"
+            @click="addUser()"
+            id="btnLocalAddNewUser"
+            >Add new user</v-btn
+          >
+          <v-btn
+            v-if="isUserCreate"
+            color="csmprimary"
+            class="ma-5 elevation-0 white--text"
+            @click="createUser()"
+            id="btnLocalCreateUser"
+            :disabled="$v.createAccount.$invalid"
+            >Create</v-btn
+          >
+          <v-btn
+            text
+            small
+            color="csmprimary"
+            v-if="isUserCreate"
+            @click="addUser()"
+            id="lblLocalCancel"
+            >Cancel</v-btn
+          >
+        </eos-has-access>
+
+        <eos-has-access
+          :to="$eosUserPermissions.users + $eosUserPermissions.list"
+        >
+          <v-data-table
+            calculate-widths
+            :items="alertData"
+            :single-expand="singleExpand"
+            :expanded.sync="expanded"
+            item-key="id"
+            show-expand
+            class="eos-table"
+            hide-default-header
+          >
+            <template v-slot:header="{}">
+              <tr>
+                <th class="tableheader" />
+                <th
+                  v-for="header in alertHeader"
+                  :key="header.text"
+                  class="tableheader"
                 >
-                  <img
-                    v-if="
-                      header.sortable && header.sortDir === alertStatus.desc
+                  <span
+                    class="headerText"
+                    :class="
+                      header.value === sortColumnName && isSortActive
+                        ? 'active'
+                        : ''
                     "
-                    :src="require('@/assets/widget/table-sort-desc.svg/')"
-                    class="d-inline-block"
-                    style="vertical-align: bottom; margin-left: -0.3em;"
-                    height="20"
-                    width="20"
+                    >{{ header.text }}</span
+                  >
+                  <span
+                    :class="
+                      header.value === sortColumnName && isSortActive
+                        ? 'active'
+                        : 'notActive'
+                    "
+                  >
+                    <img
+                      v-if="
+                        header.sortable && header.sortDir === alertStatus.desc
+                      "
+                      :src="require('@/assets/widget/table-sort-desc.svg/')"
+                      class="d-inline-block"
+                      style="vertical-align: bottom; margin-left: -0.3em;"
+                      height="20"
+                      width="20"
+                    />
+                    <img
+                      v-if="
+                        header.sortable && header.sortDir === alertStatus.asc
+                      "
+                      :src="require('@/assets/widget/table-sort-asc.svg/')"
+                      class="d-inline-block"
+                      style="vertical-align: bottom; margin-left: -0.3em;"
+                      height="20"
+                      width="20"
+                    />
+                  </span>
+                </th>
+                <th class="tableheader" />
+              </tr>
+            </template>
+            <template v-slot:item="props">
+              <tr class="font-weight-small">
+                <td @click="onExpand(props)">
+                  <img
+                    v-if="props.isExpanded"
+                    src="./../../../../assets/caret-green-down.png"
                   />
                   <img
-                    v-if="header.sortable && header.sortDir === alertStatus.asc"
-                    :src="require('@/assets/widget/table-sort-asc.svg/')"
-                    class="d-inline-block"
-                    style="vertical-align: bottom; margin-left: -0.3em;"
-                    height="20"
-                    width="20"
+                    v-if="!props.isExpanded"
+                    src="./../../../../assets/caret-green-right.png"
                   />
-                </span>
-              </th>
-              <th class="tableheader" />
-            </tr>
-          </template>
-          <template v-slot:item="props">
-            <tr class="font-weight-small">
-              <td @click="onExpand(props)">
-                <img v-if="props.isExpanded" src="./../../../../assets/caret-green-down.png" />
-                <img v-if="!props.isExpanded" src="./../../../../assets/caret-green-right.png" />
-              </td>
-              <td>{{ props.item.username }}</td>
-              <td>
-                <span
-                  v-for="(role, i) in props.item.roles"
-                  :key="role"
-                >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span>
-              </td>
-              <td>
-                <img class="mb-2" @click="onExpand(props)" src="./../../../../assets/edit-off.png" />
-                <v-divider class="mx-4" light vertical inset></v-divider>
-                <img
-                  class="mb-2"
-                  @click="onDelete(props.item.id)"
-                  src="./../../../../assets/delete-off.png"
-                />
-              </td>
-            </tr>
-          </template>
-          <template v-slot:expanded-item="props">
-            <tr class="grey lighten-5" v-if="!isUserEdit">
-              <td colspan="5">
-                <div>
-                  <v-row>
-                    <v-col class="pl-5">
-                      <div
-                        class="eos-form-group"
-                        :class="{ 'eos-form-group--error': $v.selectedItem.username.$error }"
-                      >
-                        <label class="eos-form-group-label" for="Username">Username*</label>
-                        <input
-                          class="eos-form__input_text"
-                          type="text"
-                          name="username"
-                          v-model="selectedItem.username"
-                          id="txtLocalHostnameinetrface"
-                          @input="$v.selectedItem.username.$touch"
-                        />
-                        <div class="eos-form-group-label eos-form-group-error-msg">
-                          <label
-                            v-if="$v.selectedItem.username.$dirty && !$v.selectedItem.username.required"
-                          >Account Name is required</label>
+                </td>
+                <td>{{ props.item.username }}</td>
+                <td>
+                  <span v-for="(role, i) in props.item.roles" :key="role"
+                    >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span
+                  >
+                </td>
+                <td>
+                  <eos-has-access
+                    :to="$eosUserPermissions.users + $eosUserPermissions.update"
+                  >
+                    <img
+                      class="mx-2"
+                      @click="onExpand(props)"
+                      src="./../../../../assets/actions/edit-green.svg"
+                    />
+                  </eos-has-access>
+                  <eos-has-access
+                    :to="$eosUserPermissions.users + $eosUserPermissions.delete"
+                  >
+                    <img
+                      class="mx-2"
+                      @click="onDelete(props.item.id)"
+                      src="./../../../../assets/actions/delete-green.svg"
+                    />
+                  </eos-has-access>
+                </td>
+              </tr>
+            </template>
+            <template v-slot:expanded-item="props">
+              <tr class="grey lighten-5" v-if="!isUserEdit">
+                <td colspan="5">
+                  <div>
+                    <v-row>
+                      <v-col class="pl-5">
+                        <div
+                          class="eos-form-group"
+                          :class="{
+                            'eos-form-group--error':
+                              $v.selectedItem.username.$error
+                          }"
+                        >
+                          <label class="eos-form-group-label" for="Username"
+                            >Username*</label
+                          >
+                          <input
+                            class="eos-form__input_text"
+                            type="text"
+                            name="username"
+                            v-model="selectedItem.username"
+                            id="txtLocalHostnameinetrface"
+                            @input="$v.selectedItem.username.$touch"
+                          />
+                          <div
+                            class="eos-form-group-label eos-form-group-error-msg"
+                          >
+                            <label
+                              v-if="
+                                $v.selectedItem.username.$dirty &&
+                                  !$v.selectedItem.username.required
+                              "
+                              >Account name is required</label
+                            >
+                          </div>
                         </div>
-                      </div>
-                    </v-col>
-                    <v-col>
-                      <div class="font-weight-medium pt-3 pb-2">Roles</div>
-                      <input
-                        type="radio"
-                        v-model="selectedItem.roles[0]"
-                        name="manage"
-                        value="manage"
-                        id="chkLocalManageInterface"
-                        checked
-                      />
-                      <span class="eos-rdb-container">Manage</span>
-                      <br />
-                      <input
-                        type="radio"
-                        v-model="selectedItem.roles[0]"
-                        name="monitor"
-                        value="monitor"
-                        id="chkLocalMoniterInterface"
-                      />
-                      <span class="eos-rdb-container">Monitor</span>
-                    </v-col>
-                  </v-row>
-                </div>
-                <v-btn
-                  color="csmprimary"
-                  class="ma-5 elevation-0 white--text"
-                  @click="editUser(selectedItem)"
-                  id="lblLocalApplyInterface"
-                  :disabled="$v.selectedItem.$invalid"
-                >Apply</v-btn>
-                <v-btn
-                  text
-                  small
-                  color="csmprimary"
-                  @click="closeEditUser(props)"
-                  id="lblLocalCanacelInterface"
-                >Cancel</v-btn>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
+                      </v-col>
+                      <v-col>
+                        <div class="font-weight-medium pt-3 pb-2">Roles</div>
+                        <input
+                          type="radio"
+                          v-model="selectedItem.roles[0]"
+                          name="manage"
+                          value="manage"
+                          id="chkLocalManageInterface"
+                          checked
+                        />
+                        <span class="eos-rdb-container">Manage</span>
+                        <br />
+                        <input
+                          type="radio"
+                          v-model="selectedItem.roles[0]"
+                          name="monitor"
+                          value="monitor"
+                          id="chkLocalMoniterInterface"
+                        />
+                        <span class="eos-rdb-container">Monitor</span>
+                      </v-col>
+                    </v-row>
+                  </div>
+                  <v-btn
+                    color="csmprimary"
+                    class="ma-5 elevation-0 white--text"
+                    @click="editUser(selectedItem)"
+                    id="lblLocalApplyInterface"
+                    :disabled="$v.selectedItem.$invalid"
+                    >Apply</v-btn
+                  >
+                  <v-btn
+                    text
+                    small
+                    color="csmprimary"
+                    @click="closeEditUser(props)"
+                    id="lblLocalCanacelInterface"
+                    >Cancel</v-btn
+                  >
+                </td>
+              </tr>
+            </template>
+          </v-data-table>
+        </eos-has-access>
       </v-card>
     </div>
     <span class="d-none">{{ isValidForm }}</span>

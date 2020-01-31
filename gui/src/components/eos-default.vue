@@ -15,12 +15,14 @@
 <template>
   <div>
     <header-bar />
-    <div v-if="isRouterPathOnboading">
-      <router-view style="margin-top: 4em;"></router-view>
+    <div class="header-margin" v-if="isRouterPathOnboading">
+      <router-view></router-view>
     </div>
     <div v-else>
       <eos-nav-bar />
-      <router-view style="margin-top: 4em;margin-left: 8.750em;"></router-view>
+      <div class="header-margin navbar-margin">
+        <router-view></router-view>
+      </div>
     </div>
     <loader :show="showLoader" :message="loaderMessage" />
     <EOSMessageDialog />
@@ -58,4 +60,10 @@ export default class EosDefault extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.header-margin {
+  margin-top: 4em;
+}
+.navbar-margin {
+  margin-left: 8.75em;
+}
 </style>

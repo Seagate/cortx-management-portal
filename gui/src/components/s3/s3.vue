@@ -1,15 +1,38 @@
 <template>
   <div>
-    <div id="s3-configuration-title-container" class="mb-4 s3-configuration-page-title">
-      <label id="s3-account-form-title" class="headline font-weight-bold">S3 Configuration</label>
+    <div
+      id="s3-configuration-title-container"
+      class="mb-4 s3-configuration-page-title"
+    >
+      <label id="s3-account-form-title" class="headline font-weight-bold"
+        >S3 configuration</label
+      >
       <div class="mt-1" style="color: #454545;font-size: 14px;">
-        <label>Use this table to create IAM users that have access to the buckets you create in the next step. You can add as many as you like. The access key and secret key for each user will be shown once you click continue. You will have the oppurtunity to download a CSV at that point.</label>
+        <label
+          >Use this table to create IAM users that have access to the buckets
+          you create in the next step. You can add as many as you like. The
+          access key and secret key for each user will be shown once you click
+          continue. You will have the opportunity to download a CSV at that
+          point.</label
+        >
       </div>
     </div>
     <eos-tabs :tabsInfo="tabsInfo" />
-    <S3Account v-if="showAccountTab" />
-    <IAMUser v-if="showIAMUserTab" />
-    <S3Bucket v-if="showBucketTab" />
+    <eos-has-access
+      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+    >
+      <S3Account v-if="showAccountTab" />
+    </eos-has-access>
+    <eos-has-access
+      :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+    >
+      <IAMUser v-if="showIAMUserTab" />
+    </eos-has-access>
+    <eos-has-access
+      :to="$eosUserPermissions.s3buckets + $eosUserPermissions.list"
+    >
+      <S3Bucket v-if="showBucketTab" />
+    </eos-has-access>
   </div>
 </template>
 <script lang="ts">

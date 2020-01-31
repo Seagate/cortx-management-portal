@@ -119,6 +119,14 @@ export default class EosLogin extends Vue {
             this.$data.conststr.access_token,
             res.authorization
           );
+          return this.$store.dispatch("userLogin/getUserPermissionsAction");
+        } else {
+          // Show error message on screen
+          this.$data.isValidLogin = false;
+        }
+      })
+      .then((res: any) => {
+        if (res) {
           this.navigate();
         } else {
           // Show error message on screen
