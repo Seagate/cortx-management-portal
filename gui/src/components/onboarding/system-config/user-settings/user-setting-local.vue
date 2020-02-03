@@ -373,7 +373,7 @@ import { EVENT_BUS } from "./../../../../main";
 })
 export default class EosUserSettingLocal extends Vue {
   @Validations()
-  public validations = {
+  private validations = {
     createAccount: {
       username: { required },
       password: { required, passwordRegex },
@@ -385,6 +385,47 @@ export default class EosUserSettingLocal extends Vue {
       username: { required }
     }
   };
+
+  private data() {
+    return {
+      source: "manual",
+      isUserCreate: false,
+      isUserEdit: false,
+      page: 1, // Page counter, in sync with data table
+      singleExpand: true, // Expande single row property
+      itemsPerPage: 5, // Total rows per page, in sync with data table
+      isSortActive: false, // Set table column sorting flag to default inactive
+      sortColumnName: "", // Set sorting column name to none
+      alertStatus: require("./../../../../common/const-string.json"),
+      createAccount: { username: "", password: "", confirmPassword: "" },
+      web: "",
+      cli: "",
+      api: "",
+      manage: "",
+      monitor: "",
+      temperature: "",
+      language: "",
+      timeout: "",
+      checkedRoles: "manage",
+      checkedInterfaces: [],
+      selectedItem: {},
+      expanded: [],
+      alertHeader: [
+        {
+          text: "Username",
+          value: "username",
+          sortable: false
+        },
+        {
+          text: "Roles",
+          value: "roles",
+          sortable: false
+        }
+      ],
+      alertData: []
+    };
+  }
+
   private mounted() {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
@@ -494,45 +535,6 @@ export default class EosUserSettingLocal extends Vue {
         // tslint:disable-next-line: no-console
         console.log("err logger: ", e);
       });
-  }
-  private data() {
-    return {
-      source: "manual",
-      isUserCreate: false,
-      isUserEdit: false,
-      page: 1, // Page counter, in sync with data table
-      singleExpand: true, // Expande single row property
-      itemsPerPage: 5, // Total rows per page, in sync with data table
-      isSortActive: false, // Set table column sorting flag to default inactive
-      sortColumnName: "", // Set sorting column name to none
-      alertStatus: require("./../../../../common/const-string.json"),
-      createAccount: { username: "", password: "", confirmPassword: "" },
-      web: "",
-      cli: "",
-      api: "",
-      manage: "",
-      monitor: "",
-      temperature: "",
-      language: "",
-      timeout: "",
-      checkedRoles: "manage",
-      checkedInterfaces: [],
-      selectedItem: {},
-      expanded: [],
-      alertHeader: [
-        {
-          text: "Username",
-          value: "username",
-          sortable: false
-        },
-        {
-          text: "Roles",
-          value: "roles",
-          sortable: false
-        }
-      ],
-      alertData: []
-    };
   }
 }
 </script>

@@ -14,12 +14,6 @@
       <div class="title ma-3" id="lblLDAPConfig">LDAP Configuration</div>
       <v-divider class="pa-0" />
       <div class="mt-3">
-        <!--<v-row class="col-12 py-0">
-          <v-col>
-            <input type="checkbox" @change="isLdap" v-model="isLdap" name="ldap" id="chkLDAPIsldap" />
-            <span class="ml-3 font-weight-medium" id="lblLDAPEnable">Enable LDAP</span>
-          </v-col>
-        </v-row>-->
         <v-row class="col-12 py-0">
           <v-col class="py-0">
             <div class="font-weight-medium" id="lblLDAPUserSearch">
@@ -116,7 +110,17 @@ import { Ldap } from "./../../../../models/system-configuration";
   name: "eos-user-setting-ldap"
 })
 export default class EosUserSettingLdap extends Vue {
-  public mounted() {
+  private data() {
+    return {
+      usersearchbase: "",
+      server: "",
+      port: 80,
+      altserver: "",
+      altport: 80,
+      isValid: true
+    };
+  }
+  private mounted() {
     const ldapConfiguration = this.$store.getters[
       "systemConfig/userConfigData"
     ];
@@ -128,7 +132,7 @@ export default class EosUserSettingLdap extends Vue {
       this.$data.altport = ldapConfiguration.ldap.alt_port;
     }
   }
-  public gotToNextPage() {
+  private gotToNextPage() {
     this.setLDAP()
       .then((res: any) => {
         if (res) {
@@ -142,7 +146,7 @@ export default class EosUserSettingLdap extends Vue {
         console.error("error");
       });
   }
-  public gotToPrevPage() {
+  private gotToPrevPage() {
     if (this.$store.getters["systemConfig/isLocalUserStatus"] === true) {
       this.$router.push("usersettinglocal");
     } else {
@@ -162,17 +166,6 @@ export default class EosUserSettingLdap extends Vue {
       "systemConfig/updateLdapUserConfig",
       queryParams
     );
-  }
-
-  private data() {
-    return {
-      usersearchbase: "",
-      server: "",
-      port: 80,
-      altserver: "",
-      altport: 80,
-      isValid: true
-    };
   }
 }
 </script>

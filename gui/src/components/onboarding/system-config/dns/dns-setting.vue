@@ -1,14 +1,16 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblDns">DNS network settings</div>
+      <div class="title mt-0 font-weight-bold" id="lblDns">
+        DNS network settings
+      </div>
       <div class="row mt-4">
         <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
             :class="{
-          'eos-form-group--error': $v.hostname.$error
-        }"
+              'eos-form-group--error': $v.hostname.$error
+            }"
           >
             <label class="eos-form-group-label" for="Hostname">Hostname*</label>
             <input
@@ -20,7 +22,9 @@
               @input="$v.hostname.$touch"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.hostname.$dirty && !$v.hostname.required">Hostname is required</label>
+              <label v-if="$v.hostname.$dirty && !$v.hostname.required"
+                >Hostname is required</label
+              >
             </div>
           </div>
         </div>
@@ -30,10 +34,12 @@
           <div
             class="eos-form-group"
             :class="{
-          'eos-form-group--error': $v.dnsServerAddress.$error
-        }"
+              'eos-form-group--error': $v.dnsServerAddress.$error
+            }"
           >
-            <label class="eos-form-group-label" for="accountName">DNS server*</label>
+            <label class="eos-form-group-label" for="accountName"
+              >DNS server*</label
+            >
             <textarea
               class="eos-form__input_textarea"
               id="txtDnsServer"
@@ -45,8 +51,11 @@
             ></textarea>
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
-                v-if="$v.dnsServerAddress.$dirty && !$v.dnsServerAddress.required"
-              >DNS address is required</label>
+                v-if="
+                  $v.dnsServerAddress.$dirty && !$v.dnsServerAddress.required
+                "
+                >DNS address is required</label
+              >
             </div>
           </div>
         </div>
@@ -54,10 +63,12 @@
           <div
             class="eos-form-group"
             :class="{
-          'eos-form-group--error': $v.searchDomainAddress.$error
-        }"
+              'eos-form-group--error': $v.searchDomainAddress.$error
+            }"
           >
-            <label class="eos-form-group-label" for="accountName">Search domain*</label>
+            <label class="eos-form-group-label" for="accountName"
+              >Search domain*</label
+            >
             <textarea
               class="eos-form__input_textarea"
               id="txtSearchDomain"
@@ -69,8 +80,12 @@
             ></textarea>
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
-                v-if="$v.searchDomainAddress.$dirty && !$v.searchDomainAddress.required"
-              >Search domain is required</label>
+                v-if="
+                  $v.searchDomainAddress.$dirty &&
+                    !$v.searchDomainAddress.required
+                "
+                >Search domain is required</label
+              >
             </div>
           </div>
         </div>
@@ -78,22 +93,25 @@
     </div>
     <!-- node block -->
     <div class="row ma-0 mt-3">
-      <template v-for="node in  $v.dnsNodes.$each.$iter">
+      <template v-for="node in $v.dnsNodes.$each.$iter">
         <div class="col-3 body-1 column node-container" :key="node.id">
-          <span class="font-weight-bold" id="lblIpv4Node">Node {{ node.$model.id }}</span>
+          <span class="font-weight-bold" id="lblIpv4Node"
+            >Node {{ node.$model.id }}</span
+          >
           <v-divider class="mt-2" />
           <div class="eos-form-group mt-0">
             <div
               class="eos-form-group"
               :class="{
-                  'eos-form-group--error':  node.hostname.$error
-                }"
+                'eos-form-group--error': node.hostname.$error
+              }"
             >
               <label
                 class="eos-form-group-label"
                 :id="node.$model.id + 'lblDNS4Hostname'"
                 :for="node.$model.id + 'txtDNSHostname'"
-              >Hostname*</label>
+                >Hostname*</label
+              >
               <input
                 class="eos-form__input_text"
                 type="text"
@@ -103,7 +121,9 @@
                 :name="node.$model.id + 'hostname'"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
-                <label v-if="node.hostname.$dirty && !node.hostname.required">Hostname is required</label>
+                <label v-if="node.hostname.$dirty && !node.hostname.required"
+                  >Hostname is required</label
+                >
               </div>
             </div>
           </div>
@@ -133,7 +153,7 @@ import {
 })
 export default class EosDnsSetting extends Vue {
   @Validations()
-  public validations = {
+  private validations = {
     hostname: {
       required
     },
@@ -152,10 +172,30 @@ export default class EosDnsSetting extends Vue {
     }
   };
 
-  public splitByComma(str: string) {
+  private data() {
+    return {
+      hostname: "",
+      source: "manual",
+      dnsServerAddress: [],
+      searchDomainAddress: [],
+      dnsNodes: [
+        {
+          id: 0,
+          hostname: ""
+        },
+        {
+          id: 1,
+          hostname: ""
+        }
+      ],
+      isValid: true
+    };
+  }
+
+  private splitByComma(str: string) {
     return str.split(",").filter(Boolean);
   }
-  public updateDNSconfig() {
+  private updateDNSconfig() {
     const dnsServers = this.splitByComma(`${this.$data.dnsServerAddress}`);
     const searchDomains = this.splitByComma(
       `${this.$data.searchDomainAddress}`
@@ -203,25 +243,6 @@ export default class EosDnsSetting extends Vue {
         systemconfig.dns_network_settings.search_domain;
       this.$data.dnsNodes = systemconfig.dns_network_settings.nodes;
     }
-  }
-  private data() {
-    return {
-      hostname: "",
-      source: "manual",
-      dnsServerAddress: [],
-      searchDomainAddress: [],
-      dnsNodes: [
-        {
-          id: 0,
-          hostname: ""
-        },
-        {
-          id: 1,
-          hostname: ""
-        }
-      ],
-      isValid: true
-    };
   }
 }
 </script>

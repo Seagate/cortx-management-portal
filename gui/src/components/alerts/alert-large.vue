@@ -20,7 +20,9 @@
       class="mt-3 mb-2 eos-btn-primary"
       v-if="tabsInfo.selectedTab === 1"
       @click="acknowledgeAll()"
-    >Acknowledge all</button>
+    >
+      Acknowledge all
+    </button>
     <v-data-table
       calculate-widths
       :items="alertData"
@@ -31,7 +33,7 @@
       :items-per-page.sync="itemsPerPage"
       :footer-props="{
         'items-per-page-options': [5, 10, 15]
-        }"
+      }"
       :page.sync="page"
       :update:page="page"
       :server-items-length="totalRecordsCount"
@@ -39,20 +41,34 @@
       @update:items-per-page="onSortPaginate('', null, page, itemsPerPage)"
       @update:page="onSortPaginate('', null, page, itemsPerPage)"
     >
-      <template v-slot:header="{props}">
+      <template v-slot:header="{ props }">
         <tr>
           <th
             v-for="header in alertHeader"
             :key="header.text"
             class="tableheader"
-            @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
+            @click="
+              onSortPaginate(
+                header.value,
+                header,
+                props.options.page,
+                props.options.itemsPerPage
+              )
+            "
           >
             <span
               class="headerText"
-              :class="(header.value === sortColumnName && isSortActive) ? 'active' : ''"
-            >{{ header.text }}</span>
+              :class="
+                header.value === sortColumnName && isSortActive ? 'active' : ''
+              "
+              >{{ header.text }}</span
+            >
             <span
-              :class="(header.value === sortColumnName && isSortActive) ? 'active' : 'notActive'"
+              :class="
+                header.value === sortColumnName && isSortActive
+                  ? 'active'
+                  : 'notActive'
+              "
             >
               <img
                 v-if="header.sortable && header.sortDir === alertStatus.desc"
@@ -77,36 +93,50 @@
       </template>
       <template v-slot:item="props">
         <tr style="color: #000000;">
-          <td style="white-space: nowrap;">{{ new Date(props.item.created_time*1000) | timeago }}</td>
+          <td style="white-space: nowrap;">
+            {{ new Date(props.item.created_time * 1000) | timeago }}
+          </td>
           <td>
             <div>
-              <span>Resource type: {{ props.item.module_name }} | State: {{ props.item.state }}</span>
+              <span
+                >Resource type: {{ props.item.module_name }} | State:
+                {{ props.item.state }}</span
+              >
             </div>
             <div>
+              <span v-if="props.item.module_type === 'logical_volume'"
+                >Volume group: {{ props.item.volume_group }} | Volume name:
+                {{ props.item.name }}</span
+              >
+              <span v-else-if="props.item.module_type === 'system'"
+                >Version: {{ props.item.version }} | Nodename:
+                {{ props.item.name }}</span
+              >
+              <span v-else-if="props.item.module_type === 'volume'"
+                >Size: {{ props.item.volume_size }} | Total size:
+                {{ props.item.volume_total_size }}</span
+              >
+              <span v-else-if="props.item.module_type === 'current'"
+                >Sensor name: {{ props.item.name }}</span
+              >
+              <span v-else-if="props.item.module_name === 'enclosure:fru:psu'"
+                >Location: {{ props.item.location }}</span
+              >
               <span
-                v-if="props.item.module_type === 'logical_volume'"
-              >Volume group: {{ props.item.volume_group }} | Volume name: {{ props.item.name }}</span>
-              <span
-                v-else-if="props.item.module_type === 'system'"
-              >Version: {{ props.item.version }} | Nodename: {{ props.item.name }}</span>
-              <span
-                v-else-if="props.item.module_type === 'volume'"
-              >Size: {{ props.item.volume_size }} | Total size: {{ props.item.volume_total_size }}</span>
-              <span
-                v-else-if="props.item.module_type === 'current'"
-              >Sensor name: {{ props.item.name }}</span>
-              <span
-                v-else-if="props.item.module_name === 'enclosure:fru:psu'"
-              >Location: {{ props.item.location }}</span>
-              <span
-                v-else-if="props.item.module_name === 'enclosure:fru:fan' || props.item.module_type === 'enclosure:fru:sideplane'"
-              >Name: {{ props.item.name }} | Location: {{ props.item.location }}</span>
-              <span
-                v-else-if="props.item.module_name === 'enclosure:fru:disk'"
-              >Serial number: {{ props.item.serial_number }} | Size: {{ props.item.volume_size }}</span>
-              <span
-                v-else-if="props.item.module_type === 'controller'"
-              >Serial number: {{ props.item.serial_number }}</span>
+                v-else-if="
+                  props.item.module_name === 'enclosure:fru:fan' ||
+                    props.item.module_type === 'enclosure:fru:sideplane'
+                "
+                >Name: {{ props.item.name }} | Location:
+                {{ props.item.location }}</span
+              >
+              <span v-else-if="props.item.module_name === 'enclosure:fru:disk'"
+                >Serial number: {{ props.item.serial_number }} | Size:
+                {{ props.item.volume_size }}</span
+              >
+              <span v-else-if="props.item.module_type === 'controller'"
+                >Serial number: {{ props.item.serial_number }}</span
+              >
             </div>
           </td>
           <td>
@@ -117,12 +147,15 @@
             ></div>
             <div
               style="margin: auto;"
-              v-else-if="props.item.severity ===alertStatus.critical || props.item.severity === alertStatus.error"
+              v-else-if="
+                props.item.severity === alertStatus.critical ||
+                  props.item.severity === alertStatus.error
+              "
               class="eos-status-chip eos-chip-alert"
             ></div>
             <div
               style="margin: auto;"
-              v-else-if="props.item.severity ===alertStatus.warning"
+              v-else-if="props.item.severity === alertStatus.warning"
               class="eos-status-chip eos-chip-warning"
             ></div>
             <div
@@ -131,16 +164,25 @@
               class="eos-status-chip eos-chip-ok"
             ></div>
           </td>
-          <td>{{props.item.description ? props.item.description : "--"}}</td>
+          <td>{{ props.item.description ? props.item.description : "--" }}</td>
           <td>
             <img
               :src="require('@/assets/zoom-in.svg')"
               style="cursor: pointer;"
               @click="$router.push('/alerts/' + props.item.alert_uuid)"
             />
-            <img v-if="props.item.resolved" :src="require('@/assets/resolved-filled-default.svg')" />
-            <img v-if="props.item.comment" :src="require('@/assets/comment-filled-default.svg')" />
-            <img v-if="props.item.acknowledged" :src="require('@/assets/acknowledge-default.svg')" />
+            <img
+              v-if="props.item.resolved"
+              :src="require('@/assets/resolved-filled-default.svg')"
+            />
+            <img
+              v-if="props.item.comment"
+              :src="require('@/assets/comment-filled-default.svg')"
+            />
+            <img
+              v-if="props.item.acknowledged"
+              :src="require('@/assets/acknowledge-default.svg')"
+            />
           </td>
         </tr>
       </template>
@@ -196,7 +238,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
         sortDir: "desc"
       },
       {
-        text: "Alert Target",
+        text: "Alert target",
         value: "alertTarget",
         sortable: false
       },
@@ -231,7 +273,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
     });
     const currentPageAlertIds: string[] = [];
     this.alertData.forEach((alert: any) => {
-        currentPageAlertIds.push(alert.alert_uuid);
+      currentPageAlertIds.push(alert.alert_uuid);
     });
     try {
       await this.$store.dispatch("alerts/acknowledgeAll", currentPageAlertIds);
@@ -249,5 +291,4 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
 }
 </script>
 
-<style lang="scss" scoped >
-</style>
+<style lang="scss" scoped></style>

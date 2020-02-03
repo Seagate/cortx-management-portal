@@ -34,23 +34,6 @@
           />
         </div>
       </div>
-      <v-divider class="my-5" />
-      <div>
-        <input
-          type="checkbox"
-          v-model="syslognotify"
-          name="syslognotify"
-          id="chkSysLogNotify"
-        />
-        <span class="ml-3 font-weight-bold" id="lblSyssendLog"
-          >Send test syslog notification</span
-        >
-      </div>
-      <div class="my-5 font-weight-regular">
-        You will receive a test syslog notification when you apply these
-        settings. If you do not receive this notification, your settings may be
-        incorrect.
-      </div>
       <v-divider class="pt-5" />
     </div>
     <span class="d-none">{{ isValidForm }}</span>
@@ -65,7 +48,15 @@ import { EVENT_BUS } from "./../../../../main";
   name: "eos-data-network-ipv4"
 })
 export default class EosDataNetworkIpv4 extends Vue {
-  public mounted() {
+  private data() {
+    return {
+      syslogipaddr: "",
+      syslogserverport: 80,
+      isValid: true
+    };
+  }
+
+  private mounted() {
     this.notificationSyslogGetter();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
@@ -75,7 +66,18 @@ export default class EosDataNetworkIpv4 extends Vue {
       });
     });
   }
-  public notificationSyslogGetter() {
+  private destroyed() {
+    // WizardHook: shut off on exit event listner
+    EVENT_BUS.$off("emitOnNext");
+  }
+  get isValidForm() {
+    const validate = true;
+    // WizardHook: Emit event to sibling wizard footer component
+    // to send information about data validation to enable/disable wizard footer
+    EVENT_BUS.$emit("validForm", validate);
+    return validate;
+  }
+  private notificationSyslogGetter() {
     const notificationConfiguration = this.$store.getters[
       "systemConfig/userConfigData"
     ];
@@ -89,34 +91,12 @@ export default class EosDataNetworkIpv4 extends Vue {
         notificationConfiguration.notifications.syslog.syslog_server;
       this.$data.syslogserverport =
         notificationConfiguration.notifications.syslog.syslog_port;
-      this.$data.syslognotify =
-        notificationConfiguration.notifications.syslog.send_test_syslog;
     }
-  }
-  private destroyed() {
-    // WizardHook: shut off on exit event listner
-    EVENT_BUS.$off("emitOnNext");
-  }
-  get isValidForm() {
-    const validate = true;
-    // WizardHook: Emit event to sibling wizard footer component
-    // to send information about data validation to enable/disable wizard footer
-    EVENT_BUS.$emit("validForm", validate);
-    return validate;
-  }
-  private data() {
-    return {
-      syslogipaddr: "",
-      syslogserverport: 80,
-      syslognotify: false,
-      isValid: true
-    };
   }
   private setSyslogNotificationSettings() {
     const queryParams: Syslog = {
       syslog_server: this.$data.syslogipaddr,
-      syslog_port: this.$data.syslogserverport,
-      send_test_syslog: this.$data.syslognotify
+      syslog_port: this.$data.syslogserverport
     };
     return this.$store.dispatch(
       "systemConfig/updateSyslogNotificationUserConfig",

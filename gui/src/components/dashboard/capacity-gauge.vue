@@ -15,7 +15,7 @@
 <template>
   <div class="pa-5">
     <div style="height: 30px;">
-      <div class="eos-capacity-title">Data Allocation</div>
+      <div class="eos-capacity-title">Data allocation</div>
     </div>
     <div id="gauge_capacity"></div>
     <table class="mt-3">

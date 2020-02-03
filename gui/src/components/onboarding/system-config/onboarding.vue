@@ -28,7 +28,7 @@ import EosWizard from "../../widgets/wizard/wizard.vue";
   }
 })
 export default class EosOnboarding extends Vue {
-  public mounted() {
+  private mounted() {
     this.$store.dispatch("systemConfig/getSystemConfigAction");
   }
 

@@ -1,21 +1,27 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblEmail">Notifications: Email</div>
-      <div
-        class="mt-6"
-        id="lblEmailMsg"
-      >Selecting email will allow you to configure both secure and non-secure email servers for event notification. You can control the severity of events that you wish to receive, and you will be able to test out your notification settings.</div>
+      <div class="title mt-0 font-weight-bold" id="lblEmail">
+        Notifications: Email
+      </div>
+      <div class="mt-6" id="lblEmailMsg">
+        Selecting email will allow you to configure both secure and non-secure
+        email servers for event notification. You can control the severity of
+        events that you wish to receive, and you will be able to test out your
+        notification settings.
+      </div>
       <v-divider class="mt-2" />
       <div class="row mt-5">
         <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
             :class="{
-          'eos-form-group--error': $v.smtpserver.$error
-        }"
+              'eos-form-group--error': $v.smtpserver.$error
+            }"
           >
-            <label class="eos-form-group-label" for="accountName">SMTP server*</label>
+            <label class="eos-form-group-label" for="accountName"
+              >SMTP server*</label
+            >
             <input
               class="eos-form__input_text"
               type="text"
@@ -25,8 +31,13 @@
               @input="$v.smtpserver.$touch"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.smtpserver.$dirty && !$v.smtpserver.required">SMTP server is required</label>
-              <label v-else-if="$v.smtpserver.$dirty && !$v.smtpserver.ipAddress">SMTP server address</label>
+              <label v-if="$v.smtpserver.$dirty && !$v.smtpserver.required"
+                >SMTP server is required</label
+              >
+              <label
+                v-else-if="$v.smtpserver.$dirty && !$v.smtpserver.ipAddress"
+                >SMTP server address</label
+              >
             </div>
           </div>
         </div>
@@ -36,10 +47,12 @@
           <div
             class="eos-form-group"
             :class="{
-          'eos-form-group--error': $v.senderemail.$error
-        }"
+              'eos-form-group--error': $v.senderemail.$error
+            }"
           >
-            <label class="eos-form-group-label" for="accountName">Sender email*</label>
+            <label class="eos-form-group-label" for="accountName"
+              >Sender email*</label
+            >
             <input
               class="eos-form__input_text"
               type="text"
@@ -49,10 +62,12 @@
               @input="$v.senderemail.$touch"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label
-                v-if="$v.senderemail.$dirty && !$v.senderemail.required"
-              >Sender email is required</label>
-              <label v-if="$v.senderemail.$dirty && !$v.senderemail.email">Email id not valid</label>
+              <label v-if="$v.senderemail.$dirty && !$v.senderemail.required"
+                >Sender email is required</label
+              >
+              <label v-if="$v.senderemail.$dirty && !$v.senderemail.email"
+                >Email id not valid</label
+              >
             </div>
           </div>
         </div>
@@ -60,7 +75,12 @@
       <div class="row">
         <div class="col-4 column node-container py-0">
           <div class="eos-form-group">
-            <label class="eos-form-group-label" for="hostname" id="lblDTNetworkServeradd">Protocol*</label>
+            <label
+              class="eos-form-group-label"
+              for="hostname"
+              id="lblDTNetworkServeradd"
+              >Protocol*</label
+            >
             <select
               name="cmdProtocol"
               id="cmdProtocol"
@@ -78,14 +98,15 @@
           <div
             class="eos-form-group"
             :class="{
-          'eos-form-group--error': $v.smtpport.$error
-        }"
+              'eos-form-group--error': $v.smtpport.$error
+            }"
           >
             <label
               class="eos-form-group-label"
               for="lblEmailSenderPass"
               id="lblEmailSMTPPort"
-            >SMTP port*</label>
+              >SMTP port*</label
+            >
             <input
               class="eos-form__input_text"
               type="number"
@@ -95,8 +116,12 @@
               @input="$v.smtpport.$touch"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.smtpport.$dirty && !$v.smtpport.required">Port is not valid</label>
-              <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxLength">Max 4 charactor required</label>
+              <label v-if="$v.smtpport.$dirty && !$v.smtpport.required"
+                >Port is not valid</label
+              >
+              <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxLength"
+                >Max 4 charactor required</label
+              >
             </div>
           </div>
         </div>
@@ -106,14 +131,15 @@
           <div
             class="eos-form-group"
             :class="{
-          'eos-form-group--error': $v.senderpassword.$error
-        }"
+              'eos-form-group--error': $v.senderpassword.$error
+            }"
           >
             <label
               class="eos-form-group-label"
               for="lblEmailSenderPass"
               id="lblEmailSenderPass"
-            >Sender password*</label>
+              >Sender password*</label
+            >
             <input
               class="eos-form__input_text"
               type="password"
@@ -125,10 +151,12 @@
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.required"
-              >Sender password is required</label>
+                >Sender password is required</label
+              >
               <label
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.minLength"
-              >Minimum 4 charactor required</label>
+                >Minimum 4 charactor required</label
+              >
             </div>
           </div>
         </div>
@@ -138,14 +166,15 @@
           <div
             class="eos-form-group"
             :class="{
-          'eos-form-group--error': $v.confirmpassword.$error
-        }"
+              'eos-form-group--error': $v.confirmpassword.$error
+            }"
           >
             <label
               class="eos-form-group-label"
               for="lblEmailSenderPass"
               id="lblEmailSenderPass"
-            >Confirm password*</label>
+              >Confirm password*</label
+            >
             <input
               class="eos-form__input_text"
               type="password"
@@ -156,8 +185,12 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
-                v-if="$v.confirmpassword.$dirty && !$v.confirmpassword.sameAsPassword"
-              >Confirm password do not match</label>
+                v-if="
+                  $v.confirmpassword.$dirty &&
+                    !$v.confirmpassword.sameAsPassword
+                "
+                >Confirm password do not match</label
+              >
             </div>
           </div>
         </div>
@@ -167,14 +200,15 @@
           <div
             class="eos-form-group"
             :class="{
-          'eos-form-group--error': $v.emailaddress.$error
-        }"
+              'eos-form-group--error': $v.emailaddress.$error
+            }"
           >
             <label
               class="eos-form-group-label"
               for="lblEmailSenderPass"
               id="lblEmailSenderPass"
-            >Receiver email addresses*</label>
+              >Receiver email addresses*</label
+            >
             <textarea
               class="eos-form__input_textarea"
               id="txtEmailsenderemail"
@@ -184,10 +218,13 @@
               placeholder="Enter comma ',' seperated values"
             ></textarea>
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required">Email is required</label>
+              <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required"
+                >Email is required</label
+              >
               <label
                 v-if="$v.emailaddress.$dirty && !$v.emailaddress.emailRegex"
-              >Enter valid comma ',' seperated emails</label>
+                >Enter valid comma ',' seperated emails</label
+              >
             </div>
           </div>
         </div>
@@ -196,10 +233,14 @@
         type="button"
         class="eos-btn-primary mt-5"
         :disabled="!isConfirmPasswordValid"
-      >Send test email</button>
+      >
+        Send test email
+      </button>
     </div>
 
-    <p v-if="!isValid" class="red--text error-message">Please enter valid values.</p>
+    <p v-if="!isValid" class="red--text error-message">
+      Please enter valid values.
+    </p>
     <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
@@ -227,7 +268,7 @@ const emailRegex = helpers.regex(
 })
 export default class EosDataNetworkIpv4 extends Vue {
   @Validations()
-  public validations = {
+  private validations = {
     smtpserver: {
       required,
       ipAddress
@@ -252,7 +293,23 @@ export default class EosDataNetworkIpv4 extends Vue {
       maxLength: maxLength(65535)
     }
   };
-  public mounted() {
+
+  private data() {
+    return {
+      smtpserver: "",
+      senderemail: "",
+      smtpport: 80,
+      protocol: "",
+      senderpassword: "",
+      confirmpassword: "",
+      emailaddress: "",
+      weeklyEmail: false,
+      testEmail: false,
+      isValid: true
+    };
+  }
+
+  private mounted() {
     this.notificationGetter();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
@@ -295,10 +352,6 @@ export default class EosDataNetworkIpv4 extends Vue {
         notificationConfiguration.notifications.email.smtp_protocol;
       this.$data.emailaddress =
         notificationConfiguration.notifications.email.email;
-      // this.$data.weeklyEmail =
-      //   notificationConfiguration.notifications.email.weekly_email;
-      // this.$data.testEmail =
-      //   notificationConfiguration.notifications.email.send_test_mail;
     }
   }
 
@@ -310,28 +363,12 @@ export default class EosDataNetworkIpv4 extends Vue {
       smtp_sender_email: this.$data.senderemail,
       smtp_sender_password: this.$data.senderpassword,
       email: this.$data.emailaddress
-      // weekly_email: this.$data.weeklyEmail,
-      // send_test_mail: this.$data.testEmail
     };
 
     return this.$store.dispatch(
       "systemConfig/updateEmailNotificationUserConfig",
       queryParams
     );
-  }
-  private data() {
-    return {
-      smtpserver: "",
-      senderemail: "",
-      smtpport: 80,
-      protocol: "",
-      senderpassword: "",
-      confirmpassword: "",
-      emailaddress: "",
-      weeklyEmail: false,
-      testEmail: false,
-      isValid: true
-    };
   }
   get isConfirmPasswordValid() {
     if (

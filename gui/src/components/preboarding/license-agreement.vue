@@ -46,7 +46,9 @@ import { agreementText } from "./../../common/license-agreement-text";
 })
 export default class EosOnboardingFinish extends Vue {
   private data() {
-    return { agreementText };
+    return {
+      agreementText
+    };
   }
   private acceptAgreement() {
     this.$emit("accepted", true);

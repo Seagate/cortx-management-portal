@@ -7,20 +7,27 @@
       <div
         class="ml-4 mt-4 mb-1 black--text font-weight-bold"
         style="font-size: 18px"
-      >Admin User Configuration</div>
-      <div class="ml-4 mb-7">Configure the username and password for the admin user of this system.</div>
+      >
+        Admin user configuration
+      </div>
+      <div class="ml-4 mb-7">
+        Configure the username and password for the admin user of this system.
+      </div>
       <div class="ma-4">
         <form autocomplete="off" @submit.prevent="submitForm">
           <div class="mt-4">
             <div
               class="eos-form-group"
-              :class="{ 'eos-form-group--error': $v.createAccount.username.$error }"
+              :class="{
+                'eos-form-group--error': $v.createAccount.username.$error
+              }"
             >
               <label
                 class="eos-form-group-label"
                 for="Username"
                 id="lblAdminUsername"
-              >Admin username*</label>
+                >Admin username*</label
+              >
               <div></div>
               <input
                 class="eos-form__input_text"
@@ -32,17 +39,28 @@
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
-                  v-if="$v.createAccount.username.$dirty && !$v.createAccount.username.required"
-                >Username Name is required</label>
+                  v-if="
+                    $v.createAccount.username.$dirty &&
+                      !$v.createAccount.username.required
+                  "
+                  >Username Name is required</label
+                >
               </div>
             </div>
           </div>
           <div class="mt-4">
             <div
               class="eos-form-group"
-              :class="{ 'eos-form-group--error': $v.createAccount.password.$error }"
+              :class="{
+                'eos-form-group--error': $v.createAccount.password.$error
+              }"
             >
-              <label class="eos-form-group-label" for="password" id="lblAdminPassword">Password*</label>
+              <label
+                class="eos-form-group-label"
+                for="password"
+                id="lblAdminPassword"
+                >Password*</label
+              >
               <div></div>
               <input
                 class="eos-form__input_text"
@@ -54,21 +72,28 @@
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
-                  v-if="$v.createAccount.password.$dirty && !$v.createAccount.password.required"
-                >Password is required</label>
+                  v-if="
+                    $v.createAccount.password.$dirty &&
+                      !$v.createAccount.password.required
+                  "
+                  >Password is required</label
+                >
               </div>
             </div>
           </div>
           <div class="mt-4">
             <div
               class="eos-form-group"
-              :class="{ 'eos-form-group--error': $v.createAccount.confirmPassword.$error }"
+              :class="{
+                'eos-form-group--error': $v.createAccount.confirmPassword.$error
+              }"
             >
               <label
                 class="eos-form-group-label"
                 for="confirmPassword"
                 id="lblAdminPassword"
-              >Confirm password*</label>
+                >Confirm password*</label
+              >
               <div></div>
               <input
                 class="eos-form__input_text"
@@ -80,8 +105,12 @@
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
-                  v-if="$v.createAccount.confirmPassword.$dirty && !$v.createAccount.confirmPassword.sameAsPassword"
-                >Passwords do not match</label>
+                  v-if="
+                    $v.createAccount.confirmPassword.$dirty &&
+                      !$v.createAccount.confirmPassword.sameAsPassword
+                  "
+                  >Passwords do not match</label
+                >
               </div>
             </div>
           </div>
@@ -110,7 +139,7 @@ import { required, helpers, sameAs } from "vuelidate/lib/validators";
 })
 export default class EosAdminUser extends Vue {
   @Validations()
-  public validations = {
+  private validations = {
     createAccount: {
       username: { required },
       password: { required },
@@ -119,9 +148,6 @@ export default class EosAdminUser extends Vue {
       }
     }
   };
-  private mounted() {
-    this.$store.commit("alerts/setOnboardingFlag", false);
-  }
   private data() {
     return {
       createAccount: {
@@ -131,6 +157,9 @@ export default class EosAdminUser extends Vue {
       },
       isValidResponse: true
     };
+  }
+  private mounted() {
+    this.$store.commit("alerts/setOnboardingFlag", false);
   }
   private gotToNextPage() {
     const queryParams: UserLoginQueryParam = {
