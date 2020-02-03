@@ -119,6 +119,7 @@ export default class EosLogin extends Vue {
             this.$data.conststr.access_token,
             res.authorization
           );
+          localStorage.setItem(this.$data.conststr.username, user.username);
           return this.$store.dispatch("userLogin/getUserPermissionsAction");
         } else {
           // Show error message on screen
@@ -141,7 +142,19 @@ export default class EosLogin extends Vue {
 
   private navigate() {
     if (this.$route.name === "normal-login") {
-      this.$router.push("/");
+      // Check if user is S3 user by checking the s3accounts:update permission
+      // As only the s3 user will have this permission
+      const vueInstance: any = this;
+      if (
+        vueInstance.$hasAccessToCsm(
+          vueInstance.$eosUserPermissions.s3accounts +
+            vueInstance.$eosUserPermissions.update
+        )
+      ) {
+        this.$router.push("/provisioning/s3");
+      } else {
+        this.$router.push("/");
+      }
     } else {
       this.$router.push("/onboarding");
     }
