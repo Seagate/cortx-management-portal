@@ -32,7 +32,7 @@ Vue.use(Vuex);
 })
 export default class UserLogin extends VuexModule {
   public user: any = {};
-  public userPermissions: any = {};
+  public userPermissions: object = {};
 
   public queryParams: UserLoginQueryParam = {
     username: "",
@@ -54,9 +54,6 @@ export default class UserLogin extends VuexModule {
   }
 
   get getUserPermissions() {
-    // if (Object.entries(this.userPermissions).length === 0) {
-    //   this.context.dispatch("getUserPermissionsAction");
-    // }
     return this.userPermissions;
   }
 
@@ -102,10 +99,12 @@ export default class UserLogin extends VuexModule {
   @Action
   public async getUserPermissionsAction() {
     try {
-      const res = await Api.getAll(apiRegister.user_permissions);
-      if (res && res.data && res.data.permissions) {
-        this.context.commit("setUserPermissions", res.data.permissions);
-        return res.data.permissions;
+      if (Object.entries(this.userPermissions).length === 0) {
+        const res = await Api.getAll(apiRegister.user_permissions);
+        if (res && res.data && res.data.permissions) {
+          this.context.commit("setUserPermissions", res.data.permissions);
+          return res.data.permissions;
+        }
       }
     } catch (e) {
       // tslint:disable-next-line: no-console

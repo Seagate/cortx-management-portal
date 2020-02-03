@@ -48,7 +48,7 @@ export default class HeaderBar extends Vue {
   public username: string = "";
   public data() {
     return {
-      alertStatus: require("./../../common/const-string.json")
+      constStr: require("./../../common/const-string.json")
     };
   }
   public mounted() {
@@ -61,7 +61,10 @@ export default class HeaderBar extends Vue {
       reconnectionDelay: 3000 // (Number) how long to initially wait before attempting a new (1000) })
     });
     this.$store.dispatch("alertDataAction");
-    this.username = this.$store.getters["userLogin/getUser"].username;
+    const usernameStr = localStorage.getItem(this.$data.constStr.username);
+    if (usernameStr) {
+      this.username = usernameStr;
+    }
   }
 
   get isRouterPathOnboarding() {
@@ -82,7 +85,8 @@ export default class HeaderBar extends Vue {
         console.error("Logout Action Failed");
       });
     this.$store.commit("userLogin/setUserPermissions", {});
-    localStorage.removeItem(this.$data.alertStatus.access_token);
+    localStorage.removeItem(this.$data.constStr.access_token);
+    localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
 }
