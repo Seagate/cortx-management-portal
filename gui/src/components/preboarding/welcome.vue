@@ -12,7 +12,7 @@
         We will guide you through the first-time setup of your system.
       </div>
       <div class="ml-4 mt-1 mb-8 white--text">
-        By clicking the "Get Started" button, you agree to the
+        By clicking the "Get started" button, you agree to the
         <span class="csmprimary--text">EULA.</span>
       </div>
       <button
@@ -20,7 +20,7 @@
         class="eos-btn-primary-dark ml-4"
         @click="showLicenseAgreement = true"
       >
-        Get Started
+        <span>Get started</span>
       </button>
       <LicenseAgreement
         @accepted="licenseAcceptedOrClosed"
@@ -38,9 +38,6 @@ import LicenseAgreement from "./license-agreement.vue";
   components: { LicenseAgreement }
 })
 export default class EosWelcome extends Vue {
-  public mounted() {
-    this.$store.commit("alerts/setOnboardingFlag", false);
-  }
   private data() {
     return {
       showLicenseAgreement: false
@@ -52,6 +49,9 @@ export default class EosWelcome extends Vue {
     } else {
       this.$data.showLicenseAgreement = false;
     }
+  }
+  private mounted() {
+    this.$store.commit("alerts/setOnboardingFlag", false);
   }
   private gotToNextPage() {
     this.$router.push("adminuser");

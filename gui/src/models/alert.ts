@@ -15,76 +15,76 @@
 
 // Interface for CSM schema for Alert
 interface OtherDetails {
-    dc12v: number;
-    dctemp: number;
-    vendor: string;
-    description: string;
-    dc33v: number;
-    mfg_vendor_id: string;
-    fru_shortname: string;
-    serial_number: string;
-    mfg_date: string;
-    part_number: string;
-    model: string;
-    revision: string;
-    dc5v: number;
-    dc12i: number;
-    dc5i: number;
+  dc12v: number;
+  dctemp: number;
+  vendor: string;
+  description: string;
+  dc33v: number;
+  mfg_vendor_id: string;
+  fru_shortname: string;
+  serial_number: string;
+  mfg_date: string;
+  part_number: string;
+  model: string;
+  revision: string;
+  dc5v: number;
+  dc12i: number;
+  dc5i: number;
 }
 
 interface ExtendedInfo {
-    resource_type: string;
-    position: string;
-    durable_id: string;
-    other_details: OtherDetails;
+  resource_type: string;
+  position: string;
+  durable_id: string;
+  other_details: OtherDetails;
 }
 
 interface Alert {
-    id: number;
-    alert_uuid: string;
-    status: string;
-    type: string;
-    enclosure_id: number;
-    module_name: string;
-    description: string;
-    health: string;
-    health_recommendation: string;
-    location: string;
-    resolve: number;
-    acknowledged: number;
-    severity: string;
-    state: string;
-    extended_info: ExtendedInfo;
+  id: number;
+  alert_uuid: string;
+  status: string;
+  type: string;
+  enclosure_id: number;
+  module_name: string;
+  description: string;
+  health: string;
+  health_recommendation: string;
+  location: string;
+  resolve: number;
+  acknowledged: number;
+  severity: string;
+  state: string;
+  extended_info: ExtendedInfo;
 }
 
 export interface AlertObject {
-    total_records: number;
-    alerts: Alert[];
+  total_records: number;
+  alerts: Alert[];
 }
 
 export interface AlertQueryParam {
-    sortby: string;
-    dir: string;
-    offset: number;
-    limit: number;
-    resolved?: boolean;
-    acknowledged?: boolean;
-    show_all?: boolean;
+  sortby: string;
+  dir: string;
+  offset: number;
+  limit: number;
+  resolved?: boolean;
+  acknowledged?: boolean;
+  show_all?: boolean;
 }
 
 export interface AlertEventDetail {
-    name: string;
-    event_reason: string;
-    event_recommendation: string[];
-    showRecommendation: boolean;
+  name: string;
+  event_reason: string;
+  event_recommendation: string[];
+  showRecommendation: boolean;
 }
 
 export interface AlertExtendedInfo {
-    event_time?: string;
-    resource_id?: string;
-    site_id?: string;
-    node_id?: string;
-    cluster_id?: string;
-    rack_id?: string;
-    resource?: string;
+  event_time?: string;
+  resource_id?: string;
+  site_id?: string;
+  node_id?: string;
+  cluster_id?: string;
+  rack_id?: string;
+  resource?: string;
 }

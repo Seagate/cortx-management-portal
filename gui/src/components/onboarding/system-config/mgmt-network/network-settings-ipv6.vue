@@ -100,11 +100,19 @@ import { EVENT_BUS } from "./../../../../main";
   name: "eos-network-settings-ipv4"
 })
 export default class EosNetworkSettingsIpv4 extends Vue {
-  public gotoNextPage() {
+  private data() {
+    return {
+      source: "manual",
+      staticIpList: [],
+      newAddress: "",
+      ipv6Gateway: ""
+    };
+  }
+  private gotoNextPage() {
     this.updateIpv6Config();
     this.$router.push("dataconfig1");
   }
-  public mounted() {
+  private mounted() {
     this.managementNetworkGetter();
     this.$store.commit("alerts/setOnboardingFlag", false);
     // WizardHook: Open a listener for onNext event
@@ -115,7 +123,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       });
     });
   }
-  public destroyed() {
+  private destroyed() {
     // WizardHook: shut off on exit event listner
     EVENT_BUS.$off("emitOnNext");
   }
@@ -126,7 +134,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     EVENT_BUS.$emit("validForm", validate);
     return validate;
   }
-  public managementNetworkGetter(): any {
+  private managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
     if (
       systemconfig.management_network_settings &&
@@ -138,7 +146,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
         systemconfig.management_network_settings.ipv6.ip_address;
     }
   }
-  public updateIpv6Config() {
+  private updateIpv6Config() {
     const queryParams: Ipv6 = {
       is_dhcp: false,
       ip_address: this.$data.staticIpList,
@@ -149,14 +157,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
 
     return this.$store.dispatch("systemConfig/updateMngmtIpv6", queryParams);
   }
-  private data() {
-    return {
-      source: "manual",
-      staticIpList: [],
-      newAddress: "",
-      ipv6Gateway: ""
-    };
-  }
+
   private addIpAddress(address: string) {
     if (
       this.$data.staticIpList.length < 4 &&

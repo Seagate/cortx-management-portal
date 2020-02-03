@@ -1,7 +1,9 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblUserSetting">User settings</div>
+      <div class="title mt-0 font-weight-bold" id="lblUserSetting">
+        User settings
+      </div>
       <div class="mt-4">
         <div class="font-weight-regular black--text" id="lblUsrSettingMsg">
           You have already set up a user for managing this system. Use the
@@ -24,7 +26,7 @@
               name="local"
               id="chkUsrSettingLocal"
             />
-            <span class="eos-ckb-tick"></span>           
+            <span class="eos-ckb-tick"></span>
           </label>
           <div class="mt-2 font-weight-regular black--text">
             Selecting Local Users will allow you to create and manage any users
@@ -49,7 +51,9 @@
           <div
             class="mt-2 font-weight-regular black--text"
             id="lblUsrSettingConfigSkip"
-          >If you intend to configure later, you may skip to the next step.</div>
+          >
+            If you intend to configure later, you may skip to the next step.
+          </div>
         </div>
       </div>
     </div>
@@ -64,19 +68,19 @@ import { EVENT_BUS } from "./../../../../main";
   name: "eos-user-setting"
 })
 export default class EosUserSetting extends Vue {
-  public data() {
+  private data() {
     return {
       isSkip: false
     };
   }
-  public mounted() {
+  private mounted() {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
       res(true);
     });
   }
-  public destroyed() {
+  private destroyed() {
     // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
   }
@@ -102,32 +106,32 @@ export default class EosUserSetting extends Vue {
         console.error("Save user settings Failed");
       });
   }
-  public get isLocalUserStatus(): any {
+  private get isLocalUserStatus(): any {
     return this.$store.getters["systemConfig/isLocalUserStatus"];
   }
-  public set isLocalUserStatus(status: any) {
+  private set isLocalUserStatus(status: any) {
     this.$store.commit("systemConfig/setUser", {
       type: "local",
       flag: status
     });
   }
 
-  public get isLdapUserStatus(): any {
+  private get isLdapUserStatus(): any {
     return this.$store.getters["systemConfig/isLdapUserStatus"];
   }
 
-  public set isLdapUserStatus(status: any) {
+  private set isLdapUserStatus(status: any) {
     this.$store.commit("systemConfig/setUser", {
       type: "ldap",
       flag: status
     });
   }
 
-  public get isUserSettingSkipStatus(): any {
+  private get isUserSettingSkipStatus(): any {
     return this.$store.getters["systemConfig/isUserSettingSkipStatus"];
   }
 
-  public set isUserSettingSkipStatus(status: any) {
+  private set isUserSettingSkipStatus(status: any) {
     this.$store.commit("systemConfig/setUser", {
       type: "skip",
       flag: status

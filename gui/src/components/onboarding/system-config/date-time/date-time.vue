@@ -1,20 +1,22 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div
-        class="title mt-0 font-weight-bold"
-        id="lblDTSetDateTime"
-      >Network time protocol (NTP) settings</div>
+      <div class="title mt-0 font-weight-bold" id="lblDTSetDateTime">
+        Network time protocol (NTP) settings
+      </div>
       <div class="mt-4" v-if="source === 'ntp'">
         <div
           class="eos-form-group"
-          :class="{ 'eos-form-group--error': $v.setDateTime.NtpServerAddress.$error }"
+          :class="{
+            'eos-form-group--error': $v.setDateTime.NtpServerAddress.$error
+          }"
         >
           <label
             class="eos-form-group-label"
             for="hostname"
             id="lblDTNetworkServeradd"
-          >NTP server address*</label>
+            >NTP server address*</label
+          >
           <input
             class="eos-form__input_text"
             type="text"
@@ -25,8 +27,12 @@
           />
           <div class="eos-form-group-label eos-form-group-error-msg">
             <label
-              v-if="$v.setDateTime.NtpServerAddress.$dirty && !$v.setDateTime.NtpServerAddress.required"
-            >NTP server is required</label>
+              v-if="
+                $v.setDateTime.NtpServerAddress.$dirty &&
+                  !$v.setDateTime.NtpServerAddress.required
+              "
+              >NTP server is required</label
+            >
           </div>
         </div>
         <!---->
@@ -35,20 +41,39 @@
             class="eos-form-group-label"
             for="hostname"
             id="lblDTNetworkServeradd"
-          >NTP time zone offset*</label>
-          <select name="zone" id="cmdZone" class="eos-form__input_text" v-model="NtpTimezone">
-            <option v-for="option in timezoneList" :key="option" :value="option">{{ option }}</option>
+            >NTP time zone offset*</label
+          >
+          <select
+            name="zone"
+            id="cmdZone"
+            class="eos-form__input_text"
+            v-model="NtpTimezone"
+          >
+            <option
+              v-for="option in timezoneList"
+              :key="option"
+              :value="option"
+              >{{ option }}</option
+            >
           </select>
         </div>
       </div>
       <div class="mt-4" v-if="source === 'manual'">
         <div class="font-weight-medium black--text" id="lblDTDate">Date</div>
         <div>
-          <input class="input-text" type="date" name="date" v-model="date" id="txtDTDate" />
+          <input
+            class="input-text"
+            type="date"
+            name="date"
+            v-model="date"
+            id="txtDTDate"
+          />
         </div>
         <v-row>
           <v-col class="col-1">
-            <div class="mt-5 font-weight-medium black--text" id="lblDTHour">Hour</div>
+            <div class="mt-5 font-weight-medium black--text" id="lblDTHour">
+              Hour
+            </div>
             <div>
               <input
                 class="input-text col-12"
@@ -61,7 +86,9 @@
             </div>
           </v-col>
           <v-col class="col-1">
-            <div class="mt-5 font-weight-medium black--text" id="lblDTMinute">Minute</div>
+            <div class="mt-5 font-weight-medium black--text" id="lblDTMinute">
+              Minute
+            </div>
             <div>
               <input
                 class="input-text col-12"
@@ -74,7 +101,9 @@
             </div>
           </v-col>
           <v-col class="col-1">
-            <div class="mt-5 font-weight-medium black--text" id="lblDTClock">Clock</div>
+            <div class="mt-5 font-weight-medium black--text" id="lblDTClock">
+              Clock
+            </div>
             <div>
               <select
                 name="clock"
@@ -89,9 +118,13 @@
             </div>
           </v-col>
         </v-row>
-        <div class="mt-2">Daylight saving time adjustment is not supported.</div>
+        <div class="mt-2">
+          Daylight saving time adjustment is not supported.
+        </div>
         <v-btn elevation="0" color="csmprimary" class="mt-5" id="btnDTSetNow">
-          <span class="white--text" @click="setTimeZone()">Set current date and time</span>
+          <span class="white--text" @click="setTimeZone()"
+            >Set current date and time</span
+          >
         </v-btn>
       </div>
       <span class="d-none">{{ isValidForm }}</span>
@@ -116,12 +149,28 @@ import { required, helpers } from "vuelidate/lib/validators";
 })
 export default class EosDateTime extends Vue {
   @Validations()
-  public validations = {
+  private validations = {
     setDateTime: {
       NtpServerAddress: { required }
     }
   };
-  public mounted() {
+
+  private data() {
+    return {
+      timezoneList: [],
+      source: "ntp",
+      setDateTime: {
+        NtpServerAddress: ""
+      },
+      NtpTimezone: "",
+      minute: "",
+      hours: "",
+      date: "",
+      clock: "",
+      isValid: true
+    };
+  }
+  private mounted() {
     this.managementNetworkGetter();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
@@ -140,7 +189,7 @@ export default class EosDateTime extends Vue {
       })
       .sort();
   }
-  public destroyed() {
+  private destroyed() {
     // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
   }
@@ -151,7 +200,7 @@ export default class EosDateTime extends Vue {
     EVENT_BUS.$emit("validForm", !this.$v.$invalid);
     return validate;
   }
-  public managementNetworkGetter() {
+  private managementNetworkGetter() {
     const dateTime = this.$store.getters["systemConfig/systemconfig"];
     if (
       dateTime &&
@@ -164,7 +213,7 @@ export default class EosDateTime extends Vue {
         dateTime.date_time_settings.ntp.ntp_timezone_offset;
     }
   }
-  public setNTP() {
+  private setNTP() {
     const queryParams: DateTimeSettings = {
       is_ntp: true,
       ntp: {
@@ -180,7 +229,7 @@ export default class EosDateTime extends Vue {
     };
     return this.$store.dispatch("systemConfig/updateNTPSetting", queryParams);
   }
-  public setTimeZone() {
+  private setTimeZone() {
     const toDateInputValue = () => {
       const local = new Date();
       local.setMinutes(local.getMinutes() - local.getTimezoneOffset());
@@ -191,21 +240,6 @@ export default class EosDateTime extends Vue {
     this.$data.hours = localDate.getHours();
     this.$data.minute = localDate.getMinutes();
     this.$data.date = toDateInputValue();
-  }
-  private data() {
-    return {
-      timezoneList: [],
-      source: "ntp",
-      setDateTime: {
-        NtpServerAddress: ""
-      },
-      NtpTimezone: "",
-      minute: "",
-      hours: "",
-      date: "",
-      clock: "",
-      isValid: true
-    };
   }
 }
 </script>

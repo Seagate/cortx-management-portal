@@ -15,7 +15,7 @@
 <template>
   <div class="pa-5">
     <div style="height: 30px;">
-      <div class="eos-alert-title">New Alerts</div>
+      <div class="eos-alert-title">New alerts</div>
       <img
         :src="require('@/assets/zoom-in.svg')"
         class="eos-alert-navigate"
@@ -131,7 +131,7 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
         sortDir: "desc"
       },
       {
-        text: "Alert Target",
+        text: "Alert target",
         value: "alertTarget",
         sortable: false
       },
