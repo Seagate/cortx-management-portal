@@ -105,6 +105,8 @@ export default class UserLogin extends VuexModule {
           this.context.commit("setUserPermissions", res.data.permissions);
           return res.data.permissions;
         }
+      } else {
+        return true;
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
