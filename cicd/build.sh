@@ -9,14 +9,26 @@ GUI_DIR="$BASE_DIR/src/eos/gui"
 API_DIR="$BASE_DIR/src/web"
 
 usage() {
-    echo """usage: $PROG_NAME [-v <csm version>]
+    echo """
+usage: $PROG_NAME [-v <csm version>]
                             [-b <build no>] [-k <key>]
                             [-p <product_name>]
-                            [-c <all|backend|frontend>] [-t]""" 1>&2;
+                            [-c <all|backend|frontend>] [-t]
+                            [-d]
+
+Options:
+    -v : Build rpm with version
+    -b : Build rpm with build number
+    -k : Provide key for encryption of code
+    -p : Provide product name default eos
+    -c : Build rpm for [all|backend|frontend]
+    -t : Build rpm with test plan
+    -d : Build dev env
+        """ 1>&2;
     exit 1;
 }
 
-while getopts ":g:v:b:p:k:c:t" o; do
+while getopts ":g:v:b:p:k:c:td" o; do
     case "${o}" in
         v)
             VER=${OPTARG}
@@ -36,6 +48,9 @@ while getopts ":g:v:b:p:k:c:t" o; do
         t)
             TEST=true
             ;;
+        d)
+            DEV=true
+            ;;
         *)
             usage
             ;;
@@ -50,6 +65,7 @@ cd $BASE_DIR
 [ -z "$KEY" ] && KEY="eos@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
+[ -z "$DEV" ] && DEV=false
 
 echo "Using VERSION=${VER} BUILD=${BUILD} PRODUCT=${PRODUCT} TEST=${TEST}..."
 
@@ -77,25 +93,35 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     cd $TMPDIR
 
     # Copy Backend files
-    mkdir -p $DIST/csm/lib $DIST/csm/bin $DIST/csm/conf $TMPDIR
-    cp -rs $BASE_DIR/src/ $TMPDIR/csm
+    mkdir -p $DIST/csm/lib $DIST/csm/bin $DIST/csm/conf $TMPDIR/csm
+    cp -rs $BASE_DIR/src/* $TMPDIR/csm
     cp -rs $BASE_DIR/test/ $TMPDIR/csm
 
-    # Enable csm package for python import
-    export PYTHONPATH=$TMPDIR/csm/:$PYTHONPATH
+    # Check python package
+    req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
+    echo "Installing python packages..."
+    pip3 install --user -r $req_file  > /dev/null || {
+        echo "Unable to install package from $req_file"; exit 1;
+    };
+
+    echo " $BASE_DIR $DIST"
+    [ "$DEV" == true ] && {
+        echo """
+        ******* Create Dev env *********
+        Follow Instruction for Dev env
+            Copy $BASE_DIR/cli/schema to /opt/seagate/csm/cli
+            Copy $BASE_DIR/schema to /opt/seagate/csm/
+            Copy $BASE_DIR/src/conf/etc/csm/ to /etc/csm/
+        Dev env is created at $DIST/tmp/csm
+        """  1>&2;
+        exit
+    }
 
     CONF=$BASE_DIR/src/conf/
     cp -R $BASE_DIR/schema $DIST/csm/
     cp -R $BASE_DIR/templates $DIST/csm/
     mkdir -p  $DIST/csm/cli/
     cp -R $BASE_DIR/src/cli/schema $DIST/csm/cli/
-
-    # Check python package
-    req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
-    echo "Installing python packages..."
-    pip3 install --user -r $req_file  > /dev/null || {
-        echo "Unable to istall package from $req_file"; exit 1;
-    };
 
     # Create spec for pyinstaller
     [ "$TEST" == true ] && {
