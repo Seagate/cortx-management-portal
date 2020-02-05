@@ -149,7 +149,14 @@
               class="ml-8 eos-btn-secondary"
               @click="closeBucketPolicyeDialog()"
             >Cancel</button>
-            <img  class="eos-cursor-pointer ml-8 " src="@/assets/actions/delete-green.svg"    @click="deleteBuketPolicy()"/>
+            <!-- <img  class="eos-cursor-pointer ml-8 " src="@/assets/actions/delete-green.svg"    @click="deleteBuketPolicy()"/> -->
+          <button
+              type="button"
+              class="eos-btn-primary ml-8"
+              :disabled="!$v.policyJson.jsonValidator"
+              @click="deleteBuketPolicy()"
+            >Delete Policy</button>
+         
           </div>
         </div>
       </div>
