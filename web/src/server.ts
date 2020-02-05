@@ -28,6 +28,7 @@ applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);
 
 let server: any;
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
 if (process.env.SERVER_PROTOCOL == 'http') {
   server = http.createServer(router);
