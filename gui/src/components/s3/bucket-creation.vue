@@ -373,8 +373,6 @@ export default class EosBucketCreation extends Vue {
     await Api.delete(apiRegister.bucket_policy,  this.bucketName);
     this.$store.dispatch("systemConfig/hideLoader");
   }
-
-
   private async deleteBucket() {
     this.$store.dispatch(
       "systemConfig/showLoader",
