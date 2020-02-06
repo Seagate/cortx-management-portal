@@ -97,6 +97,10 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     cp -rs $BASE_DIR/src/* $TMPDIR/csm
     cp -rs $BASE_DIR/test/ $TMPDIR/csm
 
+    # Enable csm package for python import
+    # TODO: Add pythonpath in pyinstaller spec
+    export PYTHONPATH=$TMPDIR/csm/:$PYTHONPATH
+
     # Check python package
     req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
     echo "Installing python packages..."
@@ -180,7 +184,7 @@ cd $BASE_DIR
 mkdir -p ${DIST}/rpmbuild/SOURCES
 
 # Genrate spec file for CSM
-sed -i -e "s/<RPM_NAME>/${PRODUCT}_csm/g" \
+sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm/g" \
     -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm.spec
 
 cd ${DIST}
