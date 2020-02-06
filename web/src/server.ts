@@ -28,7 +28,6 @@ applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);
 
 let server: any;
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
 if (process.env.SERVER_PROTOCOL == 'http') {
   server = http.createServer(router);
@@ -41,7 +40,7 @@ if (process.env.SERVER_PROTOCOL == 'http') {
   server = https.createServer(options, router);
 }
 
-const NODE_PORT = process.env.NODE_PORT ? process.env.NODE_PORT : 8100;
+const NODE_PORT = Number(process.env.NODE_PORT) ? Number(process.env.NODE_PORT) : 8100;
 const INCOMING_SOCKET_PORT: number = Number(process.env.INCOMING_SOCKET_PORT);
 const OUTGOING_SOCKET_PORT: number = Number(process.env.OUTGOING_SOCKET_PORT);
 const CSM_AGENT_HOST: string = process.env.CSM_AGENT_HOST || "";
