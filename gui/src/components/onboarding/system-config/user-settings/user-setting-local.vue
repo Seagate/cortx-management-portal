@@ -168,7 +168,7 @@
         >
           <v-data-table
             calculate-widths
-            :items="alertData"
+            :items="userData"
             :single-expand="singleExpand"
             :expanded.sync="expanded"
             item-key="id"
@@ -180,7 +180,7 @@
               <tr>
                 <th class="tableheader" />
                 <th
-                  v-for="header in alertHeader"
+                  v-for="header in userHeader"
                   :key="header.text"
                   class="tableheader"
                 >
@@ -410,7 +410,7 @@ export default class EosUserSettingLocal extends Vue {
       checkedInterfaces: [],
       selectedItem: {},
       expanded: [],
-      alertHeader: [
+      userHeader: [
         {
           text: "Username",
           value: "username",
@@ -422,7 +422,7 @@ export default class EosUserSettingLocal extends Vue {
           sortable: false
         }
       ],
-      alertData: []
+      userData: []
     };
   }
 
@@ -520,7 +520,7 @@ export default class EosUserSettingLocal extends Vue {
   // TODO: Need to remove this logic once api is properly implemented
   private isFirstElement(id: string): boolean {
     let isFirstElem: boolean = false;
-    if (this.$data.alertData.length > 0 && this.$data.alertData[0].id === id) {
+    if (this.$data.userData.length > 0 && this.$data.userData[0].id === id) {
       isFirstElem = true;
     }
     return isFirstElem;
@@ -529,7 +529,7 @@ export default class EosUserSettingLocal extends Vue {
     this.$store
       .dispatch("createUser/getDataAction")
       .then(data => {
-        this.$data.alertData = data;
+        this.$data.userData = data;
       })
       .catch(e => {
         // tslint:disable-next-line: no-console

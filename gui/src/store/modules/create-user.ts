@@ -47,8 +47,10 @@ export default class UserCreate extends VuexModule {
   public async getDataAction() {
     try {
       const res = await Api.getAll(apiRegister.create_csmuser);
-      const data = res.data;
-      return data;
+      if (res && res.data && res.data.users) {
+        const data = res.data.users;
+        return data;
+      }
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.log("err logger: ", e);
