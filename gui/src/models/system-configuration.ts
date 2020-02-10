@@ -19,10 +19,6 @@
 
 export interface Ipv4 {
   is_dhcp: boolean;
-  vip_address?: string;
-  netmask: string;
-  gateway: string;
-  vip_hostname?: string;
   nodes: Ipv4Node;
 }
 
@@ -45,8 +41,11 @@ export interface ManagementNetworkIpv4 {
 }
 export interface Ipv4Node {
   id: number;
+  name: string;
   ip_address: string;
   hostname: string;
+  netmask: string;
+  gateway: string;
 }
 
 export interface DataNetworkIpv4 {
