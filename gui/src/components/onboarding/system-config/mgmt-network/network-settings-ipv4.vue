@@ -20,10 +20,62 @@
           <span class="eos-rdb-tick" id="lblIp4DHCP"></span>
         </label>
       </div>
+
       <div class="row">
-        <div class="col-4 column node-container py-0"></div>
-        <div class="col-4 column node-container py-0"></div>
+        <div class="col-4 column node-container py-0">
+          <!-- <div
+            class="eos-form-group"
+            :class="{
+              'eos-form-group--error': $v.ipv4Netmask.$error
+            }"
+          >
+            <label
+              class="eos-form-group-label"
+              id="lblMngmtNetworkIpv4Netmask"
+              for="accountName"
+            >Netmask*</label>
+            <input
+              class="eos-form__input_text"
+              type="text"
+              id="txtMngmtNetworkIpv4netmask"
+              name="netmask"
+              v-model.trim="ipv4Netmask"
+              @input="$v.ipv4Netmask.$touch"
+            />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label v-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.required">Netmask is required</label>
+              <label v-else-if="$v.ipv4Netmask.$dirty && !$v.ipv4Netmask.ipAddress">Invalid netmask</label>
+            </div>
+          </div> -->
+        </div>
+        <div class="col-4 column node-container py-0">
+          <!-- <div
+            class="eos-form-group"
+            :class="{
+              'eos-form-group--error': $v.ipv4Gateway.$error
+            }"
+          >
+            <label
+              class="eos-form-group-label"
+              id="lblMngmtNetworkIpv4Gateway"
+              for="accountName"
+            >Gateway*</label>
+            <input
+              class="eos-form__input_text"
+              type="text"
+              id="txtMngmtNetworkIpv4Gateway"
+              name="gateway"
+              v-model.trim="ipv4Gateway"
+              @input="$v.ipv4Gateway.$touch"
+            />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label v-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.required">Gateway is required</label>
+              <label v-else-if="$v.ipv4Gateway.$dirty && !$v.ipv4Gateway.ipAddress">Invalid gateway</label>
+            </div>
+          </div> -->
+        </div>
       </div>
+
       <div class="row mt-5">
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
           <div class="col-3 body-2 column node-container" :key="node.id">
@@ -85,61 +137,62 @@
                 </div>
               </div>
               <div
-                class="eos-form-group"
-                :class="{
+            class="eos-form-group"
+            :class="{
               'eos-form-group--error': $v.ipv4Netmask.$error
             }"
-              >
-                <label
-                  class="eos-form-group-label"
-                  id="lblMngmtNetworkIpv4Netmask"
-                  for="accountName"
-                >Netmask*</label>
-                <input
-                  class="eos-form__input_text"
-                  type="text"
-                  :id="node.$model.id + 'txtMngmtNetworkIpv4netmask'"
-                  :name="node.$model.id + 'netmask'"
-                  v-model.trim="node.netmask.$model"
-                  @input="node.netmask.$touch"
-                />
-                <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label v-if="node.netmask.$dirty && !node.netmask.required">Netmask is required</label>
-                  <label
+          >
+            <label
+              class="eos-form-group-label"
+              id="lblMngmtNetworkIpv4Netmask"
+              for="accountName"
+            >Netmask*</label>
+            <input
+              class="eos-form__input_text"
+              type="text"
+             :id="node.$model.id + 'txtMngmtNetworkIpv4netmask'"
+              :name="node.$model.id + 'netmask'"
+               v-model.trim="node.netmask.$model"
+              @input="node.netmask.$touch"
+            />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+             <label v-if="node.netmask.$dirty && !node.netmask.required">Netmask is required</label>
+              <label
                     v-else-if="
                       node.netmask.$dirty && !node.netmask.ipAddress
                     "
                   >Invalid IP address</label>
-                </div>
-              </div>
-              <div
-                class="eos-form-group"
-                :class="{
+            </div>
+          </div>
+          <div
+            class="eos-form-group"
+            :class="{
               'eos-form-group--error': $v.ipv4Gateway.$error
             }"
-              >
-                <label
-                  class="eos-form-group-label"
-                  id="lblMngmtNetworkIpv4Gateway"
-                  for="accountName"
-                >Gateway*</label>
-                <input
-                  class="eos-form__input_text"
-                  type="text"
-                  :id="node.$model.id + 'txtMngmtNetworkIpv4Gateway'"
-                  :name="node.$model.id + 'gateway'"
-                  v-model.trim="node.gateway.$model"
-                  @input="node.gateway.$touch"
-                />
-                <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label v-if="node.gateway.$dirty && !node.gateway.required">Gateway is required</label>
-                  <label
+          >
+            <label
+              class="eos-form-group-label"
+              id="lblMngmtNetworkIpv4Gateway"
+              for="accountName"
+            >Gateway*</label>
+            <input
+              class="eos-form__input_text"
+              type="text"
+               :id="node.$model.id + 'txtMngmtNetworkIpv4Gateway'"
+              :name="node.$model.id + 'gateway'"
+               v-model.trim="node.gateway.$model"
+              @input="node.gateway.$touch"
+            />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+             <label v-if="node.gateway.$dirty && !node.gateway.required">Gateway is required</label>
+              <label
                     v-else-if="
                       node.gateway.$dirty && !node.gateway.ipAddress
                     "
                   >Invalid IP address</label>
-                </div>
-              </div>
+            </div>
+          </div>
+              
             </div>
           </div>
         </template>
@@ -171,6 +224,21 @@ import { EVENT_BUS } from "./../../../../main";
 export default class EosNetworkSettingsIpv4 extends Vue {
   @Validations()
   private validations = {
+    ipv4VipAddress: {
+      required,
+      ipAddress
+    },
+    ipv4Netmask: {
+      required,
+      ipAddress
+    },
+    ipv4Gateway: {
+      required,
+      ipAddress
+    },
+    ipv4VipHostname: {
+      required
+    },
     ipv4Nodes: {
       $each: {
         ip_address: {
@@ -184,23 +252,27 @@ export default class EosNetworkSettingsIpv4 extends Vue {
             return this.$data.source === "manual";
           })
         },
-        netmask: {
+         netmask: {
           required: requiredIf(function(this: any, form) {
             return this.$data.source === "manual";
           }),
           ipAddress
         },
-        gateway: {
+         gateway: {
           required: requiredIf(function(this: any, form) {
             return this.$data.source === "manual";
           }),
           ipAddress
-        }
+        },
       }
     }
   };
   private data() {
     return {
+      ipv4VipAddress: "",
+      ipv4Netmask: "",
+      ipv4Gateway: "",
+      ipv4VipHostname: "",
       source: "manual",
       systemConfigObject: {} as SystemConfigObject,
       isValid: true,
@@ -228,7 +300,8 @@ export default class EosNetworkSettingsIpv4 extends Vue {
           hostname: "",
           netmask: "",
           gateway: ""
-        }
+        },
+        
       ]
     };
   }
@@ -271,7 +344,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       is_dhcp: this.$data.source === "DHCP",
       nodes: this.$data.ipv4Nodes
     };
-    console.log(queryParams, "kkkkk");
+    console.log(queryParams,'kkkkk');
     return this.$store.dispatch("systemConfig/updateMngmtIpv4", queryParams);
   }
 }
