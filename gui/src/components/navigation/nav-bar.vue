@@ -66,8 +66,7 @@
         tag="div"
         class="eos-nav-item"
         active-class="eos-nav-item-active"
-        :key="navItems[3].title"
-        event=""
+        :key="navItems[3].title"      
       >
         <div style="padding: 5px;">
           <img
