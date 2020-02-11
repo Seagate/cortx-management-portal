@@ -234,7 +234,8 @@ class AlertPlugin(CsmPlugin):
                     '_'.join(str(x) for x in csm_schema[const.ALERT_SENSOR_INFO].values())
                 csm_schema[const.ALERT_SENSOR_INFO] = \
                     csm_schema[const.ALERT_SENSOR_INFO].replace(" ", "_")
-                if const.ALERT_EVENTS in csm_schema:
+                if const.ALERT_EVENTS in csm_schema and \
+                        csm_schema[const.ALERT_EVENTS] is not None:
                     csm_schema[const.ALERT_EVENT_DETAILS] = []
                     self._prepare_specific_info(csm_schema)
                     csm_schema.pop(const.ALERT_EVENTS)
