@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getBuckets, createBucket, deleteBucket, updateBuketPolicy, getBucketsPolicy } from "./bucket";
+import { getBuckets, createBucket, deleteBucket, updateBuketPolicy, getBucketsPolicy,deleteBucketPolicy } from "./bucket";
 import { checkRequiredParams } from './../../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -76,6 +76,17 @@ export default [
         } catch (err) {
           throw err;
         }
+      }
+    ]
+  },
+   {
+    path: "/api/v1/s3/bucket_policy/:bucket_name",
+    method: "delete",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        const result = await deleteBucketPolicy(req, res);
+        res.status(HttpStatus.OK).send(result);
       }
     ]
   },
