@@ -60,6 +60,15 @@ export const updateBuketPolicy = async (req: Request, res: Response) => {
 };
 /**
  * 
+ * @param req delete bucket policy
+ * @param res 
+ */
+export const deleteBucketPolicy = async (req: Request, res: Response) => {
+    let deletePolicy = Api.delete(apiRegister.bucket_policy, req, res, req.params.bucket_name);
+    return deletePolicy;
+};
+/**
+ * 
  * @param req get bucket policy
  * @param res 
  */
