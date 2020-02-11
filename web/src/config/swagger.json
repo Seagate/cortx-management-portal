@@ -163,7 +163,7 @@
         ]
       }
     },
-	"/stats/{statstype}": {
+    "/stats/{statstype}": {
       "get": {
         "tags": [
           "Get Stats"
@@ -227,9 +227,9 @@
             "default": "10"
           }
         ]
-      }    
+      }
     },
-	"/config": {
+    "/config": {
       "get": {
         "tags": [
           "Get System Config"
@@ -391,7 +391,7 @@
               }
             }
           }
-        ]      
+        ]
       }
     },
     "/login": {
@@ -437,7 +437,7 @@
         ]
       }
     },
-	"/udx-device/registration-token": {
+    "/udx-device/registration-token": {
       "get": {
         "tags": [
           "Get Registration token to register UDX device"
@@ -470,8 +470,8 @@
           "application/json": {}
         }
       }
-	},
-	"/udx-device": {
+    },
+    "/udx-device": {
       "get": {
         "tags": [
           "Get registered UDX device details"
@@ -488,19 +488,19 @@
                     "name": {
                       "type": "string"
                     },
-					"productID": {
+                    "productID": {
                       "type": "string"
                     },
-					"serialNumber": {
+                    "serialNumber": {
                       "type": "string"
                     },
-					"type": {
+                    "type": {
                       "type": "string"
                     },
-					"uuid": {
+                    "uuid": {
                       "type": "string"
                     },
-					"vendorID": {
+                    "vendorID": {
                       "type": "string"
                     }
                   }
@@ -519,7 +519,7 @@
           "application/json": {}
         }
       },
-	  "post" : {
+      "post": {
         "tags": [
           "Register UDX device"
         ],
@@ -555,9 +555,40 @@
               }
             }
           }
-		]
+        ]
       }
-	}
+    },
+    "/s3/bucket_policy/{bucket_name}": {
+      "delete": {
+        "tags": [
+          "bucket delete"
+        ],
+        "summary": "bucket policy delete",
+        "responses": {
+          "200": {
+            "description": "Bucket Policy Deleted Successfully."
+          },
+          "404": {
+            "description": "No Data Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "bucket_name",
+            "in": "path",
+            "description": "Specifies the bucket name",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    }
   },
   "definitions": {
     "system_config": {
