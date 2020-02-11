@@ -35,6 +35,9 @@ import EosSettingsMenu from "./components/settings/eos-settings-menu.vue";
 import EosUnauthorizedAccess from "./components/security/403.vue";
 import EosNotFound from "./components/security/404.vue";
 import { userPermissions } from "./common/user-permissions-map";
+import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
+import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
+import EosResource from "./components/maintenance/eos-resource.vue";
 import store from "./store/store";
 Vue.use(Router);
 
@@ -171,6 +174,33 @@ const router = new Router({
               name: "udx-registration",
               component: UDXRegistration,
               meta: { requiresAuth: true, isOnboardingReq: false }
+            }
+          ]
+        },
+        {
+          path: "maintenance",
+          component: EosMaintenance,
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: false,
+            requiredAccess: userPermissions.users + userPermissions.list
+          },
+          children: [
+            {
+              path: "",
+              name: "maintenance-menu",
+              component: EosMaintenanceMenu,
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
+            },
+            {
+              path: "resource",
+              name: "resource",
+              component: EosResource,
+              meta: { requiresAuth: false, isOnboardingReq: false }
             }
           ]
         },

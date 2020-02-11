@@ -36,5 +36,6 @@ export default {
   capacity: `api/${version}/capacity`,
   sysconfig: `api/${version}/sysconfig`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
-  user_permissions: `/api/${version}/permissions`
+  user_permissions: `/api/${version}/permissions`,
+  maintenance: ` /api/v1/maintenance`
 };
