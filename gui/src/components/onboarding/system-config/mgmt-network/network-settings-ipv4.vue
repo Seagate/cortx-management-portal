@@ -191,10 +191,6 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   };
   private data() {
     return {
-      // ipv4VipAddress: "",
-      // ipv4Netmask: "",
-      // ipv4Gateway: "",
-      // ipv4VipHostname: "",
       source: "manual",
       systemConfigObject: {} as SystemConfigObject,
       isValid: true,
