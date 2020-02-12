@@ -57,8 +57,7 @@
                 class="mt-3"
                 :class="{
                   'eos-form-group--error': node.hostname.$error
-                }"
-              >
+                }" >
                 <input
                   class="eos-form__input_text  "
                   type="text"
