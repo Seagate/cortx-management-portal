@@ -79,13 +79,16 @@ export interface DataNetworkSettings {
 
 export interface DnsNetworkSettingsNode {
   id: number;
-  hostname: string;
-}
-
-export interface DnsNetworkSettings {
+  name:string;
   hostname: string;
   dns_servers: string[];
   search_domain: string[];
+}
+
+export interface DnsNetworkSettings {
+  // hostname: string;
+  // dns_servers: string[];
+  // search_domain: string[];
   nodes: DnsNetworkSettingsNode[];
 }
 

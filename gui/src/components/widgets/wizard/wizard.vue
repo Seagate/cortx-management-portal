@@ -26,7 +26,7 @@
       </span>
     </span>
     </div>
-    <div class="pt-5 col-8">
+    <div class="pt-5 col-12">
       <component v-if="loadComponent" :is="loadComponent"></component>
     </div>
 
