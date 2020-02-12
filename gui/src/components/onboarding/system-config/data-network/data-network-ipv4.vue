@@ -128,8 +128,7 @@
                   <label v-if="node.gateway.$dirty && !node.gateway.required">Gateway is required</label>
                   <label
                     v-else-if="
-                      node.gateway.$dirty && !node.gateway.ipAddress
-                    "
+                      node.gateway.$dirty && !node.gateway.ipAddress "
                   >Invalid IP address</label>
                 </div>
               </div>
