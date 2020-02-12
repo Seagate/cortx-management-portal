@@ -1,7 +1,7 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblNetworkIP4">Management network settings: IPv4</div>
+      <div class="eos-text-lg mt-0 font-weight-bold" id="lblNetworkIP4">Management network settings: IPv4</div>
       <div
         class="mt-6"
         id="lblNetworkMsg"
@@ -20,15 +20,15 @@
           <span class="eos-rdb-tick" id="lblIp4DHCP"></span>
         </label>
       </div>
-      <div class="row mt-5">
+      <div class="row ma-0 mt-3">
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
-          <div class="col-3 body-2 column node-container" :key="node.id">
+          <div class="col-3 body-2 column node-container mr-5" :key="node.id">
             <span class="font-weight-bold" id="lblIpv4Node">{{ node.$model.name}}</span>
             <v-divider class="mt-2" />
-            <div class="mt-0">
+            <div class="mt-5">
               <div
                 v-if="source == 'manual'"
-                class="eos-form-group"
+                class=""
                 :class="{
                   'eos-form-group--error': node.ip_address.$error
                 }"
@@ -54,13 +54,13 @@
                 </div>
               </div>
               <div
-                class="eos-form-group"
+                class="mt-3"
                 :class="{
                   'eos-form-group--error': node.hostname.$error
                 }"
               >
                 <input
-                  class="eos-form__input_text"
+                  class="eos-form__input_text  "
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4Iphostname'"
                   :name="node.$model.id + 'hostname'"
@@ -73,13 +73,13 @@
                 </div>
               </div>
               <div
-                class="eos-form-group"
+                class="mt-3"
                 :class="{
                   'eos-form-group--error': node.netmask.$error
                 }"
               >
                 <input
-                  class="eos-form__input_text"
+                  class="eos-form__input_text "
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4netmask'"
                   :name="node.$model.id + 'netmask'"
@@ -97,13 +97,13 @@
                 </div>
               </div>
               <div
-                class="eos-form-group"
+                class="mt-3"
                 :class="{
               'eos-form-group--error': node.gateway.$error
             }"
               >
                 <input
-                  class="eos-form__input_text"
+                  class="eos-form__input_text "
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4Gateway'"
                   :name="node.$model.id + 'gateway'"
