@@ -30,14 +30,14 @@
       <!-- node block -->
       <div class="row mt-5">
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
-          <div class="col-3 body-2   column node-container" :key="node.id">
+          <div class="col-3 body-2   column node-container mr-5" :key="node.id">
             <span class="font-weight-bold" id="lblIpv4Node"
               > {{ node.$model.name }}</span
             >
             <v-divider class="mt-2" />
             <div
               v-if="source == 'manual'"
-              class="eos-form-group"
+              class="mt-3"
               :class="{
                 'eos-form-group--error': node.ip_address.$error
               }"
@@ -66,7 +66,7 @@
             </div>
             
             <div
-              class="eos-form-group"
+              class="mt-3"
               :class="{
                 'eos-form-group--error': node.hostname.$error
               }"
@@ -86,7 +86,7 @@
               </div>
             </div>
             <div
-                class="eos-form-group"
+                class="mt-3"
                 :class="{
                   'eos-form-group--error': node.netmask.$error
                 }"
@@ -110,7 +110,7 @@
                 </div>
               </div>
              <div
-                class="eos-form-group"
+                class="mt-3"
                 :class="{
               'eos-form-group--error': node.gateway.$error
             }"
