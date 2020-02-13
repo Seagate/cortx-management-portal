@@ -17,7 +17,7 @@ CSM Tools
 %build
 
 %install
-mkdir -p ${RPM_BUILD_ROOT}/opt/seagate/csm/eos/gui
+mkdir -p ${RPM_BUILD_ROOT}/opt/seagate/csm/eos/gui ${RPM_BUILD_ROOT}/opt/seagate/csm/conf/service/
 cp -rp ./* ${RPM_BUILD_ROOT}/opt/seagate/csm
 exit 0
 
