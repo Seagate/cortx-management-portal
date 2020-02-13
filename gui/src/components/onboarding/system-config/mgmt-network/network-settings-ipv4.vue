@@ -192,7 +192,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       }
     }
   };
-   private setipAddress(e) {
+   private setipAddress(e:any) {
     if (this.$v.ipv4Nodes.$model[1].ip_address === "") {
       this.$v.ipv4Nodes.$model[1].ip_address = e.target.value;
     }
@@ -200,7 +200,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].ip_address = e.target.value;
     }
   }
-   private setHostname(e) {
+   private setHostname(e:any) {
     if (this.$v.ipv4Nodes.$model[1].hostname === "") {
       this.$v.ipv4Nodes.$model[1].hostname = e.target.value;
     }
@@ -208,7 +208,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].hostname = e.target.value;
     }
   }
-   private setNetmask(e) {
+   private setNetmask(e:any) {
     if (this.$v.ipv4Nodes.$model[1].netmask === "") {
       this.$v.ipv4Nodes.$model[1].netmask = e.target.value;
     }
@@ -216,7 +216,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].netmask = e.target.value;
     }
   }
-  private setGetway(e) {
+  private setGetway(e:any) {
     if (this.$v.ipv4Nodes.$model[1].gateway === "") {
       this.$v.ipv4Nodes.$model[1].gateway = e.target.value;
     }
