@@ -6,12 +6,12 @@
     <!-- node block -->
     <div class="row ma-0 mt-3">
       <template v-for="node in $v.dnsNodes.$each.$iter">
-        <div class="col-3 body-1 column node-container" :key="node.id">
+        <div class="col-3 column node-container mr-5" :key="node.id">
           <span class="font-weight-bold" id="lblIpv4Node">{{ node.$model.name }}</span>
           <v-divider class="mt-2" />
-          <div class="eos-form-group mt-0">
+          <div class="eos-form-group mt-0 ml-0">
             <div
-              class="eos-form-group"
+              class="mt-3"
               :class="{
                 'eos-form-group--error': node.hostname.$error
               }"
