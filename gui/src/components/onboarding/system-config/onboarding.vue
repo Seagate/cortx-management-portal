@@ -41,5 +41,7 @@ export default class EosOnboarding extends Vue {
 <style lang="scss" scoped>
 .onboarding-container {
   margin-left: 8.75em;
+  margin-left: 7.75em;
+
 }
 </style>
