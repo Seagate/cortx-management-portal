@@ -1,7 +1,7 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="eos-text-bold eos-text-lg mt-0 font-weight-bold" id="lblDns">DNS network settings</div>   
+      <div class="title mt-0 font-weight-bold" id="lblDns">DNS network settings</div>
     </div>
     <!-- node block -->
     <div class="row ma-0 mt-3">
@@ -17,6 +17,7 @@
               }"
             >
               <input
+                v-on:change="setHostname"
                 class="eos-form__input_text mt-7"
                 type="text"
                 v-model.trim="node.hostname.$model"
@@ -30,44 +31,49 @@
               </div>
             </div>
             <div
-            class="mt-3 "
-            :class="{
+              class="eos-form-group"
+              :class="{
               'eos-form-group--error': node.dnsServerAddress.$error
             }"
-          >
-            <textarea
-              class="eos-form__input_textarea"
-              rows="3"
-              placeholder="Enter DNS server value as comma ',' seperated"
-              v-model.trim="node.dnsServerAddress.$model"
-              @input="node.dnsServerAddress.$touch"
-              :id="node.$model.id + 'txtDnsServer'"
-              :name="node.$model.id + 'dnsname'"
-            ></textarea>
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="node.dnsServerAddress.$dirty && !node.dnsServerAddress.required">DNS address is required</label>
+            >
+              <textarea
+                v-on:change="setdnsServerAddress"
+                class="eos-form__input_textarea"
+                rows="3"
+                placeholder="Enter DNS server value as comma ',' seperated"
+                v-model.trim="node.dnsServerAddress.$model"
+                @input="node.dnsServerAddress.$touch"
+                :id="node.$model.id + 'txtDnsServer'"
+                :name="node.$model.id + 'dnsname'"
+              ></textarea>
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="node.dnsServerAddress.$dirty && !node.dnsServerAddress.required"
+                >DNS address is required</label>
+              </div>
             </div>
-          </div>
-          <div
-            class="mt-3"
-            :class="{
+            <div
+              class="eos-form-group"
+              :class="{
               'eos-form-group--error': node.searchDomainAddress.$error
             }"
-          >
-            <textarea
-              class="eos-form__input_textarea"
-              :id="node.$model.id + 'txtSearchDomain'"
-              :name="node.$model.id + 'search-domain'"
-               v-model.trim="node.searchDomainAddress.$model"
-               rows="3"
-               placeholder="Enter Search domain value  as comma ',' seperated "
-               @input="node.searchDomainAddress.$touch"
-            ></textarea>
-            <div class="eos-form-group-label eos-form-group-error-msg">
-                <label v-if="node.searchDomainAddress.$dirty && !node.searchDomainAddress.required">Search domain is required</label>
+            >
+              <textarea
+                v-on:change="setsearchDomainAddress"
+                class="eos-form__input_textarea"
+                :id="node.$model.id + 'txtSearchDomain'"
+                :name="node.$model.id + 'search-domain'"
+                v-model.trim="node.searchDomainAddress.$model"
+                rows="3"
+                placeholder="Enter Search domain value  as comma ',' seperated "
+                @input="node.searchDomainAddress.$touch"
+              ></textarea>
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="node.searchDomainAddress.$dirty && !node.searchDomainAddress.required"
+                >Search domain is required</label>
+              </div>
             </div>
-          </div>
-
           </div>
         </div>
       </template>
@@ -96,7 +102,6 @@ import {
 export default class EosDnsSetting extends Vue {
   @Validations()
   private validations = {
-   
     dnsNodes: {
       $each: {
         hostname: {
@@ -112,33 +117,55 @@ export default class EosDnsSetting extends Vue {
     }
   };
 
+  private setHostname(e: any) {
+    if (this.$v.dnsNodes.$model[1].hostname === "") {
+      this.$v.dnsNodes.$model[1].hostname = e.target.value;
+    }
+    if (this.$v.dnsNodes.$model[2].hostname === "") {
+      this.$v.dnsNodes.$model[2].hostname = e.target.value;
+    }
+  }
+  private setdnsServerAddress(e: any) {
+    if (this.$v.dnsNodes.$model[1].dnsServerAddress === "") {
+      this.$v.dnsNodes.$model[1].dnsServerAddress = e.target.value;
+    }
+    if (this.$v.dnsNodes.$model[2].dnsServerAddress === "") {
+      this.$v.dnsNodes.$model[2].dnsServerAddress = e.target.value;
+    }
+  }
+  private setsearchDomainAddress(e: any) {
+    if (this.$v.dnsNodes.$model[1].searchDomainAddress === "") {
+      this.$v.dnsNodes.$model[1].searchDomainAddress = e.target.value;
+    }
+    if (this.$v.dnsNodes.$model[2].searchDomainAddress === "") {
+      this.$v.dnsNodes.$model[2].searchDomainAddress = e.target.value;
+    }
+  }
   private data() {
     return {
-      hostname: "",
       source: "manual",
       dnsNodes: [
         {
           id: 2,
           name: "VIP",
           hostname: "",
-          dnsServerAddress: [],
-          searchDomainAddress: []
+          dnsServerAddress: "",
+          searchDomainAddress: ""
         },
         {
           id: 0,
           name: "Node 0",
           hostname: "",
-          dnsServerAddress: [],
-          searchDomainAddress: []
+          dnsServerAddress: "",
+          searchDomainAddress: ""
         },
         {
           id: 1,
           name: "Node 1",
           hostname: "",
-          dnsServerAddress: [],
-          searchDomainAddress: []
+          dnsServerAddress: "",
+          searchDomainAddress: ""
         }
-        
       ],
       isValid: true
     };
@@ -152,7 +179,6 @@ export default class EosDnsSetting extends Vue {
     const searchDomains = this.splitByComma(
       `${this.$data.searchDomainAddress}`
     );
-
     const queryParams: DnsNetworkSettings = {
       nodes: this.$data.dnsNodes
     };

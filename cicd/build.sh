@@ -77,10 +77,9 @@ TMPDIR="$DIST/tmp"
 [ -d "$TMPDIR" ] && {
     rm -rf ${TMPDIR}
 }
-mkdir -p $DIST/csm/conf $TMPDIR
+mkdir -p $TMPDIR
 
 CONF=$BASE_DIR/src/conf/
-cp -R $CONF/etc $CONF/service $DIST/csm/conf
 cp $BASE_DIR/jenkins/csm_agent.spec $BASE_DIR/jenkins/csm_web.spec $TMPDIR
 COPY_END_TIME=$(date +%s)
 
@@ -89,6 +88,9 @@ COPY_END_TIME=$(date +%s)
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     # Build CSM Backend
     CORE_BUILD_START_TIME=$(date +%s)
+    mkdir -p $DIST/csm/conf/service
+    cp -R $CONF/etc $DIST/csm/conf
+    cp -R $CONF/service/csm_agent.service $DIST/csm/conf/service
     cd $TMPDIR
 
     # Copy Backend files
@@ -150,8 +152,9 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
 
     # Copy frontend files
     GUI_DIR=$DIST/csm_gui
-    mkdir -p $GUI_DIR/eos/gui/
+    mkdir -p $GUI_DIR/eos/gui/ $GUI_DIR/conf/service/
     cp -R $BASE_DIR/src/web $GUI_DIR/
+    cp -R $CONF/service/csm_web.service $GUI_DIR/conf/service/
     cp -R $BASE_DIR/src/eos/gui/.env $GUI_DIR/eos/gui/.env
 
     echo "Running Web Build"
