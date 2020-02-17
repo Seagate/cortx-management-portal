@@ -179,7 +179,6 @@ export default class EosNetworkSettingsIpv4 extends Vue {
         },
         hostname: {
           required,
-          ipAddress
         },
         netmask: {
           required,
@@ -279,17 +278,17 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     return true;
   }
   private managementNetworkGetter(): any {
-    // const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    // const mngmtNetworkSettings = systemconfig.management_network_settings;
-    // if (
-    //   mngmtNetworkSettings &&
-    //   mngmtNetworkSettings.ipv4 &&
-    //   mngmtNetworkSettings.ipv4.nodes
-    // ) {
-    //   this.$data.source =
-    //     mngmtNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
-    //   this.$data.ipv4Nodes = mngmtNetworkSettings.ipv4.nodes;
-    // }
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    const mngmtNetworkSettings = systemconfig.management_network_settings;
+    if (
+      mngmtNetworkSettings &&
+      mngmtNetworkSettings.ipv4 &&
+      mngmtNetworkSettings.ipv4.nodes
+    ) {
+      this.$data.source =
+        mngmtNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
+      this.$data.ipv4Nodes = mngmtNetworkSettings.ipv4.nodes;
+    }
   }
   private updateIpv4Config() {
     const queryParams: Ipv4 = {

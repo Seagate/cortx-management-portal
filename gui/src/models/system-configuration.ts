@@ -40,9 +40,6 @@ export interface ManagementNetworkIpv4 {
   nodes: Ipv4Node;
 }
 export interface Ipv4Node {
-  // id: number;
-  // ip_address: string;
-  // hostname: string;
   id: number;
   name: string;
   ip_address: string;

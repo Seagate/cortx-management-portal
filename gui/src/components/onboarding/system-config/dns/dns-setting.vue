@@ -6,7 +6,7 @@
     <!-- node block -->
     <div class="row ma-0 mt-3">
       <template v-for="node in $v.dnsNodes.$each.$iter">
-        <div class="col-3 column node-container mr-5" :key="node.id">
+        <div class="col-3 body-2 column node-container mr-5" :key="node.id">
           <span class="font-weight-bold" id="lblIpv4Node">{{ node.$model.name }}</span>
           <v-divider class="mt-2" />
           <div class="eos-form-group mt-0 ml-0">
@@ -31,9 +31,9 @@
               </div>
             </div>
             <div
-              class="eos-form-group"
+              class="mt-3"
               :class="{
-              'eos-form-group--error': node.dnsServerAddress.$error
+              'eos-form-group--error': node.dns_servers.$error
             }"
             >
               <textarea
@@ -41,21 +41,21 @@
                 class="eos-form__input_textarea"
                 rows="3"
                 placeholder="Enter DNS server value as comma ',' seperated"
-                v-model.trim="node.dnsServerAddress.$model"
-                @input="node.dnsServerAddress.$touch"
+                v-model.trim="node.dns_servers.$model"
+                @input="node.dns_servers.$touch"
                 :id="node.$model.id + 'txtDnsServer'"
                 :name="node.$model.id + 'dnsname'"
               ></textarea>
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
-                  v-if="node.dnsServerAddress.$dirty && !node.dnsServerAddress.required"
+                  v-if="node.dns_servers.$dirty && !node.dns_servers.required"
                 >DNS address is required</label>
               </div>
             </div>
             <div
-              class="eos-form-group"
+              class="mt-3"
               :class="{
-              'eos-form-group--error': node.searchDomainAddress.$error
+              'eos-form-group--error': node.search_domain.$error
             }"
             >
               <textarea
@@ -63,14 +63,14 @@
                 class="eos-form__input_textarea"
                 :id="node.$model.id + 'txtSearchDomain'"
                 :name="node.$model.id + 'search-domain'"
-                v-model.trim="node.searchDomainAddress.$model"
+                v-model.trim="node.search_domain.$model"
                 rows="3"
                 placeholder="Enter Search domain value  as comma ',' seperated "
-                @input="node.searchDomainAddress.$touch"
+                @input="node.search_domain.$touch"
               ></textarea>
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
-                  v-if="node.searchDomainAddress.$dirty && !node.searchDomainAddress.required"
+                  v-if="node.search_domain.$dirty && !node.search_domain.required"
                 >Search domain is required</label>
               </div>
             </div>
@@ -107,10 +107,10 @@ export default class EosDnsSetting extends Vue {
         hostname: {
           required
         },
-        dnsServerAddress: {
+        dns_servers: {
           required
         },
-        searchDomainAddress: {
+        search_domain: {
           required
         }
       }
@@ -126,19 +126,19 @@ export default class EosDnsSetting extends Vue {
     }
   }
   private setdnsServerAddress(e: any) {
-    if (this.$v.dnsNodes.$model[1].dnsServerAddress === "") {
-      this.$v.dnsNodes.$model[1].dnsServerAddress = e.target.value;
+    if (this.$v.dnsNodes.$model[1].dns_servers === "") {
+      this.$v.dnsNodes.$model[1].dns_servers = e.target.value;
     }
-    if (this.$v.dnsNodes.$model[2].dnsServerAddress === "") {
-      this.$v.dnsNodes.$model[2].dnsServerAddress = e.target.value;
+    if (this.$v.dnsNodes.$model[2].dns_servers === "") {
+      this.$v.dnsNodes.$model[2].dns_servers = e.target.value;
     }
   }
   private setsearchDomainAddress(e: any) {
-    if (this.$v.dnsNodes.$model[1].searchDomainAddress === "") {
-      this.$v.dnsNodes.$model[1].searchDomainAddress = e.target.value;
+    if (this.$v.dnsNodes.$model[1].search_domain === "") {
+      this.$v.dnsNodes.$model[1].search_domain = e.target.value;
     }
-    if (this.$v.dnsNodes.$model[2].searchDomainAddress === "") {
-      this.$v.dnsNodes.$model[2].searchDomainAddress = e.target.value;
+    if (this.$v.dnsNodes.$model[2].search_domain === "") {
+      this.$v.dnsNodes.$model[2].search_domain = e.target.value;
     }
   }
   private data() {
@@ -149,22 +149,22 @@ export default class EosDnsSetting extends Vue {
           id: 2,
           name: "VIP",
           hostname: "",
-          dnsServerAddress: "",
-          searchDomainAddress: ""
+          dns_servers: "",
+          search_domain: ""
         },
         {
           id: 0,
           name: "Node 0",
           hostname: "",
-          dnsServerAddress: "",
-          searchDomainAddress: ""
+          dns_servers: "",
+          search_domain: ""
         },
         {
           id: 1,
           name: "Node 1",
           hostname: "",
-          dnsServerAddress: "",
-          searchDomainAddress: ""
+          dns_servers: "",
+          search_domain: ""
         }
       ],
       isValid: true
@@ -175,13 +175,19 @@ export default class EosDnsSetting extends Vue {
     return str.split(",").filter(Boolean);
   }
   private updateDNSconfig() {
-    const dnsServers = this.splitByComma(`${this.$data.dnsServerAddress}`);
-    const searchDomains = this.splitByComma(
-      `${this.$data.searchDomainAddress}`
-    );
+    // const dnsServers = this.splitByComma(`${this.$data.dns_servers}`);
+    // const searchDomains = this.splitByComma(
+    //   `${this.$data.search_domain}`
+    // );
+    this.$data.dnsNodes = this.$data.dnsNodes.map((e: any) => {
+      e.dns_servers = this.splitByComma(`${e.dns_servers}`);
+      e.search_domain = this.splitByComma(`${e.search_domain}`);
+      return e;
+    });
     const queryParams: DnsNetworkSettings = {
       nodes: this.$data.dnsNodes
     };
+    console.log("queryParams", queryParams);
     return this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
   }
   private mounted() {
@@ -206,18 +212,18 @@ export default class EosDnsSetting extends Vue {
     return validate;
   }
   private managementNetworkGetter(): any {
-    // const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    // if (
-    //   systemconfig.dns_network_settings &&
-    //   systemconfig.dns_network_settings.nodes
-    // ) {
-    //   this.$data.hostname = systemconfig.dns_network_settings.hostname;
-    //   this.$data.dnsServerAddress =
-    //     systemconfig.dns_network_settings.dns_servers;
-    //   this.$data.searchDomainAddress =
-    //     systemconfig.dns_network_settings.search_domain;
-    //   this.$data.dnsNodes = systemconfig.dns_network_settings.nodes;
-    // }
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    if (
+      systemconfig.dns_network_settings &&
+      systemconfig.dns_network_settings.nodes
+    ) {
+      // this.$data.dnsNodes.hostname = systemconfig.dns_network_settings.hostname;
+      // this.$data.dnsNodes.dns_servers =
+      //   systemconfig.dns_network_settings.dns_servers;
+      // this.$data.dnsNodes.search_domain =
+      //   systemconfig.dns_network_settings.search_domain;
+      this.$data.dnsNodes = systemconfig.dns_network_settings.nodes;
+    }
   }
 }
 </script>

@@ -21,7 +21,7 @@
         </label>
       </div>
       <!-- node block -->
-      <div class="row mt-5">
+      <div class="row ma-0 mt-5">
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
           <div class="col-3 body-2 column node-container mr-5" :key="node.id">
             <span class="font-weight-bold" id="lblIpv4Node">{{ node.$model.name }}</span>
@@ -208,10 +208,6 @@ export default class EosDataNetworkIpv4 extends Vue {
   }
   private data() {
     return {
-      // ipv4VipAddress: "",
-      // ipv4VipHostname: "",
-      // ipv4Netmask: "",
-      // ipv4Gateway: "",
       ipv4Nodes: [
         {
           id: 2,
@@ -248,6 +244,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       is_dhcp: this.$data.source === "DHCP",
       nodes: this.$data.ipv4Nodes
     };
+     console.log(queryParams,'data');
     return this.$store.dispatch(
       "systemConfig/updateDataNetworkSettingIpv4",
       queryParams
@@ -275,21 +272,21 @@ export default class EosDataNetworkIpv4 extends Vue {
     return validate;
   }
   private dataNetworkGetter(): any {
-    // const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    // const dataNetworkSettings = systemconfig.data_network_settings;
-    // if (
-    //   dataNetworkSettings &&
-    //   dataNetworkSettings.ipv4 &&
-    //   dataNetworkSettings.ipv4.nodes
-    // ) {
-    //   this.$data.ipv4Nodes = dataNetworkSettings.ipv4.nodes;
-    //   this.$data.source =
-    //     dataNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
-    //   this.$data.ipv4VipAddress = dataNetworkSettings.ipv4.vip_address;
-    //   this.$data.ipv4VipHostname = dataNetworkSettings.ipv4.vip_hostname;
-    //   this.$data.ipv4Netmask = dataNetworkSettings.ipv4.netmask;
-    //   this.$data.ipv4Gateway = dataNetworkSettings.ipv4.gateway;
-    // }
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    const dataNetworkSettings = systemconfig.data_network_settings;
+    if (
+      dataNetworkSettings &&
+      dataNetworkSettings.ipv4 &&
+      dataNetworkSettings.ipv4.nodes
+    ) {
+      this.$data.ipv4Nodes = dataNetworkSettings.ipv4.nodes;
+      this.$data.source =
+        dataNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
+      this.$data.ipv4VipAddress = dataNetworkSettings.ipv4.vip_address;
+      this.$data.ipv4VipHostname = dataNetworkSettings.ipv4.vip_hostname;
+      this.$data.ipv4Netmask = dataNetworkSettings.ipv4.netmask;
+      this.$data.ipv4Gateway = dataNetworkSettings.ipv4.gateway;
+    }
   }
 }
 </script>
