@@ -115,7 +115,7 @@ export const wizardConfig = {
         api: "/systemconfig"
       }
     },
-	{
+    {
       sequence: 8,
       isSubstep: false,
       component: "EOSUploadSSL",
@@ -151,12 +151,12 @@ export const wizardConfig = {
         api: "/systemconfig"
       }
     },
-	
-	{
+
+    {
       sequence: 10,
       isSubstep: false,
       component: "EosOnboardingSummary",
-     path: "onboarding/system-config/summary/onboarding-summary.vue", 
+      path: "onboarding/system-config/summary/onboarding-summary.vue",
       isByPassed: false,
       header: {
         state: "untouched",
