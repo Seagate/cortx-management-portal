@@ -63,7 +63,7 @@
               }"
             >
               <input
-                 v-on:change="setHostname"
+                v-on:change="setHostname"
                 class="eos-form__input_text"
                 :id="node.$model.id + 'txtDataNetworkIpv4hostname'"
                 :name="node.$model.id + 'ipaddress'"
@@ -82,7 +82,7 @@
                 }"
             >
               <input
-                 v-on:change="setNetmask"
+                v-on:change="setNetmask"
                 class="eos-form__input_text"
                 type="text"
                 :id="node.$model.id + 'txtDataNetworkIpv4netmask'"
@@ -107,7 +107,7 @@
             }"
             >
               <input
-                 v-on:change="setGetway"
+                v-on:change="setGetway"
                 class="eos-form__input_text"
                 type="text"
                 :id="node.$model.id + 'txtDataNetworkIpv4Gateway'"
@@ -174,7 +174,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       }
     }
   };
-  private setipAddress(e:any) {
+  private setipAddress(e: any) {
     if (this.$v.ipv4Nodes.$model[1].ip_address === "") {
       this.$v.ipv4Nodes.$model[1].ip_address = e.target.value;
     }
@@ -182,7 +182,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].ip_address = e.target.value;
     }
   }
-   private setHostname(e:any) {
+  private setHostname(e: any) {
     if (this.$v.ipv4Nodes.$model[1].hostname === "") {
       this.$v.ipv4Nodes.$model[1].hostname = e.target.value;
     }
@@ -190,7 +190,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].hostname = e.target.value;
     }
   }
-   private setNetmask(e:any) {
+  private setNetmask(e: any) {
     if (this.$v.ipv4Nodes.$model[1].netmask === "") {
       this.$v.ipv4Nodes.$model[1].netmask = e.target.value;
     }
@@ -198,7 +198,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].netmask = e.target.value;
     }
   }
-  private setGetway(e:any) {
+  private setGetway(e: any) {
     if (this.$v.ipv4Nodes.$model[1].gateway === "") {
       this.$v.ipv4Nodes.$model[1].gateway = e.target.value;
     }
@@ -244,7 +244,6 @@ export default class EosDataNetworkIpv4 extends Vue {
       is_dhcp: this.$data.source === "DHCP",
       nodes: this.$data.ipv4Nodes
     };
-     console.log(queryParams,'data');
     return this.$store.dispatch(
       "systemConfig/updateDataNetworkSettingIpv4",
       queryParams
@@ -291,13 +290,6 @@ export default class EosDataNetworkIpv4 extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.input-text {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #e3e3e3;
-  width: 20em;
-  height: 2.5em;
-}
 .pointer {
   cursor: pointer;
 }

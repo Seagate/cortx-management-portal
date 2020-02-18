@@ -6,29 +6,33 @@
           <v-expansion-panel-header class="eos-text-lg">Management Network setting</v-expansion-panel-header>
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
-              <template v-for="(node, index) in Nodes">
+              <template v-for="(node, index) in nodes">
                 <div class="col-3 body-2 column node-container mr-5" :key="index">
                   <span class="font-weight-bold" id="lblIpv4Node">{{ node }}</span>
                   <v-divider class="mt-2" />
                   <div class="eos-form-group mt-0 ml-0">
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Ip Address:{{managementdata[index].ip_address}}</label>
+                        <label>Ip Address</label>
+                        <span class="ml-9">{{managementdata[index].ip_address}}</span>
                       </div>
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Hostname:{{managementdata[index].hostname}}</label>
+                        <label>Hostname</label>
+                        <span class="ml-10">{{managementdata[index].hostname}}</span>
                       </div>
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Netmask:{{managementdata[index].gateway}}</label>
+                        <label>Netmask</label>
+                        <span class="ml-12">{{managementdata[index].gateway}}</span>
                       </div>
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Gateway:{{managementdata[index].netmask}}</label>
+                        <label>Gateway</label>
+                        <span class="ml-12">{{managementdata[index].netmask}}</span>
                       </div>
                     </div>
                   </div>
@@ -42,29 +46,33 @@
           <v-expansion-panel-header class="eos-text-lg">Data Network setting</v-expansion-panel-header>
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
-              <template v-for="(node, index) in Nodes">
+              <template v-for="(node, index) in nodes">
                 <div class="col-3 body-2 column node-container mr-5" :key="index">
                   <span class="font-weight-bold" id="lblIpv4Node">{{ node }}</span>
                   <v-divider class="mt-2" />
                   <div class="eos-form-group mt-0 ml-0">
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Ip Address:{{datanetwork[index].ip_address}}</label>
+                        <label>Ip Address</label>
+                        <span class="ml-9">{{datanetwork[index].ip_address}}</span>
                       </div>
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Hostname:{{datanetwork[index].hostname}}</label>
+                        <label>Hostname</label>
+                        <span class="ml-10">{{datanetwork[index].hostname}}</span>
                       </div>
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Netmask:{{datanetwork[index].gateway}}</label>
+                        <label>Netmask</label>
+                        <span class="ml-12">{{datanetwork[index].gateway}}</span>
                       </div>
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Gateway:{{datanetwork[index].netmask}}</label>
+                        <label>Gateway</label>
+                        <span class="ml-12">{{datanetwork[index].netmask}}</span>
                       </div>
                     </div>
                   </div>
@@ -77,24 +85,27 @@
           <v-expansion-panel-header class="eos-text-lg">DNS Setting</v-expansion-panel-header>
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
-              <template v-for="(node, index) in Nodes">
+              <template v-for="(node, index) in nodes">
                 <div class="col-3 body-2 column node-container mr-5" :key="index">
                   <span class="font-weight-bold" id="lblIpv4Node">{{ node }}</span>
                   <v-divider class="mt-2" />
                   <div class="eos-form-group mt-0 ml-0">
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Hostname:{{dnsdata[index].hostname}}</label>
+                        <label>Hostname</label>
+                        <span class="ml-12">{{dnsdata[index].hostname}}</span>
                       </div>
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>dns_servers:{{dnsdata[index].dns_servers}}</label>
+                        <label>dnsServers</label>
+                        <span class="ml-10">{{dnsdata[index].dns_servers}}</span>
                       </div>
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>search_domain:{{dnsdata[index].search_domain}}</label>
+                        <label>searchDomain</label>
+                        <span class="ml-5">{{dnsdata[index].search_domain}}</span>
                       </div>
                     </div>
                   </div>
@@ -123,7 +134,7 @@ export default class EosOnboardingSummary extends Vue {
       managementdata: [],
       datanetwork: [],
       dnsdata: [],
-      Nodes: [" VIP", "Node 0", "Node1"]
+      nodes: [" VIP", "Node 0", "Node1"]
     };
   }
   private mounted() {

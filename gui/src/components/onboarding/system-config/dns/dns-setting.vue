@@ -175,10 +175,6 @@ export default class EosDnsSetting extends Vue {
     return str.split(",").filter(Boolean);
   }
   private updateDNSconfig() {
-    // const dnsServers = this.splitByComma(`${this.$data.dns_servers}`);
-    // const searchDomains = this.splitByComma(
-    //   `${this.$data.search_domain}`
-    // );
     this.$data.dnsNodes = this.$data.dnsNodes.map((e: any) => {
       e.dns_servers = this.splitByComma(`${e.dns_servers}`);
       e.search_domain = this.splitByComma(`${e.search_domain}`);
@@ -187,7 +183,6 @@ export default class EosDnsSetting extends Vue {
     const queryParams: DnsNetworkSettings = {
       nodes: this.$data.dnsNodes
     };
-    console.log("queryParams", queryParams);
     return this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
   }
   private mounted() {
@@ -217,34 +212,12 @@ export default class EosDnsSetting extends Vue {
       systemconfig.dns_network_settings &&
       systemconfig.dns_network_settings.nodes
     ) {
-      // this.$data.dnsNodes.hostname = systemconfig.dns_network_settings.hostname;
-      // this.$data.dnsNodes.dns_servers =
-      //   systemconfig.dns_network_settings.dns_servers;
-      // this.$data.dnsNodes.search_domain =
-      //   systemconfig.dns_network_settings.search_domain;
       this.$data.dnsNodes = systemconfig.dns_network_settings.nodes;
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.input-text {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #e3e3e3;
-  width: 20em;
-  height: 2.5em;
-}
-.textarea-text {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #e3e3e3;
-  width: 20em;
-  // height: 2.5em;
-}
-.pointer {
-  cursor: pointer;
-}
 .node-container {
   max-width: 25em;
 }

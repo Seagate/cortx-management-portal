@@ -11,9 +11,11 @@
             >Upload SSL Certificate</label>
           </v-col>
           <v-col>
-            <v-btn elevation="0" color="csmprimary" id="btnDTSetNow">
-              <span class="white--text" @click="startResource()">Upload</span>
-            </v-btn>
+            <button
+              type="button"
+              class="eos-btn-primary"
+             @click="uploadSSLCertificate()"
+            >Upload</button>
           </v-col>
         </v-row>
          <v-row class="resource-container mt-5">
@@ -25,9 +27,11 @@
             >Upload Key Certificate</label>
           </v-col>
           <v-col>
-            <v-btn elevation="0" color="csmprimary" id="btnDTSetNow">
-              <span class="white--text" @click="Clusterresource()">Upload</span>
-            </v-btn>
+             <button
+              type="button"
+              class="eos-btn-primary"
+             @click="uploadKeyCertificate()"
+            >Upload</button>
           </v-col>
         </v-row>
       </v-card>
@@ -58,9 +62,7 @@ export default class EOSUploadSSL extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      // this.updateDNSconfig().then(result => {
-        res(true);
-      // });
+            res(true);
     });
   }
    private destroyed() {
