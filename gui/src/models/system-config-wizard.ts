@@ -29,7 +29,7 @@ export const wizardConfig = {
       footer: {
         nextComponent: "EosNetworkSettingsIpv6",
         prevComponent: "EosNetworkSettings",
-        nextBtnText: "Apply and continue",
+        nextBtnText: " Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
@@ -44,7 +44,7 @@ export const wizardConfig = {
       footer: {
         nextComponent: "EosDataNetwork",
         prevComponent: "EosNetworkSettingsIpv4",
-        nextBtnText: "Apply and continue",
+        nextBtnText: "continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
@@ -77,7 +77,7 @@ export const wizardConfig = {
       footer: {
         nextComponent: "EosDataNetworkIpv6",
         prevComponent: "EosDataNetwork",
-        nextBtnText: "Apply and continue",
+        nextBtnText: " Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
@@ -92,7 +92,7 @@ export const wizardConfig = {
       footer: {
         nextComponent: "EosDnsSettings",
         prevComponent: "EosDataNetworkIpv4",
-        nextBtnText: "Apply and continue",
+        nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
@@ -110,7 +110,7 @@ export const wizardConfig = {
       footer: {
         nextComponent: "EOSUploadSSL",
         prevComponent: "EosDataNetworkIpv6",
-        nextBtnText: "Apply and continue",
+        nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
@@ -165,7 +165,7 @@ export const wizardConfig = {
       footer: {
         nextComponent: "EosUserSetting",
         prevComponent: "EosDateTime",
-        nextBtnText: "Apply and continue",
+        nextBtnText: " continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }

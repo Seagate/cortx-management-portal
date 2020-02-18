@@ -1,9 +1,9 @@
 <template>
-  <v-container class="mt-0 ml-0">
+  <v-container class="mt-6 ml-0">
     <div id="app">
       <v-expansion-panels>
         <v-expansion-panel>
-          <v-expansion-panel-header>Management Network setting</v-expansion-panel-header>
+          <v-expansion-panel-header  class="eos-text-lg">Management Network setting</v-expansion-panel-header>
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
               <template v-for="(node, index) in Nodes">
@@ -12,22 +12,22 @@
                   <v-divider class="mt-2" />
                   <div class="eos-form-group mt-0 ml-0">
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                      <div class="eos-text-lg ">
                         <label>Ip Address:{{managementdata[index].ip_address}}</label>
                       </div>
                     </div>
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                     <div class="eos-text-lg ">
                         <label>Hostname:{{managementdata[index].hostname}}</label>
                       </div>
                     </div>
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                      <div class="eos-text-lg ">
                         <label>Netmask:{{managementdata[index].gateway}}</label>
                       </div>
                     </div>
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                   <div class="eos-text-lg ">
                         <label>Gateway:{{managementdata[index].netmask}}</label>
                       </div>
                     </div>
@@ -39,7 +39,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header>Data Network setting</v-expansion-panel-header>
+          <v-expansion-panel-header class="eos-text-lg">Data Network setting</v-expansion-panel-header>
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
               <template v-for="(node, index) in Nodes">
@@ -48,22 +48,22 @@
                   <v-divider class="mt-2" />
                   <div class="eos-form-group mt-0 ml-0">
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                      <div class="eos-text-lg ">
                         <label>Ip Address:{{datanetwork[index].ip_address}}</label>
                       </div>
                     </div>
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                       <div class="eos-text-lg ">
                         <label>Hostname:{{datanetwork[index].hostname}}</label>
                       </div>
                     </div>
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                       <div class="eos-text-lg ">
                         <label>Netmask:{{datanetwork[index].gateway}}</label>
                       </div>
                     </div>
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                      <div class="eos-text-lg ">
                         <label>Gateway:{{datanetwork[index].netmask}}</label>
                       </div>
                     </div>
@@ -74,7 +74,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header>DNS Setting</v-expansion-panel-header>
+          <v-expansion-panel-header class="eos-text-lg">DNS Setting</v-expansion-panel-header>
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
               <template v-for="(node, index) in Nodes">
@@ -83,17 +83,17 @@
                   <v-divider class="mt-2" />
                   <div class="eos-form-group mt-0 ml-0">
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                      <div class="eos-text-lg ">
                         <label>Hostname:{{dnsdata[index].hostname}}</label>
                       </div>
                     </div>
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                      <div class="eos-text-lg ">
                         <label>dns_servers:{{dnsdata[index].dns_servers}}</label>
                       </div>
                     </div>
                     <div class="mt-3">
-                      <div class="eos-form-group-label">
+                      <div class="eos-text-lg ">
                         <label>search_domain:{{dnsdata[index].search_domain}}</label>
                       </div>
                     </div>
