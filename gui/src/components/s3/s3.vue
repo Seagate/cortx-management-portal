@@ -49,9 +49,24 @@ import S3Bucket from "./bucket-creation.vue";
 export default class EosS3Management extends Vue {
   public tabsInfo: TabsInfo = {
     tabs: [
-      { id: 1, label: "Account" },
-      { id: 2, label: "IAM user" },
-      { id: 3, label: "Bucket" }
+      {
+        id: 1,
+        label: "Account",
+        show: false,
+        requiredAccess: "s3accounts"
+      },
+      {
+        id: 2,
+        label: "IAM user",
+        show: false,
+        requiredAccess: "s3iamusers"
+      },
+      {
+        id: 3,
+        label: "Bucket",
+        show: false,
+        requiredAccess: "s3buckets"
+      }
     ],
     selectedTab: 1
   };
@@ -60,6 +75,24 @@ export default class EosS3Management extends Vue {
   private showIAMUserTab: boolean = false;
   private showBucketTab: boolean = false;
 
+  public mounted() {
+    /*
+    Set `show` property to true/false based on the user access
+    We can directly use Vue prototype method using `this`, but the linter
+    shows this as an error e.g. `Property '$hasAccessToCsm' does not exist on type 'Vue'`
+    That is why we need to create `vueInstance` constant with `any` type and use the
+    methods or global variables declared using `Vue.prototype`.
+    */
+
+    const vueInstance: any = this;
+    this.tabsInfo.tabs = this.tabsInfo.tabs.map((tab: any) => {
+      tab.show = vueInstance.$hasAccessToCsm(
+        vueInstance.$eosUserPermissions[tab.requiredAccess] +
+          vueInstance.$eosUserPermissions.list
+      );
+      return tab;
+    });
+  }
   @Watch("tabsInfo.selectedTab")
   public onPropertyChanged(value: number, oldValue: number) {
     switch (value) {
