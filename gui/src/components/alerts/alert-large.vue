@@ -202,9 +202,9 @@ import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
 export default class EosAlertLarge extends Mixins(AlertsMixin) {
   public tabsInfo: TabsInfo = {
     tabs: [
-      { id: 1, label: "New alerts" },
-      { id: 2, label: "Active alerts" },
-      { id: 3, label: "Alert history" }
+      { id: 1, label: "New alerts", show: true },
+      { id: 2, label: "Active alerts", show: true },
+      { id: 3, label: "Alert history", show: true }
     ],
     selectedTab: 1
   };
