@@ -78,7 +78,7 @@ export interface DataNetworkSettings {
 
 export interface DnsNetworkSettingsNode {
   id: number;
-  name:string;
+  name: string;
   hostname: string;
   dns_servers: string[];
   search_domain: string[];

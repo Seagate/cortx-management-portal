@@ -165,7 +165,7 @@ export const wizardConfig = {
       footer: {
         nextComponent: "EosUserSetting",
         prevComponent: "EosDateTime",
-        nextBtnText: " continue",
+        nextBtnText: " Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }

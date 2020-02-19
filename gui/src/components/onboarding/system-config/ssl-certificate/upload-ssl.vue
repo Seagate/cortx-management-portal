@@ -2,7 +2,7 @@
   <v-container>
     <div class="pl-4 body-2">
       <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
-         <v-row class="resource-container mt-5">
+        <v-row class="resource-container mt-5">
           <v-col>
             <label
               class="eos-form-group-label ml-10 mt-5"
@@ -11,14 +11,10 @@
             >Upload SSL Certificate</label>
           </v-col>
           <v-col>
-            <button
-              type="button"
-              class="eos-btn-primary"
-             @click="uploadSSLCertificate()"
-            >Upload</button>
+            <button type="button" class="eos-btn-primary" @click="uploadSSLCertificate()">Upload</button>
           </v-col>
         </v-row>
-         <v-row class="resource-container mt-5">
+        <v-row class="resource-container mt-5">
           <v-col>
             <label
               class="eos-form-group-label ml-10 mt-5"
@@ -27,16 +23,11 @@
             >Upload Key Certificate</label>
           </v-col>
           <v-col>
-             <button
-              type="button"
-              class="eos-btn-primary"
-             @click="uploadKeyCertificate()"
-            >Upload</button>
+            <button type="button" class="eos-btn-primary" @click="uploadKeyCertificate()">Upload</button>
           </v-col>
         </v-row>
       </v-card>
     </div>
-    
   </v-container>
 </template>
 <script lang="ts">
@@ -62,18 +53,16 @@ export default class EOSUploadSSL extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-            res(true);
+      res(true);
     });
   }
-   private destroyed() {
+  private destroyed() {
     // WizardHook: shut off on exit event listner
     EVENT_BUS.$off("emitOnNext");
   }
   private data() {
-    return {
-    
-    };
-  } 
+    return {};
+  }
 }
 </script>
 <style lang="scss" scoped>

@@ -35,5 +35,5 @@ export default class Manintenance extends VuexModule {
             console.error("err logger: ", e);
         }
     }
-    
+
 }
