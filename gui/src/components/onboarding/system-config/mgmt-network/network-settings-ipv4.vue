@@ -1,7 +1,10 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="eos-text-lg mt-0 font-weight-bold" id="lblNetworkIP4">Management network settings: IPv4</div>
+      <div
+        class="eos-text-lg mt-0 font-weight-bold"
+        id="lblNetworkIP4"
+      >Management network settings: IPv4</div>
       <div
         class="mt-6"
         id="lblNetworkMsg"
@@ -28,13 +31,13 @@
             <div class="mt-5">
               <div
                 v-if="source == 'manual'"
-                class=""
+                class
                 :class="{
                   'eos-form-group--error': node.ip_address.$error
                 }"
               >
                 <input
-                 v-on:change="setipAddress"
+                  v-on:change="setipAddress"
                   class="eos-form__input_text"
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4Ipaddress'"
@@ -58,10 +61,11 @@
                 class="mt-3"
                 :class="{
                   'eos-form-group--error': node.hostname.$error
-                }" >
+                }"
+              >
                 <input
                   v-on:change="setHostname"
-                  class="eos-form__input_text  "
+                  class="eos-form__input_text"
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4Iphostname'"
                   :name="node.$model.id + 'hostname'"
@@ -81,7 +85,7 @@
               >
                 <input
                   v-on:change="setNetmask"
-                  class="eos-form__input_text "
+                  class="eos-form__input_text"
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4netmask'"
                   :name="node.$model.id + 'netmask'"
@@ -106,7 +110,7 @@
               >
                 <input
                   v-on:change="setGetway"
-                  class="eos-form__input_text "
+                  class="eos-form__input_text"
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4Gateway'"
                   :name="node.$model.id + 'gateway'"
@@ -178,8 +182,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
           ipAddress
         },
         hostname: {
-          required,
-          ipAddress
+          required
         },
         netmask: {
           required,
@@ -192,7 +195,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       }
     }
   };
-   private setipAddress(e:any) {
+  private setipAddress(e: any) {
     if (this.$v.ipv4Nodes.$model[1].ip_address === "") {
       this.$v.ipv4Nodes.$model[1].ip_address = e.target.value;
     }
@@ -200,7 +203,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].ip_address = e.target.value;
     }
   }
-   private setHostname(e:any) {
+  private setHostname(e: any) {
     if (this.$v.ipv4Nodes.$model[1].hostname === "") {
       this.$v.ipv4Nodes.$model[1].hostname = e.target.value;
     }
@@ -208,7 +211,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].hostname = e.target.value;
     }
   }
-   private setNetmask(e:any) {
+  private setNetmask(e: any) {
     if (this.$v.ipv4Nodes.$model[1].netmask === "") {
       this.$v.ipv4Nodes.$model[1].netmask = e.target.value;
     }
@@ -216,7 +219,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].netmask = e.target.value;
     }
   }
-  private setGetway(e:any) {
+  private setGetway(e: any) {
     if (this.$v.ipv4Nodes.$model[1].gateway === "") {
       this.$v.ipv4Nodes.$model[1].gateway = e.target.value;
     }
@@ -279,17 +282,17 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     return true;
   }
   private managementNetworkGetter(): any {
-    // const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    // const mngmtNetworkSettings = systemconfig.management_network_settings;
-    // if (
-    //   mngmtNetworkSettings &&
-    //   mngmtNetworkSettings.ipv4 &&
-    //   mngmtNetworkSettings.ipv4.nodes
-    // ) {
-    //   this.$data.source =
-    //     mngmtNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
-    //   this.$data.ipv4Nodes = mngmtNetworkSettings.ipv4.nodes;
-    // }
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    const mngmtNetworkSettings = systemconfig.management_network_settings;
+    if (
+      mngmtNetworkSettings &&
+      mngmtNetworkSettings.ipv4 &&
+      mngmtNetworkSettings.ipv4.nodes
+    ) {
+      this.$data.source =
+        mngmtNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
+      this.$data.ipv4Nodes = mngmtNetworkSettings.ipv4.nodes;
+    }
   }
   private updateIpv4Config() {
     const queryParams: Ipv4 = {

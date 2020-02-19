@@ -26,7 +26,12 @@
           </v-col>
           <v-col>
             <div>
-              <select name="resource" id="resource" class="eos-form__input_text" v-model="stopresource">
+              <select
+                name="resource"
+                id="resource"
+                class="eos-form__input_text"
+                v-model="stopresource"
+              >
                 <option>Node0</option>
                 <option>Node1</option>
                 <option>Cluster</option>
@@ -39,7 +44,7 @@
             </v-btn>
           </v-col>
         </v-row>
-         <v-row class="resource-container mt-5">
+        <v-row class="resource-container mt-5">
           <v-col>
             <label
               class="eos-form-group-label ml-10 mt-5"
@@ -49,7 +54,12 @@
           </v-col>
           <v-col>
             <div>
-              <select name="resource" id="resource" class="eos-form__input_text" v-model="startresource">
+              <select
+                name="resource"
+                id="resource"
+                class="eos-form__input_text"
+                v-model="startresource"
+              >
                 <option>Node0</option>
                 <option>Node1</option>
                 <option>Cluster</option>
@@ -62,17 +72,22 @@
             </v-btn>
           </v-col>
         </v-row>
-         <v-row class="resource-container mt-5">
+        <v-row class="resource-container mt-5">
           <v-col>
             <label
               class="eos-form-group-label ml-10 mt-5"
               for="Resource"
               style=" font-size: 1em;"
-            >Shutdown  Resource</label>
+            >Shutdown Resource</label>
           </v-col>
           <v-col>
-            <div >
-              <select name="resource" id="resource" class="eos-form__input_text" v-model="shutdownresource">
+            <div>
+              <select
+                name="resource"
+                id="resource"
+                class="eos-form__input_text"
+                v-model="shutdownresource"
+              >
                 <option>Node0</option>
                 <option>Node1</option>
                 <option>Cluster</option>
@@ -97,20 +112,18 @@ import apiRegister from "../../services/api-register";
   name: "eos-resource"
 })
 export default class EosMaintenance extends Vue {
-    data(){
-        return {
-            stopresource:'',
-            startresource:'',
-            shutdownresource:''
-        }
-    }
-  private mounted() {
+  data() {
+    return {
+      stopresource: "",
+      startresource: "",
+      shutdownresource: ""
+    };
   }
- private SwitchResource() {
-     this.$store
-      .dispatch("maintanance/maintenanceAction",this.$data.resource)
-      .then((res: any) => {
-      })
+  private mounted() {}
+  private SwitchResource() {
+    this.$store
+      .dispatch("maintanance/maintenanceAction", this.$data.resource)
+      .then((res: any) => {})
       .catch(() => {
         console.error("resource  Fails");
       });

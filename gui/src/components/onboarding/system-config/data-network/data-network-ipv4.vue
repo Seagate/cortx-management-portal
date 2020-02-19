@@ -21,7 +21,7 @@
         </label>
       </div>
       <!-- node block -->
-      <div class="row mt-5">
+      <div class="row ma-0 mt-5">
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
           <div class="col-3 body-2 column node-container mr-5" :key="node.id">
             <span class="font-weight-bold" id="lblIpv4Node">{{ node.$model.name }}</span>
@@ -63,7 +63,7 @@
               }"
             >
               <input
-                 v-on:change="setHostname"
+                v-on:change="setHostname"
                 class="eos-form__input_text"
                 :id="node.$model.id + 'txtDataNetworkIpv4hostname'"
                 :name="node.$model.id + 'ipaddress'"
@@ -82,7 +82,7 @@
                 }"
             >
               <input
-                 v-on:change="setNetmask"
+                v-on:change="setNetmask"
                 class="eos-form__input_text"
                 type="text"
                 :id="node.$model.id + 'txtDataNetworkIpv4netmask'"
@@ -107,7 +107,7 @@
             }"
             >
               <input
-                 v-on:change="setGetway"
+                v-on:change="setGetway"
                 class="eos-form__input_text"
                 type="text"
                 :id="node.$model.id + 'txtDataNetworkIpv4Gateway'"
@@ -174,7 +174,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       }
     }
   };
-  private setipAddress(e:any) {
+  private setipAddress(e: any) {
     if (this.$v.ipv4Nodes.$model[1].ip_address === "") {
       this.$v.ipv4Nodes.$model[1].ip_address = e.target.value;
     }
@@ -182,7 +182,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].ip_address = e.target.value;
     }
   }
-   private setHostname(e:any) {
+  private setHostname(e: any) {
     if (this.$v.ipv4Nodes.$model[1].hostname === "") {
       this.$v.ipv4Nodes.$model[1].hostname = e.target.value;
     }
@@ -190,7 +190,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].hostname = e.target.value;
     }
   }
-   private setNetmask(e:any) {
+  private setNetmask(e: any) {
     if (this.$v.ipv4Nodes.$model[1].netmask === "") {
       this.$v.ipv4Nodes.$model[1].netmask = e.target.value;
     }
@@ -198,7 +198,7 @@ export default class EosDataNetworkIpv4 extends Vue {
       this.$v.ipv4Nodes.$model[2].netmask = e.target.value;
     }
   }
-  private setGetway(e:any) {
+  private setGetway(e: any) {
     if (this.$v.ipv4Nodes.$model[1].gateway === "") {
       this.$v.ipv4Nodes.$model[1].gateway = e.target.value;
     }
@@ -208,10 +208,6 @@ export default class EosDataNetworkIpv4 extends Vue {
   }
   private data() {
     return {
-      // ipv4VipAddress: "",
-      // ipv4VipHostname: "",
-      // ipv4Netmask: "",
-      // ipv4Gateway: "",
       ipv4Nodes: [
         {
           id: 2,
@@ -275,32 +271,25 @@ export default class EosDataNetworkIpv4 extends Vue {
     return validate;
   }
   private dataNetworkGetter(): any {
-    // const systemconfig = this.$store.getters["systemConfig/systemconfig"];
-    // const dataNetworkSettings = systemconfig.data_network_settings;
-    // if (
-    //   dataNetworkSettings &&
-    //   dataNetworkSettings.ipv4 &&
-    //   dataNetworkSettings.ipv4.nodes
-    // ) {
-    //   this.$data.ipv4Nodes = dataNetworkSettings.ipv4.nodes;
-    //   this.$data.source =
-    //     dataNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
-    //   this.$data.ipv4VipAddress = dataNetworkSettings.ipv4.vip_address;
-    //   this.$data.ipv4VipHostname = dataNetworkSettings.ipv4.vip_hostname;
-    //   this.$data.ipv4Netmask = dataNetworkSettings.ipv4.netmask;
-    //   this.$data.ipv4Gateway = dataNetworkSettings.ipv4.gateway;
-    // }
+    const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    const dataNetworkSettings = systemconfig.data_network_settings;
+    if (
+      dataNetworkSettings &&
+      dataNetworkSettings.ipv4 &&
+      dataNetworkSettings.ipv4.nodes
+    ) {
+      this.$data.ipv4Nodes = dataNetworkSettings.ipv4.nodes;
+      this.$data.source =
+        dataNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
+      this.$data.ipv4VipAddress = dataNetworkSettings.ipv4.vip_address;
+      this.$data.ipv4VipHostname = dataNetworkSettings.ipv4.vip_hostname;
+      this.$data.ipv4Netmask = dataNetworkSettings.ipv4.netmask;
+      this.$data.ipv4Gateway = dataNetworkSettings.ipv4.gateway;
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
-.input-text {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #e3e3e3;
-  width: 20em;
-  height: 2.5em;
-}
 .pointer {
   cursor: pointer;
 }
