@@ -13,7 +13,7 @@
           <div class="mt-12 netmasklabel">
             <label>Hostname*</label>
           </div>
-          <div class="">
+          <div class>
             <label>Netmask*</label>
           </div>
         </div>
