@@ -10,7 +10,12 @@
                 $v.createUserForm.iamUser.user_name.$error
             }"
           >
-            <label class="eos-form-group-label" for="userName">Username*</label>
+            <label class="eos-form-group-label" for="userName">
+              <eos-info-tooltip
+                label="Username*"
+                message="Only alphanumeric, underscore and hyphen"
+              />
+            </label>
             <input
               class="eos-form__input_text"
               type="text"
@@ -44,9 +49,12 @@
               'eos-form-group--error': $v.createUserForm.iamUser.password.$error
             }"
           >
-            <label class="eos-form-group-label" for="userPassword"
-              >Password*</label
-            >
+            <label class="eos-form-group-label" for="userPassword">
+              <eos-info-tooltip
+                label="Password*"
+                message="minimum 8 characters, must contain at least 1 capital, 1 small, 1 special, 1 numeric character"
+              />
+            </label>
             <input
               class="eos-form__input_text"
               type="password"
@@ -82,7 +90,9 @@
               'eos-form-group--error': $v.createUserForm.iamUser.path.$error
             }"
           >
-            <label class="eos-form-group-label" for="userPath">Path*</label>
+            <label class="eos-form-group-label" for="userPath">
+              <eos-info-tooltip label="Path*" message="Should start with '/'" />
+            </label>
             <input
               class="eos-form__input_text"
               type="text"
@@ -312,14 +322,11 @@ import { required, helpers, sameAs } from "vuelidate/lib/validators";
 import { IAMUser } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-
-const userNameRegex = helpers.regex("userNameRegex", /^[a-zA-Z0-9_-]{1,64}$/);
-const pathRegex = helpers.regex("pathRegex", /^(\/[^/ ]*)+\/?$/);
-const passwordRegex = helpers.regex(
-  "passwordRegex",
-  // tslint:disable-next-line
-  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
-);
+import {
+  iamUserNameRegex,
+  iamPathRegex,
+  iamPasswordRegex
+} from "./../../common/regex-helpers";
 
 @Component({
   name: "eos-iam-user-management"
@@ -336,9 +343,9 @@ export default class EosIAMUserManagement extends Vue {
   public validations = {
     createUserForm: {
       iamUser: {
-        user_name: { required, userNameRegex },
-        path: { required, pathRegex },
-        password: { required, passwordRegex }
+        user_name: { required, iamUserNameRegex },
+        path: { required, iamPathRegex },
+        password: { required, iamPasswordRegex }
       },
       confirmPassword: {
         sameAsPassword: sameAs(() => {

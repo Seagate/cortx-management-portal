@@ -66,6 +66,7 @@ export default class UserLogin extends VuexModule {
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
+      return e;
     }
   }
 

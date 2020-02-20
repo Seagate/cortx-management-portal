@@ -10,7 +10,12 @@
                 $v.createBucketForm.bucket.bucket_name.$error
             }"
           >
-            <label class="eos-form-group-label" for="bucketName">Bucket name*</label>
+            <label class="eos-form-group-label" for="bucketName">
+              <eos-info-tooltip
+                label="Bucket name*"
+                message="Minimum 3 characters. Only alphanumeric, underscore and hyphen"
+              />
+            </label>
             <input
               class="eos-form__input_text"
               type="text"
@@ -25,13 +30,15 @@
                   $v.createBucketForm.bucket.bucket_name.$dirty &&
                     !$v.createBucketForm.bucket.bucket_name.required
                 "
-              >Bucket name is required</label>
+                >Bucket name is required</label
+              >
               <label
                 v-else-if="
                   $v.createBucketForm.bucket.bucket_name.$dirty &&
                     !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
                 "
-              >Invalid bucket name</label>
+                >Invalid bucket name</label
+              >
             </div>
           </div>
         </v-col>
@@ -44,28 +51,44 @@
             class="eos-btn-primary"
             @click="createBucket()"
             :disabled="$v.createBucketForm.$invalid"
-          >Create bucket</button>
+          >
+            Create bucket
+          </button>
           <button
             type="button"
             class="ml-8 eos-btn-secondary"
             @click="closeCreateBucketForm()"
-          >Cancel</button>
+          >
+            Cancel
+          </button>
         </v-col>
       </v-row>
     </div>
-    <eos-has-access :to="$eosUserPermissions.s3buckets + $eosUserPermissions.create">
+    <eos-has-access
+      :to="$eosUserPermissions.s3buckets + $eosUserPermissions.create"
+    >
       <button
         type="button"
         class="mt-2 mb-2 eos-btn-primary"
         v-if="!showCreateBucketForm"
         @click="openCreateBucketForm()"
-      >Create</button>
+      >
+        Create
+      </button>
     </eos-has-access>
-    <v-dialog v-model="showBucketCreateSuccessDialog" persistent max-width="790">
+    <v-dialog
+      v-model="showBucketCreateSuccessDialog"
+      persistent
+      max-width="790"
+    >
       <v-card>
         <v-system-bar color="grey lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="closeBucketCreateSuccessDialog()" style="cursor: pointer;">mdi-close</v-icon>
+          <v-icon
+            @click="closeBucketCreateSuccessDialog()"
+            style="cursor: pointer;"
+            >mdi-close</v-icon
+          >
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
@@ -76,7 +99,9 @@
             type="button"
             class="ma-5 eos-btn-primary"
             @click="closeBucketCreateSuccessDialog()"
-          >Ok</button>
+          >
+            Ok
+          </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -85,7 +110,11 @@
       <v-card>
         <v-system-bar color="greay lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="closeConfirmDeleteDialog('no')" style="cursor: pointer;">mdi-close</v-icon>
+          <v-icon
+            @click="closeConfirmDeleteDialog('no')"
+            style="cursor: pointer;"
+            >mdi-close</v-icon
+          >
         </v-system-bar>
         <v-card-title class="title ml-3">
           <img class="mr-2" src="./../../assets/status/warning.png" />
@@ -93,9 +122,9 @@
         </v-card-title>
         <v-divider />
         <v-card-text>
-          <label
-            class="ml-3 delete-bucket-confirmation-msg"
-          >Are you sure you want to delete the bucket?</label>
+          <label class="ml-3 delete-bucket-confirmation-msg"
+            >Are you sure you want to delete the bucket?</label
+          >
         </v-card-text>
 
         <v-card-actions>
@@ -103,12 +132,16 @@
             type="button"
             class="ma-5 eos-btn-primary"
             @click="closeConfirmDeleteDialog('yes')"
-          >Yes</button>
+          >
+            Yes
+          </button>
           <button
             type="button"
             class="ma-5 eos-btn-primary"
             @click="closeConfirmDeleteDialog('no')"
-          >No</button>
+          >
+            No
+          </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -125,7 +158,9 @@
         </div>
         <div class="eos-modal-body">
           <div class="eos-form-group" style="width: 100%;">
-            <label class="eos-form-group-label" for="comment">Add your JSON here</label>
+            <label class="eos-form-group-label" for="comment"
+              >Add your JSON here</label
+            >
             <textarea
               class="eos-form__input_textarea"
               v-model="policyJson"
@@ -134,8 +169,12 @@
             <span
               class="eos-form-group-label eos-form-group-error-msg red--text"
               v-if="$v.policyJson.$dirty && !$v.policyJson.required"
-            >Policy JSON is required</span>
-            <span class="eos-form-group-label eos-form-group-error-msg red--text">{{ jsonerr }}</span>
+              >Policy JSON is required</span
+            >
+            <span
+              class="eos-form-group-label eos-form-group-error-msg red--text"
+              >{{ jsonerr }}</span
+            >
           </div>
           <div class="policy-container">
             <button
@@ -143,24 +182,31 @@
               class="eos-btn-primary"
               :disabled="!$v.policyJson.jsonValidator"
               @click="updateBuketPolicy()"
-            >Update</button>
-          <button
+            >
+              Update
+            </button>
+            <button
               type="button"
               class="eos-btn-primary ml-8"
               :disabled="!$v.policyJson.jsonValidator"
               @click="deleteBuketPolicy()"
-            >Delete </button>
+            >
+              Delete
+            </button>
             <button
               type="button"
               class="ml-8 eos-btn-secondary ml-8"
               @click="closeBucketPolicyeDialog()"
-            >Cancel</button>
-         
+            >
+              Cancel
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <eos-has-access :to="$eosUserPermissions.s3buckets + $eosUserPermissions.list">
+    <eos-has-access
+      :to="$eosUserPermissions.s3buckets + $eosUserPermissions.list"
+    >
       <v-data-table
         calculate-widths
         :items="bucketsList"
@@ -172,7 +218,11 @@
       >
         <template v-slot:header="{}">
           <tr>
-            <th v-for="header in bucketsTableHeaderList" :key="header.text" class="tableheader">
+            <th
+              v-for="header in bucketsTableHeaderList"
+              :key="header.text"
+              class="tableheader"
+            >
               <span>{{ header.text }}</span>
             </th>
             <th class="tableheader" />
@@ -208,7 +258,7 @@ import { Bucket } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
-const bucketNameRegex = helpers.regex("bucketNameRegex", /^[a-zA-Z0-9_-]*$/);
+import { bucketNameRegex } from "./../../common/regex-helpers";
 
 @Component({
   name: "eos-bucket-creation"
@@ -372,11 +422,8 @@ export default class EosBucketCreation extends Vue {
   }
   public async deleteBuketPolicy() {
     this.showBucketPolicyDialog = false;
-    this.$store.dispatch(
-      "systemConfig/showLoader",
-      "Delete bucket policy..."
-    );
-    await Api.delete(apiRegister.bucket_policy,  this.bucketName);
+    this.$store.dispatch("systemConfig/showLoader", "Delete bucket policy...");
+    await Api.delete(apiRegister.bucket_policy, this.bucketName);
     this.$store.dispatch("systemConfig/hideLoader");
   }
   private async deleteBucket() {
@@ -399,8 +446,8 @@ export default class EosBucketCreation extends Vue {
   border-style: solid;
   border-width: 1px;
 }
-.policy-container{
-  display:flex; 
-  margin-top:10px;
+.policy-container {
+  display: flex;
+  margin-top: 10px;
 }
 </style>
