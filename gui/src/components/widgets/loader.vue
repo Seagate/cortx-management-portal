@@ -13,16 +13,16 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-overlay :value="show" opacity="0.75">
+  <v-overlay id="commonLoaderContainer" :value="show" opacity="0.75">
     <div class="loader-container">
       <div class="loader-header" v-if="title">
         <label>Header</label>
       </div>
       <div class="loader-body">
         <div class="loader-message" v-if="message">
-          <label>{{ message }}</label>
+          <label id="lblLoaderMessage">{{ message }}</label>
         </div>
-        <v-progress-linear indeterminate color="csmprimary" background-color="csmdisabled"></v-progress-linear>
+        <v-progress-linear id="commonLoaderProgress" indeterminate color="csmprimary" background-color="csmdisabled"></v-progress-linear>
       </div>
     </div>
   </v-overlay>
