@@ -163,6 +163,69 @@
         ]
       }
     },
+    "/alerts/{alert_id}/comments": {
+      "get": {
+        "tags": [
+          "Get All comments on alert with alert id."
+        ],
+        "summary": "Get All comments on alert with alert id.",
+        "responses": {
+          "200": {
+            "description": "Alert comments list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "object",
+                      "description": "List of comments on alert"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing Valid Required Parameters"
+          },
+          "404": {
+            "description": "Alert Not Found"
+          }
+        },
+        "content": {
+          "application/json": {}
+        }
+      },
+      "post": {
+        "tags": [
+          "Add comment to alert with alert id"
+        ],
+        "summary": "Add comment to alert with alert id.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "comment_text",
+            "in": "body",
+            "description": "Comment text",
+            "schema": {
+              "type": "string",
+              "required": true
+            }
+          }
+        ]
+      }
+    },
     "/stats/{statstype}": {
       "get": {
         "tags": [

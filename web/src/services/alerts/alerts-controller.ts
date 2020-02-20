@@ -52,3 +52,13 @@ export const updateAlerts = async (req: Request, res: Response) => {
     return result;
 };
 
+export const getCommentsForAlert = async (req: Request, res: Response) => {
+    const url = apiRegister.all_alerts + "/" + req.params.alert_id + "/comments";
+    return await Api.getAll(url, req, res);
+};
+
+export const addCommentToAlert = async (req: Request, res: Response) => {
+    const url = apiRegister.all_alerts + "/" + req.params.alert_id + "/comments";
+    return await Api.post(url, req, res);
+};
+
