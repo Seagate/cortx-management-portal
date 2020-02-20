@@ -7,9 +7,9 @@
         id="lblIpv4Msg"
       >You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
-      <div class="font-weight-bold mt-6">Source</div>
-      <div class="mt-4">
-        <label class="eos-rdb-container">
+      <div class="font-weight-bold mt-6">
+        Source
+        <label class="eos-rdb-container ml-3">
           Manual
           <input type="radio" name="source" v-model="source" value="manual" />
           <span class="eos-rdb-tick" id="lblIp4Manual"></span>
@@ -20,8 +20,23 @@
           <span class="eos-rdb-tick" id="lblIp4DHCP"></span>
         </label>
       </div>
-      <!-- node block -->
       <div class="row ma-0 mt-5">
+        <div class="col-1 body-2 column node-container mr-12">
+          <div class="mt-5 font-weight-bold">
+            <div class="mt-12" v-if="source == 'manual'">
+              <label>IPaddress*</label>
+            </div>
+            <div class="mt-12">
+              <label>Hostname*</label>
+            </div>
+            <div class="mt-12">
+              <label>Netmask*</label>
+            </div>
+            <div class="mt-12">
+              <label>Gateway*</label>
+            </div>
+          </div>
+        </div>
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
           <div class="col-3 body-2 column node-container mr-5" :key="node.id">
             <span class="font-weight-bold" id="lblIpv4Node">{{ node.$model.name }}</span>
@@ -42,7 +57,6 @@
                 :name="node.$model.id + 'ipaddress'"
                 v-model.trim="node.ip_address.$model"
                 @input="node.ip_address.$touch"
-                placeholder="IP address"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
@@ -69,7 +83,6 @@
                 :name="node.$model.id + 'ipaddress'"
                 v-model.trim="node.hostname.$model"
                 @input="node.hostname.$touch"
-                placeholder="Hostname"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label v-if="node.hostname.$dirty && !node.hostname.required">Hostname is required</label>
@@ -89,7 +102,6 @@
                 :name="node.$model.id + 'netmask'"
                 v-model.trim="node.netmask.$model"
                 @input="node.netmask.$touch"
-                placeholder="Netmask"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label v-if="node.netmask.$dirty && !node.netmask.required">Netmask is required</label>
@@ -114,7 +126,6 @@
                 :name="node.$model.id + 'gateway'"
                 v-model.trim="node.gateway.$model"
                 @input="node.gateway.$touch"
-                placeholder="Gateway"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label v-if="node.gateway.$dirty && !node.gateway.required">Gateway is required</label>

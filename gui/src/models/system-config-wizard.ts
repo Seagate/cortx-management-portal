@@ -1,8 +1,26 @@
 export const wizardConfig = {
-  currentComponent: "EosNetworkSettings",
+  currentComponent: "EOSUploadSSL",
   steps: [
     {
       sequence: 1,
+      isSubstep: false,
+      component: "EOSUploadSSL",
+      path: "onboarding/system-config/ssl-certificate/upload-ssl.vue",
+      isByPassed: false,
+      header: {
+        state: "completed",
+        name: "SSLUpload"
+      },
+      footer: {
+        nextComponent: "EosNetworkSettings",
+        prevComponent: "homebase",
+        nextBtnText: "Continue",
+        prevBtnText: "",
+        api: "/systemconfig"
+      }
+    },
+    {
+      sequence: 2,
       isSubstep: false,
       component: "EosNetworkSettings",
       path: "onboarding/system-config/mgmt-network/network-settings.vue",
@@ -13,14 +31,14 @@ export const wizardConfig = {
       },
       footer: {
         nextComponent: "EosNetworkSettingsIpv4",
-        prevComponent: "homebase",
+        prevComponent: "EOSUploadSSL",
         nextBtnText: "Continue",
-        prevBtnText: "",
+        prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
     },
     {
-      sequence: 2,
+      sequence: 3,
       isSubstep: true,
       component: "EosNetworkSettingsIpv4",
       path: "onboarding/system-config/mgmt-network/network-settings-ipv4.vue",
@@ -35,7 +53,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 3,
+      sequence: 4,
       isSubstep: true,
       component: "EosNetworkSettingsIpv6",
       path: "onboarding/system-config/mgmt-network/network-settings-ipv6.vue",
@@ -50,7 +68,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 4,
+      sequence: 5,
       isSubstep: false,
       component: "EosDataNetwork",
       path: "onboarding/system-config/data-network/data-network.vue",
@@ -68,7 +86,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 5,
+      sequence: 6,
       isSubstep: true,
       component: "EosDataNetworkIpv4",
       path: "onboarding/system-config/data-network/data-network-ipv4.vue",
@@ -83,7 +101,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 6,
+      sequence: 7,
       isSubstep: true,
       component: "EosDataNetworkIpv6",
       path: "onboarding/system-config/data-network/data-network-ipv6.vue",
@@ -98,7 +116,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 7,
+      sequence: 8,
       isSubstep: false,
       component: "EosDnsSettings",
       path: "onboarding/system-config/dns/dns-setting.vue",
@@ -108,27 +126,9 @@ export const wizardConfig = {
         name: "DNS"
       },
       footer: {
-        nextComponent: "EOSUploadSSL",
+        nextComponent: "EosDateTime",
         prevComponent: "EosDataNetworkIpv6",
         nextBtnText: "Continue",
-        prevBtnText: "Back to previous step",
-        api: "/systemconfig"
-      }
-    },
-    {
-      sequence: 8,
-      isSubstep: false,
-      component: "EOSUploadSSL",
-      path: "onboarding/system-config/ssl-certificate/upload-ssl.vue",
-      isByPassed: false,
-      header: {
-        state: "untouched",
-        name: "SSLUpload"
-      },
-      footer: {
-        nextComponent: "EosDateTime",
-        prevComponent: "EosDnsSettings",
-        nextBtnText: "Apply and continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
@@ -145,7 +145,7 @@ export const wizardConfig = {
       },
       footer: {
         nextComponent: "EosOnboardingSummary",
-        prevComponent: "EOSUploadSSL",
+        prevComponent: "EosDnsSettings",
         nextBtnText: "Apply and continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"

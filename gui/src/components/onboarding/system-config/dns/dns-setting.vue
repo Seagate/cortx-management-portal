@@ -4,14 +4,27 @@
       <div class="title mt-0 font-weight-bold" id="lblDns">DNS network settings</div>
     </div>
     <!-- node block -->
-    <div class="row ma-0 mt-3">
+    <div class="row ma-0 mt-5">
+      <div class="col-1 body-2 column node-container mt-5">
+        <div class="mt-10 font-weight-bold">
+          <div class="mt-12" v-if="source == 'manual'">
+            <label>IPaddress*</label>
+          </div>
+          <div class="mt-12 netmasklabel">
+            <label>Hostname*</label>
+          </div>
+          <div class>
+            <label>Netmask*</label>
+          </div>
+        </div>
+      </div>
       <template v-for="node in $v.dnsNodes.$each.$iter">
-        <div class="col-3 body-2 column node-container mr-5" :key="node.id">
+        <div class="col-2 body-2 column node-container mr-5" :key="node.id">
           <span class="font-weight-bold" id="lblIpv4Node">{{ node.$model.name }}</span>
           <v-divider class="mt-2" />
           <div class="eos-form-group mt-0 ml-0">
             <div
-              class="mt-3"
+              class
               :class="{
                 'eos-form-group--error': node.hostname.$error
               }"
@@ -220,5 +233,8 @@ export default class EosDnsSetting extends Vue {
 <style lang="scss" scoped>
 .node-container {
   max-width: 25em;
+}
+.netmasklabel {
+  height: 130px;
 }
 </style>
