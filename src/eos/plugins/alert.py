@@ -142,18 +142,20 @@ class AlertPlugin(CsmPlugin):
                 alert = self._convert_to_csm_schema(message)
                 """Validating Schema using marshmallow"""
                 alert_validator = AlertSchemaValidator()
-                alert_data = alert_validator.load(alert, unknown='EXCLUDE')
+                alert_data = alert_validator.load(alert,  unknown='EXCLUDE')
+                Log.debug(f"Validated alert as acknowleged. Alert-data: {alert_data}")
                 status = self.monitor_callback(alert_data)
                 if status:
                     # Acknowledge the alert so that it could be
                     # removed from the queue.
+                    Log.debug(f"Marking alert as acknowleged. status: {status}")
                     self.comm_client.acknowledge()
             except ValidationError as ve:
                 # Acknowledge incase of validation error.
-                Log.exception(ve)
+                Log.warn(f"Acknowledge incase of validation error {ve}")
                 self.comm_client.acknowledge()
             except Exception as e:
-                Log.exception(e)
+                Log.warn(f"Silently acknowledge ill-formed CSM alerts: {e}")
                 # Silently acknowledge ill-formed CSM alerts
                 self.comm_client.acknowledge()
 
@@ -166,7 +168,7 @@ class AlertPlugin(CsmPlugin):
         try:
             self.comm_client.recv(self._plugin_callback)
         except Exception as e:
-            Log.exception(e)
+            Log.warn(e)
 
     def stop(self):
         """
@@ -178,6 +180,7 @@ class AlertPlugin(CsmPlugin):
         """ 
         Parsing the alert JSON to create the csm schema
         """
+        Log.debug(f"Convert to csm schema:{message}")
         csm_schema = {}
         try:
             json_msg_obj = JsonMessage(message)
@@ -244,8 +247,8 @@ class AlertPlugin(CsmPlugin):
                 csm_schema[const.ALERT_EXTENDED_INFO] = \
                         str(csm_schema[const.ALERT_EXTENDED_INFO])
         except Exception as e:
-            Log.exception(e)
-            raise CsmError(-1, '%s' % e)
+            raise CsmError(-1, '%s' %e)
+        Log.debug(f"Converted schema:{csm_schema}")
         return csm_schema
 
     def _prepare_specific_info(self, csm_schema):
