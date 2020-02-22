@@ -15,16 +15,16 @@
 <template>
   <div>
     <v-row style="border-bottom: 2px solid rgba(0, 0, 0, 0.12);">
-      <v-col cols="8" style="border-right: 2px solid rgba(0, 0, 0, 0.12);">
-        <eos-alert-medium />
-      </v-col>
-      <v-col cols="4">
-        <eos-capacity-guage />
+      <v-col cols="12">
+        <eos-stats-medium />
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
-        <eos-stats-medium />
+      <v-col cols="4" style="border-right: 2px solid rgba(0, 0, 0, 0.12);">
+        <eos-capacity-guage />
+      </v-col>
+      <v-col cols="8">
+        <eos-alert-medium />
       </v-col>
     </v-row>
   </div>

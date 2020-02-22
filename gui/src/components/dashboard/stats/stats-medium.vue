@@ -15,10 +15,10 @@
 <template>
   <div class="pa-5">
     <div style="height: 30px;">
-      <div class="eos-alert-title">Performance</div>
-      <img :src="require('@/assets/zoom-in.svg')" class="eos-alert-navigate" />
+      <div class="eos-text-lg eos-text-bold eos-float-l">Performance</div>
+      <img :src="require('@/assets/zoom-in.svg')"   @click="$router.push('/performance')" class="eos-float-r eos-cursor-pointer" />
     </div>
-    <eos-line-chart />
+    <eos-line-chart chartId="line_chart" />
   </div>
 </template>
 <script lang="ts">
@@ -35,15 +35,4 @@ import EosLineChart from "./../../widgets/line-chart.vue";
 export default class EosStatsMedium extends Vue {}
 </script>
 <style lang="scss" scoped>
-.eos-alert-title {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  color: rgba(0, 0, 0, 0.87);
-  float: left;
-}
-.eos-alert-navigate {
-  float: right;
-  cursor: pointer;
-}
 </style>
