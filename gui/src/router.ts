@@ -34,6 +34,7 @@ import EosSettings from "./components/settings/eos-settings.vue";
 import EosSettingsMenu from "./components/settings/eos-settings-menu.vue";
 import EosUnauthorizedAccess from "./components/security/403.vue";
 import EosNotFound from "./components/security/404.vue";
+import EosPerformanceLarge from "./components/performance/performance-large.vue";
 import { userPermissions } from "./common/user-permissions-map";
 import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
 import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
@@ -100,6 +101,16 @@ const router = new Router({
           path: "alerts",
           name: "alerts-large",
           component: EosAlertLarge,
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: true,
+            requiredAccess: userPermissions.alerts + userPermissions.list
+          }
+        },
+        {
+          path: "performance",
+          name: "performance-large",
+          component: EosPerformanceLarge,
           meta: {
             requiresAuth: true,
             isOnboardingReq: true,
