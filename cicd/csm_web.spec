@@ -27,9 +27,7 @@ CFG_DIR=$CSM_DIR/conf
 PRODUCT=<PRODUCT>
 
 [ -d "${CSM_DIR}/${PRODUCT}/gui" ] && {
-    [ -f /etc/systemd/system/csm_web.service ] || {
-        cp -f $CFG_DIR/service/csm_web.service /etc/systemd/system/csm_web.service
-    }
+    cp -f $CFG_DIR/service/csm_web.service /etc/systemd/system/csm_web.service
 
     ENV=$CSM_DIR/web/web-dist/.env
     sed -i "s|CSM_UI_PATH=\"/\"|CSM_UI_PATH=\"${CSM_DIR}/${PRODUCT}/gui/ui-dist\"|g" $ENV
@@ -40,6 +38,7 @@ exit 0
 %postun
 [ $1 -eq 1 ] && exit 0
 rm -f /usr/bin/csm_web 2> /dev/null;
+rm -rf /etc/systemd/system/csm_web.service
 exit 0
 
 %clean
