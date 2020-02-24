@@ -35,7 +35,7 @@
               <label
                 v-else-if="
                   $v.createUserForm.iamUser.user_name.$dirty &&
-                    !$v.createUserForm.iamUser.user_name.userNameRegex
+                    !$v.createUserForm.iamUser.user_name.iamUserNameRegex
                 "
                 >Invalid username</label
               >
@@ -74,7 +74,7 @@
               <label
                 v-else-if="
                   $v.createUserForm.iamUser.password.$dirty &&
-                    !$v.createUserForm.iamUser.password.passwordRegex
+                    !$v.createUserForm.iamUser.password.iamPasswordRegex
                 "
                 >Invalid password</label
               >
