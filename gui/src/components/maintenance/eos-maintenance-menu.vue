@@ -18,6 +18,10 @@
       <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">HA</label>
       <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/maintenance/resource')" >Manage</button>
     </div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Audit log</label>
+      <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/maintenance/auditlog')" >Download</button>
+    </div>
   </div>
 </template>
  <script lang="ts">

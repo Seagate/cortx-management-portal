@@ -32,6 +32,7 @@ import EosProvisioning from "./components/provisioning/eos-provisioning.vue";
 import EosProvisioningMenu from "./components/provisioning/eos-provisioning-menu.vue";
 import EosSettings from "./components/settings/eos-settings.vue";
 import EosSettingsMenu from "./components/settings/eos-settings-menu.vue";
+import EosAuditLog from "./components/maintenance/auditlog.vue";
 import EosUnauthorizedAccess from "./components/security/403.vue";
 import EosNotFound from "./components/security/404.vue";
 import EosPerformanceLarge from "./components/performance/performance-large.vue";
@@ -40,6 +41,7 @@ import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
 import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
 import EosResource from "./components/maintenance/eos-resource.vue";
 import store from "./store/store";
+
 Vue.use(Router);
 
 // Note: requiresAuth: Flag for User Logged into the system
@@ -201,6 +203,12 @@ const router = new Router({
               path: "",
               name: "maintenance-menu",
               component: EosMaintenanceMenu,
+              meta: { requiresAuth: true, isOnboardingReq: false }
+            },
+            {
+              path: "auditlog",
+              name: "auditlog",
+              component: EosAuditLog,
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
