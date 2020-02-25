@@ -85,7 +85,7 @@ export default class UserCreate extends VuexModule {
   @Action
   public async updateUserDetails(payload: any) {
     try {
-      const res = Api.put(apiRegister.create_csmuser, payload, payload.id);
+      const res = Api.patch(apiRegister.create_csmuser, payload, payload.id);
       return res;
     } catch (e) {
       // tslint:disable-next-line: no-console
