@@ -1,5 +1,5 @@
 /*****************************************************************************
- Filename:          manintenance.ts
+ Filename:          maintenance.ts
  Description:       main Store Module
  Creation Date:     27/11/2019
  Author:            Jayshree More
@@ -15,25 +15,65 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
-import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-module-decorators";
+import {
+  Module,
+  VuexModule,
+  Mutation,
+  Action,
+  MutationAction
+} from "vuex-module-decorators";
 Vue.use(Vuex);
 
 @Module({
-    namespaced: true
+  namespaced: true
 })
-export default class Manintenance extends VuexModule {
-    /**
-     * @param queryParams {object},
-     *
-     */
-    @Action
-    public async maintenanceAction(queryParams: object) {
-        try {
-            const res = await Api.post(apiRegister.maintenance, queryParams);
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.error("err logger: ", e);
-        }
+export default class Maintenance extends VuexModule {
+  @Action
+  public async getNodeStatus(queryParams: object) {
+    try {
+      const res = await Api.getAll(apiRegister.node_status, queryParams);
+      if (res) {
+        return res.data;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
     }
-
+  }
+  @Action
+  public async stopNode(queryParams: object) {
+    try {
+      const res = await Api.getAll(apiRegister.node_stop, queryParams);
+      if (res) {
+        return res.data;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
+    }
+  }
+  @Action
+  public async startNode(queryParams: object) {
+    try {
+      const res = await Api.getAll(apiRegister.node_start, queryParams);
+      if (res) {
+        return res.data;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
+    }
+  }
+  @Action
+  public async shutdownNode(queryParams: object) {
+    try {
+      const res = await Api.getAll(apiRegister.node_shutdown, queryParams);
+      if (res) {
+        return res.data;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
+    }
+  }
 }
