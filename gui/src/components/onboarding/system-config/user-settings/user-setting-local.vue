@@ -95,7 +95,7 @@
                   type="password"
                   name="confirmPassword"
                   v-model="createAccount.confirmPassword"
-                  id="txtLocalPass"
+                  id="txtLocalConfirmPass"
                   @input="$v.createAccount.confirmPassword.$touch"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
