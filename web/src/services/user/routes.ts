@@ -53,7 +53,7 @@ export default [
   },
   {
     path: "/api/v1/csm/users/:user_id",
-    method: "put",
+    method: "patch",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
