@@ -37,6 +37,7 @@ export default {
   sysconfig: `api/${version}/sysconfig`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
+  auditlogs: `/api/${version}/auditlogs`,
   maintenance: ` /api/${version}/maintenance/cluster`,
   node_status: ` /api/${version}/maintenance/cluster/node_status`,
   node_stop: ` /api/${version}/maintenance/cluster/stop`,

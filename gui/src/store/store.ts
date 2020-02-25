@@ -22,7 +22,9 @@ import bucket from "./modules/s3-bucket";
 import performanceStats from "./modules/performance-stats";
 import createUser from "./modules/create-user";
 import messageDialog from "./modules/message-dialog";
+import download from "./modules/download";
 import maintenance from "./modules/maintenance";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -35,6 +37,7 @@ export default new Vuex.Store({
         performanceStats,
         createUser,
         messageDialog,
+        download,
         maintenance
     }
 });

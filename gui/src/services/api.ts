@@ -66,6 +66,10 @@ export abstract class Api {
         return Promise.reject(this.buildErrorResponse(error.response));
       });
   }
+  // Wrapper method to for get api
+  public static async getFile(url: string, queryParams?: object) {
+    return await axios.get(url, { responseType: "blob" });
+  }
   // Wrapper method for update api
   public static async patch(url: string, payload: object, id?: string) {
     const tempURL = id ? url + "/" + id : url;
