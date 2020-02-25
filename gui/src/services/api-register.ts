@@ -37,6 +37,7 @@ export default {
   sysconfig: `api/${version}/sysconfig`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
+  upload_firmware: `/api/${version}/uploadfirmware`, // TODO: change to right API
   auditlogs: `/api/${version}/auditlogs`,
   maintenance: ` /api/${version}/maintenance/cluster`,
   node_status: ` /api/${version}/maintenance/cluster/node_status`,

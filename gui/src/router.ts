@@ -40,6 +40,7 @@ import { userPermissions } from "./common/user-permissions-map";
 import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
 import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
 import EosResource from "./components/maintenance/eos-resource.vue";
+import EosFirmware from "./components/onboarding/system-config/firmware/firmware.vue";
 import store from "./store/store";
 
 Vue.use(Router);
@@ -220,7 +221,13 @@ const router = new Router({
               name: "resource",
               component: EosResource,
               meta: { requiresAuth: false, isOnboardingReq: false }
-            }
+            },
+            {
+              path: "firmware",
+              name: "firmware",
+              component: EosFirmware,
+              meta: { requiresAuth: false, isOnboardingReq: false }
+            },
           ]
         },
         {
