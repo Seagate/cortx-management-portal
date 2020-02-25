@@ -93,6 +93,18 @@ export abstract class Api {
         return Promise.reject(this.buildErrorResponse(error.response));
       });
   }
+  // Wrapper method for post api to upload file
+  public static async uploadFile(url: string, payload: FormData) {
+    return await axios.post(url, payload, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }).then((response) => {
+      return Promise.resolve(this.buildSuccessResponse(response));
+    }).catch((error) => {
+      return Promise.reject(this.buildErrorResponse(error.response));
+    });
+  }
   // Wrapper method for post api
   public static async delete(url: string, id: string) {
     const tempURL = id ? url + "/" + id : url;
