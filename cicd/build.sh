@@ -6,6 +6,7 @@ BASE_DIR=$(realpath "$(dirname $0)/..")
 PROG_NAME=$(basename $0)
 DIST=$(realpath $BASE_DIR/dist)
 API_DIR="$BASE_DIR/src/web"
+CSM_PATH="/opt/seagate/eos/csm"
 
 usage() {
     echo """
@@ -179,6 +180,23 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     UI_BUILD_END_TIME=$(date +%s)
 fi
 
+################## Add CSM_PATH #################################
+
+# Genrate spec file for CSM
+sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_agent/g" \
+    -e "s|<CSM_PATH>|${CSM_PATH}|g" \
+    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_agent.spec
+
+sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
+    -e "s|<CSM_PATH>|${CSM_PATH}|g" \
+    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
+
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/schema/commands.yaml
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/setup.yaml
+
 ################### TAR & RPM BUILD ##############################
 
 # Remove existing directory tree and create fresh one.
@@ -186,13 +204,6 @@ TAR_START_TIME=$(date +%s)
 cd $BASE_DIR
 \rm -rf ${DIST}/rpmbuild
 mkdir -p ${DIST}/rpmbuild/SOURCES
-
-# Genrate spec file for CSM
-sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_agent/g" \
-    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_agent.spec
-
-sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
-    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
 
 cd ${DIST}
 # Create tar for csm
