@@ -184,9 +184,6 @@ export default class EosAdminUser extends Vue {
       invalidMessage: ""
     };
   }
-  private mounted() {
-    this.$store.commit("alerts/setOnboardingFlag", false);
-  }
   private gotToNextPage() {
     const queryParams: UserLoginQueryParam = {
       username: this.$data.createAccount.username,

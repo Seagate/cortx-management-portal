@@ -70,6 +70,7 @@ export interface AlertQueryParam {
   resolved?: boolean;
   acknowledged?: boolean;
   show_all?: boolean;
+  show_active?: boolean;
 }
 
 export interface AlertEventDetail {

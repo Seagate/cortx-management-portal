@@ -14,16 +14,11 @@
  *****************************************************************************/
 import Vue from "vue";
 import Vuex from "vuex";
-import { Api } from "./../../services/api";
-import apiRegister from "./../../services/api-register";
 import {
   Module,
   VuexModule,
-  Mutation,
-  Action,
-  MutationAction
+  Mutation
 } from "vuex-module-decorators";
-import { AlertObject, AlertQueryParam } from "./../../models/alert";
 
 Vue.use(Vuex);
 
@@ -31,126 +26,63 @@ Vue.use(Vuex);
   namespaced: true
 })
 export default class Alerts extends VuexModule {
-  public alerts: AlertObject | null = null;
-  public header: object | null = null;
-  public isOnboardingDone: boolean = true;
-  public queryParams: AlertQueryParam = {
-    sortby: "created_time",
-    dir: "desc",
-    offset: 1,
-    limit: 5
+  public alert_page_filter: string = "new";
+  public items_per_page: number = 200;
+  public current_page: number = 1;
+  public sort_info: any = {
+    header: "created_time",
+    sort_dir: "desc"
   };
-  public currentPage: number = 1;
-  public recordsPerPage: number = 5;
 
   @Mutation
-  public alertDataMutation(payload: AlertObject) {
-    this.alerts = { ...payload };
+  public setAlertPageFilter(alert_page_filter: string) {
+    this.alert_page_filter = alert_page_filter;
   }
 
-  @Mutation
-  public setOnboardingFlag(flag: boolean) {
-    this.isOnboardingDone = flag;
-  }
-  get onboardingStatus() {
-    return this.isOnboardingDone;
+  get getAlertPageFilter() {
+    return this.alert_page_filter;
   }
 
   @Mutation
-  public setPage(page: number) {
-    this.currentPage = page;
-  }
-  get page() {
-    return this.currentPage;
+  public setItemsPerPage(items_per_page: number) {
+    this.items_per_page = items_per_page;
   }
 
-  // set items per page
+  get getItemsPerPage() {
+    return this.items_per_page;
+  }
+
   @Mutation
-  public setItemsPerPage(noOfRecords: number) {
-    this.recordsPerPage = noOfRecords;
+  public setCurrentPage(current_page: number) {
+    this.current_page = current_page;
   }
 
-  // Get items per page
-  get itemsPerPage() {
-    return this.recordsPerPage;
+  get getCurrentPage() {
+    return this.current_page;
   }
 
-  @Action
-  public async alertDataAction(queryParams: object) {
-    queryParams = queryParams ? queryParams : this.queryParams;
-    try {
-      const res = await Api.getAll(apiRegister.all_alerts, queryParams);
-      const data = res.data;
-      this.context.commit("alertDataMutation", data);
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log("err logger: ", e);
+  @Mutation
+  public setSortInfo(header: string) {
+    if (this.sort_info.header === header) {
+      this.sort_info.sort_dir = this.sort_info.sort_dir === "asc" ? "desc" : "asc";
+    } else {
+      this.sort_info.header = header;
+      this.sort_info.sort_dir = "asc";
     }
   }
 
-  @Action
-  public async updateAlert(payload: any): Promise<any | undefined> {
-    try {
-      const res = Api.patch(
-        apiRegister.all_alerts,
-        { acknowledged: payload.acknowledged, comment: payload.comment },
-        payload.alert_uuid
-      );
-      return res;
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
-    }
+  get getSortInfo() {
+    return this.sort_info;
   }
 
-  @Action
-  public async acknowledgeAll(alertIds: any): Promise<any | undefined> {
-    try {
-      const res = await Api.patch(apiRegister.all_alerts, alertIds);
-      return res;
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
-    }
-  }
-
-  get alertTotalRecordCount() {
-    if (this.alerts) {
-      return this.alerts.total_records;
-    }
-
-    return;
-  }
-
-  get alertData() {
-    if (this.alerts) {
-      return this.alerts.alerts;
-    }
-
-    return;
-  }
-
-  // Set headers for alert table
   @Mutation
-  public alertHeaderMutation(headerObj: object) {
-    this.header = headerObj;
+  public resetAlertQueryParams() {
+    this.items_per_page = 200;
+    this.current_page = 1;
+    this.sort_info = {
+      header: "created_time",
+      sort_dir: "desc"
+    };
   }
 
-  // Get alert headers
-  get alertHeader() {
-    return this.header;
-  }
-
-  // Set query params for Alert Table
-  @Mutation
-  public alertQueryParamMutation({ ...queryParams }) {
-    this.queryParams.sortby = queryParams.sortby;
-    this.queryParams.dir = queryParams.dir;
-    this.queryParams.offset = queryParams.offset;
-    this.queryParams.limit = queryParams.limit;
-  }
-  // Get Alert Query Parameter
-  get alertQueryParams(): AlertQueryParam {
-    return this.queryParams;
-  }
 }
