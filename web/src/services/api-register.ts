@@ -30,5 +30,6 @@ export default {
   s3_bucket: `/api/${version}/s3/bucket`,
   capacity: `/api/${version}/capacity`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
-  user_permissions: `/api/${version}/permissions`
+  user_permissions: `/api/${version}/permissions`,
+  health_summary: `/api/${version}/system/health`
 };

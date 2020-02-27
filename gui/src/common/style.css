@@ -278,6 +278,49 @@ textarea:focus {
 }
 /* Radiobutton style rules --- End */
 
+/* Switch style rules --- Start */
+.eos-switch-container {
+  position: relative;
+  display: inline-block;
+  width: 31px;
+  height: 16px;
+}
+.eos-switch-container input {
+  display: none;
+}
+.eos-switch {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 34px;
+}
+.eos-switch:before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  top: 2px;
+  left: 3px;
+  bottom: 2px;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 50%;
+}
+input:checked + .eos-switch {
+  border: 2px solid #6EBE49;
+}
+input:checked + .eos-switch:before {
+  border: 0;
+  background-color: #6EBE49;
+  transform: translateX(13px);
+}
+/* Switch style rules --- End */
+
 /* Button primary (White background) style rules --- Start */
 .eos-btn-primary {
   background: #6ebe49;

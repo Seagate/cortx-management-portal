@@ -81,7 +81,9 @@ export default {
                 sortby: "created_time",
                 dir: "desc",
                 offset: 1,
-                limit: 5
+                limit: 5,
+                acknowledged: false,
+                resolved: false
             };
             try {
                 const res = await Api.getAll(apiRegister.all_alerts, queryParams);

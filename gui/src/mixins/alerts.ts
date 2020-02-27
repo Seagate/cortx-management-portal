@@ -13,102 +13,105 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 // mixin.js
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
-import { AlertQueryParam } from "../models/alert";
+import { Component, Vue } from "vue-property-decorator";
+import { AlertQueryParam, AlertObject } from "../models/alert";
+import { Api } from "../services/api";
+import apiRegister from "../services/api-register";
 
-@Component({
-  name: "eos-alert-medium"
-})
+@Component
 export default class AlertsMixin extends Vue {
-  public alertPageFilter: "new" | "active" | "history" = "new";
+  public alertObject: AlertObject = {} as AlertObject;
+  public constString: any = require("../common/const-string.json");
+  public alertTableHeaders: any = [];
+  public sortByHeader: any = {};
+  public hidePagination: boolean = true;
+
+  public async onSort(header: any) {
+    if (header.sortable) {
+      this.$store.commit("alerts/setSortInfo", header.value);
+      this.onSortPaginate();
+    }
+  }
 
   // Column sort handler
-  public async onSortPaginate(
-    sortby: string,
-    sortedHeader: any,
-    offset: number,
-    limit: number
-  ) {
+  public async onSortPaginate() {
     const alertQueryParam: AlertQueryParam = {} as AlertQueryParam;
-    // Check if current column is sortable
-    if (sortedHeader && sortedHeader.sortable) {
-      // Change sort direction in alertHeader data for current selected/sorted column
-      this.$data.isSortActive = false; // Reset sort active for all columns
-      this.$data.sortColumnName = "";
-      for (const header of this.alertHeader) {
-        if (header.value === sortby) {
-          header.sortDir = sortedHeader.sortDir === "desc" ? "asc" : "desc";
-          // Set flags sorting active with respective header name
-          this.$data.isSortActive = true;
-          this.$data.sortColumnName = header.value;
-        }
-      }
-      // Update alert header data set with updated sort direction
-      this.$store.commit("alerts/alertHeaderMutation", this.alertHeader);
+
+    switch (this.alertPageFilter) {
+      case "new":
+        alertQueryParam.acknowledged = false;
+        alertQueryParam.resolved = false;
+        break;
+      case "active":
+        alertQueryParam.show_active = true;
+        break;
+      case "history":
+        alertQueryParam.acknowledged = true;
+        alertQueryParam.resolved = true;
+        alertQueryParam.show_all = true;
+        break;
     }
-    // Set queryparams data to store; sortBy is null in case of pagination
-    // For sorting sortBy should have column value
+    const sortInfo = this.$store.getters["alerts/getSortInfo"];
+    alertQueryParam.sortby = sortInfo.header;
+    alertQueryParam.dir = sortInfo.sort_dir;
+    alertQueryParam.offset = this.currentPage;
+    alertQueryParam.limit = this.itemsPerPage;
 
-    sortby = sortby ? sortby : this.queryParams.sortby;
-    const dir =
-      sortedHeader != null ? sortedHeader.sortDir : this.queryParams.dir;
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Fetching alerts..."
+    );
 
-    if (this.$data.alertPageFilter) {
-      switch (this.$data.alertPageFilter) {
-        case "new":
-          alertQueryParam.acknowledged = false;
-          alertQueryParam.resolved = false;
-          break;
-        case "active":
-          alertQueryParam.acknowledged = true;
-          alertQueryParam.resolved = false;
-          break;
-        case "history":
-          alertQueryParam.acknowledged = true;
-          alertQueryParam.resolved = true;
-          alertQueryParam.show_all = true;
-          break;
+    const res = await Api.getAll(apiRegister.all_alerts, alertQueryParam);
+    if (res && res.data) {
+      this.alertObject = res.data;
+      if (this.alertObject.total_records > 200) {
+        this.hidePagination = false;
       }
     }
-    alertQueryParam.sortby = sortby;
-    alertQueryParam.dir = dir;
-    alertQueryParam.offset = offset;
-    alertQueryParam.limit = limit;
-    this.$store.commit("alerts/alertQueryParamMutation", alertQueryParam);
-    // Get queryparams data from store and then dispatch to action
-    this.$store.dispatch("systemConfig/showLoader", "Fetching alerts...");
-    await this.$store.dispatch("alerts/alertDataAction", alertQueryParam);
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
-  // Get total_records from alert API
-  get totalRecordsCount() {
-    return this.$store.getters["alerts/alertTotalRecordCount"];
+  public async acknowledgeAll() {
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: true,
+      message: "Acknowledging alerts..."
+    });
+    const currentPageAlertIds: string[] = [];
+    this.alertObject.alerts.forEach((alert: any) => {
+      currentPageAlertIds.push(alert.alert_uuid);
+    });
+    try {
+      await Api.patch(apiRegister.all_alerts, currentPageAlertIds);
+      this.currentPage = this.currentPage > 1 ? this.currentPage-- : 1;
+      await this.onSortPaginate();
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
+    }
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: false,
+      message: ""
+    });
   }
-  // Get the header data from store
-  get alertHeader() {
-    return this.$store.getters["alerts/alertHeader"];
+
+  get currentPage() {
+    return this.$store.getters["alerts/getCurrentPage"];
   }
-  // Get all alerts from API
-  get alertData() {
-    return this.$store.getters["alerts/alertData"];
-  }
-  // Get alerts queryparams from store
-  get queryParams() {
-    return this.$store.getters["alerts/alertQueryParams"];
-  }
-  // Get current page
-  get page() {
-    return this.$store.getters["alerts/page"];
-  }
-  // Set current page
-  set page(page: number) {
-    this.$store.commit("alerts/setPage", page);
+  set currentPage(page: number) {
+    this.$store.commit("alerts/setCurrentPage", page);
   }
   get itemsPerPage() {
-    return this.$store.getters["alerts/itemsPerPage"];
+    return this.$store.getters["alerts/getItemsPerPage"];
   }
   set itemsPerPage(items: number) {
     this.$store.commit("alerts/setItemsPerPage", items);
   }
+  get alertPageFilter() {
+    return this.$store.getters["alerts/getAlertPageFilter"];
+  }
+  set alertPageFilter(alertPageFilter: string) {
+    this.$store.commit("alerts/setAlertPageFilter", alertPageFilter);
+  }
+
 }

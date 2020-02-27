@@ -120,9 +120,6 @@ export default class EosWelcome extends Vue {
       this.$data.showLicenseAgreement = false;
     }
   }
-  private mounted() {
-    this.$store.commit("alerts/setOnboardingFlag", false);
-  }
   private gotToNextPage() {
     this.$router.push("adminuser");
   }
