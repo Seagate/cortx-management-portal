@@ -184,9 +184,11 @@ export default class EosMaintenance extends Vue {
   }
   private mounted() {
     this.$store.dispatch("maintenance/getNodeStatus").then((res: any) => {
-      this.$data.online = res.online;
-      this.$data.offline = res.offline;
-      this.$data.nodes = res.nodes;
+      if (res) {
+        this.$data.online = res.online;
+        this.$data.offline = res.offline;
+        this.$data.nodes = res.nodes;
+      }
     });
   }
   private switchResource() {
@@ -205,7 +207,7 @@ export default class EosMaintenance extends Vue {
     this.$data.confirmationDialogMessage =
       "Are you sure, you want to stop the node?";
     this.$data.confirmationDialogSubMessage =
-      "*Please note that if you stop the cluster then the entire application will stop";
+      "Please note that if you stop the cluster then the entire application will stop";
 
     this.$data.actionMethod = "stop";
     this.$data.showConfirmationDialog = true;
@@ -218,7 +220,7 @@ export default class EosMaintenance extends Vue {
     this.$data.confirmationDialogMessage =
       "Are you sure, you want to shutdown the node?";
     this.$data.confirmationDialogSubMessage =
-      "*Please note that if you shutdown the cluster then the entire application will stop";
+      "Please note that if you shutdown the cluster then the entire application will stop";
 
     this.$data.actionMethod = "shutdown";
     this.$data.showConfirmationDialog = true;

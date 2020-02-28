@@ -50,6 +50,7 @@ export default class SystemConfiguration extends VuexModule {
   public isDataNetworkSettingsSkip: boolean = false;
   public loaderShow: boolean = false;
   public loaderMessage: string = "";
+  public loaderTimeout: any;
   public notifications: Notifications = {} as Notifications;
   public isLocalUser: boolean = false;
   public isLdapUser: boolean = false;
@@ -499,6 +500,10 @@ export default class SystemConfiguration extends VuexModule {
       show: true,
       message
     });
+    clearTimeout(this.loaderTimeout);
+    this.loaderTimeout = setTimeout(() => {
+      this.context.dispatch("hideLoader");
+    }, 20000);
   }
   @Action
   public async hideLoader() {

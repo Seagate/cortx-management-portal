@@ -136,14 +136,14 @@
               </div>
             </div>
           </div>
-          <v-btn
-            elevation="0"
-            color="csmprimary"
+          <button
+            type="button"
+            class="eos-btn-primary"
             @click="gotToNextPage()"
-            :disabled="$v.createAccount.$invalid"
+            :disabled="$v.createAccount.$invalid || createUserInProgress"
           >
-            <span class="white--text">Apply and continue</span>
-          </v-btn>
+            Apply and continue
+          </button>
         </form>
         <div v-if="!isValidResponse" class="red--text mt-2">
           {{ invalidMessage }}
@@ -181,7 +181,8 @@ export default class EosAdminUser extends Vue {
         confirmPassword: ""
       },
       isValidResponse: true,
-      invalidMessage: ""
+      invalidMessage: "",
+      createUserInProgress: false
     };
   }
   private gotToNextPage() {
@@ -190,22 +191,28 @@ export default class EosAdminUser extends Vue {
       password: this.$data.createAccount.password
     };
     this.$data.isValidResponse = true;
+    this.$data.createUserInProgress = true;
+    this.$data.invalidMessage = "";
+
+    this.$store.dispatch("systemConfig/showLoader", "Creating admin user...");
 
     this.$store
       .dispatch("userLogin/createUserAction", queryParams)
       .then((res: any) => {
         if (res) {
           if (res.status === 201) {
-            this.$router.push("preboarding-login");
+            this.$router.push({ name: "preboarding-login" });
           } else if (res.status === 409) {
-            this.$data.invalidMessage = "Conflict: Root user already exists";
+            throw new Error("Conflict: Root user already exists");
           }
         }
-        this.$data.isValidResponse = false;
+        throw new Error("Create admin user failed");
       })
       .catch((e: any) => {
         this.$data.isValidResponse = false;
-        this.$data.invalidMessage = "Create admin user failed";
+        this.$data.createUserInProgress = false;
+        this.$data.invalidMessage = e.message;
+        this.$store.dispatch("systemConfig/hideLoader");
       });
   }
 }
