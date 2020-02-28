@@ -19,7 +19,7 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/user",
+    path: "/api/v1/csm/users",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -30,7 +30,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/user",
+    path: "/api/v1/csm/users",
     method: "post",
     handler: [
       checkRequiredParams,
@@ -41,7 +41,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/user/:user_id",
+    path: "/api/v1/csm/users/:user_id",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -52,7 +52,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/user/:user_id",
+    path: "/api/v1/csm/users/:user_id",
     method: "put",
     handler: [
       checkRequiredParams,
@@ -63,7 +63,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/user/:user_id",
+    path: "/api/v1/csm/users/:user_id",
     method: "delete",
     handler: [
       checkRequiredParams,
