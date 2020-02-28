@@ -14,7 +14,7 @@ usage: $PROG_NAME [-v <csm version>]
                             [-b <build no>] [-k <key>]
                             [-p <product_name>]
                             [-c <all|backend|frontend>] [-t]
-                            [-d]
+                            [-d][-i]
 
 Options:
     -v : Build rpm with version
@@ -24,11 +24,12 @@ Options:
     -c : Build rpm for [all|backend|frontend]
     -t : Build rpm with test plan
     -d : Build dev env
+    -i : Build csm with integration test
         """ 1>&2;
     exit 1;
 }
 
-while getopts ":g:v:b:p:k:c:td" o; do
+while getopts ":g:v:b:p:k:c:tdi" o; do
     case "${o}" in
         v)
             VER=${OPTARG}
@@ -51,6 +52,9 @@ while getopts ":g:v:b:p:k:c:td" o; do
         d)
             DEV=true
             ;;
+        i)
+            INTEGRATION=true
+            ;;
         *)
             usage
             ;;
@@ -65,6 +69,7 @@ cd $BASE_DIR
 [ -z "$KEY" ] && KEY="eos@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
+[ -z "$INTEGRATION" ] && INTEGRATION=false
 [ -z "$DEV" ] && DEV=false
 
 echo "Using VERSION=${VER} BUILD=${BUILD} PRODUCT=${PRODUCT} TEST=${TEST}..."
@@ -238,6 +243,19 @@ BUILD_END_TIME=$(date +%s)
 
 echo "CSM RPMs ..."
 find $BASE_DIR -name *.rpm
+
+[ "$INTEGRATION" == true ] && {
+    INTEGRATION_TEST_START=$(date +%s)
+    bash $BASE_DIR/jenkins/cicd/csm_cicd.sh $DIST/rpmbuild/RPMS/x86_64 $BASE_DIR $CSM_PATH
+    RESULT=$(cat /tmp/result.txt)
+    cat /tmp/result.txt
+    echo $RESULT
+    [ "Failed" == $RESULT ] && {
+        echo "CICD Failed"
+        exit 1
+    }
+    INTEGRATION_TEST_STOP=$(date +%s)
+}
 
 COPY_DIFF=$(( $COPY_END_TIME - $COPY_START_TIME ))
 printf "COPY TIME!!!!!!!!!!!!"
