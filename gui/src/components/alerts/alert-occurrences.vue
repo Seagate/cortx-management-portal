@@ -128,7 +128,6 @@ export default class EosAlertOccurrences extends Vue {
   };
 
   public async mounted() {
-      console.log('calling');
       this.onSortPaginate();
     // Set Alert table default header options
     this.alertTableHeaders = [
@@ -167,7 +166,6 @@ export default class EosAlertOccurrences extends Vue {
     alertQueryParam.limit = this.itemsPerPage;
     this.$store.dispatch("systemConfig/showLoader", "Fetching alerts...");
     const res = await Api.getAll(apiRegister.all_alerts, alertQueryParam);
-    console.log(res,'jhfdhh');
     if (res && res.data) {
       this.alertObject = res.data;
       if (this.alertObject.total_records > 200) {
