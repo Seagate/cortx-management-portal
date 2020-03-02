@@ -195,11 +195,14 @@
       </div>
     </template>
     <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
+    <eos-tabs :tabsInfo="tabsInfo" />
+    <eos-alert-occurrences/>
+     <!-- <eos-alert-related/> -->
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, maxLength } from "vuelidate/lib/validators";
 import { Api } from "./../../services/api";
@@ -207,10 +210,12 @@ import apiRegister from "./../../services/api-register";
 import { AlertEventDetail, AlertExtendedInfo } from "../../models/alert";
 import AlertExtendedInfoComp from "./alert-extended-info.vue";
 import EosAlertComments from "./alert-comments.vue";
-
+import EosAlertOccurrences from "./alert-occurrences.vue";
+import EosAlertRelated from "./alert-related.vue";
+import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
 @Component({
   name: "eos-alert-details",
-  components: { AlertExtendedInfoComp, EosAlertComments }
+  components: { AlertExtendedInfoComp, EosAlertComments, EosAlertOccurrences,EosTabs}
 })
 export default class EosAlertDetails extends Vue {
   public alertId: string = "";
@@ -223,15 +228,38 @@ export default class EosAlertDetails extends Vue {
   public addCommentForm = {
     comment_text: ""
   };
-
+  private showOccurrenceTab: boolean = true;
+  private showRelatedTab: boolean = false;
+  public tabsInfo: TabsInfo = {
+    tabs: [
+      { id: 1, label: "Occurrences", show: true },
+      { id: 2, label: "Related", show: true }
+    ],
+    selectedTab: 1
+  };
+  @Watch("tabsInfo.selectedTab")
+  public onPropertyChanged(value: number, oldValue: number) {
+    switch (value) {
+      case 1:
+        this.showOccurrenceTab = true;
+        this.showRelatedTab = false;
+        break;
+      case 2:
+        this.showOccurrenceTab = false;
+        this.showRelatedTab = true;
+        break;
+    }
+  }
   @Validations()
   public validations = {
     addCommentForm: {
       comment_text: { required, maxLength: maxLength(250) }
     }
   };
-
   public async mounted() {
+    this.tabsInfo.tabs = this.tabsInfo.tabs.map((tab: any) => {
+      return tab;
+    });
     this.alertId = this.$route.params.alert_id;
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
@@ -244,7 +272,7 @@ export default class EosAlertDetails extends Vue {
         if (this.alert.extended_info) {
           const tempAlertExtendedInfoJSONString = this.alert.extended_info
             .split("'")
-            .join("\"");
+            .join('"');
           this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
           this.alertExtendedInfo = this.alertDetails.info;
         }
@@ -253,7 +281,7 @@ export default class EosAlertDetails extends Vue {
         if (this.alert.event_details) {
           const tempAlertEventDetailsJSONString = this.alert.event_details
             .split("'")
-            .join("\"");
+            .join('"');
           tempAlertEventDetails = JSON.parse(tempAlertEventDetailsJSONString);
         }
         if (tempAlertEventDetails.length > 0) {
@@ -290,7 +318,6 @@ export default class EosAlertDetails extends Vue {
       message: ""
     });
   }
-
   public async acknowledgeAlert() {
     let tempAlertAcknowledged: boolean = true;
     let loaderMessage: string = "Acknowledging alert...";
