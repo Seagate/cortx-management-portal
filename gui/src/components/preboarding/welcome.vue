@@ -1,4 +1,4 @@
-<template>
+ <template>
   <v-container class="pa-0 ma-0 col-12 black">
     <div height="70em" class="pl-10 py-5">
       <img src="../../assets/logo.png" />
@@ -23,7 +23,7 @@
             class="eos-form__input_text"
             type="text"
             maxlength="4"
-            v-on:keyup="moveOnMax"
+            v-on:keyup="moveOnNext"
             v-model="key1"
           />
         </v-col>
@@ -33,7 +33,7 @@
             type="text"
             ref="key2"
             maxlength="4"
-            v-on:keyup="moveOnMax"
+            v-on:keyup="moveOnNext"
             v-model="key2"
           />
         </v-col>
@@ -43,7 +43,7 @@
             type="text"
             ref="key3"
             maxlength="4"
-            v-on:keyup="moveOnMax"
+            v-on:keyup="moveOnNext"
             v-model="key3"
           />
         </v-col>
@@ -53,7 +53,7 @@
             type="text"
             maxlength="4"
             ref="key4"
-            v-on:keyup="moveOnMax"
+            v-on:keyup="moveOnNext"
             v-model="key4"
           />
         </v-col>
@@ -61,7 +61,7 @@
       <button
         type="button"
         class="eos-btn-primary-dark ml-4"
-        @click="showLicenseAgreement=true"
+        @click="addLicense"
         :disabled="!getStarted"
       >
         <span>Get started</span>
@@ -89,7 +89,7 @@ export default class EosWelcome extends Vue {
       getStarted: false
     };
   }
-  private moveOnMax() {
+  private moveOnNext() {
     if (this.$data.key1.length >= 4) {
       const inputRef: any = this.$refs.key2;
       inputRef.focus();
@@ -122,6 +122,25 @@ export default class EosWelcome extends Vue {
   }
   private gotToNextPage() {
     this.$router.push("adminuser");
+  }
+  private addLicense() {
+    const licensekey = {
+      license_key: this.$data.key1.concat(
+        this.$data.key2,
+        this.$data.key3,
+        this.$data.key4
+      )
+    };
+    try {
+      this.$store
+        .dispatch("userLogin/addLicenseKey", licensekey)
+        .then((res: any) => {
+          this.$data.showLicenseAgreement = true;
+        });
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      return e;
+    }
   }
 }
 </script>

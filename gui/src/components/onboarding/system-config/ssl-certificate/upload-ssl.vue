@@ -1,6 +1,11 @@
 <template>
   <v-container>
     <div class="pl-4 body-2">
+      <div class="title mt-0 font-weight-bold" id="lblIpv4Dns">SSL Upload</div>
+      <div
+        class="mt-6"
+        id="lblIpv4Msg"
+      >You need to upload ssl and key certificate here</div>
       <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
         <v-row class="resource-container mt-5">
           <v-col>

@@ -114,4 +114,15 @@ export default class UserLogin extends VuexModule {
       console.error("err logger: ", e);
     }
   }
+  @Action
+  public async addLicenseKey(queryParams: object) {
+    try {
+      const res = await Api.post(apiRegister.addlicensekey, queryParams);
+      return res;
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
+      return e;
+    }
+  }
 }

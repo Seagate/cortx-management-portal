@@ -43,3 +43,10 @@ export const saveUser = async (req: Request, res: Response) => {
   let adminUser = Api.post(apiRegister.admin_user_create, req, res);
   return adminUser;
 };
+/**
+ * added license key 
+ */
+export const license = async (req: Request, res: Response) => {
+  let addlicense = Api.post(apiRegister.addlicensekey, req, res)
+  return addlicense;
+};
