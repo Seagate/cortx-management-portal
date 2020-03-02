@@ -196,8 +196,8 @@
     </template>
     <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
     <eos-tabs :tabsInfo="tabsInfo" />
-    <eos-alert-occurrences/>
-     <!-- <eos-alert-related/> -->
+    <eos-alert-occurrences v-if="showOccurrenceTab" />
+    <eos-alert-related v-if="showRelatedTab" />
   </div>
 </template>
 
@@ -215,7 +215,13 @@ import EosAlertRelated from "./alert-related.vue";
 import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
 @Component({
   name: "eos-alert-details",
-  components: { AlertExtendedInfoComp, EosAlertComments, EosAlertOccurrences,EosTabs}
+  components: {
+    AlertExtendedInfoComp,
+    EosAlertComments,
+    EosAlertOccurrences,
+    EosAlertRelated,
+    EosTabs
+  }
 })
 export default class EosAlertDetails extends Vue {
   public alertId: string = "";
