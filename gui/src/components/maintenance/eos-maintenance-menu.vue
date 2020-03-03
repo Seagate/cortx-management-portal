@@ -32,7 +32,9 @@
     </div>
     </div>
     <div class="eos-wrap-height-menu-card-layout">
-      <button type="button" class="eos-btn-tertiary">About</button>
+      <button type="button" class="eos-btn-tertiary" @click="goToAbout()">
+        About
+      </button>
     </div>
   </div>
 </template>
@@ -80,6 +82,9 @@ export default class EosMaintenanceMenu extends Vue {
   }
   private goToAuditLog() {
     this.$router.push({ name: "auditlog" });
+  }
+  private goToAbout() {
+    this.$router.push({ name: "about" });
   }
   private handleClickFunction(actionClickFunction: string) {
     const vueInstance: any = this;

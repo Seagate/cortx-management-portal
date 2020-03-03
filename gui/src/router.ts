@@ -47,6 +47,7 @@ import EosDataNetwork from "./components/onboarding/system-config/data-network/d
 import EosDNS from "./components/onboarding/system-config/dns/dns-setting.vue";
 import EosNTP from "./components/onboarding/system-config/date-time/date-time.vue";
 import EosSSL from "./components/onboarding/system-config/ssl-certificate/upload-ssl.vue";
+import EosAbout from "./components/maintenance/eos-about.vue";
 import store from "./store/store";
 
 Vue.use(Router);
@@ -286,13 +287,13 @@ const router = new Router({
               path: "resource",
               name: "resource",
               component: EosResource,
-              meta: { requiresAuth: false, isOnboardingReq: false }
+              meta: { requiresAuth: true, isOnboardingReq: false }
             },
             {
               path: "firmware",
               name: "firmware",
               component: EosFirmware,
-              meta: { requiresAuth: false, isOnboardingReq: false }
+              meta: { requiresAuth: true, isOnboardingReq: false }
             }
           ]
         },
@@ -321,6 +322,12 @@ const router = new Router({
           name: "403",
           component: EosUnauthorizedAccess,
           meta: { requiresAuth: false, isOnboardingReq: false }
+        },
+        {
+          path: "about",
+          name: "about",
+          component: EosAbout,
+          meta: { requiresAuth: true, isOnboardingReq: false }
         },
         {
           path: "clouduser",
