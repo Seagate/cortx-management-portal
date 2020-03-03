@@ -24,7 +24,6 @@
         <router-view></router-view>
       </div>
     </div>
-    <loader :show="showLoader" :message="loaderMessage" />
     <EOSMessageDialog />
   </div>
 </template>
@@ -34,7 +33,6 @@ import { Component, Vue } from "vue-property-decorator";
 import HeaderBar from "./header/header-bar.vue";
 import EosNavBar from "./navigation/nav-bar.vue";
 import { SystemConfigObject } from "../models/system-configuration";
-import Loader from "./widgets/loader.vue";
 import EOSMessageDialog from "./widgets/eos-message-dialog.vue";
 
 @Component({
@@ -42,19 +40,12 @@ import EOSMessageDialog from "./widgets/eos-message-dialog.vue";
   components: {
     HeaderBar,
     EosNavBar,
-    Loader,
     EOSMessageDialog
   }
 })
 export default class EosDefault extends Vue {
   get isRouterPathOnboading() {
     return this.$route.name === "onboarding";
-  }
-  get showLoader() {
-    return this.$store.getters["systemConfig/showLoaderStatus"];
-  }
-  get loaderMessage() {
-    return this.$store.getters["systemConfig/loaderMessageText"];
   }
 }
 </script>

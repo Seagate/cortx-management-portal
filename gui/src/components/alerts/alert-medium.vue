@@ -14,6 +14,7 @@
  *****************************************************************************/
 <template>
   <div class="pa-5">
+    <eos-health-summary />
     <div style="height: 30px;">
       <div class="eos-alert-title">New alerts</div>
       <img
@@ -25,38 +26,37 @@
     <div class="mt-3">
       <v-data-table
         calculate-widths
-        :items="alertData"
+        :items="alertObject.alerts"
         item-key="created_time"
         height="250"
         :items-per-page.sync="itemsPerPage"
         :footer-props="{
-        'items-per-page-options': [5, 10, 15]
+        'items-per-page-options': [50, 100, 150, 200]
         }"
-        :page.sync="page"
-        :update:page="page"
-        :server-items-length="totalRecordsCount"
+        :page.sync="currentPage"
+        :update:page="currentPage"
+        :server-items-length="alertObject.total_records"
         hide-default-header
-        @update:items-per-page="onSortPaginate(null, null, page, itemsPerPage)"
-        @update:page="onSortPaginate(null, null, page, itemsPerPage)"
+        :hide-default-footer="hidePagination"
+        @update:items-per-page="onSortPaginate()"
+        @update:page="onSortPaginate()"
         id="tblAlertMedium"
       >
-        <template v-slot:header="{props}">
+        <template v-slot:header="{}">
           <tr>
             <th
-              v-for="header in alertHeader"
+              v-for="header in alertTableHeaders"
               :key="header.text"
-              class="tableheader"
-              @click="onSortPaginate(header.value, header, props.options.page, props.options.itemsPerPage)"
+              :class="[
+                'tableheader',
+                header.sortable ? 'eos-cursor-pointer' : ''
+              ]"
+              @click="onSort(header)"
             >
-              <span
-                class="headerText"
-                :class="(header.value === sortColumnName && isSortActive) ? 'active' : ''"
-              >{{ header.text }}</span>
-              <span
-                :class="(header.value === sortColumnName && isSortActive) ? 'active' : 'notActive'"
-              >
+              <span>{{ header.text }}</span>
+              <span v-if="header.value === sortInfo.header">
                 <img
-                  v-if="header.sortable && header.sortDir === alertStatus.desc"
+                  v-if="sortInfo.sort_dir === alertStatus.desc"
                   :src="require('@/assets/widget/table-sort-desc.svg/')"
                   class="d-inline-block"
                   style="vertical-align: bottom; margin-left: -0.3em;"
@@ -64,7 +64,7 @@
                   width="20"
                 />
                 <img
-                  v-if="header.sortable && header.sortDir === alertStatus.asc"
+                  v-if="sortInfo.sort_dir === alertStatus.asc"
                   :src="require('@/assets/widget/table-sort-asc.svg/')"
                   class="d-inline-block"
                   style="vertical-align: bottom; margin-left: -0.3em;"
@@ -79,7 +79,7 @@
           <tr style="color: #000000;">
             <td style="white-space: nowrap;">{{ new Date(props.item.created_time*1000) | timeago }}</td>
             <td style="white-space: nowrap;">
-              <span >{{ props.item.module_type + " | " + props.item.state }}</span>
+              <span>{{ props.item.module_type + " | " + props.item.state }}</span>
             </td>
             <td>
               <div
@@ -113,17 +113,20 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
+import EosHealthSummary from "../system/health-summary.vue";
 
 @Component({
-  name: "eos-alert-medium"
+  name: "eos-alert-medium",
+  components: { EosHealthSummary }
 })
 export default class EosAlertMedium extends Mixins(AlertsMixin) {
-  public mounted() {
-    // Call action to get all alert data
-    this.onSortPaginate("", null, this.page, this.itemsPerPage);
-    this.$store.commit("alerts/setOnboardingFlag", true);
+  public async mounted() {
+    if (this.alertPageFilter !== "new") {
+      this.alertPageFilter = "new";
+      this.$store.commit("alerts/resetAlertQueryParams");
+    }
     // Set Alert table default header options
-    const headers = [
+    this.alertTableHeaders = [
       {
         text: "Time",
         value: "created_time",
@@ -138,7 +141,7 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
       {
         text: "Severity",
         value: "severity",
-        sortable: false
+        sortable: true
       },
       {
         text: "Description",
@@ -146,16 +149,17 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
         sortable: false
       }
     ];
-    // Mutate header data in store
-    this.$store.commit("alerts/alertHeaderMutation", headers);
+    // Call action to get all alert data
+    await this.onSortPaginate();
+  }
+
+  get sortInfo() {
+    return this.$store.getters["alerts/getSortInfo"];
   }
 
   public data() {
     return {
-      isSortActive: false, // Set table column sorting flag to default inactive
-      sortColumnName: "", // Set sorting column name to none
-      alertStatus: require("./../../common/const-string.json"),
-      rowsPerPageItems: [5, 10, 15]
+      alertStatus: require("./../../common/const-string.json")
     };
   }
 }

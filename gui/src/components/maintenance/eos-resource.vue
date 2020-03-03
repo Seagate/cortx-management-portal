@@ -1,9 +1,9 @@
 /*****************************************************************************
- Filename:          eos-settings.vue
- Description:       Settings container component.
+ Filename:          eos-resource.vue
+ Description:       Resource Maintenance
 
- Creation Date:     31/12/2019
- Author:            Jayshree .A. More
+ Creation Date:     21/02/2020
+ Author:            Vaibhav Bhavsar
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -13,83 +13,152 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-container>
-    <div class="pl-4 body-2">
-      <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
-        <v-row class="resource-container pt-10">
-          <v-col>
-            <label
-              class="eos-form-group-label ml-10 mt-5"
-              for="Resource"
-              style=" font-size: 1em;"
-            >Stop Resource</label>
-          </v-col>
-          <v-col>
-            <div>
-              <select name="resource" id="resource" class="eos-form__input_text" v-model="stopresource">
-                <option>Node0</option>
-                <option>Node1</option>
-                <option>Cluster</option>
-              </select>
-            </div>
-          </v-col>
-          <v-col>
-            <v-btn elevation="0" color="csmprimary" id="btnDTSetNow">
-              <span class="white--text" @click="stopresource()">Apply</span>
-            </v-btn>
-          </v-col>
-        </v-row>
-         <v-row class="resource-container mt-5">
-          <v-col>
-            <label
-              class="eos-form-group-label ml-10 mt-5"
-              for="Resource"
-              style=" font-size: 1em;"
-            >Start Resource</label>
-          </v-col>
-          <v-col>
-            <div>
-              <select name="resource" id="resource" class="eos-form__input_text" v-model="startresource">
-                <option>Node0</option>
-                <option>Node1</option>
-                <option>Cluster</option>
-              </select>
-            </div>
-          </v-col>
-          <v-col>
-            <v-btn elevation="0" color="csmprimary" id="btnDTSetNow">
-              <span class="white--text" @click="startResource()">Apply</span>
-            </v-btn>
-          </v-col>
-        </v-row>
-         <v-row class="resource-container mt-5">
-          <v-col>
-            <label
-              class="eos-form-group-label ml-10 mt-5"
-              for="Resource"
-              style=" font-size: 1em;"
-            >Shutdown  Resource</label>
-          </v-col>
-          <v-col>
-            <div >
-              <select name="resource" id="resource" class="eos-form__input_text" v-model="shutdownresource">
-                <option>Node0</option>
-                <option>Node1</option>
-                <option>Cluster</option>
-              </select>
-            </div>
-          </v-col>
-          <v-col>
-            <v-btn elevation="0" color="csmprimary" id="btnDTSetNow">
-              <span class="white--text" @click="Clusterresource()">Apply</span>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card>
+  <div>
+    <div
+      id="s3-configuration-title-container"
+      class="mb-4 s3-configuration-page-title"
+    >
+      <label id="s3-account-form-title" class="headline font-weight-bold"
+        >System maintenance</label
+      >
     </div>
-  </v-container>
+
+    <v-container>
+      <div class="pl-4 body-2">
+        <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
+          <v-row class="resource-container pt-10">
+            <v-col>
+              <label
+                class="eos-form-group-label ml-10 mt-5"
+                for="Resource"
+                style=" font-size: 1em;"
+                >Stop resource</label
+              >
+            </v-col>
+            <v-col>
+              <div>
+                <select
+                  :disabled="!online.length"
+                  name="resource"
+                  id="resource"
+                  class="eos-form__input_text"
+                  v-model="resource.stop"
+                >
+                  <option
+                    v-for="(node, index) in online"
+                    :key="index"
+                    :value="node"
+                    >{{ node }}</option
+                  >
+                  <option value="all">cluster</option>
+                </select>
+              </div>
+            </v-col>
+            <v-col>
+              <button
+                type="button"
+                id="btnStopResource"
+                class="eos-btn-primary"
+                :disabled="!online.length"
+                @click="stopSelectedResource()"
+              >
+                Apply
+              </button>
+            </v-col>
+          </v-row>
+          <v-row class="resource-container mt-5">
+            <v-col>
+              <label
+                class="eos-form-group-label ml-10 mt-5"
+                for="Resource"
+                style=" font-size: 1em;"
+                >Start resource</label
+              >
+            </v-col>
+            <v-col>
+              <div>
+                <select
+                  :disabled="!offline.length"
+                  name="resource"
+                  id="resource"
+                  class="eos-form__input_text"
+                  v-model="resource.start"
+                >
+                  <option
+                    v-for="(node, index) in offline"
+                    :key="index"
+                    :value="node"
+                    >{{ node }}</option
+                  >
+                  <option value="all">cluster</option>
+                </select>
+              </div>
+            </v-col>
+            <v-col>
+              <button
+                type="button"
+                id="btnStartResource"
+                class="eos-btn-primary"
+                :disabled="!offline.length"
+                @click="startSelectedResource()"
+              >
+                Apply
+              </button>
+            </v-col>
+          </v-row>
+          <v-row class="resource-container mt-5">
+            <v-col>
+              <label
+                class="eos-form-group-label ml-10 mt-5"
+                for="Resource"
+                style=" font-size: 1em;"
+                >Shutdown resource</label
+              >
+            </v-col>
+            <v-col>
+              <div>
+                <select
+                  name="resource"
+                  id="resource"
+                  class="eos-form__input_text"
+                  v-model="resource.shutdown"
+                >
+                  <option
+                    v-for="(node, index) in nodes"
+                    :key="index"
+                    :value="node"
+                    >{{ node }}</option
+                  >
+                  <option value="all">cluster</option>
+                </select>
+              </div>
+            </v-col>
+            <v-col>
+              <button
+                type="button"
+                id="btnShutdownResource"
+                class="eos-btn-primary"
+                @click="shutdownSelectedResource()"
+              >
+                Apply
+              </button>
+            </v-col>
+          </v-row>
+        </v-card>
+      </div>
+      <eos-confirmation-dialog
+        :show="showConfirmationDialog"
+        title="Confirmation"
+        :message="confirmationDialogMessage"
+        :submessage="confirmationDialogSubMessage"
+        severity="warning"
+        @closeDialog="closeConfirmationDialog"
+        cancelButtonText="No"
+      ></eos-confirmation-dialog>
+    </v-container>
+  </div>
 </template>
- <script lang="ts">
+<script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
@@ -97,23 +166,64 @@ import apiRegister from "../../services/api-register";
   name: "eos-resource"
 })
 export default class EosMaintenance extends Vue {
-    data(){
-        return {
-            stopresource:'',
-            startresource:'',
-            shutdownresource:''
-        }
-    }
-  private mounted() {
+  private data() {
+    return {
+      resource: {
+        stop: "",
+        start: "",
+        shutdown: ""
+      },
+      actionMethod: "",
+      online: [],
+      offline: [],
+      nodes: [],
+      showConfirmationDialog: false,
+      confirmationDialogMessage: "",
+      confirmationDialogSubMessage: ""
+    };
   }
- private SwitchResource() {
-     this.$store
-      .dispatch("maintanance/maintenanceAction",this.$data.resource)
-      .then((res: any) => {
-      })
-      .catch(() => {
-        console.error("resource  Fails");
+  private mounted() {
+    this.$store.dispatch("maintenance/getNodeStatus").then((res: any) => {
+      if (res) {
+        this.$data.online = res.online;
+        this.$data.offline = res.offline;
+        this.$data.nodes = res.nodes;
+      }
+    });
+  }
+  private switchResource() {
+    this.$store.dispatch("maintenance/maintenanceAction");
+  }
+  private closeConfirmationDialog(confirmation: boolean) {
+    this.$data.showConfirmationDialog = false;
+    if (confirmation) {
+      this.$store.dispatch(`maintenance/${this.$data.actionMethod}Node`, {
+        node: this.$data.resource[this.$data.actionMethod]
       });
+    }
+    this.$data.resource[this.$data.actionMethod] = "";
+  }
+  private stopSelectedResource(action: boolean) {
+    this.$data.confirmationDialogMessage =
+      "Are you sure, you want to stop the node?";
+    this.$data.confirmationDialogSubMessage =
+      "Please note that if you stop the cluster then the entire application will stop";
+
+    this.$data.actionMethod = "stop";
+    this.$data.showConfirmationDialog = true;
+  }
+  private startSelectedResource(action: boolean) {
+    this.$data.actionMethod = "start";
+    this.$data.showConfirmationDialog = true;
+  }
+  private shutdownSelectedResource(action: boolean) {
+    this.$data.confirmationDialogMessage =
+      "Are you sure, you want to shutdown the node?";
+    this.$data.confirmationDialogSubMessage =
+      "Please note that if you shutdown the cluster then the entire application will stop";
+
+    this.$data.actionMethod = "shutdown";
+    this.$data.showConfirmationDialog = true;
   }
 }
 </script>

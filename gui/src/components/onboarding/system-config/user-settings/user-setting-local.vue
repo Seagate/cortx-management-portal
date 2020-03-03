@@ -20,9 +20,12 @@
                   'eos-form-group--error': $v.createAccount.username.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Username"
-                  >Username*</label
-                >
+                <label class="eos-form-group-label" for="Username">
+                  <eos-info-tooltip
+                    label="Username*"
+                    message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+                  />
+                </label>
                 <input
                   class="eos-form__input_text"
                   type="text"
@@ -47,9 +50,11 @@
                   'eos-form-group--error': $v.createAccount.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password"
-                  >Password*</label
-                >
+                <label class="eos-form-group-label" for="password">
+                  <eos-info-tooltip
+                    label="Password*"
+                    message="minimum 8 characters, must contain at least 1 capital, 1 small, 1 special, 1 numeric character"
+                /></label>
                 <input
                   class="eos-form__input_text"
                   type="password"
@@ -90,7 +95,7 @@
                   type="password"
                   name="confirmPassword"
                   v-model="createAccount.confirmPassword"
-                  id="txtLocalPass"
+                  id="txtLocalConfirmPass"
                   @input="$v.createAccount.confirmPassword.$touch"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
@@ -278,9 +283,12 @@
                               $v.selectedItem.username.$error
                           }"
                         >
-                          <label class="eos-form-group-label" for="Username"
-                            >Username*</label
-                          >
+                          <label class="eos-form-group-label" for="Username">
+                            <eos-info-tooltip
+                              label="Username*"
+                              message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+                            />
+                          </label>
                           <input
                             class="eos-form__input_text"
                             type="text"
@@ -361,11 +369,8 @@ import {
   sameAs,
   requiredIf
 } from "vuelidate/lib/validators";
-const passwordRegex = helpers.regex(
-  "passwordRegex",
-  // tslint:disable-next-line
-  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
-);
+import { passwordRegex } from "./../../../../common/regex-helpers";
+
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({

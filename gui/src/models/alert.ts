@@ -70,6 +70,7 @@ export interface AlertQueryParam {
   resolved?: boolean;
   acknowledged?: boolean;
   show_all?: boolean;
+  show_active?: boolean;
 }
 
 export interface AlertEventDetail {
@@ -87,4 +88,11 @@ export interface AlertExtendedInfo {
   cluster_id?: string;
   rack_id?: string;
   resource?: string;
+}
+
+export interface AlertComment {
+  comment_id: string;
+  comment_text: string;
+  created_time: string;
+  created_by: string;
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="eos-p-2">
-    <h1>Unauthorized Access</h1>
+    <h1>Access Denied</h1>
     <p>
       This is a secure area. You are not authorized to see this page.
     </p>

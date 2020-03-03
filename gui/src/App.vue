@@ -15,17 +15,28 @@
 <template>
   <v-app style="background-color: #FFF;">
     <router-view></router-view>
+    <loader :show="showLoader" :message="loaderMessage" />
   </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import Loader from "./components/widgets/loader.vue";
 
 @Component({
-  name: "App"
+  name: "App",
+  components: {
+    Loader
+  }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  get showLoader() {
+    return this.$store.getters["systemConfig/showLoaderStatus"];
+  }
+  get loaderMessage() {
+    return this.$store.getters["systemConfig/loaderMessageText"];
+  }
+}
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

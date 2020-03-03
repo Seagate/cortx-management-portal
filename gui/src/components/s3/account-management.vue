@@ -10,9 +10,12 @@
                 $v.createAccountForm.account.account_name.$error
             }"
           >
-            <label class="eos-form-group-label" for="accountName"
-              >Account name*</label
-            >
+            <label class="eos-form-group-label" for="accountName">
+              <eos-info-tooltip
+                label="Account name*"
+                message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+              />
+            </label>
             <input
               class="eos-form__input_text"
               type="text"
@@ -47,9 +50,12 @@
                 $v.createAccountForm.account.password.$error
             }"
           >
-            <label class="eos-form-group-label" for="accountPassword"
-              >Password*</label
-            >
+            <label class="eos-form-group-label" for="accountPassword">
+              <eos-info-tooltip
+                label="Password*"
+                message="minimum 8 characters, must contain at least 1 capital, 1 small, 1 special, 1 numeric character"
+              />
+            </label>
             <input
               class="eos-form__input_text"
               type="password"
@@ -108,8 +114,7 @@
               <label
                 v-else-if="
                   $v.createAccountForm.account.account_email.$dirty &&
-                    !$v.createAccountForm.account.account_email
-                      .accountEmailRegex
+                    !$v.createAccountForm.account.account_email.email
                 "
                 >Invalid email id</label
               >
@@ -415,26 +420,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
-import { required, helpers, sameAs } from "vuelidate/lib/validators";
+import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import { Account } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import Loader from "../widgets/loader.vue";
-
-const accountNameRegex = helpers.regex("accountNameRegex", /^[a-zA-Z0-9_-]*$/);
-const accountEmailRegex = helpers.regex(
-  "accountEmailRegex",
-  /[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*/
-);
-const passwordRegex = helpers.regex(
-  "passwordRegex",
-  // tslint:disable-next-line
-  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
-);
+import { accountNameRegex, passwordRegex } from "./../../common/regex-helpers";
 
 @Component({
-  name: "eos-account-management",
-  components: { Loader }
+  name: "eos-account-management"
 })
 export default class EosAccountManagement extends Vue {
   public createAccountForm = {
@@ -452,7 +445,7 @@ export default class EosAccountManagement extends Vue {
     createAccountForm: {
       account: {
         account_name: { required, accountNameRegex },
-        account_email: { required, accountEmailRegex },
+        account_email: { required, email },
         password: { required, passwordRegex }
       },
       confirmPassword: {

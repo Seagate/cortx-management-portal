@@ -32,13 +32,17 @@ import EosProvisioning from "./components/provisioning/eos-provisioning.vue";
 import EosProvisioningMenu from "./components/provisioning/eos-provisioning-menu.vue";
 import EosSettings from "./components/settings/eos-settings.vue";
 import EosSettingsMenu from "./components/settings/eos-settings-menu.vue";
+import EosAuditLog from "./components/maintenance/auditlog.vue";
 import EosUnauthorizedAccess from "./components/security/403.vue";
 import EosNotFound from "./components/security/404.vue";
+import EosPerformanceLarge from "./components/performance/performance-large.vue";
 import { userPermissions } from "./common/user-permissions-map";
 import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
 import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
 import EosResource from "./components/maintenance/eos-resource.vue";
+import EosFirmware from "./components/onboarding/system-config/firmware/firmware.vue";
 import store from "./store/store";
+
 Vue.use(Router);
 
 // Note: requiresAuth: Flag for User Logged into the system
@@ -100,6 +104,16 @@ const router = new Router({
           path: "alerts",
           name: "alerts-large",
           component: EosAlertLarge,
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: true,
+            requiredAccess: userPermissions.alerts + userPermissions.list
+          }
+        },
+        {
+          path: "performance",
+          name: "performance-large",
+          component: EosPerformanceLarge,
           meta: {
             requiresAuth: true,
             isOnboardingReq: true,
@@ -190,6 +204,12 @@ const router = new Router({
               path: "",
               name: "maintenance-menu",
               component: EosMaintenanceMenu,
+              meta: { requiresAuth: true, isOnboardingReq: false }
+            },
+            {
+              path: "auditlog",
+              name: "auditlog",
+              component: EosAuditLog,
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
@@ -201,7 +221,13 @@ const router = new Router({
               name: "resource",
               component: EosResource,
               meta: { requiresAuth: false, isOnboardingReq: false }
-            }
+            },
+            {
+              path: "firmware",
+              name: "firmware",
+              component: EosFirmware,
+              meta: { requiresAuth: false, isOnboardingReq: false }
+            },
           ]
         },
         {

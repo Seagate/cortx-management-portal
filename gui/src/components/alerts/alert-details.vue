@@ -27,7 +27,7 @@
           <label>{{ alert.module_type }}</label>
         </div>
         <div class="eos-float-r">
-          <div class="eos-icon-btn eos-comment-icon"></div>
+          <div class="eos-icon-btn eos-comment-icon" @click="isShowCommentsDialog = true"></div>
           <div class="eos-icon-btn eos-acknowledge-icon ml-5" @click="acknowledgeAlert()"></div>
         </div>
       </div>
@@ -101,13 +101,10 @@
       </div>
     </div>
     <template v-if="alertEventDetails.length > 0">
-      <div
-        v-for="(event_detail, i) in alertEventDetails"
-        v-bind:key="'event_detail_' + i"
-      >
+      <div v-for="(event_detail, i) in alertEventDetails" v-bind:key="'event_detail_' + i">
         <div class="mb-2" style="border: 1px solid #E8E8E8;" v-if="event_detail.event_reason">
           <div class="pa-2" style="background: #E8E8E8;">
-            <label>Name: </label>
+            <label>Name:&nbsp;</label>
             <label>{{ event_detail.name }}</label>
           </div>
           <div class="pa-2">
@@ -149,34 +146,54 @@
         </div>
       </div>
     </template>
+    <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Validations } from "vuelidate-property-decorators";
+import { required, maxLength } from "vuelidate/lib/validators";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
-import { AlertEventDetail, AlertExtendedInfo } from "../../models/alert";
+import {
+  AlertEventDetail,
+  AlertExtendedInfo
+} from "../../models/alert";
 import AlertExtendedInfoComp from "./alert-extended-info.vue";
+import EosAlertComments from "./alert-comments.vue";
 
 @Component({
   name: "eos-alert-details",
-  components: { AlertExtendedInfoComp }
+  components: { AlertExtendedInfoComp, EosAlertComments }
 })
 export default class EosAlertDetails extends Vue {
+  public alertId: string = "";
   public alert: any = null;
   public alertEventDetails: AlertEventDetail[] = [];
   public alertExtendedInfo: AlertExtendedInfo = {};
   public alertDetails: any = {};
   public showAlertDetailsDialog: boolean = false;
+  public isShowCommentsDialog: boolean = false;
+  public addCommentForm = {
+    comment_text: ""
+  };
+
+  @Validations()
+  public validations = {
+    addCommentForm: {
+      comment_text: { required, maxLength: maxLength(250) }
+    }
+  };
 
   public async mounted() {
+    this.alertId = this.$route.params.alert_id;
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
       message: "Fetching alert details..."
     });
     const res = await Api.getAll(
-      apiRegister.all_alerts + "/" + this.$route.params.alert_id
+      apiRegister.all_alerts + "/" + this.alertId
     );
     if (res.data) {
       this.alert = res.data;
@@ -232,27 +249,31 @@ export default class EosAlertDetails extends Vue {
   }
 
   public async acknowledgeAlert() {
-    if (!this.alert.acknowledged) {
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: true,
-        message: "Acknowledging alert..."
-      });
-      try {
-        await Api.patch(
-          apiRegister.all_alerts,
-          { acknowledged: true },
-          this.$route.params.alert_id
-        );
-        this.alert.acknowledged = true;
-      } catch (e) {
-        // tslint:disable-next-line: no-console
-        console.log(e);
-      }
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: false,
-        message: ""
-      });
+    let tempAlertAcknowledged: boolean = true;
+    let loaderMessage: string = "Acknowledging alert...";
+    if (this.alert.acknowledged) {
+      tempAlertAcknowledged = false;
+      loaderMessage = "Unacknowledging alert...";
     }
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: true,
+      message: loaderMessage
+    });
+    try {
+      await Api.patch(
+        apiRegister.all_alerts,
+        { acknowledged: tempAlertAcknowledged },
+        this.alertId
+      );
+      this.alert.acknowledged = tempAlertAcknowledged;
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
+    }
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: false,
+      message: ""
+    });
   }
 }
 </script>

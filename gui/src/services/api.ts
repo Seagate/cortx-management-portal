@@ -27,7 +27,7 @@ axios.interceptors.request.use(
     if (token) {
       config.headers.Authorization = token;
     }
-    config.timeout = 10000;
+    config.timeout = 1000;
     return config;
   },
   error => {
@@ -53,50 +53,79 @@ axios.interceptors.response.use(
 
 export abstract class Api {
   // Wrapper method to for get api
-  public static async getAll(url: string, queryParams?: object): Promise<ApiResponse> {
-    return await axios.get(url, { params: queryParams })
-      .then((response) => {
+  public static async getAll(
+    url: string,
+    queryParams?: object
+  ): Promise<ApiResponse> {
+    return await axios
+      .get(url, { params: queryParams })
+      .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
-      }).catch((error) => {
+      })
+      .catch(error => {
         return Promise.reject(this.buildErrorResponse(error.response));
       });
+  }
+  // Wrapper method to for get api
+  public static async getFile(url: string, queryParams?: object) {
+    return await axios.get(url, { responseType: "blob" });
   }
   // Wrapper method for update api
   public static async patch(url: string, payload: object, id?: string) {
     const tempURL = id ? url + "/" + id : url;
-    return await axios.patch(tempURL, payload)
-      .then((response) => {
+    return await axios
+      .patch(tempURL, payload)
+      .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
-      }).catch((error) => {
+      })
+      .catch(error => {
         return Promise.reject(this.buildErrorResponse(error.response));
       });
   }
   // Wrapper method for post api
   public static async post(url: string, payload: object) {
-    return await axios.post(url, payload)
-      .then((response) => {
+    return await axios
+      .post(url, payload)
+      .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
-      }).catch((error) => {
+      })
+      .catch(error => {
         return Promise.reject(this.buildErrorResponse(error.response));
       });
+  }
+  // Wrapper method for post api to upload file
+  public static async uploadFile(url: string, payload: FormData) {
+    return await axios.post(url, payload, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }).then((response) => {
+      return Promise.resolve(this.buildSuccessResponse(response));
+    }).catch((error) => {
+      return Promise.reject(this.buildErrorResponse(error.response));
+    });
   }
   // Wrapper method for post api
   public static async delete(url: string, id: string) {
     const tempURL = id ? url + "/" + id : url;
-    return await axios.delete(tempURL)
-      .then((response) => {
+    return await axios
+      .delete(tempURL)
+      .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
-      }).catch((error) => {
+      })
+      .catch(error => {
         return Promise.reject(this.buildErrorResponse(error.response));
       });
   }
   // Wrapper method for update api
   public static async put(url: string, payload: object, id: string) {
     const tempURL = id ? url + "/" + id : url;
-    return await axios.put(tempURL, payload)
-      .then((response) => {
+    return await axios
+      .put(tempURL, payload)
+      .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
-      }).catch((error) => {
+      })
+      .catch(error => {
         return Promise.reject(this.buildErrorResponse(error.response));
       });
   }

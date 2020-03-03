@@ -19,59 +19,44 @@
       type="button"
       class="mt-3 mb-2 eos-btn-primary"
       v-if="tabsInfo.selectedTab === 1"
-      @click="acknowledgeAll()"
+      @click="showConfirmationDialog = true"
+      :disabled="alertObject.alerts.length === 0"
     >
       Acknowledge all
     </button>
     <v-data-table
       calculate-widths
-      :items="alertData"
-      :single-expand="singleExpand"
+      :items="alertObject.alerts"
       item-key="created_time"
-      show-expand
       class="eos-table"
       :items-per-page.sync="itemsPerPage"
       :footer-props="{
-        'items-per-page-options': [5, 10, 15]
+        'items-per-page-options': [50, 100, 150, 200]
       }"
-      :page.sync="page"
-      :update:page="page"
-      :server-items-length="totalRecordsCount"
+      :page.sync="currentPage"
+      :update:page="currentPage"
+      :server-items-length="alertObject.total_records"
       hide-default-header
-      @update:items-per-page="onSortPaginate('', null, page, itemsPerPage)"
-      @update:page="onSortPaginate('', null, page, itemsPerPage)"
+      :hide-default-footer="hidePagination"
+      @update:items-per-page="onSortPaginate()"
+      @update:page="onSortPaginate()"
+      id="tblAlertLarge"
     >
-      <template v-slot:header="{ props }">
+      <template v-slot:header="{}">
         <tr>
           <th
-            v-for="header in alertHeader"
+            v-for="header in alertTableHeaders"
             :key="header.text"
-            class="tableheader"
-            @click="
-              onSortPaginate(
-                header.value,
-                header,
-                props.options.page,
-                props.options.itemsPerPage
-              )
-            "
+            :class="[
+              'tableheader',
+              header.sortable ? 'eos-cursor-pointer' : ''
+            ]"
+            @click="onSort(header)"
           >
-            <span
-              class="headerText"
-              :class="
-                header.value === sortColumnName && isSortActive ? 'active' : ''
-              "
-              >{{ header.text }}</span
-            >
-            <span
-              :class="
-                header.value === sortColumnName && isSortActive
-                  ? 'active'
-                  : 'notActive'
-              "
-            >
+            <span>{{ header.text }}</span>
+            <span v-if="header.value === sortInfo.header">
               <img
-                v-if="header.sortable && header.sortDir === alertStatus.desc"
+                v-if="sortInfo.sort_dir === alertStatus.desc"
                 :src="require('@/assets/widget/table-sort-desc.svg/')"
                 class="d-inline-block"
                 style="vertical-align: bottom; margin-left: -0.3em;"
@@ -79,7 +64,7 @@
                 width="20"
               />
               <img
-                v-if="header.sortable && header.sortDir === alertStatus.asc"
+                v-if="sortInfo.sort_dir === alertStatus.asc"
                 :src="require('@/assets/widget/table-sort-asc.svg/')"
                 class="d-inline-block"
                 style="vertical-align: bottom; margin-left: -0.3em;"
@@ -168,25 +153,35 @@
           <td>
             <img
               :src="require('@/assets/zoom-in.svg')"
-              style="cursor: pointer;"
+              class="eos-cursor-pointer"
               @click="$router.push('/alerts/' + props.item.alert_uuid)"
             />
             <img
-              v-if="props.item.resolved"
-              :src="require('@/assets/resolved-filled-default.svg')"
-            />
-            <img
-              v-if="props.item.comment"
               :src="require('@/assets/comment-filled-default.svg')"
+              class="eos-cursor-pointer"
+              @click="showAlertCommentsDialog(props.item.alert_uuid)"
             />
             <img
               v-if="props.item.acknowledged"
               :src="require('@/assets/acknowledge-default.svg')"
             />
+            <img
+              v-if="props.item.resolved"
+              :src="require('@/assets/resolved-filled-default.svg')"
+            />
           </td>
         </tr>
       </template>
     </v-data-table>
+    <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertIdForComments" />
+    <eos-confirmation-dialog
+      :show="showConfirmationDialog"
+      title="Confirmation"
+      message="Are you sure you want to acknowledge all alerts?"
+      severity="warning"
+      @closeDialog="closeConfirmationDialog"
+      cancelButtonText="No"
+    ></eos-confirmation-dialog>
   </div>
 </template>
 
@@ -194,17 +189,21 @@
 import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
 import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
+import EosAlertComments from "./alert-comments.vue";
 
 @Component({
   name: "eos-alert-large",
-  components: { EosTabs }
+  components: { EosTabs, EosAlertComments }
 })
 export default class EosAlertLarge extends Mixins(AlertsMixin) {
+  public isShowCommentsDialog: boolean = false;
+  public alertIdForComments: string = "";
+  public showConfirmationDialog: boolean = false;
   public tabsInfo: TabsInfo = {
     tabs: [
-      { id: 1, label: "New alerts" },
-      { id: 2, label: "Active alerts" },
-      { id: 3, label: "Alert history" }
+      { id: 1, label: "New alerts", show: true },
+      { id: 2, label: "Active alerts", show: true },
+      { id: 3, label: "Alert history", show: true }
     ],
     selectedTab: 1
   };
@@ -222,15 +221,24 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
         this.alertPageFilter = "history";
         break;
     }
-    this.onSortPaginate("", null, this.page, this.itemsPerPage);
+    this.$store.commit("alerts/resetAlertQueryParams");
+    this.onSortPaginate();
   }
 
   public mounted() {
-    // Call action to get all alert data
-    this.onSortPaginate("", null, this.page, this.itemsPerPage);
-    this.$store.commit("alerts/setOnboardingFlag", true);
+    switch (this.alertPageFilter) {
+      case "new":
+        this.tabsInfo.selectedTab = 1;
+        break;
+      case "active":
+        this.tabsInfo.selectedTab = 2;
+        break;
+      case "history":
+        this.tabsInfo.selectedTab = 3;
+        break;
+    }
     // Set Alert table default header options
-    const headers = [
+    this.alertTableHeaders = [
       {
         text: "Time",
         value: "created_time",
@@ -245,7 +253,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
       {
         text: "Severity",
         value: "severity",
-        sortable: false
+        sortable: true
       },
       {
         text: "Description",
@@ -253,42 +261,39 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
         sortable: false
       }
     ];
-    // Mutate header data in store
-    this.$store.commit("alerts/alertHeaderMutation", headers);
+    // Call action to get all alert data
+    this.onSortPaginate();
   }
+
+  get sortInfo() {
+    return this.$store.getters["alerts/getSortInfo"];
+  }
+
   public data() {
     return {
-      isColaps: false,
-      singleExpand: false, // Expande single row property
-      isSortActive: false, // Set table column sorting flag to default inactive
-      sortColumnName: "", // Set sorting column name to none
       alertStatus: require("./../../common/const-string.json")
     };
   }
 
-  public async acknowledgeAll() {
-    this.$store.dispatch("systemConfig/showLoaderMessage", {
-      show: true,
-      message: "Acknowledging alerts..."
-    });
-    const currentPageAlertIds: string[] = [];
-    this.alertData.forEach((alert: any) => {
-      currentPageAlertIds.push(alert.alert_uuid);
-    });
-    try {
-      await this.$store.dispatch("alerts/acknowledgeAll", currentPageAlertIds);
-      this.$store.commit("alerts/setPage", 1);
-      await this.onSortPaginate("", null, this.page, this.itemsPerPage);
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
+  public showAlertCommentsDialog(alertId: string) {
+    this.alertIdForComments = alertId;
+    this.isShowCommentsDialog = true;
+  }
+
+  public async closeConfirmationDialog(confirmation: boolean) {
+    this.showConfirmationDialog = false;
+    if (confirmation) {
+      await this.acknowledgeAll();
     }
-    this.$store.dispatch("systemConfig/showLoaderMessage", {
-      show: false,
-      message: ""
-    });
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.eos-audit-log-switch-container {
+  height: 34px;
+}
+.eos-audit-log-switch {
+  margin: 2px 5px 0px 0px;
+}
+</style>

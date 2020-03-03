@@ -26,8 +26,12 @@
                 class="eos-form-group-label"
                 for="Username"
                 id="lblAdminUsername"
-                >Admin username*</label
               >
+                <eos-info-tooltip
+                  label="Admin username*"
+                  message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+                />
+              </label>
               <div></div>
               <input
                 class="eos-form__input_text"
@@ -45,6 +49,13 @@
                   "
                   >Username Name is required</label
                 >
+                <label
+                  v-else-if="
+                    $v.createAccount.username.$dirty &&
+                      !$v.createAccount.username.accountNameRegex
+                  "
+                  >Invalid username</label
+                >
               </div>
             </div>
           </div>
@@ -59,8 +70,12 @@
                 class="eos-form-group-label"
                 for="password"
                 id="lblAdminPassword"
-                >Password*</label
               >
+                <eos-info-tooltip
+                  label="Password*"
+                  message="minimum 8 characters, must contain at least 1 capital, 1 small, 1 special, 1 numeric character"
+                />
+              </label>
               <div></div>
               <input
                 class="eos-form__input_text"
@@ -78,6 +93,13 @@
                   "
                   >Password is required</label
                 >
+                <label
+                  v-else-if="
+                    $v.createAccount.password.$dirty &&
+                      !$v.createAccount.password.passwordRegex
+                  "
+                  >Invalid password</label
+                >
               </div>
             </div>
           </div>
@@ -91,7 +113,7 @@
               <label
                 class="eos-form-group-label"
                 for="confirmPassword"
-                id="lblAdminPassword"
+                id="lblConfirmAdminPassword"
                 >Confirm password*</label
               >
               <div></div>
@@ -99,7 +121,7 @@
                 class="eos-form__input_text"
                 type="password"
                 name="confirmPassword"
-                id="adminPassword"
+                id="confirmAdminPassword"
                 v-model.trim="createAccount.confirmPassword"
                 @input="$v.createAccount.confirmPassword.$touch"
               />
@@ -114,16 +136,18 @@
               </div>
             </div>
           </div>
-          <v-btn
-            elevation="0"
-            color="csmprimary"
+          <button
+            type="button"
+            class="eos-btn-primary"
             @click="gotToNextPage()"
-            :disabled="$v.createAccount.$invalid"
+            :disabled="$v.createAccount.$invalid || createUserInProgress"
           >
-            <span class="white--text">Apply and continue</span>
-          </v-btn>
+            Apply and continue
+          </button>
         </form>
-        <div v-if="!isValidResponse" class="red--text mt-2">Create admin user failed</div>
+        <div v-if="!isValidResponse" class="red--text mt-2">
+          {{ invalidMessage }}
+        </div>
       </div>
     </div>
   </v-container>
@@ -132,8 +156,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { UserLoginQueryParam } from "./../../models/user-login";
 import { Validations } from "vuelidate-property-decorators";
-import { required, helpers, sameAs } from "vuelidate/lib/validators";
-
+import { required, sameAs } from "vuelidate/lib/validators";
+import { accountNameRegex, passwordRegex } from "./../../common/regex-helpers";
+import { invalid } from "moment";
 @Component({
   name: "eos-admin-user"
 })
@@ -141,8 +166,8 @@ export default class EosAdminUser extends Vue {
   @Validations()
   private validations = {
     createAccount: {
-      username: { required },
-      password: { required },
+      username: { required, accountNameRegex },
+      password: { required, passwordRegex },
       confirmPassword: {
         sameAsPassword: sameAs("password")
       }
@@ -155,11 +180,10 @@ export default class EosAdminUser extends Vue {
         password: "",
         confirmPassword: ""
       },
-      isValidResponse: true
+      isValidResponse: true,
+      invalidMessage: "",
+      createUserInProgress: false
     };
-  }
-  private mounted() {
-    this.$store.commit("alerts/setOnboardingFlag", false);
   }
   private gotToNextPage() {
     const queryParams: UserLoginQueryParam = {
@@ -167,20 +191,28 @@ export default class EosAdminUser extends Vue {
       password: this.$data.createAccount.password
     };
     this.$data.isValidResponse = true;
+    this.$data.createUserInProgress = true;
+    this.$data.invalidMessage = "";
+
+    this.$store.dispatch("systemConfig/showLoader", "Creating admin user...");
 
     this.$store
       .dispatch("userLogin/createUserAction", queryParams)
       .then((res: any) => {
-        if (res.status === 200) {
-          this.$router.push("preboarding-login");
-        } else {
-          this.$data.isValidResponse = false;
+        if (res) {
+          if (res.status === 201) {
+            this.$router.push({ name: "preboarding-login" });
+          } else if (res.status === 409) {
+            throw new Error("Conflict: Root user already exists");
+          }
         }
+        throw new Error("Create admin user failed");
       })
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("Create User Action Failed");
+      .catch((e: any) => {
         this.$data.isValidResponse = false;
+        this.$data.createUserInProgress = false;
+        this.$data.invalidMessage = e.message;
+        this.$store.dispatch("systemConfig/hideLoader");
       });
   }
 }

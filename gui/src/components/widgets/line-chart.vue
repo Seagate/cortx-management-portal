@@ -13,7 +13,16 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="ma-0 elevation-0" width="100%" tile>
+  <v-card class="ma-0 elevation-0" width="100%" min-height="410px" tile>
+    <div class="loader-container" v-if="show && $route.name!=='dashboard'">
+      <div class="loader-message" v-if="show">
+        <label>{{ message }}</label>
+      </div>
+      <div class="loader-body">
+        <v-progress-linear indeterminate color="csmprimary" background-color="csmdisabled"></v-progress-linear>
+      </div>
+    </div>
+
     <v-row>
       <v-col cols="2">
         <v-select
@@ -47,46 +56,89 @@
         </v-tabs>
       </v-col>
     </v-row>
-    <div id="line_chart"></div>
+    <div :id="chartId"></div>
   </v-card>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import * as c3 from "c3";
 import { PerformanceStatsQueryParams } from "./../../models/performance-stats";
+import StatsUtility from "../../common/stats-utility";
+export interface StatsQueryParams {
+  from: number;
+  to: number;
+  // interval: process.env.VUE_APP_INTERVAL,
+  total_sample: number;
+  metric1: string;
+  metric2: string;
+}
+
 
 @Component({
   name: "eos-line-chart"
 })
 export default class EosLineChart extends Vue {
+  @Prop({ required: true })
+  public chartId: string;
   private chart: any;
   private throughputPoll: any;
   private ispollThroughPut: boolean = true;
   private milliSecondDiviser = 1000;
-  private metric1: string = "Write";
-  private metric2: string = "Total";
+  private metric1: string = "throughput_read";
+  private metric2: string = "throughput_total";
   private prefetch: number = 1800;
+  private fromTimeSec: number;
+  private show: boolean = true;
+  private toTimeSec: number;
+  private message: string = "Loading....";
+
   // items: are the metric parameters to be popullated on the dropdown of the performance stats
   // TODO: Get this list from the api and remove this hard coaded value.
   public data() {
     return {
-      items: ["Read", "Write", "Total"]
+      items: [
+        "",
+        "throughput_read",
+        "throughput_write",
+        "throughput_total",
+        "latency_total_request_time",
+        "latency_create_object",
+        "latency_delete_object",
+        "latency_write_object",
+        "latency_read_object",
+        "latency_getkv",
+        "latency_putkv",
+        "latency_deletekv",
+        "iops_read_object",
+        "iops_write_object",
+        "iops_read_bucket",
+        "iops_write_bucket"
+      ]
     };
   }
 
   // Function for handlling Metric1 dropdown change
   public metric1Change() {
+    // set this parameter to true to show the component based loader
+    // on dropdown change of metric1
+    this.show = true;
     this.initThrouthputStats(this.prefetch);
   }
 
   // Function for handling Metric2 dropdown change
   public metric2Change() {
+    // set this parameter to true to show the component based loader on dropdown
+    // change of metric2 dropdown.
+    this.show = true;
     this.initThrouthputStats(this.prefetch);
   }
 
   // Function to handle tab change event.
   public tabChange(prefetchSec: number) {
     this.prefetch = prefetchSec;
+    // set this parameter to true to show component based loader
+    // on tab change
+    this.show = true;
     this.initThrouthputStats(this.prefetch);
   }
 
@@ -108,13 +160,15 @@ export default class EosLineChart extends Vue {
     if (this.chart) {
       this.chart = this.chart.destroy();
     }
-    const queryParams: any = {
-      id: 1,
-      from:
-        Math.round(new Date().getTime() / this.milliSecondDiviser) -
-        preFetchDurationInSec,
-      to: Math.round(new Date().getTime() / this.milliSecondDiviser),
-      interval: process.env.VUE_APP_INTERVAL,
+    this.fromTimeSec =
+      Math.round(new Date().getTime() / this.milliSecondDiviser) -
+      preFetchDurationInSec;
+    this.toTimeSec = Math.round(new Date().getTime() / this.milliSecondDiviser);
+    const queryParams: StatsQueryParams = {
+      from: this.fromTimeSec,
+      to: this.toTimeSec,
+      // interval: process.env.VUE_APP_INTERVAL,
+      total_sample: 100,
       metric1: this.metric1,
       metric2: this.metric2
     };
@@ -125,26 +179,23 @@ export default class EosLineChart extends Vue {
     );
     const demoData = [
       ["x", new Date().getTime()],
-      ["total", 0],
-      ["read", 0],
-      ["write", 0]
+      ["throughput_read", 0],
+      ["throughput_write", 0],
     ];
 
     obj.then(data => {
+      this.show = false;
+      const y1label: string = StatsUtility.getYaxisLabel(this.metric1);
+      const y2label: string = StatsUtility.getYaxisLabel(this.metric2);
+      const y2Obj: any = StatsUtility.getYtwoObject(this.metric2);
       this.chart = c3.generate({
-        bindto: "#line_chart",
+        // bindto: "#line_chart",
+        bindto: "#" + this.chartId,
         data: {
           x: "x",
-          columns: data ? data : demoData,
+          columns: data ? data : [[]],
           type: "spline",
-          axes:
-            this.metric2 === "read"
-              ? {
-                  read: "y2"
-                }
-              : this.metric2 === "write"
-              ? { write: "y2" }
-              : { total: "y2" }
+          axes: y2Obj
         },
         legend: {
           position: "bottom"
@@ -180,7 +231,7 @@ export default class EosLineChart extends Vue {
             min: 0,
             padding: { top: 0, bottom: 0 },
             label: {
-              text: "MB Transferred Per Second",
+              text: y1label,
               position: "outer-middle"
             }
           },
@@ -189,7 +240,7 @@ export default class EosLineChart extends Vue {
             min: 0,
             padding: { top: 0, bottom: 0 },
             label: {
-              text: "MB Transferred Per Second",
+              text: y2label,
               position: "outer-middle"
             }
           }
@@ -205,7 +256,8 @@ export default class EosLineChart extends Vue {
             Math.round(new Date().getTime() / this.milliSecondDiviser) -
             process.env.VUE_APP_FROM_TO_TIME_OFFSET,
           to: Math.round(new Date().getTime() / this.milliSecondDiviser),
-          interval: process.env.VUE_APP_INTERVAL,
+          // interval: process.env.VUE_APP_INTERVAL,
+          total_sample: 1,
           metric1: this.metric1,
           metric2: this.metric2
         };
@@ -232,5 +284,32 @@ export default class EosLineChart extends Vue {
   cursor: pointer;
   text-transform: none;
   font-weight: bold;
+}
+
+.loader-container {
+  background-color: #ffffff;
+  width: 333px;
+  position: absolute;
+  top: 13rem;
+  left: 25rem;
+  z-index: 99;
+  border: solid;
+  border-width: 1px;
+  border-color: #b7b7b7;
+}
+
+.loader-body {
+  padding: 10px;
+}
+.loader-message {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+  margin-bottom: 6px;
+  margin-bottom: 6px;
+  margin-left: 1rem;
+  margin-top: 1rem;
 }
 </style>

@@ -1,6 +1,6 @@
 
 import { Request, Response, request, response } from "express";
-import { getSessionKey, saveUser, logout, getAdminUser } from "./login-controller";
+import { getSessionKey, saveUser, logout, getAdminUser, license } from "./login-controller";
 import { checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
@@ -47,6 +47,17 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await saveUser(req, res);
+        res.status(HttpStatus.OK).send();        
+      }
+    ]
+  },
+  {
+    path: "/api/v1/license",
+    method: "post",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        const result = await license(req, res);
         res.status(HttpStatus.OK).send();        
       }
     ]

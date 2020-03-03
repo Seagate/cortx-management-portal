@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getAlerts, getAlertById, updateAlert, updateAlerts } from "./alerts-controller";
+import { getAlerts, getAlertById, updateAlert, updateAlerts, getCommentsForAlert, addCommentToAlert } from "./alerts-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -84,6 +84,37 @@ export default [
           throw err;
         }
         
+      }
+    ]
+  },
+  {
+    path: "/api/v1/alerts/:alert_id/comments",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getCommentsForAlert(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+        
+      }
+    ]
+  },
+  {
+    path: "/api/v1/alerts/:alert_id/comments",
+    method: "post",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await addCommentToAlert(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
       }
     ]
   }

@@ -103,6 +103,8 @@ class BaseClient:
         return element
 
     async def _query_conn(self, action, params, path, verb, list_marker=None):
+        Log.debug(f"Make query:action:{action}, params:{params}, "
+                  f"path:{path}, verb:{verb}, list_marker:{list_marker}")
         def _execute():
             return self.connection.make_request(action, params, path, verb)
 
@@ -131,6 +133,7 @@ class BaseClient:
         """
         Converts a body of a failed query into IamError object
         """
+        Log.error(f"Create error body: {body}")
         if 'ErrorResponse' not in body:
             return None
 
@@ -194,12 +197,15 @@ class IamClient(BaseClient):
 
         :returns: ExtendedIamAccount in case of success, IamError otherwise
         """
+        Log.debug(f"Create account profile. account_name:{account_name}, "
+                  f"account_email:{account_email}")
         params = {
             'AccountName': account_name,
             'Email': account_email
         }
 
         (code, body) = await self._query_conn('CreateAccount', params, '/', 'POST')
+        Log.debug(f"Create account profile status: {code}")
         if code != 201:
             return self._create_error(body)
         else:
@@ -208,7 +214,6 @@ class IamClient(BaseClient):
 
             # For some strange reason there is no email field in the server response
             resp.account_email = account_email
-
             return resp
 
     @Log.trace_method(Log.DEBUG, exclude_args=['account_password'])
@@ -220,7 +225,8 @@ class IamClient(BaseClient):
 
         :returns: IamLoginProfile in case of success, IamError otherwise
         """
-
+        Log.debug(f"Create account login profile. account_name:{account_name}, "
+                  f"require_reset:{require_reset}")
         params = {
             'AccountName': account_name,
             'Password': account_password,
@@ -228,6 +234,7 @@ class IamClient(BaseClient):
         }
 
         (code, body) = await self._query_conn('CreateAccountLoginProfile', params, '/', 'POST')
+        Log.debug(f"Create login profile status: {code}")
         if code != 201:
             return self._create_error(body)
         else:
@@ -244,6 +251,8 @@ class IamClient(BaseClient):
 
         :returns: True in case of success, IamError otherwise
         """
+        Log.debug(f"Update account login profile: account_name:{account_name}, "
+                  f"require_reset:{require_reset}")
 
         params = {
             'AccountName': account_name,
@@ -252,6 +261,7 @@ class IamClient(BaseClient):
         }
 
         (code, body) = await self._query_conn('UpdateAccountLoginProfile', params, '/', 'POST')
+        Log.debug(f"Update account profile status: {code}")
         if code != 200:
             return self._create_error(body)
         else:
@@ -265,13 +275,13 @@ class IamClient(BaseClient):
 
         :returns: True in case of success, IamError otherwise
         """
-
+        Log.debug(f"List account login profile. account_name:{account_name}")
         params = {
             'AccountName': account_name
         }
 
         (code, body) = await self._query_conn('GetAccountLoginProfile', params, '/', 'POST')
-        print(body)
+        Log.debug(f"List account profile status: {code}")
         if code != 200:
             return self._create_error(body)
         else:
@@ -286,6 +296,7 @@ class IamClient(BaseClient):
 
         :returns: IamAccountListResponse or IamError
         """
+        Log.debug(f"List account status. max_items:{max_items}, marker:{marker}")
         params = {}
 
         if marker:
@@ -296,6 +307,7 @@ class IamClient(BaseClient):
 
         (code, body) = await self._query_conn('ListAccounts', params, '/', 'POST',
                                               list_marker='Accounts')
+        Log.debug(f"List account status: {code}")
         if code != 200:
             return self._create_error(body)
         else:
@@ -322,11 +334,13 @@ class IamClient(BaseClient):
 
         :returns: ExtendedIamAccount in case of success, IamError otherwise
         """
+        Log.debug(f"Reset account access key. account_name:{account_name}")
         params = {
             'AccountName': account_name
         }
 
         (code, body) = await self._query_conn('ResetAccountAccessKey', params, '/', 'POST')
+        Log.debug(f"Reset account access key status code: {code}")
         if code != 201:
             return self._create_error(body)
         else:
@@ -345,6 +359,8 @@ class IamClient(BaseClient):
 
         :returns: True in case of success, IamError in case of problem
         """
+        Log.debug(f"Delete account access key: account_name:{account_name}, "
+                  f"force:{force}")
         params = {
             'AccountName': account_name
         }
@@ -353,6 +369,7 @@ class IamClient(BaseClient):
             params['Force'] = True
 
         (code, body) = await self._query_conn('DeleteAccount', params, '/', 'POST')
+        Log.debug(f"Delete account status code: {code}")
         if code != 200:
             return self._create_error(body)
         else:
@@ -365,12 +382,14 @@ class IamClient(BaseClient):
 
         :returns: IamUser in case of success, IamError otherwise
         """
+        Log.debug(f"Create iam user. user_name:{user_name}, path_prefix:{path_prefix}")
         params = {
             'UserName': user_name,
             'Path': path_prefix
         }
 
         (code, body) = await self._query_conn('CreateUser', params, '/', 'POST')
+        Log.debug(f"Create iam user status code: {code}")
         if code != 201:
             return self._create_error(body)
         else:
@@ -380,7 +399,8 @@ class IamClient(BaseClient):
     @Log.trace_method(Log.DEBUG, exclude_args=['user_password'])
     async def create_user_login_profile(self, user_name, user_password, require_reset=False):
         # TODO: server returns OperationNotSupported. Why??
-
+        Log.debug(f"Create user login profile. user_name:{user_name}, "
+                  f"require_reset:{require_reset}")
         params = {
             'UserName': user_name,
             'Password': user_password,
@@ -388,6 +408,7 @@ class IamClient(BaseClient):
         }
 
         (code, body) = await self._query_conn('CreateLoginProfile', params, '/', 'POST')
+        Log.debug(f"Create user profile status code: {code}")
         if code != 201:
             return self._create_error(body)
         else:
@@ -401,6 +422,8 @@ class IamClient(BaseClient):
 
         :returns: IamUserListResponse in case of success, IamError otherwise
         """
+        Log.debug(f"List iam user. path_prefix:{path_prefix}, marker:{marker}, "
+                  f"max_items:{max_items}")
         params = {}
         if path_prefix:
             params['PathPrefix'] = path_prefix
@@ -412,6 +435,7 @@ class IamClient(BaseClient):
             params['MaxItems'] = max_items
 
         (code, body) = await self._query_conn('ListUsers', params, '/', 'POST', list_marker='Users')
+        Log.debug(f"List iam User status code: {code}")
         if code != 200:
             return self._create_error(body)
         else:
@@ -436,11 +460,13 @@ class IamClient(BaseClient):
         IAM user deletion.
         :returns: True in case of success, IamError in case of problem
         """
+        Log.debug(f"Delete iam User: {user_name}")
         params = {
             'UserName': user_name
         }
 
         (code, body) = await self._query_conn('DeleteUser', params, '/', 'POST')
+        Log.debug(f"Delete iam User status code: {code}")
         if code != 200:
             return self._create_error(body)
         else:
@@ -477,6 +503,8 @@ class IamClient(BaseClient):
         :param new_user_name: If not None, user will be renamed accordingly
         :returns: True in case of success, IamError in case of problem
         """
+        Log.debug(f"Update iam User: {user_name}, new_path:{new_path}, "
+                  f"new_user_name:{new_user_name}")
         params = {
             'UserName': user_name
         }
@@ -488,6 +516,7 @@ class IamClient(BaseClient):
             params['NewUserName'] = new_user_name
 
         (code, body) = await self._query_conn('UpdateUser', params, '/', 'POST')
+        Log.debug(f"Update iam User status code: {code}")
         if code != 200:
             return self._create_error(body)
         else:
@@ -519,12 +548,14 @@ class S3Client(BaseClient):
 
         :returns: S3.Bucket
         """
+        Log.debug(f"create bucket: {bucket_name}")
         return await self._loop.run_in_executor(self._executor,
                                                 partial(self.connection.create_bucket,
                                                         Bucket=bucket_name))
 
     @Log.trace_method(Log.DEBUG)
     async def delete_bucket(self, bucket_name: str):
+        Log.debug(f"delete bucket: {bucket_name}")
         bucket = await self._loop.run_in_executor(self._executor, self.connection.Bucket, bucket_name)
         # NOTE: according to boto3 documentation all of the keys should be deleted before
         #  bucket deletion itself
@@ -535,12 +566,14 @@ class S3Client(BaseClient):
 
     @Log.trace_method(Log.DEBUG)
     async def get_all_buckets(self):
+        Log.debug(f"Get all buckets ")
         return await self._loop.run_in_executor(self._executor, self.connection.buckets.all)
 
     @Log.trace_method(Log.DEBUG)
     async def get_bucket_tagging(self, bucket):
         # When the tag_set is not available ClientError is raised
         # Need to avoid that in order to iterate over tags for all available buckets
+        Log.debug(f"Get bucket tagging: {bucket}")
         try:
             tagging = await self._loop.run_in_executor(self._executor, bucket.Tagging)
             tags = tagging.tag_set
@@ -553,6 +586,7 @@ class S3Client(BaseClient):
 
     @Log.trace_method(Log.DEBUG)
     async def put_bucket_tagging(self, bucket_name, tags: dict):
+        Log.debug(f"Put bucket tagging: bucket_name:{bucket_name}, tags:{tags}")
         def _run():
             tag_set = {
                 'TagSet': [
@@ -575,6 +609,7 @@ class S3Client(BaseClient):
         :type bucket_name: str
         :returns: A dict of bucket policy
         """
+        Log.debug(f"Get bucket tagging: {bucket_name}")
         def _run():
             bucket = self.connection.BucketPolicy(bucket_name)
             return json.loads(bucket.policy)
@@ -592,6 +627,7 @@ class S3Client(BaseClient):
         :type policy: dict
         :returns:
         """
+        Log.debug(f"Put bucket tagging: bucket_name: {bucket_name}, policy: {policy}")
         def _run():
             bucket = self.connection.BucketPolicy(bucket_name)
             bucket_policy = json.dumps(policy)
@@ -608,6 +644,8 @@ class S3Client(BaseClient):
         :type bucket_name: str
         :returns:
         """
+
+        Log.debug(f"Delete bucket tagging: {bucket_name}")
         bucket = await self._loop.run_in_executor(self._executor,
                                                   self.connection.BucketPolicy,
                                                   bucket_name)
@@ -645,7 +683,7 @@ class S3Plugin:
     def __init__(self):
         Log.info('S3 plugin is loaded')
 
-    @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
+    @Log.trace_method(Log.DEBUG, exclude_args=['access_key','secret_key','session_token'])
     def get_iam_client(self, access_key, secret_key, connection_config=None, session_token=None) -> IamClient:
         """
         Returns a management object for S3/IAM accounts.
@@ -656,7 +694,7 @@ class S3Plugin:
         return IamClient(access_key, secret_key, connection_config,
                          asyncio.get_event_loop(), session_token)
 
-    @Log.trace_method(Log.DEBUG, exclude_args=['secret_key'])
+    @Log.trace_method(Log.DEBUG, exclude_args=['access_key','secret_key','session_token'])
     def get_s3_client(self, access_key, secret_key, connection_config=None, session_token=None) -> S3Client:
         """
         Returns a management object for S3/IAM accounts.
@@ -668,7 +706,7 @@ class S3Plugin:
                         asyncio.get_event_loop(), session_token)
 
 
-    @Log.trace_method(Log.DEBUG)
+    @Log.trace_method(Log.DEBUG, exclude_args=['password'])
     async def get_temp_credentials(self, account_name, password, duration=None,
                                    user_name=None, connection_config=None):
         """
@@ -681,6 +719,7 @@ class S3Plugin:
         :param connection_config: TODO: find out details about this field
         :returns: An instance of IamTempCredentials object
         """
+        Log.debug(f"Get temp credentials: {account_name}, user_name:{user_name}")
         iamcli = IamClient('', '', connection_config, asyncio.get_event_loop())
         params = {
             'AccountName': account_name,

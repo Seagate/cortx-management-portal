@@ -16,7 +16,23 @@
   <div>
     <div class="eos-menu-card-layout">
       <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">HA</label>
-      <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/maintenance/resource')" >Manage</button>
+      <button
+        type="button"
+        class="eos-btn-tertiary eos-float-r"
+        @click="$router.push('/maintenance/resource')"
+      >Manage</button>
+    </div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Firmware</label>
+      <button
+        type="button"
+        class="eos-btn-tertiary eos-float-r"
+        @click="$router.push('/maintenance/firmware')"
+      >Manage</button>
+    </div>
+    <div class="eos-menu-card-layout">
+      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Audit log</label>
+      <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/maintenance/auditlog')" >Download</button>
     </div>
   </div>
 </template>
@@ -30,16 +46,16 @@ export default class EosMaintenanceMenu extends Vue {}
 </script>
 <style lang="scss" scoped>
 .eos-menu-card-layout {
-  height: 6.250em;
-  width: 56.250em;
+  height: 6.25em;
+  width: 56.25em;
   padding-left: 1em;
-  padding-top: 0.500em;
+  padding-top: 0.5em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 .eos-wrap-height-menu-card-layout {
-  width: 56.250em;
-  padding-top: 0.500em;
-  padding-bottom: 0.500em;
+  width: 56.25em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 .eos-menu-card-title {

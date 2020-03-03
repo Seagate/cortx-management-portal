@@ -17,9 +17,12 @@
     <div
       v-for="tab in tabsInfo.tabs"
       v-bind:key="tab.id"
+      v-if="tab.show"
       :class="tab.id === tabsInfo.selectedTab ? 'eos-tab-active' : 'eos-tab'"
       @click="tabsInfo.selectedTab = tab.id"
-    >{{ tab.label }}</div>
+    >
+      {{ tab.label }}
+    </div>
   </div>
 </template>
 
@@ -29,6 +32,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export interface Tab {
   id: number;
   label: string;
+  show: boolean;
+  requiredAccess?: string;
 }
 
 export interface TabsInfo {

@@ -221,8 +221,7 @@
               <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required"
                 >Email is required</label
               >
-              <label
-                v-if="$v.emailaddress.$dirty && !$v.emailaddress.emailRegex"
+              <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.email"
                 >Enter valid comma ',' seperated emails</label
               >
             </div>
@@ -237,7 +236,6 @@
         Send test email
       </button>
     </div>
-
     <p v-if="!isValid" class="red--text error-message">
       Please enter valid values.
     </p>
@@ -259,10 +257,7 @@ import {
   minLength,
   maxLength
 } from "vuelidate/lib/validators";
-const emailRegex = helpers.regex(
-  "emailRegex",
-  /^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$/
-);
+
 @Component({
   name: "eos-data-network-ipv4"
 })
@@ -286,7 +281,7 @@ export default class EosDataNetworkIpv4 extends Vue {
     },
     emailaddress: {
       required,
-      emailRegex
+      email
     },
     smtpport: {
       required,
