@@ -14,39 +14,24 @@
  *****************************************************************************/
 <template>
   <div>
+    <div v-for="item in settingSubmenuItems" :key="item.id">
     <div class="eos-menu-card-layout">
-      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Notifications</label>
-      <button type="button" class="eos-btn-tertiary eos-float-r" disabled>Manage</button>
+        <label
+          class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
+        >
+          {{ item.title }}</label
+        >
+        <button
+          type="button"
+          class="eos-btn-tertiary eos-float-r"
+          @click="handleClickFunction(item.actionClickFunction)"
+          :disabled="item.disabled"
+        >
+          {{ item.actionName }}
+        </button>
     </div>
-    <div class="eos-menu-card-layout">
-      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">User</label>
-      <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/settings/usersettinglocal')">Manage</button>
     </div>
-    <div class="eos-menu-card-layout">
-      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">UDX</label>
-      <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/settings/udx-registration')">Manage</button>
     </div>
-    <div class="eos-menu-card-layout">
-      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Updates</label>
-      <button type="button" class="eos-btn-tertiary eos-float-r" disabled>Manage</button>
-      <div style="margin-top: 3em;">
-        <label class="eos-text-sm">Up to date</label>
-      </div>
-    </div>
-    <div class="eos-menu-card-layout">
-      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Privacy</label>
-      <button type="button" class="eos-btn-tertiary eos-float-r" disabled>Manage</button>
-    </div>
-    <div class="eos-wrap-height-menu-card-layout">
-      <button type="button" class="eos-btn-tertiary">Quit service</button>
-    </div>
-    <div class="eos-wrap-height-menu-card-layout">
-      <button type="button" class="eos-btn-tertiary">Restart service</button>
-    </div>
-    <div class="eos-wrap-height-menu-card-layout">
-      <button type="button" class="eos-btn-tertiary">About</button>
-    </div>
-  </div>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
@@ -54,20 +39,81 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 @Component({
   name: "eos-settings-menu"
 })
-export default class EosSettingsMenu extends Vue {}
+export default class EosSettingsMenu extends Vue {
+  public settingSubmenuItems = [
+    {
+      title: "Notifications",
+      actionName: "Manage",
+      actionClickFunction: "goToNotifications",
+      disabled: false
+    },
+    {
+      title: "Management network",
+      actionName: "Manage",
+      actionClickFunction: "goToManagementNetwork",
+      disabled: false
+    },
+    {
+      title: "Data network",
+      actionName: "Manage",
+      actionClickFunction: "goToDataNetwork",
+      disabled: false
+    },
+    {
+      title: "DNS",
+      actionName: "Manage",
+      actionClickFunction: "goToDNS",
+      disabled: false
+    },
+    {
+      title: "NTP",
+      actionName: "Manage",
+      actionClickFunction: "goToNTP",
+      disabled: false
+    },
+    {
+      title: "SSL Certificate",
+      actionName: "Manage",
+      actionClickFunction: "goToSSL",
+      disabled: false
+    }
+  ];
+  private goToNotifications() {
+    this.$router.push({ name: "notifications" });
+  }
+  private goToManagementNetwork() {
+    this.$router.push({ name: "management-network" });
+  }
+  private goToDataNetwork() {
+    this.$router.push({ name: "data-network" });
+  }
+  private goToDNS() {
+    this.$router.push({ name: "dns" });
+  }
+  private goToNTP() {
+    this.$router.push({ name: "ntp" });
+  }
+  private goToSSL() {
+    this.$router.push({ name: "ssl-upload" });
+  }
+  private handleClickFunction(actionClickFunction: string) {
+    const vueInstance: any = this;
+    vueInstance[actionClickFunction]();
+  }
+}
 </script>
 <style lang="scss" scoped>
 .eos-menu-card-layout {
-  height: 6.250em;
-  width: 56.250em;
+  height: 6.25em;
+  width: 56.25em;
   padding-left: 1em;
-  padding-top: 0.500em;
+  padding-top: 0.5em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 .eos-wrap-height-menu-card-layout {
-  width: 56.250em;
-  padding-top: 0.500em;
-  padding-bottom: 0.500em;
+  width: 56.25em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 .eos-menu-card-title {
