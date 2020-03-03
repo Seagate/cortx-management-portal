@@ -14,98 +14,25 @@
  *****************************************************************************/
 <template>
   <div class="eos-nav">
-    <eos-has-access :to="$eosUserPermissions.alerts + $eosUserPermissions.list">
-      <router-link
-        :to="navItems[0].path"
-        tag="div"
-        class="eos-nav-item"
-        active-class="eos-nav-item-active"
-        :key="navItems[0].title"
-      >
-        <img class="eos-nav-item-icon-default" :src="navItems[0].iconDefault" />
-        <img class="eos-nav-item-icon-active" :src="navItems[0].iconActive" />
-        <label>{{ navItems[0].title }}</label>
-      </router-link>
-    </eos-has-access>
+    <div v-for="navItem in navItems" :key="navItem.title">
     <eos-has-access
-      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
-    >
+        :to="
+          $eosUserPermissions[navItem.requiredAccess] + $eosUserPermissions.list
+        "
+      >
       <router-link
-        :to="navItems[1].path"
+          :to="navItem.path"
         tag="div"
         class="eos-nav-item"
         active-class="eos-nav-item-active"
-        :key="navItems[1].title"
+          :key="navItem.title"
       >
-        <div style="padding: 5px;">
-          <img
-            class="eos-nav-item-icon-default"
-            :src="navItems[1].iconDefault"
-          />
-          <img class="eos-nav-item-icon-active" :src="navItems[1].iconActive" />
-        </div>
-        <label>{{ navItems[1].title }}</label>
+          <img class="eos-nav-item-icon-default" :src="navItem.iconDefault" />
+          <img class="eos-nav-item-icon-active" :src="navItem.iconActive" />
+          <label>{{ navItem.title }}</label>
       </router-link>
     </eos-has-access>
-    <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.list">
-      <router-link
-        :to="navItems[2].path"
-        tag="div"
-        class="eos-nav-item"
-        active-class="eos-nav-item-active"
-        :key="navItems[2].title"
-      >
-        <img class="eos-nav-item-icon-default" :src="navItems[2].iconDefault" />
-        <img class="eos-nav-item-icon-active" :src="navItems[2].iconActive" />
-        <label>{{ navItems[2].title }}</label>
-      </router-link>
-    </eos-has-access>
-    <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.list">
-      <router-link
-        :to="navItems[3].path"
-        tag="div"
-        class="eos-nav-item"
-        active-class="eos-nav-item-active"
-        :key="navItems[3].title"      
-      >
-        <div style="padding: 5px;">
-          <img
-            class="eos-nav-item-icon-default"
-            :src="navItems[3].iconDefault"
-          />
-          <img class="eos-nav-item-icon-active" :src="navItems[3].iconActive" />
         </div>
-        <label>{{ navItems[3].title }}</label>
-      </router-link>
-    </eos-has-access>
-    <eos-has-access :to="$eosUserPermissions.alerts + $eosUserPermissions.list">
-      <router-link
-        :to="navItems[4].path"
-        tag="div"
-        class="eos-nav-item"
-        active-class="eos-nav-item-active"
-        :key="navItems[4].title"
-      >
-        <div v-if="alertNotifications.alertCount > 0">
-          <img
-            class="eos-nav-item-icon-default"
-            :src="navItems[4].iconDefaultWithNotification"
-          />
-          <img
-            class="eos-nav-item-icon-active"
-            :src="navItems[4].iconActiveWithNotification"
-          />
-        </div>
-        <div v-else>
-          <img
-            class="eos-nav-item-icon-default"
-            :src="navItems[4].iconDefault"
-          />
-          <img class="eos-nav-item-icon-active" :src="navItems[4].iconActive" />
-        </div>
-        <label>{{ navItems[4].title }}</label>
-      </router-link>
-    </eos-has-access>
   </div>
 </template>
 <script lang="ts">
@@ -120,33 +47,43 @@ export default class EosNavBar extends Vue {
       title: "Dashboard",
       path: "/dashboard",
       iconDefault: require("@/assets/navigation/dashboard-grey.svg"),
-      iconActive: require("@/assets/navigation/dashboard-white.svg")
-    },
-    {
-      title: "Provisioning",
-      path: "/provisioning",
-      iconDefault: require("@/assets/navigation/provisioning-grey.svg"),
-      iconActive: require("@/assets/navigation/provisioning-white.svg")
-    },
-    {
-      title: "Settings",
-      path: "/settings",
-      iconDefault: require("@/assets/navigation/settings-grey.svg"),
-      iconActive: require("@/assets/navigation/settings-white.svg")
-    },
-    {
-      title: "Maintenance",
-      path: "/maintenance",
-      iconDefault: require("@/assets/navigation/maintenance-grey.svg"),
-      iconActive: require("@/assets/navigation/maintenance-white.svg")
+      iconActive: require("@/assets/navigation/dashboard-white.svg"),
+      requiredAccess: "alerts"
     },
     {
       title: "Alerts",
       path: "/alerts",
       iconDefault: require("@/assets/navigation/alerts-grey.svg"),
       iconActive: require("@/assets/navigation/alerts-white.svg"),
-      iconDefaultWithNotification: require("@/assets/navigation/alerts-dot-grey.svg"),
-      iconActiveWithNotification: require("@/assets/navigation/alerts-dot-white.svg")
+      requiredAccess: "alerts"
+    },
+    {
+      title: "Provisioning",
+      path: "/provisioning",
+      iconDefault: require("@/assets/navigation/provisioning-grey.svg"),
+      iconActive: require("@/assets/navigation/provisioning-white.svg"),
+      requiredAccess: "s3accounts"
+    },
+    {
+      title: "UDX",
+      path: "/udx-registration",
+      iconDefault: require("@/assets/navigation/udx-grey.svg"),
+      iconActive: require("@/assets/navigation/udx-white.svg"),
+      requiredAccess: "s3accounts"
+    },
+    {
+      title: "Settings",
+      path: "/settings",
+      iconDefault: require("@/assets/navigation/settings-grey.svg"),
+      iconActive: require("@/assets/navigation/settings-white.svg"),
+      requiredAccess: "users"
+    },
+    {
+      title: "Maintenance",
+      path: "/maintenance",
+      iconDefault: require("@/assets/navigation/maintenance-grey.svg"),
+      iconActive: require("@/assets/navigation/maintenance-white.svg"),
+      requiredAccess: "users"
     }
   ];
 

@@ -41,6 +41,13 @@ import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
 import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
 import EosResource from "./components/maintenance/eos-resource.vue";
 import EosFirmware from "./components/onboarding/system-config/firmware/firmware.vue";
+import EosNotifications from "./components/onboarding/system-config/notifications/notifications-email.vue";
+import EosManagementNetwork from "./components/onboarding/system-config/mgmt-network/network-settings-ipv4.vue";
+import EosDataNetwork from "./components/onboarding/system-config/data-network/data-network-ipv4.vue";
+import EosDNS from "./components/onboarding/system-config/dns/dns-setting.vue";
+import EosNTP from "./components/onboarding/system-config/date-time/date-time.vue";
+import EosSSL from "./components/onboarding/system-config/ssl-certificate/upload-ssl.vue";
+import EosAbout from "./components/maintenance/eos-about.vue";
 import store from "./store/store";
 
 Vue.use(Router);
@@ -151,6 +158,16 @@ const router = new Router({
                 requiredAccess:
                   userPermissions.s3accounts + userPermissions.list
               }
+            },
+            {
+              path: "usersettinglocal",
+              name: "usersettinglocal",
+              component: EosUserSettingLocal,
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
             }
           ]
         },
@@ -174,22 +191,72 @@ const router = new Router({
               }
             },
             {
-              path: "usersettinglocal",
-              name: "usersettinglocal",
-              component: EosUserSettingLocal,
+              path: "/notifications",
+              name: "notifications",
+              component: EosNotifications,
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.users + userPermissions.list
+                requiredAccess: userPermissions.sysconfig + userPermissions.list
               }
             },
             {
-              path: "udx-registration",
-              name: "udx-registration",
-              component: UDXRegistration,
-              meta: { requiresAuth: true, isOnboardingReq: false }
+              path: "/management-network",
+              name: "management-network",
+              component: EosManagementNetwork,
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.sysconfig + userPermissions.list
+              }
+            },
+            {
+              path: "/data-network",
+              name: "data-network",
+              component: EosDataNetwork,
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.sysconfig + userPermissions.list
+              }
+            },
+            {
+              path: "/dns",
+              name: "dns",
+              component: EosDNS,
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.sysconfig + userPermissions.list
+              }
+            },
+            {
+              path: "/ntp",
+              name: "ntp",
+              component: EosNTP,
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.sysconfig + userPermissions.list
+              }
+            },
+            {
+              path: "/ssl-upload",
+              name: "ssl-upload",
+              component: EosSSL,
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.sysconfig + userPermissions.list
+              }
             }
           ]
+        },
+        {
+          path: "udx-registration",
+          name: "udx-registration",
+          component: UDXRegistration,
+          meta: { requiresAuth: true, isOnboardingReq: false }
         },
         {
           path: "maintenance",
@@ -220,14 +287,14 @@ const router = new Router({
               path: "resource",
               name: "resource",
               component: EosResource,
-              meta: { requiresAuth: false, isOnboardingReq: false }
+              meta: { requiresAuth: true, isOnboardingReq: false }
             },
             {
               path: "firmware",
               name: "firmware",
               component: EosFirmware,
-              meta: { requiresAuth: false, isOnboardingReq: false }
-            },
+              meta: { requiresAuth: true, isOnboardingReq: false }
+            }
           ]
         },
         {
@@ -255,6 +322,12 @@ const router = new Router({
           name: "403",
           component: EosUnauthorizedAccess,
           meta: { requiresAuth: false, isOnboardingReq: false }
+        },
+        {
+          path: "about",
+          name: "about",
+          component: EosAbout,
+          meta: { requiresAuth: true, isOnboardingReq: false }
         },
         {
           path: "clouduser",
