@@ -63,7 +63,7 @@
               />
             </span>
           </th>
-              <th class="tableheader"></th>
+          <th class="tableheader"></th>
         </tr>
       </template>
       <template v-slot:item="props">
@@ -95,11 +95,13 @@
             ></div>
           </td>
           <td>{{props.item.description ? props.item.description : "--"}}</td>
-          <td> <img
+          <td>
+            <img
               :src="require('@/assets/zoom-in.svg')"
               class="eos-cursor-pointer"
               @click="$router.push('/alerts/' + props.item.alert_uuid)"
-            /></td>
+            />
+          </td>
         </tr>
       </template>
     </v-data-table>
@@ -128,7 +130,7 @@ export default class EosAlertOccurrences extends Vue {
   };
 
   public async mounted() {
-      this.onSortPaginate();
+    this.onSortPaginate();
     // Set Alert table default header options
     this.alertTableHeaders = [
       {
@@ -165,7 +167,7 @@ export default class EosAlertOccurrences extends Vue {
     alertQueryParam.offset = this.currentPage;
     alertQueryParam.limit = this.itemsPerPage;
     this.$store.dispatch("systemConfig/showLoader", "Fetching alerts...");
-    const res = await Api.getAll(apiRegister.all_alerts, alertQueryParam);
+    const res = await Api.getAll(apiRegister.alerts_history, alertQueryParam);
     if (res && res.data) {
       this.alertObject = res.data;
       if (this.alertObject.total_records > 200) {
