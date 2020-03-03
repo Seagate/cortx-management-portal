@@ -160,10 +160,7 @@ export default class EosAlertOccurrences extends Vue {
   }
   // Column sort handler
   public async onSortPaginate() {
-    let sensor_info1=this.$route.params;
-    let c=Object.values(sensor_info1);
-    console.log('this.$route.params',c);
-
+    let sensor_info1 = this.$route.params;
     const alertQueryParam: AlertQueryParam = {} as AlertQueryParam;
     const sortInfo = this.$store.getters["alerts/getSortInfo"];
     alertQueryParam.sortby = sortInfo.header;
@@ -171,11 +168,13 @@ export default class EosAlertOccurrences extends Vue {
     alertQueryParam.offset = this.currentPage;
     alertQueryParam.limit = this.itemsPerPage;
     this.$store.dispatch("systemConfig/showLoader", "Fetching alerts...");
-    const res = await Api.getAll(apiRegister.alerts_history,{sensor_info:c});
+    const res = await Api.getAll(apiRegister.alerts_history, {
+      sensor_info: sensor_info1.alert_id
+    });
     if (res && res.data) {
       this.alertObject = res.data;
       if (this.alertObject.total_records > 200) {
-        this.hidePagination = false; 
+        this.hidePagination = false;
       }
     }
     this.$store.dispatch("systemConfig/hideLoader");
