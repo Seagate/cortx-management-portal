@@ -99,7 +99,7 @@
             <img
               :src="require('@/assets/zoom-in.svg')"
               class="eos-cursor-pointer"
-              @click="$router.push('/alerts/' + props.item.alert_uuid)"
+              @click="$router.push('/alerts_history/' + props.item.alert_uuid)"
             />
           </td>
         </tr>
@@ -160,6 +160,10 @@ export default class EosAlertOccurrences extends Vue {
   }
   // Column sort handler
   public async onSortPaginate() {
+    let sensor_info1=this.$route.params;
+    let c=Object.values(sensor_info1);
+    console.log('this.$route.params',c);
+
     const alertQueryParam: AlertQueryParam = {} as AlertQueryParam;
     const sortInfo = this.$store.getters["alerts/getSortInfo"];
     alertQueryParam.sortby = sortInfo.header;
@@ -167,11 +171,11 @@ export default class EosAlertOccurrences extends Vue {
     alertQueryParam.offset = this.currentPage;
     alertQueryParam.limit = this.itemsPerPage;
     this.$store.dispatch("systemConfig/showLoader", "Fetching alerts...");
-    const res = await Api.getAll(apiRegister.alerts_history, alertQueryParam);
+    const res = await Api.getAll(apiRegister.alerts_history,{sensor_info:c});
     if (res && res.data) {
       this.alertObject = res.data;
       if (this.alertObject.total_records > 200) {
-        this.hidePagination = false;
+        this.hidePagination = false; 
       }
     }
     this.$store.dispatch("systemConfig/hideLoader");

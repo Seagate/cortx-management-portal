@@ -16,6 +16,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Dashboard from "./components/dashboard/dashboard.vue";
 import EosAlertLarge from "./components/alerts/alert-large.vue";
+import EosAlertHistory from "./components/alerts/alert-history-details.vue";
 import EosAlertDetails from "./components/alerts/alert-details.vue";
 import EosUserSettingLocal from "./components/onboarding/system-config/user-settings/user-setting-local.vue";
 import EosS3Management from "./components/s3/s3.vue";
@@ -131,6 +132,16 @@ const router = new Router({
           path: "alerts/:alert_id",
           name: "alert-detail",
           component: EosAlertDetails,
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: true,
+            requiredAccess: userPermissions.alerts + userPermissions.list
+          }
+        },
+        {
+          path: "alerts_history/:alert_id",
+          name: "alert-occurrences",
+          component: EosAlertHistory,
           meta: {
             requiresAuth: true,
             isOnboardingReq: true,
