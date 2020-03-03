@@ -114,7 +114,6 @@ export default class EosNetworkSettingsIpv4 extends Vue {
   }
   private mounted() {
     this.managementNetworkGetter();
-    this.$store.commit("alerts/setOnboardingFlag", false);
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {

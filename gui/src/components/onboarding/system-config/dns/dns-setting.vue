@@ -8,13 +8,13 @@
       <div class="col-1 body-2 column node-container mt-5">
         <div class="mt-10 font-weight-bold">
           <div class="mt-12" v-if="source == 'manual'">
-            <label>IPaddress*</label>
-          </div>
-          <div class="mt-12 netmasklabel">
             <label>Hostname*</label>
           </div>
+          <div class="mt-12 netmasklabel">
+            <label>DNS server*</label>
+          </div>
           <div class>
-            <label>Netmask*</label>
+            <label>Search domain*</label>
           </div>
         </div>
       </div>

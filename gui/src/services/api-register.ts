@@ -1,5 +1,3 @@
-import { Bucket } from "@/models/s3";
-
 /*****************************************************************************
  Filename:          api-register.ts
  Description:       API Register: use for maintainging single registry for API
@@ -37,10 +35,14 @@ export default {
   sysconfig: `api/${version}/sysconfig`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
+  addlicensekey: ` /api/${version}/license`,
+  upload_firmware: `/api/${version}/uploadfirmware`, // TODO: change to right API
   auditlogs: `/api/${version}/auditlogs`,
   maintenance: ` /api/${version}/maintenance/cluster`,
   node_status: ` /api/${version}/maintenance/cluster/node_status`,
   node_stop: ` /api/${version}/maintenance/cluster/stop`,
   node_start: ` /api/${version}/maintenance/cluster/start`,
-  node_shutdown: ` /api/${version}/maintenance/cluster/shutdown`
+  node_shutdown: ` /api/${version}/maintenance/cluster/shutdown`,
+  health_summary: `/api/${version}/system/health`,
+  audit_alerts: `/api/${version}/audit_alerts`
 };

@@ -52,12 +52,11 @@
               >Password is required</span
             >
           </div>
-
           <button
             type="button"
             class="eos-btn-primary-dark"
             @click="gotToNextPage()"
-            :disabled="$v.loginForm.$invalid"
+            :disabled="$v.loginForm.$invalid || loginInProgress"
           >
             Login
           </button>
@@ -93,8 +92,9 @@ export default class EosLogin extends Vue {
 
   private data() {
     return {
-      conststr: require("./../../common/const-string.json"),
-      isValidLogin: true
+      constStr: require("./../../common/const-string.json"),
+      isValidLogin: true,
+      loginInProgress: false
     };
   }
 
@@ -107,6 +107,8 @@ export default class EosLogin extends Vue {
   private gotToNextPage() {
     // Hide login err message
     this.$data.isValidLogin = true;
+    this.$data.loginInProgress = true;
+
     this.$store
       .dispatch("userLogin/loginAction", this.loginForm)
       .then((res: any) => {
@@ -116,27 +118,26 @@ export default class EosLogin extends Vue {
           };
           this.$store.commit("userLogin/setUser", user);
           localStorage.setItem(
-            this.$data.conststr.access_token,
+            this.$data.constStr.access_token,
             res.authorization
           );
-          localStorage.setItem(this.$data.conststr.username, user.username);
+          localStorage.setItem(this.$data.constStr.username, user.username);
           return this.$store.dispatch("userLogin/getUserPermissionsAction");
         } else {
-          // Show error message on screen
-          this.$data.isValidLogin = false;
+          throw new Error("Login Failed");
         }
       })
       .then((res: any) => {
         if (res) {
           this.navigate();
         } else {
-          // Show error message on screen
-          this.$data.isValidLogin = false;
+          throw new Error("Login Failed");
         }
       })
       .catch(() => {
         // Show error message on screen
         this.$data.isValidLogin = false;
+        this.$data.loginInProgress = false;
       });
   }
 

@@ -6,6 +6,7 @@ BASE_DIR=$(realpath "$(dirname $0)/..")
 PROG_NAME=$(basename $0)
 DIST=$(realpath $BASE_DIR/dist)
 API_DIR="$BASE_DIR/src/web"
+CSM_PATH="/opt/seagate/eos/csm"
 
 usage() {
     echo """
@@ -13,7 +14,7 @@ usage: $PROG_NAME [-v <csm version>]
                             [-b <build no>] [-k <key>]
                             [-p <product_name>]
                             [-c <all|backend|frontend>] [-t]
-                            [-d]
+                            [-d][-i]
 
 Options:
     -v : Build rpm with version
@@ -23,11 +24,12 @@ Options:
     -c : Build rpm for [all|backend|frontend]
     -t : Build rpm with test plan
     -d : Build dev env
+    -i : Build csm with integration test
         """ 1>&2;
     exit 1;
 }
 
-while getopts ":g:v:b:p:k:c:td" o; do
+while getopts ":g:v:b:p:k:c:tdi" o; do
     case "${o}" in
         v)
             VER=${OPTARG}
@@ -50,6 +52,9 @@ while getopts ":g:v:b:p:k:c:td" o; do
         d)
             DEV=true
             ;;
+        i)
+            INTEGRATION=true
+            ;;
         *)
             usage
             ;;
@@ -64,6 +69,7 @@ cd $BASE_DIR
 [ -z "$KEY" ] && KEY="eos@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
+[ -z "$INTEGRATION" ] && INTEGRATION=false
 [ -z "$DEV" ] && DEV=false
 
 echo "Using VERSION=${VER} BUILD=${BUILD} PRODUCT=${PRODUCT} TEST=${TEST}..."
@@ -179,6 +185,22 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     UI_BUILD_END_TIME=$(date +%s)
 fi
 
+################## Add CSM_PATH #################################
+
+# Genrate spec file for CSM
+sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_agent/g" \
+    -e "s|<CSM_PATH>|${CSM_PATH}|g" \
+    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_agent.spec
+
+sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
+    -e "s|<CSM_PATH>|${CSM_PATH}|g" \
+    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
+
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/schema/commands.yaml
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service
+sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/setup.yaml
 ################### TAR & RPM BUILD ##############################
 
 # Remove existing directory tree and create fresh one.
@@ -186,13 +208,6 @@ TAR_START_TIME=$(date +%s)
 cd $BASE_DIR
 \rm -rf ${DIST}/rpmbuild
 mkdir -p ${DIST}/rpmbuild/SOURCES
-
-# Genrate spec file for CSM
-sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_agent/g" \
-    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_agent.spec
-
-sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
-    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
 
 cd ${DIST}
 # Create tar for csm
@@ -228,6 +243,19 @@ BUILD_END_TIME=$(date +%s)
 
 echo "CSM RPMs ..."
 find $BASE_DIR -name *.rpm
+
+[ "$INTEGRATION" == true ] && {
+    INTEGRATION_TEST_START=$(date +%s)
+    bash $BASE_DIR/jenkins/cicd/csm_cicd.sh $DIST/rpmbuild/RPMS/x86_64 $BASE_DIR $CSM_PATH
+    RESULT=$(cat /tmp/result.txt)
+    cat /tmp/result.txt
+    echo $RESULT
+    [ "Failed" == $RESULT ] && {
+        echo "CICD Failed"
+        exit 1
+    }
+    INTEGRATION_TEST_STOP=$(date +%s)
+}
 
 COPY_DIFF=$(( $COPY_END_TIME - $COPY_START_TIME ))
 printf "COPY TIME!!!!!!!!!!!!"

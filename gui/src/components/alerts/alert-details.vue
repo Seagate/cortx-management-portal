@@ -27,7 +27,7 @@
           <label>{{ alert.module_type }}</label>
         </div>
         <div class="eos-float-r">
-          <div class="eos-icon-btn eos-comment-icon" @click="showComments()"></div>
+          <div class="eos-icon-btn eos-comment-icon" @click="isShowCommentsDialog = true"></div>
           <div class="eos-icon-btn eos-acknowledge-icon ml-5" @click="acknowledgeAlert()"></div>
         </div>
       </div>
@@ -146,73 +146,7 @@
         </div>
       </div>
     </template>
-    <template v-if="showCommentsDialog">
-      <div class="eos-modal-container">
-        <div class="eos-modal">
-          <div class="eos-modal-header">
-            <label>Comments</label>
-            <img
-              class="eos-modal-close"
-              :src="require('@/assets/close-green.svg')"
-              @click="closeAddCommentDialog()"
-            />
-          </div>
-          <div class="eos-comments-container">
-            <label v-if="alertComments.length === 0" class="eos-text-md ml-4">No comments</label>
-            <div v-else
-              class="eos-comment"
-              v-for="alertComment in alertComments"
-              :key="alertComment.comment_id"
-            >
-              <div>
-                <span class="eos-text-md">{{ alertComment.comment_text }}</span>
-              </div>
-              <div class="mt-2" style="height: 20px;">
-                <span class="eos-text-sm">{{ new Date(alertComment.created_time * 1000) | timeago }}</span>
-                <span class="eos-text-sm mx-3">|</span>
-                <span class="eos-text-sm">{{ alertComment.created_by }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="eos-modal-footer">
-            <div
-              class="eos-form-group"
-              :class="{
-                'eos-form-group--error': $v.addCommentForm.comment_text.$error
-              }"
-              style="width: 100%;"
-            >
-              <textarea
-                class="eos-form__input_textarea"
-                v-model.trim="addCommentForm.comment_text"
-                @input="$v.addCommentForm.comment_text.$touch"
-              ></textarea>
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label
-                  v-if="$v.addCommentForm.comment_text.$dirty && !$v.addCommentForm.comment_text.required"
-                >Comment is required</label>
-                <label
-                  v-else-if="$v.addCommentForm.comment_text.$dirty && !$v.addCommentForm.comment_text.maxLength"
-                >Comment cannot be more than 250 characters</label>
-              </div>
-            </div>
-            <div style="height: 40px;margin-top:10px;">
-              <button
-                type="button"
-                class="eos-btn-secondary eos-float-r ml-3"
-                @click="closeAddCommentDialog()"
-              >Cancel</button>
-              <button
-                type="button"
-                class="eos-btn-primary eos-float-r"
-                @click="saveComment()"
-                :disabled="$v.addCommentForm.$invalid"
-              >Save</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
+    <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
   </div>
 </template>
 
@@ -224,23 +158,23 @@ import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import {
   AlertEventDetail,
-  AlertExtendedInfo,
-  AlertComment
+  AlertExtendedInfo
 } from "../../models/alert";
 import AlertExtendedInfoComp from "./alert-extended-info.vue";
+import EosAlertComments from "./alert-comments.vue";
 
 @Component({
   name: "eos-alert-details",
-  components: { AlertExtendedInfoComp }
+  components: { AlertExtendedInfoComp, EosAlertComments }
 })
 export default class EosAlertDetails extends Vue {
+  public alertId: string = "";
   public alert: any = null;
   public alertEventDetails: AlertEventDetail[] = [];
   public alertExtendedInfo: AlertExtendedInfo = {};
   public alertDetails: any = {};
   public showAlertDetailsDialog: boolean = false;
-  public showCommentsDialog: boolean = false;
-  public alertComments: AlertComment[] = [];
+  public isShowCommentsDialog: boolean = false;
   public addCommentForm = {
     comment_text: ""
   };
@@ -253,12 +187,13 @@ export default class EosAlertDetails extends Vue {
   };
 
   public async mounted() {
+    this.alertId = this.$route.params.alert_id;
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
       message: "Fetching alert details..."
     });
     const res = await Api.getAll(
-      apiRegister.all_alerts + "/" + this.$route.params.alert_id
+      apiRegister.all_alerts + "/" + this.alertId
     );
     if (res.data) {
       this.alert = res.data;
@@ -314,77 +249,31 @@ export default class EosAlertDetails extends Vue {
   }
 
   public async acknowledgeAlert() {
-    if (!this.alert.acknowledged) {
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: true,
-        message: "Acknowledging alert..."
-      });
-      try {
-        await Api.patch(
-          apiRegister.all_alerts,
-          { acknowledged: true },
-          this.$route.params.alert_id
-        );
-        this.alert.acknowledged = true;
-      } catch (e) {
-        // tslint:disable-next-line: no-console
-        console.log(e);
-      }
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: false,
-        message: ""
-      });
+    let tempAlertAcknowledged: boolean = true;
+    let loaderMessage: string = "Acknowledging alert...";
+    if (this.alert.acknowledged) {
+      tempAlertAcknowledged = false;
+      loaderMessage = "Unacknowledging alert...";
     }
-  }
-
-  public async showComments() {
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
-      message: "Fetching comments..."
+      message: loaderMessage
     });
-    const res = await Api.getAll(
-      apiRegister.all_alerts + "/" + this.$route.params.alert_id + "/comments"
-    );
-    if (res.data) {
-      this.alertComments = res.data.comments;
+    try {
+      await Api.patch(
+        apiRegister.all_alerts,
+        { acknowledged: tempAlertAcknowledged },
+        this.alertId
+      );
+      this.alert.acknowledged = tempAlertAcknowledged;
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
     }
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: false,
       message: ""
     });
-    this.showCommentsDialog = true;
-  }
-
-  public async saveComment() {
-    const comment = {
-      comment_text: this.addCommentForm.comment_text
-    };
-    this.showCommentsDialog = false;
-    this.resetAddCommentForm();
-    this.$store.dispatch("systemConfig/showLoaderMessage", {
-      show: true,
-      message: "Adding comment..."
-    });
-    const res = await Api.post(
-      apiRegister.all_alerts + "/" + this.$route.params.alert_id + "/comments",
-      comment
-    );
-    this.$store.dispatch("systemConfig/showLoaderMessage", {
-      show: false,
-      message: ""
-    });
-  }
-
-  public closeAddCommentDialog() {
-    this.showCommentsDialog = false;
-    this.resetAddCommentForm();
-  }
-
-  private resetAddCommentForm() {
-    this.addCommentForm.comment_text = "";
-    if (this.$v.addCommentForm) {
-      this.$v.addCommentForm.$reset();
-    }
   }
 }
 </script>
@@ -402,21 +291,5 @@ export default class EosAlertDetails extends Vue {
 }
 .eos-alert-status-chip-disabled {
   color: #b7b7b7;
-}
-.eos-modal-footer {
-  height: 12em;
-  padding: 0.5em;
-}
-.eos-comments-container {
-  height: 12.5em;
-  border-bottom: 1px solid #b7b7b7;
-  overflow: auto;
-  padding: 2px;
-}
-.eos-comment {
-  padding: 0.5em;
-  border: 1px solid #b7b7b7;
-  margin-bottom: 2px;
-  border-radius: 4px;
 }
 </style>

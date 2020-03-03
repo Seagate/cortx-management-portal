@@ -17,12 +17,12 @@ CSM Tools
 %build
 
 %install
-mkdir -p ${RPM_BUILD_ROOT}/opt/seagate/csm/eos/gui ${RPM_BUILD_ROOT}/opt/seagate/csm/conf/service/
-cp -rp ./* ${RPM_BUILD_ROOT}/opt/seagate/csm
+mkdir -p ${RPM_BUILD_ROOT}<CSM_PATH>/eos/gui ${RPM_BUILD_ROOT}<CSM_PATH>/conf/service/
+cp -rp ./* ${RPM_BUILD_ROOT}<CSM_PATH>
 exit 0
 
 %post
-CSM_DIR=/opt/seagate/csm
+CSM_DIR=<CSM_PATH>
 CFG_DIR=$CSM_DIR/conf
 PRODUCT=<PRODUCT>
 
@@ -35,10 +35,16 @@ PRODUCT=<PRODUCT>
 }
 exit 0
 
+%preun
+[ $1 -eq 1 ] && exit 0
+systemctl disable csm_web
+systemctl stop csm_web
+
 %postun
 [ $1 -eq 1 ] && exit 0
 rm -f /usr/bin/csm_web 2> /dev/null;
-rm -rf /etc/systemd/system/csm_web.service
+rm -rf /etc/systemd/system/csm_web.service 2> /dev/null;
+systemctl daemon-reload
 exit 0
 
 %clean
@@ -46,7 +52,7 @@ exit 0
 %files
 # TODO - Verify permissions, user and groups for directory.
 %defattr(-, root, root, -)
-/opt/seagate/csm/*
+<CSM_PATH>/*
 
 %changelog
 * Mon Jul 29 2019 Ajay Paratmandali <ajay.paratmandali@seagate.com> - 1.0.0
