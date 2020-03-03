@@ -58,7 +58,7 @@ export const saveUser = async (req: Request, res: Response) => {
  * @param res 
  */
 export const updateUser = async (req: Request, res: Response) => {
-  let adminUser = Api.put(apiRegister.csm_user, req, res, req.params.user_id);
+  let adminUser = Api.patch(apiRegister.csm_user, req, res, req.params.user_id);
   return adminUser;
 };
 
