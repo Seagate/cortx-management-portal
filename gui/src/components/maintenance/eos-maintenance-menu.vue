@@ -14,25 +14,25 @@
  *****************************************************************************/
 <template>
   <div>
+    <div v-for="item in settingSubmenuItems" :key="item.id">
     <div class="eos-menu-card-layout">
-      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">HA</label>
+        <label
+          class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
+        >
+          {{ item.title }}</label
+        >
       <button
         type="button"
         class="eos-btn-tertiary eos-float-r"
-        @click="$router.push('/maintenance/resource')"
-      >Manage</button>
+          @click="handleClickFunction(item.actionClickFunction)"
+          :disabled="item.disabled"
+        >
+          {{ item.actionName }}
+        </button>
     </div>
-    <div class="eos-menu-card-layout">
-      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Firmware</label>
-      <button
-        type="button"
-        class="eos-btn-tertiary eos-float-r"
-        @click="$router.push('/maintenance/firmware')"
-      >Manage</button>
     </div>
-    <div class="eos-menu-card-layout">
-      <label class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title">Audit log</label>
-      <button type="button" class="eos-btn-tertiary eos-float-r" @click="$router.push('/maintenance/auditlog')" >Download</button>
+    <div class="eos-wrap-height-menu-card-layout">
+      <button type="button" class="eos-btn-tertiary">About</button>
     </div>
   </div>
 </template>
@@ -42,7 +42,50 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 @Component({
   name: "eos-maintenance-menu"
 })
-export default class EosMaintenanceMenu extends Vue {}
+export default class EosMaintenanceMenu extends Vue {
+  public settingSubmenuItems = [
+    {
+      title: "System maintenance",
+      actionName: "Manage",
+      actionClickFunction: "goToSystemMaintenance",
+      disabled: false
+    },
+    {
+      title: "Firmware",
+      actionName: "Manage",
+      actionClickFunction: "goToFirmware",
+      disabled: false
+    },
+    {
+      title: "Software",
+      actionName: "Manage",
+      actionClickFunction: "goToSoftware",
+      disabled: false
+    },
+    {
+      title: "Audit log",
+      actionName: "Download",
+      actionClickFunction: "goToAuditLog",
+      disabled: false
+    }
+  ];
+  private goToSystemMaintenance() {
+    this.$router.push({ name: "resource" });
+  }
+  private goToFirmware() {
+    this.$router.push({ name: "firmware" });
+  }
+  private goToSoftware() {
+    this.$router.push({ name: "software" });
+  }
+  private goToAuditLog() {
+    this.$router.push({ name: "auditlog" });
+  }
+  private handleClickFunction(actionClickFunction: string) {
+    const vueInstance: any = this;
+    vueInstance[actionClickFunction]();
+  }
+}
 </script>
 <style lang="scss" scoped>
 .eos-menu-card-layout {

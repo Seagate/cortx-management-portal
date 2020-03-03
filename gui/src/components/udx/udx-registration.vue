@@ -17,36 +17,44 @@
     <Loader :show="showLoader" :message="loaderMessage" />
     <div id="udx-reg-form" v-if="!udxDevice && !isFetchingDeviceDetails">
       <div id="udx-reg-form-title-container" class="udx-reg-page-title">
-        <label id="udx-reg-form-title" class="headline font-weight-bold">UDX registration</label>
+        <label id="udx-reg-form-title" class="headline font-weight-bold"
+          >UDX registration</label
+        >
       </div>
       <div id="udx-reg-token-container" class="mt-4" v-if="identificationToken">
         <label id="udx-reg-token-lbl">Your identification token</label>
         <v-tooltip right>
           <template v-slot:activator="{ on }">
-            <v-icon class="csmprimary--text mx-2" size="20" v-on="on">mdi-help-circle-outline</v-icon>
+            <v-icon class="csmprimary--text mx-2" size="20" v-on="on"
+              >mdi-help-circle-outline</v-icon
+            >
           </template>
-          <span>On your UDX web portal choose "Add Device" and then enter the identification token below.</span>
+          <span
+            >On your UDX web portal choose "Add Device" and then enter the
+            identification token below.</span
+          >
         </v-tooltip>
         <div id="udx-reg-token" class="mt-1">
-          <label
-            id="udx-reg-token-part-1"
-            class="float-left"
-          >{{ identificationToken.substring(0,4) }}</label>
-          <label
-            id="udx-reg-token-part-2"
-            class="float-left ml-2"
-          >{{ identificationToken.substring(4,8) }}</label>
-          <label
-            id="udx-reg-token-part-3"
-            class="float-left ml-2"
-          >{{ identificationToken.substring(8,12) }}</label>
+          <label id="udx-reg-token-part-1" class="float-left">{{
+            identificationToken.substring(0, 4)
+          }}</label>
+          <label id="udx-reg-token-part-2" class="float-left ml-2">{{
+            identificationToken.substring(4, 8)
+          }}</label>
+          <label id="udx-reg-token-part-3" class="float-left ml-2">{{
+            identificationToken.substring(8, 12)
+          }}</label>
         </div>
         <div id="udx-reg-url-textbox-container" class="mt-6">
           <div id="udx-reg-url-textbox-lbl-container">
-            <span id="udx-reg-url-textbox-lbl" class="font-weight-medium">Enter URL</span>
+            <span id="udx-reg-url-textbox-lbl" class="font-weight-medium"
+              >Enter URL</span
+            >
             <v-tooltip right>
               <template v-slot:activator="{ on }">
-                <v-icon class="csmprimary--text mx-2" size="20" v-on="on">mdi-help-circle-outline</v-icon>
+                <v-icon class="csmprimary--text mx-2" size="20" v-on="on"
+                  >mdi-help-circle-outline</v-icon
+                >
               </template>
               <span>Enter the URL provided by your UDX portal.</span>
             </v-tooltip>
@@ -70,7 +78,9 @@
       <v-card>
         <v-system-bar color="greay lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="continueAfterRegistration()" class="cursor-pointer">mdi-close</v-icon>
+          <v-icon @click="continueAfterRegistration()" class="cursor-pointer"
+            >mdi-close</v-icon
+          >
         </v-system-bar>
         <v-card-title class="title ml-3">
           <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
@@ -78,12 +88,16 @@
         </v-card-title>
         <v-divider />
         <v-card-text>
-          <label
-            class="ml-3 udx-registration-success-msg"
-          >This device has been successfully registered.</label>
+          <label class="ml-3 udx-registration-success-msg"
+            >This device has been successfully registered.</label
+          >
         </v-card-text>
         <v-card-actions>
-          <v-btn color="csmprimary" @click="continueAfterRegistration()" class="ma-5 elevation-0">
+          <v-btn
+            color="csmprimary"
+            @click="continueAfterRegistration()"
+            class="ma-5 elevation-0"
+          >
             <span class="white--text">Continue</span>
           </v-btn>
         </v-card-actions>
@@ -91,10 +105,9 @@
     </v-dialog>
     <div id="udx-device-details-container" v-if="udxDevice">
       <div id="udx-device-details-title-container" class="udx-reg-page-title">
-        <label
-          id="udx-device-details-title"
-          class="headline font-weight-bold"
-        >UDX registration details</label>
+        <label id="udx-device-details-title" class="headline font-weight-bold"
+          >UDX registration details</label
+        >
       </div>
       <table id="udx-device-details" class="mt-4 udx-device-details">
         <tr>
@@ -122,6 +135,7 @@
           <td class="py-2">{{ udxDevice.vendorID }}</td>
         </tr>
       </table>
+
       <v-btn
         color="csmprimary"
         @click="showConfirmUnregisterDialog = true"
@@ -129,11 +143,19 @@
       >
         <span class="white--text">Deregister</span>
       </v-btn>
-      <v-dialog v-model="showConfirmUnregisterDialog" persistent max-width="790">
+      <v-dialog
+        v-model="showConfirmUnregisterDialog"
+        persistent
+        max-width="790"
+      >
         <v-card>
           <v-system-bar color="greay lighten-3">
             <v-spacer></v-spacer>
-            <v-icon @click="closeConfirmUnregisterDialog('no')" style="cursor: pointer;">mdi-close</v-icon>
+            <v-icon
+              @click="closeConfirmUnregisterDialog('no')"
+              style="cursor: pointer;"
+              >mdi-close</v-icon
+            >
           </v-system-bar>
           <v-card-title class="title ml-3">
             <img class="mr-2" src="./../../assets/status/warning.png" />
@@ -141,7 +163,9 @@
           </v-card-title>
           <v-divider />
           <v-card-text>
-            <label class="ml-3 unregister-confirmation-msg">Are you sure you want to deregister?</label>
+            <label class="ml-3 unregister-confirmation-msg"
+              >Are you sure you want to deregister?</label
+            >
           </v-card-text>
 
           <v-card-actions>
@@ -185,7 +209,7 @@ export default class UDXRegistration extends Vue {
   private showLoader: boolean = false;
   private loaderMessage: string = "";
   private showRegistrationSuccessDialog: boolean = false;
-  private udxDevice: UDXDevice | null;
+  private udxDevice: UDXDevice | null = null;
   private isFetchingDeviceDetails: boolean = false;
   private showConfirmUnregisterDialog: boolean = false;
 
