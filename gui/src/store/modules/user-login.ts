@@ -57,7 +57,7 @@ export default class UserLogin extends VuexModule {
     return this.userPermissions;
   }
 
-  @Action
+  @Action({ rawError: true })
   public async createUserAction(queryParams: object) {
     queryParams = queryParams ? queryParams : this.queryParams;
     try {
@@ -66,7 +66,9 @@ export default class UserLogin extends VuexModule {
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
-      return e;
+      if (e && e.data && e.data.message_text) {
+        throw new Error(e.data.message_text);
+      }
     }
   }
 
@@ -114,6 +116,7 @@ export default class UserLogin extends VuexModule {
       console.error("err logger: ", e);
     }
   }
+
   @Action
   public async addLicenseKey(queryParams: object) {
     try {
