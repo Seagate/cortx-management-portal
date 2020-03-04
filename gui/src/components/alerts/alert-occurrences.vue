@@ -124,6 +124,8 @@ export default class EosAlertOccurrences extends Vue {
   public alertTableHeaders: any = [];
   public itemsPerPage: number = 200;
   public currentPage: number = 1;
+   @Prop({ required: true })
+   public sensor_info: string;
   public sortInfo: any = {
     header: "created_time",
     sort_dir: "desc"
@@ -160,7 +162,6 @@ export default class EosAlertOccurrences extends Vue {
   }
   // Column sort handler
   public async onSortPaginate() {
-    let sensor_info1 = this.$route.params;
     const alertQueryParam: AlertQueryParam = {} as AlertQueryParam;
     const sortInfo = this.$store.getters["alerts/getSortInfo"];
     alertQueryParam.sortby = sortInfo.header;
@@ -169,7 +170,7 @@ export default class EosAlertOccurrences extends Vue {
     alertQueryParam.limit = this.itemsPerPage;
     this.$store.dispatch("systemConfig/showLoader", "Fetching alerts...");
     const res = await Api.getAll(apiRegister.alerts_history, {
-      sensor_info: sensor_info1.alert_id
+      sensor_info: this.sensor_info
     });
     if (res && res.data) {
       this.alertObject = res.data;

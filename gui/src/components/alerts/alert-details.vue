@@ -196,7 +196,7 @@
     </template>
     <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
     <eos-tabs :tabsInfo="tabsInfo" />
-    <eos-alert-occurrences v-if="showOccurrenceTab" />
+    <eos-alert-occurrences v-if="showOccurrenceTab" :sensor_info="sensor_info"/>
     <eos-alert-related v-if="showRelatedTab" />
   </div>
 </template>
@@ -231,6 +231,7 @@ export default class EosAlertDetails extends Vue {
   public alertDetails: any = {};
   public showAlertDetailsDialog: boolean = false;
   public isShowCommentsDialog: boolean = false;
+  public sensor_info:string="";
   public addCommentForm = {
     comment_text: ""
   };
@@ -272,6 +273,7 @@ export default class EosAlertDetails extends Vue {
       message: "Fetching alert details..."
     });
     const res = await Api.getAll(apiRegister.all_alerts + "/" + this.alertId);
+     this.sensor_info= res.data.sensor_info;
     if (res.data) {
       this.alert = res.data;
       try {
