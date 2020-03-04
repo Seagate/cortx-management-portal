@@ -22,6 +22,18 @@
       <div class="eos-logo-separator"></div>
       <img :src="require('@/assets/cloudstore.svg/')" />
       <div class="eos-header-right-aligned-items">
+        <div
+          class="eos-logout-icon-container"
+          @click="$router.push({ name: 'alerts-large' })"
+          v-if="!isRouterPathOnboarding"
+        >
+          <div v-if="alertNotifications.alertCount > 0">
+            <img :src="require('@/assets/navigation/alerts-dot-white.svg')" />
+          </div>
+          <div v-else>
+            <img :src="require('@/assets/navigation/alerts-white.svg')" />
+          </div>
+        </div>
         <div style="padding-top: 1.125em;" class="pr-2">
           <label class="eos-username-label">{{ username }}</label>
         </div>
@@ -69,6 +81,10 @@ export default class HeaderBar extends Vue {
 
   get isRouterPathOnboarding() {
     return this.$route.name === "onboarding";
+  }
+
+  get alertNotifications() {
+    return this.$store.state.alertNotification.socket;
   }
   private logout() {
     // Invalidate session from Server, remove localStorage token and re-route to login page
