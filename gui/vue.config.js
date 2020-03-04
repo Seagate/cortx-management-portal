@@ -1,7 +1,7 @@
 module.exports = {
     outputDir: 'web-dist',
     devServer: {
-        proxy: 'http://10.230.245.80:28101'
+        proxy: 'http://localhost:8100'
     },
     configureWebpack: {
         devtool: 'source-map'
