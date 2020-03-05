@@ -99,10 +99,13 @@ export default class UserLogin extends VuexModule {
       console.log("err logger: ", e);
     }
   }
-  @Action
+  @Action({ rawError: true })
   public async getUserPermissionsAction() {
     try {
-      if (Object.entries(this.userPermissions).length === 0) {
+      if (
+        this.userPermissions &&
+        !Object.entries(this.userPermissions).length
+      ) {
         const res = await Api.getAll(apiRegister.user_permissions);
         if (res && res.data && res.data.permissions) {
           this.context.commit("setUserPermissions", res.data.permissions);
@@ -114,6 +117,7 @@ export default class UserLogin extends VuexModule {
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
+      throw new Error(e.message);
     }
   }
 
