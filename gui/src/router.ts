@@ -140,7 +140,7 @@ const router = new Router({
         },
         {
           path: "alerts_history/:alert_id",
-          name: "alert-occurrences",
+          name: "alert-history",
           component: EosAlertHistory,
           meta: {
             requiresAuth: true,
