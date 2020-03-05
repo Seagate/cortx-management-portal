@@ -30,12 +30,12 @@
       :hide-default-footer="hidePagination"
       @update:items-per-page="onSortPaginate()"
       @update:page="onSortPaginate()"
-      id="tblAlertMedium"
+      id="tblAlertoccurenes"
     >
       <template v-slot:header="{}">
         <tr>
           <th
-            v-for="header in alertTableHeaders"
+            v-for="header in alertOccurrencesTableHeaders"
             :key="header.text"
             :class="[
                 'tableheader',
@@ -121,7 +121,7 @@ import { AlertQueryParam, AlertObject } from "./../../models/alert";
 export default class EosAlertOccurrences extends Vue {
   public alertObject: AlertObject = {} as AlertObject;
   public hidePagination: boolean = true;
-  public alertTableHeaders: any = [];
+  public alertOccurrencesTableHeaders: any = [];
   public itemsPerPage: number = 200;
   public currentPage: number = 1;
    @Prop({ required: true })
@@ -134,7 +134,7 @@ export default class EosAlertOccurrences extends Vue {
   public async mounted() {
     this.onSortPaginate();
     // Set Alert table default header options
-    this.alertTableHeaders = [
+    this.alertOccurrencesTableHeaders = [
       {
         text: "Time",
         value: "created_time",
