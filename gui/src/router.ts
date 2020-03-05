@@ -356,22 +356,24 @@ router.beforeEach(async (to, from, next) => {
     } else {
       try {
         await store.dispatch("userLogin/getUserPermissionsAction");
+        const routerApp: any = router.app.$root;
+        if (
+          to.meta.requiredAccess &&
+          // tslint:disable-next-line
+          !routerApp.$hasAccessToCsm(to.meta.requiredAccess)
+        ) {
+          next({
+            path: "/403"
+          });
+        }
       } catch (error) {
         // tslint:disable-next-line: no-console
         console.log("getUserPermissionsAction failed", error);
-      }
-      const routerApp: any = router.app.$root;
-      if (
-        to.meta.requiredAccess &&
-        // tslint:disable-next-line
-        !routerApp.$hasAccessToCsm(to.meta.requiredAccess)
-      ) {
         next({
-          path: "/403"
+          path: "/login"
         });
-      } else {
-        next();
       }
+      next();
     }
   } else {
     next(); // make sure to always call next()!
