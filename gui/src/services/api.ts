@@ -22,8 +22,8 @@ import { ApiResponse } from "./api-model";
 //       - if create admin user page no need of auth token
 axios.interceptors.request.use(
   config => {
-    const conststr = require("../common/const-string.json");
-    const token = localStorage.getItem(conststr.access_token);
+    const constStr = require("../common/const-string.json");
+    const token = localStorage.getItem(constStr.access_token);
     if (token) {
       config.headers.Authorization = token;
     }
@@ -43,8 +43,9 @@ axios.interceptors.response.use(
   error => {
     // Handle Unauthorised response. Re-route to login page if unauthorised response received.
     if (error.response && error.response.status === 401) {
-      const conststr = require("../common/const-string.json");
-      localStorage.removeItem(conststr.access_token);
+      const constStr = require("../common/const-string.json");
+      localStorage.removeItem(constStr.access_token);
+      localStorage.removeItem(constStr.username);
       router.push("/login");
     }
     return Promise.reject(error);
