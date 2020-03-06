@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-   <div class="eos-p-2" v-if="alert">
+  <div class="eos-p-2" v-if="alert">
     <div class="eos-back-to-alerts-btn" @click="$router.push('/alerts')">
       <img :src="require('@/assets/arrow-left.svg')" />
       <span class="mt-1">Alerts</span>
@@ -29,7 +29,7 @@
         <!-- <div class="eos-float-r">
           <div class="eos-icon-btn eos-comment-icon" @click="isShowCommentsDialog = true"></div>
           <div class="eos-icon-btn eos-acknowledge-icon ml-5" @click="acknowledgeAlert()"></div>
-        </div> -->
+        </div>-->
       </div>
       <div class="eos-text-md eos-text-bold">
         <div>
@@ -149,7 +149,7 @@
     <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
     <!-- <eos-tabs :tabsInfo="tabsInfo" />
     <eos-alert-occurrences v-if="showOccurrenceTab" :sensor_info="sensor_info"/>
-    <eos-alert-related v-if="showRelatedTab" /> -->
+    <eos-alert-related v-if="showRelatedTab" />-->
   </div>
 </template>
 
@@ -210,7 +210,7 @@ export default class EosAlertHistory extends Vue {
         if (this.alert.extended_info) {
           const tempAlertExtendedInfoJSONString = this.alert.extended_info
             .split("'")
-            .join("\"");
+            .join('"');
           this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
           this.alertExtendedInfo = this.alertDetails.info;
         }
@@ -219,7 +219,7 @@ export default class EosAlertHistory extends Vue {
         if (this.alert.event_details) {
           const tempAlertEventDetailsJSONString = this.alert.event_details
             .split("'")
-            .join("\"");
+            .join('"');
           tempAlertEventDetails = JSON.parse(tempAlertEventDetailsJSONString);
         }
         if (tempAlertEventDetails.length > 0) {
@@ -283,7 +283,7 @@ export default class EosAlertHistory extends Vue {
       show: false,
       message: ""
     });
-  }  
+  }
 }
 </script>
 

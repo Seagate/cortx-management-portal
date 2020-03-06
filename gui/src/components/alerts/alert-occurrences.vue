@@ -27,7 +27,6 @@
       :update:page="currentPage"
       :server-items-length="alertObject.total_records"
       hide-default-header
-      :hide-default-footer="hidePagination"
       @update:items-per-page="onSortPaginate()"
       @update:page="onSortPaginate()"
       id="tblAlertoccurenes"
