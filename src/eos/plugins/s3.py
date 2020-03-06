@@ -178,7 +178,6 @@ class IamClient(BaseClient):
         }
 
         self.IAM_USER_MAPPING = {
-            'Path': 'path',
             'UserName': 'user_name',
             'UserId': 'user_id',
             'Arn': 'arn'
@@ -376,16 +375,15 @@ class IamClient(BaseClient):
             return True
 
     @Log.trace_method(Log.DEBUG)
-    async def create_user(self, user_name, path_prefix ='/') -> Union[IamUser, IamError]:
+    async def create_user(self, user_name) -> Union[IamUser, IamError]:
         """
         Create an IAM user.
 
         :returns: IamUser in case of success, IamError otherwise
         """
-        Log.debug(f"Create iam user. user_name:{user_name}, path_prefix:{path_prefix}")
+        Log.debug(f"Create iam user. user_name:{user_name}")
         params = {
-            'UserName': user_name,
-            'Path': path_prefix
+            'UserName': user_name
         }
 
         (code, body) = await self._query_conn('CreateUser', params, '/', 'POST')
@@ -415,18 +413,16 @@ class IamClient(BaseClient):
             return None
 
     @Log.trace_method(Log.DEBUG)
-    async def list_users(self, path_prefix=None, marker=None,
+    async def list_users(self, marker=None,
                          max_items=None) -> Union[IamUserListResponse, IamError]:
         """
         Note that max_items and marker are not working for now!!
 
         :returns: IamUserListResponse in case of success, IamError otherwise
         """
-        Log.debug(f"List iam user. path_prefix:{path_prefix}, marker:{marker}, "
+        Log.debug(f"List iam user. marker:{marker}, "
                   f"max_items:{max_items}")
         params = {}
-        if path_prefix:
-            params['PathPrefix'] = path_prefix
 
         if marker:
             params['Marker'] = marker
@@ -493,24 +489,20 @@ class IamClient(BaseClient):
             return None
 
     @Log.trace_method(Log.DEBUG)
-    async def update_user(self, user_name, new_path=None,
+    async def update_user(self, user_name,
                           new_user_name=None) -> Union[bool, IamError]:
         """
         Update an existing IAM user.
 
         :param user_name: TODO: find out details about this field
-        :param new_path: If not None, user's path will be set to this value
         :param new_user_name: If not None, user will be renamed accordingly
         :returns: True in case of success, IamError in case of problem
         """
-        Log.debug(f"Update iam User: {user_name}, new_path:{new_path}, "
+        Log.debug(f"Update iam User: {user_name} "
                   f"new_user_name:{new_user_name}")
         params = {
             'UserName': user_name
         }
-
-        if new_path:
-            params['NewPath'] = new_path
 
         if new_user_name:
             params['NewUserName'] = new_user_name
