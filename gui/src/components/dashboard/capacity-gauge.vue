@@ -13,20 +13,24 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="pa-5">
-    <div style="height: 30px;">
-      <div class="eos-capacity-title">Capacity</div>
+  <div id="capacityContainer">
+    <div>
+      <div class="eos-text-lg eos-text-bold">Capacity</div>
     </div>
-    <div id="gauge_capacity"></div>
+    <div class="eos-capacity-container" id="gauge_capacity"></div>
     <table class="mt-3">
       <tr>
-        <td style="width: 25px;"><div style="height: 13px;width: 13px;background: #6EBE49;"></div></td>
-        <td style="width: 110px;" class="eos-capacity-title">Used</td>
+        <td class="width-25" >
+          <div class="capacity-used-badge"  ></div>
+        </td>
+        <td  class="eos-capacity-title width-110">Used</td>
         <td>{{capacityDetails.used}}</td>
       </tr>
       <tr>
-        <td style="width: 25px;"><div style="height: 13px;width: 13px;background: #9E9E9E;"></div></td>
-        <td style="width: 110px;" class="eos-capacity-title">Available</td>
+        <td>
+          <div class="capacity-available-badge"></div>
+        </td>
+        <td class="eos-capacity-title">Available</td>
         <td>{{capacityDetails.avail}}</td>
       </tr>
     </table>
@@ -72,7 +76,7 @@ export default class EosCapacityGauge extends Vue {
             }
           },
           size: {
-            height: 180
+            height: window.innerHeight < 900 ? 110 : 180
           }
         });
       });
@@ -85,15 +89,50 @@ export default class EosCapacityGauge extends Vue {
 </script>
 <style lang="scss" scoped>
 @import "./../../../node_modules/c3/c3.min.css";
-.eos-capacity-title {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  color: rgba(0, 0, 0, 0.87);
-  float: left;
+.capacityContainer {
+    .eos-capacity-title {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.87);
+      float: left;
+    }
 }
-.eos-capacity-separator{
+.capacity-used-badge {
+    height: 13px; 
+    width: 13px; 
+    background: rgb(110, 190, 73);
+  }
+  .capacity-available-badge {
+    height: 13px; 
+    width: 13px; 
+    background: rgb(158, 158, 158);
+
+  }
+.eos-capacity-separator {
   width: 100%;
-  border-top: 1px solid #E3E3E3; 
+  border-top: 1px solid #e3e3e3;
+}
+.width-25 {
+  width: 25px;
+}
+.width-110 {
+  width: 110px;
+}
+@media screen and (min-height: 600px) {
+  #capacityContainer {
+    padding-left: 20px;
+  }
+  .eos-capacity-container {
+    height: 110px;
+  }
+}
+@media screen and (min-height: 900px) {
+  #capacityContainer {
+    padding: 20px;
+  }
+   .eos-capacity-container {
+    height: 180px;
+  }
 }
 </style>

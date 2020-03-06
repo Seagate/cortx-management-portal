@@ -13,10 +13,14 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="pa-5">
+  <div id="statsContainer">
     <div style="height: 30px;">
       <div class="eos-text-lg eos-text-bold eos-float-l">Performance</div>
-      <img :src="require('@/assets/zoom-in.svg')"   @click="$router.push('/performance')" class="eos-float-r eos-cursor-pointer" />
+      <img
+        :src="require('@/assets/zoom-in.svg')"
+        @click="$router.push('/performance')"
+        class="eos-float-r eos-cursor-pointer"
+      />
     </div>
     <eos-line-chart chartId="line_chart" />
   </div>
@@ -35,4 +39,14 @@ import EosLineChart from "./../../widgets/line-chart.vue";
 export default class EosStatsMedium extends Vue {}
 </script>
 <style lang="scss" scoped>
+@media screen and (min-height: 600px) {
+  #statsContainer {
+    padding-left: 20px;
+  }
+}
+@media screen and (min-height: 900px) {
+  #statsContainer {
+    padding: 20px;
+  }
+}
 </style>

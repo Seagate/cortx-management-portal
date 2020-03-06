@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="pa-5">
+  <div id="alertMediumContainer">
     <eos-health-summary />
     <div style="height: 30px;">
       <div class="eos-alert-title">New alerts</div>
@@ -175,5 +175,15 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
 .eos-alert-navigate {
   float: right;
   cursor: pointer;
+}
+@media screen and (min-height: 600px) {
+  #alertMediumContainer {
+    padding-left: 20px;
+  }
+}
+@media screen and (min-height: 900px) {
+  #alertMediumContainer {
+    padding: 20px;
+  }
 }
 </style>
