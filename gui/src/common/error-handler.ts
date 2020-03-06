@@ -21,7 +21,7 @@ export function errorHandler(err: any, vm: any, info: any) {
   });
   if (err.error) {
     store.commit("messageDialog/show", {
-      title: err.error.name,
+      title: "Error",
       message: err.error.message
     });
   } else {
