@@ -33,6 +33,11 @@ export const getAlerts = async (req: Request, res: Response) => {
     let result = await alertData;
     return result;
 };
+export const getAlertsHistory = async (req: Request, res: Response) => {
+    let alertHistoryData = Api.getAll(apiRegister.alerts_history, req, res);
+    let result = await alertHistoryData;
+    return result;
+};
 
 export const getAlertById = async (req: Request, res: Response) => {
     let alertData = Api.getAll(apiRegister.all_alerts + "/" + req.params.alert_id, req, res);

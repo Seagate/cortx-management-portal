@@ -124,8 +124,8 @@ export default class EosAlertOccurrences extends Vue {
   public alertOccurrencesTableHeaders: any = [];
   public itemsPerPage: number = 200;
   public currentPage: number = 1;
-   @Prop({ required: true })
-   public sensor_info: string;
+  @Prop({ required: true })
+  public sensor_info: string;
   public sortInfo: any = {
     header: "created_time",
     sort_dir: "desc"
@@ -179,6 +179,12 @@ export default class EosAlertOccurrences extends Vue {
       }
     }
     this.$store.dispatch("systemConfig/hideLoader");
+  }
+  public async onSort(header: any) {
+    if (header.sortable) {
+      this.$store.commit("alerts/setSortInfo", header.value);
+      this.onSortPaginate();
+    }
   }
   public data() {
     return {

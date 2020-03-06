@@ -16,6 +16,7 @@ export const version = "v1";
 
 export default {
   all_alerts: `/api/${version}/alerts`,
+  alerts_history : `/api/${version}/alerts_history`,
   all_system_config: `/api/${version}/sysconfig`,
   stats: `/api/${version}/stats`,
   csm_user: `/api/${version}/csm/users`,
