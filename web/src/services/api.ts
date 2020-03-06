@@ -17,6 +17,7 @@ import https from 'https';
 import { Request, Response } from "express";
 import HttpStatus from 'http-status-codes';
 import * as HTTPError from '../utils/http-errors';
+import fs from 'fs';
 
 let base_url = process.env.CSM_AGENT_PROTOCOL + "://" + process.env.CSM_AGENT_HOST
     + (process.env.CSM_AGENT_PORT ? ":" + process.env.CSM_AGENT_PORT : "");
@@ -46,7 +47,7 @@ export abstract class Api {
             // -- end --
 
             let query = req.query;
-            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             for (const key in query) {
                 let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
                 geturl += seperator + key + "=" + query[key];
@@ -57,9 +58,41 @@ export abstract class Api {
                     'authorization': authorization
                 }
             }
-            
+
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
+                reject(error);
+            });
+        });
+    }
+
+    // Wrapper method to for get file api, unsed in upload/download functionality
+    public static async getFile(url: string, req: Request, resp: Response) {
+        return new Promise((resolve, reject) => {
+            let geturl = base_url + url;
+
+            // Remove following code onde all the Python APIs are ready
+            // -- Start --
+            if (url.startsWith("/mock")) {
+                geturl = mock_base_url + url;
+            }
+            console.log("GET: " + geturl);
+            // -- end --
+
+            let query = req.query;
+            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            for (const key in query) {
+                let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
+                geturl += seperator + key + "=" + query[key];
+            }
+            const options = {
+                headers: {
+                    'authorization': authorization,
+                    'responseType': 'blob'
+                }
+            }
+            http_agent.get(geturl, options, Api.handleFileResponse(resolve, reject, resp)).on("error", (err: any) => {
+                let error = err.message;
                 reject(error);
             });
         });
@@ -83,7 +116,7 @@ export abstract class Api {
             // -- end --
 
             let query = req.query;
-            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             for (const key in query) {
                 let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
                 geturl += seperator + key + "=" + query[key];
@@ -94,7 +127,6 @@ export abstract class Api {
                     'authorization': authorization
                 }
             }
-            
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
@@ -106,7 +138,6 @@ export abstract class Api {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
             let patchurl = base_url + url;
-            
             // Remove following code onde all the Python APIs are ready
             // -- Start --
             if (url.startsWith("/mock")) {
@@ -118,7 +149,7 @@ export abstract class Api {
             }
             console.log("PATCH: " + patchurl);
             // -- end --
-            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "PATCH",
                 headers: {
@@ -141,7 +172,6 @@ export abstract class Api {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
             let puturl = base_url + url;
-            
             // Remove following code onde all the Python APIs are ready
             // -- Start --
             if (url.startsWith("/mock")) {
@@ -153,7 +183,7 @@ export abstract class Api {
             }
             console.log("put: " + puturl);
             // -- end --
-            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "put",
                 headers: {
@@ -183,7 +213,7 @@ export abstract class Api {
             }
             console.log("POST: " + posturl);
             // -- end --
-            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "POST",
                 headers: {
@@ -194,7 +224,7 @@ export abstract class Api {
             }
 
             let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
-                console.log("1. "+err);
+                console.log("1. " + err);
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
             });
@@ -214,7 +244,7 @@ export abstract class Api {
             console.log("DELETE: " + deleteUrl);
             // -- end --
             const requestData = req && req.body ? JSON.stringify(req.body) : "";
-            let authorization = req.headers? (req.headers.authorization?req.headers.authorization:""): "";
+            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "DELETE",
                 headers: {
@@ -237,10 +267,10 @@ export abstract class Api {
         return (apiresp: any) => {
             let data = '';
             let response: any;
-            
-            if(apiresp.headers.authorization){
-                resp.set("Authorization", apiresp.headers.authorization);    
-            }            
+
+            if (apiresp.headers.authorization) {
+                resp.set("Authorization", apiresp.headers.authorization);
+            }
 
             apiresp.on('data', (chunk: any) => {
                 data += chunk;
@@ -255,6 +285,54 @@ export abstract class Api {
                     resolve(response);
                 } else {
                     let err = Api.handleError(apiresp.statusCode, response);
+                    reject(err);
+                }
+            });
+        };
+    }
+
+    private static handleFileResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
+        return (req: any) => {
+            let data: any = [];
+            let response: any;
+
+            if (req.headers.authorization) {
+                resp.set("Authorization", req.headers.authorization);
+            }
+            // Set all request headers to response object
+            if (req.headers["accept-ranges"]) resp.set("accept-ranges", req.headers["accept-ranges"]);
+            if (req.headers["cache-control"]) resp.set("cache-control", req.headers["cache-control"]);
+            if (req.headers["content-disposition"]) resp.set("content-disposition", req.headers["content-disposition"]);
+            if (req.headers["content-encoding"]) resp.set("content-encoding", req.headers["content-encoding"]);// "x-tar"
+            if (req.headers["content-length"]) resp.set("content-length", req.headers["content-length"]);
+            if (req.headers["content-security-policy"]) resp.set("content-security-policy", req.headers["content-security-policy"]);
+            if (req.headers["content-type"]) resp.set("content-type", req.headers["content-type"]);
+            if (req.headers["date"]) resp.set("date", req.headers["date"]);
+            if (req.headers["expires"]) resp.set("expires", req.headers["expires"]);
+            if (req.headers["last-modified"]) resp.set("last-modified", req.headers["last-modified"]);
+            if (req.headers["pragma"]) resp.set("pragma", req.headers["pragma"]);
+            if (req.headers["referrer-policy"]) resp.set("referrer-policy", req.headers["referrer-policy"]);
+            if (req.headers["server"]) resp.set("server", req.headers["server"]);
+            if (req.headers["strict-transport-security"]) resp.set("strict-transport-security", req.headers["strict-transport-security"]);
+            if (req.headers["x-content-type-options"]) resp.set("x-content-type-options", req.headers["x-content-type-options"]);
+            if (req.headers["x-frame-options"]) resp.set("x-frame-options", req.headers["x-frame-options"]);
+            if (req.headers["x-xss-protection"]) resp.set("x-xss-protection", req.headers["x-xss-protection"]);
+
+            req.on('data', (chunk: any) => {
+                // Push chunk-data coming from server to response data object
+                data.push(chunk);
+            });
+            req.on('end', () => {
+                try {
+                    // Prepare response data as a Buffer obj so that it will get treatement as a file
+                    response = Buffer.concat(data);
+                } catch (err) {
+                    response = data;
+                }
+                if (sucessCodeRegex.test(req.statusCode)) {
+                    resolve(response);
+                } else {
+                    let err = Api.handleError(req.statusCode, response);
                     reject(err);
                 }
             });

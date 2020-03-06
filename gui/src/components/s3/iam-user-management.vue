@@ -43,6 +43,10 @@
           </div>
         </v-col>
         <v-col class="py-0 pl-0">
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col class="py-0 pr-0">
           <div
             class="eos-form-group"
             :class="{
@@ -77,44 +81,6 @@
                     !$v.createUserForm.iamUser.password.iamPasswordRegex
                 "
                 >Invalid password</label
-              >
-            </div>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="py-0 pr-0">
-          <div
-            class="eos-form-group"
-            :class="{
-              'eos-form-group--error': $v.createUserForm.iamUser.path.$error
-            }"
-          >
-            <label class="eos-form-group-label" for="userPath">
-              <eos-info-tooltip label="Path*" message="Should start with '/'" />
-            </label>
-            <input
-              class="eos-form__input_text"
-              type="text"
-              id="userPath"
-              name="userPath"
-              v-model.trim="createUserForm.iamUser.path"
-              @input="$v.createUserForm.iamUser.path.$touch"
-            />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label
-                v-if="
-                  $v.createUserForm.iamUser.path.$dirty &&
-                    !$v.createUserForm.iamUser.path.required
-                "
-                >Path is required</label
-              >
-              <label
-                v-else-if="
-                  $v.createUserForm.iamUser.path.$dirty &&
-                    !$v.createUserForm.iamUser.path.pathRegex
-                "
-                >Invalid path</label
               >
             </div>
           </div>
@@ -297,7 +263,7 @@
             <td>{{ props.item.user_name }}</td>
             <td>{{ props.item.user_id }}</td>
             <td>{{ props.item.arn }}</td>
-            <td>{{ props.item.path }}</td>
+            <!-- <td>{{ props.item.path }}</td> -->
             <eos-has-access
               :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.delete"
             >
@@ -344,7 +310,7 @@ export default class EosIAMUserManagement extends Vue {
     createUserForm: {
       iamUser: {
         user_name: { required, iamUserNameRegex },
-        path: { required, iamPathRegex },
+       // path: { required, iamPathRegex },
         password: { required, iamPasswordRegex }
       },
       confirmPassword: {
@@ -383,11 +349,6 @@ export default class EosIAMUserManagement extends Vue {
       {
         text: "ARN",
         value: "arn",
-        sortable: false
-      },
-      {
-        text: "Path",
-        value: "path",
         sortable: false
       }
     ];
