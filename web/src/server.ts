@@ -41,16 +41,15 @@ if (process.env.SERVER_PROTOCOL == 'http') {
 }
 
 const NODE_PORT = Number(process.env.NODE_PORT) ? Number(process.env.NODE_PORT) : 28100;
-const INCOMING_SOCKET_PORT: number = Number(process.env.INCOMING_SOCKET_PORT);
-const OUTGOING_SOCKET_PORT: number = Number(process.env.OUTGOING_SOCKET_PORT);
+const CSM_AGENT_PORT: number = Number(process.env.CSM_AGENT_PORT);
 const CSM_AGENT_HOST: string = process.env.CSM_AGENT_HOST || "";
 
 server.listen(NODE_PORT, () => {
   console.log("Server is running at " + process.env.SERVER_PROTOCOL + "://localhost:" + NODE_PORT);
 
   // Server shoud send data over other socket
-  const socketServer = new SocketService(OUTGOING_SOCKET_PORT);
-  socketServer.getConnection("ws://" + CSM_AGENT_HOST + ":" + INCOMING_SOCKET_PORT + "/ws");
+  const socketServer = new SocketService(server);
+  socketServer.getConnection("ws://" + CSM_AGENT_HOST + ":" + CSM_AGENT_PORT + "/ws");
 
 }
 );
