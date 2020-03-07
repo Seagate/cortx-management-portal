@@ -312,11 +312,11 @@ textarea:focus {
   border-radius: 50%;
 }
 input:checked + .eos-switch {
-  border: 2px solid #6EBE49;
+  border: 2px solid #6ebe49;
 }
 input:checked + .eos-switch:before {
   border: 0;
-  background-color: #6EBE49;
+  background-color: #6ebe49;
   transform: translateX(13px);
 }
 /* Switch style rules --- End */

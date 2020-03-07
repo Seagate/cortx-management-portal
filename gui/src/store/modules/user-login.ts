@@ -87,10 +87,9 @@ export default class UserLogin extends VuexModule {
   }
 
   @Action
-  public async logoutAction(queryParams: object) {
-    queryParams = queryParams ? queryParams : this.queryParams;
+  public async logoutAction() {
     try {
-      const res = await Api.post(apiRegister.logout, queryParams);
+      const res = await Api.post(apiRegister.logout, {});
       if (res && res.status) {
         return res.status;
       }

@@ -256,7 +256,11 @@ const router = new Router({
           path: "udx-registration",
           name: "udx-registration",
           component: UDXRegistration,
-          meta: { requiresAuth: true, isOnboardingReq: false }
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: false,
+            requiredAccess: userPermissions.sysconfig + userPermissions.list
+          }
         },
         {
           path: "maintenance",
@@ -280,20 +284,28 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.users + userPermissions.list
+                requiredAccess: userPermissions.auditlog + userPermissions.list
               }
             },
             {
               path: "resource",
               name: "resource",
               component: EosResource,
-              meta: { requiresAuth: true, isOnboardingReq: false }
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.sysconfig + userPermissions.list
+              }
             },
             {
               path: "firmware",
               name: "firmware",
               component: EosFirmware,
-              meta: { requiresAuth: true, isOnboardingReq: false }
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.sysconfig + userPermissions.list
+              }
             }
           ]
         },
@@ -327,7 +339,11 @@ const router = new Router({
           path: "about",
           name: "about",
           component: EosAbout,
-          meta: { requiresAuth: true, isOnboardingReq: false }
+          meta: {
+            requiresAuth: true,
+            isOnboardingReq: false,
+            requiredAccess: userPermissions.sysconfig + userPermissions.list
+          }
         },
         {
           path: "clouduser",
