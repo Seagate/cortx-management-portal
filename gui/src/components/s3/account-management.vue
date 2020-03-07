@@ -397,7 +397,7 @@
             >
               <img
                 v-on:click="expand(!isExpanded)"
-                style="cursor: pointer;"
+                class="eos-action-pointer"
                 src="./../../assets/actions/edit-green.svg"
               />
             </eos-has-access>
@@ -407,7 +407,7 @@
             >
               <img
                 @click="openConfirmDeleteDialog(item.account_name)"
-                style="cursor: pointer;"
+                class="eos-action-pointer"
                 src="./../../assets/actions/delete-green.svg"
               />
             </eos-has-access>

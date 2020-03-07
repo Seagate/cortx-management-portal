@@ -156,11 +156,15 @@
               class="eos-cursor-pointer"
               @click="$router.push('/alerts/' + props.item.alert_uuid)"
             />
+            <eos-has-access
+              :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
+            >
             <img
               :src="require('@/assets/comment-filled-default.svg')"
               class="eos-cursor-pointer"
               @click="showAlertCommentsDialog(props.item.alert_uuid)"
             />
+            </eos-has-access>
             <img
               v-if="props.item.acknowledged"
               :src="require('@/assets/acknowledge-default.svg')"
@@ -173,7 +177,10 @@
         </tr>
       </template>
     </v-data-table>
-    <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertIdForComments" />
+    <eos-alert-comments
+      v-model="isShowCommentsDialog"
+      :alertId="alertIdForComments"
+    />
     <eos-confirmation-dialog
       :show="showConfirmationDialog"
       title="Confirmation"

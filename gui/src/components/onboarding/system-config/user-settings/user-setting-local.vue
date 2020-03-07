@@ -183,7 +183,7 @@
           >
             <template v-slot:header="{}">
               <tr>
-                <th class="tableheader" />
+                <th class="tableheader" width="10%" />
                 <th
                   v-for="header in userHeader"
                   :key="header.text"
@@ -232,15 +232,21 @@
             </template>
             <template v-slot:item="props">
               <tr class="font-weight-small">
-                <td @click="onExpand(props)">
-                  <img
-                    v-if="props.isExpanded"
-                    src="./../../../../assets/caret-green-down.png"
-                  />
-                  <img
-                    v-if="!props.isExpanded"
-                    src="./../../../../assets/caret-green-right.png"
-                  />
+                <td>
+                  <eos-has-access
+                    :to="$eosUserPermissions.users + $eosUserPermissions.update"
+                  >
+                    <div @click="onExpand(props)">
+                      <img
+                        v-if="props.isExpanded"
+                        src="./../../../../assets/caret-green-down.png"
+                      />
+                      <img
+                        v-if="!props.isExpanded"
+                        src="./../../../../assets/caret-green-right.png"
+                      />
+                    </div>
+                  </eos-has-access>
                 </td>
                 <td>{{ props.item.username }}</td>
                 <td>
@@ -253,7 +259,7 @@
                     :to="$eosUserPermissions.users + $eosUserPermissions.update"
                   >
                     <img
-                      class="mx-2"
+                      class="mx-2 eos-action-pointer"
                       @click="onExpand(props)"
                       src="./../../../../assets/actions/edit-green.svg"
                     />
@@ -262,7 +268,7 @@
                     :to="$eosUserPermissions.users + $eosUserPermissions.delete"
                   >
                     <img
-                      class="mx-2"
+                      class="mx-2 eos-action-pointer"
                       @click="onDelete(props.item.id)"
                       src="./../../../../assets/actions/delete-green.svg"
                     />
