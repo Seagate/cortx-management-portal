@@ -91,17 +91,18 @@ export default class HeaderBar extends Vue {
     this.$store
       .dispatch("userLogin/logoutAction")
       .then((res: any) => {
+        localStorage.removeItem(this.$data.constStr.access_token);
         if (res === 200) {
           // tslint:disable-next-line: no-console
           console.log("Logout Success");
         }
       })
       .catch(() => {
+        localStorage.removeItem(this.$data.constStr.access_token);
         // tslint:disable-next-line: no-console
         console.error("Logout Action Failed");
       });
     this.$store.commit("userLogin/setUserPermissions", {});
-    localStorage.removeItem(this.$data.constStr.access_token);
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
