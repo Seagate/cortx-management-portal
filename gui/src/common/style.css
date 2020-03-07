@@ -600,7 +600,4 @@ tbody tr:hover {
 .eos-resolved-filled-icon:active {
   background-image: url("../assets/resolved-filled-pressed.svg");
 }
-.eos-action-pointer {
-  cursor: pointer;
-}
 /* Icon buttons styles --- End */

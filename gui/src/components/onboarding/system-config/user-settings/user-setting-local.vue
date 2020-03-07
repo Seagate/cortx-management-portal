@@ -259,7 +259,7 @@
                     :to="$eosUserPermissions.users + $eosUserPermissions.update"
                   >
                     <img
-                      class="mx-2 eos-action-pointer"
+                      class="mx-2 eos-cursor-pointer"
                       @click="onExpand(props)"
                       src="./../../../../assets/actions/edit-green.svg"
                     />
@@ -268,7 +268,7 @@
                     :to="$eosUserPermissions.users + $eosUserPermissions.delete"
                   >
                     <img
-                      class="mx-2 eos-action-pointer"
+                      class="mx-2 eos-cursor-pointer"
                       @click="onDelete(props.item.id)"
                       src="./../../../../assets/actions/delete-green.svg"
                     />
