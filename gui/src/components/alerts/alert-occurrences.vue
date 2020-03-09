@@ -180,8 +180,14 @@ export default class EosAlertOccurrences extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
   public async onSort(header: any) {
-    if (header.sortable) {
-      this.$store.commit("alerts/setSortInfo", header.value);
+     if (header.sortable) {
+    if (this.sortInfo.header === header) {
+      this.sortInfo.sort_dir =
+        this.sortInfo.sort_dir === "asc" ? "desc" : "asc";
+    } else {
+      this.sortInfo.header = header;
+      this.sortInfo.sort_dir = "asc";
+    }
       this.onSortPaginate();
     }
   }

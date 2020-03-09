@@ -196,8 +196,7 @@
     </template>
     <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
     <eos-tabs :tabsInfo="tabsInfo" />
-    <eos-alert-occurrences v-if="showOccurrenceTab" :sensor_info="sensor_info"/>
-    <eos-alert-related v-if="showRelatedTab" />
+    <eos-alert-occurrences v-if="showOccurrenceTab" :sensor_info="sensor_info" />
   </div>
 </template>
 
@@ -211,7 +210,6 @@ import { AlertEventDetail, AlertExtendedInfo } from "../../models/alert";
 import AlertExtendedInfoComp from "./alert-extended-info.vue";
 import EosAlertComments from "./alert-comments.vue";
 import EosAlertOccurrences from "./alert-occurrences.vue";
-import EosAlertRelated from "./alert-related.vue";
 import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
 @Component({
   name: "eos-alert-details",
@@ -219,7 +217,6 @@ import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
     AlertExtendedInfoComp,
     EosAlertComments,
     EosAlertOccurrences,
-    EosAlertRelated,
     EosTabs
   }
 })
@@ -231,17 +228,14 @@ export default class EosAlertDetails extends Vue {
   public alertDetails: any = {};
   public showAlertDetailsDialog: boolean = false;
   public isShowCommentsDialog: boolean = false;
-  public sensor_info:string="";
+  public sensor_info: string = "";
   public addCommentForm = {
     comment_text: ""
   };
   private showOccurrenceTab: boolean = true;
   private showRelatedTab: boolean = false;
   public tabsInfo: TabsInfo = {
-    tabs: [
-      { id: 1, label: "Occurrences", show: true },
-      { id: 2, label: "Related", show: true }
-    ],
+    tabs: [{ id: 1, label: "Occurrences", show: true }],
     selectedTab: 1
   };
   @Watch("tabsInfo.selectedTab")
@@ -250,10 +244,6 @@ export default class EosAlertDetails extends Vue {
       case 1:
         this.showOccurrenceTab = true;
         this.showRelatedTab = false;
-        break;
-      case 2:
-        this.showOccurrenceTab = false;
-        this.showRelatedTab = true;
         break;
     }
   }
@@ -273,7 +263,7 @@ export default class EosAlertDetails extends Vue {
       message: "Fetching alert details..."
     });
     const res = await Api.getAll(apiRegister.all_alerts + "/" + this.alertId);
-     this.sensor_info= res.data.sensor_info;
+    this.sensor_info = res.data.sensor_info;
     if (res.data) {
       this.alert = res.data;
       try {
