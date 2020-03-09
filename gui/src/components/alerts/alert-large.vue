@@ -127,12 +127,7 @@
           <td>
             <div
               style="margin: auto;"
-              v-if="props.item.severity === alertStatus.warning"
-              class="eos-status-chip eos-chip-offline"
-            ></div>
-            <div
-              style="margin: auto;"
-              v-else-if="
+              v-if="
                 props.item.severity === alertStatus.critical ||
                   props.item.severity === alertStatus.error
               "
@@ -146,7 +141,7 @@
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.informational"
-              class="eos-status-chip eos-chip-ok"
+              class="eos-status-chip eos-chip-information"
             ></div>
           </td>
           <td>{{ props.item.description ? props.item.description : "--" }}</td>
@@ -156,11 +151,16 @@
               class="eos-cursor-pointer"
               @click="$router.push('/alerts/' + props.item.alert_uuid)"
             />
+            <eos-has-access
+              :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
+            >
             <img
+              v-if="!(props.item.acknowledged && props.item.resolved)"
               :src="require('@/assets/comment-filled-default.svg')"
               class="eos-cursor-pointer"
               @click="showAlertCommentsDialog(props.item.alert_uuid)"
             />
+            </eos-has-access>
             <img
               v-if="props.item.acknowledged"
               :src="require('@/assets/acknowledge-default.svg')"
@@ -173,7 +173,10 @@
         </tr>
       </template>
     </v-data-table>
-    <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertIdForComments" />
+    <eos-alert-comments
+      v-model="isShowCommentsDialog"
+      :alertId="alertIdForComments"
+    />
     <eos-confirmation-dialog
       :show="showConfirmationDialog"
       title="Confirmation"

@@ -9,5 +9,6 @@ export const userPermissions = {
   s3buckets: "s3buckets",
   users: "users",
   alerts: "alerts",
-  stats: "stats"
+  stats: "stats",
+  auditlog: "auditlog",
 };

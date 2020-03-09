@@ -18,7 +18,10 @@
       <img :src="require('@/assets/arrow-left.svg')" />
       <span class="mt-1">Alerts</span>
     </div>
-    <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);" class="mt-4 mb-3">
+    <div
+      style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);"
+      class="mt-4 mb-3"
+    >
       <div style="height: 30px;">
         <div class="eos-float-l" v-if="alert && alertExtendedInfo">
           <label class="eos-text-lg eos-text-bold">Id:&nbsp;</label>
@@ -26,9 +29,19 @@
           <label class="eos-text-lg eos-text-bold">&nbsp;| Name:&nbsp;</label>
           <label>{{ alert.module_type }}</label>
         </div>
-        <div class="eos-float-r">
-          <div class="eos-icon-btn eos-comment-icon" @click="isShowCommentsDialog = true"></div>
-          <div class="eos-icon-btn eos-acknowledge-icon ml-5" @click="acknowledgeAlert()"></div>
+        <div class="eos-float-r" v-if="!(alert.acknowledged && alert.resolved)">
+          <eos-has-access
+            :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
+          >
+            <div
+              class="eos-icon-btn eos-comment-icon"
+              @click="isShowCommentsDialog = true"
+            ></div>
+            <div
+              class="eos-icon-btn eos-acknowledge-icon ml-5"
+              @click="acknowledgeAlert()"
+            ></div>
+          </eos-has-access>
         </div>
       </div>
       <div class="eos-text-md eos-text-bold">
@@ -43,30 +56,43 @@
           <label>&nbsp;| State: {{ alert.state }}</label>
         </div>
         <div>
+          <span v-if="alert.module_type === 'logical_volume'"
+            >Volume group: {{ alert.volume_group }} | Volume name:
+            {{ alert.name }}</span
+          >
+          <span v-else-if="alert.module_type === 'system'"
+            >Version: {{ alert.version }} | Nodename: {{ alert.name }}</span
+          >
+          <span v-else-if="alert.module_type === 'volume'"
+            >Size: {{ alert.volume_size }} | Total size:
+            {{ alert.volume_total_size }}</span
+          >
+          <span v-else-if="alert.module_type === 'current'"
+            >Sensor name: {{ alert.name }}</span
+          >
+          <span v-else-if="alert.module_name === 'enclosure:fru:psu'"
+            >Location: {{ alert.location }}</span
+          >
           <span
-            v-if="alert.module_type === 'logical_volume'"
-          >Volume group: {{ alert.volume_group }} | Volume name: {{ alert.name }}</span>
-          <span
-            v-else-if="alert.module_type === 'system'"
-          >Version: {{ alert.version }} | Nodename: {{ alert.name }}</span>
-          <span
-            v-else-if="alert.module_type === 'volume'"
-          >Size: {{ alert.volume_size }} | Total size: {{ alert.volume_total_size }}</span>
-          <span v-else-if="alert.module_type === 'current'">Sensor name: {{ alert.name }}</span>
-          <span v-else-if="alert.module_name === 'enclosure:fru:psu'">Location: {{ alert.location }}</span>
-          <span
-            v-else-if="alert.module_name === 'enclosure:fru:fan' || alert.module_name === 'enclosure:fru:sideplane'"
-          >Name: {{ alert.name }} | Location: {{ alert.location }}</span>
-          <span
-            v-else-if="alert.module_name === 'enclosure:fru:disk'"
-          >Serial number: {{ alert.serial_number }} | Size: {{ alert.volume_size }}</span>
-          <span
-            v-else-if="alert.module_type === 'controller'"
-          >Serial number: {{ alert.serial_number }}</span>
+            v-else-if="
+              alert.module_name === 'enclosure:fru:fan' ||
+                alert.module_name === 'enclosure:fru:sideplane'
+            "
+            >Name: {{ alert.name }} | Location: {{ alert.location }}</span
+          >
+          <span v-else-if="alert.module_name === 'enclosure:fru:disk'"
+            >Serial number: {{ alert.serial_number }} | Size:
+            {{ alert.volume_size }}</span
+          >
+          <span v-else-if="alert.module_type === 'controller'"
+            >Serial number: {{ alert.serial_number }}</span
+          >
         </div>
       </div>
       <div class="mt-3">
-        <label v-if="alert">{{ new Date(alert.created_time*1000) | timeago }}</label>
+        <label v-if="alert">{{
+          new Date(alert.created_time * 1000) | timeago
+        }}</label>
       </div>
       <div style="height: 30px;" class="mt-2">
         <div class="eos-float-l">
@@ -75,34 +101,52 @@
             class="eos-float-l"
             :src="require('@/assets/resolved-filled-default.svg')"
           />
-          <img v-else class="eos-float-l" :src="require('@/assets/resolved-filled-disabled.svg')" />
+          <img
+            v-else
+            class="eos-float-l"
+            :src="require('@/assets/resolved-filled-disabled.svg')"
+          />
           <label
             :class="alert.resolved ? '' : 'eos-alert-status-chip-disabled'"
             style="float: left;"
-          >Resolved |</label>
+            >Resolved |</label
+          >
           <img
             v-if="alert.acknowledged"
             class="eos-float-l"
             :src="require('@/assets/acknowledge-default.svg')"
           />
-          <img v-else class="eos-float-l" :src="require('@/assets/acknowledge-disabled.svg')" />
+          <img
+            v-else
+            class="eos-float-l"
+            :src="require('@/assets/acknowledge-disabled.svg')"
+          />
           <label
             :class="alert.acknowledged ? '' : 'eos-alert-status-chip-disabled'"
             style="float: left;"
-          >Acknowledged</label>
+            >Acknowledged</label
+          >
         </div>
         <div class="eos-float-r">
           <label
             @click="showAlertDetailsDialog = true"
             class="eos-text-md eos-cursor-pointer"
             style="color: #6EBE49;"
-          >Details</label>
+            >Details</label
+          >
         </div>
       </div>
     </div>
     <template v-if="alertEventDetails.length > 0">
-      <div v-for="(event_detail, i) in alertEventDetails" v-bind:key="'event_detail_' + i">
-        <div class="mb-2" style="border: 1px solid #E8E8E8;" v-if="event_detail.event_reason">
+      <div
+        v-for="(event_detail, i) in alertEventDetails"
+        v-bind:key="'event_detail_' + i"
+      >
+        <div
+          class="mb-2"
+          style="border: 1px solid #E8E8E8;"
+          v-if="event_detail.event_reason"
+        >
           <div class="pa-2" style="background: #E8E8E8;">
             <label>Name:&nbsp;</label>
             <label>{{ event_detail.name }}</label>
@@ -111,15 +155,19 @@
             <label>Reason: {{ event_detail.event_reason }}</label>
             <span
               v-if="event_detail.event_recommendation.length > 0"
-              @click="event_detail.showRecommendation = !event_detail.showRecommendation"
+              @click="
+                event_detail.showRecommendation = !event_detail.showRecommendation
+              "
               style="color: #6EBE49;cursor: pointer;font-size: 12px;"
-            >Recommendations</span>
+              >Recommendations</span
+            >
           </div>
           <div class="pa-2" v-if="event_detail.showRecommendation">
             <label>Recommendations:</label>
             <div>
               <ul
-                v-for="(recommendation, index) in event_detail.event_recommendation"
+                v-for="(recommendation,
+                index) in event_detail.event_recommendation"
                 v-bind:key="index"
               >
                 <li v-if="recommendation">{{ recommendation }}</li>
@@ -156,10 +204,7 @@ import { Validations } from "vuelidate-property-decorators";
 import { required, maxLength } from "vuelidate/lib/validators";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
-import {
-  AlertEventDetail,
-  AlertExtendedInfo
-} from "../../models/alert";
+import { AlertEventDetail, AlertExtendedInfo } from "../../models/alert";
 import AlertExtendedInfoComp from "./alert-extended-info.vue";
 import EosAlertComments from "./alert-comments.vue";
 
@@ -192,9 +237,7 @@ export default class EosAlertDetails extends Vue {
       show: true,
       message: "Fetching alert details..."
     });
-    const res = await Api.getAll(
-      apiRegister.all_alerts + "/" + this.alertId
-    );
+    const res = await Api.getAll(apiRegister.all_alerts + "/" + this.alertId);
     if (res.data) {
       this.alert = res.data;
       try {
@@ -278,7 +321,7 @@ export default class EosAlertDetails extends Vue {
 }
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .eos-back-to-alerts-btn {
   display: flex;
   cursor: pointer;

@@ -90,18 +90,10 @@ export default class HeaderBar extends Vue {
     // Invalidate session from Server, remove localStorage token and re-route to login page
     this.$store
       .dispatch("userLogin/logoutAction")
-      .then((res: any) => {
-        if (res === 200) {
-          // tslint:disable-next-line: no-console
-          console.log("Logout Success");
-        }
-      })
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("Logout Action Failed");
+      .finally(() => {
+        localStorage.removeItem(this.$data.constStr.access_token);
       });
     this.$store.commit("userLogin/setUserPermissions", {});
-    localStorage.removeItem(this.$data.constStr.access_token);
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
