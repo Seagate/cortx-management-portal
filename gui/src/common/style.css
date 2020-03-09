@@ -494,6 +494,9 @@ tbody tr:hover {
   width: 16px;
   border-radius: 50%;
 }
+.eos-chip-information {
+  background: #00a1dd;
+}
 .eos-chip-ok {
   background: #6ebe49;
 }

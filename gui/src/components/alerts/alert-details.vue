@@ -29,7 +29,7 @@
           <label class="eos-text-lg eos-text-bold">&nbsp;| Name:&nbsp;</label>
           <label>{{ alert.module_type }}</label>
         </div>
-        <div class="eos-float-r">
+        <div class="eos-float-r" v-if="!(alert.acknowledged && alert.resolved)">
           <eos-has-access
             :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
           >
