@@ -22,8 +22,8 @@ import { ApiResponse } from "./api-model";
 //       - if create admin user page no need of auth token
 axios.interceptors.request.use(
   config => {
-    const conststr = require("../common/const-string.json");
-    const token = localStorage.getItem(conststr.access_token);
+    const constStr = require("../common/const-string.json");
+    const token = localStorage.getItem(constStr.access_token);
     if (token) {
       config.headers.Authorization = token;
     }
@@ -43,8 +43,9 @@ axios.interceptors.response.use(
   error => {
     // Handle Unauthorised response. Re-route to login page if unauthorised response received.
     if (error.response && error.response.status === 401) {
-      const conststr = require("../common/const-string.json");
-      localStorage.removeItem(conststr.access_token);
+      const constStr = require("../common/const-string.json");
+      localStorage.removeItem(constStr.access_token);
+      localStorage.removeItem(constStr.username);
       router.push("/login");
     }
     return Promise.reject(error);
@@ -95,15 +96,18 @@ export abstract class Api {
   }
   // Wrapper method for post api to upload file
   public static async uploadFile(url: string, payload: FormData) {
-    return await axios.post(url, payload, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    }).then((response) => {
-      return Promise.resolve(this.buildSuccessResponse(response));
-    }).catch((error) => {
-      return Promise.reject(this.buildErrorResponse(error.response));
-    });
+    return await axios
+      .post(url, payload, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      .then(response => {
+        return Promise.resolve(this.buildSuccessResponse(response));
+      })
+      .catch(error => {
+        return Promise.reject(this.buildErrorResponse(error.response));
+      });
   }
   // Wrapper method for post api
   public static async delete(url: string, id: string) {
@@ -142,6 +146,7 @@ export abstract class Api {
 
   private static buildErrorResponse(response: any): ApiResponse {
     const apiResponse: ApiResponse = {
+      data: response.data ? response.data : {},
       status: response.status,
       statusText: response.statusText,
       error: {

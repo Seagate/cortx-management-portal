@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <v-card class="ma-0 elevation-0" width="100%" min-height="410px" tile>
+  <v-card id="lineChartContainer" class="ma-0 elevation-0" width="100%" tile>
     <div class="loader-container" v-if="show && $route.name!=='dashboard'">
       <div class="loader-message" v-if="show">
         <label>{{ message }}</label>
@@ -56,7 +56,7 @@
         </v-tabs>
       </v-col>
     </v-row>
-    <div :id="chartId"></div>
+    <div class="eos-chart-container" :id="chartId"></div>
   </v-card>
 </template>
 <script lang="ts">
@@ -72,7 +72,6 @@ export interface StatsQueryParams {
   metric1: string;
   metric2: string;
 }
-
 
 @Component({
   name: "eos-line-chart"
@@ -180,7 +179,7 @@ export default class EosLineChart extends Vue {
     const demoData = [
       ["x", new Date().getTime()],
       ["throughput_read", 0],
-      ["throughput_write", 0],
+      ["throughput_write", 0]
     ];
 
     obj.then(data => {
@@ -191,6 +190,9 @@ export default class EosLineChart extends Vue {
       this.chart = c3.generate({
         // bindto: "#line_chart",
         bindto: "#" + this.chartId,
+        size: {
+          height: window.innerHeight < 900 ? 190 : 320
+        },
         data: {
           x: "x",
           columns: data ? data : [[]],
@@ -312,4 +314,15 @@ export default class EosLineChart extends Vue {
   margin-left: 1rem;
   margin-top: 1rem;
 }
+@media screen and (min-height: 600px) {
+  .eos-chart-container {
+    height: 190px;
+  }
+}
+@media screen and (min-height: 900px) {
+  .eos-chart-container {
+    height: 320px;
+  }
+}
+
 </style>

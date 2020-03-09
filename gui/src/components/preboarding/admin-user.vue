@@ -200,13 +200,12 @@ export default class EosAdminUser extends Vue {
       .dispatch("userLogin/createUserAction", queryParams)
       .then((res: any) => {
         if (res) {
-          if (res.status === 201) {
-            this.$router.push({ name: "preboarding-login" });
-          } else if (res.status === 409) {
-            throw new Error("Conflict: Root user already exists");
-          }
+          this.$store.dispatch("systemConfig/hideLoader");
+          this.$data.createUserInProgress = false;
+          this.$router.push({ name: "preboarding-login" });
+        } else {
+          throw new Error("Create admin user failed");
         }
-        throw new Error("Create admin user failed");
       })
       .catch((e: any) => {
         this.$data.isValidResponse = false;

@@ -57,7 +57,7 @@ export default class UserLogin extends VuexModule {
     return this.userPermissions;
   }
 
-  @Action
+  @Action({ rawError: true })
   public async createUserAction(queryParams: object) {
     queryParams = queryParams ? queryParams : this.queryParams;
     try {
@@ -66,7 +66,9 @@ export default class UserLogin extends VuexModule {
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
-      return e;
+      if (e && e.data && e.data.message_text) {
+        throw new Error(e.data.message_text);
+      }
     }
   }
 
@@ -85,10 +87,9 @@ export default class UserLogin extends VuexModule {
   }
 
   @Action
-  public async logoutAction(queryParams: object) {
-    queryParams = queryParams ? queryParams : this.queryParams;
+  public async logoutAction() {
     try {
-      const res = await Api.post(apiRegister.logout, queryParams);
+      const res = await Api.post(apiRegister.logout, {});
       if (res && res.status) {
         return res.status;
       }
@@ -97,10 +98,13 @@ export default class UserLogin extends VuexModule {
       console.log("err logger: ", e);
     }
   }
-  @Action
+  @Action({ rawError: true })
   public async getUserPermissionsAction() {
     try {
-      if (Object.entries(this.userPermissions).length === 0) {
+      if (
+        this.userPermissions &&
+        !Object.entries(this.userPermissions).length
+      ) {
         const res = await Api.getAll(apiRegister.user_permissions);
         if (res && res.data && res.data.permissions) {
           this.context.commit("setUserPermissions", res.data.permissions);
@@ -112,8 +116,10 @@ export default class UserLogin extends VuexModule {
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
+      throw new Error(e.message);
     }
   }
+
   @Action
   public async addLicenseKey(queryParams: object) {
     try {
