@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div class="pa-5">
+  <div id="alertMediumContainer">
     <eos-health-summary />
     <div style="height: 30px;">
       <div class="eos-alert-title">New alerts</div>
@@ -84,23 +84,18 @@
             <td>
               <div
                 style="margin: auto;"
-                v-if="props.item.severity === alertStatus.warning"
-                class="eos-status-chip eos-chip-offline"
-              ></div>
-              <div
-                style="margin: auto;"
-                v-else-if="props.item.severity ===alertStatus.critical || props.item.severity === alertStatus.error"
+                v-if="props.item.severity ===alertStatus.critical || props.item.severity === alertStatus.error"
                 class="eos-status-chip eos-chip-alert"
               ></div>
               <div
                 style="margin: auto;"
-                v-else-if="props.item.severity ===alertStatus.warning"
+                v-else-if="props.item.severity === alertStatus.warning"
                 class="eos-status-chip eos-chip-warning"
               ></div>
               <div
                 style="margin: auto;"
                 v-if="props.item.severity === alertStatus.informational"
-                class="eos-status-chip eos-chip-ok"
+                class="eos-status-chip eos-chip-information"
               ></div>
             </td>
             <td>{{props.item.description ? props.item.description : "--"}}</td>
@@ -175,5 +170,15 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
 .eos-alert-navigate {
   float: right;
   cursor: pointer;
+}
+@media screen and (min-height: 600px) {
+  #alertMediumContainer {
+    padding-left: 20px;
+  }
+}
+@media screen and (min-height: 900px) {
+  #alertMediumContainer {
+    padding: 20px;
+  }
 }
 </style>

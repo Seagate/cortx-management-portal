@@ -14,6 +14,8 @@
  *****************************************************************************/
 
 import WebSocket from 'ws';
+import * as http from 'http';
+import * as https from 'https';
 
 /**
  * SocketService.ts is responsible to listen a WebSocket open by python server
@@ -23,8 +25,8 @@ export class SocketService {
 
     wss: WebSocket.Server;
 
-    constructor(serverport: number) {
-        this.wss = new WebSocket.Server({ port: serverport });
+    constructor(server: http.Server | https.Server) {
+        this.wss = new WebSocket.Server({ server: server });
     }
 
     /*
