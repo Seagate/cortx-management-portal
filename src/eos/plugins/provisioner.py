@@ -2,7 +2,7 @@
 from csm.common.log import Log
 
 
-class ProvisionerPlugin:
+class Provisioner:
     def __init__(self):
         self._provisioner = "provisioner"
 
