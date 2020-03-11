@@ -17,7 +17,7 @@ import https from 'https';
 import { Request, Response } from "express";
 import HttpStatus from 'http-status-codes';
 import * as HTTPError from '../utils/http-errors';
-import fs from 'fs';
+import logger from './../config/winston';
 
 let base_url = process.env.CSM_AGENT_PROTOCOL + "://" + process.env.CSM_AGENT_HOST
     + (process.env.CSM_AGENT_PORT ? ":" + process.env.CSM_AGENT_PORT : "");
@@ -58,7 +58,7 @@ export abstract class Api {
                     'authorization': authorization
                 }
             }
-
+            logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
@@ -91,6 +91,8 @@ export abstract class Api {
                     'responseType': 'blob'
                 }
             }
+
+            logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleFileResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = err.message;
                 reject(error);
@@ -127,6 +129,8 @@ export abstract class Api {
                     'authorization': authorization
                 }
             }
+
+            logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
@@ -159,6 +163,7 @@ export abstract class Api {
                 }
             }
 
+            logger.info('PATCH: ' + patchurl);
             let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
@@ -193,6 +198,7 @@ export abstract class Api {
                 }
             }
 
+            logger.info('PUT: ' + puturl);
             let httpRequest = http_agent.request(puturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
@@ -223,6 +229,7 @@ export abstract class Api {
                 }
             }
 
+            logger.info('POST: ' + posturl);
             let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 console.log("1. " + err);
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -254,6 +261,7 @@ export abstract class Api {
                 }
             }
 
+            logger.info('DELETE: ' + deleteUrl);
             let httpRequest = http_agent.request(deleteUrl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
                 reject(error);
@@ -282,9 +290,12 @@ export abstract class Api {
                     response = data;
                 }
                 if (sucessCodeRegex.test(apiresp.statusCode)) {
+                    logger.info('SUCCESS RESPONSE: ' + JSON.stringify(response));
                     resolve(response);
                 } else {
                     let err = Api.handleError(apiresp.statusCode, response);
+                    logger.error('ERROR RESPONSE: ' + JSON.stringify(response) + ' STATUS CODE: ' 
+                    + apiresp.statusCode + ' ERROR: ' + JSON.stringify(err));
                     reject(err);
                 }
             });
@@ -330,9 +341,12 @@ export abstract class Api {
                     response = data;
                 }
                 if (sucessCodeRegex.test(req.statusCode)) {
+                    logger.info('SUCCESS RESPONSE');
                     resolve(response);
                 } else {
                     let err = Api.handleError(req.statusCode, response);
+                    logger.error('ERROR RESPONSE: STATUS CODE: ' 
+                    + req.statusCode + ' ERROR: ' + JSON.stringify(err));
                     reject(err);
                 }
             });
