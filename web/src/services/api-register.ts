@@ -31,8 +31,8 @@ export default {
   capacity: `/api/${version}/capacity`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
+  addlicensekey:`/api/${version}/license/onboarding`,
   all_alerts_history: `/api/${version}/alerts_history`,
   auditlogs: `/api/${version}/auditlogs`,
-  addlicensekey:`/api/${version}/license`,
   health_summary: `/api/${version}/system/health`
 };
