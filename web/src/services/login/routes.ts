@@ -52,7 +52,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/license",
+    path: "/api/v1/license/onboarding",
     method: "post",
     handler: [
       checkRequiredParams,
