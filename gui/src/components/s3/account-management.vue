@@ -30,15 +30,13 @@
                   $v.createAccountForm.account.account_name.$dirty &&
                     !$v.createAccountForm.account.account_name.required
                 "
-                >Account name is required</label
-              >
+              >Account name is required</label>
               <label
                 v-else-if="
                   $v.createAccountForm.account.account_name.$dirty &&
                     !$v.createAccountForm.account.account_name.accountNameRegex
                 "
-                >Invalid account name</label
-              >
+              >Invalid account name</label>
             </div>
           </div>
         </v-col>
@@ -70,15 +68,13 @@
                   $v.createAccountForm.account.password.$dirty &&
                     !$v.createAccountForm.account.password.required
                 "
-                >Password is required</label
-              >
+              >Password is required</label>
               <label
                 v-else-if="
                   $v.createAccountForm.account.password.$dirty &&
                     !$v.createAccountForm.account.password.passwordRegex
                 "
-                >Invalid password</label
-              >
+              >Invalid password</label>
             </div>
           </div>
         </v-col>
@@ -92,9 +88,7 @@
                 $v.createAccountForm.account.account_email.$error
             }"
           >
-            <label class="eos-form-group-label" for="accountEmail"
-              >Email id*</label
-            >
+            <label class="eos-form-group-label" for="accountEmail">Email id*</label>
             <input
               class="eos-form__input_text"
               type="text"
@@ -109,15 +103,13 @@
                   $v.createAccountForm.account.account_email.$dirty &&
                     !$v.createAccountForm.account.account_email.required
                 "
-                >Email id is required</label
-              >
+              >Email id is required</label>
               <label
                 v-else-if="
                   $v.createAccountForm.account.account_email.$dirty &&
                     !$v.createAccountForm.account.account_email.email
                 "
-                >Invalid email id</label
-              >
+              >Invalid email id</label>
             </div>
           </div>
         </v-col>
@@ -129,9 +121,7 @@
                 $v.createAccountForm.confirmPassword.$error
             }"
           >
-            <label class="eos-form-group-label" for="confirmPassword"
-              >Confirm password*</label
-            >
+            <label class="eos-form-group-label" for="confirmPassword">Confirm password*</label>
             <input
               class="eos-form__input_text"
               type="password"
@@ -146,8 +136,7 @@
                 $v.createAccountForm.confirmPassword.$dirty &&
                   !$v.createAccountForm.confirmPassword.sameAsPassword
               "
-              >Passwords do not match</span
-            >
+            >Passwords do not match</span>
           </div>
         </v-col>
       </v-row>
@@ -158,38 +147,28 @@
             class="eos-btn-primary"
             @click="createAccount()"
             :disabled="$v.createAccountForm.$invalid"
-          >
-            Create account
-          </button>
+          >Create account</button>
           <button
             type="button"
             class="ml-8 eos-btn-secondary"
             @click="closeCreateAccountForm()"
-          >
-            Cancel
-          </button>
+          >Cancel</button>
         </v-col>
       </v-row>
     </div>
-    <eos-has-access
-      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.create"
-    >
+    <eos-has-access :to="$eosUserPermissions.s3accounts + $eosUserPermissions.create">
       <button
         type="button"
         class="mt-2 mb-2 eos-btn-primary"
         v-if="!showCreateAccountForm"
         @click="openCreateAccountForm()"
-      >
-        Create
-      </button>
+      >Create</button>
     </eos-has-access>
     <v-dialog v-model="showAccountDetailsDialog" persistent max-width="790">
       <v-card>
         <v-system-bar color="greay lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="closeAccountDetailsDialog()" style="cursor: pointer;"
-            >mdi-close</v-icon
-          >
+          <v-icon @click="closeAccountDetailsDialog()" style="cursor: pointer;">mdi-close</v-icon>
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
@@ -205,29 +184,19 @@
 
         <table class="mx-7">
           <tr style>
-            <th style="width:15rem;height:6rem;text-align: left">
-              Account name
-            </th>
+            <th style="width:15rem;height:6rem;text-align: left">Account name</th>
             <th style="width:24.2rem;text-align: left">Access key</th>
             <th style="width:5rem;text-align: left">Secret</th>
           </tr>
           <tr>
-            <td style="width:15rem;height:2rem;text-align: left">
-              {{ account.account_name }}
-            </td>
+            <td style="width:15rem;height:2rem;text-align: left">{{ account.account_name }}</td>
             <td>{{ account.access_key }}</td>
             <td>{{ account.secret_key }}</td>
           </tr>
         </table>
 
         <v-card-actions>
-          <button
-            type="button"
-            class="ma-5 eos-btn-primary"
-            @click="closeAccountDetailsDialog()"
-          >
-            Ok
-          </button>
+          <button type="button" class="ma-5 eos-btn-primary" @click="closeAccountDetailsDialog()">Ok</button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -236,11 +205,7 @@
       <v-card>
         <v-system-bar color="greay lighten-3">
           <v-spacer></v-spacer>
-          <v-icon
-            @click="closeConfirmDeleteDialog('no')"
-            style="cursor: pointer;"
-            >mdi-close</v-icon
-          >
+          <v-icon @click="closeConfirmDeleteDialog('no')" style="cursor: pointer;">mdi-close</v-icon>
         </v-system-bar>
         <v-card-title class="title ml-3">
           <img class="mr-2" src="./../../assets/status/warning.png" />
@@ -248,9 +213,9 @@
         </v-card-title>
         <v-divider />
         <v-card-text>
-          <label class="ml-3 delete-account-confirmation-msg"
-            >Are you sure you want to delete the account?</label
-          >
+          <label
+            class="ml-3 delete-account-confirmation-msg"
+          >Are you sure you want to delete the account?</label>
         </v-card-text>
 
         <v-card-actions>
@@ -258,22 +223,16 @@
             type="button"
             class="ma-5 eos-btn-primary"
             @click="closeConfirmDeleteDialog('yes')"
-          >
-            Yes
-          </button>
+          >Yes</button>
           <button
             type="button"
             class="ma-5 eos-btn-primary"
             @click="closeConfirmDeleteDialog('no')"
-          >
-            No
-          </button>
+          >No</button>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <eos-has-access
-      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
-    >
+    <eos-has-access :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list">
       <v-data-table
         :headers="accountsTableHeaderList"
         :items="accountsList"
@@ -288,11 +247,7 @@
       >
         <template v-slot:header="{}">
           <tr>
-            <th
-              v-for="header in accountsTableHeaderList"
-              :key="header.text"
-              class="tableheader"
-            >
+            <th v-for="header in accountsTableHeaderList" :key="header.text" class="tableheader">
               <span>{{ header.text }}</span>
             </th>
           </tr>
@@ -307,9 +262,7 @@
                     'eos-form-group--error': $v.editAccountForm.password.$error
                   }"
                 >
-                  <label class="eos-form-group-label" for="accountPasswordEdit"
-                    >Password*</label
-                  >
+                  <label class="eos-form-group-label" for="accountPasswordEdit">Password*</label>
                   <input
                     class="eos-form__input_text"
                     type="password"
@@ -324,15 +277,13 @@
                         $v.editAccountForm.password.$dirty &&
                           !$v.editAccountForm.password.required
                       "
-                      >Password is required</label
-                    >
+                    >Password is required</label>
                     <label
                       v-else-if="
                         $v.editAccountForm.password.$dirty &&
                           !$v.editAccountForm.password.passwordRegex
                       "
-                      >Invalid password</label
-                    >
+                    >Invalid password</label>
                   </div>
                 </div>
               </v-col>
@@ -344,9 +295,7 @@
                       $v.editAccountForm.confirmPassword.$error
                   }"
                 >
-                  <label class="eos-form-group-label" for="confirmPasswordEdit"
-                    >Confirm password*</label
-                  >
+                  <label class="eos-form-group-label" for="confirmPasswordEdit">Confirm password*</label>
                   <input
                     class="eos-form__input_text"
                     type="password"
@@ -361,8 +310,7 @@
                       $v.editAccountForm.confirmPassword.$dirty &&
                         !$v.editAccountForm.confirmPassword.sameAsPassword
                     "
-                    >Passwords do not match</span
-                  >
+                  >Passwords do not match</span>
                 </div>
               </v-col>
             </v-row>
@@ -374,17 +322,13 @@
                   class="eos-btn-primary"
                   @click="editAccount(props)"
                   :disabled="$v.editAccountForm.$invalid"
-                >
-                  Update
-                </button>
+                >Update</button>
                 <button
                   type="button"
                   id="btncancelEditpass"
                   class="ml-8 eos-btn-secondary"
                   @click="closeEditAccountForm()"
-                >
-                  Cancel
-                </button>
+                >Cancel</button>
               </v-col>
             </v-row>
           </td>
@@ -550,14 +494,10 @@ export default class EosAccountManagement extends Vue {
   }
 
   public clearCreateAccountForm() {
-    this.account = {} as Account;
-    this.createAccountForm = {
-      account: {} as Account,
-      confirmPassword: ""
-    };
-    if (this.$v.createAccountForm) {
-      this.$v.createAccountForm.$reset();
-    }
+    this.createAccountForm.confirmPassword = "";
+    this.createAccountForm.account.password = "";
+    this.createAccountForm.account.account_name = "";
+    this.createAccountForm.account.account_email = "";
   }
 
   public openConfirmDeleteDialog(accountName: string) {
@@ -583,7 +523,6 @@ export default class EosAccountManagement extends Vue {
     }
     this.accountToDelete = "";
   }
-
   private async deleteAccount() {
     this.$store.dispatch(
       "systemConfig/showLoader",
@@ -623,29 +562,10 @@ tr {
 .notActive {
   opacity: 0;
 }
-.headerText {
-  color: black;
-}
-.backoverview {
-  position: relative;
-  top: 1em;
-  cursor: pointer;
-}
-.backoverviewimg {
-  position: relative;
-  display: inline-block;
-}
-.backoverviewtxt {
-  position: relative;
-  top: -0.3em;
-}
 .tableheader:hover {
   .notActive {
     opacity: 1;
   }
-}
-.largeAlert {
-  border: 2px solid #e3e3e3;
 }
 tbody tr:active {
   border-top: 2px solid darkgray !important;
