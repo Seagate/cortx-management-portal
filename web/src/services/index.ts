@@ -7,7 +7,8 @@ import userRoutes from "./user/routes";
 import s3Routes from "./s3/routes";
 import s3BucketRoutes from "./s3/bucket/routes";
 import capacityRoutes from "./stats/capacity/routes";
-import userConfigRoutes from "./onboarding/userconfig/routes";
+import alertsHistoryRoutes from "./alerts_history/routes";
+import userConfigRoutes from "./onboarding/userconfig/routes"
 import systemHealthRoutes from "./system/routes";
 import audit from "./audit/routes";
 
@@ -22,6 +23,7 @@ export default [
     ...s3BucketRoutes,
     ...capacityRoutes,
     ...userConfigRoutes,
+    ...alertsHistoryRoutes,
     ...systemHealthRoutes,
     ...audit
 ];
