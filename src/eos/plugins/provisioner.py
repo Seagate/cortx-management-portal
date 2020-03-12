@@ -37,9 +37,9 @@ class ProvisionerPlugin:
         return validation_result
 
     async def trigger_software_upgrade(self, path):
-        Log.debug(f"Validating package: f{path}")
+        Log.debug(f"Validating software package: f{path}")
         pass
 
     async def get_software_upgrade_status(self):
-        Log.debug("Getting last firmware upgrade status")
+        Log.debug("Getting last software upgrade status")
         pass
