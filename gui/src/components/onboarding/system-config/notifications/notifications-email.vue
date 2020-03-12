@@ -34,10 +34,6 @@
               <label v-if="$v.smtpserver.$dirty && !$v.smtpserver.required"
                 >SMTP server is required</label
               >
-              <label
-                v-else-if="$v.smtpserver.$dirty && !$v.smtpserver.ipAddress"
-                >SMTP server address</label
-              >
             </div>
           </div>
         </div>
@@ -87,8 +83,9 @@
               class="eos-form__input_text"
               v-model="protocol"
             >
-              <option value="TLS">SSL/TLS</option>
-              <option value="STARTTLS">STARTTLS</option>
+              <option value="ssl">SSL</option>
+              <option value="tls">TLS</option>
+              <option value="starttls">STARTTLS</option>
             </select>
           </div>
         </div>
@@ -231,11 +228,22 @@
       <button
         type="button"
         class="eos-btn-primary mt-5"
-        :disabled="!isConfirmPasswordValid"
+        @click="sendTestEmail()"
+        :disabled="!isConfirmPasswordValid || testEmailInProgress"
       >
         Send test email
       </button>
+      <span
+        v-if="testEmailMessage"
+        class="ml-2"
+        :class="[
+          testEmailMessageError ? 'red--text error-message' : 'csmprimary--text'
+        ]"
+      >
+        {{ testEmailMessage }}
+      </span>
     </div>
+
     <p v-if="!isValid" class="red--text error-message">
       Please enter valid values.
     </p>
@@ -252,6 +260,7 @@ import {
   helpers,
   sameAs,
   ipAddress,
+  url,
   requiredIf,
   email,
   minLength,
@@ -265,8 +274,7 @@ export default class EosDataNetworkIpv4 extends Vue {
   @Validations()
   private validations = {
     smtpserver: {
-      required,
-      ipAddress
+      required
     },
     senderemail: {
       required,
@@ -293,13 +301,16 @@ export default class EosDataNetworkIpv4 extends Vue {
     return {
       smtpserver: "",
       senderemail: "",
-      smtpport: 80,
-      protocol: "",
+      smtpport: 465,
+      protocol: "ssl",
       senderpassword: "",
       confirmpassword: "",
       emailaddress: "",
       weeklyEmail: false,
       testEmail: false,
+      testEmailInProgress: false,
+      testEmailMessage: "",
+      testEmailMessageError: false,
       isValid: true
     };
   }
@@ -359,11 +370,50 @@ export default class EosDataNetworkIpv4 extends Vue {
       smtp_sender_password: this.$data.senderpassword,
       email: this.$data.emailaddress
     };
-
     return this.$store.dispatch(
       "systemConfig/updateEmailNotificationUserConfig",
       queryParams
     );
+  }
+  private sendTestEmail() {
+    this.$data.testEmailMessage = "";
+    this.$data.testEmailMessageError = false;
+    this.$data.testEmailInProgress = true;
+
+    const queryParams: Email = {
+      smtp_server: this.$data.smtpserver,
+      smtp_port: this.$data.smtpport,
+      smtp_protocol: this.$data.protocol,
+      smtp_sender_email: this.$data.senderemail,
+      smtp_sender_password: this.$data.senderpassword,
+      email: this.$data.emailaddress
+    };
+    this.$store
+      .dispatch("systemConfig/sendTestEmailNotification", queryParams)
+      .then((res: any) => {
+        if (res) {
+          if (res.status) {
+            this.$data.testEmailInProgress = false;
+
+            this.$data.testEmailMessage = "Success";
+          } else {
+            let failedRecipientsList = "";
+            if (res.failed_recipients) {
+              failedRecipientsList = `Failed Recipients: ${res.failed_recipients.join(
+                ", "
+              )}`;
+            }
+            throw new Error(`${res.error} ${failedRecipientsList}`);
+          }
+        } else {
+          throw new Error("Test email check failed");
+        }
+      })
+      .catch((error: any) => {
+        this.$data.testEmailMessage = error.message;
+        this.$data.testEmailMessageError = true;
+        this.$data.testEmailInProgress = false;
+      });
   }
   get isConfirmPasswordValid() {
     if (
