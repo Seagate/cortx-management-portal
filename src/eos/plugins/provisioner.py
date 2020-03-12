@@ -17,14 +17,16 @@
 
 # import provisioner
 from csm.common.log import Log
+from csm.common.errors import InvalidRequest
 from csm.core.data.upgrade import PackageInformation
 
 
-class PackageValidationError(Exception):
+class PackageValidationError(InvalidRequest):
     pass
 
 
 class ProvisionerPlugin:
+    # TODO: implement the plugin
     def __init__(self):
         pass
 
@@ -39,8 +41,5 @@ class ProvisionerPlugin:
         pass
 
     async def get_software_upgrade_status(self):
-        # TODO: Provisioner api to get last firmware upgrade status.
         Log.debug("Getting last firmware upgrade status")
-        return {"status": "Successful",
-                "DateTime": "YYYY-MM-DD-HH:MM:SS",
-                "version": "1.2.3"}
+        pass
