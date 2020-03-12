@@ -14,12 +14,18 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getAllSystemConfig, getSystemConfig, saveSystemConfig, updateSystemConfig } from "./on-boarding-controller";
-import { checkRequiredParams } from './../../middleware/validator';
-import HttpStatus from 'http-status-codes';
+import {
+  getAllSystemConfig,
+  getSystemConfig,
+  saveSystemConfig,
+  updateSystemConfig,
+  sendTestEmail
+} from "./on-boarding-controller";
+import { checkRequiredParams } from "./../../middleware/validator";
+import HttpStatus from "http-status-codes";
 
 /**
- * It has all the REST APIs to get, save, update the System Configuration related details. 
+ * It has all the REST APIs to get, save, update the System Configuration related details.
  */
 
 export default [
@@ -49,7 +55,22 @@ export default [
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
-        }        
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/sysconfig_helpers/email_test",
+    method: "post",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await sendTestEmail(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
       }
     ]
   },
@@ -79,7 +100,7 @@ export default [
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
-        }        
+        }
       }
     ]
   }

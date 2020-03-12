@@ -20,29 +20,47 @@ import { Request, Response, request, response } from "express";
 
 /**
  * This is responsible for getting System Configuration data
- * @param query 
+ * @param query
  */
 export const getAllSystemConfig = async (req: Request, res: Response) => {
-    return await Api.getAll(apiRegister.all_system_config, req, res);    
+  return await Api.getAll(apiRegister.all_system_config, req, res);
 };
 
 /**
  * This is responsible for getting System Configuration data
- * @param query 
+ * @param query
  */
 export const getSystemConfig = async (req: Request, res: Response) => {
-    return await Api.get(apiRegister.all_system_config, req, res, req.params.config_id);    
+  return await Api.get(
+    apiRegister.all_system_config,
+    req,
+    res,
+    req.params.config_id
+  );
 };
 
 /**
  * This is responsible to store System Configuration data.
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  */
 export const saveSystemConfig = async (req: Request, res: Response) => {
-    return await Api.post(apiRegister.all_system_config, req, res);    
+  return await Api.post(apiRegister.all_system_config, req, res);
+};
+/**
+ * This is responsible to sending Test Email.
+ * @param req
+ * @param res
+ */
+export const sendTestEmail = async (req: Request, res: Response) => {
+  return await Api.post(apiRegister.send_test_email, req, res);
 };
 
 export const updateSystemConfig = async (req: Request, res: Response) => {
-    return await Api.put(apiRegister.all_system_config, req, res, req.params.config_id);    
+  return await Api.put(
+    apiRegister.all_system_config,
+    req,
+    res,
+    req.params.config_id
+  );
 };

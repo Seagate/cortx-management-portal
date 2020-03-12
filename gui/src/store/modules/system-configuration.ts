@@ -180,6 +180,23 @@ export default class SystemConfiguration extends VuexModule {
       console.log(e);
     }
   }
+  /**
+   * @param queryParams {object},
+   * This action for checking email notification.
+   */
+  @Action
+  public async sendTestEmailNotification(payload: any) {
+    try {
+      const res = await Api.post(apiRegister.send_test_email, payload);
+      if (res && res.data) {
+        const data = res.data;
+        return data;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
+    }
+  }
 
   /**
    * @param queryParams {object},
