@@ -13,7 +13,7 @@
             <label class="eos-form-group-label" for="userName">
               <eos-info-tooltip
                 label="Username*"
-                message="Only alphanumeric, underscore and hyphen"
+                message="Min 1 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
               />
             </label>
             <input
@@ -56,7 +56,7 @@
             <label class="eos-form-group-label" for="userPassword">
               <eos-info-tooltip
                 label="Password*"
-                message="minimum 8 characters, must contain at least 1 capital, 1 small, 1 special, 1 numeric character"
+                message="Minimum 8 characters. Must contain at least 1 capital, 1 small, 1 special, 1 numeric character."
               />
             </label>
             <input
