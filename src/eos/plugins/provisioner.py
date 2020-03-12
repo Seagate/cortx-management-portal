@@ -18,7 +18,7 @@
 # import provisioner
 from csm.common.log import Log
 from csm.common.errors import InvalidRequest
-from csm.core.data.upgrade import PackageInformation
+from csm.core.data.models.upgrade import PackageInformation
 
 
 class PackageValidationError(InvalidRequest):
