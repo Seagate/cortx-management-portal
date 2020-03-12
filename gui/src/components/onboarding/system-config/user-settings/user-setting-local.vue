@@ -21,7 +21,7 @@
                 <label class="eos-form-group-label" for="Username">
                   <eos-info-tooltip
                     label="Username*"
-                    message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+                    message="Min 8 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
                   />
                 </label>
                 <input
@@ -56,9 +56,8 @@
                 <label class="eos-form-group-label" for="password">
                   <eos-info-tooltip
                     label="Password*"
-                    message="minimum 8 characters, must contain at least 1 capital, 1 small, 1 special, 1 numeric character"
-                  />
-                </label>
+                    message="Minimum 8 characters. Must contain at least 1 capital, 1 small, 1 special, 1 numeric character."
+                /></label>
                 <input
                   class="eos-form__input_text"
                   type="password"
@@ -248,7 +247,7 @@
                   <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.delete">
                     <img
                       class="mx-2 eos-cursor-pointer"
-                      @click="onDelete(props.item.id)"
+                      @click="onDeleteConfirmation(props.item.id)"
                       src="./../../../../assets/actions/delete-green.svg"
                     />
                   </eos-has-access>
@@ -271,7 +270,7 @@
                           <label class="eos-form-group-label" for="Username">
                             <eos-info-tooltip
                               label="Username*"
-                              message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+                              message="Min 8 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
                             />
                           </label>
                           <input
@@ -336,6 +335,14 @@
         </eos-has-access>
       </v-card>
     </div>
+    <eos-confirmation-dialog
+      :show="showConfirmationDialog"
+      title="Confirmation"
+      :message="confirmationDialogMessage"
+      severity="warning"
+      @closeDialog="closeConfirmationDialog"
+      cancelButtonText="No"
+    ></eos-confirmation-dialog>
     <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
@@ -380,7 +387,7 @@ export default class EosUserSettingLocal extends Vue {
       isUserCreate: false,
       isUserEdit: false,
       page: 1, // Page counter, in sync with data table
-      singleExpand: true, // Expande single row property
+      singleExpand: true, // Expanded single row property
       itemsPerPage: 5, // Total rows per page, in sync with data table
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
@@ -410,7 +417,10 @@ export default class EosUserSettingLocal extends Vue {
           sortable: false
         }
       ],
-      userData: []
+      userData: [],
+      selectedItemToDelete: "",
+      showConfirmationDialog: false,
+      confirmationDialogMessage: "Are you sure you want to delete this user?"
     };
   }
 
@@ -437,6 +447,17 @@ export default class EosUserSettingLocal extends Vue {
   private addUser() {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     return this.$data.isUserCreate;
+  }
+
+  private onDeleteConfirmation(id: string) {
+    this.$data.selectedItemToDelete = id;
+    this.$data.showConfirmationDialog = true;
+  }
+  private closeConfirmationDialog(confirmation: boolean) {
+    this.$data.showConfirmationDialog = false;
+    if (confirmation && this.$data.selectedItemToDelete) {
+      this.onDelete(this.$data.selectedItemToDelete);
+    }
   }
   /**
    * This method create csm user
@@ -491,6 +512,7 @@ export default class EosUserSettingLocal extends Vue {
       props.expand(false);
     }
   }
+
   private onDelete(id: string) {
     // TODO: Need to remove this check once api is properly implemented
     if (!this.isFirstElement(id)) {
