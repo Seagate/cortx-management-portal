@@ -4,8 +4,8 @@
       <div class="title mt-0 font-weight-bold" id="lblLocalSetting">User settings: Local</div>
       <div class="mt-5">
         <span class="font-weight-regular" id="lblLocalMsgConfig">
-          Use this table to create CSM users that have access CSM functionality.
-          You can add as many as you like.
+          Use this table to create CSM users that have access to CSM
+          functionality. You can add as many as you like.
         </span>
       </div>
       <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
@@ -135,30 +135,37 @@
             </v-col>
           </v-row>
         </div>
-        <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.create">
-          <v-btn
+        <eos-has-access
+          :to="$eosUserPermissions.users + $eosUserPermissions.create"
+        >
+          <button
             v-if="!isUserCreate"
-            color="csmprimary"
-            class="ma-5 elevation-0 white--text"
+            type="button"
+            class="ma-5 eos-btn-primary"
             @click="addUser()"
             id="btnLocalAddNewUser"
-          >Add new user</v-btn>
-          <v-btn
+          >
+            Add new user
+          </button>
+          <button
             v-if="isUserCreate"
-            color="csmprimary"
-            class="ma-5 elevation-0 white--text"
+            type="button"
+            class="ma-5 eos-btn-primary"
             @click="createUser()"
             id="btnLocalCreateUser"
             :disabled="$v.createAccount.$invalid"
-          >Create</v-btn>
-          <v-btn
-            text
-            small
-            color="csmprimary"
+          >
+            Create
+          </button>
+          <button
             v-if="isUserCreate"
+            type="button"
+            class="eos-btn-tertiary"
             @click="addUser()"
             id="lblLocalCancel"
-          >Cancel</v-btn>
+          >
+            Cancel
+          </button>
         </eos-has-access>
 
         <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.list">
@@ -287,47 +294,62 @@
                                 $v.selectedItem.username.$dirty &&
                                   !$v.selectedItem.username.required
                               "
-                            >Account name is required</label>
+                              >Username is required</label
+                            >
                           </div>
                         </div>
                       </v-col>
                       <v-col>
-                        <div class="font-weight-medium pt-3 pb-2">Roles</div>
-                        <input
-                          type="radio"
-                          v-model="selectedItem.roles[0]"
-                          name="manage"
-                          value="manage"
-                          id="chkLocalManageInterface"
-                          checked
-                        />
-                        <span class="eos-rdb-container">Manage</span>
+                        <div class="mb-3">Roles</div>
+                        <label class="eos-rdb-container">
+                          Manage
+                          <input
+                            type="radio"
+                            v-model="selectedItem.roles[0]"
+                            name="manage"
+                            value="manage"
+                            id="chkLocalManageInterface"
+                          />
+                          <span
+                            class="eos-rdb-tick"
+                            id="lblLocalManageInterface"
+                          ></span>
+                        </label>
                         <br />
-                        <input
-                          type="radio"
-                          v-model="selectedItem.roles[0]"
-                          name="monitor"
-                          value="monitor"
-                          id="chkLocalMoniterInterface"
-                        />
-                        <span class="eos-rdb-container">Monitor</span>
+                        <label class="eos-rdb-container mt-2">
+                          Monitor
+                          <input
+                            type="radio"
+                            v-model="selectedItem.roles[0]"
+                            name="monitor"
+                            value="monitor"
+                            id="chkLocalMonitorInterface"
+                          />
+                          <span
+                            class="eos-rdb-tick"
+                            id="lblLocalMonitorInterface"
+                          ></span>
+                        </label>
                       </v-col>
                     </v-row>
                   </div>
-                  <v-btn
-                    color="csmprimary"
-                    class="ma-5 elevation-0 white--text"
+                  <button
+                    type="button"
+                    class="ma-5 eos-btn-primary"
                     @click="editUser(selectedItem)"
                     id="lblLocalApplyInterface"
                     :disabled="$v.selectedItem.$invalid"
-                  >Apply</v-btn>
-                  <v-btn
-                    text
-                    small
-                    color="csmprimary"
+                  >
+                    Apply
+                  </button>
+                  <button
+                    type="button"
+                    class="eos-btn-tertiary"
                     @click="closeEditUser(props)"
                     id="lblLocalCanacelInterface"
-                  >Cancel</v-btn>
+                  >
+                    Cancel
+                  </button>
                 </td>
               </tr>
             </template>
@@ -478,9 +500,8 @@ export default class EosUserSettingLocal extends Vue {
       .then((res: any) => {
         this.getUserData();
       })
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("Create User Fails");
+      .finally(() => {
+        this.$data.createAccount = {};
       });
     return this.$data.isUserCreate;
   }
