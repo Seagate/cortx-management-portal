@@ -26,10 +26,6 @@
           <label class="eos-text-lg eos-text-bold">&nbsp;| Name:&nbsp;</label>
           <label>{{ alert.module_type }}</label>
         </div>
-        <!-- <div class="eos-float-r">
-          <div class="eos-icon-btn eos-comment-icon" @click="isShowCommentsDialog = true"></div>
-          <div class="eos-icon-btn eos-acknowledge-icon ml-5" @click="acknowledgeAlert()"></div>
-        </div>-->
       </div>
       <div class="eos-text-md eos-text-bold">
         <div>
@@ -147,9 +143,6 @@
       </div>
     </template>
     <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
-    <!-- <eos-tabs :tabsInfo="tabsInfo" />
-    <eos-alert-occurrences v-if="showOccurrenceTab" :sensor_info="sensor_info"/>
-    <eos-alert-related v-if="showRelatedTab" />-->
   </div>
 </template>
 
@@ -210,7 +203,7 @@ export default class EosAlertHistory extends Vue {
         if (this.alert.extended_info) {
           const tempAlertExtendedInfoJSONString = this.alert.extended_info
             .split("'")
-            .join('"');
+            .join("'");
           this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
           this.alertExtendedInfo = this.alertDetails.info;
         }
@@ -219,7 +212,7 @@ export default class EosAlertHistory extends Vue {
         if (this.alert.event_details) {
           const tempAlertEventDetailsJSONString = this.alert.event_details
             .split("'")
-            .join('"');
+            .join("'");
           tempAlertEventDetails = JSON.parse(tempAlertEventDetailsJSONString);
         }
         if (tempAlertEventDetails.length > 0) {

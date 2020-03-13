@@ -196,7 +196,7 @@
     </template>
     <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
     <eos-tabs :tabsInfo="tabsInfo" />
-    <eos-alert-occurrences v-if="showOccurrenceTab" :sensor_info="sensor_info" />
+    <eos-alert-occurrences :sensor_info="sensor_info" />
   </div>
 </template>
 
@@ -238,15 +238,6 @@ export default class EosAlertDetails extends Vue {
     tabs: [{ id: 1, label: "Occurrences", show: true }],
     selectedTab: 1
   };
-  @Watch("tabsInfo.selectedTab")
-  public onPropertyChanged(value: number, oldValue: number) {
-    switch (value) {
-      case 1:
-        this.showOccurrenceTab = true;
-        this.showRelatedTab = false;
-        break;
-    }
-  }
   @Validations()
   public validations = {
     addCommentForm: {
@@ -254,9 +245,6 @@ export default class EosAlertDetails extends Vue {
     }
   };
   public async mounted() {
-    this.tabsInfo.tabs = this.tabsInfo.tabs.map((tab: any) => {
-      return tab;
-    });
     this.alertId = this.$route.params.alert_id;
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
@@ -270,7 +258,7 @@ export default class EosAlertDetails extends Vue {
         if (this.alert.extended_info) {
           const tempAlertExtendedInfoJSONString = this.alert.extended_info
             .split("'")
-            .join('"');
+            .join("'");
           this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
           this.alertExtendedInfo = this.alertDetails.info;
         }
@@ -279,7 +267,7 @@ export default class EosAlertDetails extends Vue {
         if (this.alert.event_details) {
           const tempAlertEventDetailsJSONString = this.alert.event_details
             .split("'")
-            .join('"');
+            .join("'");
           tempAlertEventDetails = JSON.parse(tempAlertEventDetailsJSONString);
         }
         if (tempAlertEventDetails.length > 0) {
