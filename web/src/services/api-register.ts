@@ -34,5 +34,11 @@ export default {
   addlicensekey:`/api/${version}/license/onboarding`,
   all_alerts_history: `/api/${version}/alerts_history`,
   auditlogs: `/api/${version}/auditlogs`,
-  health_summary: `/api/${version}/system/health`
+  health_summary: `/api/${version}/system/health`,
+  maintenance: ` /api/${version}/maintenance/cluster`,
+  node_status: ` /api/${version}/maintenance/cluster/node_status`,
+  node_stop: ` /api/${version}/maintenance/cluster/stop`,
+  node_start: ` /api/${version}/maintenance/cluster/start`,
+  node_shutdown: ` /api/${version}/maintenance/cluster/shutdown`,
+  send_test_email: `/api/${version}/sysconfig_helpers/email_test`,
 };

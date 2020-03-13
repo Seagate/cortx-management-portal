@@ -13,7 +13,7 @@
             <label class="eos-form-group-label" for="bucketName">
               <eos-info-tooltip
                 label="Bucket name*"
-                message="Minimum 3 characters. Only alphanumeric, underscore and hyphen"
+                message="Min 3 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
               />
             </label>
             <input

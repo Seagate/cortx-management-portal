@@ -4,8 +4,8 @@
       <div class="title mt-0 font-weight-bold" id="lblLocalSetting">User settings: Local</div>
       <div class="mt-5">
         <span class="font-weight-regular" id="lblLocalMsgConfig">
-          Use this table to create CSM users that have access CSM functionality.
-          You can add as many as you like.
+          Use this table to create CSM users that have access to CSM
+          functionality. You can add as many as you like.
         </span>
       </div>
       <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
@@ -21,7 +21,7 @@
                 <label class="eos-form-group-label" for="Username">
                   <eos-info-tooltip
                     label="Username*"
-                    message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+                    message="Min 8 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
                   />
                 </label>
                 <input
@@ -56,9 +56,8 @@
                 <label class="eos-form-group-label" for="password">
                   <eos-info-tooltip
                     label="Password*"
-                    message="minimum 8 characters, must contain at least 1 capital, 1 small, 1 special, 1 numeric character"
-                  />
-                </label>
+                    message="Minimum 8 characters. Must contain at least 1 capital, 1 small, 1 special, 1 numeric character."
+                /></label>
                 <input
                   class="eos-form__input_text"
                   type="password"
@@ -136,30 +135,37 @@
             </v-col>
           </v-row>
         </div>
-        <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.create">
-          <v-btn
+        <eos-has-access
+          :to="$eosUserPermissions.users + $eosUserPermissions.create"
+        >
+          <button
             v-if="!isUserCreate"
-            color="csmprimary"
-            class="ma-5 elevation-0 white--text"
+            type="button"
+            class="ma-5 eos-btn-primary"
             @click="addUser()"
             id="btnLocalAddNewUser"
-          >Add new user</v-btn>
-          <v-btn
+          >
+            Add new user
+          </button>
+          <button
             v-if="isUserCreate"
-            color="csmprimary"
-            class="ma-5 elevation-0 white--text"
+            type="button"
+            class="ma-5 eos-btn-primary"
             @click="createUser()"
             id="btnLocalCreateUser"
             :disabled="$v.createAccount.$invalid"
-          >Create</v-btn>
-          <v-btn
-            text
-            small
-            color="csmprimary"
+          >
+            Create
+          </button>
+          <button
             v-if="isUserCreate"
+            type="button"
+            class="eos-btn-tertiary"
             @click="addUser()"
             id="lblLocalCancel"
-          >Cancel</v-btn>
+          >
+            Cancel
+          </button>
         </eos-has-access>
 
         <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.list">
@@ -248,7 +254,7 @@
                   <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.delete">
                     <img
                       class="mx-2 eos-cursor-pointer"
-                      @click="onDelete(props.item.id)"
+                      @click="onDeleteConfirmation(props.item.id)"
                       src="./../../../../assets/actions/delete-green.svg"
                     />
                   </eos-has-access>
@@ -271,7 +277,7 @@
                           <label class="eos-form-group-label" for="Username">
                             <eos-info-tooltip
                               label="Username*"
-                              message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+                              message="Min 8 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
                             />
                           </label>
                           <input
@@ -288,47 +294,62 @@
                                 $v.selectedItem.username.$dirty &&
                                   !$v.selectedItem.username.required
                               "
-                            >Account name is required</label>
+                              >Username is required</label
+                            >
                           </div>
                         </div>
                       </v-col>
                       <v-col>
-                        <div class="font-weight-medium pt-3 pb-2">Roles</div>
-                        <input
-                          type="radio"
-                          v-model="selectedItem.roles[0]"
-                          name="manage"
-                          value="manage"
-                          id="chkLocalManageInterface"
-                          checked
-                        />
-                        <span class="eos-rdb-container">Manage</span>
+                        <div class="mb-3">Roles</div>
+                        <label class="eos-rdb-container">
+                          Manage
+                          <input
+                            type="radio"
+                            v-model="selectedItem.roles[0]"
+                            name="manage"
+                            value="manage"
+                            id="chkLocalManageInterface"
+                          />
+                          <span
+                            class="eos-rdb-tick"
+                            id="lblLocalManageInterface"
+                          ></span>
+                        </label>
                         <br />
-                        <input
-                          type="radio"
-                          v-model="selectedItem.roles[0]"
-                          name="monitor"
-                          value="monitor"
-                          id="chkLocalMoniterInterface"
-                        />
-                        <span class="eos-rdb-container">Monitor</span>
+                        <label class="eos-rdb-container mt-2">
+                          Monitor
+                          <input
+                            type="radio"
+                            v-model="selectedItem.roles[0]"
+                            name="monitor"
+                            value="monitor"
+                            id="chkLocalMonitorInterface"
+                          />
+                          <span
+                            class="eos-rdb-tick"
+                            id="lblLocalMonitorInterface"
+                          ></span>
+                        </label>
                       </v-col>
                     </v-row>
                   </div>
-                  <v-btn
-                    color="csmprimary"
-                    class="ma-5 elevation-0 white--text"
+                  <button
+                    type="button"
+                    class="ma-5 eos-btn-primary"
                     @click="editUser(selectedItem)"
                     id="lblLocalApplyInterface"
                     :disabled="$v.selectedItem.$invalid"
-                  >Apply</v-btn>
-                  <v-btn
-                    text
-                    small
-                    color="csmprimary"
+                  >
+                    Apply
+                  </button>
+                  <button
+                    type="button"
+                    class="eos-btn-tertiary"
                     @click="closeEditUser(props)"
                     id="lblLocalCanacelInterface"
-                  >Cancel</v-btn>
+                  >
+                    Cancel
+                  </button>
                 </td>
               </tr>
             </template>
@@ -336,6 +357,14 @@
         </eos-has-access>
       </v-card>
     </div>
+    <eos-confirmation-dialog
+      :show="showConfirmationDialog"
+      title="Confirmation"
+      :message="confirmationDialogMessage"
+      severity="warning"
+      @closeDialog="closeConfirmationDialog"
+      cancelButtonText="No"
+    ></eos-confirmation-dialog>
     <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
@@ -380,7 +409,7 @@ export default class EosUserSettingLocal extends Vue {
       isUserCreate: false,
       isUserEdit: false,
       page: 1, // Page counter, in sync with data table
-      singleExpand: true, // Expande single row property
+      singleExpand: true, // Expanded single row property
       itemsPerPage: 5, // Total rows per page, in sync with data table
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
@@ -410,7 +439,10 @@ export default class EosUserSettingLocal extends Vue {
           sortable: false
         }
       ],
-      userData: []
+      userData: [],
+      selectedItemToDelete: "",
+      showConfirmationDialog: false,
+      confirmationDialogMessage: "Are you sure you want to delete this user?"
     };
   }
 
@@ -438,6 +470,17 @@ export default class EosUserSettingLocal extends Vue {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     return this.$data.isUserCreate;
   }
+
+  private onDeleteConfirmation(id: string) {
+    this.$data.selectedItemToDelete = id;
+    this.$data.showConfirmationDialog = true;
+  }
+  private closeConfirmationDialog(confirmation: boolean) {
+    this.$data.showConfirmationDialog = false;
+    if (confirmation && this.$data.selectedItemToDelete) {
+      this.onDelete(this.$data.selectedItemToDelete);
+    }
+  }
   /**
    * This method create csm user
    */
@@ -457,9 +500,8 @@ export default class EosUserSettingLocal extends Vue {
       .then((res: any) => {
         this.getUserData();
       })
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("Create User Fails");
+      .finally(() => {
+        this.$data.createAccount = {};
       });
     return this.$data.isUserCreate;
   }
@@ -491,6 +533,7 @@ export default class EosUserSettingLocal extends Vue {
       props.expand(false);
     }
   }
+
   private onDelete(id: string) {
     // TODO: Need to remove this check once api is properly implemented
     if (!this.isFirstElement(id)) {

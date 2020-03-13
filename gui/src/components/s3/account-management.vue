@@ -13,7 +13,7 @@
             <label class="eos-form-group-label" for="accountName">
               <eos-info-tooltip
                 label="Account name*"
-                message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+                message="Min 8 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
               />
             </label>
             <input
@@ -43,6 +43,45 @@
           </div>
         </v-col>
         <v-col class="py-0 pl-0">
+          <div
+            class="eos-form-group"
+            :class="{
+              'eos-form-group--error':
+                $v.createAccountForm.account.account_email.$error
+            }"
+          >
+            <label class="eos-form-group-label" for="accountEmail"
+              >Email id*</label
+            >
+            <input
+              class="eos-form__input_text"
+              type="text"
+              id="accountEmail"
+              name="accountEmail"
+              v-model.trim="createAccountForm.account.account_email"
+              @input="$v.createAccountForm.account.account_email.$touch"
+            />
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label
+                v-if="
+                  $v.createAccountForm.account.account_email.$dirty &&
+                    !$v.createAccountForm.account.account_email.required
+                "
+                >Email id is required</label
+              >
+              <label
+                v-else-if="
+                  $v.createAccountForm.account.account_email.$dirty &&
+                    !$v.createAccountForm.account.account_email.email
+                "
+                >Invalid email id</label
+              >
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col class="py-0 pr-0">
           <div
             class="eos-form-group"
             :class="{
@@ -78,45 +117,6 @@
                     !$v.createAccountForm.account.password.passwordRegex
                 "
                 >Invalid password</label
-              >
-            </div>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="py-0 pr-0">
-          <div
-            class="eos-form-group"
-            :class="{
-              'eos-form-group--error':
-                $v.createAccountForm.account.account_email.$error
-            }"
-          >
-            <label class="eos-form-group-label" for="accountEmail"
-              >Email id*</label
-            >
-            <input
-              class="eos-form__input_text"
-              type="text"
-              id="accountEmail"
-              name="accountEmail"
-              v-model.trim="createAccountForm.account.account_email"
-              @input="$v.createAccountForm.account.account_email.$touch"
-            />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label
-                v-if="
-                  $v.createAccountForm.account.account_email.$dirty &&
-                    !$v.createAccountForm.account.account_email.required
-                "
-                >Email id is required</label
-              >
-              <label
-                v-else-if="
-                  $v.createAccountForm.account.account_email.$dirty &&
-                    !$v.createAccountForm.account.account_email.email
-                "
-                >Invalid email id</label
               >
             </div>
           </div>
@@ -550,14 +550,10 @@ export default class EosAccountManagement extends Vue {
   }
 
   public clearCreateAccountForm() {
-    this.account = {} as Account;
-    this.createAccountForm = {
-      account: {} as Account,
-      confirmPassword: ""
-    };
-    if (this.$v.createAccountForm) {
-      this.$v.createAccountForm.$reset();
-    }
+    this.createAccountForm.confirmPassword = "";
+    this.createAccountForm.account.password = "";
+    this.createAccountForm.account.account_name = "";
+    this.createAccountForm.account.account_email = "";
   }
 
   public openConfirmDeleteDialog(accountName: string) {
@@ -583,7 +579,6 @@ export default class EosAccountManagement extends Vue {
     }
     this.accountToDelete = "";
   }
-
   private async deleteAccount() {
     this.$store.dispatch(
       "systemConfig/showLoader",
@@ -623,29 +618,10 @@ tr {
 .notActive {
   opacity: 0;
 }
-.headerText {
-  color: black;
-}
-.backoverview {
-  position: relative;
-  top: 1em;
-  cursor: pointer;
-}
-.backoverviewimg {
-  position: relative;
-  display: inline-block;
-}
-.backoverviewtxt {
-  position: relative;
-  top: -0.3em;
-}
 .tableheader:hover {
   .notActive {
     opacity: 1;
   }
-}
-.largeAlert {
-  border: 2px solid #e3e3e3;
 }
 tbody tr:active {
   border-top: 2px solid darkgray !important;
