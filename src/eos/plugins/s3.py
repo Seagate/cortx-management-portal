@@ -546,6 +546,24 @@ class S3Client(BaseClient):
                                                         Bucket=bucket_name))
 
     @Log.trace_method(Log.DEBUG)
+    async def get_bucket(self, bucket_name):
+        """
+        Checks if a bucket with a specified name exists and returns it
+        """
+        Log.debug(f"get bucket: {bucket_name}")
+        bucket = self.connection.Bucket(bucket_name)
+        try:
+            coro = partial(self.connection.meta.client.head_bucket, Bucket=bucket_name)
+            await self._loop.run_in_executor(self._executor, coro)
+        except ClientError as e:
+            if e.response['Error']['Code'] == '404':
+                bucket = None
+            else:
+                raise e
+
+        return bucket
+
+    @Log.trace_method(Log.DEBUG)
     async def delete_bucket(self, bucket_name: str):
         Log.debug(f"delete bucket: {bucket_name}")
         bucket = await self._loop.run_in_executor(self._executor, self.connection.Bucket, bucket_name)
@@ -553,7 +571,7 @@ class S3Client(BaseClient):
         #  bucket deletion itself
         for key in bucket.objects.all():
             await self._loop.run_in_executor(self._executor, key.delete)
-        
+
         await self._loop.run_in_executor(self._executor, bucket.delete)
 
     @Log.trace_method(Log.DEBUG)
