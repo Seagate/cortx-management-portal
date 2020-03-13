@@ -15,15 +15,19 @@
 <template>
   <div class="eos-p-2">
     <eos-tabs :tabsInfo="tabsInfo" />
-    <button
-      type="button"
-      class="mt-3 mb-2 eos-btn-primary"
-      v-if="tabsInfo.selectedTab === 1"
-      @click="showConfirmationDialog = true"
-      :disabled="alertObject.alerts.length === 0"
+    <eos-has-access
+      :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
     >
-      Acknowledge all
-    </button>
+      <button
+        type="button"
+        class="mt-3 mb-2 eos-btn-primary"
+        v-if="tabsInfo.selectedTab === 1"
+        @click="showConfirmationDialog = true"
+        :disabled="alertObject.alerts.length === 0"
+      >
+        Acknowledge all
+      </button>
+    </eos-has-access>
     <v-data-table
       calculate-widths
       :items="alertObject.alerts"
@@ -154,12 +158,12 @@
             <eos-has-access
               :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
             >
-            <img
-              v-if="!(props.item.acknowledged && props.item.resolved)"
-              :src="require('@/assets/comment-filled-default.svg')"
-              class="eos-cursor-pointer"
-              @click="showAlertCommentsDialog(props.item.alert_uuid)"
-            />
+              <img
+                v-if="!(props.item.acknowledged && props.item.resolved)"
+                :src="require('@/assets/comment-filled-default.svg')"
+                class="eos-cursor-pointer"
+                @click="showAlertCommentsDialog(props.item.alert_uuid)"
+              />
             </eos-has-access>
             <img
               v-if="props.item.acknowledged"

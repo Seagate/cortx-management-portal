@@ -29,7 +29,7 @@
               >
                 <eos-info-tooltip
                   label="Admin username*"
-                  message="minimum 8 characters. Only alphanumeric, underscore and hyphen are allowed"
+                  message="Min 8 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
                 />
               </label>
               <div></div>
@@ -73,7 +73,7 @@
               >
                 <eos-info-tooltip
                   label="Password*"
-                  message="minimum 8 characters, must contain at least 1 capital, 1 small, 1 special, 1 numeric character"
+                  message="Minimum 8 characters. Must contain at least 1 capital, 1 small, 1 special, 1 numeric character."
                 />
               </label>
               <div></div>

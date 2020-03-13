@@ -13,17 +13,17 @@
         <div class="title title-container">
           <img
             v-if="severity === 'info'"
-            class="mr-2 success-img"
+            class="mr-2"
             :src="require('@/assets/actions/info-green.svg')"
           />
           <img
             v-if="severity === 'warning'"
-            class="mr-2 success-img"
+            class="mr-2"
             :src="require('@/assets/actions/warning-green.svg')"
           />
           <img
             v-if="severity === 'danger'"
-            class="mr-2 success-img"
+            class="mr-2"
             :src="require('@/assets/actions/danger-red.svg')"
           />
           <span class="finish-text">{{ message }}</span>
@@ -98,14 +98,10 @@ export default class EosConfirmationDialog extends Vue {
 }
 .finish-text {
   vertical-align: center;
-  float: left;
-}
-.success-img {
-  margin-top: 3px;
-  float: left;
 }
 .title-container {
   height: 30px;
+  display: flex;
 }
 .submessage-text {
   font-weight: 400;
