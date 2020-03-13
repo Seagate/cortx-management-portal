@@ -71,4 +71,3 @@ export const addCommentToAlert = async (req: Request, res: Response) => {
     const url = apiRegister.all_alerts + "/" + req.params.alert_id + "/comments";
     return await Api.post(url, req, res);
 };
-
