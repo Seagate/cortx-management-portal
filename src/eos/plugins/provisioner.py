@@ -19,11 +19,32 @@
 
 # import provisioner
 from csm.common.log import Log
+from csm.common.errors import InvalidRequest
+from csm.core.data.models.upgrade import PackageInformation
 
 
-class Provisioner:
+class PackageValidationError(InvalidRequest):
+    pass
+
+
+class ProvisionerPlugin:
+    # TODO: implement the plugin
     def __init__(self):
         self._provisioner = "provisioner"
+
+    async def validate_hotfix_package(self, path) -> PackageInformation:
+        Log.debug(f"Validating package: f{path}")
+        validation_result = PackageInformation()
+        validation_result.version = '1.2.3'
+        return validation_result
+
+    async def trigger_software_upgrade(self, path):
+        Log.debug(f"Validating software package: f{path}")
+        pass
+
+    async def get_software_upgrade_status(self):
+        Log.debug("Getting last software upgrade status")
+        pass
 
     async def validate_package(self, file_path):
         # TODO: Provisioner api to validate package tobe implented here
