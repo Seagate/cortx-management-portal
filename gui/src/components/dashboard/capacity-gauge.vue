@@ -20,23 +20,23 @@
     <div class="eos-capacity-container" id="gauge_capacity"></div>
     <table class="mt-3">
       <tr>
-        <td class="width-25" >
-          <div class="capacity-used-badge"  ></div>
+        <td class="width-25">
+          <div class="capacity-used-badge"></div>
         </td>
-        <td  class="eos-capacity-title width-110">Used</td>
+        <td class="width-110">Used</td>
         <td>{{capacityDetails.used}}</td>
       </tr>
       <tr>
         <td>
           <div class="capacity-available-badge"></div>
         </td>
-        <td class="eos-capacity-title">Available</td>
+        <td >Available</td>
         <td>{{capacityDetails.avail}}</td>
       </tr>
     </table>
     <div class="mt-2 mb-2 eos-capacity-separator"></div>
     <div>
-      <div class="eos-capacity-title">Total</div>
+      <div>Total</div>
       <span style="float: right;">{{capacityDetails.size}}</span>
     </div>
   </div>
@@ -89,26 +89,17 @@ export default class EosCapacityGauge extends Vue {
 </script>
 <style lang="scss" scoped>
 @import "./../../../node_modules/c3/c3.min.css";
-.capacityContainer {
-    .eos-capacity-title {
-      font-style: normal;
-      font-weight: bold;
-      font-size: 18px;
-      color: rgba(0, 0, 0, 0.87);
-      float: left;
-    }
-}
-.capacity-used-badge {
-    height: 13px; 
-    width: 13px; 
-    background: rgb(110, 190, 73);
-  }
-  .capacity-available-badge {
-    height: 13px; 
-    width: 13px; 
-    background: rgb(158, 158, 158);
 
-  }
+.capacity-used-badge {
+  height: 13px;
+  width: 13px;
+  background: rgb(110, 190, 73);
+}
+.capacity-available-badge {
+  height: 13px;
+  width: 13px;
+  background: rgb(158, 158, 158);
+}
 .eos-capacity-separator {
   width: 100%;
   border-top: 1px solid #e3e3e3;
@@ -131,7 +122,7 @@ export default class EosCapacityGauge extends Vue {
   #capacityContainer {
     padding: 20px;
   }
-   .eos-capacity-container {
+  .eos-capacity-container {
     height: 180px;
   }
 }

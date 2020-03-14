@@ -30,6 +30,7 @@
         <eos-line-chart :chartId="chartId" />
       </v-row>
     </div>
+    <div id="lastItem"></div>
   </div>
 </template>
  <script lang="ts">
