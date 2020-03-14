@@ -29,7 +29,7 @@
               >
                 <eos-info-tooltip
                   label="Admin username*"
-                  message="Min 8 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
+                  :message="accountNameTooltipMessage"
                 />
               </label>
               <div></div>
@@ -73,7 +73,7 @@
               >
                 <eos-info-tooltip
                   label="Password*"
-                  message="Minimum 8 characters. Must contain at least 1 capital, 1 small, 1 special, 1 numeric character."
+                  :message="passwordTooltipMessage"
                 />
               </label>
               <div></div>
@@ -157,7 +157,12 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { UserLoginQueryParam } from "./../../models/user-login";
 import { Validations } from "vuelidate-property-decorators";
 import { required, sameAs } from "vuelidate/lib/validators";
-import { accountNameRegex, passwordRegex } from "./../../common/regex-helpers";
+import {
+  accountNameRegex,
+  passwordRegex,
+  passwordTooltipMessage,
+  accountNameTooltipMessage
+} from "./../../common/regex-helpers";
 import { invalid } from "moment";
 @Component({
   name: "eos-admin-user"
@@ -182,7 +187,9 @@ export default class EosAdminUser extends Vue {
       },
       isValidResponse: true,
       invalidMessage: "",
-      createUserInProgress: false
+      createUserInProgress: false,
+      passwordTooltipMessage,
+      accountNameTooltipMessage
     };
   }
   private gotToNextPage() {

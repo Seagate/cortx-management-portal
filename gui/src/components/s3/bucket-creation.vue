@@ -13,7 +13,7 @@
             <label class="eos-form-group-label" for="bucketName">
               <eos-info-tooltip
                 label="Bucket name*"
-                message="Min 3 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
+                :message="accountNameTooltipMessage"
               />
             </label>
             <input
@@ -35,7 +35,7 @@
               <label
                 v-else-if="
                   $v.createBucketForm.bucket.bucket_name.$dirty &&
-                    !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
+                    !$v.createBucketForm.bucket.bucket_name.accountNameRegex
                 "
                 >Invalid bucket name</label
               >
@@ -258,7 +258,10 @@ import { Bucket } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
-import { bucketNameRegex } from "./../../common/regex-helpers";
+import {
+  accountNameRegex,
+  accountNameTooltipMessage
+} from "./../../common/regex-helpers";
 
 @Component({
   name: "eos-bucket-creation"
@@ -271,7 +274,7 @@ export default class EosBucketCreation extends Vue {
   public validations = {
     createBucketForm: {
       bucket: {
-        bucket_name: { required, bucketNameRegex, minLength: minLength(3) }
+        bucket_name: { required, accountNameRegex, minLength: minLength(3) }
       }
     },
     policyJson: {
@@ -300,6 +303,7 @@ export default class EosBucketCreation extends Vue {
   private bucketToDelete: string = "";
   private policyJson: any = "";
   private bucketName: any = "";
+  private accountNameTooltipMessage: string = accountNameTooltipMessage;
 
   constructor() {
     super();

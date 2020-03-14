@@ -1,7 +1,7 @@
 <template>
   <span class="d-flex">
     {{ label }}
-    <v-tooltip right max-width="300">
+    <v-tooltip right max-width="305">
       <template v-slot:activator="{ on }">
         <img
           class="eos-info-icon"
