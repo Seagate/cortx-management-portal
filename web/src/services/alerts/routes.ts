@@ -14,7 +14,7 @@
  *****************************************************************************/
 
 import { Request, Response, request, response } from "express";
-import { getAlerts, getAlertById, updateAlert, updateAlerts, getCommentsForAlert, addCommentToAlert } from "./alerts-controller";
+import { getAlerts,getAlertsHistory,getAlertHistrorydetailsById, getAlertById, updateAlert, updateAlerts, getCommentsForAlert, addCommentToAlert } from "./alerts-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -36,6 +36,37 @@ export default [
         } catch (err) {
           throw err;
         }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/alerts_history",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getAlertsHistory(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/alerts_history/:alert_id",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getAlertHistrorydetailsById(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+        
       }
     ]
   },
