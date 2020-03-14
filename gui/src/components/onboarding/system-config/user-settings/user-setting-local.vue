@@ -1,7 +1,9 @@
 <template>
   <v-container>
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">User settings: Local</div>
+      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">
+        User settings: Local
+      </div>
       <div class="mt-5">
         <span class="font-weight-regular" id="lblLocalMsgConfig">
           Use this table to create CSM users that have access to CSM
@@ -21,7 +23,7 @@
                 <label class="eos-form-group-label" for="Username">
                   <eos-info-tooltip
                     label="Username*"
-                    message="Min 8 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
+                    :message="accountNameTooltipMessage"
                   />
                 </label>
                 <input
@@ -38,13 +40,15 @@
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.required
                     "
-                  >Account Name is required</label>
+                    >Account Name is required</label
+                  >
                   <label
                     v-else-if="
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.accountNameRegex
                     "
-                  >Invalid username</label>
+                    >Invalid username</label
+                  >
                 </div>
               </div>
               <div
@@ -56,7 +60,7 @@
                 <label class="eos-form-group-label" for="password">
                   <eos-info-tooltip
                     label="Password*"
-                    message="Minimum 8 characters. Must contain at least 1 capital, 1 small, 1 special, 1 numeric character."
+                    :message="passwordTooltipMessage"
                 /></label>
                 <input
                   class="eos-form__input_text"
@@ -72,13 +76,15 @@
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.required
                     "
-                  >Password is required</label>
+                    >Password is required</label
+                  >
                   <label
                     v-else-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.passwordRegex
                     "
-                  >Invalid password</label>
+                    >Invalid password</label
+                  >
                 </div>
               </div>
               <div
@@ -88,7 +94,9 @@
                     $v.createAccount.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password">Confirm password*</label>
+                <label class="eos-form-group-label" for="password"
+                  >Confirm password*</label
+                >
                 <input
                   class="eos-form__input_text"
                   type="password"
@@ -103,7 +111,8 @@
                       $v.createAccount.confirmPassword.$dirty &&
                         !$v.createAccount.confirmPassword.sameAsPassword
                     "
-                  >Passwords do not match</label>
+                    >Passwords do not match</label
+                  >
                 </div>
               </div>
             </v-col>
@@ -168,7 +177,9 @@
           </button>
         </eos-has-access>
 
-        <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.list">
+        <eos-has-access
+          :to="$eosUserPermissions.users + $eosUserPermissions.list"
+        >
           <v-data-table
             calculate-widths
             :items="userData"
@@ -182,7 +193,11 @@
             <template v-slot:header="{}">
               <tr>
                 <th class="tableheader" width="10%" />
-                <th v-for="header in userHeader" :key="header.text" class="tableheader">
+                <th
+                  v-for="header in userHeader"
+                  :key="header.text"
+                  class="tableheader"
+                >
                   <span
                     class="headerText"
                     :class="
@@ -190,7 +205,8 @@
                         ? 'active'
                         : ''
                     "
-                  >{{ header.text }}</span>
+                    >{{ header.text }}</span
+                  >
                   <span
                     :class="
                       header.value === sortColumnName && isSortActive
@@ -226,9 +242,14 @@
             <template v-slot:item="props">
               <tr class="font-weight-small">
                 <td>
-                  <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.update">
+                  <eos-has-access
+                    :to="$eosUserPermissions.users + $eosUserPermissions.update"
+                  >
                     <div @click="onExpand(props)">
-                      <img v-if="props.isExpanded" src="./../../../../assets/caret-green-down.png" />
+                      <img
+                        v-if="props.isExpanded"
+                        src="./../../../../assets/caret-green-down.png"
+                      />
                       <img
                         v-if="!props.isExpanded"
                         src="./../../../../assets/caret-green-right.png"
@@ -238,20 +259,23 @@
                 </td>
                 <td>{{ props.item.username }}</td>
                 <td>
-                  <span
-                    v-for="(role, i) in props.item.roles"
-                    :key="role"
-                  >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span>
+                  <span v-for="(role, i) in props.item.roles" :key="role"
+                    >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span
+                  >
                 </td>
                 <td>
-                  <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.update">
+                  <eos-has-access
+                    :to="$eosUserPermissions.users + $eosUserPermissions.update"
+                  >
                     <img
                       class="mx-2 eos-cursor-pointer"
                       @click="onExpand(props)"
                       src="./../../../../assets/actions/edit-green.svg"
                     />
                   </eos-has-access>
-                  <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.delete">
+                  <eos-has-access
+                    :to="$eosUserPermissions.users + $eosUserPermissions.delete"
+                  >
                     <img
                       class="mx-2 eos-cursor-pointer"
                       @click="onDeleteConfirmation(props.item.id)"
@@ -288,7 +312,9 @@
                             id="txtLocalHostnameinetrface"
                             @input="$v.selectedItem.username.$touch"
                           />
-                          <div class="eos-form-group-label eos-form-group-error-msg">
+                          <div
+                            class="eos-form-group-label eos-form-group-error-msg"
+                          >
                             <label
                               v-if="
                                 $v.selectedItem.username.$dirty &&
@@ -379,8 +405,10 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 import {
+  accountNameRegex,
   passwordRegex,
-  accountNameRegex
+  passwordTooltipMessage,
+  accountNameTooltipMessage
 } from "./../../../../common/regex-helpers";
 
 import { EVENT_BUS } from "./../../../../main";
@@ -442,7 +470,9 @@ export default class EosUserSettingLocal extends Vue {
       userData: [],
       selectedItemToDelete: "",
       showConfirmationDialog: false,
-      confirmationDialogMessage: "Are you sure you want to delete this user?"
+      confirmationDialogMessage: "Are you sure you want to delete this user?",
+      passwordTooltipMessage,
+      accountNameTooltipMessage
     };
   }
 
