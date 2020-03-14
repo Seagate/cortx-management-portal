@@ -13,7 +13,7 @@
             <label class="eos-form-group-label" for="userName">
               <eos-info-tooltip
                 label="Username*"
-                message="Min 1 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
+                :message="accountNameTooltipMessage"
               />
             </label>
             <input
@@ -35,14 +35,12 @@
               <label
                 v-else-if="
                   $v.createUserForm.iamUser.user_name.$dirty &&
-                    !$v.createUserForm.iamUser.user_name.iamUserNameRegex
+                    !$v.createUserForm.iamUser.user_name.accountNameRegex
                 "
                 >Invalid username</label
               >
             </div>
           </div>
-        </v-col>
-        <v-col class="py-0 pl-0">
         </v-col>
       </v-row>
       <v-row>
@@ -56,7 +54,7 @@
             <label class="eos-form-group-label" for="userPassword">
               <eos-info-tooltip
                 label="Password*"
-                message="Minimum 8 characters. Must contain at least 1 capital, 1 small, 1 special, 1 numeric character."
+                :message="passwordTooltipMessage"
               />
             </label>
             <input
@@ -78,7 +76,7 @@
               <label
                 v-else-if="
                   $v.createUserForm.iamUser.password.$dirty &&
-                    !$v.createUserForm.iamUser.password.iamPasswordRegex
+                    !$v.createUserForm.iamUser.password.passwordRegex
                 "
                 >Invalid password</label
               >
@@ -289,9 +287,11 @@ import { IAMUser } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import {
-  iamUserNameRegex,
+  accountNameRegex,
   iamPathRegex,
-  iamPasswordRegex
+  passwordRegex,
+  passwordTooltipMessage,
+  accountNameTooltipMessage
 } from "./../../common/regex-helpers";
 
 @Component({
@@ -309,9 +309,9 @@ export default class EosIAMUserManagement extends Vue {
   public validations = {
     createUserForm: {
       iamUser: {
-        user_name: { required, iamUserNameRegex },
-       // path: { required, iamPathRegex },
-        password: { required, iamPasswordRegex }
+        user_name: { required, accountNameRegex },
+        // path: { required, iamPathRegex },
+        password: { required, passwordRegex }
       },
       confirmPassword: {
         sameAsPassword: sameAs(() => {
@@ -329,6 +329,8 @@ export default class EosIAMUserManagement extends Vue {
   private usersList: IAMUser[] = [];
   private user: IAMUser;
   private userToDelete: string = "";
+  private passwordTooltipMessage: string = passwordTooltipMessage;
+  private accountNameTooltipMessage: string = accountNameTooltipMessage;
 
   constructor() {
     super();

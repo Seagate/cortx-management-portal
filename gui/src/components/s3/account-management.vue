@@ -13,7 +13,7 @@
             <label class="eos-form-group-label" for="accountName">
               <eos-info-tooltip
                 label="Account name*"
-                message="Min 8 to 64 characters. Only alphanumeric, underscore and hyphen are allowed."
+                :message="accountNameTooltipMessage"
               />
             </label>
             <input
@@ -92,7 +92,7 @@
             <label class="eos-form-group-label" for="accountPassword">
               <eos-info-tooltip
                 label="Password*"
-                message="minimum 8 characters, must contain at least 1 capital, 1 small, 1 special, 1 numeric character"
+                :message="passwordTooltipMessage"
               />
             </label>
             <input
@@ -307,9 +307,12 @@
                     'eos-form-group--error': $v.editAccountForm.password.$error
                   }"
                 >
-                  <label class="eos-form-group-label" for="accountPasswordEdit"
-                    >Password*</label
-                  >
+                  <label class="eos-form-group-label" for="accountPasswordEdit">
+                    <eos-info-tooltip
+                      label="Password*"
+                      :message="passwordTooltipMessage"
+                    />
+                  </label>
                   <input
                     class="eos-form__input_text"
                     type="password"
@@ -424,7 +427,12 @@ import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import { Account } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import { accountNameRegex, passwordRegex } from "./../../common/regex-helpers";
+import {
+  accountNameRegex,
+  passwordRegex,
+  passwordTooltipMessage,
+  accountNameTooltipMessage
+} from "./../../common/regex-helpers";
 
 @Component({
   name: "eos-account-management"
@@ -470,6 +478,8 @@ export default class EosAccountManagement extends Vue {
   private accountsTableHeaderList: any[];
   private accountsList: Account[] = [];
   private accountToDelete: string = "";
+  private passwordTooltipMessage: string = passwordTooltipMessage;
+  private accountNameTooltipMessage: string = accountNameTooltipMessage;
 
   constructor() {
     super();
