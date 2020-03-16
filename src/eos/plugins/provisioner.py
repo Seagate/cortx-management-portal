@@ -6,7 +6,7 @@
  Description:       Contains the implementation of Provisioner plugin.
 
  Creation Date:     02/25/2020
- Author:            Udayan Yaragattikar
+ Author:            Udayan Yaragattikar, Ajay Shingare
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -17,21 +17,32 @@
  ****************************************************************************
 """
 
-# import provisioner
 from csm.common.log import Log
+from csm.core.blogic import const
 from csm.common.errors import InvalidRequest
 from csm.core.data.models.upgrade import PackageInformation
 
+try:
+    import provisioner
+    import provisioner.freeze
+except ImportError as error:
+    Log.error(f"Provisioner module not found : {error}")
 
 class PackageValidationError(InvalidRequest):
     pass
 
-
 class ProvisionerPlugin:
-    # TODO: implement the plugin
+    """
+    Plugin that provides provisioner's api integration.
+    """
     def __init__(self):
-        self._provisioner = "provisioner"
-
+        try:
+            self.provisioner = provisioner
+            Log.info("Provisioner plugin is loaded")
+        except Exception as error:
+            self.provisioner = None
+            Log.error(f"Provisioner module not found : {error}")
+            
     async def validate_hotfix_package(self, path) -> PackageInformation:
         Log.debug(f"Validating package: f{path}")
         validation_result = PackageInformation()
@@ -62,3 +73,20 @@ class ProvisionerPlugin:
         return {"status": "Successful",
                 "DateTime": "YYYY-MM-DD-HH:MM:SS",
                 "version": "1.2.3"}
+
+    async def set_ntp(self, ntp_data: dict):
+        """
+        Set ntp configuration using provisioner api.
+        :param ntp_data: Ntp config dict 
+        :returns:
+        """
+        # TODO: Exception handling as per provisioner's api response
+        try:
+            if (ntp_data.get(const.NTP_SERVER_ADDRESS, None) and 
+                    ntp_data.get(const.NTP_TIMEZONE_OFFSET, None)):
+                if self.provisioner:
+                    Log.debug("Handling provisioner's set ntp api request")
+                    self.provisioner.set_ntp(server=ntp_data[const.NTP_SERVER_ADDRESS], 
+                                timezone=ntp_data[const.NTP_TIMEZONE_OFFSET].split()[-1])
+        except self.provisioner.errors.ProvisionerError as error:
+            Log.error(f"Provisioner api error : {error}")
