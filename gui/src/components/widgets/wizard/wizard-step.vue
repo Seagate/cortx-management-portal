@@ -65,7 +65,7 @@ a:hover {
   color: white;
   margin: 0 1px;
   padding: 5px 10px 10px 30px;
-  min-width: 12em;
+  min-width: 10em;
   float: left;
   position: relative;
   background-color: #b7b7b7;
