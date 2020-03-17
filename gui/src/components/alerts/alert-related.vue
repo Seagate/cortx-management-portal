@@ -13,7 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <h1>EosAlerRelated</h1>
+  <h1>EosAlertRelated</h1>
 </template>
 
 <script lang="ts">
@@ -22,12 +22,9 @@ import AlertsMixin from "./../../mixins/alerts";
 
 @Component({
   name: "eos-alert-related",
-  components: {  }
+  components: {}
 })
-export default class EosAlerRelated  extends Vue {
-  
-}
+export default class EosAlerRelated extends Vue {}
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -232,8 +232,8 @@ export default class EosAlertDetails extends Vue {
   public addCommentForm = {
     comment_text: ""
   };
-  private showOccurrenceTab: boolean = true;
-  private showRelatedTab: boolean = false;
+  public showOccurrenceTab: boolean = true;
+  public showRelatedTab: boolean = false;
   public tabsInfo: TabsInfo = {
     tabs: [{ id: 1, label: "Occurrences", show: true }],
     selectedTab: 1

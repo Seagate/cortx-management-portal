@@ -1,6 +1,8 @@
-import { PerfomanceStatsDetails, DiskCapacityDetails } from "./../models/performance-stats";
+import {
+  PerfomanceStatsDetails,
+  DiskCapacityDetails
+} from "./../models/performance-stats";
 export default abstract class StatsUtility {
-
   // params : metricValue = selected stats metric value.
   public static getYtwoObject(metricValue: string): any {
     // metrics object has c3 y2 axis object for each stats parameter.
@@ -53,10 +55,8 @@ export default abstract class StatsUtility {
         return metrics.iops_read_bucket;
       case "iops_write_bucket":
         return metrics.iops_write_bucket;
-      default :
+      default:
         return {};
-
-
     }
   }
 
@@ -72,15 +72,17 @@ export default abstract class StatsUtility {
       default:
         return "";
     }
-
-
   }
 
   // This static method converts api responce into 2D array format of c3.js
   // parameters: payload: api response data
   //             chartType: Throughput|| Latency || IOPS
   //             paramList: List of 2 metrics to show on the graph
-  public static formatData(payload: PerfomanceStatsDetails, chartType: string = "", paramList: string[]): any[][] {
+  public static formatData(
+    payload: PerfomanceStatsDetails,
+    chartType: string = "",
+    paramList: string[]
+  ): any[][] {
     const c3Format: any = { ...payload };
     const outputFormat: any[][] = [];
     const constStr = require("../common/const-string.json");
@@ -92,13 +94,23 @@ export default abstract class StatsUtility {
     if (c3Format.list !== undefined) {
       for (let objCount = 0; objCount <= c3Format.list.length - 1; objCount++) {
         if (objCount === 0) {
-          for (let datePointCount = 0; datePointCount <= c3Format.list[0].data[0].length - 1; datePointCount++) {
-            payload.list[0].data[0].splice(datePointCount, 1, new Date(payload.list[0].data[0][datePointCount]));
+          for (
+            let datePointCount = 0;
+            datePointCount <= c3Format.list[0].data[0].length - 1;
+            datePointCount++
+          ) {
+            payload.list[0].data[0].splice(
+              datePointCount,
+              1,
+              new Date(payload.list[0].data[0][datePointCount])
+            );
           }
         }
         if (chartType === constStr.throughput) {
           for (let i = 0; i <= payload.list[objCount].data[1].length - 1; i++) {
-            payload.list[objCount].data[1][i] = Math.round(payload.list[objCount].data[1][i] / (1024 * 1024));
+            payload.list[objCount].data[1][i] = Math.round(
+              payload.list[objCount].data[1][i] / (1024 * 1024)
+            );
           }
         }
         payload.list[objCount].data[1].unshift(payload.list[objCount].label);
@@ -110,8 +122,11 @@ export default abstract class StatsUtility {
     // Following loop is for recognizing the parameter to splice
     // Which we are not going to show on the gui
     // This logic will go once we integrate with generic stats api
-    for (let paramIndex = 0; paramIndex <= paramArray.length - 1; paramIndex++) {
-
+    for (
+      let paramIndex = 0;
+      paramIndex <= paramArray.length - 1;
+      paramIndex++
+    ) {
       if (!paramList.includes(paramArray[paramIndex])) {
         switch (paramArray[paramIndex].toLowerCase()) {
           case "read":
@@ -133,11 +148,13 @@ export default abstract class StatsUtility {
   }
 
   // This static function is used to convert capacity api data into c3 fromat
-  public static formatCapacityData(payload: DiskCapacityDetails | null): [string, ...any[]][] {
+  public static formatCapacityData(
+    payload: DiskCapacityDetails | null
+  ): [string, ...any[]][] {
     const outputFormat: [string, ...any[]][] = [["data"]];
     if (payload !== null && payload !== undefined) {
       const percentUsage = payload.usage_percentage.split(" ");
-      outputFormat[0].push(parseInt(percentUsage[0], 10));
+      outputFormat[0].push(percentUsage[0]);
     }
     return outputFormat;
   }
@@ -146,17 +163,27 @@ export default abstract class StatsUtility {
   // c3.js: format [ ["x", new Date().getTime()], ["total", 0], ["read", 0], ["write", 0] ]
   // api response format : { "id": "1", "metrics": [ { "data": [ [ 1580732207000 ], [ 0 ] ],
   // "name": "throughput.read", "unit": "bytes" } ] }
-  public static formatDataGenric(payload: any, chartType: string = "", paramList: any[]) {
+  public static formatDataGenric(
+    payload: any,
+    chartType: string = "",
+    paramList: any[]
+  ) {
     const c3Format: any = { ...payload };
     const outputFormat: any[][] = [];
     if (c3Format.metrics !== undefined) {
-      for (let metricNo = 0; metricNo <= c3Format.metrics.length - 1; metricNo++) {
+      for (
+        let metricNo = 0;
+        metricNo <= c3Format.metrics.length - 1;
+        metricNo++
+      ) {
         if (c3Format.metrics[metricNo].data !== undefined) {
           if (metricNo === 0) {
             c3Format.metrics[metricNo].data[0].unshift("x");
             outputFormat.push(c3Format.metrics[metricNo].data[0]);
           }
-          c3Format.metrics[metricNo].data[1].unshift(this.replaceCharInStr(c3Format.metrics[metricNo].name, ".", "_"));
+          c3Format.metrics[metricNo].data[1].unshift(
+            this.replaceCharInStr(c3Format.metrics[metricNo].name, ".", "_")
+          );
           outputFormat.push(c3Format.metrics[metricNo].data[1]);
         }
       }
@@ -180,9 +207,15 @@ export default abstract class StatsUtility {
     }
   }
 
-  public static replaceCharInStr(value: string, charToReplace: string, charToReplaceWith: string): string {
-    return value.substring(0, value.indexOf(charToReplace)) + charToReplaceWith +
-    value.substring(value.indexOf(charToReplace)
-    + 1, value.length);
+  public static replaceCharInStr(
+    value: string,
+    charToReplace: string,
+    charToReplaceWith: string
+  ): string {
+    return (
+      value.substring(0, value.indexOf(charToReplace)) +
+      charToReplaceWith +
+      value.substring(value.indexOf(charToReplace) + 1, value.length)
+    );
   }
 }
