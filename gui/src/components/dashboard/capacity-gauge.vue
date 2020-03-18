@@ -24,21 +24,26 @@
           <div class="capacity-used-badge"></div>
         </td>
         <td class="width-110">Used</td>
-        <td>{{capacityDetails.used}}</td>
+        <td>{{ capacityDetails.used }}</td>
       </tr>
       <tr>
         <td>
           <div class="capacity-available-badge"></div>
         </td>
-        <td >Available</td>
-        <td>{{capacityDetails.avail}}</td>
+        <td>Available</td>
+        <td>{{ capacityDetails.avail }}</td>
       </tr>
     </table>
     <div class="mt-2 mb-2 eos-capacity-separator"></div>
-    <div>
-      <div>Total</div>
-      <span style="float: right;">{{capacityDetails.size}}</span>
-    </div>
+    <table class="mt-3">
+      <tr>
+        <td class="width-25">
+          <div></div>
+        </td>
+        <td class="width-110">Total</td>
+        <td>{{ capacityDetails.size }}</td>
+      </tr>
+    </table>
   </div>
 </template>
 <script lang="ts">
@@ -70,9 +75,9 @@ export default class EosCapacityGauge extends Vue {
             }
           },
           color: {
-            pattern: ["#60B044", "#60B044", "#60B044", "#60B044"], // the three color levels for the percentage values.
+            pattern: ["#60B044", "#F7A528", "#DC1F2E"], // the three color levels for the percentage values.
             threshold: {
-              values: [30, 60, 90, 100]
+              values: [50, 90, 100]
             }
           },
           size: {

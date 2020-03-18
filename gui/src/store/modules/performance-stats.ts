@@ -45,37 +45,41 @@ export default class PerformanceStats extends VuexModule {
   public constStr = require("../../common/const-string.json");
   // Throuthput
   @Action
-  public async getThroughputPerformanceStats(
-    queryParams: any
-  ) {
+  public async getThroughputPerformanceStats(queryParams: any) {
     try {
       const { metric1, metric2 } = queryParams;
       const metric1Unit = StatsUtility.getUnitStatMatric(queryParams.metric1);
       const metric2Unit = StatsUtility.getUnitStatMatric(queryParams.metric2);
-      const metric1Name: string = StatsUtility.replaceCharInStr(queryParams.metric1, "_", ".") + "." + metric1Unit;
-      const metric2Name: string = StatsUtility.replaceCharInStr(queryParams.metric2, "_", ".") + "." + metric2Unit;
+      const metric1Name: string =
+        StatsUtility.replaceCharInStr(queryParams.metric1, "_", ".") +
+        "." +
+        metric1Unit;
+      const metric2Name: string =
+        StatsUtility.replaceCharInStr(queryParams.metric2, "_", ".") +
+        "." +
+        metric2Unit;
       let apiUri: string = "";
 
       if (queryParams.metric1 !== "" && queryParams.metric2 !== "") {
         // tslint:disable-next-line:max-line-length
         apiUri = `${apiRegister.stats}?from=${queryParams.from}&to=${queryParams.to}&total_sample=${queryParams.total_sample}&metric=${metric1Name}&metric=${metric2Name}`;
-
       } else {
         if (queryParams.metric1 === "") {
           // tslint:disable-next-line:max-line-length
           apiUri = `${apiRegister.stats}?from=${queryParams.from}&to=${queryParams.to}&total_sample=${queryParams.total_sample}&metric=${metric2Name}`;
-
         } else {
           // tslint:disable-next-line:max-line-length
           apiUri = `${apiRegister.stats}?from=${queryParams.from}&to=${queryParams.to}&total_sample=${queryParams.total_sample}&metric=${metric1Name}`;
-
         }
-
       }
       const res = await Api.getAll(apiUri);
 
       if (res && res.data) {
-        return StatsUtility.formatDataGenric(res.data, this.constStr.throughput, [metric1, metric2]);
+        return StatsUtility.formatDataGenric(
+          res.data,
+          this.constStr.throughput,
+          [metric1, metric2]
+        );
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -121,6 +125,7 @@ export default class PerformanceStats extends VuexModule {
         return StatsUtility.formatCapacityData(res.data);
       }
     } catch (e) {
+      this.context.commit("setCapacityStats", {} as DiskCapacityDetails);
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
     }
