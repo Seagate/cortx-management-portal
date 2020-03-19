@@ -40,7 +40,7 @@ export default class MessageDialog extends VuexModule {
       this.showDialog = true;
       this.timer = setTimeout(() => {
         this.showDialog = false;
-      }, 5000);
+      }, 10000);
     }
   }
 
