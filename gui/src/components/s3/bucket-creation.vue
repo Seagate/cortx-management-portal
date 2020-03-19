@@ -274,7 +274,7 @@ export default class EosBucketCreation extends Vue {
   public validations = {
     createBucketForm: {
       bucket: {
-        bucket_name: { required, accountNameRegex, minLength: minLength(3) }
+        bucket_name: { required, accountNameRegex }
       }
     },
     policyJson: {

@@ -69,7 +69,7 @@ export default class EosNavBar extends Vue {
       path: "/udx-registration",
       iconDefault: require("@/assets/navigation/udx-grey.svg"),
       iconActive: require("@/assets/navigation/udx-white.svg"),
-      requiredAccess: "s3accounts"
+      requiredAccess: "sysconfig"
     },
     {
       title: "Settings",

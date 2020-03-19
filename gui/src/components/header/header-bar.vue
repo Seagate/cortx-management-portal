@@ -22,6 +22,9 @@
       <div class="eos-logo-separator"></div>
       <img :src="require('@/assets/cloudstore.svg/')" />
       <div class="eos-header-right-aligned-items">
+        <eos-has-access
+          :to="$eosUserPermissions.alerts + $eosUserPermissions.list"
+        >
         <div
           class="eos-logout-icon-container"
           @click="$router.push({ name: 'alerts-large' })"
@@ -34,6 +37,7 @@
             <img :src="require('@/assets/navigation/alerts-white.svg')" />
           </div>
         </div>
+        </eos-has-access>
         <div style="padding-top: 1.125em;" class="pr-2">
           <label class="eos-username-label">{{ username }}</label>
         </div>
@@ -88,9 +92,7 @@ export default class HeaderBar extends Vue {
   }
   private logout() {
     // Invalidate session from Server, remove localStorage token and re-route to login page
-    this.$store
-      .dispatch("userLogin/logoutAction")
-      .finally(() => {
+    this.$store.dispatch("userLogin/logoutAction").finally(() => {
         localStorage.removeItem(this.$data.constStr.access_token);
       });
     this.$store.commit("userLogin/setUserPermissions", {});

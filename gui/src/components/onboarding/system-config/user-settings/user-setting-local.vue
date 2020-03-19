@@ -242,20 +242,26 @@
             <template v-slot:item="props">
               <tr class="font-weight-small">
                 <td>
-                  <eos-has-access
-                    :to="$eosUserPermissions.users + $eosUserPermissions.update"
-                  >
-                    <div @click="onExpand(props)">
-                      <img
-                        v-if="props.isExpanded"
-                        src="./../../../../assets/caret-green-down.png"
-                      />
-                      <img
-                        v-if="!props.isExpanded"
-                        src="./../../../../assets/caret-green-right.png"
-                      />
-                    </div>
-                  </eos-has-access>
+                  <span v-if="!isAdminUser(props.item)">
+                    <eos-has-access
+                      :to="
+                        $eosUserPermissions.users + $eosUserPermissions.update
+                      "
+                    >
+                      <div @click="onExpand(props)">
+                        <img
+                          v-if="props.isExpanded"
+                          title="Minimize"
+                          :src="require('@/assets/caret-down.svg')"
+                        />
+                        <img
+                          v-if="!props.isExpanded"
+                          title="Expand"
+                          :src="require('@/assets/caret-right.svg')"
+                        />
+                      </div>
+                    </eos-has-access>
+                  </span>
                 </td>
                 <td>{{ props.item.username }}</td>
                 <td>
@@ -264,24 +270,32 @@
                   >
                 </td>
                 <td>
-                  <eos-has-access
-                    :to="$eosUserPermissions.users + $eosUserPermissions.update"
-                  >
-                    <img
-                      class="mx-2 eos-cursor-pointer"
-                      @click="onExpand(props)"
-                      src="./../../../../assets/actions/edit-green.svg"
-                    />
-                  </eos-has-access>
-                  <eos-has-access
-                    :to="$eosUserPermissions.users + $eosUserPermissions.delete"
-                  >
-                    <img
-                      class="mx-2 eos-cursor-pointer"
-                      @click="onDeleteConfirmation(props.item.id)"
-                      src="./../../../../assets/actions/delete-green.svg"
-                    />
-                  </eos-has-access>
+                  <span v-if="!isAdminUser(props.item)">
+                    <eos-has-access
+                      :to="
+                        $eosUserPermissions.users + $eosUserPermissions.update
+                      "
+                    >
+                      <img
+                        class="mx-2 eos-cursor-pointer"
+                        @click="onExpand(props)"
+                        title="Edit"
+                        src="./../../../../assets/actions/edit-green.svg"
+                      />
+                    </eos-has-access>
+                    <eos-has-access
+                      :to="
+                        $eosUserPermissions.users + $eosUserPermissions.delete
+                      "
+                    >
+                      <img
+                        class="mx-2 eos-cursor-pointer"
+                        @click="onDeleteConfirmation(props.item.id)"
+                        title="Delete"
+                        src="./../../../../assets/actions/delete-green.svg"
+                      />
+                    </eos-has-access>
+                  </span>
                 </td>
               </tr>
             </template>
@@ -515,6 +529,8 @@ export default class EosUserSettingLocal extends Vue {
    * This method create csm user
    */
   private createUser() {
+    this.$store.dispatch("systemConfig/showLoader", "Creating user...");
+
     this.$data.isUserCreate = !this.$data.isUserCreate;
     const queryParams: UserDetails = {
       username: this.$data.createAccount.username,
@@ -532,6 +548,7 @@ export default class EosUserSettingLocal extends Vue {
       })
       .finally(() => {
         this.$data.createAccount = {};
+        this.$store.dispatch("systemConfig/hideLoader");
       });
     return this.$data.isUserCreate;
   }
@@ -539,6 +556,7 @@ export default class EosUserSettingLocal extends Vue {
    * Edit Csm User
    */
   private editUser(selectedItem: any) {
+    this.$store.dispatch("systemConfig/showLoader", "Updating user details...");
     this.$store
       .dispatch("createUser/updateUserDetails", selectedItem)
       .then((res: any) => {
@@ -547,6 +565,9 @@ export default class EosUserSettingLocal extends Vue {
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("Create User Fails");
+      })
+      .finally(() => {
+        this.$store.dispatch("systemConfig/hideLoader");
       });
     this.$data.expanded = [];
   }
@@ -558,35 +579,38 @@ export default class EosUserSettingLocal extends Vue {
   private onExpand(props: any) {
     if (props.isExpanded === false) {
       props.expand(props.item);
-      this.$data.selectedItem = props.item;
+      this.$data.selectedItem = {
+        ...props.item,
+        roles: [...props.item.roles]
+      };
     } else {
       props.expand(false);
     }
   }
 
   private onDelete(id: string) {
-    // TODO: Need to remove this check once api is properly implemented
-    if (!this.isFirstElement(id)) {
-      this.$store
-        .dispatch("createUser/deleteUserAction", id)
-        .then(data => {
-          this.getUserData();
-        })
-        .catch(e => {
-          // tslint:disable-next-line: no-console
-          console.log("err logger: ", e);
-        });
-    }
+    this.$store.dispatch("systemConfig/showLoader", "Deleting user...");
+
+    this.$store
+      .dispatch("createUser/deleteUserAction", id)
+      .then(data => {
+        this.getUserData();
+      })
+      .catch(e => {
+        // tslint:disable-next-line: no-console
+        console.log("err logger: ", e);
+      })
+      .finally(() => {
+        this.$store.dispatch("systemConfig/hideLoader");
+      });
   }
-  // TODO: Need to remove this logic once api is properly implemented
-  private isFirstElement(id: string): boolean {
-    let isFirstElem: boolean = false;
-    if (this.$data.userData.length > 0 && this.$data.userData[0].id === id) {
-      isFirstElem = true;
-    }
-    return isFirstElem;
+
+  private isAdminUser(item: any) {
+    return item.roles.includes("root");
   }
   private getUserData() {
+    this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
+
     this.$store
       .dispatch("createUser/getDataAction")
       .then(data => {
@@ -595,6 +619,9 @@ export default class EosUserSettingLocal extends Vue {
       .catch(e => {
         // tslint:disable-next-line: no-console
         console.log("err logger: ", e);
+      })
+      .finally(() => {
+        this.$store.dispatch("systemConfig/hideLoader");
       });
   }
 }
