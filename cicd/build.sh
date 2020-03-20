@@ -107,7 +107,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
 
     # Enable csm package for python import
     # TODO: Add pythonpath in pyinstaller spec
-    export PYTHONPATH=$TMPDIR/csm/:$PYTHONPATH
+    export PYTHONPATH=$TMPDIR:$PYTHONPATH
 
     # Check python package
     req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
