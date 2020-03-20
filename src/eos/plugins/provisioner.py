@@ -90,3 +90,8 @@ class ProvisionerPlugin:
                                 timezone=ntp_data[const.NTP_TIMEZONE_OFFSET].split()[-1])
         except self.provisioner.errors.ProvisionerError as error:
             Log.error(f"Provisioner api error : {error}")
+
+    async def get_provisioner_status(self, status_type):
+        # TODO: Provisioner api to get status tobe implented here
+        Log.debug(f"Getting provisioner status for : {status_type}")
+        return {"status": "Successful"}
