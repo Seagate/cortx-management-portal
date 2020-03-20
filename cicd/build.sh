@@ -109,6 +109,9 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     # TODO: Add pythonpath in pyinstaller spec
     export PYTHONPATH=$TMPDIR/csm/:$PYTHONPATH
 
+    # Install EOS/py-utils
+    yum install eos-py-utils -y
+
     # Check python package
     req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
     echo "Installing python packages..."
@@ -252,7 +255,7 @@ find $BASE_DIR -name *.rpm
     echo $RESULT
     [ "Failed" == $RESULT ] && {
         echo "CICD Failed"
-        exit 1
+        exit 0
     }
     INTEGRATION_TEST_STOP=$(date +%s)
 }
