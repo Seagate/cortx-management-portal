@@ -109,6 +109,9 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     # TODO: Add pythonpath in pyinstaller spec
     export PYTHONPATH=$TMPDIR:$PYTHONPATH
 
+    # Install EOS/py-utils
+    yum install eos-py-utils -y
+
     # Check python package
     req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
     echo "Installing python packages..."
