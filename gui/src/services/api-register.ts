@@ -46,5 +46,6 @@ export default {
   node_shutdown: ` /api/${version}/maintenance/cluster/shutdown`,
   health_summary: `/api/${version}/system/health`,
   audit_alerts: `/api/${version}/audit_alerts`,
-  send_test_email: `/api/${version}/sysconfig_helpers/email_test`
+  send_test_email: `/api/${version}/sysconfig_helpers/email_test`,
+  ssl_upload: `/api/${version}/tls/bundle`
 };

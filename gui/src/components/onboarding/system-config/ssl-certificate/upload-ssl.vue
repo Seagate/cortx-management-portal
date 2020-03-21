@@ -1,37 +1,39 @@
 <template>
-  <v-container>
+  <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblIpv4Dns">SSL Upload</div>
-      <div
-        class="mt-6"
-        id="lblIpv4Msg"
-      >You need to upload ssl and key certificate here</div>
-      <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
-        <v-row class="resource-container mt-5">
-          <v-col>
-            <label
-              class="eos-form-group-label ml-10 mt-5"
-              for="Resource"
-              style=" font-size: 1em;"
-            >Upload SSL Certificate</label>
-          </v-col>
-          <v-col>
-            <button type="button" class="eos-btn-primary" @click="uploadSSLCertificate()">Upload</button>
+      <div class="title mt-0 font-weight-bold" id="lblUpdateFirmware">Upload SSL Certificate</div>
+      <div class="mt-6" id="lblUpdateFirmwareMsg">
+        <span class="eos-text-bold">It is important that you are uploading ssl cerificate</span>
+      </div>
+      <div class="mt-6" id="lblVersion"></div>
+      <v-divider class="mt-2 mb-5" />
+      <input type="file" id="file" ref="file" v-on:change="handleFileUpload($event.target.files)" />
+      <v-divider class="mt-5 mb-2" />
+      <div class="mt-8">
+        <!-- <button
+          id="btnInstallFirmware"
+          type="button"
+          class="eos-btn-primary"
+          @click="uploadCertificate()"
+        >Upload Certificate</button>-->
+        <v-row>
+          <v-col cols="12">
+            <v-row
+              :align="alignment"
+              :justify="justify"
+              class="grey lighten-5"
+              style="height: 300px;"
+            >
+              <button
+                id="btnInstallFirmware"
+                type="button"
+                class="eos-btn-primary"
+                @click="uploadCertificate()"
+              >Upload Certificate</button>
+            </v-row>
           </v-col>
         </v-row>
-        <v-row class="resource-container mt-5">
-          <v-col>
-            <label
-              class="eos-form-group-label ml-10 mt-5"
-              for="Resource"
-              style=" font-size: 1em;"
-            >Upload Key Certificate</label>
-          </v-col>
-          <v-col>
-            <button type="button" class="eos-btn-primary" @click="uploadKeyCertificate()">Upload</button>
-          </v-col>
-        </v-row>
-      </v-card>
+      </div>
     </div>
     <span class="d-none">{{ isValidForm }}</span>
   </v-container>
@@ -73,10 +75,21 @@ export default class EOSUploadSSL extends Vue {
     EVENT_BUS.$emit("validForm", validate);
     return validate;
   }
-  private data() {
-    return {};
+  public data() {
+    return {
+      file: File
+    };
+  }
+  private handleFileUpload(fileList: FileList) {
+    this.$data.file = fileList[0];
+  }
+  private uploadCertificate() {
+    const formData = new FormData();
+    formData.append("pemfile", this.$data.file);
+    this.$store.dispatch("sslupload/uploadSSLCerificate", formData);
   }
 }
 </script>
 <style lang="scss" scoped>
 </style>
+};
