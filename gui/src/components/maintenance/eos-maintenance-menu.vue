@@ -14,23 +14,10 @@
  *****************************************************************************/
 <template>
   <div>
-    <div v-for="item in settingSubmenuItems" :key="item.id">
-    <div class="eos-menu-card-layout">
-        <label
-          class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
-        >
-          {{ item.title }}</label
-        >
-      <button
-        type="button"
-        class="eos-btn-tertiary eos-float-r"
-          @click="handleClickFunction(item.actionClickFunction)"
-          :disabled="item.disabled"
-        >
-          {{ item.actionName }}
-        </button>
-    </div>
-    </div>
+    <eos-menu-list
+      :menuItems="subMenuItems"
+      @clickFunctionHandler="clickFunctionHandler"
+    ></eos-menu-list>
     <div class="eos-wrap-height-menu-card-layout">
       <button type="button" class="eos-btn-tertiary" @click="goToAbout()">
         About
@@ -38,14 +25,17 @@
     </div>
   </div>
 </template>
- <script lang="ts">
+<script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
-
+import EosMenuList from "../widgets/eos-menu-list.vue";
 @Component({
-  name: "eos-maintenance-menu"
+  name: "eos-maintenance-menu",
+  components: {
+    EosMenuList
+  }
 })
 export default class EosMaintenanceMenu extends Vue {
-  public settingSubmenuItems = [
+  public subMenuItems = [
     {
       title: "System maintenance",
       actionName: "Manage",
@@ -62,7 +52,7 @@ export default class EosMaintenanceMenu extends Vue {
       title: "Software",
       actionName: "Manage",
       actionClickFunction: "goToSoftware",
-      disabled: false
+      disabled: true
     },
     {
       title: "Audit log",
@@ -86,27 +76,17 @@ export default class EosMaintenanceMenu extends Vue {
   private goToAbout() {
     this.$router.push({ name: "about" });
   }
-  private handleClickFunction(actionClickFunction: string) {
+  private clickFunctionHandler(actionClickFunction: string) {
     const vueInstance: any = this;
     vueInstance[actionClickFunction]();
   }
 }
 </script>
 <style lang="scss" scoped>
-.eos-menu-card-layout {
-  height: 6.25em;
-  width: 56.25em;
-  padding-left: 1em;
-  padding-top: 0.5em;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
 .eos-wrap-height-menu-card-layout {
   width: 56.25em;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-.eos-menu-card-title {
-  margin-top: 0.313em;
 }
 </style>

@@ -14,33 +14,24 @@
  *****************************************************************************/
 <template>
   <div>
-    <div v-for="item in settingSubmenuItems" :key="item.id">
-    <div class="eos-menu-card-layout">
-        <label
-          class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
-        >
-          {{ item.title }}</label
-        >
-        <button
-          type="button"
-          class="eos-btn-tertiary eos-float-r"
-          @click="handleClickFunction(item.actionClickFunction)"
-          :disabled="item.disabled"
-        >
-          {{ item.actionName }}
-        </button>
-    </div>
-    </div>
+    <eos-menu-list
+      :menuItems="subMenuItems"
+      @clickFunctionHandler="clickHandler"
+    ></eos-menu-list>
     </div>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import EosMenuList from "../widgets/eos-menu-list.vue";
 
 @Component({
-  name: "eos-settings-menu"
+  name: "eos-settings-menu",
+  components: {
+    EosMenuList
+  }
 })
 export default class EosSettingsMenu extends Vue {
-  public settingSubmenuItems = [
+  public subMenuItems = [
     {
       title: "Notifications",
       actionName: "Manage",
@@ -96,27 +87,17 @@ export default class EosSettingsMenu extends Vue {
   private goToSSL() {
     this.$router.push({ name: "ssl-upload" });
   }
-  private handleClickFunction(actionClickFunction: string) {
+  private clickHandler(actionClickFunction: string) {
     const vueInstance: any = this;
     vueInstance[actionClickFunction]();
   }
 }
 </script>
 <style lang="scss" scoped>
-.eos-menu-card-layout {
-  height: 6.25em;
-  width: 56.25em;
-  padding-left: 1em;
-  padding-top: 0.5em;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
 .eos-wrap-height-menu-card-layout {
   width: 56.25em;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-.eos-menu-card-title {
-  margin-top: 0.313em;
 }
 </style>
