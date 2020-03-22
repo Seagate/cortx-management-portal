@@ -1,8 +1,7 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div
-        class="eos-text-lg mt-0 font-weight-bold"
+      <div class="title mt-0 font-weight-bold"
         id="lblNetworkIP4"
       >Management network settings: IPv4</div>
       <div

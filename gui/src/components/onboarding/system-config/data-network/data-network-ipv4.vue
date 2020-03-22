@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-0 ml-0 pt-0">
+  <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblIpv4Dns">Data network settings: IPv4</div>
       <div

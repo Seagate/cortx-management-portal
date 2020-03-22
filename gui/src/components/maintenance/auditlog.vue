@@ -48,11 +48,13 @@
           class="eos-form__input_text"
           v-model="timerange"
         >
-          <option value="1">One Day</option>
-          <option value="7">One week</option>
-          <option value="30">One month</option>
-          <option value="90">Three months</option>
-          <option value="180">Six months</option>
+          <option value="1">One day</option>
+          <option value="2">Two days</option>
+          <option value="3">Three days</option>
+          <option value="4">Four days</option>
+          <option value="5">Five days</option>
+          <option value="6">Six days</option>
+          <option value="7">Seven days</option>
         </select>
       </div>
       <div class="mt-8 nav-btn">

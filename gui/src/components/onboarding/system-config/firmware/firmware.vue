@@ -36,7 +36,6 @@
         >Install new firmware file</button>
       </div>
     </div>
-    <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
