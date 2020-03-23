@@ -154,15 +154,9 @@
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span>User created: access key and secret</span>
+          <span>User created</span>
         </v-card-title>
         <v-divider />
-        <v-row class="mx-4">
-          <v-col cols="8">
-            <span>Save this information, you will not see it again.</span>
-          </v-col>
-          <v-spacer></v-spacer>
-        </v-row>
 
         <table class="mx-7 mb-7">
           <tr style>
