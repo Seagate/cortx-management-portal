@@ -15,14 +15,12 @@
 import store from "../store/store";
 
 export function errorHandler(err: any, vm: any, info: any) {
-  store.dispatch("systemConfig/showLoaderMessage", {
-    show: false,
-    message: ""
-  });
+  store.dispatch("systemConfig/hideLoader");
   if (err.error) {
     store.commit("messageDialog/show", {
       title: "Error",
-      message: err.data && err.data.message ? err.data.message : err.error.message
+      message:
+        err.data && err.data.message ? err.data.message : err.error.message
     });
   } else {
     store.commit("messageDialog/show");

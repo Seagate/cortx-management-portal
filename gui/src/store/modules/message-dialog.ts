@@ -24,7 +24,7 @@ Vue.use(Vuex);
 export default class MessageDialog extends VuexModule {
   public showDialog: boolean = false;
   public title: string = "Error";
-  public message: string = "Internal error occured";
+  public message: string = "Internal error occurred";
   private timer: any;
 
   @Mutation
@@ -36,7 +36,7 @@ export default class MessageDialog extends VuexModule {
       this.title = dialogPayload.title ? dialogPayload.title : "Error";
       this.message = dialogPayload.message
         ? dialogPayload.message
-        : "Internal error occured";
+        : "Internal error occurred";
       this.showDialog = true;
       this.timer = setTimeout(() => {
         this.showDialog = false;
@@ -49,7 +49,7 @@ export default class MessageDialog extends VuexModule {
     clearTimeout(this.timer);
     this.showDialog = false;
     this.title = "Error";
-    this.message = "Internal error occured";
+    this.message = "Internal error occurred";
   }
 
   @Mutation

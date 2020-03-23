@@ -56,7 +56,7 @@
           </button>
           <button
             type="button"
-            class="ml-8 eos-btn-secondary"
+            class="eos-btn-tertiary"
             @click="closeCreateBucketForm()"
           >
             Cancel
@@ -91,7 +91,7 @@
           >
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
-          <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
+          <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
           <span>Bucket created successfully.</span>
         </v-card-title>
         <v-card-actions>
@@ -100,47 +100,7 @@
             class="ma-5 eos-btn-primary"
             @click="closeBucketCreateSuccessDialog()"
           >
-            Ok
-          </button>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="showConfirmDeleteDialog" persistent max-width="790">
-      <v-card>
-        <v-system-bar color="greay lighten-3">
-          <v-spacer></v-spacer>
-          <v-icon
-            @click="closeConfirmDeleteDialog('no')"
-            style="cursor: pointer;"
-            >mdi-close</v-icon
-          >
-        </v-system-bar>
-        <v-card-title class="title ml-3">
-          <img class="mr-2" src="./../../assets/status/warning.png" />
-          <span>Confirmation</span>
-        </v-card-title>
-        <v-divider />
-        <v-card-text>
-          <label class="ml-3 delete-bucket-confirmation-msg"
-            >Are you sure you want to delete the bucket?</label
-          >
-        </v-card-text>
-
-        <v-card-actions>
-          <button
-            type="button"
-            class="ma-5 eos-btn-primary"
-            @click="closeConfirmDeleteDialog('yes')"
-          >
-            Yes
-          </button>
-          <button
-            type="button"
-            class="ma-5 eos-btn-primary"
-            @click="closeConfirmDeleteDialog('no')"
-          >
-            No
+            Okay
           </button>
         </v-card-actions>
       </v-card>
@@ -153,50 +113,58 @@
           <img
             class="eos-modal-close"
             :src="require('@/assets/close-green.svg')"
-            @click="closeBucketPolicyeDialog()"
+            @click="closeBucketPolicyDialog()"
           />
         </div>
         <div class="eos-modal-body">
-          <div class="eos-form-group" style="width: 100%;">
-            <label class="eos-form-group-label" for="comment"
-              >Add your JSON here</label
-            >
+          <div
+            class="eos-form-group eos-form-group-custom"
+            :class="{
+              'eos-form-group--error': $v.policyJSON.$error
+            }"
+          >
+            <label class="eos-form-group-label" for="policyJSONTextarea">
+              Add your JSON here
+            </label>
             <textarea
-              class="eos-form__input_textarea"
-              v-model="policyJson"
-              @input="$v.policyJson.$touch"
+              class="eos-form__input_textarea eos-form__input_textarea-custom"
+              name="policyJSONTextarea"
+              id="policyJSONTextarea"
+              rows="10"
+              v-model="policyJSON"
+              @input="$v.policyJSON.$touch"
             ></textarea>
-            <span
-              class="eos-form-group-label eos-form-group-error-msg red--text"
-              v-if="$v.policyJson.$dirty && !$v.policyJson.required"
-              >Policy JSON is required</span
-            >
-            <span
-              class="eos-form-group-label eos-form-group-error-msg red--text"
-              >{{ jsonerr }}</span
-            >
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label v-if="$v.policyJSON.$dirty && !$v.policyJSON.required"
+                >Policy JSON is required</label
+              >
+              <label
+                v-else-if="$v.policyJSON.$dirty && !$v.policyJSON.JSONValidator"
+                >{{ JSONError }}</label
+              >
+            </div>
           </div>
-          <div class="policy-container">
+          <div class="mt-3 policy-container">
             <button
               type="button"
               class="eos-btn-primary"
-              :disabled="!$v.policyJson.jsonValidator"
-              @click="updateBuketPolicy()"
+              :disabled="!$v.policyJSON.JSONValidator"
+              @click="updateBucketPolicy()"
             >
               Update
             </button>
             <button
               type="button"
-              class="eos-btn-primary ml-8"
-              :disabled="!$v.policyJson.jsonValidator"
-              @click="deleteBuketPolicy()"
+              class="eos-btn-primary ml-2"
+              :disabled="!$v.policyJSON.JSONValidator"
+              @click="deleteBucketPolicy()"
             >
               Delete
             </button>
             <button
               type="button"
-              class="ml-8 eos-btn-secondary ml-8"
-              @click="closeBucketPolicyeDialog()"
+              class="eos-btn-tertiary"
+              @click="closeBucketPolicyDialog()"
             >
               Cancel
             </button>
@@ -248,6 +216,15 @@
         </template>
       </v-data-table>
     </eos-has-access>
+
+    <eos-confirmation-dialog
+      :show="showConfirmDeleteDialog"
+      title="Confirmation"
+      message="Are you sure you want to delete the bucket?"
+      severity="warning"
+      @closeDialog="closeConfirmDeleteDialog"
+      cancelButtonText="No"
+    ></eos-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -277,23 +254,23 @@ export default class EosBucketCreation extends Vue {
         bucket_name: { required, accountNameRegex }
       }
     },
-    policyJson: {
+    policyJSON: {
       required,
-      jsonValidator: (value: any, $data: any) => {
+      JSONValidator: (value: any, $data: any) => {
         let isValid = false;
         try {
           JSON.parse(value);
-          $data.jsonerr = "";
+          $data.JSONError = "";
           isValid = true;
         } catch (e) {
-          $data.jsonerr = e.message;
+          $data.JSONError = e.message;
         }
         return isValid;
       }
     }
   };
 
-  private jsonvalidationMsg: any = "" || null;
+  private jsonValidationMessage: any = "" || null;
   private showCreateBucketForm: boolean;
   private showBucketCreateSuccessDialog: boolean;
   private showConfirmDeleteDialog: boolean;
@@ -301,13 +278,13 @@ export default class EosBucketCreation extends Vue {
   private bucketsTableHeaderList: any[];
   private bucketsList: Bucket[] = [];
   private bucketToDelete: string = "";
-  private policyJson: any = "";
+  private policyJSON: any = "";
   private bucketName: any = "";
   private accountNameTooltipMessage: string = accountNameTooltipMessage;
 
   constructor() {
     super();
-    this.jsonvalidationMsg = "";
+    this.jsonValidationMessage = "";
     this.bucketName = "";
     this.showCreateBucketForm = false;
     this.showBucketCreateSuccessDialog = false;
@@ -324,7 +301,7 @@ export default class EosBucketCreation extends Vue {
 
   public data() {
     return {
-      jsonerr: ""
+      JSONError: ""
     };
   }
 
@@ -394,37 +371,40 @@ export default class EosBucketCreation extends Vue {
       const res: any = await Api.getAll(
         apiRegister.bucket_policy + "/" + bucketname
       );
-      this.policyJson = JSON.stringify(res.data, null, 4);
+      this.policyJSON = JSON.stringify(res.data, null, 4);
     } catch (error) {
-      this.policyJson = "";
+      this.policyJSON = "";
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showBucketPolicyDialog = true;
   }
 
-  public async closeConfirmDeleteDialog(confirmation: string) {
+  public async closeConfirmDeleteDialog(confirmation: boolean) {
     this.showConfirmDeleteDialog = false;
-    if (confirmation === "yes") {
+    if (confirmation) {
       await this.deleteBucket();
     }
     this.bucketToDelete = "";
   }
-  public closeBucketPolicyeDialog() {
+  public closeBucketPolicyDialog() {
     this.showBucketPolicyDialog = false;
-    this.policyJson = "";
+    this.policyJSON = "";
+    if (this.$v.policyJSON) {
+      this.$v.policyJSON.$reset();
+    }
   }
-  public async updateBuketPolicy() {
-    const policy = JSON.parse(this.policyJson);
+  public async updateBucketPolicy() {
+    const policy = JSON.parse(this.policyJSON);
     this.showBucketPolicyDialog = false;
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Updating bucket policy..."
     );
     await Api.put(apiRegister.bucket_policy, policy, this.bucketName);
-    this.policyJson = "";
+    this.policyJSON = "";
     this.$store.dispatch("systemConfig/hideLoader");
   }
-  public async deleteBuketPolicy() {
+  public async deleteBucketPolicy() {
     this.showBucketPolicyDialog = false;
     this.$store.dispatch("systemConfig/showLoader", "Delete bucket policy...");
     await Api.delete(apiRegister.bucket_policy, this.bucketName);
@@ -453,5 +433,11 @@ export default class EosBucketCreation extends Vue {
 .policy-container {
   display: flex;
   margin-top: 10px;
+}
+.eos-form-group-custom {
+  width: auto;
+}
+.eos-form__input_textarea-custom {
+  height: auto;
 }
 </style>

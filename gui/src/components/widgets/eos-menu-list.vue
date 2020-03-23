@@ -1,20 +1,45 @@
 <template>
   <div>
     <div v-for="item in menuItems" :key="item.id">
-      <div class="eos-menu-card-layout">
-        <label
-          class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
+      <div v-if="item.requiredAccess">
+        <eos-has-access
+          :to="
+            $eosUserPermissions[item.requiredAccess] + $eosUserPermissions.list
+          "
         >
-          {{ item.title }}</label
-        >
-        <button
-          type="button"
-          class="eos-btn-tertiary eos-float-r"
-          @click="$emit('clickFunctionHandler', item.actionClickFunction)"
-          :disabled="item.disabled"
-        >
-          {{ item.actionName }}
-        </button>
+          <div class="eos-menu-card-layout">
+            <label
+              class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
+            >
+              {{ item.title }}</label
+            >
+            <button
+              type="button"
+              class="eos-btn-tertiary eos-float-r"
+              @click="$emit('clickFunctionHandler', item.actionClickFunction)"
+              :disabled="item.disabled"
+            >
+              {{ item.actionName }}
+            </button>
+          </div>
+        </eos-has-access>
+      </div>
+      <div v-else>
+        <div class="eos-menu-card-layout">
+          <label
+            class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
+          >
+            {{ item.title }}</label
+          >
+          <button
+            type="button"
+            class="eos-btn-tertiary eos-float-r"
+            @click="$emit('clickFunctionHandler', item.actionClickFunction)"
+            :disabled="item.disabled"
+          >
+            {{ item.actionName }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
