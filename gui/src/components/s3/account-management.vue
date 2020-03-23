@@ -198,7 +198,15 @@
         <v-divider />
         <v-row class="mx-4">
           <v-col cols="8">
-            <span>Save this information, you will not see it again.</span>
+            <v-row>
+              <img
+                class="mr-1"
+                :src="require('@/assets/actions/warning-orange.svg')"
+              />
+              <span class="font-weight-bold red--text"
+                >Save this information, you will not see it again.</span
+              >
+            </v-row>
           </v-col>
           <v-spacer></v-spacer>
         </v-row>
