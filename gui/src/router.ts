@@ -43,11 +43,11 @@ import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vu
 import EosResource from "./components/maintenance/eos-resource.vue";
 import EosFirmware from "./components/onboarding/system-config/firmware/firmware.vue";
 import EosNotifications from "./components/onboarding/system-config/notifications/notifications-email.vue";
-import EosManagementNetwork from "./components/onboarding/system-config/mgmt-network/network-settings-ipv4.vue";
-import EosDataNetwork from "./components/onboarding/system-config/data-network/data-network-ipv4.vue";
-import EosDNS from "./components/onboarding/system-config/dns/dns-setting.vue";
-import EosNTP from "./components/onboarding/system-config/date-time/date-time.vue";
-import EosSSL from "./components/onboarding/system-config/ssl-certificate/upload-ssl.vue";
+import EosMangementSetting from "./components/settings/mgmt-network-setting.vue";
+import EosDataNetworkSetting from "./components/settings/data-network.setting.vue";
+import EosDnsDataSetting from "./components/settings/dns-data-setting.vue";
+import EOSUploadSSLSetting from "./components/settings/ssl-certificate-setting.vue";
+import EosNtpSetting from "./components/settings/ntp-setting.vue";
 import EosAbout from "./components/maintenance/eos-about.vue";
 import store from "./store/store";
 
@@ -214,7 +214,7 @@ const router = new Router({
             {
               path: "/management-network",
               name: "management-network",
-              component: EosManagementNetwork,
+              component: EosMangementSetting,
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
@@ -224,7 +224,7 @@ const router = new Router({
             {
               path: "/data-network",
               name: "data-network",
-              component: EosDataNetwork,
+              component: EosDataNetworkSetting,
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
@@ -234,7 +234,7 @@ const router = new Router({
             {
               path: "/dns",
               name: "dns",
-              component: EosDNS,
+              component: EosDnsDataSetting,
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
@@ -244,7 +244,7 @@ const router = new Router({
             {
               path: "/ntp",
               name: "ntp",
-              component: EosNTP,
+              component: EosNtpSetting,
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
@@ -254,7 +254,7 @@ const router = new Router({
             {
               path: "/ssl-upload",
               name: "ssl-upload",
-              component: EosSSL,
+              component: EOSUploadSSLSetting,
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
