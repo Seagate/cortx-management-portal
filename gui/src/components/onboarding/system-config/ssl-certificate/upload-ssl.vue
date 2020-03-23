@@ -10,12 +10,6 @@
       <input type="file" id="file" ref="file" v-on:change="handleFileUpload($event.target.files)" />
       <v-divider class="mt-5 mb-2" />
       <div class="mt-8">
-        <!-- <button
-          id="btnInstallFirmware"
-          type="button"
-          class="eos-btn-primary"
-          @click="uploadCertificate()"
-        >Upload Certificate</button>-->
         <v-row>
           <v-col cols="12">
             <v-row
@@ -25,11 +19,14 @@
               style="height: 300px;"
             >
               <button
-                id="btnInstallFirmware"
+                id="btnUploadSSL"
                 type="button"
                 class="eos-btn-primary"
                 @click="uploadCertificate()"
               >Upload Certificate</button>
+              <span  class="ml-7 " v-if="!route">
+              <EOSInstallSSL/>
+              </span>
             </v-row>
           </v-col>
         </v-row>
@@ -40,6 +37,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import EOSInstallSSL from "./install-ssl.vue";
 import {
   SystemConfigObject,
   DnsNetworkSettings
@@ -54,10 +52,23 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 @Component({
-  name: "uploade-ssl"
+  name: "uploade-ssl",
+  components: {
+   EOSInstallSSL,
+  }
 })
 export default class EOSUploadSSL extends Vue {
   private mounted() {
+    if(this.$route.path=='/onboarding')
+    {
+      this.$data.route=true;
+    }
+    else{
+      this.$data.route=false;
+    }
+    this.$data.route==this.$route.name;
+    console.log(this.$data.route==this.$route.name,'component');
+    console.log(this.$route,'$route.name');
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -77,7 +88,8 @@ export default class EOSUploadSSL extends Vue {
   }
   public data() {
     return {
-      file: File
+      file: File,
+        route:"false",
     };
   }
   private handleFileUpload(fileList: FileList) {

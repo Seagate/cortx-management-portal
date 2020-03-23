@@ -39,4 +39,17 @@ export default class SSLupload extends VuexModule {
             console.error("err logger: ", e);
         }
     }
+    /**
+     * This action for install ssl certifacate.
+     */
+    @Action
+    public async installSSLCerificate(payload: any) {
+        try {
+          const res = Api.patch(apiRegister.ssl_upload, payload);
+          return res;
+        } catch (e) {
+          // tslint:disable-next-line: no-console
+          console.log(e);
+        }
+      }
 }
