@@ -19,7 +19,7 @@
           <img
             v-if="severity === 'warning'"
             class="mr-2"
-            :src="require('@/assets/actions/warning-green.svg')"
+            :src="require('@/assets/actions/warning-orange.svg')"
           />
           <img
             v-if="severity === 'danger'"

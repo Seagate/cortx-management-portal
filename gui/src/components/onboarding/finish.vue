@@ -10,7 +10,7 @@
             <div class="title title-container">
               <img
                 class="mr-2 success-img"
-                :src="require('@/assets/status/healthy-icon.png')"
+                :src="require('@/assets/resolved-default.svg')"
               />
               <span class="finish-text"
                 >Onboarding has been successfully completed.</span
@@ -76,7 +76,6 @@ export default class EosOnboardingFinish extends Vue {
   float: left;
 }
 .success-img {
-  margin-top: 3px;
   float: left;
 }
 .title-container{

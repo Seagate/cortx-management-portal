@@ -83,7 +83,7 @@
           >
         </v-system-bar>
         <v-card-title class="title ml-3">
-          <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
+          <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
           <span>Success</span>
         </v-card-title>
         <v-divider />

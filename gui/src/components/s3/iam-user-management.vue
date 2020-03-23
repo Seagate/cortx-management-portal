@@ -124,7 +124,7 @@
           </button>
           <button
             type="button"
-            class="ml-8 eos-btn-secondary"
+            class="eos-btn-tertiary"
             @click="closeCreateUserForm()"
           >
             Cancel
@@ -153,7 +153,7 @@
           >
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
-          <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
+          <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
           <span>User created: access key and secret</span>
         </v-card-title>
         <v-divider />
@@ -191,46 +191,6 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="showConfirmDeleteDialog" persistent max-width="790">
-      <v-card>
-        <v-system-bar color="greay lighten-3">
-          <v-spacer></v-spacer>
-          <v-icon
-            @click="closeConfirmDeleteDialog('no')"
-            style="cursor: pointer;"
-            >mdi-close</v-icon
-          >
-        </v-system-bar>
-        <v-card-title class="title ml-3">
-          <img class="mr-2" src="./../../assets/status/warning.png" />
-          <span>Confirmation</span>
-        </v-card-title>
-        <v-divider />
-        <v-card-text>
-          <label class="ml-3 delete-user-confirmation-msg"
-            >Are you sure you want to delete the user?</label
-          >
-        </v-card-text>
-
-        <v-card-actions>
-          <v-btn
-            color="csmprimary"
-            @click="closeConfirmDeleteDialog('yes')"
-            class="ma-5 elevation-0"
-          >
-            <span class="white--text">Yes</span>
-          </v-btn>
-          <v-btn
-            color="csmprimary"
-            outlined
-            @click="closeConfirmDeleteDialog('no')"
-            class="ma-5 elevation-0"
-          >
-            <span style="text-transform: none;">No</span>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <eos-has-access
       :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
     >
@@ -261,22 +221,31 @@
             <td>{{ props.item.user_name }}</td>
             <td>{{ props.item.user_id }}</td>
             <td>{{ props.item.arn }}</td>
-            <!-- <td>{{ props.item.path }}</td> -->
-            <eos-has-access
-              :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.delete"
-            >
-              <td>
+            <td>
+              <eos-has-access
+                :to="
+                  $eosUserPermissions.s3iamusers + $eosUserPermissions.delete
+                "
+              >
                 <img
                   @click="openConfirmDeleteDialog(props.item.user_name)"
-                  style="cursor: pointer;"
+                  class="eos-cursor-pointer"
                   src="./../../assets/actions/delete-green.svg"
                 />
-              </td>
-            </eos-has-access>
+              </eos-has-access>
+            </td>
           </tr>
         </template>
       </v-data-table>
     </eos-has-access>
+    <eos-confirmation-dialog
+      :show="showConfirmDeleteDialog"
+      title="Confirmation"
+      message="Are you sure you want to delete the user?"
+      severity="warning"
+      @closeDialog="closeConfirmDeleteDialog"
+      cancelButtonText="No"
+    ></eos-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -418,9 +387,9 @@ export default class EosIAMUserManagement extends Vue {
     this.showConfirmDeleteDialog = true;
   }
 
-  public async closeConfirmDeleteDialog(confirmation: string) {
+  public async closeConfirmDeleteDialog(confirmation: boolean) {
     this.showConfirmDeleteDialog = false;
-    if (confirmation === "yes") {
+    if (confirmation) {
       await this.deleteUser();
     }
     this.userToDelete = "";
