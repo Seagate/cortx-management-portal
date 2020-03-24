@@ -258,7 +258,7 @@ export default class EosAlertDetails extends Vue {
         if (this.alert.extended_info) {
           const tempAlertExtendedInfoJSONString = this.alert.extended_info
             .split("'")
-            .join("'");
+            .join("\"");
           this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
           this.alertExtendedInfo = this.alertDetails.info;
         }
@@ -267,7 +267,7 @@ export default class EosAlertDetails extends Vue {
         if (this.alert.event_details) {
           const tempAlertEventDetailsJSONString = this.alert.event_details
             .split("'")
-            .join("'");
+            .join("\"");
           tempAlertEventDetails = JSON.parse(tempAlertEventDetailsJSONString);
         }
         if (tempAlertEventDetails.length > 0) {
