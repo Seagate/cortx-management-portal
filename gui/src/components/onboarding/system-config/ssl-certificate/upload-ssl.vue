@@ -36,8 +36,7 @@
         </v-row>
       </div>
     </div>
-    <span class="d-none">{{ isValidForm }}</span>
-  </v-container>
+   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
@@ -55,12 +54,15 @@ import {
   ipAddress,
   requiredIf
 } from "vuelidate/lib/validators";
+import EOSUploadSSLConfig from "./upload-ssl-config.vue";
+
 @Component({
   name: "uploade-ssl",
   components: {
     EOSInstallSSL
   }
 })
+
 export default class EOSUploadSSL extends Vue {
   @Validations()
   private validations = {
@@ -107,6 +109,7 @@ export default class EOSUploadSSL extends Vue {
     this.$store.dispatch("sslupload/uploadSSLCerificate", formData);
   }
 }
+
 </script>
 <style lang="scss" scoped>
 </style>

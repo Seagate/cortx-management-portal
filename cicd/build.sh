@@ -105,10 +105,6 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     cp -rs $BASE_DIR/src/* $TMPDIR/csm
     cp -rs $BASE_DIR/test/ $TMPDIR/csm
 
-    # Enable csm package for python import
-    # TODO: Add pythonpath in pyinstaller spec
-    export PYTHONPATH=$TMPDIR:$PYTHONPATH
-
     # Install EOS/py-utils
     yum install eos-py-utils -y
 

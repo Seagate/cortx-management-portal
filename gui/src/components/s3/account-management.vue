@@ -163,7 +163,7 @@
           </button>
           <button
             type="button"
-            class="ml-8 eos-btn-secondary"
+            class="eos-btn-tertiary"
             @click="closeCreateAccountForm()"
           >
             Cancel
@@ -192,13 +192,21 @@
           >
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
-          <img class="mr-2" src="./../../assets/status/healthy-icon.png" />
-          <span>Account created: access key and secret</span>
+          <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
+          <span>Account created: access key and secret key</span>
         </v-card-title>
         <v-divider />
         <v-row class="mx-4">
           <v-col cols="8">
-            <span>Save this information, you will not see it again.</span>
+            <v-row>
+              <img
+                class="mr-1"
+                :src="require('@/assets/actions/warning-orange.svg')"
+              />
+              <span class="font-weight-bold red--text"
+                >Save this information, you will not see it again.</span
+              >
+            </v-row>
           </v-col>
           <v-spacer></v-spacer>
         </v-row>
@@ -209,7 +217,7 @@
               Account name
             </th>
             <th style="width:24.2rem;text-align: left">Access key</th>
-            <th style="width:5rem;text-align: left">Secret</th>
+            <th style="width:5rem;text-align: left">Secret key</th>
           </tr>
           <tr>
             <td style="width:15rem;height:2rem;text-align: left">
@@ -232,45 +240,6 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="showConfirmDeleteDialog" persistent max-width="790">
-      <v-card>
-        <v-system-bar color="greay lighten-3">
-          <v-spacer></v-spacer>
-          <v-icon
-            @click="closeConfirmDeleteDialog('no')"
-            style="cursor: pointer;"
-            >mdi-close</v-icon
-          >
-        </v-system-bar>
-        <v-card-title class="title ml-3">
-          <img class="mr-2" src="./../../assets/status/warning.png" />
-          <span>Confirmation</span>
-        </v-card-title>
-        <v-divider />
-        <v-card-text>
-          <label class="ml-3 delete-account-confirmation-msg"
-            >Are you sure you want to delete the account?</label
-          >
-        </v-card-text>
-
-        <v-card-actions>
-          <button
-            type="button"
-            class="ma-5 eos-btn-primary"
-            @click="closeConfirmDeleteDialog('yes')"
-          >
-            Yes
-          </button>
-          <button
-            type="button"
-            class="ma-5 eos-btn-primary"
-            @click="closeConfirmDeleteDialog('no')"
-          >
-            No
-          </button>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <eos-has-access
       :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
     >
@@ -383,7 +352,7 @@
                 <button
                   type="button"
                   id="btncancelEditpass"
-                  class="ml-8 eos-btn-secondary"
+                  class="eos-btn-tertiary"
                   @click="closeEditAccountForm()"
                 >
                   Cancel
@@ -401,7 +370,7 @@
               <img
                 v-on:click="expand(!isExpanded)"
                 class="eos-cursor-pointer"
-                src="./../../assets/actions/edit-green.svg"
+                src="@/assets/actions/edit-green.svg"
               />
             </eos-has-access>
             <eos-has-access
@@ -411,13 +380,22 @@
               <img
                 @click="openConfirmDeleteDialog(item.account_name)"
                 class="eos-cursor-pointer"
-                src="./../../assets/actions/delete-green.svg"
+                src="@/assets/actions/delete-green.svg"
               />
             </eos-has-access>
           </div>
         </template>
       </v-data-table>
     </eos-has-access>
+
+    <eos-confirmation-dialog
+      :show="showConfirmDeleteDialog"
+      title="Confirmation"
+      message="Are you sure you want to delete the account?"
+      severity="warning"
+      @closeDialog="closeConfirmDeleteDialog"
+      cancelButtonText="No"
+    ></eos-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -582,9 +560,9 @@ export default class EosAccountManagement extends Vue {
     }
   }
 
-  public async closeConfirmDeleteDialog(confirmation: string) {
+  public async closeConfirmDeleteDialog(confirmation: boolean) {
     this.showConfirmDeleteDialog = false;
-    if (confirmation === "yes") {
+    if (confirmation) {
       await this.deleteAccount();
     }
     this.accountToDelete = "";

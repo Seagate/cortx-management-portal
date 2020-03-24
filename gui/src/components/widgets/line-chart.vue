@@ -71,6 +71,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import * as c3 from "c3";
 import { PerformanceStatsQueryParams } from "./../../models/performance-stats";
 import StatsUtility from "../../common/stats-utility";
+import * as d3 from "d3";
 export interface StatsQueryParams {
   from: number;
   to: number;
@@ -108,7 +109,7 @@ export default class EosLineChart extends Vue {
         "throughput_read",
         "throughput_write",
         "throughput_total",
-        "latency_total_request_time",
+        "latency_avarage_latency",
         "latency_create_object",
         "latency_delete_object",
         "latency_write_object",
@@ -198,6 +199,8 @@ export default class EosLineChart extends Vue {
       try {
         obj
           .then(data => {
+            const formatInteger = d3.format(",");
+            const formatDecimal = d3.format(",.2f");
             if (data !== undefined) {
               this.showComponentLoader = false;
               const y1label: string = StatsUtility.getYaxisLabel(this.metric1);
@@ -212,7 +215,7 @@ export default class EosLineChart extends Vue {
                 data: {
                   x: "x",
                   columns: data ? data : [[]],
-                  type: "spline",
+                  type: "line",
                   axes: y2Obj
                 },
                 legend: {
