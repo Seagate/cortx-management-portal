@@ -7,7 +7,11 @@
       </div>
       <div class="mt-6" id="lblVersion"></div>
       <v-divider class="mt-2 mb-5" />
-      <input type="file" id="file" ref="file" v-on:change="handleFileUpload($event.target.files)" />
+      <input
+        type="file"
+        id="file"
+        ref="file"
+        v-on:change="handleFileUpload($event.target.files) " accept =".pem"/>
       <v-divider class="mt-5 mb-2" />
       <div class="mt-8">
         <v-row>
@@ -21,11 +25,11 @@
               <button
                 id="btnUploadSSL"
                 type="button"
-                class="eos-btn-primary"
+                class="eos-btn-primary mt-3"
                 @click="uploadCertificate()"
               >Upload Certificate</button>
-              <span  class="ml-7 " v-if="!route">
-              <EOSInstallSSL/>
+              <span class="ml-7" v-if="!route">
+                <EOSInstallSSL />
               </span>
             </v-row>
           </v-col>
@@ -54,21 +58,23 @@ import {
 @Component({
   name: "uploade-ssl",
   components: {
-   EOSInstallSSL,
+    EOSInstallSSL
   }
 })
 export default class EOSUploadSSL extends Vue {
+  @Validations()
+  private validations = {
+    file: { required }
+  };
   private mounted() {
-    if(this.$route.path=='/onboarding')
-    {
-      this.$data.route=true;
+    if (this.$route.path == "/onboarding") {
+      this.$data.route = true;
+    } else {
+      this.$data.route = false;
     }
-    else{
-      this.$data.route=false;
-    }
-    this.$data.route==this.$route.name;
-    console.log(this.$data.route==this.$route.name,'component');
-    console.log(this.$route,'$route.name');
+    this.$data.route == this.$route.name;
+    console.log(this.$data.route == this.$route.name, "component");
+    console.log(this.$route, "$route.name");
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -89,7 +95,7 @@ export default class EOSUploadSSL extends Vue {
   public data() {
     return {
       file: File,
-        route:"false",
+      route: "false"
     };
   }
   private handleFileUpload(fileList: FileList) {
