@@ -5,7 +5,7 @@
       <div
         class="mt-6"
         id="lblIpv4Msg"
-      >Test data for upload SSL</div>
+      >You need to upload ssl and key certificate here</div>
       <eosUploadSSLConfig/>
       <button
         type="button"

@@ -144,81 +144,15 @@ export const wizardConfig = {
         name: "NTP"
       },
       footer: {
-        nextComponent: "EosOnboardingSummary",
+        nextComponent: "EosNotifications",
         prevComponent: "EosDnsSettings",
         nextBtnText: "Apply and continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
     },
-
     {
       sequence: 10,
-      isSubstep: false,
-      component: "EosOnboardingSummary",
-      path: "onboarding/system-config/summary/onboarding-summary.vue",
-      isByPassed: false,
-      header: {
-        state: "untouched",
-        name: "Summary"
-      },
-      footer: {
-        nextComponent: "EosUserSetting",
-        prevComponent: "EosDateTime",
-        nextBtnText: " Continue",
-        prevBtnText: "Back to previous step",
-        api: "/systemconfig"
-      }
-    },
-    {
-      sequence: 11,
-      component: "EosUserSetting",
-      path: "onboarding/system-config/user-settings/user-setting.vue",
-      isByPassed: false,
-      header: {
-        state: "untouched",
-        name: "Users"
-      },
-      footer: {
-        nextComponent: "EosUserSettingLocal",
-        prevComponent: "EosOnboardingSummary",
-        nextBtnText: "Continue",
-        prevBtnText: "Back to previous step",
-        api: "/systemconfig"
-      }
-    },
-    {
-      sequence: 12,
-      isSubstep: true,
-      component: "EosUserSettingLocal",
-      path: "onboarding/system-config/user-settings/user-setting-local.vue",
-      name: "User setting local",
-      isByPassed: true,
-      footer: {
-        nextComponent: "EosUserSettingLdap",
-        prevComponent: "EosUserSetting",
-        nextBtnText: "Continue",
-        prevBtnText: "Back to previous step",
-        api: "/systemconfig"
-      }
-    },
-    {
-      sequence: 13,
-      isSubstep: true,
-      component: "EosUserSettingLdap",
-      path: "onboarding/system-config/user-settings/user-setting-ldap.vue",
-      name: "User setting LDAP",
-      isByPassed: true,
-      footer: {
-        nextComponent: "EosNotifications",
-        prevComponent: "EosUserSettingLocal",
-        nextBtnText: "Apply and continue",
-        prevBtnText: "Back to previous step",
-        api: "/systemconfig"
-      }
-    },
-    {
-      sequence: 14,
       isSubstep: false,
       component: "EosNotifications",
       path: "onboarding/system-config/notifications/notifications.vue",
@@ -229,14 +163,14 @@ export const wizardConfig = {
       },
       footer: {
         nextComponent: "EosNotificationsEmail",
-        prevComponent: "EosUserSettingLdap",
+        prevComponent: "EosDateTime",
         nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
     },
     {
-      sequence: 15,
+      sequence: 11,
       isSubstep: true,
       component: "EosNotificationsEmail",
       path: "onboarding/system-config/notifications/notifications-email.vue",
@@ -251,14 +185,14 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 16,
+      sequence: 12,
       isSubstep: true,
       component: "EosNotificationsSyslog",
       path: "onboarding/system-config/notifications/notifications-syslog.vue",
       name: "Notifications syslog",
       isByPassed: true,
       footer: {
-        nextComponent: "EosOnboardingFinish",
+        nextComponent: "EosOnboardingSummary",
         prevComponent: "EosNotificationsEmail",
         nextBtnText: "Apply and continue",
         prevBtnText: "Back to previous step",
@@ -266,7 +200,25 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 17,
+      sequence: 13,
+      isSubstep: false,
+      component: "EosOnboardingSummary",
+      path: "onboarding/system-config/summary/onboarding-summary.vue",
+      isByPassed: false,
+      header: {
+        state: "untouched",
+        name: "Summary"
+      },
+      footer: {
+        nextComponent: "EosOnboardingFinish",
+        prevComponent: "EosNotificationsSyslog",
+        nextBtnText: " Continue",
+        prevBtnText: "Back to previous step",
+        api: "/systemconfig"
+      }
+    },
+    {
+      sequence: 14,
       isSubstep: false,
       component: "EosOnboardingFinish",
       path: "onboarding/finish.vue",
