@@ -11,21 +11,9 @@
       </div>
       <div class="eos-modal-body">
         <div class="title title-container">
-          <img
-            v-if="severity === 'info'"
-            class="mr-2"
-            :src="require('@/assets/actions/info-green.svg')"
-          />
-          <img
-            v-if="severity === 'warning'"
-            class="mr-2"
-            :src="require('@/assets/actions/warning-orange.svg')"
-          />
-          <img
-            v-if="severity === 'danger'"
-            class="mr-2"
-            :src="require('@/assets/actions/danger-red.svg')"
-          />
+          <!-- <img class="mr-2" :src="require(severityIcons[severity])" /> -->
+          <!-- <img class="severity-img mr-2" :src="require(severityIcons[severity].toString())" /> -->
+          <img class="severity-img mr-2" :src="severityIcons[severity]" />
           <span class="finish-text">{{ message }}</span>
         </div>
         <br />
@@ -36,12 +24,17 @@
           <button
             type="button"
             class="eos-btn-primary"
+            v-if="confirmButtonText"
+            :class="
+              severity === 'danger' ? 'eos-btn-danger' : 'eos-btn-primary'
+            "
             @click="$emit('closeDialog', true)"
           >
             {{ confirmButtonText }}
           </button>
           <button
             type="button"
+            v-if="cancelButtonText"
             class="eos-btn-tertiary"
             @click="$emit('closeDialog', false)"
           >
@@ -81,6 +74,16 @@ export default class EosConfirmationDialog extends Vue {
 
   @Prop({ required: false, default: "Cancel" })
   public cancelButtonText!: string;
+
+  public data() {
+    return {
+      severityIcons: {
+        info: require("@/assets/actions/info-green.svg"),
+        warning: require("@/assets/actions/warning-orange.svg"),
+        danger: require("@/assets/actions/danger-red.svg")
+      }
+    };
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -100,13 +103,16 @@ export default class EosConfirmationDialog extends Vue {
   vertical-align: center;
 }
 .title-container {
-  height: 30px;
   display: flex;
+  overflow: auto;
 }
 .submessage-text {
   font-weight: 400;
   font-size: small;
   color: red;
   float: right;
+}
+.severity-img {
+  align-self: flex-start;
 }
 </style>
