@@ -1,8 +1,8 @@
 /*****************************************************************************
- Filename:          firmware.ts
- Description:       Upload firmware file to server/backend
+ Filename:          ssl-upload.ts
+ Description:       Upload ssl  file to server/backend
  Creation Date:     06/02/2019
- Author:            Sanjeevan Bhave
+ Author:            Jayshree More
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.

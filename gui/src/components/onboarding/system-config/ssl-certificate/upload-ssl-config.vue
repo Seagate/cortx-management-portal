@@ -33,6 +33,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { Api } from "./../../../../services/api"
+import apiRegister from "./../../../../services/api-register";
 import EOSInstallSSL from "./install-ssl.vue";
 import {
   SystemConfigObject,
@@ -93,10 +95,10 @@ export default class EOSUploadSSLConfig extends Vue {
   private handleFileUpload(fileList: FileList) {
     this.$data.file = fileList[0];
   }
-  private uploadCertificate() {
+  private async uploadCertificate() {
     const formData = new FormData();
     formData.append("pemfile", this.$data.file);
-    this.$store.dispatch("sslupload/uploadSSLCerificate", formData);
+      const res = await Api.uploadFile(apiRegister.ssl_upload, formData);
   }
 }
 </script>

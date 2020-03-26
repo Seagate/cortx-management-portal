@@ -139,6 +139,50 @@
             </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header class="eos-text-lg">Notifications</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <div class="row ma-0 mt-3">
+              <template>
+                <div class="col-3 body-2 column node-container mr-5">
+                  <span class="font-weight-bold" id="lblIpv4Node"></span>
+                  <div class="eos-form-group mt-0 ml-0">
+                    <div class="mt-3">
+                      <div class="eos-text-lg">
+                        <label>SMTP Server</label>
+                        <span class="ml-12">{{notificationData.smtp_server}}</span>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <div class="eos-text-lg">
+                        <label>Sender Email</label>
+                        <span class="ml-12">{{notificationData.smtp_sender_email}}</span>
+                      </div>
+                    </div>
+                     <div class="mt-3">
+                      <div class="eos-text-lg">
+                        <label>Receiver Email</label>
+                        <span class="ml-10">{{notificationData.email}}</span>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <div class="eos-text-lg">
+                        <label class="mr-10">Protocol</label>
+                        <span class="ml-12">{{notificationData.smtp_protocol}}</span>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <div class="eos-text-lg">
+                        <label class="mr-6">SMTP Port</label>
+                        <span class="ml-12">{{notificationData.smtp_port}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
       </v-expansion-panels>
       <v-dialog v-model="showConfirmDeleteDialog" persistent max-width="790">
         <v-card>
@@ -188,7 +232,8 @@ export default class EosOnboardingSummary extends Vue {
       new_url: "",
       showConfirmDeleteDialog: false,
       nodes: [" VIP", "Node0", "Node1"],
-      wizardRes: undefined
+      wizardRes: undefined,
+      notificationData: ""
     };
   }
   private openConfirmDialog() {
@@ -232,6 +277,7 @@ export default class EosOnboardingSummary extends Vue {
       systemconfig.management_network_settings.ipv4.nodes;
     this.$data.datanetwork = systemconfig.data_network_settings.ipv4.nodes;
     this.$data.dnsdata = systemconfig.dns_network_settings.nodes;
+    this.$data.notificationData = systemconfig.notifications.email;
     this.$data.datetime = systemconfig.dns_network_settings.nodes;
     const url = window.location.href;
     const protocol = location.protocol;

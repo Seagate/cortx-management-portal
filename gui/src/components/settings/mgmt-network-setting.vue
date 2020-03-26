@@ -8,7 +8,7 @@
       <div
         class="mt-6"
         id="lblNetworkMsg"
-      >Test Data for Management settings .</div>
+      >You need to configure a single IP address for management of this system.</div>
       <v-divider class="mt-2" />
       <eosNetworkSettingsIpv4/>
       <button 

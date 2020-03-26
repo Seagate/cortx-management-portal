@@ -10,6 +10,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { Api } from "./../../../../services/api"
+import apiRegister from "./../../../../services/api-register";
 import {
   SystemConfigObject,
   DnsNetworkSettings
@@ -46,12 +48,11 @@ export default class EOSInstallSSL extends Vue {
     return {
     };
   }
-  private installCertificate() {
+  private async installCertificate() {
     const install={
       install:true
     }
-   
-   this.$store.dispatch("sslupload/installSSLCerificate", install);
+   const res = Api.patch(apiRegister.ssl_upload, install);
   }
 }
 </script>
