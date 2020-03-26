@@ -37,7 +37,7 @@ export default {
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
   addlicensekey: `/api/${version}/license/onboarding`,
-  upload_firmware: `/api/${version}/uploadfirmware`, // TODO: change to right API
+  upload_firmware: `/api/${version}/upgrade/firmware/upload`, // TODO: change to right API
   auditlogs: `/api/${version}/auditlogs`,
   maintenance: ` /api/${version}/maintenance/cluster`,
   node_status: ` /api/${version}/maintenance/cluster/node_status`,
@@ -46,5 +46,8 @@ export default {
   node_shutdown: ` /api/${version}/maintenance/cluster/shutdown`,
   health_summary: `/api/${version}/system/health`,
   audit_alerts: `/api/${version}/audit_alerts`,
-  send_test_email: `/api/${version}/sysconfig_helpers/email_test`
+  send_test_email: `/api/${version}/sysconfig_helpers/email_test`,
+  start_firmware_upgrade: `/api/${version}/upgrade/firmware/start`,
+  firmware_package_availability: `/api/${version}/upgrade/firmware/availibility`,
+  last_upgrade_status: `/api/${version}/upgrade/firmware/last_upgrade_status`
 };

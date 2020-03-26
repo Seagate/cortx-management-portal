@@ -42,4 +42,8 @@ export default {
   node_start: ` /api/${version}/maintenance/cluster/start`,
   node_shutdown: ` /api/${version}/maintenance/cluster/shutdown`,
   send_test_email: `/api/${version}/sysconfig_helpers/email_test`,
+  upload_firmware: `/api/${version}/upgrade/firmware/upload`,
+  start_firmware_upgrade: `/api/${version}/upgrade/firmware/start`,
+  firmware_package_availability: `/api/${version}/upgrade/firmware/availibility`,
+  last_upgrade_status: `/api/${version}/provisioner/status?status_type=firmware`
 };

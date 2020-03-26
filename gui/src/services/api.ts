@@ -100,7 +100,8 @@ export abstract class Api {
       .post(url, payload, {
         headers: {
           "Content-Type": "multipart/form-data"
-        }
+        },
+        timeout: -1
       })
       .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));

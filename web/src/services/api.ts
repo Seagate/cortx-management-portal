@@ -18,9 +18,13 @@ import { Request, Response } from "express";
 import HttpStatus from 'http-status-codes';
 import * as HTTPError from '../utils/http-errors';
 import logger from './../config/winston';
+import FormData = require('form-data');
+import fs = require('fs');
+import multiparty = require('multiparty');
 
 let base_url = process.env.CSM_AGENT_PROTOCOL + "://" + process.env.CSM_AGENT_HOST
     + (process.env.CSM_AGENT_PORT ? ":" + process.env.CSM_AGENT_PORT : "");
+const file_upload_dir = process.env.FILE_UPLOAD_FOLDER;
 let mock_base_url = "http://localhost:3001"; // Remove after all the Python APIs
 let http_agent: any;
 if (process.env.CSM_AGENT_PROTOCOL == 'http') {
@@ -237,6 +241,44 @@ export abstract class Api {
             });
             httpRequest.write(requestData);
             httpRequest.end();
+        });
+    }
+
+    public static async uploadFiles(url: string, req: Request, resp: Response, id?: string | number) {
+        return new Promise((resolve, reject) => {
+            const requestData = JSON.stringify(req.body);
+            let posturl = base_url + url + ((id) ? "/" + id : "");
+            // Remove following code onde all the Python APIs are ready
+            // -- Start --
+            if (url.startsWith("/mock")) {
+                posturl = mock_base_url + url + ((id) ? "/" + id : "");
+            }
+            console.log("POST: " + posturl);
+            // -- end --
+
+            // -- Multiparty
+            let form = new multiparty.Form({ uploadDir: file_upload_dir });
+            form.parse(req, (err, fields, files) => {});
+
+            form.on('file', function (name, file) {
+                const form = new FormData();
+                form.append(name, fs.createReadStream(file.path), {filename: file.originalFilename});
+
+                const headers = form.getHeaders();
+                headers['authorization'] = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+
+                const options = {
+                    method: 'POST',
+                    headers: headers,
+                };
+
+                const httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
+                    let error = new HTTPError.HTTP500Error(err.message);
+                    reject(error);
+                });
+                 
+                form.pipe(httpRequest);
+            });
         });
     }
 
