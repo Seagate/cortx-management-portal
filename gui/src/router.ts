@@ -49,6 +49,10 @@ import EosDnsDataSetting from "./components/settings/dns-data-setting.vue";
 import EOSUploadSSLSetting from "./components/settings/ssl-certificate-setting.vue";
 import EosNtpSetting from "./components/settings/ntp-setting.vue";
 import EosAbout from "./components/maintenance/eos-about.vue";
+import EosHealthSubmenu from "./components/health/eos-health-menu.vue";
+import EosHealthView from "./components/health/eos-health-view.vue";
+import EosHealthAlertDetails from "./components/health/eos-health-alert-details.vue";
+import EosHealth from "./components/health/eos-health.vue";
 import store from "./store/store";
 
 Vue.use(Router);
@@ -183,6 +187,30 @@ const router = new Router({
           ]
         },
         {
+          path: "health",
+          component: EosHealth,
+          meta: { requiresAuth: true, isOnboardingReq: false },
+          children: [
+            {
+              path: "",
+              name: "health",
+              component: EosHealthSubmenu,
+              meta: { requiresAuth: true, isOnboardingReq: false },
+            },
+            {
+              path: "healthview",
+              name: "healthview",
+              component: EosHealthView,
+              meta: { requiresAuth: true, isOnboardingReq: false },
+            }, {
+              path: "healthview/:alert_id",
+              name: "health-alerts-details",
+              component: EosHealthAlertDetails,
+              meta: { requiresAuth: true, isOnboardingReq: false }
+            }
+          ]
+        },
+        {
           path: "settings",
           component: EosSettings,
           meta: {
@@ -202,7 +230,7 @@ const router = new Router({
               }
             },
             {
-              path: "/notifications",
+              path: "notifications",
               name: "notifications",
               component: EosNotifications,
               meta: {
@@ -212,7 +240,7 @@ const router = new Router({
               }
             },
             {
-              path: "/management-network",
+              path: "management-network",
               name: "management-network",
               component: EosMangementSetting,
               meta: {
@@ -222,7 +250,7 @@ const router = new Router({
               }
             },
             {
-              path: "/data-network",
+              path: "data-network",
               name: "data-network",
               component: EosDataNetworkSetting,
               meta: {
@@ -232,7 +260,7 @@ const router = new Router({
               }
             },
             {
-              path: "/dns",
+              path: "dns",
               name: "dns",
               component: EosDnsDataSetting,
               meta: {
@@ -242,7 +270,7 @@ const router = new Router({
               }
             },
             {
-              path: "/ntp",
+              path: "ntp",
               name: "ntp",
               component: EosNtpSetting,
               meta: {
@@ -252,7 +280,7 @@ const router = new Router({
               }
             },
             {
-              path: "/ssl-upload",
+              path: "ssl-upload",
               name: "ssl-upload",
               component: EOSUploadSSLSetting,
               meta: {
