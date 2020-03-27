@@ -604,7 +604,6 @@ export default class EosUserSettingLocal extends Vue {
         this.$store.dispatch("systemConfig/hideLoader");
       });
   }
-
   private isAdminUser(item: any) {
     return item.roles.includes("root");
   }

@@ -45,5 +45,6 @@ export default {
   upload_firmware: `/api/${version}/upgrade/firmware/upload`,
   start_firmware_upgrade: `/api/${version}/upgrade/firmware/start`,
   firmware_package_availability: `/api/${version}/upgrade/firmware/availibility`,
-  last_upgrade_status: `/api/${version}/provisioner/status?status_type=firmware`
+  last_upgrade_status: `/api/${version}/provisioner/status?status_type=firmware`,
+  ssl_upload: `/api/${version}/tls/bundle`,
 };

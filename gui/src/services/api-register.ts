@@ -47,6 +47,7 @@ export default {
   health_summary: `/api/${version}/system/health`,
   audit_alerts: `/api/${version}/audit_alerts`,
   send_test_email: `/api/${version}/sysconfig_helpers/email_test`,
+  ssl_upload: `/api/${version}/tls/bundle`,
   start_firmware_upgrade: `/api/${version}/upgrade/firmware/start`,
   firmware_package_availability: `/api/${version}/upgrade/firmware/availibility`,
   last_upgrade_status: `/api/${version}/upgrade/firmware/last_upgrade_status`

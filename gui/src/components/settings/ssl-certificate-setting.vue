@@ -7,11 +7,11 @@
         id="lblIpv4Msg"
       >You need to upload ssl and key certificate here</div>
       <eosUploadSSLConfig/>
-      <button
+      <!-- <button
         type="button"
         class="eos-btn-primary eos-float-l ml-3"
         >Apply
-      </button>
+      </button> -->
     </div>
    </v-container>
 </template>

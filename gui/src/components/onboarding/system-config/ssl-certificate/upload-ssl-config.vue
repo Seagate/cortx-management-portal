@@ -1,38 +1,41 @@
 <template>
-  <v-container>
-    <div>
-      <v-card class="col-10 mt-8 elevation-0" outlined tile>
-        <v-row class="resource-container pt-5">
-          <v-col class="pt-5">
-            <label
-              class="eos-form-group-label ml-10 mt-5"
-              for="Resource"
-              style=" font-size: 1em;"
-            >Upload SSL Certificate</label>
-          </v-col>
-          <v-col>
-            <button type="button" class="eos-btn-primary" @click="uploadSSLCertificate()">Upload</button>
+  <v-container class="mt-0 ml-0">
+    <div class="pl-4 body-2">
+      <div class="mt-6" id="lblVersion"></div>
+      <v-divider class="mt-2 mb-5" />
+      <input
+        type="file"
+        id="file"
+        ref="file"
+        v-on:change="handleFileUpload($event.target.files) " accept =".pem"/>
+      <v-divider class="mt-5 mb-2" />
+      <div class="mt-8">
+        <v-row>
+          <v-col cols="12">
+            <v-row
+            >
+              <button
+                id="btnUploadSSL"
+                type="button"
+                class="eos-btn-primary mt-3"
+                @click="uploadCertificate()"
+              >Upload Certificate</button>
+              <span class="ml-7"  v-if="!route">
+                <EOSInstallSSL />
+              </span>
+            </v-row>
           </v-col>
         </v-row>
-        <v-row class="resource-container pt-5">
-          <v-col class="pt-5">
-            <label
-              class="eos-form-group-label ml-10 mt-5"
-              for="Resource"
-              style=" font-size: 1em;"
-            >Upload Key Certificate</label>
-          </v-col>
-          <v-col>
-            <button type="button" class="eos-btn-primary" @click="uploadKeyCertificate()">Upload</button>
-          </v-col>
-        </v-row>
-      </v-card>
+      </div>
     </div>
-    <span class="d-none">{{ isValidForm }}</span>
-  </v-container>
+     <span class="d-none">{{ isValidForm }}</span>
+   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { Api } from "./../../../../services/api"
+import apiRegister from "./../../../../services/api-register";
+import EOSInstallSSL from "./install-ssl.vue";
 import {
   SystemConfigObject,
   DnsNetworkSettings
@@ -47,10 +50,23 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 @Component({
-  name: "uploade-ssl-config"
+  name: "uploade-ssl-config",
+  components: {
+    EOSInstallSSL
+  }
 })
 export default class EOSUploadSSLConfig extends Vue {
+ @Validations()
+  private validations = {
+    file: { required }
+  };
   private mounted() {
+    if (this.$route.path == "/onboarding") {
+      this.$data.route = true;
+    } else {
+      this.$data.route = false;
+    }
+    this.$data.route == this.$route.name;
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -68,8 +84,24 @@ export default class EOSUploadSSLConfig extends Vue {
     EVENT_BUS.$emit("validForm", validate);
     return validate;
   }
-  private data() {
-    return {};
+  public data() {
+    return {
+      file: File,
+      route: "false"
+    };
+  }
+  private handleFileUpload(fileList: FileList) {
+    this.$data.file = fileList[0];
+  }
+  private async uploadCertificate() {
+    const formData = new FormData();
+    formData.append("pemfile", this.$data.file);
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Uploading certificate..."
+    );
+      const res = await Api.uploadFile(apiRegister.ssl_upload, formData);
+      this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>
