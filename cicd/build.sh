@@ -7,6 +7,7 @@ PROG_NAME=$(basename $0)
 DIST=$(realpath $BASE_DIR/dist)
 API_DIR="$BASE_DIR/src/web"
 CSM_PATH="/opt/seagate/eos/csm"
+HARE_PATH="/opt/seagate/eos/"
 
 usage() {
     echo """
@@ -196,6 +197,7 @@ sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
     -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
 
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/schema/commands.yaml
+sed -i -e "s|<HARE_PATH>|${HARE_PATH}|g" $DIST/csm/schema/commands.yaml
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service
