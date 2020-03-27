@@ -4,4 +4,9 @@ export interface ApiResponse {
     status: number;
     statusText: string;
     error?: Error;
+    warning?: ApiWarning;
+}
+
+export interface ApiWarning {
+    message?: string;
 }
