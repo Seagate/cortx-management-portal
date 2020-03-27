@@ -52,7 +52,12 @@ export default class EOSInstallSSL extends Vue {
     const install={
       install:true
     }
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "certificate installation in progress..."
+    );
    const res = Api.patch(apiRegister.ssl_upload, install);
+   this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>

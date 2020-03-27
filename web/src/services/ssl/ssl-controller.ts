@@ -17,7 +17,7 @@
 import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response } from "express";
-export const sslUpload = async (req: Request, res: Response) => {
+export const sslCertificateUpload = async (req: Request, res: Response) => {
     const result = await Api.uploadFiles(apiRegister.ssl_upload, req, res);
     return result;
 };
@@ -26,7 +26,7 @@ export const sslUpload = async (req: Request, res: Response) => {
  * @param req 
  * @param res 
  */
-export const sslInstall = async (req: Request, res: Response) => {
+export const sslCertificateInstall = async (req: Request, res: Response) => {
   let adminUser = Api.patch(apiRegister.ssl_upload, req, res, '');
   return adminUser;
 };

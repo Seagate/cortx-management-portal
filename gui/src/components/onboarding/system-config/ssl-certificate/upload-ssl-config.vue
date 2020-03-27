@@ -67,8 +67,6 @@ export default class EOSUploadSSLConfig extends Vue {
       this.$data.route = false;
     }
     this.$data.route == this.$route.name;
-    console.log(this.$data.route == this.$route.name, "component");
-    console.log(this.$route, "$route.name");
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -98,7 +96,12 @@ export default class EOSUploadSSLConfig extends Vue {
   private async uploadCertificate() {
     const formData = new FormData();
     formData.append("pemfile", this.$data.file);
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Uploading certificate..."
+    );
       const res = await Api.uploadFile(apiRegister.ssl_upload, formData);
+      this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>

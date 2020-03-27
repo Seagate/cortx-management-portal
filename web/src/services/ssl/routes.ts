@@ -1,6 +1,6 @@
 
 import { Request, Response, request, response } from "express";
-import { sslUpload, sslInstall} from "./ssl-controller";
+import { sslCertificateUpload, sslCertificateInstall} from "./ssl-controller";
 import { checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
@@ -11,7 +11,7 @@ export default [
         handler: [
             checkRequiredParams,
             async (req: Request, res: Response) => {
-                const result = await sslUpload(req, res);
+                const result = await sslCertificateUpload(req, res);
                 res.status(HttpStatus.OK).send(result);
             }
         ]
@@ -22,7 +22,7 @@ export default [
         handler: [
             checkRequiredParams,
             async (req: Request, res: Response) => {
-                const result = await sslInstall(req, res);
+                const result = await sslCertificateInstall(req, res);
                 res.status(HttpStatus.OK).send(result);
             }
         ]
