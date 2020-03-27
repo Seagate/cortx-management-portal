@@ -7,21 +7,24 @@
         type="file"
         id="file"
         ref="file"
-        v-on:change="handleFileUpload($event.target.files) " accept =".pem"/>
+        v-on:change="handleFileUpload($event.target.files)"
+        accept=".pem"
+      />
       <v-divider class="mt-5 mb-2" />
       <div class="mt-8">
         <v-row>
           <v-col cols="12">
-            <v-row
-            >
+            <v-row>
               <button
-               :disabled="!filestatus"
+                :disabled="!filestatus"
                 id="btnUploadSSL"
                 type="button"
                 class="eos-btn-primary mt-3"
                 @click="uploadCertificate()"
-              >Upload Certificate</button>
-              <span class="ml-7"  v-if="!route">
+              >
+                Upload Certificate
+              </button>
+              <span class="ml-7" v-if="!route">
                 <EOSInstallSSL />
               </span>
             </v-row>
@@ -29,12 +32,12 @@
         </v-row>
       </div>
     </div>
-     <span class="d-none">{{ isValidForm }}</span>
-   </v-container>
+    <span class="d-none">{{ isValidForm }}</span>
+  </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Api } from "./../../../../services/api"
+import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
 import EOSInstallSSL from "./install-ssl.vue";
 import {
@@ -57,7 +60,7 @@ import {
   }
 })
 export default class EOSUploadSSLConfig extends Vue {
- @Validations()
+  @Validations()
   private validations = {
     file: { required }
   };
@@ -75,7 +78,7 @@ export default class EOSUploadSSLConfig extends Vue {
     });
   }
   private destroyed() {
-    // WizardHook: shut off on exit event listner
+    // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
   }
   get isValidForm() {
@@ -85,28 +88,24 @@ export default class EOSUploadSSLConfig extends Vue {
     EVENT_BUS.$emit("validForm", validate);
     return validate;
   }
-  public data() {
+  private data() {
     return {
-      filestatus:false,
+      filestatus: false,
       file: File,
       route: "false"
     };
   }
   private handleFileUpload(fileList: FileList) {
     this.$data.file = fileList[0];
-    this.$data.filestatus=true;
+    this.$data.filestatus = true;
   }
   private async uploadCertificate() {
     const formData = new FormData();
     formData.append("pemfile", this.$data.file);
-    this.$store.dispatch(
-      "systemConfig/showLoader",
-      "Uploading certificate..."
-    );
-      const res = await Api.uploadFile(apiRegister.ssl_upload, formData);
-      this.$store.dispatch("systemConfig/hideLoader");
+    this.$store.dispatch("systemConfig/showLoader", "Uploading certificate...");
+    const res = await Api.uploadFile(apiRegister.ssl_upload, formData);
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

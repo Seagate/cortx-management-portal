@@ -15,7 +15,7 @@
 
 // Interface for CSM schema for System Configuration
 
-// onboarding scheama
+// onboarding schema
 
 export interface Ipv4 {
   is_dhcp: boolean;
@@ -43,17 +43,12 @@ export interface Ipv4Node {
   id: number;
   name: string;
   ip_address: string;
-  hostname: string;
-  netmask: string;
-  gateway: string;
+  netmask?: string;
+  gateway?: string;
 }
 
 export interface DataNetworkIpv4 {
   is_dhcp: boolean;
-  // vip_address?: string;
-  // vip_hostname?: string;
-  // netmask: string;
-  // gateway: string;
   nodes: Ipv4Node;
 }
 
@@ -71,23 +66,18 @@ export interface DataNetworkIpv6 {
 }
 
 export interface DataNetworkSettings {
-  is_external_load_balancer: boolean;
   ipv4: DataNetworkIpv4;
-  ipv6: DataNetworkIpv6;
+  ipv6?: DataNetworkIpv6;
 }
 
 export interface DnsNetworkSettingsNode {
   id: number;
   name: string;
-  hostname: string;
   dns_servers: string[];
   search_domain: string[];
 }
 
 export interface DnsNetworkSettings {
-  // hostname: string;
-  // dns_servers: string[];
-  // search_domain: string[];
   nodes: DnsNetworkSettingsNode[];
 }
 

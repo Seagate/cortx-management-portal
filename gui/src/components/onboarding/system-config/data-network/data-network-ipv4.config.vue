@@ -1,43 +1,98 @@
 <template>
-  <v-container class="mt-0 ml-0 pt-0">
+  <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="font-weight-bold mt-6">
         Source
-        <label class="eos-rdb-container ml-3">
+        <label class="eos-rdb-container ml-10">
           Manual
           <input type="radio" name="source" v-model="source" value="manual" />
           <span class="eos-rdb-tick" id="lblIp4Manual"></span>
         </label>
-        <label class="eos-rdb-container ml-10">
+        <label class="eos-rdb-container ml-6">
           DHCP
-          <input type="radio" name="DHCP" v-model="source" value="DHCP" id="txtIP4DHCP" />
+          <input
+            type="radio"
+            name="DHCP"
+            v-model="source"
+            value="DHCP"
+            id="txtIP4DHCP"
+          />
           <span class="eos-rdb-tick" id="lblIp4DHCP"></span>
         </label>
       </div>
-      <div class="row ma-0 mt-5">
-        <div class="col-1 body-2 column node-container mr-12">
+
+      <div class="row ma-0 mt-3">
+        <div class="col-1 body-2 column pa-0 node-container">
           <div class="mt-5 font-weight-bold">
-            <div class="mt-12" v-if="source == 'manual'">
-              <label>IPaddress*</label>
-            </div>
-            <div class="mt-12">
-              <label>Hostname*</label>
-            </div>
-            <div class="mt-12">
-              <label>Netmask*</label>
-            </div>
-            <div class="mt-12">
-              <label>Gateway*</label>
+            <div class="mt-6">
+              <label>VIP*: </label>
             </div>
           </div>
         </div>
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
-          <div class="col-3 body-2 column node-container mr-5" :key="node.id">
-            <span class="font-weight-bold" id="lblIpv4Node">{{ node.$model.name }}</span>
-            <!-- {{(JSON.stringify(node))}} -->
+          <div
+            class="col-3 body-2 column pa-0 node-container"
+            v-if="node.$model.name === 'VIP'"
+            :key="node.id"
+          >
+            <div class="mt-5">
+              <div
+                class
+                :class="{
+                  'eos-form-group--error': node.ip_address.$error
+                }"
+              >
+                <input
+                  class="eos-form__input_text"
+                  type="text"
+                  :id="node.$model.id + 'txtMngmtNetworkIpv4Ipaddress'"
+                  :name="node.$model.id + 'ipaddress'"
+                  v-model.trim="node.ip_address.$model"
+                  @input="node.ip_address.$touch"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="node.ip_address.$dirty && !node.ip_address.required"
+                    >IP address is required</label
+                  >
+                  <label
+                    v-else-if="
+                      node.ip_address.$dirty && !node.ip_address.ipAddress
+                    "
+                    >Invalid IP address</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <div class="row ma-0 mt-5" v-if="source == 'manual'">
+        <div class="col-1 body-2 column pa-0 node-container mr-12">
+          <div class="mt-5 font-weight-bold">
+            <div class="mt-12">
+              <label>IPaddress*</label>
+            </div>
+            <div class="mt-12">
+              <label>Gateway*</label>
+            </div>
+            <div class="mt-12">
+              <label>Netmask</label>
+            </div>
+          </div>
+        </div>
+        <template v-for="node in $v.ipv4Nodes.$each.$iter">
+          <div
+            class="col-3 body-2 column pa-0 node-container mr-5"
+            v-if="node.$model.name !== 'VIP'"
+            :key="node.id"
+          >
+            <span class="font-weight-bold" id="lblIpv4Node">{{
+              node.$model.name
+            }}</span>
             <v-divider class="mt-2" />
             <div
-              v-if="source == 'manual'"
               class="mt-3"
               :class="{
                 'eos-form-group--error': node.ip_address.$error
@@ -55,38 +110,48 @@
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
                   v-if="node.ip_address.$dirty && !node.ip_address.required"
-                >IP address is required</label>
+                  >IP address is required</label
+                >
                 <label
                   v-else-if="
                     node.ip_address.$dirty && !node.ip_address.ipAddress
                   "
-                >Invalid IP address</label>
+                  >Invalid IP address</label
+                >
               </div>
             </div>
 
             <div
               class="mt-3"
               :class="{
-                'eos-form-group--error': node.hostname.$error
+                'eos-form-group--error': node.gateway.$error
               }"
             >
               <input
-                v-on:change="setHostname"
+                v-on:change="setGateway"
                 class="eos-form__input_text"
-                :id="node.$model.id + 'txtDataNetworkIpv4hostname'"
-                :name="node.$model.id + 'ipaddress'"
-                v-model.trim="node.hostname.$model"
-                @input="node.hostname.$touch"
+                type="text"
+                :id="node.$model.id + 'txtDataNetworkIpv4Gateway'"
+                :name="node.$model.id + 'gateway'"
+                v-model.trim="node.gateway.$model"
+                @input="node.gateway.$touch"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
-                <label v-if="node.hostname.$dirty && !node.hostname.required">Hostname is required</label>
+                <label v-if="node.gateway.$dirty && !node.gateway.required"
+                  >Gateway is required</label
+                >
+                <label
+                  v-else-if="node.gateway.$dirty && !node.gateway.ipAddress"
+                  >Invalid gateway</label
+                >
               </div>
             </div>
+
             <div
               class="mt-3"
               :class="{
-                  'eos-form-group--error': node.netmask.$error
-                }"
+                'eos-form-group--error': node.netmask.$error
+              }"
             >
               <input
                 v-on:change="setNetmask"
@@ -98,35 +163,9 @@
                 @input="node.netmask.$touch"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
-                <label v-if="node.netmask.$dirty && !node.netmask.required">Netmask is required</label>
-                <label
-                  v-else-if="
-                      node.netmask.$dirty && !node.netmask.ipAddress
-                    "
-                >Invalid IP address</label>
-              </div>
-            </div>
-            <div
-              class="mt-3"
-              :class="{
-              'eos-form-group--error': node.gateway.$error
-            }"
-            >
-              <input
-                v-on:change="setGetway"
-                class="eos-form__input_text"
-                type="text"
-                :id="node.$model.id + 'txtDataNetworkIpv4Gateway'"
-                :name="node.$model.id + 'gateway'"
-                v-model.trim="node.gateway.$model"
-                @input="node.gateway.$touch"
-              />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label v-if="node.gateway.$dirty && !node.gateway.required">Gateway is required</label>
-                <label
-                  v-else-if="
-                      node.gateway.$dirty && !node.gateway.ipAddress "
-                >Invalid IP address</label>
+                <label v-if="node.netmask.$dirty && !node.netmask.ipAddress"
+                  >Invalid netmask</label
+                >
               </div>
             </div>
           </div>
@@ -165,15 +204,13 @@ export default class EosDataNetworkIpv4Config extends Vue {
           }),
           ipAddress
         },
-        hostname: {
-          required
-        },
-        netmask: {
-          required,
+        gateway: {
+          required: requiredIf(function(this: any, form) {
+            return this.$data.source === "manual";
+          }),
           ipAddress
         },
-        gateway: {
-          required,
+        netmask: {
           ipAddress
         }
       }
@@ -187,14 +224,6 @@ export default class EosDataNetworkIpv4Config extends Vue {
       this.$v.ipv4Nodes.$model[2].ip_address = e.target.value;
     }
   }
-  private setHostname(e: any) {
-    if (this.$v.ipv4Nodes.$model[1].hostname === "") {
-      this.$v.ipv4Nodes.$model[1].hostname = e.target.value;
-    }
-    if (this.$v.ipv4Nodes.$model[2].hostname === "") {
-      this.$v.ipv4Nodes.$model[2].hostname = e.target.value;
-    }
-  }
   private setNetmask(e: any) {
     if (this.$v.ipv4Nodes.$model[1].netmask === "") {
       this.$v.ipv4Nodes.$model[1].netmask = e.target.value;
@@ -203,7 +232,7 @@ export default class EosDataNetworkIpv4Config extends Vue {
       this.$v.ipv4Nodes.$model[2].netmask = e.target.value;
     }
   }
-  private setGetway(e: any) {
+  private setGateway(e: any) {
     if (this.$v.ipv4Nodes.$model[1].gateway === "") {
       this.$v.ipv4Nodes.$model[1].gateway = e.target.value;
     }
@@ -218,15 +247,13 @@ export default class EosDataNetworkIpv4Config extends Vue {
           id: 2,
           name: "VIP",
           ip_address: "",
-          hostname: "",
           netmask: "",
-          gateway: ""
+          gateway: "1.1.1.1"
         },
         {
           id: 0,
           name: "Node 0",
           ip_address: "",
-          hostname: "",
           netmask: "",
           gateway: ""
         },
@@ -234,7 +261,6 @@ export default class EosDataNetworkIpv4Config extends Vue {
           id: 1,
           name: "Node 1",
           ip_address: "",
-          hostname: "",
           netmask: "",
           gateway: ""
         }
@@ -286,10 +312,6 @@ export default class EosDataNetworkIpv4Config extends Vue {
       this.$data.ipv4Nodes = dataNetworkSettings.ipv4.nodes;
       this.$data.source =
         dataNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
-      this.$data.ipv4VipAddress = dataNetworkSettings.ipv4.vip_address;
-      this.$data.ipv4VipHostname = dataNetworkSettings.ipv4.vip_hostname;
-      this.$data.ipv4Netmask = dataNetworkSettings.ipv4.netmask;
-      this.$data.ipv4Gateway = dataNetworkSettings.ipv4.gateway;
     }
   }
 }

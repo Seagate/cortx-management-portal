@@ -1,13 +1,9 @@
 <template>
   <v-container class="mt-0 ml-0">
-    <!-- node block -->
     <div class="row ma-0 mt-5">
       <div class="col-1 body-2 column node-container mt-5">
         <div class="mt-10 font-weight-bold">
-          <div class="mt-12" v-if="source == 'manual'">
-            <label>Hostname*</label>
-          </div>
-          <div class="mt-12 netmasklabel">
+          <div class="mt-6 netmasklabel">
             <label>DNS server*</label>
           </div>
           <div class>
@@ -16,41 +12,23 @@
         </div>
       </div>
       <template v-for="node in $v.dnsNodes.$each.$iter">
-        <div class="col-2 body-2 column node-container mr-5" :key="node.id">
-          <span class="font-weight-bold" id="lblIpv4Node">{{ node.$model.name }}</span>
+        <div class="col-3 body-2 column node-container mr-5" :key="node.id">
+          <span class="font-weight-bold" id="lblIpv4Node">{{
+            node.$model.name
+          }}</span>
           <v-divider class="mt-2" />
-          <div class="eos-form-group mt-0 ml-0">
-            <div
-              class
-              :class="{
-                'eos-form-group--error': node.hostname.$error
-              }"
-            >
-              <input
-                v-on:change="setHostname"
-                class="eos-form__input_text mt-7"
-                type="text"
-                v-model.trim="node.hostname.$model"
-                @input="node.hostname.$touch"
-                :id="node.$model.id + 'txtDnsHostname'"
-                :name="node.$model.id + 'hostname'"
-                placeholder="Hostname"
-              />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label v-if="node.hostname.$dirty && !node.hostname.required">Hostname is required</label>
-              </div>
-            </div>
+          <div class="eos-form-group eos-form-group-custom mt-0 ml-0">
             <div
               class="mt-3"
               :class="{
-              'eos-form-group--error': node.dns_servers.$error
-            }"
+                'eos-form-group--error': node.dns_servers.$error
+              }"
             >
               <textarea
                 v-on:change="setdnsServerAddress"
-                class="eos-form__input_textarea"
+                class="eos-form__input_textarea eos-form__input_textarea-custom"
                 rows="3"
-                placeholder="Enter DNS server value as comma ',' seperated"
+                placeholder="Enter DNS server value as comma ',' separated"
                 v-model.trim="node.dns_servers.$model"
                 @input="node.dns_servers.$touch"
                 :id="node.$model.id + 'txtDnsServer'"
@@ -59,29 +37,33 @@
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
                   v-if="node.dns_servers.$dirty && !node.dns_servers.required"
-                >DNS address is required</label>
+                  >DNS address is required</label
+                >
               </div>
             </div>
             <div
               class="mt-3"
               :class="{
-              'eos-form-group--error': node.search_domain.$error
-            }"
+                'eos-form-group--error': node.search_domain.$error
+              }"
             >
               <textarea
                 v-on:change="setsearchDomainAddress"
-                class="eos-form__input_textarea"
+                class="eos-form__input_textarea eos-form__input_textarea-custom"
                 :id="node.$model.id + 'txtSearchDomain'"
                 :name="node.$model.id + 'search-domain'"
                 v-model.trim="node.search_domain.$model"
                 rows="3"
-                placeholder="Enter Search domain value  as comma ',' seperated "
+                placeholder="Enter search domain value as comma ',' separated"
                 @input="node.search_domain.$touch"
               ></textarea>
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
-                  v-if="node.search_domain.$dirty && !node.search_domain.required"
-                >Search domain is required</label>
+                  v-if="
+                    node.search_domain.$dirty && !node.search_domain.required
+                  "
+                  >Search domain is required</label
+                >
               </div>
             </div>
           </div>
@@ -114,9 +96,6 @@ export default class EosDnsSettingConfig extends Vue {
   private validations = {
     dnsNodes: {
       $each: {
-        hostname: {
-          required
-        },
         dns_servers: {
           required
         },
@@ -127,14 +106,6 @@ export default class EosDnsSettingConfig extends Vue {
     }
   };
 
-  private setHostname(e: any) {
-    if (this.$v.dnsNodes.$model[1].hostname === "") {
-      this.$v.dnsNodes.$model[1].hostname = e.target.value;
-    }
-    if (this.$v.dnsNodes.$model[2].hostname === "") {
-      this.$v.dnsNodes.$model[2].hostname = e.target.value;
-    }
-  }
   private setdnsServerAddress(e: any) {
     if (this.$v.dnsNodes.$model[1].dns_servers === "") {
       this.$v.dnsNodes.$model[1].dns_servers = e.target.value;
@@ -155,13 +126,6 @@ export default class EosDnsSettingConfig extends Vue {
     return {
       source: "manual",
       dnsNodes: [
-        {
-          id: 2,
-          name: "VIP",
-          hostname: "",
-          dns_servers: "",
-          search_domain: ""
-        },
         {
           id: 0,
           name: "Node 0",
@@ -232,6 +196,12 @@ export default class EosDnsSettingConfig extends Vue {
   max-width: 25em;
 }
 .netmasklabel {
-  height: 130px;
+  height: 95px;
+}
+.eos-form-group-custom {
+  width: auto;
+}
+.eos-form__input_textarea-custom {
+  height: auto;
 }
 </style>

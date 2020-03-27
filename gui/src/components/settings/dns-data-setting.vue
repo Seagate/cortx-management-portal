@@ -1,13 +1,13 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblDns">DNS network settings</div>
+      <div class="eos-text-lg mt-0 font-weight-bold" id="lblDns">
+        DNS network settings
+      </div>
     </div>
     <eosDnsSettingConfig />
-    <button 
-     type="button" 
-     class="eos-btn-primary eos-float-l ml-3">
-     Apply
+    <button type="button" class="eos-btn-primary eos-float-l ml-3">
+      Apply
     </button>
   </v-container>
 </template>
@@ -21,8 +21,6 @@ import EosDnsSettingConfig from "../onboarding/system-config/dns/dns-setting-con
     eosDnsSettingConfig: EosDnsSettingConfig
   }
 })
-
 export default class EosDnsDataSetting extends Vue {}
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
