@@ -27,6 +27,6 @@ export const sslCertificateUpload = async (req: Request, res: Response) => {
  * @param res 
  */
 export const sslCertificateInstall = async (req: Request, res: Response) => {
-  let adminUser = Api.patch(apiRegister.ssl_upload, req, res, '');
-  return adminUser;
+  let uploadCertificate = Api.patch(apiRegister.ssl_upload, req, res, '');
+  return uploadCertificate;
 };
