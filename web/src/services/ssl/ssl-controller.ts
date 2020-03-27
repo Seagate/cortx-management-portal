@@ -22,7 +22,7 @@ export const sslCertificateUpload = async (req: Request, res: Response) => {
     return result;
 };
 /**
- * This method updates the CSM user.
+ * This method for install ssl certificate.
  * @param req 
  * @param res 
  */
