@@ -105,22 +105,22 @@ export default class EosLineChart extends Vue {
   public data() {
     return {
       items: [
-        "",
-        "throughput_read",
-        "throughput_write",
-        "throughput_total",
-        "latency_avarage_latency",
-        "latency_create_object",
-        "latency_delete_object",
-        "latency_write_object",
-        "latency_read_object",
-        "latency_getkv",
-        "latency_putkv",
-        "latency_deletekv",
-        "iops_read_object",
-        "iops_write_object",
-        "iops_read_bucket",
-        "iops_write_bucket"
+        { value: "", text: "-- No Metric --" },
+        { value: "throughput_read", text: "throughput_read" },
+        { value: "throughput_write", text: "throughput_write" },
+        { value: "throughput_total", text: "throughput_total" },
+        { value: "latency_avarage_latency", text: "avarage_latency" },
+        { value: "latency_create_object", text: "latency_create_object" },
+        { value: "latency_delete_object", text: "latency_delete_object" },
+        { value: "latency_write_object", text: "latency_write_object" },
+        { value: "latency_read_object", text: "latency_read_object" },
+        { value: "latency_getkv", text: "latency_getkv" },
+        { value: "latency_putkv", text: "latency_putkv" },
+        { value: "latency_deletekv", text: "latency_deletekv" },
+        { value: "iops_read_object", text: "iops_read_object" },
+        { value: "iops_write_object", text: "iops_write_object" },
+        { value: "iops_read_bucket", text: "iops_read_bucket" },
+        { value: "iops_write_bucket", text: "iops_write_bucket" }
       ]
     };
   }

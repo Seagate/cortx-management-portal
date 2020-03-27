@@ -25,6 +25,7 @@ export default class MessageDialog extends VuexModule {
   public showDialog: boolean = false;
   public title: string = "Error";
   public message: string = "Internal error occurred";
+  public type: "warning" | "error" = "error";
   private timer: any;
 
   @Mutation
@@ -33,6 +34,7 @@ export default class MessageDialog extends VuexModule {
       clearTimeout(this.timer);
     }
     if (dialogPayload) {
+      this.type = dialogPayload.type ? dialogPayload.type : "error";
       this.title = dialogPayload.title ? dialogPayload.title : "Error";
       this.message = dialogPayload.message
         ? dialogPayload.message
@@ -48,6 +50,7 @@ export default class MessageDialog extends VuexModule {
   public hide() {
     clearTimeout(this.timer);
     this.showDialog = false;
+    this.type = "error";
     this.title = "Error";
     this.message = "Internal error occurred";
   }

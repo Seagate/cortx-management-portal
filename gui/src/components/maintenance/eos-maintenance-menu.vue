@@ -56,7 +56,7 @@ export default class EosMaintenanceMenu extends Vue {
     },
     {
       title: "Audit log",
-      actionName: "Download",
+      actionName: "View/Download",
       actionClickFunction: "goToAuditLog",
       disabled: false
     }

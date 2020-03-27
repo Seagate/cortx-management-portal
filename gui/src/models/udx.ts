@@ -1,6 +1,6 @@
 /*****************************************************************************
  Filename:          udx.ts
- Description:       UDX Device Model
+ Description:       UDX Model
 
  Creation Date:     08/11/2019
  Author:            Sri Bhargav Metta
@@ -13,8 +13,7 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 
-// Interface for CSM schema for UDX Device
-export class UDXDevice {
+export class UDX {
     public name: string;
     public productID: string;
     public serialNumber: string;

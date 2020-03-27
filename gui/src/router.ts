@@ -23,7 +23,7 @@ import EosS3Management from "./components/s3/s3.vue";
 import EosAdminUser from "./components/preboarding/admin-user.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
 import EosLogin from "./components/preboarding/login.vue";
-import UDXRegistration from "./components/udx/udx-registration.vue";
+import EosUDX from "./components/udx/eos-udx.vue";
 import EosAutoLogin from "./components/preboarding/auto-login.vue";
 import EosHomebase from "./components/onboarding/homebase.vue";
 import EosOnboarding from "./components/onboarding/system-config/onboarding.vue";
@@ -265,9 +265,9 @@ const router = new Router({
           ]
         },
         {
-          path: "udx-registration",
-          name: "udx-registration",
-          component: UDXRegistration,
+          path: "udx",
+          name: "udx",
+          component: EosUDX,
           meta: {
             requiresAuth: true,
             isOnboardingReq: false,

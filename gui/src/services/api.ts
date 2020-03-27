@@ -64,7 +64,8 @@ export abstract class Api {
         return Promise.resolve(this.buildSuccessResponse(response));
       })
       .catch(error => {
-        return Promise.reject(this.buildErrorResponse(error.response));
+        const apiResponse: ApiResponse = this.getResponseFromError(error);
+        return Promise.reject(apiResponse);
       });
   }
   // Wrapper method to for get api
@@ -80,7 +81,8 @@ export abstract class Api {
         return Promise.resolve(this.buildSuccessResponse(response));
       })
       .catch(error => {
-        return Promise.reject(this.buildErrorResponse(error.response));
+        const apiResponse: ApiResponse = this.getResponseFromError(error);
+        return Promise.reject(apiResponse);
       });
   }
   // Wrapper method for post api
@@ -91,7 +93,8 @@ export abstract class Api {
         return Promise.resolve(this.buildSuccessResponse(response));
       })
       .catch(error => {
-        return Promise.reject(this.buildErrorResponse(error.response));
+        const apiResponse: ApiResponse = this.getResponseFromError(error);
+        return Promise.reject(apiResponse);
       });
   }
   // Wrapper method for post api to upload file
@@ -100,13 +103,15 @@ export abstract class Api {
       .post(url, payload, {
         headers: {
           "Content-Type": "multipart/form-data"
-        }
+        },
+        timeout: -1
       })
       .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
       })
       .catch(error => {
-        return Promise.reject(this.buildErrorResponse(error.response));
+        const apiResponse: ApiResponse = this.getResponseFromError(error);
+        return Promise.reject(apiResponse);
       });
   }
   // Wrapper method for post api
@@ -118,7 +123,8 @@ export abstract class Api {
         return Promise.resolve(this.buildSuccessResponse(response));
       })
       .catch(error => {
-        return Promise.reject(this.buildErrorResponse(error.response));
+        const apiResponse: ApiResponse = this.getResponseFromError(error);
+        return Promise.reject(apiResponse);
       });
   }
   // Wrapper method for update api
@@ -130,7 +136,8 @@ export abstract class Api {
         return Promise.resolve(this.buildSuccessResponse(response));
       })
       .catch(error => {
-        return Promise.reject(this.buildErrorResponse(error.response));
+        const apiResponse: ApiResponse = this.getResponseFromError(error);
+        return Promise.reject(apiResponse);
       });
   }
 
@@ -144,6 +151,16 @@ export abstract class Api {
     return apiResponse;
   }
 
+  private static getResponseFromError(error: any): ApiResponse {
+    let apiResponse: ApiResponse;
+    if (error.code && error.code === "ECONNABORTED") {
+      apiResponse = this.buildReqCancelledWarnResp(error);
+    } else {
+      apiResponse = this.buildErrorResponse(error.response);
+    }
+    return apiResponse;
+  }
+
   private static buildErrorResponse(response: any): ApiResponse {
     const apiResponse: ApiResponse = {
       data: response.data ? response.data : {},
@@ -152,6 +169,17 @@ export abstract class Api {
       error: {
         name: "Error: " + response.status,
         message: response.statusText
+      }
+    };
+    return apiResponse;
+  }
+
+  private static buildReqCancelledWarnResp(error: any): ApiResponse {
+    const apiResponse: ApiResponse = {
+      status: error.code,
+      statusText: error.message,
+      warning: {
+        message: "Server is taking too long to respond. Please refresh the page."
       }
     };
     return apiResponse;

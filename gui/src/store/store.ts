@@ -26,6 +26,7 @@ import firmware from "./modules/firmware";
 
 import download from "./modules/download";
 import maintenance from "./modules/maintenance";
+import sslupload from "./modules/ssl-upload";
 
 Vue.use(Vuex);
 
@@ -41,6 +42,7 @@ export default new Vuex.Store({
         messageDialog,
         firmware,
         download,
-        maintenance
+        maintenance,
+        sslupload
     }
 });

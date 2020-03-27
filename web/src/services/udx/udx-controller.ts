@@ -17,16 +17,22 @@
 import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response } from "express";
+import { randomBytes } from "crypto";
 
 
 export const getUDXDevices = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.udx_devices, req, res);
-    return result;
+    /*let result = await Api.getAll(apiRegister.udx_devices, req, res);
+    return result;*/
+    return [];
 };
 
 export const getIdentificationToken = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.udx_reg_token, req, res);
-    return result;
+    /*let result = await Api.getAll(apiRegister.udx_reg_token, req, res);
+    return result;*/
+    const pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    return {
+        registrationToken: [...randomBytes(12)].map(x => pool[x % pool.length]).join('')
+    };
 };
 
 

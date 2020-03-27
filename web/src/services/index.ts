@@ -11,6 +11,8 @@ import alertsHistoryRoutes from "./alerts_history/routes";
 import userConfigRoutes from "./onboarding/userconfig/routes"
 import systemHealthRoutes from "./system/routes";
 import audit from "./audit/routes";
+import firmware from "./firmware/routes";
+import ssl from "./ssl/routes";
 
 export default [
     ...loginRoutes,
@@ -25,5 +27,7 @@ export default [
     ...userConfigRoutes,
     ...alertsHistoryRoutes,
     ...systemHealthRoutes,
-    ...audit
+    ...audit,
+    ...firmware,
+    ...ssl
 ];

@@ -15,7 +15,10 @@
 <template>
   <v-overlay color="rgba(0, 0, 0, 0.75)" :value="$store.state.messageDialog.showDialog">
     <div class="eos-msg-dialog-container">
-      <div class="eos-msg-dialog-header">
+      <div
+        class="eos-msg-dialog-header"
+        :class="{ 'eos-chip-warning': $store.state.messageDialog.type === 'warning', 'eos-chip-alert': $store.state.messageDialog.type === 'error' }"
+      >
         <label class="eos-msg-dialog-header-title">{{ $store.state.messageDialog.title }}</label>
         <div class="eos-msg-dialog-close" @click="closeDialog()"></div>
       </div>
@@ -48,7 +51,6 @@ export default class EosMessageDialog extends Vue {
 }
 .eos-msg-dialog-header {
   height: 66px;
-  background: #dc1f2e;
   display: flex;
   flex-wrap: nowrap;
   padding-top: 24px;
@@ -75,7 +77,6 @@ export default class EosMessageDialog extends Vue {
 .eos-msg-dialog-close {
   width: 28px;
   height: 28px;
-  background: #dc1f2e;
   position: relative;
   transform: rotate(45deg);
   -ms-transform: rotate(45deg); /* IE 9 */

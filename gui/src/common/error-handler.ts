@@ -18,9 +18,16 @@ export function errorHandler(err: any, vm: any, info: any) {
   store.dispatch("systemConfig/hideLoader");
   if (err.error) {
     store.commit("messageDialog/show", {
+      type: "error",
       title: "Error",
       message:
         err.data && err.data.message ? err.data.message : err.error.message
+    });
+  } else if (err.warning) {
+    store.commit("messageDialog/show", {
+      type: "warning",
+      title: "Warning",
+      message: err.warning.message
     });
   } else {
     store.commit("messageDialog/show");
