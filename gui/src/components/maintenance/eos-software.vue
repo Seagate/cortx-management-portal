@@ -48,6 +48,7 @@
           ? confirmButtonText
           : undefined
       "
+      :confirmButtonDisabled="confirmButtonDisabled"
       :cancelButtonText="cancelButtonText ? cancelButtonText : undefined"
     ></eos-confirmation-dialog>
   </v-container>
@@ -62,14 +63,15 @@ import apiRegister from "../../services/api-register";
 export default class EosHotfix extends Vue {
   public data() {
     return {
-      file: undefined,
+      file: File,
       confirmationMessage: "",
       showConfirmDialog: false,
       cancelButtonText: undefined,
       confirmButtonText: undefined,
       confirmDialogSeverity: "info",
       formData: undefined,
-      hotfixStatus: ""
+      hotfixStatus: "",
+      confirmButtonDisabled: false
     };
   }
 
@@ -77,11 +79,8 @@ export default class EosHotfix extends Vue {
     this.$data.file = fileList[0];
   }
   private async uploadHotfix() {
-    const formData = new FormData();
-    formData.append("file", this.$data.file);
-
     this.$store.dispatch(
-      "systemConfig/showLoader",
+      "systemConfig/showInfiniteLoader",
       "Getting upgrade status..."
     );
     const hotfixStatus = await Api.getAll(apiRegister.hotfix_status);
@@ -134,14 +133,22 @@ export default class EosHotfix extends Vue {
     }
   }
   private async closeConfirmDialog(confirmation: boolean) {
+    const formData = new FormData();
+    formData.append("package", this.$data.file);
     if (confirmation) {
+      this.$data.showConfirmDialog = false;
       if (this.$data.hotfixStatus === "uploaded") {
+        this.$store.dispatch(
+          "systemConfig/showInfiniteLoader",
+          "Upgrading in progress..."
+        );
         const res = await Api.post(apiRegister.hotfix_start, {});
       } else {
-        const res = await Api.uploadFile(
-          apiRegister.hotfix_upload,
-          this.$data.formData
+        this.$store.dispatch(
+          "systemConfig/showInfiniteLoader",
+          "Uploading hotfix upgrade file..."
         );
+        const res = await Api.uploadFile(apiRegister.hotfix_upload, formData);
       }
     }
     this.$data.showConfirmDialog = false;

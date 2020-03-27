@@ -11,8 +11,6 @@
       </div>
       <div class="eos-modal-body">
         <div class="title title-container">
-          <!-- <img class="mr-2" :src="require(severityIcons[severity])" /> -->
-          <!-- <img class="severity-img mr-2" :src="require(severityIcons[severity].toString())" /> -->
           <img class="severity-img mr-2" :src="severityIcons[severity]" />
           <span class="finish-text">{{ message }}</span>
         </div>
@@ -25,6 +23,7 @@
             type="button"
             class="eos-btn-primary"
             v-if="confirmButtonText"
+            :disabled="confirmButtonDisabled"
             :class="
               severity === 'danger' ? 'eos-btn-danger' : 'eos-btn-primary'
             "
@@ -35,6 +34,7 @@
           <button
             type="button"
             v-if="cancelButtonText"
+            :disabled="cancelButtonDisabled"
             class="eos-btn-tertiary"
             @click="$emit('closeDialog', false)"
           >
@@ -72,8 +72,14 @@ export default class EosConfirmationDialog extends Vue {
   @Prop({ required: false, default: "Yes" })
   public confirmButtonText!: string;
 
+  @Prop({ required: false, default: false })
+  public confirmButtonDisabled!: boolean;
+
   @Prop({ required: false, default: "Cancel" })
   public cancelButtonText!: string;
+
+  @Prop({ required: false, default: false })
+  public cancelButtonDisabled!: boolean;
 
   public data() {
     return {

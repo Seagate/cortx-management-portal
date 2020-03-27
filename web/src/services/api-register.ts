@@ -16,7 +16,7 @@ export const version = "v1";
 
 export default {
   all_alerts: `/api/${version}/alerts`,
-  alerts_history : `/api/${version}/alerts_history`,
+  alerts_history: `/api/${version}/alerts_history`,
   all_system_config: `/api/${version}/sysconfig`,
   stats: `/api/${version}/stats`,
   csm_user: `/api/${version}/csm/users`,
@@ -32,7 +32,7 @@ export default {
   capacity: `/api/${version}/capacity`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
-  addlicensekey:`/api/${version}/license/onboarding`,
+  addlicensekey: `/api/${version}/license/onboarding`,
   all_alerts_history: `/api/${version}/alerts_history`,
   auditlogs: `/api/${version}/auditlogs`,
   health_summary: `/api/${version}/system/health`,
@@ -42,6 +42,9 @@ export default {
   node_start: ` /api/${version}/maintenance/cluster/start`,
   node_shutdown: ` /api/${version}/maintenance/cluster/shutdown`,
   send_test_email: `/api/${version}/sysconfig_helpers/email_test`,
+  hotfix_status: `/api/${version}/upgrade/hotfix/status`,
+  hotfix_upload: `/api/${version}/upgrade/hotfix/upload`,
+  hotfix_start: `/api/${version}/upgrade/hotfix/start`,
   upload_firmware: `/api/${version}/upgrade/firmware/upload`,
   start_firmware_upgrade: `/api/${version}/upgrade/firmware/start`,
   firmware_package_availability: `/api/${version}/upgrade/firmware/availibility`,
