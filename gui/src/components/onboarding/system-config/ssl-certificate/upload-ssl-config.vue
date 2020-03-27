@@ -15,6 +15,7 @@
             <v-row
             >
               <button
+               :disabled="!filestatus"
                 id="btnUploadSSL"
                 type="button"
                 class="eos-btn-primary mt-3"
@@ -86,12 +87,14 @@ export default class EOSUploadSSLConfig extends Vue {
   }
   public data() {
     return {
+      filestatus:false,
       file: File,
       route: "false"
     };
   }
   private handleFileUpload(fileList: FileList) {
     this.$data.file = fileList[0];
+    this.$data.filestatus=true;
   }
   private async uploadCertificate() {
     const formData = new FormData();
