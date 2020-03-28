@@ -3,7 +3,7 @@
     <button
       id="btnInstallFirmware"
       type="button"
-      class="eos-btn-primary "
+      class="eos-btn-primary"
       @click="installCertificate()"
     >
       Apply Certificate
@@ -60,4 +60,3 @@ export default class EOSInstallSSL extends Vue {
 }
 </script>
 <style lang="scss" scoped></style>
-};

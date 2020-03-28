@@ -65,12 +65,11 @@ export default class EOSUploadSSLConfig extends Vue {
     file: { required }
   };
   private mounted() {
-    if (this.$route.path == "/onboarding") {
+    if (this.$route.path === "/onboarding") {
       this.$data.route = true;
     } else {
       this.$data.route = false;
     }
-    this.$data.route == this.$route.name;
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -92,7 +91,7 @@ export default class EOSUploadSSLConfig extends Vue {
     return {
       filestatus: false,
       file: File,
-      route: "false"
+      route: false
     };
   }
   private handleFileUpload(fileList: FileList) {
