@@ -19,6 +19,7 @@ import {
   getSystemConfig,
   saveSystemConfig,
   updateSystemConfig,
+  patchSystemConfig,
   sendTestEmail
 } from "./on-boarding-controller";
 import { checkRequiredParams } from "./../../middleware/validator";
@@ -97,6 +98,21 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await updateSystemConfig(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/sysconfig/:config_id",
+    method: "patch",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await patchSystemConfig(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;

@@ -1,27 +1,31 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="eos-text-lg mt-0 font-weight-bold" id="lblDns">
-        DNS resolver settings
+      <div class="eos-text-lg mt-0 font-weight-bold" id="lblIpv4DataNetwork">
+        Data network settings: IPv4
       </div>
+      <div class="mt-6" id="lblIpv4Msg">
+        You need to configure a single IP address for management of this system.
+      </div>
+      <v-divider class="mt-2" />
+      <eosDataNetworkIpv4Config @apply-settings="applySettings" />
     </div>
-    <v-divider class="mt-2" />
-    <eosDnsSettingConfig @apply-settings="applySettings" />
   </v-container>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosDnsSettingConfig from "../onboarding/system-config/dns/dns-setting-config.vue";
+import EosDataNetworkIpv4Config from "../onboarding/system-config/data-network/data-network-ipv4-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-dns-data-setting",
+  name: "eos-data-network-setting",
   components: {
-    eosDnsSettingConfig: EosDnsSettingConfig
+    eosDataNetworkIpv4Config: EosDataNetworkIpv4Config
   }
 })
-export default class EosDnsDataSetting extends Vue {
+export default class EosDataNetworkSetting extends Vue {
   private data() {
     return {
       sysconfigData: {}
@@ -41,15 +45,16 @@ export default class EosDnsDataSetting extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Please wait");
     const res = await Api.patch(
       apiRegister.sysconfig,
-      { dns_network_settings: { nodes: data } },
+      { data_network_settings: { ipv4: data } },
       this.$data.sysconfigData.config_id,
       {
         params: {
-          config_type: "dns_network_settings"
+          config_type: "data_network_settings"
         }
       }
     );
   }
 }
 </script>
+
 <style lang="scss" scoped></style>

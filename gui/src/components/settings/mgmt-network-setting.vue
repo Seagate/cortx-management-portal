@@ -8,7 +8,7 @@
         You need to configure a single IP address for management of this system.
       </div>
       <v-divider class="mt-2" />
-      <eosNetworkSettingsIpv4 />
+      <eosNetworkSettingsIpv4 @apply-settings="applySettings" />
     </div>
   </v-container>
 </template>
@@ -26,8 +26,33 @@ import apiRegister from "../../services/api-register";
   }
 })
 export default class EosMangementSetting extends Vue {
-  public async mounted() {
-    await this.$store.dispatch("systemConfig/getSystemConfigAction");
+  private data() {
+    return {
+      sysconfigData: {}
+    };
+  }
+  private async mounted() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Fetching system configuration..."
+    );
+    this.$data.sysconfigData = await this.$store.dispatch(
+      "systemConfig/getSystemConfigAction"
+    );
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
+  private async applySettings(data: object) {
+    this.$store.dispatch("systemConfig/showLoader", "Please wait");
+    const res = await Api.patch(
+      apiRegister.sysconfig,
+      { management_network_settings: { ipv4: data } },
+      this.$data.sysconfigData.config_id,
+      {
+        params: {
+          config_type: "management_network_settings"
+        }
+      }
+    );
   }
 }
 </script>

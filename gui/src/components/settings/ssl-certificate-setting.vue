@@ -8,11 +8,6 @@
         You need to upload ssl and key certificate here
       </div>
       <eosUploadSSLConfig />
-      <!-- <button
-        type="button"
-        class="eos-btn-primary eos-float-l ml-3"
-        >Apply
-      </button> -->
     </div>
   </v-container>
 </template>
@@ -21,7 +16,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import EOSUploadSSLConfig from "../onboarding/system-config/ssl-certificate/upload-ssl-config.vue";
 
 @Component({
-  name: "uploade-ssl-setting",
+  name: "upload-ssl-setting",
   components: {
     eosUploadSSLConfig: EOSUploadSSLConfig
   }

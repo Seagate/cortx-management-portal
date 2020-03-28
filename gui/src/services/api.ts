@@ -73,10 +73,15 @@ export abstract class Api {
     return await axios.get(url, { responseType: "blob" });
   }
   // Wrapper method for update api
-  public static async patch(url: string, payload: object, id?: string) {
+  public static async patch(
+    url: string,
+    payload: object,
+    id?: string,
+    config?: object
+  ) {
     const tempURL = id ? url + "/" + id : url;
     return await axios
-      .patch(tempURL, payload)
+      .patch(tempURL, payload, config)
       .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
       })
@@ -179,7 +184,8 @@ export abstract class Api {
       status: error.code,
       statusText: error.message,
       warning: {
-        message: "Server is taking too long to respond. Please refresh the page."
+        message:
+          "Server is taking too long to respond. Please refresh the page."
       }
     };
     return apiResponse;

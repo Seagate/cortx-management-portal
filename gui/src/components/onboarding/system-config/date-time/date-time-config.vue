@@ -57,6 +57,14 @@
       </div>
       <span class="d-none">{{ isValidForm }}</span>
     </div>
+    <button
+      type="button"
+      v-if="$route.path !== '/onboarding'"
+      @click="applySettings()"
+      class="eos-btn-primary eos-float-l my-10"
+    >
+      Apply
+    </button>
   </v-container>
 </template>
 <script lang="ts">
@@ -145,6 +153,16 @@ export default class EosDateTimeConfig extends Vue {
       }
     };
     return this.$store.dispatch("systemConfig/updateNTPSetting", queryParams);
+  }
+  private applySettings() {
+    const queryParams: DateTimeSettings = {
+      is_ntp: true,
+      ntp: {
+        ntp_server_address: this.$data.setDateTime.NtpServerAddress,
+        ntp_timezone_offset: this.$data.NtpTimezone
+      }
+    };
+    this.$emit("apply-settings", queryParams);
   }
 }
 </script>

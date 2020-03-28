@@ -4,10 +4,7 @@
       <div class="eos-text-lg mt-0 font-weight-bold" id="lblDTSetDateTime">
         Network time protocol (NTP) settings
       </div>
-      <eosDateTimeConfig />
-      <button type="button" class="eos-btn-primary eos-float-l ml-3">
-        Apply
-      </button>
+      <eosDateTimeConfig @apply-settings="applySettings" />
     </div>
   </v-container>
 </template>
@@ -15,6 +12,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import EosDateTimeConfig from "../onboarding/system-config/date-time/date-time-config.vue";
+import { Api } from "../../services/api";
+import apiRegister from "../../services/api-register";
 
 @Component({
   name: "eos-date-time",
@@ -22,7 +21,36 @@ import EosDateTimeConfig from "../onboarding/system-config/date-time/date-time-c
     eosDateTimeConfig: EosDateTimeConfig
   }
 })
-export default class EosNtpSetting extends Vue {}
+export default class EosNtpSetting extends Vue {
+  private data() {
+    return {
+      sysconfigData: {}
+    };
+  }
+  private async mounted() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Fetching system configuration..."
+    );
+    this.$data.sysconfigData = await this.$store.dispatch(
+      "systemConfig/getSystemConfigAction"
+    );
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
+  private async applySettings(data: object) {
+    this.$store.dispatch("systemConfig/showLoader", "Please wait");
+    const res = await Api.patch(
+      apiRegister.sysconfig,
+      { date_time_settings: { nodes: data } },
+      this.$data.sysconfigData.config_id,
+      {
+        params: {
+          config_type: "date_time_settings"
+        }
+      }
+    );
+  }
+}
 </script>
 
 <style lang="scss" scoped></style>

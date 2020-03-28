@@ -1,27 +1,34 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="eos-text-lg mt-0 font-weight-bold" id="lblDns">
-        DNS resolver settings
+      <div class="eos-text-lg mt-0 font-weight-bold" id="lblEmail">
+        Notifications: Email
       </div>
+      <div class="mt-6" id="lblEmailMsg">
+        Selecting email will allow you to configure both secure and non-secure
+        email servers for event notification. You can control the severity of
+        events that you wish to receive, and you will be able to test out your
+        notification settings.
+      </div>
+      <v-divider class="mt-2" />
+      <eosNotifications @apply-settings="applySettings" />
     </div>
-    <v-divider class="mt-2" />
-    <eosDnsSettingConfig @apply-settings="applySettings" />
   </v-container>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosDnsSettingConfig from "../onboarding/system-config/dns/dns-setting-config.vue";
+import EosNotifications from "../onboarding/system-config/notifications/notifications-email-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-dns-data-setting",
+  name: "eos-network-settings-ipv4",
   components: {
-    eosDnsSettingConfig: EosDnsSettingConfig
+    eosNotifications: EosNotifications
   }
 })
-export default class EosDnsDataSetting extends Vue {
+export default class EosNetworkSettingsIpv4 extends Vue {
   private data() {
     return {
       sysconfigData: {}
@@ -41,15 +48,16 @@ export default class EosDnsDataSetting extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Please wait");
     const res = await Api.patch(
       apiRegister.sysconfig,
-      { dns_network_settings: { nodes: data } },
+      { notifications: { nodes: data } },
       this.$data.sysconfigData.config_id,
       {
         params: {
-          config_type: "dns_network_settings"
+          config_type: "notifications"
         }
       }
     );
   }
 }
 </script>
+
 <style lang="scss" scoped></style>

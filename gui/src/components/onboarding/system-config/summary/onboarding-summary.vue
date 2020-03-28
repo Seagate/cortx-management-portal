@@ -49,13 +49,13 @@
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Netmask</label>
+                        <label>Gateway</label>
                         <span class="ml-12">{{ node.gateway }}</span>
                       </div>
                     </div>
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Gateway</label>
+                        <label>Netmask</label>
                         <span class="ml-12">{{ node.netmask }}</span>
                       </div>
                     </div>

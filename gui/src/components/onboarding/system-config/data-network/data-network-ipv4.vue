@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosDataNetworkIpv4Config from "./data-network-ipv4.config.vue";
+import EosDataNetworkIpv4Config from "./data-network-ipv4-config.vue";
 
 @Component({
   name: "eos-data-network-ipv4",

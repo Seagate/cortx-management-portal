@@ -24,7 +24,7 @@
               >
                 Upload Certificate
               </button>
-              <span class="ml-7" v-if="!route">
+              <span class="ml-7" v-if="$route.path !== '/onboarding'">
                 <EOSInstallSSL />
               </span>
             </v-row>
@@ -54,7 +54,7 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 @Component({
-  name: "uploade-ssl-config",
+  name: "upload-ssl-config",
   components: {
     EOSInstallSSL
   }
@@ -64,12 +64,14 @@ export default class EOSUploadSSLConfig extends Vue {
   private validations = {
     file: { required }
   };
+  private data() {
+    return {
+      filestatus: false,
+      file: File,
+      isRoute: false
+    };
+  }
   private mounted() {
-    if (this.$route.path === "/onboarding") {
-      this.$data.route = true;
-    } else {
-      this.$data.route = false;
-    }
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -87,13 +89,7 @@ export default class EOSUploadSSLConfig extends Vue {
     EVENT_BUS.$emit("validForm", validate);
     return validate;
   }
-  private data() {
-    return {
-      filestatus: false,
-      file: File,
-      route: false
-    };
-  }
+
   private handleFileUpload(fileList: FileList) {
     this.$data.file = fileList[0];
     this.$data.filestatus = true;

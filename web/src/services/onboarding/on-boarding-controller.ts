@@ -64,3 +64,12 @@ export const updateSystemConfig = async (req: Request, res: Response) => {
     req.params.config_id
   );
 };
+
+export const patchSystemConfig = async (req: Request, res: Response) => {
+  return await Api.patch(
+    req.url,
+    req,
+    res,
+    ""
+  );
+};

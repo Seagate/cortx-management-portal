@@ -59,6 +59,14 @@
       </div>
     </div>
     <span class="d-none">{{ isValidForm }}</span>
+    <button
+      type="button"
+      v-if="$route.path !== '/onboarding'"
+      @click="applySettings()"
+      class="eos-btn-primary eos-float-l my-10"
+    >
+      Apply
+    </button>
   </v-container>
 </template>
 <script lang="ts">
@@ -147,6 +155,13 @@ export default class EosNetworkSettingsIpv4Config extends Vue {
       nodes: this.$data.ipv4Nodes
     };
     return this.$store.dispatch("systemConfig/updateMngmtIpv4", queryParams);
+  }
+  private applySettings() {
+    const queryParams: Ipv4 = {
+      is_dhcp: this.$data.source === "DHCP",
+      nodes: this.$data.ipv4Nodes
+    };
+    this.$emit("apply-settings", queryParams);
   }
 }
 </script>
