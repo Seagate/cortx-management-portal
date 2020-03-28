@@ -283,45 +283,6 @@ export abstract class Api {
             });
         });
     }
-
-    public static async uploadHotfixFiles(url: string, req: Request, resp: Response, id?: string | number) {
-        return new Promise((resolve, reject) => {
-            const requestData = JSON.stringify(req.body);
-            let posturl = base_url + url + ((id) ? "/" + id : "");
-            // Remove following code onde all the Python APIs are ready
-            // -- Start --
-            if (url.startsWith("/mock")) {
-                posturl = mock_base_url + url + ((id) ? "/" + id : "");
-            }
-            console.log("POST: " + posturl);
-            // -- end --
-
-            // -- Multiparty
-            let form = new multiparty.Form({ uploadDir: file_upload_dir });
-            form.parse(req, (err, fields, files) => {});
-
-            form.on('package', function (name, file) {
-            console.log("Api -> uploadFiles -> name", name)
-                const form = new FormData();
-                form.append(name, fs.createReadStream(file.path), {filename: file.originalFilename});
-
-                const headers = form.getHeaders();
-                headers['authorization'] = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-
-                const options = {
-                    method: 'POST',
-                    headers: headers,
-                };
-
-                const httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
-                    let error = new HTTPError.HTTP500Error(err.message);
-                    reject(error);
-                });
-                form.pipe(httpRequest);
-            });
-        });
-    }
-
     
     public static async delete(url: string, req: Request, resp: Response, id?: string | number) {
         return new Promise((resolve, reject) => {
