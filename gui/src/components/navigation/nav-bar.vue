@@ -51,24 +51,17 @@ export default class EosNavBar extends Vue {
       requiredAccess: "alerts"
     },
     {
-      title: "Alerts",
-      path: "/alerts",
-      iconDefault: require("@/assets/navigation/alerts-grey.svg"),
-      iconActive: require("@/assets/navigation/alerts-white.svg"),
-      requiredAccess: "alerts"
+      title: "Health",
+      path: "/health",
+      iconDefault: require("@/assets/navigation/health-grey.svg"),
+      iconActive: require("@/assets/navigation/health-white.svg"),
+      requiredAccess: "s3accounts"
     },
     {
       title: "Provisioning",
       path: "/provisioning",
       iconDefault: require("@/assets/navigation/provisioning-grey.svg"),
       iconActive: require("@/assets/navigation/provisioning-white.svg"),
-      requiredAccess: "s3accounts"
-    },
-    {
-      title: "Health",
-      path: "/health",
-      iconDefault: require("@/assets/navigation/health-grey.svg"),
-      iconActive: require("@/assets/navigation/health-white.svg"),
       requiredAccess: "s3accounts"
     },
     {

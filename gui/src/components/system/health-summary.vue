@@ -14,30 +14,26 @@
  *****************************************************************************/
 <template>
   <div class="eos-health-summary-container">
-    <label class="eos-text-lg eos-text-bold eos-float-l">Health summary</label>
-    <div class="eos-float-r">
-      <div class="eos-summary-chip eos-chip-ok eos-float-l ml-2">
-        <div class="summary-label">
-          <label class="eos-text-md">Healthy</label>
-        </div>
-        <div class="summary-count">
-          <label class="eos-text-sm">{{ healthSummary.good }}</label>
-        </div>
-      </div>
-      <div class="eos-summary-chip eos-chip-warning eos-float-l ml-2">
-        <div class="summary-label">
-          <label class="eos-text-md">Degraded</label>
-        </div>
-        <div class="summary-count">
-          <label class="eos-text-sm">{{ healthSummary.degraded }}</label>
-        </div>
-      </div>
+    <label class="eos-text-lg eos-text-bold eos-float-l">Health</label>
+    <div
+      class="eos-float-l"
+      v-if="healthSummary.total - healthSummary.good > 0"
+    >
       <div class="eos-summary-chip eos-chip-alert eos-float-l ml-2">
-        <div class="summary-label">
-          <label class="eos-text-md">Faulty</label>
-        </div>
         <div class="summary-count">
-          <label class="eos-text-sm">{{ healthSummary.fault }}</label>
+          <label
+            class="eos-text-sm"
+          >{{ healthSummary.total - healthSummary.good}}</label>
+        </div>
+      </div>
+    </div>
+    <div
+      class="eos-float-l"
+      v-if="healthSummary.total - healthSummary.good === 0"
+    >
+      <div class="eos-summary-chip eos-chip-ok eos-float-l ml-2">
+        <div class="summary-count">
+          <label class="eos-text-sm">ok</label>
         </div>
       </div>
     </div>
@@ -56,7 +52,10 @@ export default class EosHealthSummary extends Vue {
   public healthSummary: HealthSummary = {
     good: 0,
     fault: 0,
-    degraded: 0
+    degraded: 0,
+    total: 0,
+    unrecoverable: 0,
+    critical: 0
   };
 
   public async mounted() {
@@ -76,9 +75,17 @@ export default class EosHealthSummary extends Vue {
       this.healthSummary.fault = healthSummaryResp.fault
         ? healthSummaryResp.fault
         : 0;
+      this.healthSummary.total = healthSummaryResp.total
+        ? healthSummaryResp.total
+        : 0;
+      this.healthSummary.critical = healthSummaryResp.critical
+        ? healthSummaryResp.critical
+        : 0;
+      this.healthSummary.unrecoverable = healthSummaryResp.unrecoverable
+        ? healthSummaryResp.unrecoverable
+        : 0;
     }
   }
-
 }
 </script>
 <style lang="scss" scoped>
@@ -103,8 +110,7 @@ export default class EosHealthSummary extends Vue {
     border-radius: 34px;
     line-height: 1;
     padding: 0 3px 3px 3px;
-    margin-left: 8px;
-    min-width: 22px;
+    min-width: 33px;
   }
 }
 </style>

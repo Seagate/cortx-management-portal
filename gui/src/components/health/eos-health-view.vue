@@ -14,40 +14,32 @@
  *****************************************************************************/
 <template>
   <div class="pa-5">
-    <div class="eos-text-lg eos-text-bold">Health View</div>
-    <v-row>
-      <v-col cols="4">
-        <div class="eos-text-lg eos-text-bold">{{componentName}}</div>
-      </v-col>
-      <v-col cols="8">
-        <div class="eos-float-r">
-          <div class="eos-summary-chip eos-chip-ok eos-float-l ml-2">
-            <div class="summary-label">
-              <label class="eos-text-md">Healthy</label>
-            </div>
-            <div class="summary-count">
-              <label class="eos-text-sm">{{healthSummary.good?healthSummary.good:0}}</label>
-            </div>
-          </div>
-          <div class="eos-summary-chip eos-chip-warning eos-float-l ml-2">
-            <div class="summary-label">
-              <label class="eos-text-md">Degraded</label>
-            </div>
-            <div class="summary-count">
-              <label class="eos-text-sm">{{healthSummary.degraded?healthSummary.degraded:0}}</label>
-            </div>
-          </div>
-          <div class="eos-summary-chip eos-chip-alert eos-float-l ml-2">
-            <div class="summary-label">
-              <label class="eos-text-md">Faulty</label>
-            </div>
-            <div class="summary-count">
-              <label class="eos-text-sm">{{healthSummary.fault?healthSummary.fault:0}}</label>
-            </div>
+    <div class="eos-text-lg eos-text-bold pr-2">Health View</div>
+    <div>
+      <div class="eos-health-summary-container">
+        <div class="eos-text-lg eos-float-l eos-text-bold">{{componentName}}</div>
+
+        <div
+          class="eos-summary-chip eos-float-l eos-chip-ok ml-2"
+          v-if="( healthSummary.total?healthSummary.total:0 ) - ( healthSummary.good?healthSummary.good:0 )===0"
+        >
+          <div class="summary-count">
+            <label class="eos-text-sm">ok</label>
           </div>
         </div>
-      </v-col>
-    </v-row>
+        <div
+          class="eos-summary-chip eos-float-l eos-chip-alert ml-2"
+          v-if="( healthSummary.total?healthSummary.total:0 ) - ( healthSummary.good?healthSummary.good:0 )>0"
+        >
+          <div class="summary-count">
+            <label
+              class="eos-text-sm"
+            >{{( healthSummary.total?healthSummary.total:0 ) - ( healthSummary.good?healthSummary.good:0 )}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <v-data-table
       calculate-widths
       :items="alertObject.alerts"
@@ -192,7 +184,10 @@ export default class EosHealthView extends Vue {
   public healthSummary: HealthSummary = {
     good: 0,
     fault: 0,
-    degraded: 0
+    degraded: 0,
+    total: 0,
+    unrecoverable: 0,
+    critical: 0
   };
   public data() {
     return {
@@ -232,6 +227,9 @@ export default class EosHealthView extends Vue {
 .eos-health-summary-container {
   height: 1.875em;
 }
+.eos-health-summary-container {
+  height: 1.875em;
+}
 .eos-summary-chip {
   display: flex;
   min-height: 16px;
@@ -250,8 +248,8 @@ export default class EosHealthView extends Vue {
     border-radius: 34px;
     line-height: 1;
     padding: 0 3px 3px 3px;
-    margin-left: 8px;
-    min-width: 22px;
+    //margin-left: 8px;
+    min-width: 33px;
   }
 }
 </style>

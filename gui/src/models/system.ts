@@ -17,4 +17,7 @@ export interface HealthSummary {
     good: number;
     fault: number;
     degraded: number;
+    total: number;
+    unrecoverable: number;
+    critical: number;
 }
