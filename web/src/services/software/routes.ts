@@ -32,7 +32,7 @@ export default [
   },
   {
     path: "/api/v1/upgrade/hotfix/start",
-    method: "get",
+    method: "post",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {

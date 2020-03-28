@@ -1,162 +1,198 @@
 <template>
-  <v-container class="mt-0 ml-0">
-    <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblUpdateHotfix">
-        Update hotfix
-      </div>
-      <div class="mt-6" id="lblUpdateHotfixMsg">
-        <span class="eos-text-bold"
-          >It is important that you are using the hotfix for your system.</span
-        >
-        Use the link below to see if there's a newer version.
-        <br />If a newer version is available, download it to your device and
-        then install the file using button below.
-      </div>
-      <div class="mt-6" id="lblVersion">
-        <span class="eos-text-bold">Your hotfix version:</span> Seagate storage
-        complete 10.2 (Jan 2019 release).
-      </div>
-      <v-divider class="mt-2 mb-5" />
+  <div>
+    <div class="eos-text-lg eos-text-bold" id="lblUpdateHotfix">
+      Update hotfix
+    </div>
+    <div
+      class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md"
+      v-if="lastUpgradeStatus"
+    >
+      <table>
+        <tr>
+          <td style="width: 180px;">
+            <label class="eos-text-bold">Last Upgrade status:</label>
+          </td>
+          <td style="padding-top: 3px;">
+            <label>{{ lastUpgradeStatus.status }}</label>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 180px;">
+            <label class="eos-text-bold">Last Upgraded version:</label>
+          </td>
+          <td style="padding-top: 3px;">1.1.0</td>
+        </tr>
+        <tr v-if="lastUpgradeStatus.description">
+          <td style="width: 180px;">
+            <label class="eos-text-bold">Last Upgrade description:</label>
+          </td>
+          <td style="padding-top: 3px;">
+            <label>{{ lastUpgradeStatus.description }}</label>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="mt-6 eos-text-md" id="lblUpdateHotfixMsg">
+      <span class="eos-text-bold"
+        >It is important that you are using the hotfix for your system.</span
+      >
+      Use the link below to see if there's a newer version.
+      <br />If a newer version is available, download it to your device and then
+      install the file using button below.
+    </div>
+    <div class="mt-6 eos-text-md" id="lblVersion">
+      <span class="eos-text-bold">Your hotfix version:</span> Seagate storage
+      complete 10.2 (Jan 2019 release).
+    </div>
+    <v-divider class="mt-2 mb-5" />
+    <div v-if="!showUploadForm">
+      <button
+        id="btnInstallHotfix"
+        type="button"
+        class="eos-btn-primary"
+        @click="showUploadForm = true"
+      >
+        Install new hotfix file
+      </button>
+      <button
+        id="btnStartUpgrade"
+        type="button"
+        class="ml-5 eos-btn-primary"
+        @click="startUpgrade()"
+        :disabled="!isPackageAvailable"
+      >
+        Start upgrade
+      </button>
+    </div>
+    <div v-else>
       <input
         type="file"
         id="file"
-        ref="file"
+        ref="hotfixPackageFileInput"
         accept=".iso"
-        v-on:change="handleFileUpload($event.target.files)"
+        @change="handleFileUpload($event.target.files)"
       />
-      <v-divider class="mt-5 mb-2" />
-      <div class="mt-8">
-        <!-- :disabled="!file" -->
-        <button
-          id="btnInstallHotfix"
-          type="button"
-          class="eos-btn-primary"
-          @click="uploadHotfix()"
-        >
-          Install new hotfix file
-        </button>
+      <div
+        class="eos-form-group-label eos-form-group-error-msg mt-3"
+        v-if="
+          hotfixPackageFormValidation.isDirty &&
+            !hotfixPackageFormValidation.isValid
+        "
+      >
+        <label>Package should be a '.iso' file.</label>
       </div>
+      <v-divider class="mt-5 mb-2" />
+      <button
+        id="btnInstallHotfix"
+        type="button"
+        class="mt-3 eos-btn-primary"
+        @click="uploadHotfixPackage()"
+        :disabled="!hotfixPackage"
+      >
+        Install
+      </button>
+      <button
+        id="btnCancelInstallHotfix"
+        type="button"
+        class="mt-3 ml-5 eos-btn-secondary"
+        @click="closeUploadForm()"
+      >
+        Cancel
+      </button>
     </div>
-    <eos-confirmation-dialog
-      :show="showConfirmDialog"
-      title="Confirmation"
-      :message="confirmationMessage"
-      :severity="confirmDialogSeverity"
-      @closeDialog="closeConfirmDialog"
-      :confirmButtonText="
-        confirmButtonText || confirmButtonText === ''
-          ? confirmButtonText
-          : undefined
-      "
-      :confirmButtonDisabled="confirmButtonDisabled"
-      :cancelButtonText="cancelButtonText ? cancelButtonText : undefined"
-    ></eos-confirmation-dialog>
-  </v-container>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+
 @Component({
   name: "eos-hotfix"
 })
 export default class EosHotfix extends Vue {
-  public data() {
-    return {
-      file: File,
-      confirmationMessage: "",
-      showConfirmDialog: false,
-      cancelButtonText: undefined,
-      confirmButtonText: undefined,
-      confirmDialogSeverity: "info",
-      formData: undefined,
-      hotfixStatus: "",
-      confirmButtonDisabled: false
-    };
+  public lastUpgradeStatus: any = null;
+  public showUploadForm: boolean = false;
+  public isPackageAvailable: boolean = false;
+  public hotfixPackage: File | null = null;
+  public hotfixPackageFormValidation: any = {
+    isDirty: false,
+    isValid: false
+  };
+
+  public async mounted() {
+    await this.getLastUpgradeStatus();
   }
 
-  private handleFileUpload(fileList: FileList) {
-    this.$data.file = fileList[0];
+  public async getLastUpgradeStatus() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Fetching last upgrade status..."
+    );
+    const res: any = await Api.getAll(apiRegister.hotfix_status);
+    this.lastUpgradeStatus = res && res.data ? res.data : null;
+    if (this.lastUpgradeStatus.status === "uploaded") {
+      this.$data.isPackageAvailable = true;
+    }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
-  private async uploadHotfix() {
+
+  public handleFileUpload(fileList: FileList) {
+    this.hotfixPackageFormValidation.isDirty = true;
+    this.hotfixPackageFormValidation.isValid = false;
+    this.hotfixPackage = null;
+    if (this.validateFilename(fileList[0].name)) {
+      this.hotfixPackage = fileList[0];
+      this.hotfixPackageFormValidation.isValid = true;
+    }
+  }
+
+  public async uploadHotfixPackage() {
+    if (this.hotfixPackage !== null) {
+      this.$store.dispatch(
+        "systemConfig/showInfiniteLoader",
+        "Uploading the package..."
+      );
+      const formData = new FormData();
+      formData.append("package", this.hotfixPackage);
+      const res = await Api.uploadFile(apiRegister.hotfix_upload, formData);
+      this.closeUploadForm();
+      this.isPackageAvailable = true;
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
+  }
+  public async startUpgrade() {
     this.$store.dispatch(
       "systemConfig/showInfiniteLoader",
-      "Getting upgrade status..."
+      "Hotfix upgrade in progress..."
     );
-    const hotfixStatus = await Api.getAll(apiRegister.hotfix_status);
+    const res = await Api.post(apiRegister.hotfix_start, {}, { timeout: -1 });
     this.$store.dispatch("systemConfig/hideLoader");
-    // const hotfixStatus = {
-    //   data: {
-    //     status: "uploaded",
-    //     version: "unknown_ver",
-    //     description: "unknown_desc",
-    //     details: "Package uploaded successfully",
-    //     uploaded_at: "2020-03-24T05:17:04.276455",
-    //     started_at: "2020-03-24T05:18:11.044907",
-    //     updated_at: "2020-03-24T05:58:29.945115"
-    //   }
-    //   // data: {}
-    // };
-
-    if (hotfixStatus && hotfixStatus.data) {
-      if (hotfixStatus.data.status) {
-        this.$data.hotfixStatus = hotfixStatus.data.status;
-        if (hotfixStatus.data.status === "success") {
-          this.$data.confirmationMessage = `Success. ${hotfixStatus.data.details}
-          Do you want to upload new package?`;
-          this.$data.showConfirmDialog = true;
-        } else if (hotfixStatus.data.status === "fail") {
-          this.$data.confirmationMessage = `Failed.
-          ${hotfixStatus.data.details}
-          Do you want to upload new package?`;
-          this.$data.showConfirmDialog = true;
-          this.$data.confirmDialogSeverity = "warning";
-        } else if (hotfixStatus.data.status === "in_progress") {
-          this.$data.confirmationMessage = `Package upload is in progress.
-          ${hotfixStatus.data.details}`;
-          this.$data.showConfirmDialog = true;
-          this.$data.confirmButtonText = "";
-          this.$data.confirmDialogSeverity = "warning";
-          this.$data.cancelButtonText = "Okay";
-        } else if (hotfixStatus.data.status === "uploaded") {
-          this.$data.confirmationMessage = `Package has been uploaded successfully.
-          ${hotfixStatus.data.details}
-          Do you want to start the upgrading process?`;
-          this.$data.showConfirmDialog = true;
-          this.$data.confirmButtonText = "Yes";
-          this.$data.cancelButtonText = "Cancel";
-        }
-      } else {
-        this.$data.confirmationMessage = `Do you want to upload new package?`;
-        this.$data.showConfirmDialog = true;
-      }
-    }
   }
-  private async closeConfirmDialog(confirmation: boolean) {
-    const formData = new FormData();
-    formData.append("package", this.$data.file);
-    if (confirmation) {
-      this.$data.showConfirmDialog = false;
-      if (this.$data.hotfixStatus === "uploaded") {
-        this.$store.dispatch(
-          "systemConfig/showInfiniteLoader",
-          "Upgrading in progress..."
-        );
-        const res = await Api.post(apiRegister.hotfix_start, {});
-      } else {
-        this.$store.dispatch(
-          "systemConfig/showInfiniteLoader",
-          "Uploading hotfix upgrade file..."
-        );
-        const res = await Api.uploadFile(apiRegister.hotfix_upload, formData);
-      }
+  public closeUploadForm() {
+    const fileInput: any = this.$refs.hotfixPackageFileInput;
+    fileInput.value = "";
+    this.hotfixPackage = null;
+    this.showUploadForm = false;
+  }
+
+  private validateFilename(fileName: string): boolean {
+    let isFileNameValid: boolean = false;
+    const fileNameParts = fileName.split(".");
+    if (
+      fileNameParts.length > 1 &&
+      fileNameParts[fileNameParts.length - 1] === "iso"
+    ) {
+      isFileNameValid = true;
     }
-    this.$data.showConfirmDialog = false;
-    this.$data.confirmDialogSeverity = "info";
-    this.$data.confirmButtonText = undefined;
-    this.$data.cancelButtonText = undefined;
+    return isFileNameValid;
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.eos-last-upgrade-info-container {
+  border: 1px solid #e3e3e3;
+  border-radius: 5px;
+}
+</style>
