@@ -55,75 +55,6 @@
           </select>
         </div>
       </div>
-      <div class="mt-4" v-if="source === 'manual'">
-        <div class="font-weight-medium black--text" id="lblDTDate">Date</div>
-        <div>
-          <input
-            class="input-text"
-            type="date"
-            name="date"
-            v-model="date"
-            id="txtDTDate"
-          />
-        </div>
-        <v-row>
-          <v-col class="col-1">
-            <div class="mt-5 font-weight-medium black--text" id="lblDTHour">
-              Hour
-            </div>
-            <div>
-              <input
-                class="input-text col-12"
-                type="number"
-                name="hours"
-                v-model="hours"
-                id="txtDTNumber"
-                style="width: 7em;"
-              />
-            </div>
-          </v-col>
-          <v-col class="col-1">
-            <div class="mt-5 font-weight-medium black--text" id="lblDTMinute">
-              Minute
-            </div>
-            <div>
-              <input
-                class="input-text col-12"
-                type="number"
-                name="minute"
-                v-model="minute"
-                id="txtDTDate"
-                style="width: 7em;"
-              />
-            </div>
-          </v-col>
-          <v-col class="col-1">
-            <div class="mt-5 font-weight-medium black--text" id="lblDTClock">
-              Clock
-            </div>
-            <div>
-              <select
-                name="clock"
-                id="cmdClock"
-                class="input-text"
-                style="width: 7em;"
-                v-model="clock"
-              >
-                <option value="24hrs">24 Hrs</option>
-                <option value="12hrs">12 Hrs</option>
-              </select>
-            </div>
-          </v-col>
-        </v-row>
-        <div class="mt-2">
-          Daylight saving time adjustment is not supported.
-        </div>
-        <v-btn elevation="0" color="csmprimary" class="mt-5" id="btnDTSetNow">
-          <span class="white--text" @click="setTimeZone()"
-            >Set current date and time</span
-          >
-        </v-btn>
-      </div>
       <span class="d-none">{{ isValidForm }}</span>
     </div>
   </v-container>
@@ -133,8 +64,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import {
   SystemConfigObject,
   DateTimeSettings,
-  Ntp,
-  DateTime
+  Ntp
 } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
 import * as moment from "moment-timezone";
@@ -160,10 +90,6 @@ export default class EosDateTimeConfig extends Vue {
         NtpServerAddress: ""
       },
       NtpTimezone: "",
-      minute: "",
-      hours: "",
-      date: "",
-      clock: "",
       isValid: true
     };
   }
@@ -216,27 +142,9 @@ export default class EosDateTimeConfig extends Vue {
       ntp: {
         ntp_server_address: this.$data.setDateTime.NtpServerAddress,
         ntp_timezone_offset: this.$data.NtpTimezone
-      },
-      date_time: {
-        date: this.$data.date,
-        hour: this.$data.hours,
-        minute: this.$data.minute,
-        clock: this.$data.clock
       }
     };
     return this.$store.dispatch("systemConfig/updateNTPSetting", queryParams);
-  }
-  private setTimeZone() {
-    const toDateInputValue = () => {
-      const local = new Date();
-      local.setMinutes(local.getMinutes() - local.getTimezoneOffset());
-      return local.toJSON().slice(0, 10);
-    };
-
-    const localDate = new Date();
-    this.$data.hours = localDate.getHours();
-    this.$data.minute = localDate.getMinutes();
-    this.$data.date = toDateInputValue();
   }
 }
 </script>

@@ -74,6 +74,10 @@ textarea:focus {
   width: 325px;
   min-height: 88px;
 }
+.eos-form-group-custom {
+  width: auto;
+  min-height: auto;
+}
 .eos-form__input_text {
   background: #ffffff;
   border: 1px solid #9e9e9e;
@@ -110,6 +114,9 @@ textarea:focus {
   display: inline-block;
   width: 100%;
   resize: none;
+}
+.eos-form__input_textarea-custom {
+  height: auto;
 }
 .eos-form__input_textarea:focus {
   border-color: #6ebe49;
