@@ -1,14 +1,12 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblDTSetDateTime">
+      <div class="eos-text-lg mt-0 font-weight-bold" id="lblDTSetDateTime">
         Network time protocol (NTP) settings
       </div>
-      <eosDateTimeConfig/>
-      <button
-        type="button"
-        class="eos-btn-primary eos-float-l ml-3"
-        >Apply
+      <eosDateTimeConfig />
+      <button type="button" class="eos-btn-primary eos-float-l ml-3">
+        Apply
       </button>
     </div>
   </v-container>
@@ -22,13 +20,9 @@ import EosDateTimeConfig from "../onboarding/system-config/date-time/date-time-c
   name: "eos-date-time",
   components: {
     eosDateTimeConfig: EosDateTimeConfig
-
   }
 })
-
-export default class EosNtpSetting extends Vue {
-}
+export default class EosNtpSetting extends Vue {}
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

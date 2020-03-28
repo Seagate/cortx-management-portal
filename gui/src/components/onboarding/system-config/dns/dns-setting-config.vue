@@ -17,9 +17,9 @@
             node.$model.name
           }}</span>
           <v-divider class="mt-2" />
-          <div class="eos-form-group eos-form-group-custom mt-0 ml-0">
+          <div class="mt-0 ml-0">
             <div
-              class="mt-3"
+              class="eos-form-group eos-form-group-custom mt-3"
               :class="{
                 'eos-form-group--error': node.dns_servers.$error
               }"
@@ -42,7 +42,7 @@
               </div>
             </div>
             <div
-              class="mt-3"
+              class="eos-form-group eos-form-group-custom mt-3"
               :class="{
                 'eos-form-group--error': node.search_domain.$error
               }"
@@ -129,14 +129,12 @@ export default class EosDnsSettingConfig extends Vue {
         {
           id: 0,
           name: "Node 0",
-          hostname: "",
           dns_servers: "",
           search_domain: ""
         },
         {
           id: 1,
           name: "Node 1",
-          hostname: "",
           dns_servers: "",
           search_domain: ""
         }
@@ -197,11 +195,5 @@ export default class EosDnsSettingConfig extends Vue {
 }
 .netmasklabel {
   height: 95px;
-}
-.eos-form-group-custom {
-  width: auto;
-}
-.eos-form__input_textarea-custom {
-  height: auto;
 }
 </style>

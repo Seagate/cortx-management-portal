@@ -27,7 +27,7 @@
           <div class="col-3 body-2 column pa-0 node-container" :key="node.id">
             <div class="mt-5">
               <div
-                class
+                class="eos-form-group eos-form-group-custom"
                 :class="{
                   'eos-form-group--error': node.ip_address.$error
                 }"
@@ -102,10 +102,7 @@ export default class EosNetworkSettingsIpv4Config extends Vue {
         {
           id: 2,
           name: "VIP",
-          ip_address: "",
-          hostname: "",
-          netmask: "",
-          gateway: ""
+          ip_address: ""
         }
       ]
     };

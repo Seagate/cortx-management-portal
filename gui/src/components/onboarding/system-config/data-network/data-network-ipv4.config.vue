@@ -37,7 +37,7 @@
           >
             <div class="mt-5">
               <div
-                class
+                class="eos-form-group eos-form-group-custom"
                 :class="{
                   'eos-form-group--error': node.ip_address.$error
                 }"
@@ -93,7 +93,7 @@
             }}</span>
             <v-divider class="mt-2" />
             <div
-              class="mt-3"
+              class="eos-form-group eos-form-group-custom mt-3"
               :class="{
                 'eos-form-group--error': node.ip_address.$error
               }"
@@ -122,7 +122,7 @@
             </div>
 
             <div
-              class="mt-3"
+              class="eos-form-group eos-form-group-custom mt-3"
               :class="{
                 'eos-form-group--error': node.gateway.$error
               }"
@@ -148,7 +148,7 @@
             </div>
 
             <div
-              class="mt-3"
+              class="eos-form-group eos-form-group-custom mt-3"
               :class="{
                 'eos-form-group--error': node.netmask.$error
               }"
@@ -217,26 +217,30 @@ export default class EosDataNetworkIpv4Config extends Vue {
     }
   };
   private setipAddress(e: any) {
-    if (this.$v.ipv4Nodes.$model[1].ip_address === "") {
+    if (!this.$v.ipv4Nodes.$model[1].ip_address) {
       this.$v.ipv4Nodes.$model[1].ip_address = e.target.value;
     }
-    if (this.$v.ipv4Nodes.$model[2].ip_address === "") {
+    if (!this.$v.ipv4Nodes.$model[2].ip_address) {
       this.$v.ipv4Nodes.$model[2].ip_address = e.target.value;
     }
   }
   private setNetmask(e: any) {
-    if (this.$v.ipv4Nodes.$model[1].netmask === "") {
-      this.$v.ipv4Nodes.$model[1].netmask = e.target.value;
+    let target = e.target.value;
+    if (!e.target.value) {
+      target = null;
     }
-    if (this.$v.ipv4Nodes.$model[2].netmask === "") {
-      this.$v.ipv4Nodes.$model[2].netmask = e.target.value;
+    if (!this.$v.ipv4Nodes.$model[1].netmask) {
+      this.$v.ipv4Nodes.$model[1].netmask = target;
+    }
+    if (!this.$v.ipv4Nodes.$model[2].netmask) {
+      this.$v.ipv4Nodes.$model[2].netmask = target;
     }
   }
   private setGateway(e: any) {
-    if (this.$v.ipv4Nodes.$model[1].gateway === "") {
+    if (!this.$v.ipv4Nodes.$model[1].gateway) {
       this.$v.ipv4Nodes.$model[1].gateway = e.target.value;
     }
-    if (this.$v.ipv4Nodes.$model[2].gateway === "") {
+    if (!this.$v.ipv4Nodes.$model[2].gateway) {
       this.$v.ipv4Nodes.$model[2].gateway = e.target.value;
     }
   }
@@ -247,22 +251,22 @@ export default class EosDataNetworkIpv4Config extends Vue {
           id: 2,
           name: "VIP",
           ip_address: "",
-          netmask: "",
-          gateway: "1.1.1.1"
+          netmask: null,
+          gateway: "0.0.0.0"
         },
         {
           id: 0,
           name: "Node 0",
           ip_address: "",
-          netmask: "",
-          gateway: ""
+          netmask: null,
+          gateway: null
         },
         {
           id: 1,
           name: "Node 1",
           ip_address: "",
-          netmask: "",
-          gateway: ""
+          netmask: null,
+          gateway: null
         }
       ],
       source: "manual",
@@ -291,7 +295,7 @@ export default class EosDataNetworkIpv4Config extends Vue {
     });
   }
   private destroyed() {
-    // WizardHook: shut off on exit event listner
+    // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
   }
   get isValidForm() {

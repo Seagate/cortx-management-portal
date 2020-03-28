@@ -86,17 +86,9 @@ export interface Ntp {
   ntp_timezone_offset: string;
 }
 
-export interface DateTime {
-  date: string;
-  hour: string;
-  minute: string;
-  clock: string;
-}
-
 export interface DateTimeSettings {
   is_ntp: boolean;
   ntp: Ntp;
-  date_time: DateTime;
 }
 
 export interface Ldap {
@@ -139,6 +131,7 @@ export interface SystemConfigObject {
   ldap: Ldap;
   notifications: Notifications;
   wizard_metadata: WizardData;
+  is_summary: boolean;
 }
 
 export interface Header {

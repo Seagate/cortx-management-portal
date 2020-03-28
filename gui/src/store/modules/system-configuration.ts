@@ -273,6 +273,12 @@ export default class SystemConfiguration extends VuexModule {
     this.systemConfigDetails.date_time_settings = { ...payload };
   }
 
+  // Summary Mutation
+  @Mutation
+  public updateSummaryMutation(payload: any) {
+    this.systemConfigDetails.is_summary = payload;
+  }
+
   @Mutation
   public setNetworkManagementSettings(networkType: any) {
     if (networkType.type === "ipV4") {
@@ -384,7 +390,7 @@ export default class SystemConfiguration extends VuexModule {
       console.error(e);
     }
   }
-  // datan/w4
+  // data n/w4
   @Action
   public async updateDataNetworkSettingIpv4(payload: any) {
     try {
@@ -437,6 +443,22 @@ export default class SystemConfiguration extends VuexModule {
   public async updateNTPSetting(payload: any) {
     try {
       this.context.commit("updateNTPSettingMutation", payload);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
+      return res;
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error(e);
+    }
+  }
+  // Summary setting
+  @Action
+  public async updateSummary(payload: any) {
+    try {
+      this.context.commit("updateSummaryMutation", payload);
       const res = await Api.put(
         apiRegister.sysconfig,
         this.systemConfigDetails,
