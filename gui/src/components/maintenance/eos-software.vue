@@ -51,6 +51,7 @@
         type="button"
         class="eos-btn-primary"
         @click="showUploadForm = true"
+        :disabled="!canInstallHotfix"
       >
         Install new hotfix file
       </button>
@@ -114,6 +115,7 @@ export default class EosHotfix extends Vue {
   public lastUpgradeStatus: any = null;
   public showUploadForm: boolean = false;
   public isPackageAvailable: boolean = false;
+  public canInstallHotfix: boolean = true;
   public hotfixPackage: File | null = null;
   public hotfixPackageFormValidation: any = {
     isDirty: false,
@@ -133,6 +135,9 @@ export default class EosHotfix extends Vue {
     this.lastUpgradeStatus = res && res.data ? res.data : null;
     if (this.lastUpgradeStatus.status === "uploaded") {
       this.$data.isPackageAvailable = true;
+    }
+    if (this.lastUpgradeStatus.status === "in_progress") {
+      this.$data.canInstallHotfix = false;
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
