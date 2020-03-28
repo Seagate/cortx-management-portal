@@ -1,16 +1,16 @@
 <template>
   <v-container class="mt-0 ml-0">
     <button
-                id="btnInstallFirmware"
-                type="button"
-                class="eos-btn-primary "
-                @click="installCertificate()"
-              >Apply Certificate</button>
+      id="btnInstallFirmware"
+      type="button"
+      class="eos-btn-primary"
+      @click="installCertificate()"
+    >Apply Certificate</button>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Api } from "./../../../../services/api"
+import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
 import {
   SystemConfigObject,
@@ -18,10 +18,7 @@ import {
 } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
 import { Validations } from "vuelidate-property-decorators";
-import {
-  required,
-  helpers
-} from "vuelidate/lib/validators";
+import { required, helpers } from "vuelidate/lib/validators";
 @Component({
   name: "eos-install-ssl"
 })
@@ -44,22 +41,25 @@ export default class EOSInstallSSL extends Vue {
     EVENT_BUS.$emit("validForm", validate);
     return validate;
   }
-  public data() {
-    return {
-    };
+  private data() {
+    return {};
   }
   private async installCertificate() {
-    const install={
-      install:true
-    }
+    const install = {
+      install: true
+    };
     this.$store.dispatch(
       "systemConfig/showLoader",
       "certificate installation in progress..."
     );
-   const res = Api.patch(apiRegister.ssl_upload, install);
-   this.$store.dispatch("systemConfig/hideLoader");
+    const res = Api.patch(apiRegister.ssl_upload, install);
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
+</script>
+<style lang="scss" scoped>
+</style>
+};
 </script>
 <style lang="scss" scoped>
 </style>

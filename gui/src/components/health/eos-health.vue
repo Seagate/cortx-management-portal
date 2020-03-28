@@ -1,9 +1,9 @@
 /*****************************************************************************
- Filename:          system.vue
- Description:       System Model
+ Filename:          eos-health.vue
+ Description:       Health container component.
 
- Creation Date:     21/02/2020
- Author:            Sri Bhargav Metta
+ Creation Date:     27/03/2019
+ Author:            Piyush Gupte
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -12,12 +12,16 @@
  or disclosure of this code, for any reason, not expressly authorized is
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
+<template>
+  <router-view class="eos-p-2"></router-view>
+</template>
+ <script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
 
-export interface HealthSummary {
-    good: number;
-    fault: number;
-    degraded: number;
-    total: number;
-    unrecoverable: number;
-    critical: number;
-}
+@Component({
+  name: "eos-health"
+})
+export default class EosHealth extends Vue {}
+</script>
+<style lang="scss" scoped>
+</style>

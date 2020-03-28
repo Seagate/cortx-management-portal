@@ -15,24 +15,24 @@
 <template>
   <div class="eos-nav">
     <div v-for="navItem in navItems" :key="navItem.title">
-    <eos-has-access
+      <eos-has-access
         :to="
           $eosUserPermissions[navItem.requiredAccess] + $eosUserPermissions.list
         "
       >
-      <router-link
+        <router-link
           :to="navItem.path"
-        tag="div"
-        class="eos-nav-item"
-        active-class="eos-nav-item-active"
+          tag="div"
+          class="eos-nav-item"
+          active-class="eos-nav-item-active"
           :key="navItem.title"
-      >
+        >
           <img class="eos-nav-item-icon-default" :src="navItem.iconDefault" />
           <img class="eos-nav-item-icon-active" :src="navItem.iconActive" />
           <label>{{ navItem.title }}</label>
-      </router-link>
-    </eos-has-access>
-        </div>
+        </router-link>
+      </eos-has-access>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -51,11 +51,11 @@ export default class EosNavBar extends Vue {
       requiredAccess: "alerts"
     },
     {
-      title: "Alerts",
-      path: "/alerts",
-      iconDefault: require("@/assets/navigation/alerts-grey.svg"),
-      iconActive: require("@/assets/navigation/alerts-white.svg"),
-      requiredAccess: "alerts"
+      title: "Health",
+      path: "/health",
+      iconDefault: require("@/assets/navigation/health-grey.svg"),
+      iconActive: require("@/assets/navigation/health-white.svg"),
+      requiredAccess: "s3accounts"
     },
     {
       title: "Provisioning",
