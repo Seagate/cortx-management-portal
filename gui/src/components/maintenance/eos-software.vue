@@ -16,11 +16,11 @@
             <label>{{ lastUpgradeStatus.status }}</label>
           </td>
         </tr>
-        <tr>
+        <tr v-if="lastUpgradeStatus.version">
           <td style="width: 180px;">
             <label class="eos-text-bold">Last Upgraded version:</label>
           </td>
-          <td style="padding-top: 3px;">1.1.0</td>
+          <td style="padding-top: 3px;">{{ lastUpgradeStatus.version }}</td>
         </tr>
         <tr v-if="lastUpgradeStatus.description">
           <td style="width: 180px;">
@@ -40,10 +40,6 @@
       <br />If a newer version is available, download it to your device and then
       install the file using button below.
     </div>
-    <div class="mt-6 eos-text-md" id="lblVersion">
-      <span class="eos-text-bold">Your hotfix version:</span> Seagate storage
-      complete 10.2 (Jan 2019 release).
-    </div>
     <v-divider class="mt-2 mb-5" />
     <div v-if="!showUploadForm">
       <button
@@ -53,7 +49,7 @@
         @click="showUploadForm = true"
         :disabled="!canInstallHotfix"
       >
-        Install new hotfix file
+        Upload new hotfix file
       </button>
       <button
         id="btnStartUpgrade"
@@ -90,7 +86,7 @@
         @click="uploadHotfixPackage()"
         :disabled="!hotfixPackage"
       >
-        Install
+        Upload
       </button>
       <button
         id="btnCancelInstallHotfix"
