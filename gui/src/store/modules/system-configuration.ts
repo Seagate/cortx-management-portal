@@ -544,6 +544,16 @@ export default class SystemConfiguration extends VuexModule {
       this.context.dispatch("hideLoader");
     }, 20000);
   }
+
+  @Action
+  public async showInfiniteLoader(message: string) {
+    this.context.commit("loaderConfigMutation", {
+      show: true,
+      message
+    });
+    clearTimeout(this.loaderTimeout);
+  }
+
   @Action
   public async hideLoader() {
     this.context.commit("loaderConfigMutation", {

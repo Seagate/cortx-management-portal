@@ -52,7 +52,7 @@ export default class EosMaintenanceMenu extends Vue {
       title: "Software",
       actionName: "Manage",
       actionClickFunction: "goToSoftware",
-      disabled: true
+      disabled: false
     },
     {
       title: "Audit log",

@@ -1,13 +1,22 @@
 <template>
   <v-container class="mt-0 ml-0">
     <button
+      :disabled="!installStatus"
       id="btnInstallFirmware"
       type="button"
       class="eos-btn-primary"
-      @click="installCertificate()"
+      @click="openConfirmDialog()"
     >
       Apply Certificate
     </button>
+    <eos-confirmation-dialog
+      :show="showConfirmDialog"
+      title="Confirmation"
+      message="Are you sure you want to install the certificate? If you install certificate you will redirect to login"
+      severity="warning"
+      @closeDialog="closeConfirmDialog"
+      cancelButtonText="No"
+    ></eos-confirmation-dialog>
   </v-container>
 </template>
 <script lang="ts">
@@ -25,6 +34,9 @@ import { required, helpers } from "vuelidate/lib/validators";
   name: "eos-install-ssl"
 })
 export default class EOSInstallSSL extends Vue {
+  @Prop({ required: true })
+  public installStatus: any;
+  private showConfirmDialog: boolean;
   private mounted() {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
@@ -33,7 +45,7 @@ export default class EOSInstallSSL extends Vue {
     });
   }
   private destroyed() {
-    // WizardHook: shut off on exit event listner
+    // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
   }
   get isValidForm() {
@@ -44,7 +56,19 @@ export default class EOSInstallSSL extends Vue {
     return validate;
   }
   private data() {
-    return {};
+    return {
+      showConfirmDialog: false
+    };
+  }
+  private openConfirmDialog() {
+    this.showConfirmDialog = true;
+  }
+  private async closeConfirmDialog(confirmation: boolean) {
+    this.showConfirmDialog = false;
+    if (confirmation) {
+      await this.installCertificate();
+      this.$router.push("/login");
+    }
   }
   private async installCertificate() {
     const install = {

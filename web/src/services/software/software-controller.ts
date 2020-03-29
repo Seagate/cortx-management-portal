@@ -1,10 +1,10 @@
 /*****************************************************************************
- Filename:          firmware-controller.ts
+ Filename:          software-controller.ts
  Description:       Gets the data from provider and process it and send back
                     to client.
 
- Creation Date:     06/03/2020
- Author:            Sanjeevan Bhave
+ Creation Date:     26/03/2020
+ Author:            Vaibhav Bhavsar
 
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
@@ -14,23 +14,21 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 
-import { Api } from "./../api";
-import apiRegister from "./../api-register";
+import { Api } from "../api";
+import apiRegister from "../api-register";
 import { Request, Response } from "express";
-export const sslCertificateUpload = async (req: Request, res: Response) => {
-  const result = await Api.uploadFiles(apiRegister.ssl_upload, req, res);
+
+export const getLastUpgradeStatus = async (req: Request, res: Response) => {
+  const result = await Api.getAll(apiRegister.hotfix_status, req, res);
   return result;
 };
-/**
- * This method for install ssl certificate.
- * @param req 
- * @param res 
- */
-export const sslCertificateInstall = async (req: Request, res: Response) => {
-  let uploadCertificate = Api.patch(apiRegister.ssl_upload, req, res, '');
-  return uploadCertificate;
+
+export const hotfixUpload = async (req: Request, res: Response) => {
+  const result = await Api.uploadFiles(apiRegister.hotfix_upload, req, res);
+  return result;
 };
-export const certificateAvailability = async (req: Request, res: Response) => {
-  const result = await Api.getAll(apiRegister.ssl_upload, req, res);
+
+export const startUpgrade = async (req: Request, res: Response) => {
+  const result = await Api.post(apiRegister.hotfix_start, req, res);
   return result;
 };
