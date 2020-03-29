@@ -41,7 +41,7 @@ export default class EosNtpSetting extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Please wait");
     const res = await Api.patch(
       apiRegister.sysconfig,
-      { date_time_settings: { nodes: data } },
+      { date_time_settings: data },
       this.$data.sysconfigData.config_id,
       {
         params: {
@@ -49,6 +49,7 @@ export default class EosNtpSetting extends Vue {
         }
       }
     );
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>

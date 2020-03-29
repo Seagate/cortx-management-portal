@@ -53,6 +53,7 @@ export default class EosMangementSetting extends Vue {
         }
       }
     );
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>

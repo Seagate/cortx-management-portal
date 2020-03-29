@@ -55,11 +55,12 @@
           </select>
         </div>
       </div>
-      <span class="d-none">{{ isValidForm }}</span>
+      <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
     <button
       type="button"
       v-if="$route.path !== '/onboarding'"
+      :disabled="$v.$invalid"
       @click="applySettings()"
       class="eos-btn-primary eos-float-l my-10"
     >
@@ -102,7 +103,6 @@ export default class EosDateTimeConfig extends Vue {
     };
   }
   private mounted() {
-    this.managementNetworkGetter();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -131,7 +131,7 @@ export default class EosDateTimeConfig extends Vue {
     EVENT_BUS.$emit("validForm", !this.$v.$invalid);
     return validate;
   }
-  private managementNetworkGetter() {
+  get managementNetworkGetter() {
     const dateTime = this.$store.getters["systemConfig/systemconfig"];
     if (
       dateTime &&
@@ -143,6 +143,7 @@ export default class EosDateTimeConfig extends Vue {
       this.$data.NtpTimezone =
         dateTime.date_time_settings.ntp.ntp_timezone_offset;
     }
+    return true;
   }
   private setNTP() {
     const queryParams: DateTimeSettings = {

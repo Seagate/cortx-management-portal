@@ -53,6 +53,7 @@ export default class EosDataNetworkSetting extends Vue {
         }
       }
     );
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>

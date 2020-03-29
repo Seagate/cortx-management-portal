@@ -58,10 +58,11 @@
         </template>
       </div>
     </div>
-    <span class="d-none">{{ isValidForm }}</span>
+    <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     <button
       type="button"
       v-if="$route.path !== '/onboarding'"
+      :disabled="$v.$invalid"
       @click="applySettings()"
       class="eos-btn-primary eos-float-l my-10"
     >
@@ -117,7 +118,6 @@ export default class EosNetworkSettingsIpv4Config extends Vue {
   }
 
   private mounted() {
-    this.managementNetworkGetter();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -136,7 +136,7 @@ export default class EosNetworkSettingsIpv4Config extends Vue {
     EVENT_BUS.$emit("validForm", !this.$v.$invalid);
     return true;
   }
-  private managementNetworkGetter(): any {
+  get managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
     const mngmtNetworkSettings = systemconfig.management_network_settings;
     if (
@@ -148,6 +148,7 @@ export default class EosNetworkSettingsIpv4Config extends Vue {
         mngmtNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
       this.$data.ipv4Nodes = mngmtNetworkSettings.ipv4.nodes;
     }
+    return true;
   }
   private updateIpv4Config() {
     const queryParams: Ipv4 = {

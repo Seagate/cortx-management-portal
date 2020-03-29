@@ -237,10 +237,11 @@
     <p v-if="!isValid" class="red--text error-message">
       Please enter valid values.
     </p>
-    <span class="d-none">{{ isValidForm }}</span>
+    <span class="d-none">{{ isValidForm }}{{ notificationGetter }}</span>
     <button
       type="button"
       v-if="$route.path !== '/onboarding'"
+      :disabled="$v.$invalid"
       @click="applySettings()"
       class="eos-btn-primary eos-float-l my-10"
     >
@@ -314,7 +315,6 @@ export default class EosNotifications extends Vue {
   }
 
   private mounted() {
-    this.notificationGetter();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -337,7 +337,7 @@ export default class EosNotifications extends Vue {
     EVENT_BUS.$emit("validForm", !this.$v.$invalid);
     return validate;
   }
-  private notificationGetter(): any {
+  get notificationGetter(): any {
     const notificationConfiguration = this.$store.getters[
       "systemConfig/userConfigData"
     ];
@@ -357,6 +357,7 @@ export default class EosNotifications extends Vue {
       this.$data.emailaddress =
         notificationConfiguration.notifications.email.email;
     }
+    return true;
   }
 
   private setEmailNotificationSettings() {

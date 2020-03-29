@@ -219,7 +219,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <span class="d-none">{{ isValidForm }}</span>
+      <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
   </v-container>
 </template>
@@ -268,7 +268,6 @@ export default class EosOnboardingSummary extends Vue {
     return validate;
   }
   private mounted() {
-    this.managementNetworkGetter();
     const vm = this;
     EVENT_BUS.$on("emitOnNext", (res: any) => {
       vm.openConfirmDialog();
@@ -279,7 +278,7 @@ export default class EosOnboardingSummary extends Vue {
     // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
   }
-  private managementNetworkGetter(): any {
+  get managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
     if (systemconfig) {
       if (
@@ -320,6 +319,7 @@ export default class EosOnboardingSummary extends Vue {
       //   port
       // );
     }
+    return true;
   }
 }
 </script>

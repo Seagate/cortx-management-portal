@@ -72,10 +72,11 @@
         </template>
       </div>
     </div>
-    <span class="d-none">{{ isValidForm }}</span>
+    <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     <button
       type="button"
       v-if="$route.path !== '/onboarding'"
+      :disabled="$v.$invalid"
       @click="applySettings()"
       class="eos-btn-primary eos-float-l my-10"
     >
@@ -168,7 +169,6 @@ export default class EosDnsSettingConfig extends Vue {
     return this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
   }
   private mounted() {
-    this.managementNetworkGetter();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -188,7 +188,7 @@ export default class EosDnsSettingConfig extends Vue {
     EVENT_BUS.$emit("validForm", !this.$v.$invalid);
     return validate;
   }
-  private managementNetworkGetter(): any {
+  get managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
     if (
       systemconfig.dns_network_settings &&
@@ -196,6 +196,7 @@ export default class EosDnsSettingConfig extends Vue {
     ) {
       this.$data.dnsNodes = systemconfig.dns_network_settings.nodes;
     }
+    return true;
   }
   private applySettings() {
     const nodes = this.$data.dnsNodes.map((e: any) => {

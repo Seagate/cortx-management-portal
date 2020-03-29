@@ -48,7 +48,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Please wait");
     const res = await Api.patch(
       apiRegister.sysconfig,
-      { notifications: { nodes: data } },
+      { notifications: { email: data } },
       this.$data.sysconfigData.config_id,
       {
         params: {
@@ -56,6 +56,7 @@ export default class EosNetworkSettingsIpv4 extends Vue {
         }
       }
     );
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>

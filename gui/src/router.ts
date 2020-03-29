@@ -42,7 +42,7 @@ import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
 import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
 import EosResource from "./components/maintenance/eos-resource.vue";
 import EosFirmware from "./components/onboarding/system-config/firmware/firmware.vue";
-import EosNotifications from "./components/onboarding/system-config/notifications/notifications-email.vue";
+import EosNotifications from "./components/settings/notifications-email-setting.vue";
 import EosMangementSetting from "./components/settings/mgmt-network-setting.vue";
 import EosDataNetworkSetting from "./components/settings/data-network-setting.vue";
 import EosDnsDataSetting from "./components/settings/dns-data-setting.vue";

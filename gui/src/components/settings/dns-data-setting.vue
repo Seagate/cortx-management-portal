@@ -41,7 +41,7 @@ export default class EosDnsDataSetting extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Please wait");
     const res = await Api.patch(
       apiRegister.sysconfig,
-      { dns_network_settings: { nodes: data } },
+      { dns_network_settings: data },
       this.$data.sysconfigData.config_id,
       {
         params: {
@@ -49,6 +49,7 @@ export default class EosDnsDataSetting extends Vue {
         }
       }
     );
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>
