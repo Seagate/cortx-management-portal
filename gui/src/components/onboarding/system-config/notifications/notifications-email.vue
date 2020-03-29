@@ -21,12 +21,12 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import EosNotifications from "./notifications-email-config.vue";
 
 @Component({
-  name: "eos-network-settings-ipv4",
+  name: "eos-notification-email",
   components: {
     eosNotifications: EosNotifications
   }
 })
-export default class EosNetworkSettingsIpv4 extends Vue {}
+export default class EosNotificationEmail extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

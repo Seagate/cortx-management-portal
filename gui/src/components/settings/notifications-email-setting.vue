@@ -23,12 +23,12 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-network-settings-ipv4",
+  name: "eos-notification-email-settings",
   components: {
     eosNotifications: EosNotifications
   }
 })
-export default class EosNetworkSettingsIpv4 extends Vue {
+export default class EosNotificationEmailSettings extends Vue {
   private data() {
     return {
       sysconfigData: {}
