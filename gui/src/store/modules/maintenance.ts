@@ -43,7 +43,7 @@ export default class Maintenance extends VuexModule {
   @Action
   public async stopNode(queryParams: object) {
     try {
-      const res = await Api.getAll(apiRegister.node_stop, queryParams);
+      const res = await Api.post(apiRegister.node_stop, queryParams);
       if (res) {
         return res.data;
       }
@@ -55,7 +55,7 @@ export default class Maintenance extends VuexModule {
   @Action
   public async startNode(queryParams: object) {
     try {
-      const res = await Api.getAll(apiRegister.node_start, queryParams);
+      const res = await Api.post(apiRegister.node_start, queryParams);
       if (res) {
         return res.data;
       }
@@ -67,7 +67,7 @@ export default class Maintenance extends VuexModule {
   @Action
   public async shutdownNode(queryParams: object) {
     try {
-      const res = await Api.getAll(apiRegister.node_shutdown, queryParams);
+      const res = await Api.post(apiRegister.node_shutdown, queryParams);
       if (res) {
         return res.data;
       }

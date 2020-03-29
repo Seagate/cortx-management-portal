@@ -103,7 +103,7 @@ export default class EosLogin extends Vue {
     this.$store.commit("messageDialog/hide");
   }
   private handleEnterEvent() {
-    if (this.$v.loginForm && !this.$v.loginForm.$invalid) {
+    if (this.$v.loginForm && !this.$v.loginForm.$invalid && !this.$data.loginInProgress) {
       this.gotToNextPage();
     }
   }

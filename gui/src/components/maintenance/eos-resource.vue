@@ -16,128 +16,99 @@
   <div>
     <div
       id="s3-configuration-title-container"
-      class="mb-4 s3-configuration-page-title"
+      class="s3-configuration-page-title"
     >
       <label id="s3-account-form-title" class="headline font-weight-bold"
         >System maintenance</label
       >
     </div>
 
-    <v-container>
-      <div class="pl-4 body-2">
-        <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
-          <v-row class="resource-container pt-10">
-            <v-col>
+    <v-container class="ml-0 pl-0">
+      <div class="body-2">
+        <v-card class="col-8 pa-5 elevation-0" outlined tile>
+          <v-row class="row-container" align="center" no-gutters>
+            <v-col col="3" lg="3">
               <label
-                class="eos-form-group-label ml-10 mt-5"
+                class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-                >Stop resource</label
-              >
+                >Start service:
+              </label>
             </v-col>
-            <v-col>
-              <div>
-                <select
-                  :disabled="!online.length"
-                  name="resource"
-                  id="resource"
-                  class="eos-form__input_text"
-                  v-model="resource.stop"
-                >
-                  <option
-                    v-for="(node, index) in online"
-                    :key="index"
-                    :value="node"
-                    >{{ node }}</option
-                  >
-                  <option value="all">cluster</option>
-                </select>
-              </div>
+            <v-col col="3" md="auto" class="mx-3">
+              <eos-dropdown
+                @update:selectedOption="handleStartSelect"
+                :options="createOptionsForDropdown(resourceState.offline)"
+                :width="dropdownWidth"
+                :title="resource.start ? resource.start : undefined"
+              ></eos-dropdown>
             </v-col>
-            <v-col>
-              <button
-                type="button"
-                id="btnStopResource"
-                class="eos-btn-primary"
-                :disabled="!online.length"
-                @click="stopSelectedResource()"
-              >
-                Apply
-              </button>
-            </v-col>
-          </v-row>
-          <v-row class="resource-container mt-5">
-            <v-col>
-              <label
-                class="eos-form-group-label ml-10 mt-5"
-                for="Resource"
-                style=" font-size: 1em;"
-                >Start resource</label
-              >
-            </v-col>
-            <v-col>
-              <div>
-                <select
-                  :disabled="!offline.length"
-                  name="resource"
-                  id="resource"
-                  class="eos-form__input_text"
-                  v-model="resource.start"
-                >
-                  <option
-                    v-for="(node, index) in offline"
-                    :key="index"
-                    :value="node"
-                    >{{ node }}</option
-                  >
-                  <option value="all">cluster</option>
-                </select>
-              </div>
-            </v-col>
-            <v-col>
+            <v-col md="2">
               <button
                 type="button"
                 id="btnStartResource"
                 class="eos-btn-primary"
-                :disabled="!offline.length"
+                :disabled="!resourceState.offline.length || !resource.start"
                 @click="startSelectedResource()"
               >
                 Apply
               </button>
             </v-col>
           </v-row>
-          <v-row class="resource-container mt-5">
-            <v-col>
+          <v-row class="mt-5 row-container" align="center" no-gutters>
+            <v-col col="3" lg="3">
               <label
-                class="eos-form-group-label ml-10 mt-5"
+                class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-                >Shutdown resource</label
-              >
+                >Stop service:
+              </label>
             </v-col>
-            <v-col>
+            <v-col col="3" md="auto" class="mx-3">
               <div>
-                <select
-                  name="resource"
-                  id="resource"
-                  class="eos-form__input_text"
-                  v-model="resource.shutdown"
-                >
-                  <option
-                    v-for="(node, index) in nodes"
-                    :key="index"
-                    :value="node"
-                    >{{ node }}</option
-                  >
-                  <option value="all">cluster</option>
-                </select>
+                <eos-dropdown
+                  @update:selectedOption="handleStopSelect"
+                  :options="createOptionsForDropdown(resourceState.online)"
+                  :width="dropdownWidth"
+                  :title="resource.stop ? resource.stop : undefined"
+                ></eos-dropdown>
               </div>
             </v-col>
-            <v-col>
+            <v-col md="2">
+              <button
+                type="button"
+                id="btnStopResource"
+                class="eos-btn-primary"
+                :disabled="!resourceState.online.length >= 1 || !resource.stop"
+                @click="stopSelectedResource()"
+              >
+                Apply
+              </button>
+            </v-col>
+          </v-row>
+          <v-row class="mt-5 row-container" align="center" no-gutters>
+            <v-col col="3" lg="3">
+              <label
+                class="eos-form-group-label font-weight-bold"
+                for="Resource"
+                style=" font-size: 1em;"
+                >Shutdown:
+              </label>
+            </v-col>
+            <v-col col="3" md="auto" class="mx-3">
+              <eos-dropdown
+                @update:selectedOption="handleShutdownSelect"
+                :options="createOptionsForDropdown(resourceState.all)"
+                :width="dropdownWidth"
+                :title="resource.shutdown ? resource.shutdown : undefined"
+              ></eos-dropdown>
+            </v-col>
+            <v-col md="2">
               <button
                 type="button"
                 id="btnShutdownResource"
                 class="eos-btn-primary"
+                :disabled="!resource.shutdown"
                 @click="shutdownSelectedResource()"
               >
                 Apply
@@ -151,10 +122,13 @@
         title="Confirmation"
         :message="confirmationDialogMessage"
         :submessage="confirmationDialogSubMessage"
-        severity="warning"
+        :severity="confirmationDialogSeverity"
         @closeDialog="closeConfirmationDialog"
         cancelButtonText="No"
       ></eos-confirmation-dialog>
+      <div class="eos-text-primary mt-2">
+        {{ actionMessage }}
+      </div>
     </v-container>
   </div>
 </template>
@@ -162,8 +136,11 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import EosDropdown from "../widgets/dropdown/eos-dropdown-view.vue";
+import { EosDropdownOption } from "../widgets/dropdown/eos-dropdown-model";
 @Component({
-  name: "eos-resource"
+  name: "eos-resource",
+  components: { EosDropdown }
 })
 export default class EosMaintenance extends Vue {
   private data() {
@@ -174,22 +151,53 @@ export default class EosMaintenance extends Vue {
         shutdown: ""
       },
       actionMethod: "",
+      resourceState: {
+        online: [],
+        offline: [],
+        all: []
+      },
       online: [],
       offline: [],
       nodes: [],
       showConfirmationDialog: false,
       confirmationDialogMessage: "",
-      confirmationDialogSubMessage: ""
+      confirmationDialogSubMessage: "",
+      confirmationDialogSeverity: "danger",
+      dropdownWidth: "200px",
+      actionMessage: "",
+      dummyRes: { online: [], offline: [], all: [] }
     };
   }
   private mounted() {
-    this.$store.dispatch("maintenance/getNodeStatus").then((res: any) => {
-      if (res) {
-        this.$data.online = res.online;
-        this.$data.offline = res.offline;
-        this.$data.nodes = res.nodes;
-      }
-    });
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Fetching system resources..."
+    );
+
+    this.$store
+      .dispatch("maintenance/getNodeStatus")
+      .then((res: any) => {
+        if (res && res.node_status) {
+          if (!this.$data.resourceState) {
+            this.$data.resourceState = {};
+          }
+          res.node_status.forEach((e: any) => {
+            if (e.online) {
+              this.$data.resourceState.online.push(e.name);
+            }
+            if (e.standby) {
+              this.$data.resourceState.offline.push(e.name);
+            }
+            if (!e.shutdown) {
+              this.$data.resourceState.all.push(e.name);
+            }
+          });
+          this.$data.resourceState.all.push("cluster");
+        }
+      })
+      .finally(() => {
+        this.$store.dispatch("systemConfig/hideLoader");
+      });
   }
   private switchResource() {
     this.$store.dispatch("maintenance/maintenanceAction");
@@ -197,23 +205,47 @@ export default class EosMaintenance extends Vue {
   private closeConfirmationDialog(confirmation: boolean) {
     this.$data.showConfirmationDialog = false;
     if (confirmation) {
-      this.$store.dispatch(`maintenance/${this.$data.actionMethod}Node`, {
-        node: this.$data.resource[this.$data.actionMethod]
-      });
+      this.$store.dispatch(
+        "systemConfig/showLoader",
+        `${this.$data.actionMethod} node...`
+      );
+      this.$store
+        .dispatch(`maintenance/${this.$data.actionMethod}Node`, {
+          resource_name: this.$data.resource[this.$data.actionMethod]
+        })
+        .then((res: any) => {
+          if (res) {
+            this.$data.actionMessage = res.message;
+          } else {
+            throw new Error("Failed to perform the action");
+          }
+        })
+        .catch((e: any) => {
+          this.$data.actionMessage = e.message;
+        })
+        .finally(() => {
+          this.$store.dispatch("systemConfig/hideLoader");
+          this.$data.resource = {
+            stop: "",
+            start: "",
+            shutdown: ""
+          };
+        });
     }
-    this.$data.resource[this.$data.actionMethod] = "";
   }
   private stopSelectedResource(action: boolean) {
     this.$data.confirmationDialogMessage =
       "Are you sure, you want to stop the node?";
-    this.$data.confirmationDialogSubMessage =
-      "Please note that if you stop the cluster then the entire application will stop";
 
     this.$data.actionMethod = "stop";
+    this.$data.confirmationDialogSeverity = "danger";
     this.$data.showConfirmationDialog = true;
   }
   private startSelectedResource(action: boolean) {
     this.$data.actionMethod = "start";
+    this.$data.confirmationDialogMessage =
+      "Are you sure, you want to start the node?";
+    this.$data.confirmationDialogSeverity = "info";
     this.$data.showConfirmationDialog = true;
   }
   private shutdownSelectedResource(action: boolean) {
@@ -223,12 +255,30 @@ export default class EosMaintenance extends Vue {
       "Please note that if you shutdown the cluster then the entire application will stop";
 
     this.$data.actionMethod = "shutdown";
+    this.$data.confirmationDialogSeverity = "danger";
     this.$data.showConfirmationDialog = true;
+  }
+  private createOptionsForDropdown(list: string[]) {
+    return list.map((e: string) => {
+      return { label: e, value: e };
+    });
+  }
+  private handleShutdownSelect(selected: EosDropdownOption) {
+    this.$data.resource.shutdown = selected.value;
+  }
+  private handleStartSelect(selected: EosDropdownOption) {
+    this.$data.resource.start = selected.value;
+  }
+  private handleStopSelect(selected: EosDropdownOption) {
+    this.$data.resource.stop = selected.value;
   }
 }
 </script>
 <style lang="scss" scoped>
 .resource-container {
   display: flex;
+}
+.row-container {
+  justify-content: left;
 }
 </style>
