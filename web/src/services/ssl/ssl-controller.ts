@@ -18,8 +18,8 @@ import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response } from "express";
 export const sslCertificateUpload = async (req: Request, res: Response) => {
-    const result = await Api.uploadFiles(apiRegister.ssl_upload, req, res);
-    return result;
+  const result = await Api.uploadFiles(apiRegister.ssl_upload, req, res);
+  return result;
 };
 /**
  * This method for install ssl certificate.
@@ -29,4 +29,8 @@ export const sslCertificateUpload = async (req: Request, res: Response) => {
 export const sslCertificateInstall = async (req: Request, res: Response) => {
   let uploadCertificate = Api.patch(apiRegister.ssl_upload, req, res, '');
   return uploadCertificate;
+};
+export const certificateAvailability = async (req: Request, res: Response) => {
+  const result = await Api.getAll(apiRegister.ssl_upload, req, res);
+  return result;
 };
