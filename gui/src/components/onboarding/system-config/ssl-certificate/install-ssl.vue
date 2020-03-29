@@ -6,11 +6,13 @@
       type="button"
       class="eos-btn-primary"
       @click="openConfirmDialog()"
-    >Apply Certificate</button>
+    >
+      Apply Certificate
+    </button>
     <eos-confirmation-dialog
       :show="showConfirmDialog"
       title="Confirmation"
-      message="Are you sure you want to install the certifate? If you install certificate you will redirect to login"
+      message="Are you sure you want to install the certificate? If you install certificate you will redirect to login"
       severity="warning"
       @closeDialog="closeConfirmDialog"
       cancelButtonText="No"
@@ -43,7 +45,7 @@ export default class EOSInstallSSL extends Vue {
     });
   }
   private destroyed() {
-    // WizardHook: shut off on exit event listner
+    // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
   }
   get isValidForm() {
@@ -81,10 +83,4 @@ export default class EOSInstallSSL extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-</style>
-};
-</script>
-<style lang="scss" scoped>
-</style>
-};
+<style lang="scss" scoped></style>

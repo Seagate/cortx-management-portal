@@ -1,15 +1,17 @@
-  <template>
+<template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="mt-6" id="lblVersion">
-        <span class="eos-text-bold">last uploded file: {{status.filename}} : {{status.date}}</span>
+        <span class="eos-text-bold"
+          >last uploded file: {{ status.filename }} : {{ status.date }}</span
+        >
       </div>
       <v-divider class="mt-2 mb-5" />
       <input
         type="file"
         id="file"
         ref="file"
-        v-on:change="handleFileUpload($event.target.files) "
+        v-on:change="handleFileUpload($event.target.files)"
         accept=".pem"
       />
       <v-divider class="mt-5 mb-2" />
@@ -23,8 +25,10 @@
                 type="button"
                 class="eos-btn-primary mt-3"
                 @click="uploadCertificate()"
-              >Upload Certificate</button>
-              <span class="ml-7" v-if="!route">
+              >
+                Upload Certificate
+              </button>
+              <span class="ml-7" v-if="$route.path !== '/onboarding'">
                 <EOSInstallSSL :installStatus="buttonStatus" />
               </span>
             </v-row>
@@ -35,7 +39,7 @@
     <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
-  <script lang="ts">
+<script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
@@ -54,7 +58,7 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 @Component({
-  name: "uploade-ssl-config",
+  name: "upload-ssl-config",
   components: {
     EOSInstallSSL
   }
@@ -65,11 +69,6 @@ export default class EOSUploadSSLConfig extends Vue {
     file: { required }
   };
   private mounted() {
-    if (this.$route.path === "/onboarding") {
-      this.$data.route = true;
-    } else {
-      this.$data.route = false;
-    }
     this.getCertificateStatus();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
@@ -78,7 +77,7 @@ export default class EOSUploadSSLConfig extends Vue {
     });
   }
   private destroyed() {
-    // WizardHook: shut off on exit event listner
+    // WizardHook: shut off on exit event listener
     EVENT_BUS.$off("emitOnNext");
   }
   get isValidForm() {
@@ -122,5 +121,4 @@ export default class EOSUploadSSLConfig extends Vue {
   }
 }
 </script>
-  <style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

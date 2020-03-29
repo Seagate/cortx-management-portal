@@ -27,7 +27,8 @@
       class="csmprimary--text ml-8 pointer"
       @click="gotoPrevPage()"
       v-if="this.$props.footerObj && this.$props.footerObj.prevBtnText"
-    >{{ this.$props.footerObj.prevBtnText }}</span>
+      >{{ this.$props.footerObj.prevBtnText }}</span
+    >
   </div>
 </template>
 <script lang="ts">
@@ -62,10 +63,7 @@ export default class EosWizardFooter extends Vue {
     const result = new Promise(resolve => {
       // emit event which will trigger onNext method of middle component
       // and get a callback response (res) once its work is finished
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: true,
-        message: "Please wait"
-      });
+      this.$store.dispatch("systemConfig/showLoader", "Please wait");
       EVENT_BUS.$emit("emitOnNext", resolve); // Emit event to Middle Component (sibling)
     }).then(res => {
       if (res) {
@@ -77,9 +75,7 @@ export default class EosWizardFooter extends Vue {
           "goNext"
         ); // Emit event to Wizard Component (parent)
       }
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: false
-      });
+      this.$store.dispatch("systemConfig/hideLoader");
     });
   }
   private gotoPrevPage() {

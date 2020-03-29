@@ -434,10 +434,5 @@ export default class EosBucketCreation extends Vue {
   display: flex;
   margin-top: 10px;
 }
-.eos-form-group-custom {
-  width: auto;
-}
-.eos-form__input_textarea-custom {
-  height: auto;
-}
+
 </style>

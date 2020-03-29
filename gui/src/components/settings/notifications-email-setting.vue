@@ -1,31 +1,34 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="eos-text-lg mt-0 font-weight-bold" id="lblNetworkIP4">
-        Management network settings: IPv4
+      <div class="eos-text-lg mt-0 font-weight-bold" id="lblEmail">
+        Notifications: Email
       </div>
-      <div class="mt-6" id="lblNetworkMsg">
-        You need to configure a single IP address for management of this system.
+      <div class="mt-6" id="lblEmailMsg">
+        Selecting email will allow you to configure both secure and non-secure
+        email servers for event notification. You can control the severity of
+        events that you wish to receive, and you will be able to test out your
+        notification settings.
       </div>
       <v-divider class="mt-2" />
-      <eosNetworkSettingsIpv4 @apply-settings="applySettings" />
+      <eosNotifications @apply-settings="applySettings" />
     </div>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosNetworkSettingsIpv4Config from "../onboarding/system-config/mgmt-network/network-settings-ipv4-config.vue";
+import EosNotifications from "../onboarding/system-config/notifications/notifications-email-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-mgmt-settings",
+  name: "eos-notification-email-settings",
   components: {
-    eosNetworkSettingsIpv4: EosNetworkSettingsIpv4Config
+    eosNotifications: EosNotifications
   }
 })
-export default class EosMangementSetting extends Vue {
+export default class EosNotificationEmailSettings extends Vue {
   private data() {
     return {
       sysconfigData: {}
@@ -45,11 +48,11 @@ export default class EosMangementSetting extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Please wait");
     const res = await Api.patch(
       apiRegister.sysconfig,
-      { management_network_settings: { ipv4: data } },
+      { notifications: { email: data } },
       this.$data.sysconfigData.config_id,
       {
         params: {
-          config_type: "management_network_settings"
+          config_type: "notifications"
         }
       }
     );
