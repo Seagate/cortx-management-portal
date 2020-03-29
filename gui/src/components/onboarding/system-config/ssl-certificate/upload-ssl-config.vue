@@ -2,9 +2,7 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="mt-6" id="lblVersion">
-        <span class="eos-text-bold"
-          >last uploded file: {{ status.filename }} : {{ status.date }}</span
-        >
+        <span class="eos-text-bold">last uploded file: {{ status.filename }} : {{ status.date }}</span>
       </div>
       <v-divider class="mt-2 mb-5" />
       <input
@@ -25,9 +23,7 @@
                 type="button"
                 class="eos-btn-primary mt-3"
                 @click="uploadCertificate()"
-              >
-                Upload Certificate
-              </button>
+              >Upload Certificate</button>
               <span class="ml-7" v-if="$route.path !== '/onboarding'">
                 <EOSInstallSSL :installStatus="buttonStatus" />
               </span>
@@ -102,7 +98,7 @@ export default class EOSUploadSSLConfig extends Vue {
   }
   private async getCertificateStatus() {
     this.$store.dispatch("systemConfig/showLoader", "getting certificate...");
-    const res = await Api.getAll(apiRegister.ssl_upload);
+    const res = await Api.getAll(apiRegister.ssl_status);
     this.$data.status = res.data;
     if (this.$data.status.status === "installation_successful") {
       this.$data.buttonStatus = false;

@@ -6,7 +6,7 @@ import HttpStatus from 'http-status-codes';
 
 export default [
     {
-        path: "/api/v1/tls/bundle",
+        path: "/api/v1/tls/bundle/upload",
         method: "post",
         handler: [
             checkRequiredParams,
@@ -17,8 +17,8 @@ export default [
         ]
     },
     {
-        path: "/api/v1/tls/bundle",
-        method: "patch",
+        path: "/api/v1/tls/bundle/install",
+        method: "post",
         handler: [
             checkRequiredParams,
             async (req: Request, res: Response) => {
@@ -28,7 +28,7 @@ export default [
         ]
     },
     {
-        path: "/api/v1/tls/bundle",
+        path: "/api/v1/tls/bundle/status",
         method: "get",
         handler: [
             checkRequiredParams,

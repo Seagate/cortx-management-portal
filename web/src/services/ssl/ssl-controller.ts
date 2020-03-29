@@ -27,10 +27,10 @@ export const sslCertificateUpload = async (req: Request, res: Response) => {
  * @param res 
  */
 export const sslCertificateInstall = async (req: Request, res: Response) => {
-  let uploadCertificate = Api.patch(apiRegister.ssl_upload, req, res, '');
+  let uploadCertificate = Api.post(apiRegister.ssl_install, req, res);
   return uploadCertificate;
 };
 export const certificateAvailability = async (req: Request, res: Response) => {
-  const result = await Api.getAll(apiRegister.ssl_upload, req, res);
+  const result = await Api.getAll(apiRegister.ssl_status, req, res);
   return result;
 };

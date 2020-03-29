@@ -45,7 +45,7 @@ export default class SSLupload extends VuexModule {
   @Action
   public async installSSLCerificate(payload: any) {
     try {
-      const res = Api.patch(apiRegister.ssl_upload, payload);
+      const res = Api.post(apiRegister.ssl_install, payload);
       return res;
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -55,7 +55,7 @@ export default class SSLupload extends VuexModule {
   @Action
   public async getSSLStatus() {
     try {
-      const res = await Api.getAll(apiRegister.ssl_upload);
+      const res = await Api.getAll(apiRegister.ssl_status);
       if (res) {
         return res.data;
       }
