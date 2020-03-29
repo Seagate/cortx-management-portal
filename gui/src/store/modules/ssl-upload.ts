@@ -20,36 +20,48 @@ import { Module, VuexModule, Mutation, Action, MutationAction } from "vuex-modul
 Vue.use(Vuex);
 
 @Module({
-    namespaced: true
+  namespaced: true
 })
 export default class SSLupload extends VuexModule {
-    public queryParams: FormData = new FormData();
+  public queryParams: FormData = new FormData();
 
-    /**
-     * @param queryParams {object},
-     * This action for create user.
-     */
-    @Action
-    public async uploadSSLCerificate(queryParams: FormData) {
-        queryParams = queryParams ? queryParams : this.queryParams;
-        try {
-            const res = await Api.uploadFile(apiRegister.ssl_upload, queryParams);
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.error("err logger: ", e);
-        }
+  /**
+   * @param queryParams {object},
+   * This action for create user.
+   */
+  @Action
+  public async uploadSSLCerificate(queryParams: FormData) {
+    queryParams = queryParams ? queryParams : this.queryParams;
+    try {
+      const res = await Api.uploadFile(apiRegister.ssl_upload, queryParams);
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
     }
-    /**
-     * This action for install ssl certifacate.
-     */
-    @Action
-    public async installSSLCerificate(payload: any) {
-        try {
-          const res = Api.patch(apiRegister.ssl_upload, payload);
-          return res;
-        } catch (e) {
-          // tslint:disable-next-line: no-console
-          console.log(e);
-        }
+  }
+  /**
+   * This action for install ssl certifacate.
+   */
+  @Action
+  public async installSSLCerificate(payload: any) {
+    try {
+      const res = Api.patch(apiRegister.ssl_upload, payload);
+      return res;
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
+    }
+  }
+  @Action
+  public async getSSLStatus() {
+    try {
+      const res = await Api.getAll(apiRegister.ssl_upload);
+      if (res) {
+        return res.data;
       }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
+    }
+  }
 }

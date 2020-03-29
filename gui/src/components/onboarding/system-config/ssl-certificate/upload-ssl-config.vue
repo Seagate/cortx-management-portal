@@ -1,7 +1,9 @@
-<template>
+  <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="mt-6" id="lblVersion"></div>
+      <div class="mt-6" id="lblVersion">
+        <span class="eos-text-bold">last uploded file: {{status.filename}} : {{status.date}}</span>
+      </div>
       <v-divider class="mt-2 mb-5" />
       <input
         type="file"
@@ -23,7 +25,7 @@
                 @click="uploadCertificate()"
               >Upload Certificate</button>
               <span class="ml-7" v-if="!route">
-                <EOSInstallSSL />
+                <EOSInstallSSL :installStatus="buttonStatus" />
               </span>
             </v-row>
           </v-col>
@@ -33,7 +35,7 @@
     <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
-<script lang="ts">
+  <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
@@ -68,6 +70,7 @@ export default class EOSUploadSSLConfig extends Vue {
     } else {
       this.$data.route = false;
     }
+    this.getCertificateStatus();
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
@@ -87,6 +90,8 @@ export default class EOSUploadSSLConfig extends Vue {
   }
   private data() {
     return {
+      buttonStatus: false,
+      status: "",
       filestatus: false,
       file: File,
       route: false
@@ -96,14 +101,26 @@ export default class EOSUploadSSLConfig extends Vue {
     this.$data.file = fileList[0];
     this.$data.filestatus = true;
   }
+  private async getCertificateStatus() {
+    this.$store.dispatch("systemConfig/showLoader", "getting certificate...");
+    const res = await Api.getAll(apiRegister.ssl_upload);
+    this.$data.status = res.data;
+    if (this.$data.status.status === "installation_successful") {
+      this.$data.buttonStatus = false;
+    } else if (this.$data.status.status === "not_installed") {
+      this.$data.buttonStatus = true;
+    }
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
   private async uploadCertificate() {
     const formData = new FormData();
     formData.append("pemfile", this.$data.file);
     this.$store.dispatch("systemConfig/showLoader", "Uploading certificate...");
     const res = await Api.uploadFile(apiRegister.ssl_upload, formData);
+    this.$data.buttonStatus = true;
     this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>
-<style lang="scss" scoped>
+  <style lang="scss" scoped>
 </style>
