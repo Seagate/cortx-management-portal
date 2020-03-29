@@ -22,14 +22,14 @@
             <label class="eos-text-bold">Last Upgrade status:</label>
           </td>
           <td style="padding-top: 3px;">
-            <label>{{ lastUpgradeStatus.status }}</label>
+            <label>{{ lastUpgradeStatus.status.toUpperCase() }}</label>
           </td>
         </tr>
         <tr>
           <td style="width: 180px;">
             <label class="eos-text-bold">Last Upgraded version:</label>
           </td>
-          <td style="padding-top: 3px;">1.1.0</td>
+          <td style="padding-top: 3px;">{{ lastUpgradeStatus.version }}</td>
         </tr>
       </table>
     </div>
@@ -38,32 +38,29 @@
       Use the link below to see if there's a newer version.
       <br />If a newer version is available, download it to your device and then install the file using button below.
     </div>
-    <div class="mt-6 eos-text-md" id="lblVersion">
-      <span class="eos-text-bold">Your firmware version:</span> Seagate storage complete 10.2 (Jan 2019 release).
-    </div>
     <v-divider class="mt-2 mb-5" />
-    <div v-if="!showUploadForm">
+    <div v-if="!showUploadForm && lastUpgradeStatus">
       <button
         id="btnInstallFirmware"
         type="button"
         class="eos-btn-primary"
         @click="showUploadForm = true"
-        :disabled="isPackageAvailable"
-      >Install new firmware file</button>
+      >Upload new firmware file</button>
       <button
         id="btnStartUpgrade"
         type="button"
         class="ml-5 eos-btn-primary"
         @click="startUpgrade()"
-        :disabled="!isPackageAvailable"
+        :disabled="!isPackageAvailable || lastUpgradeStatus.status === 'in_progress'"
       >Start upgrade</button>
     </div>
-    <div v-else>
+    <div v-if="showUploadForm">
       <input
         type="file"
         id="file"
         ref="firmwarePackageFileInput"
         @change="handleFileUpload($event.target.files)"
+        accept =".iso"
       />
       <div
         class="eos-form-group-label eos-form-group-error-msg mt-3"
@@ -78,7 +75,7 @@
         class="mt-3 eos-btn-primary"
         @click="uploadFirmwarePackage()"
         :disabled="!firmwarePackage"
-      >Install</button>
+      >Upload</button>
       <button
         id="btnCancelInstallFirmware"
         type="button"
@@ -92,12 +89,13 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../../../services/api";
 import apiRegister from "../../../../services/api-register";
+import { LastUpgradeStatus } from "../../../../models/firmware";
 
 @Component({
   name: "eos-firmware"
 })
 export default class EosFirmware extends Vue {
-  public lastUpgradeStatus: any = null;
+  public lastUpgradeStatus: LastUpgradeStatus | null = null;
   public showUploadForm: boolean = false;
   public isPackageAvailable: boolean = false;
   public firmwarePackage: File | null = null;
@@ -121,20 +119,28 @@ export default class EosFirmware extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
+  public async startUpgrade() {
+    if (this.lastUpgradeStatus) {
+      this.lastUpgradeStatus.status = "in_progress";
+    }
+    this.$store.dispatch("systemConfig/showLoader", "Starting upgrade...");
+    const res: any = await Api.post(apiRegister.start_firmware_upgrade, {});
+    this.lastUpgradeStatus = res && res.data ? res.data : null;
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
+
   public async getPackageAvailability() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Fetching package availability..."
     );
     try {
-      const res: any = await Api.getAll(
-        apiRegister.firmware_package_availability
-      );
+      await Api.getAll(apiRegister.firmware_package_availability);
       this.isPackageAvailable = true;
     } catch (e) {
       if (
         e.status &&
-        e.status === 404 &&
+        e.status === 400 &&
         e.data &&
         e.data.error_code === 4101
       ) {
@@ -157,12 +163,13 @@ export default class EosFirmware extends Vue {
   public async uploadFirmwarePackage() {
     if (this.firmwarePackage !== null) {
       this.$store.dispatch(
-        "systemConfig/showLoader",
+        "systemConfig/showInfiniteLoader",
         "Uploading the package..."
       );
       const formData = new FormData();
       formData.append("package", this.firmwarePackage);
       const res = await Api.uploadFile(apiRegister.upload_firmware, formData);
+      this.lastUpgradeStatus = res && res.data ? res.data : null;
       this.closeUploadForm();
       this.isPackageAvailable = true;
       this.$store.dispatch("systemConfig/hideLoader");

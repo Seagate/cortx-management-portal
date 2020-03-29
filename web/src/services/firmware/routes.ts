@@ -29,7 +29,7 @@ export default [
     },
     {
         path: "/api/v1/upgrade/firmware/start",
-        method: "get",
+        method: "post",
         handler: [
             checkRequiredParams,
             async (req: Request, res: Response) => {
@@ -39,7 +39,7 @@ export default [
         ]
     },
     {
-        path: "/api/v1/upgrade/firmware/availibility",
+        path: "/api/v1/upgrade/firmware/availability",
         method: "get",
         handler: [
             checkRequiredParams,

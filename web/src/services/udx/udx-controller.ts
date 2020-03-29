@@ -19,11 +19,15 @@ import apiRegister from "./../api-register";
 import { Request, Response } from "express";
 import { randomBytes } from "crypto";
 
+const devices: any[] = [];
+let isUDXRegistered: any = {
+    isRegistered: false
+};
 
 export const getUDXDevices = async (req: Request, res: Response) => {
     /*let result = await Api.getAll(apiRegister.udx_devices, req, res);
     return result;*/
-    return [];
+    return devices;
 };
 
 export const getIdentificationToken = async (req: Request, res: Response) => {
@@ -37,17 +41,36 @@ export const getIdentificationToken = async (req: Request, res: Response) => {
 
 
 export const registerUDX = async (req: Request, res: Response) => {
-    let result = await Api.post(apiRegister.udx_devices, req, res);
-    return result;
+    /*let result = await Api.post(apiRegister.udx_register_device, req, res);
+    return result;*/
+    devices.push({
+        name: "Test name 1",
+        productID: "Test product id 1",
+        serialNumber: "Test serial number 1",
+        type: "Test type 1",
+        uuid: "Test UUID",
+        vendorID: "Test vendor id"
+    });
+    isUDXRegistered.isRegistered = true;
+    return {
+        s3_account: {
+          access_key: "AAABBBCCC",
+          secret_key: "DDDEEEFFF"
+        },
+        iam_user: {
+          access_key: "GGGHHHIII",
+          secret_key: "JJJKKKLLL"
+        }
+    };
 };
 
 export const getUDXRegistrationStatus = async (req: Request, res: Response) => {
-    let result;
+    /*let result;
     try {
-        await Api.getAll(apiRegister.udx_reg_status, req, res);
+        await Api.getAll(apiRegister.udx_register_device, req, res);
         result = {"isRegistered": true};
     } catch(exception) {
         result = {"isRegistered": false};
-    }
-    return result;
+    }*/
+    return isUDXRegistered;
 };

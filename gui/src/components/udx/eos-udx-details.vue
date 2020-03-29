@@ -46,7 +46,6 @@
           </tr>
         </table>
       </div>
-      <button v-else type="button" class="eos-btn-primary" @click="$router.push('/udx/registration')">Register UDX</button>
     </div>
   </div>
 </template>
