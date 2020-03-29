@@ -46,7 +46,15 @@
           @click="logout()"
           v-if="!isRouterPathOnboarding"
         >
-          <img :src="require('@/assets/logout.svg/')" />
+          <v-tooltip left max-width="300">
+            <template v-slot:activator="{ on }">
+              <img
+                :src="require('@/assets/logout.svg/')"
+                v-on="on"
+              />
+            </template>
+            <span>Logout</span>
+          </v-tooltip>
         </div>
       </div>
     </div>
@@ -93,8 +101,8 @@ export default class HeaderBar extends Vue {
   private logout() {
     // Invalidate session from Server, remove localStorage token and re-route to login page
     this.$store.dispatch("userLogin/logoutAction").finally(() => {
-        localStorage.removeItem(this.$data.constStr.access_token);
-      });
+      localStorage.removeItem(this.$data.constStr.access_token);
+    });
     this.$store.commit("userLogin/setUserPermissions", {});
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");

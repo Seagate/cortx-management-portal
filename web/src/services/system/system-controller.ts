@@ -19,20 +19,58 @@ import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response } from "express";
 
-
 export default class SystemController {
-    public async getHealthSummary (req: Request, res: Response) {
-        let healthSummaryData = await Api.getAll(apiRegister.health_summary, req, res);
-        return healthSummaryData;
-    }
+  public async getHealthSummary(req: Request, res: Response) {
+    let healthSummaryData = await Api.getAll(
+      apiRegister.health_summary,
+      req,
+      res
+    );
+    return healthSummaryData;
+  }
 
-    public async getHealthView (req: Request, res: Response) {
-        let healthSummaryData = await Api.getAll(apiRegister.health_view, req, res);
-        return healthSummaryData;
-    }
+  public async getHealthView(req: Request, res: Response) {
+    let healthSummaryData = await Api.getAll(apiRegister.health_view, req, res);
+    return healthSummaryData;
+  }
 
-    public async getNodeHealth (req: Request, res: Response) {
-        let healthSummaryData = await Api.getAll(apiRegister.node_health, req, res);
-        return healthSummaryData;
-    }
+  public async getNodeHealth(req: Request, res: Response) {
+    let healthSummaryData = await Api.getAll(apiRegister.node_health, req, res);
+    return healthSummaryData;
+  }
 }
+
+/**
+ * This is responsible to fetching node status.
+ * @param req
+ * @param res
+ */
+export const getNodeStatus = async (req: Request, res: Response) => {
+  let nodeStatusData = await Api.getAll(apiRegister.node_status, req, res);
+  return nodeStatusData;
+};
+
+/**
+ * This is responsible to stop node.
+ * @param req
+ * @param res
+ */
+export const stopNode = async (req: Request, res: Response) => {
+  return await Api.post(apiRegister.node_stop, req, res);
+};
+/**
+ * This is responsible to start node.
+ * @param req
+ * @param res
+ */
+export const startNode = async (req: Request, res: Response) => {
+  return await Api.post(apiRegister.node_start, req, res);
+};
+/**
+ * This is responsible to shutdown node.
+ * @param req
+ * @param res
+ */
+export const shutdownNode = async (req: Request, res: Response) => {
+  return await Api.post(apiRegister.node_shutdown, req, res);
+};

@@ -14,13 +14,19 @@
  *****************************************************************************/
 
 import { Request, Response } from "express";
+import {
+  getNodeStatus,
+  startNode,
+  stopNode,
+  shutdownNode
+} from "./system-controller";
 import  SystemController from "./system-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
 
 /**
- * It has all the REST APIs to get the system related details. 
+ * It has all the REST APIs to get the system related details.
  */
 
 const syscontroller = new SystemController()
@@ -63,6 +69,66 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await syscontroller.getNodeHealth(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/maintenance/cluster/node_status",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getNodeStatus(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/maintenance/cluster/start",
+    method: "post",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await startNode(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/maintenance/cluster/stop",
+    method: "post",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await stopNode(req, res);
+          res.status(HttpStatus.OK).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/maintenance/cluster/shutdown",
+    method: "post",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await shutdownNode(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
