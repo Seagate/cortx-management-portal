@@ -16,7 +16,7 @@ export const version = "v1";
 
 export default {
   all_alerts: `/api/${version}/alerts`,
-  alerts_history : `/api/${version}/alerts_history`,
+  alerts_history: `/api/${version}/alerts_history`,
   systemconfig: `api/${version}/systemconfig`,
   create_user: `api/${version}/preboarding/user`,
   login: `api/${version}/login`,
@@ -37,6 +37,9 @@ export default {
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
   addlicensekey: `/api/${version}/license/onboarding`,
+  hotfix_status: `/api/${version}/upgrade/hotfix/status`,
+  hotfix_upload: `/api/${version}/upgrade/hotfix/upload`,
+  hotfix_start: `/api/${version}/upgrade/hotfix/start`,
   upload_firmware: `/api/${version}/upgrade/firmware/upload`, // TODO: change to right API
   auditlogs: `/api/${version}/auditlogs`,
   maintenance: ` /api/${version}/maintenance/cluster`,

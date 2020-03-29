@@ -283,7 +283,7 @@ export abstract class Api {
             });
         });
     }
-
+    
     public static async delete(url: string, req: Request, resp: Response, id?: string | number) {
         return new Promise((resolve, reject) => {
             let deleteUrl = base_url + url + ((id) ? "/" + id : "");

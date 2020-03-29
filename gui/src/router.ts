@@ -42,6 +42,7 @@ import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
 import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
 import EosResource from "./components/maintenance/eos-resource.vue";
 import EosFirmware from "./components/onboarding/system-config/firmware/firmware.vue";
+import EosSoftware from "./components/maintenance/eos-software.vue";
 import EosNotifications from "./components/onboarding/system-config/notifications/notifications-email.vue";
 import EosMangementSetting from "./components/settings/mgmt-network-setting.vue";
 import EosDataNetworkSetting from "./components/settings/data-network.setting.vue";
@@ -345,7 +346,17 @@ const router = new Router({
                 isOnboardingReq: false,
                 requiredAccess: userPermissions.sysconfig + userPermissions.list
               }
-            }
+            },
+            {
+              path: "software",
+              name: "software",
+              component: EosSoftware,
+              meta: {
+                requiresAuth: true,
+                isOnboardingReq: false,
+                requiredAccess: userPermissions.sysconfig + userPermissions.list
+              }
+            },
           ]
         },
         {

@@ -13,6 +13,7 @@ import systemHealthRoutes from "./system/routes";
 import audit from "./audit/routes";
 import firmware from "./firmware/routes";
 import ssl from "./ssl/routes";
+import software from "./software/routes";
 
 export default [
     ...loginRoutes,
@@ -29,5 +30,6 @@ export default [
     ...systemHealthRoutes,
     ...audit,
     ...firmware,
-    ...ssl
+    ...ssl,
+    ...software,
 ];

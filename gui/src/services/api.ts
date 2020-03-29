@@ -27,7 +27,11 @@ axios.interceptors.request.use(
     if (token) {
       config.headers.Authorization = token;
     }
-    config.timeout = 20000;
+    if (config.timeout === -1) {
+      config.timeout = 0;
+    } else {
+      config.timeout = 20000;
+    }
     return config;
   },
   error => {
@@ -86,9 +90,9 @@ export abstract class Api {
       });
   }
   // Wrapper method for post api
-  public static async post(url: string, payload: object) {
+  public static async post(url: string, payload: object, config?: object) {
     return await axios
-      .post(url, payload)
+      .post(url, payload, config)
       .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
       })
@@ -179,7 +183,8 @@ export abstract class Api {
       status: error.code,
       statusText: error.message,
       warning: {
-        message: "Server is taking too long to respond. Please refresh the page."
+        message:
+          "Server is taking too long to respond. Please refresh the page."
       }
     };
     return apiResponse;
