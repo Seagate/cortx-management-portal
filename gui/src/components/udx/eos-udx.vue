@@ -14,8 +14,8 @@
  *****************************************************************************/
 <template>
   <div class="eos-p-2">
-    <EosUDXDetails v-if="udx" />
-    <EosUDXRegistration v-else @complete="registrationComplete()" />
+    <EosUDXDetails v-if="udx" :udx="udx" />
+    <EosUDXRegistration v-if="showUDXRegistrationForm" @complete="registrationComplete()" />
   </div>
 </template>
 
@@ -33,16 +33,20 @@ import EosUDXRegistration from "./eos-udx-registration.vue";
 })
 export default class EosUDX extends Vue {
   public udx: UDX | null = null;
+  public isUDXRegistered: boolean = false;
+  public showUDXRegistrationForm: boolean = false;
 
   public async mounted() {
-    await this.getUDXDetails();
+    await this.getRegistrationStatus();
+    if (this.isUDXRegistered) {
+      await this.getUDXDetails();
+    } else {
+      this.showUDXRegistrationForm = true;
+    }
   }
 
   public async getUDXDetails() {
-    this.$store.dispatch(
-      "systemConfig/showLoader",
-      "Fetching UDX details..."
-    );
+    this.$store.dispatch("systemConfig/showLoader", "Fetching UDX details...");
     const res = await Api.getAll(apiRegister.udx_device);
     if (res && res.data && res.data.length > 0) {
       this.udx = res.data[0];
@@ -51,7 +55,20 @@ export default class EosUDX extends Vue {
   }
 
   public async registrationComplete() {
+    this.showUDXRegistrationForm = false;
     await this.getUDXDetails();
+  }
+
+  private async getRegistrationStatus() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Checking registration status..."
+    );
+    const res = await Api.getAll(apiRegister.udx_registration);
+    if (res && res.data) {
+      this.isUDXRegistered = res.data.isRegistered;
+    }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>

@@ -276,9 +276,11 @@ export abstract class Api {
                     let error = new HTTPError.HTTP500Error(err.message);
                     reject(error);
                 });
+
                 httpRequest.on("close", ()=> {
                     fs.unlink(file.path, (err) => {});
-                    })
+                });
+
                 form.pipe(httpRequest);
             });
         });

@@ -25,7 +25,7 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/udx-device/registration-status",
+    path: "/api/v1/udx_device/registration",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -40,7 +40,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/udx-device/registration-token",
+    path: "/api/v1/udx_device/registration_token",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -55,7 +55,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/udx-device",
+    path: "/api/v1/udx_device",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -70,7 +70,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/udx-device",
+    path: "/api/v1/udx_device/registration",
     method: "post",
     handler: [
       checkRequiredParams,
