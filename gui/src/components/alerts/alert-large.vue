@@ -126,6 +126,10 @@
               <span v-else-if="props.item.module_type === 'controller'"
                 >Serial number: {{ props.item.serial_number }}</span
               >
+              <div>
+              <span v-if="props.item.module_type === 'iem'"
+                >Source Id : {{ props.item.source_id  }} | Component Id: {{ props.item.component_id }} | Module Id:{{ props.item.module_id }} </span
+              ></div>
             </div>
           </td>
           <td>
@@ -135,17 +139,28 @@
                 props.item.severity === alertStatus.critical ||
                   props.item.severity === alertStatus.error
               "
+              title="critical | error"
               class="eos-status-chip eos-chip-alert"
             ></div>
             <div
               style="margin: auto;"
+              title="warning"
               v-else-if="props.item.severity === alertStatus.warning"
               class="eos-status-chip eos-chip-warning"
             ></div>
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.informational"
+              title="info"
               class="eos-status-chip eos-chip-information"
+            ></div>
+             <div
+              style="margin: auto;"
+              v-if="(props.item.severity !== alertStatus.informational) 
+              && (props.item.severity !== alertStatus.warning)
+              && (props.item.severity !== alertStatus.critical && props.item.severity !== alertStatus.error)"
+              title="other"
+              class="eos-status-chip eos-chip-others"
             ></div>
           </td>
           <td>{{ props.item.description ? props.item.description : "--" }}</td>
