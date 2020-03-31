@@ -31,7 +31,7 @@
           >
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
-              <template v-for="(node, index) in datanetwork">
+              <template v-for="(node, index) in dataNetwork">
                 <div
                   class="col-3 body-2 column node-container mr-5"
                   :key="index"
@@ -112,7 +112,7 @@
                     <div class="mt-3">
                       <div class="eos-text-lg">
                         <label>NTP address</label>
-                        <span class="ml-12">{{ serveraddess }}</span>
+                        <span class="ml-12">{{ serverAddress }}</span>
                       </div>
                     </div>
                     <div class="mt-3">
@@ -182,43 +182,14 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <v-dialog v-model="showConfirmDeleteDialog" persistent max-width="790">
-        <v-card>
-          <v-system-bar color="greay lighten-3">
-            <v-spacer></v-spacer>
-            <v-icon
-              @click="closeConfirmDeleteDialog('no')"
-              style="cursor: pointer;"
-              >mdi-close</v-icon
-            >
-          </v-system-bar>
-          <v-card-title class="title ml-3">
-            <span>Confirmation</span>
-          </v-card-title>
-          <v-divider />
-          <v-card-text>
-            <label class="ml-3 delete-bucket-confirmation-msg"
-              >You are moving on new ip {{ new_url }}</label
-            >
-          </v-card-text>
-          <v-card-actions>
-            <button
-              type="button"
-              class="ma-5 eos-btn-primary"
-              @click="closeConfirmDialog('yes')"
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              class="ma-5 eos-btn-tertiary"
-              @click="closeConfirmDialog('no')"
-            >
-              No
-            </button>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <eos-confirmation-dialog
+        :show="showConfirmDialog"
+        title="Confirmation"
+        :message="'You are moving on new IP address ' + new_url"
+        severity="info"
+        @closeDialog="closeConfirmDialog"
+        confirmButtonText="Continue"
+      ></eos-confirmation-dialog>
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
   </v-container>
@@ -236,23 +207,23 @@ import {
 export default class EosOnboardingSummary extends Vue {
   private data() {
     return {
-      serveraddess: "",
+      serverAddress: "",
       timezone: "",
       managementData: [],
-      datanetwork: [],
+      dataNetwork: [],
       dnsData: [],
       new_url: "",
-      showConfirmDeleteDialog: false,
+      showConfirmDialog: false,
       wizardRes: undefined,
       notificationData: {}
     };
   }
   private openConfirmDialog() {
-    this.$data.showConfirmDeleteDialog = true;
+    this.$data.showConfirmDialog = true;
   }
   private async closeConfirmDialog(confirmation: string) {
-    this.$data.showConfirmDeleteDialog = false;
-    if (confirmation === "yes") {
+    this.$data.showConfirmDialog = false;
+    if (confirmation) {
       this.$data.wizardRes(true);
       this.$store.dispatch("systemConfig/updateSummary", true);
     } else {
@@ -292,7 +263,7 @@ export default class EosOnboardingSummary extends Vue {
         systemconfig.data_network_settings &&
         systemconfig.data_network_settings.ipv4
       ) {
-        this.$data.datanetwork = systemconfig.data_network_settings.ipv4.nodes;
+        this.$data.dataNetwork = systemconfig.data_network_settings.ipv4.nodes;
       }
       if (systemconfig.dns_network_settings) {
         this.$data.dnsData = systemconfig.dns_network_settings.nodes;
@@ -303,7 +274,7 @@ export default class EosOnboardingSummary extends Vue {
       ) {
         this.$data.timezone =
           systemconfig.date_time_settings.ntp.ntp_timezone_offset;
-        this.$data.serveraddess =
+        this.$data.serverAddress =
           systemconfig.date_time_settings.ntp.ntp_server_address;
       }
       if (systemconfig.notifications) {

@@ -9,7 +9,7 @@ export const wizardConfig = {
       isByPassed: false,
       header: {
         state: "completed",
-        name: "SSLUpload"
+        name: "SSL upload"
       },
       footer: {
         nextComponent: "EosNetworkSettings",

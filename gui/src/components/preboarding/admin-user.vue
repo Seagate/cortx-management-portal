@@ -124,6 +124,7 @@
                 id="confirmAdminPassword"
                 v-model.trim="createAccount.confirmPassword"
                 @input="$v.createAccount.confirmPassword.$touch"
+                v-on:keyup.enter="handleEnterEvent()"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
@@ -207,8 +208,6 @@ export default class EosAdminUser extends Vue {
       .dispatch("userLogin/createUserAction", queryParams)
       .then((res: any) => {
         if (res) {
-          this.$store.dispatch("systemConfig/hideLoader");
-          this.$data.createUserInProgress = false;
           this.$router.push({ name: "preboarding-login" });
         } else {
           throw new Error("Create admin user failed");
@@ -216,10 +215,21 @@ export default class EosAdminUser extends Vue {
       })
       .catch((e: any) => {
         this.$data.isValidResponse = false;
-        this.$data.createUserInProgress = false;
         this.$data.invalidMessage = e.message;
+      })
+      .finally(() => {
+        this.$data.createUserInProgress = false;
         this.$store.dispatch("systemConfig/hideLoader");
       });
+  }
+  private handleEnterEvent() {
+    if (
+      this.$v.createAccount &&
+      !this.$v.createAccount.$invalid &&
+      !this.$data.createUserInProgress
+    ) {
+      this.gotToNextPage();
+    }
   }
 }
 </script>

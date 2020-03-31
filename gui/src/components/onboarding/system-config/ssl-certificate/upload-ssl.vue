@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblIpv4Dns">SSL Upload</div>
+      <div class="title mt-0 font-weight-bold" id="lblIpv4Dns">SSL upload</div>
       <div
         class="mt-6"
         id="lblIpv4Msg"

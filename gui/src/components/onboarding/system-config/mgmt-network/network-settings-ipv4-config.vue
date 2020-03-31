@@ -24,7 +24,11 @@
           </div>
         </div>
         <template v-for="node in $v.ipv4Nodes.$each.$iter">
-          <div class="col-3 body-2 column pa-0 node-container" :key="node.id">
+          <div
+            class="col-3 body-2 column pa-0 node-container"
+            v-if="node.$model.name === 'VIP'"
+            :key="node.id"
+          >
             <div class="mt-5">
               <div
                 class="eos-form-group eos-form-group-custom"

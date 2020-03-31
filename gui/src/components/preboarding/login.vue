@@ -101,9 +101,14 @@ export default class EosLogin extends Vue {
   private mounted() {
     this.$store.dispatch("systemConfig/hideLoader");
     this.$store.commit("messageDialog/hide");
+    this.$store.commit("userLogin/setUserPermissions", {});
   }
   private handleEnterEvent() {
-    if (this.$v.loginForm && !this.$v.loginForm.$invalid && !this.$data.loginInProgress) {
+    if (
+      this.$v.loginForm &&
+      !this.$v.loginForm.$invalid &&
+      !this.$data.loginInProgress
+    ) {
       this.gotToNextPage();
     }
   }

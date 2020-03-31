@@ -55,7 +55,7 @@ export default class EosNavBar extends Vue {
       path: "/health",
       iconDefault: require("@/assets/navigation/health-grey.svg"),
       iconActive: require("@/assets/navigation/health-white.svg"),
-      requiredAccess: "s3accounts"
+      requiredAccess: "sysconfig"
     },
     {
       title: "Provisioning",
