@@ -92,6 +92,14 @@
               v-if="props.item.severity === alertStatus.informational"
               class="eos-status-chip eos-chip-ok"
             ></div>
+             <div
+              style="margin: auto;"
+              v-if="(props.item.severity !== alertStatus.informational) 
+              && (props.item.severity !== alertStatus.warning)
+              && (props.item.severity !== alertStatus.critical && props.item.severity !== alertStatus.error)"
+              title="other"
+              class="eos-status-chip eos-chip-others"
+            ></div>
           </td>
           <td>{{props.item.description ? props.item.description : "--"}}</td>
           <td>

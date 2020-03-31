@@ -85,18 +85,29 @@
               <div
                 style="margin: auto;"
                 v-if="props.item.severity ===alertStatus.critical || props.item.severity === alertStatus.error"
+                title="critical | error"
                 class="eos-status-chip eos-chip-alert"
               ></div>
               <div
                 style="margin: auto;"
                 v-else-if="props.item.severity === alertStatus.warning"
+                title="warning"
                 class="eos-status-chip eos-chip-warning"
               ></div>
               <div
                 style="margin: auto;"
                 v-if="props.item.severity === alertStatus.informational"
+                title="info"
                 class="eos-status-chip eos-chip-information"
               ></div>
+               <div
+              style="margin: auto;"
+              v-if="(props.item.severity !== alertStatus.informational) 
+              && (props.item.severity !== alertStatus.warning)
+              && (props.item.severity !== alertStatus.critical && props.item.severity !== alertStatus.error)"
+              title="other"
+              class="eos-status-chip eos-chip-others"
+            ></div>
             </td>
             <td>{{props.item.description ? props.item.description : "--"}}</td>
           </tr>
