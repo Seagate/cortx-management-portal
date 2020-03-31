@@ -11,16 +11,18 @@
  Portions are also trade secret. Any use, duplication, derivation, distribution
  or disclosure of this code, for any reason, not expressly authorized is
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
- *****************************************************************************/
+ **************************************************************************** */
 
 import { Request, Response } from "express";
 import {
   getNodeStatus,
   startNode,
   stopNode,
-  shutdownNode
+  shutdownNode,
+  getHealthSummary,
+  getHealthView,
+  getNodeHealth
 } from "./system-controller";
-import  SystemController from "./system-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -29,16 +31,15 @@ import HttpStatus from 'http-status-codes';
  * It has all the REST APIs to get the system related details.
  */
 
-const syscontroller = new SystemController()
 export default [
   {
-    path: "/api/v1/system/health",
+    path: "/api/v1/system/health/summary",
     method: "get",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await syscontroller.getHealthSummary(req, res);
+          const result = await getHealthSummary(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -47,13 +48,13 @@ export default [
     ]
   },
   {
-    path: "/api/v1/system/health_view",
+    path: "/api/v1/system/health/view",
     method: "get",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await syscontroller.getHealthView(req, res);
+          const result = await getHealthView(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
@@ -62,13 +63,13 @@ export default [
     ]
   },
   {
-    path: "/api/v1/system/node_health",
+    path: "/api/v1/system/health/node",
     method: "get",
     handler: [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
-          const result = await syscontroller.getNodeHealth(req, res);
+          const result = await getNodeHealth(req, res);
           res.status(HttpStatus.OK).send(result);
         } catch (err) {
           throw err;
