@@ -13,7 +13,11 @@
           </div>
         </div>
         <template v-for="node in $v.dnsNodes.$each.$iter">
-          <div class="col-3 body-2 column node-container mr-5" :key="node.id">
+          <div
+            class="col-3 body-2 column node-container mr-5"
+            v-if="node.$model.name !== 'VIP'"
+            :key="node.id"
+          >
             <span class="font-weight-bold" id="lblIpv4Node">{{
               node.$model.name
             }}</span>

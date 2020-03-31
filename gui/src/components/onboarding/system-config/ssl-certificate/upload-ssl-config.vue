@@ -2,7 +2,9 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="mt-6" id="lblVersion">
-        <span class="eos-text-bold">last uploded file: {{ status.filename }} : {{ status.date }}</span>
+        <span class="eos-text-bold"
+          >Last uploaded file: {{ status.filename }} : {{ status.date }}</span
+        >
       </div>
       <v-divider class="mt-2 mb-5" />
       <input
@@ -18,12 +20,14 @@
           <v-col cols="12">
             <v-row>
               <button
-                :disabled="!filestatus"
+                :disabled="!fileStatus"
                 id="btnUploadSSL"
                 type="button"
                 class="eos-btn-primary mt-3"
                 @click="uploadCertificate()"
-              >Upload Certificate</button>
+              >
+                Upload certificate
+              </button>
               <span class="ml-7" v-if="$route.path !== '/onboarding'">
                 <EOSInstallSSL :installStatus="buttonStatus" />
               </span>
@@ -87,17 +91,17 @@ export default class EOSUploadSSLConfig extends Vue {
     return {
       buttonStatus: false,
       status: "",
-      filestatus: false,
+      fileStatus: false,
       file: File,
       route: false
     };
   }
   private handleFileUpload(fileList: FileList) {
     this.$data.file = fileList[0];
-    this.$data.filestatus = true;
+    this.$data.fileStatus = true;
   }
   private async getCertificateStatus() {
-    this.$store.dispatch("systemConfig/showLoader", "getting certificate...");
+    this.$store.dispatch("systemConfig/showLoader", "Fetching certificate...");
     const res = await Api.getAll(apiRegister.ssl_status);
     this.$data.status = res.data;
     if (this.$data.status.status === "installation_successful") {

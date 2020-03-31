@@ -7,7 +7,7 @@
       class="eos-btn-primary"
       @click="openConfirmDialog()"
     >
-      Apply Certificate
+      Apply certificate
     </button>
     <eos-confirmation-dialog
       :show="showConfirmDialog"

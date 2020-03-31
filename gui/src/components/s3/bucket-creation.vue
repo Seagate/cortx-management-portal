@@ -13,7 +13,7 @@
             <label class="eos-form-group-label" for="bucketName">
               <eos-info-tooltip
                 label="Bucket name*"
-                :message="accountNameTooltipMessage"
+                :message="bucketNameTooltipMessage"
               />
             </label>
             <input
@@ -35,7 +35,7 @@
               <label
                 v-else-if="
                   $v.createBucketForm.bucket.bucket_name.$dirty &&
-                    !$v.createBucketForm.bucket.bucket_name.accountNameRegex
+                    !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
                 "
                 >Invalid bucket name</label
               >
@@ -236,8 +236,8 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 import {
-  accountNameRegex,
-  accountNameTooltipMessage
+  bucketNameRegex,
+  bucketNameTooltipMessage
 } from "./../../common/regex-helpers";
 
 @Component({
@@ -251,7 +251,7 @@ export default class EosBucketCreation extends Vue {
   public validations = {
     createBucketForm: {
       bucket: {
-        bucket_name: { required, accountNameRegex }
+        bucket_name: { required, bucketNameRegex }
       }
     },
     policyJSON: {
@@ -280,7 +280,7 @@ export default class EosBucketCreation extends Vue {
   private bucketToDelete: string = "";
   private policyJSON: any = "";
   private bucketName: any = "";
-  private accountNameTooltipMessage: string = accountNameTooltipMessage;
+  private bucketNameTooltipMessage: string = bucketNameTooltipMessage;
 
   constructor() {
     super();
