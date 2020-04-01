@@ -1,9 +1,9 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="font-weight-bold mt-6" id="lblIp4Source">
+      <div class="font-weight-bold mt-5" id="lblIp4Source">
         Source:
-        <label class="eos-rdb-container ml-10">
+        <label class="eos-rdb-container ml-9">
           DHCP
           <input
             type="radio"
@@ -15,10 +15,10 @@
           <span class="eos-rdb-tick" id="lblIp4DHCP"></span>
         </label>
       </div>
-      <div class="row ma-0 mt-3">
+      <div class="row ma-0">
         <div class="col-1 body-2 column pa-0 node-container">
           <div class="mt-5 font-weight-bold">
-            <div class="mt-6">
+            <div class="mt-7">
               <label>VIP*: </label>
             </div>
           </div>

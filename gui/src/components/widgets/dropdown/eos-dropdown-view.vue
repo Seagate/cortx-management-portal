@@ -65,14 +65,14 @@ export default class EosDropdown extends Vue {
   display: inline-block;
   outline: none;
   position: relative;
+  height: 40px;
 }
 .eos-dropdown-title {
   display: inline-block;
   background: #ffffff;
   border: 1px solid #b7b7b7;
   border-radius: 4px;
-  height: 2.5em;
-  padding: 0.375em 0.625em 0.375em 0.625em;
+  padding: 0.6em 0.625em 0.375em 1em;
   cursor: pointer;
   width: 100%;
 }

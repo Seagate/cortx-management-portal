@@ -1,7 +1,7 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="mt-4" v-if="source === 'ntp'">
+      <div class="mt-2" v-if="source === 'ntp'">
         <div
           class="eos-form-group"
           :class="{
@@ -11,7 +11,7 @@
           <label
             class="eos-form-group-label"
             for="hostname"
-            id="lblDTNetworkServeradd"
+            id="lblDTNetworkServerAdd"
             >NTP server address*</label
           >
           <input
@@ -37,22 +37,14 @@
           <label
             class="eos-form-group-label"
             for="hostname"
-            id="lblDTNetworkServeradd"
+            id="lblNTPTimeZoneAdd"
             >NTP time zone offset*</label
           >
-          <select
-            name="zone"
-            id="cmdZone"
-            class="eos-form__input_text"
-            v-model="NtpTimezone"
-          >
-            <option
-              v-for="option in timezoneList"
-              :key="option"
-              :value="option"
-              >{{ option }}</option
-            >
-          </select>
+          <eos-dropdown
+            @update:selectedOption="handleDropdownSelect"
+            :options="createOptionsForDropdown(timezoneList)"
+            :title="NtpTimezone ? NtpTimezone : undefined"
+          ></eos-dropdown>
         </div>
       </div>
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
@@ -164,6 +156,14 @@ export default class EosDateTimeConfig extends Vue {
       }
     };
     this.$emit("apply-settings", queryParams);
+  }
+  private createOptionsForDropdown(list: string[]) {
+    return list.map((e: string) => {
+      return { label: e, value: e };
+    });
+  }
+  private handleDropdownSelect(selected: any) {
+    this.$data.NtpTimezone = selected.value;
   }
 }
 </script>

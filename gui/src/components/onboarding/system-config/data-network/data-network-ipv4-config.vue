@@ -1,9 +1,9 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="font-weight-bold mt-6">
-        Source
-        <label class="eos-rdb-container ml-10">
+      <div class="font-weight-bold mt-5">
+        Source:
+        <label class="eos-rdb-container ml-9">
           Manual
           <input type="radio" name="source" v-model="source" value="manual" />
           <span class="eos-rdb-tick" id="lblIp4Manual"></span>
@@ -21,10 +21,10 @@
         </label>
       </div>
 
-      <div class="row ma-0 mt-3">
+      <div class="row ma-0">
         <div class="col-1 body-2 column pa-0 node-container">
           <div class="mt-5 font-weight-bold">
-            <div class="mt-6">
+            <div class="mt-7">
               <label>VIP*: </label>
             </div>
           </div>
@@ -68,17 +68,17 @@
         </template>
       </div>
 
-      <div class="row ma-0 mt-5" v-if="source == 'manual'">
+      <div class="row ma-0 mt-4" v-if="source == 'manual'">
         <div class="col-1 body-2 column pa-0 node-container mr-12">
           <div class="mt-5 font-weight-bold">
             <div class="mt-12">
-              <label>IPaddress*</label>
+              <label>IPaddress*:</label>
             </div>
             <div class="mt-12">
-              <label>Gateway*</label>
+              <label>Gateway*:</label>
             </div>
             <div class="mt-12">
-              <label>Netmask</label>
+              <label>Netmask:</label>
             </div>
           </div>
         </div>

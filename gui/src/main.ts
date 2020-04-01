@@ -25,6 +25,7 @@ import EosHasAccess from "./components/security/has-access.vue";
 import { userPermissions as userPermissionsMap } from "./common/user-permissions-map";
 import EosInfoTooltip from "./components/widgets/eos-info-tooltip.vue";
 import EosConfirmationDialog from "./components/widgets/eos-confirmation-dialog.vue";
+import EosDropdown from "./components/widgets/dropdown/eos-dropdown-view.vue";
 
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
@@ -60,6 +61,7 @@ Vue.prototype.$hasAccessToCsm = function(role: string) {
 Vue.component("eos-has-access", EosHasAccess);
 Vue.component("eos-info-tooltip", EosInfoTooltip);
 Vue.component("eos-confirmation-dialog", EosConfirmationDialog);
+Vue.component("eos-dropdown", EosDropdown);
 
 Vue.prototype.$eosUserPermissions = userPermissionsMap;
 
