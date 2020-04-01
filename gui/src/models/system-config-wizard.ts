@@ -146,7 +146,7 @@ export const wizardConfig = {
       footer: {
         nextComponent: "EosNotifications",
         prevComponent: "EosDnsSettings",
-        nextBtnText: "Apply and continue",
+        nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }
@@ -179,7 +179,7 @@ export const wizardConfig = {
       footer: {
         nextComponent: "EosNotificationsSyslog",
         prevComponent: "EosNotifications",
-        nextBtnText: "Apply and continue",
+        nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
       }

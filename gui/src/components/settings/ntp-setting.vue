@@ -4,6 +4,7 @@
       <div class="eos-text-lg mt-0 font-weight-bold" id="lblDTSetDateTime">
         Network time protocol (NTP) settings
       </div>
+      <v-divider class="mt-2" />
       <eosDateTimeConfig @apply-settings="applySettings" />
     </div>
   </v-container>

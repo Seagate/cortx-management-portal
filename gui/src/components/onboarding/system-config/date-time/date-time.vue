@@ -4,7 +4,8 @@
       <div class="title mt-0 font-weight-bold" id="lblDTSetDateTime">
         Network time protocol (NTP) settings
       </div>
-      <eosDateTimeConfig/>
+      <v-divider class="mt-2" />
+      <eosDateTimeConfig />
     </div>
   </v-container>
 </template>
@@ -17,13 +18,9 @@ import EosDateTimeConfig from "./date-time-config.vue";
   name: "eos-date-time",
   components: {
     eosDateTimeConfig: EosDateTimeConfig
-
   }
 })
-
-export default class EosDateTime extends Vue {
-}
+export default class EosDateTime extends Vue {}
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -3,7 +3,8 @@
     <div class="pl-4 body-2">
       <div class="mt-6" id="lblVersion">
         <span class="eos-text-bold"
-          >Last uploaded file: {{ status.filename }} : {{ status.date }}</span
+          >Last uploaded file: {{ status.filename
+          }}{{ status.date ? " : " + status.date : "" }}</span
         >
       </div>
       <v-divider class="mt-2 mb-5" />

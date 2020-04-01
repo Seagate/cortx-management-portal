@@ -1,10 +1,17 @@
 <template>
-  <v-container class="mt-6 ml-0">
-    <div id="app">
-      <v-expansion-panels>
+  <v-container class="mt-0 ml-0">
+    <div class="pl-4 body-2">
+      <div class="title mt-0 font-weight-bold" id="lblNetworkIP4">
+        Onboarding Summary
+      </div>
+      <div class="mt-3" id="lblNetworkMsg">
+        Please verify the configurations below.
+      </div>
+      <v-divider class="mt-2" />
+      <v-expansion-panels class="mt-5">
         <v-expansion-panel v-if="managementData[0]">
-          <v-expansion-panel-header class="eos-text-lg"
-            >Management network setting</v-expansion-panel-header
+          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+            >Management network settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
@@ -26,8 +33,8 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg"
-            >Data network setting</v-expansion-panel-header
+          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+            >Data network settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
@@ -43,17 +50,17 @@
                   <div class="eos-form-group mt-0 ml-0">
                     <div class="mt-3">
                       <div class="eos-text-lg">
-                        <label>Ip Address</label>
+                        <label>IP Address</label>
                         <span class="ml-9">{{ node.ip_address }}</span>
                       </div>
                     </div>
-                    <div class="mt-3">
+                    <div class="mt-3" v-if="node.name !== 'VIP'">
                       <div class="eos-text-lg">
                         <label>Gateway</label>
                         <span class="ml-12">{{ node.gateway }}</span>
                       </div>
                     </div>
-                    <div class="mt-3">
+                    <div class="mt-3" v-if="node.name !== 'VIP'">
                       <div class="eos-text-lg">
                         <label>Netmask</label>
                         <span class="ml-12">{{ node.netmask }}</span>
@@ -66,8 +73,8 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg"
-            >DNS setting</v-expansion-panel-header
+          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+            >DNS settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
@@ -100,8 +107,8 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg"
-            >NTP setting</v-expansion-panel-header
+          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+            >NTP settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
             <div class="row ma-0 mt-3">
@@ -128,10 +135,10 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg"
+          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
             >Notifications</v-expansion-panel-header
           >
-          <v-expansion-panel-content>
+          <v-expansion-panel-content v-if="notificationData">
             <div class="row ma-0 mt-3">
               <template>
                 <div class="col-3 body-2 column node-container mr-5">
@@ -185,7 +192,7 @@
       <eos-confirmation-dialog
         :show="showConfirmDialog"
         title="Confirmation"
-        :message="'You are moving on new IP address ' + new_url"
+        :message="'You are moving on new IP address ' + newUrl"
         severity="info"
         @closeDialog="closeConfirmDialog"
         confirmButtonText="Continue"
@@ -212,7 +219,7 @@ export default class EosOnboardingSummary extends Vue {
       managementData: [],
       dataNetwork: [],
       dnsData: [],
-      new_url: "",
+      newUrl: "",
       showConfirmDialog: false,
       wizardRes: undefined,
       notificationData: {}
@@ -251,17 +258,23 @@ export default class EosOnboardingSummary extends Vue {
   }
   get managementNetworkGetter(): any {
     const systemconfig = this.$store.getters["systemConfig/systemconfig"];
+    let redirectUrl;
+
     if (systemconfig) {
       if (
         systemconfig.management_network_settings &&
-        systemconfig.management_network_settings.ipv4
+        systemconfig.management_network_settings.ipv4 &&
+        systemconfig.management_network_settings.ipv4.nodes &&
+        systemconfig.management_network_settings.ipv4.nodes[0]
       ) {
         this.$data.managementData =
           systemconfig.management_network_settings.ipv4.nodes;
+        redirectUrl = this.$data.managementData[0].ip_address;
       }
       if (
         systemconfig.data_network_settings &&
-        systemconfig.data_network_settings.ipv4
+        systemconfig.data_network_settings.ipv4 &&
+        systemconfig.data_network_settings.ipv4.nodes
       ) {
         this.$data.dataNetwork = systemconfig.data_network_settings.ipv4.nodes;
       }
@@ -277,18 +290,15 @@ export default class EosOnboardingSummary extends Vue {
         this.$data.serverAddress =
           systemconfig.date_time_settings.ntp.ntp_server_address;
       }
-      if (systemconfig.notifications) {
+      if (systemconfig.notifications && systemconfig.notifications.email) {
         this.$data.notificationData = systemconfig.notifications.email;
       }
-      // const url = window.location.href;
-      // const protocol = location.protocol;
-      // const port = location.port;
-      // this.$data.new_url = protocol.concat(
-      //   "//",
-      //   this.$data.managementData[0].hostname,
-      //   ":",
-      //   port
-      // );
+      const protocol = window.location.protocol;
+      const defaultUrl = window.location.hostname;
+      const port = window.location.port;
+      this.$data.newUrl = `${protocol}//${
+        redirectUrl ? redirectUrl : defaultUrl
+      }:${port}`;
     }
     return true;
   }

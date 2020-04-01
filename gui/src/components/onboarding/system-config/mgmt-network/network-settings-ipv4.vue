@@ -4,7 +4,7 @@
       <div class="title mt-0 font-weight-bold" id="lblNetworkIP4">
         Management network settings: IPv4
       </div>
-      <div class="mt-6" id="lblNetworkMsg">
+      <div class="mt-3" id="lblNetworkMsg">
         You need to configure a single IP address for management of this system.
       </div>
       <v-divider class="mt-2" />
