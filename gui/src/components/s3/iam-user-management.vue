@@ -158,18 +158,18 @@
         </v-card-title>
         <v-divider />
 
-        <table class="mx-7 mb-7">
-          <tr style>
-            <th style="width:15rem;height:6rem;text-align: left">Username</th>
-            <th style="width:24.2rem;text-align: left">User id</th>
-            <th style="width:5rem;text-align: left">ARN</th>
+        <table class="mt-2 ml-7 eos-text-md">
+          <tr>
+            <td class="py-2 eos-text-bold credentials-item-label">Username</td>
+            <td class="py-2">{{ user.user_name }}</td>
           </tr>
           <tr>
-            <td style="width:15rem;height:2rem;text-align: left">
-              {{ user.user_name }}
-            </td>
-            <td>{{ user.user_id }}</td>
-            <td>{{ user.arn }}</td>
+            <td class="py-2 eos-text-bold credentials-item-label">User id</td>
+            <td class="py-2">{{ user.user_id }}</td>
+          </tr>
+          <tr>
+            <td class="py-2 eos-text-bold credentials-item-label">ARN</td>
+            <td class="py-2">{{ user.arn }}</td>
           </tr>
         </table>
 
@@ -405,5 +405,8 @@ export default class EosIAMUserManagement extends Vue {
 .delete-user-confirmation-msg {
   color: #000;
   font-size: 16px;
+}
+.credentials-item-label {
+  width: 10rem;
 }
 </style>

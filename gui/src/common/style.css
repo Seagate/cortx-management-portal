@@ -55,6 +55,22 @@ body {
   color: #6ebe49;
 }
 
+.eos-text-information {
+  color: #00a1dd;
+}
+
+.eos-text-warning {
+  color: #f7a528;
+}
+
+.eos-text-alert {
+  color: #dc1f2e;
+}
+
+.eos-text-others {
+  color: #8B4513;
+}
+
 .eos-float-l {
   float: left;
 }
