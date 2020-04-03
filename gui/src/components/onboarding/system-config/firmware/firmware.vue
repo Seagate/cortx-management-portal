@@ -39,7 +39,7 @@
       <br />If a newer version is available, download it to your device and then install the file using button below.
     </div>
     <v-divider class="mt-2 mb-5" />
-    <div v-if="!showUploadForm && lastUpgradeStatus">
+    <div v-if="!showUploadForm">
       <button
         id="btnInstallFirmware"
         type="button"
@@ -51,7 +51,7 @@
         type="button"
         class="ml-5 eos-btn-primary"
         @click="startUpgrade()"
-        :disabled="!isPackageAvailable || lastUpgradeStatus.status === 'in_progress'"
+        :disabled="!isPackageAvailable || (lastUpgradeStatus && lastUpgradeStatus.status === 'in_progress')"
       >Start upgrade</button>
     </div>
     <div v-if="showUploadForm">
@@ -115,7 +115,7 @@ export default class EosFirmware extends Vue {
       "Fetching last upgrade status..."
     );
     const res: any = await Api.getAll(apiRegister.last_upgrade_status);
-    this.lastUpgradeStatus = res && res.data ? res.data : null;
+    this.lastUpgradeStatus = res && res.data && res.data.status ? res.data : null;
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
