@@ -11,12 +11,12 @@ Description=Cloud Storage Manager
 Environment=NODE_PORT=%i
 Type=simple
 PermissionsStartOnly=true
-ExecStartPre=
+#ExecStartPre=
 ExecStartPre=/usr/bin/mkdir -p /var/run/csm
 ExecStartPre=/usr/bin/chown csm:csm /var/run/csm
 ExecStart=/opt/nodejs/node-v12.13.0-linux-x64/bin/node <CSM_PATH>/web/web-dist/server.js &
-ExecStopPost=/sbin/fuser -k 28100/tcp
-ExecStopPost=/sbin/fuser -k 28102/tcp
+#ExecStopPost=/sbin/fuser -k 28100/tcp
+#ExecStopPost=/sbin/fuser -k 28102/tcp
 ExecStopPost=/bin/rm -rf /var/run/csm/csm_web.pid
 PIDFile=/var/run/csm/csm_web.pid
 User=csm
