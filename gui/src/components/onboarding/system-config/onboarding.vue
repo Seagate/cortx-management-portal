@@ -28,8 +28,8 @@ import EosWizard from "../../widgets/wizard/wizard.vue";
   }
 })
 export default class EosOnboarding extends Vue {
-  private mounted() {
-    this.$store.dispatch("systemConfig/getSystemConfigAction");
+  private async mounted() {
+    await this.$store.dispatch("systemConfig/getSystemConfigAction");
   }
 
   get systemConfigData() {
@@ -42,6 +42,5 @@ export default class EosOnboarding extends Vue {
 .onboarding-container {
   margin-left: 8.75em;
   margin-left: 7.75em;
-
 }
 </style>

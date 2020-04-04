@@ -433,8 +433,6 @@ router.beforeEach(async (to, from, next) => {
           });
         }
       } catch (error) {
-        // tslint:disable-next-line: no-console
-        console.log("getUserPermissionsAction failed", error);
         next({
           path: "/login"
         });
