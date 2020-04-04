@@ -23,3 +23,8 @@ export const passwordTooltipMessage =
   "Min 8 characters. Must contain at least 1 capital, 1 small, 1 special, 1 numeric character.";
 
 export const iamPathRegex = helpers.regex("pathRegex", /^(\/[^/ ]*)+\/?$/);
+// tslint:disable-next-line
+export const commaSeparatedEmailsRegex = helpers.regex(
+  "commaSeparatedEmailsRegex",
+  /^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$/
+);

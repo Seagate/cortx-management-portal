@@ -12,7 +12,8 @@
       <div class="eos-modal-body">
         <div class="title title-container">
           <img class="severity-img mr-2" :src="severityIcons[severity]" />
-          <span class="finish-text">{{ message }}</span>
+          <span v-if="isMessageInHTML" class="finish-text" v-html="message"></span>
+          <span v-else class="finish-text">{{ message }}</span>
         </div>
         <br />
         <div>
@@ -61,6 +62,9 @@ export default class EosConfirmationDialog extends Vue {
 
   @Prop({ required: false })
   public message!: string;
+
+  @Prop({ required: false, default: false })
+  public isMessageInHTML!: boolean;
 
   @Prop({ required: false })
   public submessage!: string;

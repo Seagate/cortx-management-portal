@@ -72,13 +72,13 @@
         <div class="col-1 body-2 column pa-0 node-container mr-12">
           <div class="mt-5 font-weight-bold">
             <div class="mt-12">
-              <label>IPaddress*:</label>
+              <label>IP address*:</label>
             </div>
             <div class="mt-12">
-              <label>Gateway*:</label>
+              <label>Netmask*:</label>
             </div>
             <div class="mt-12">
-              <label>Netmask:</label>
+              <label>Gateway:</label>
             </div>
           </div>
         </div>
@@ -124,32 +124,6 @@
             <div
               class="eos-form-group eos-form-group-custom mt-3"
               :class="{
-                'eos-form-group--error': node.gateway.$error
-              }"
-            >
-              <input
-                v-on:change="setGateway"
-                class="eos-form__input_text"
-                type="text"
-                :id="node.$model.id + 'txtDataNetworkIpv4Gateway'"
-                :name="node.$model.id + 'gateway'"
-                v-model.trim="node.gateway.$model"
-                @input="node.gateway.$touch"
-              />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label v-if="node.gateway.$dirty && !node.gateway.required"
-                  >Gateway is required</label
-                >
-                <label
-                  v-else-if="node.gateway.$dirty && !node.gateway.ipAddress"
-                  >Invalid gateway</label
-                >
-              </div>
-            </div>
-
-            <div
-              class="eos-form-group eos-form-group-custom mt-3"
-              :class="{
                 'eos-form-group--error': node.netmask.$error
               }"
             >
@@ -163,8 +137,34 @@
                 @input="node.netmask.$touch"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
-                <label v-if="node.netmask.$dirty && !node.netmask.ipAddress"
+                <label v-if="node.netmask.$dirty && !node.netmask.required"
+                  >Netmask is required</label
+                >
+                <label
+                  v-else-if="node.netmask.$dirty && !node.netmask.ipAddress"
                   >Invalid netmask</label
+                >
+              </div>
+            </div>
+
+            <div
+              class="eos-form-group eos-form-group-custom mt-3"
+              :class="{
+                'eos-form-group--error': node.gateway.$error
+              }"
+            >
+              <input
+                v-on:change="setGateway"
+                class="eos-form__input_text"
+                type="text"
+                :id="node.$model.id + 'txtDataNetworkIpv4Gateway'"
+                :name="node.$model.id + 'gateway'"
+                v-model.trim="node.gateway.$model"
+                @input="node.gateway.$touch"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label v-if="node.gateway.$dirty && !node.gateway.ipAddress"
+                  >Invalid gateway</label
                 >
               </div>
             </div>
@@ -214,12 +214,12 @@ export default class EosDataNetworkIpv4Config extends Vue {
           ipAddress
         },
         gateway: {
-          required: requiredIf(function(this: any, form) {
-            return this.$data.source === "manual";
-          }),
           ipAddress
         },
         netmask: {
+          required: requiredIf(function(this: any, form) {
+            return this.$data.source === "manual";
+          }),
           ipAddress
         }
       }
@@ -246,11 +246,15 @@ export default class EosDataNetworkIpv4Config extends Vue {
     }
   }
   private setGateway(e: any) {
+    let target = e.target.value;
+    if (!e.target.value) {
+      target = null;
+    }
     if (!this.$v.ipv4Nodes.$model[1].gateway) {
-      this.$v.ipv4Nodes.$model[1].gateway = e.target.value;
+      this.$v.ipv4Nodes.$model[1].gateway = target;
     }
     if (!this.$v.ipv4Nodes.$model[2].gateway) {
-      this.$v.ipv4Nodes.$model[2].gateway = e.target.value;
+      this.$v.ipv4Nodes.$model[2].gateway = target;
     }
   }
   private data() {
@@ -260,8 +264,8 @@ export default class EosDataNetworkIpv4Config extends Vue {
           id: 2,
           name: "VIP",
           ip_address: "",
-          netmask: null,
-          gateway: "0.0.0.0"
+          netmask: "0.0.0.0",
+          gateway: null
         },
         {
           id: 0,

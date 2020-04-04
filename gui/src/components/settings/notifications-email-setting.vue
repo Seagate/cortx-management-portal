@@ -4,7 +4,7 @@
       <div class="eos-text-lg mt-0 font-weight-bold" id="lblEmail">
         Notifications: Email
       </div>
-      <div class="mt-6" id="lblEmailMsg">
+      <div class="mt-3" id="lblEmailMsg">
         Selecting email will allow you to configure both secure and non-secure
         email servers for event notification. You can control the severity of
         events that you wish to receive, and you will be able to test out your

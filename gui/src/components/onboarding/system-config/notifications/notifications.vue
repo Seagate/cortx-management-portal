@@ -1,8 +1,10 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblNotification">Notifications</div>
-      <div class="mt-4">
+      <div class="title mt-0 font-weight-bold" id="lblNotification">
+        Notifications
+      </div>
+      <div class="mt-3">
         <div class="font-weight-regular black--text" id="lblNotificationMsg">
           The system will send out notifications of important events that may
           happen throughout the life of the product. It is highly recommended
@@ -13,12 +15,15 @@
           doing so is strongly discouraged.
         </div>
 
-        <div class="mt-5 font-weight-regular black--text" id="lblNotificationMsgChoose">
+        <div
+          class="mt-3 font-weight-regular black--text"
+          id="lblNotificationMsgChoose"
+        >
           Choose the notification options below that align best with your plans
           for supporting data infrastructure within your network.
         </div>
-        <v-divider class="mt-5" />
-        <div class="mt-5">
+        <v-divider class="mt-3" />
+        <div class="mt-6">
           <label class="eos-ckb-container" for="chkNotificationEmail">
             Email
             <input
@@ -30,7 +35,10 @@
             />
             <span class="eos-ckb-tick"></span>
           </label>
-          <div class="mt-2 font-weight-regular black--text" id="lblNotificationConfig">
+          <div
+            class="mt-2 font-weight-regular black--text"
+            id="lblNotificationConfig"
+          >
             Selecting Email will allow you to configure both secure and
             non-secure email servers for event notification. You can control the
             severity of events that you wish to receive, and you will be able to

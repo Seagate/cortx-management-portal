@@ -273,12 +273,6 @@ export default class SystemConfiguration extends VuexModule {
     this.systemConfigDetails.date_time_settings = { ...payload };
   }
 
-  // Summary Mutation
-  @Mutation
-  public updateSummaryMutation(payload: any) {
-    this.systemConfigDetails.is_summary = payload;
-  }
-
   @Mutation
   public setNetworkManagementSettings(networkType: any) {
     if (networkType.type === "ipV4") {
@@ -331,7 +325,11 @@ export default class SystemConfiguration extends VuexModule {
       const res = await Api.getAll(apiRegister.sysconfig);
       let data = {};
       if (res && res.data && Array.isArray(res.data)) {
-        data = res.data[0];
+        const defaultConfig = res.data[0];
+        if (defaultConfig.is_summary) {
+          defaultConfig.is_summary = false;
+        }
+        data = defaultConfig;
         this.context.commit("systemConfigMutation", data);
         return data;
       }
@@ -446,7 +444,8 @@ export default class SystemConfiguration extends VuexModule {
       const res = await Api.put(
         apiRegister.sysconfig,
         this.systemConfigDetails,
-        this.systemConfigDetails.config_id
+        this.systemConfigDetails.config_id,
+        { timeout: -1 }
       );
       return res;
     } catch (e) {
@@ -458,11 +457,11 @@ export default class SystemConfiguration extends VuexModule {
   @Action
   public async updateSummary(payload: any) {
     try {
-      this.context.commit("updateSummaryMutation", payload);
       const res = await Api.put(
         apiRegister.sysconfig,
-        this.systemConfigDetails,
-        this.systemConfigDetails.config_id
+        { ...this.systemConfigDetails, is_summary: payload },
+        this.systemConfigDetails.config_id,
+        { timeout: -1 }
       );
       return res;
     } catch (e) {

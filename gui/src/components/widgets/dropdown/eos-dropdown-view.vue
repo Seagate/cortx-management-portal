@@ -72,7 +72,7 @@ export default class EosDropdown extends Vue {
   background: #ffffff;
   border: 1px solid #b7b7b7;
   border-radius: 4px;
-  padding: 0.6em 0.625em 0.375em 1em;
+  padding: 0.5em 0.625em 0.375em 1em;
   cursor: pointer;
   width: 100%;
 }

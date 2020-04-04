@@ -2,13 +2,19 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="row ma-0">
-        <div class="col-1 body-2 column node-container">
+        <div class="col-2 body-2 column node-container">
           <div class="mt-5 font-weight-bold">
             <div class="mt-6 dns-label">
-              <label>DNS server*:</label>
+              <eos-info-tooltip
+                label="DNS servers*:"
+                message="Enter DNS server value as comma ',' separated"
+              />
             </div>
             <div class>
-              <label>Search domain*:</label>
+              <eos-info-tooltip
+                label="Search domains*:"
+                message="Enter Search domain value as comma ',' separated"
+              />
             </div>
           </div>
         </div>
@@ -26,6 +32,7 @@
                 }"
               >
                 <textarea
+                  v-on:change="setDNSServers(node.$model.id)"
                   class="eos-form__input_textarea eos-form__input_textarea-custom"
                   rows="3"
                   placeholder="Enter DNS server value as comma ',' separated"
@@ -48,6 +55,7 @@
                 }"
               >
                 <textarea
+                  v-on:change="setSearchDomain(node.$model.id)"
                   class="eos-form__input_textarea eos-form__input_textarea-custom"
                   :id="node.$model.id + 'txtSearchDomain'"
                   :name="node.$model.id + 'search-domain'"
@@ -122,25 +130,43 @@ export default class EosDnsSettingConfig extends Vue {
         {
           id: 0,
           name: "Node 0",
-          dns_servers: "",
-          search_domain: ""
+          dns_servers: null,
+          search_domain: null
         }
       ],
       isValid: true
     };
   }
 
+  private setDNSServers(nodeId: number) {
+    const dnsServers = this.$v.dnsNodes.$model[nodeId].dns_servers;
+    this.$v.dnsNodes.$model[nodeId].dns_servers = dnsServers.replace(
+      /\s+/g,
+      ""
+    );
+  }
+  private setSearchDomain(nodeId: number) {
+    const searchDomains = this.$v.dnsNodes.$model[nodeId].search_domain;
+    this.$v.dnsNodes.$model[nodeId].search_domain = searchDomains.replace(
+      /\s+/g,
+      ""
+    );
+  }
+
   private splitByComma(str: string) {
     return str.split(",").filter(Boolean);
   }
   private updateDNSconfig() {
-    this.$data.dnsNodes = this.$data.dnsNodes.map((e: any) => {
-      e.dns_servers = this.splitByComma(`${e.dns_servers}`);
-      e.search_domain = this.splitByComma(`${e.search_domain}`);
-      return e;
-    });
+    // Return only node 0 configurations by filtering node by ID 0
+    const nodes = this.$data.dnsNodes
+      .map((e: any) => {
+        e.dns_servers = this.splitByComma(`${e.dns_servers}`);
+        e.search_domain = this.splitByComma(`${e.search_domain}`);
+        return e;
+      })
+      .filter((e: any) => e.id === 0);
     const queryParams: DnsNetworkSettings = {
-      nodes: this.$data.dnsNodes
+      nodes
     };
     return this.$store.dispatch("systemConfig/updateDNSSetting", queryParams);
   }
@@ -176,11 +202,15 @@ export default class EosDnsSettingConfig extends Vue {
     return true;
   }
   private applySettings() {
-    const nodes = this.$data.dnsNodes.map((e: any) => {
-      e.dns_servers = this.splitByComma(`${e.dns_servers}`);
-      e.search_domain = this.splitByComma(`${e.search_domain}`);
-      return e;
-    });
+    // Return only node 0 configurations by filtering node by ID 0
+    const nodes = this.$data.dnsNodes
+      .map((e: any) => {
+        e.dns_servers = this.splitByComma(`${e.dns_servers}`);
+        e.search_domain = this.splitByComma(`${e.search_domain}`);
+        return e;
+      })
+      .filter((e: any) => e.id === 0);
+
     const queryParams: DnsNetworkSettings = {
       nodes
     };
