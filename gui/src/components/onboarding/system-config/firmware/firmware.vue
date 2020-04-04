@@ -25,12 +25,6 @@
             <label>{{ lastUpgradeStatus.status.toUpperCase() }}</label>
           </td>
         </tr>
-        <tr>
-          <td style="width: 180px;">
-            <label class="eos-text-bold">Last Upgraded version:</label>
-          </td>
-          <td style="padding-top: 3px;">{{ lastUpgradeStatus.version }}</td>
-        </tr>
       </table>
     </div>
     <div class="mt-6 eos-text-md" id="lblUpdateFirmwareMsg">
