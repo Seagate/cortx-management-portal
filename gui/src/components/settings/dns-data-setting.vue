@@ -35,6 +35,14 @@ export default class EosDnsDataSetting extends Vue {
     this.$data.sysconfigData = await this.$store.dispatch(
       "systemConfig/getSystemConfigAction"
     );
+    if (!this.$data.sysconfigData) {
+      const errorMessage = `No configurations found. Please complete the onboarding process`;
+      throw {
+        error: {
+          message: errorMessage
+        }
+      };
+    }
     this.$store.dispatch("systemConfig/hideLoader");
   }
   private async applySettings(data: object) {
@@ -46,7 +54,8 @@ export default class EosDnsDataSetting extends Vue {
       {
         params: {
           config_type: "dns_network_settings"
-        }
+        },
+        timeout: -1
       }
     );
     this.$store.dispatch("systemConfig/hideLoader");

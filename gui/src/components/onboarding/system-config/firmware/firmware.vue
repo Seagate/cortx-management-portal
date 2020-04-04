@@ -157,7 +157,7 @@ export default class EosFirmware extends Vue {
   public async uploadFirmwarePackage() {
     if (this.firmwarePackage !== null) {
       this.$store.dispatch(
-        "systemConfig/showInfiniteLoader",
+        "systemConfig/showLoader",
         "Uploading the package..."
       );
       const formData = new FormData();

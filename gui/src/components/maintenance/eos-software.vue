@@ -10,23 +10,23 @@
       <table>
         <tr>
           <td style="width: 180px;">
-            <label class="eos-text-bold">Last Upgrade status:</label>
+            <label class="eos-text-bold">Last upgrade status:</label>
           </td>
-          <td style="padding-top: 3px;">
-            <label>{{ lastUpgradeStatus.status }}</label>
+          <td style="padding-top: 2px;">
+            <label>{{ lastUpgradeStatus.status || "Not available" }}</label>
           </td>
         </tr>
         <tr v-if="lastUpgradeStatus.version">
-          <td style="width: 180px;">
-            <label class="eos-text-bold">Last Upgraded version:</label>
+          <td>
+            <label class="eos-text-bold">Last upgrade version:</label>
           </td>
-          <td style="padding-top: 3px;">{{ lastUpgradeStatus.version }}</td>
+          <td style="padding-top: 2px;">{{ lastUpgradeStatus.version }}</td>
         </tr>
         <tr v-if="lastUpgradeStatus.description">
-          <td style="width: 180px;">
-            <label class="eos-text-bold">Last Upgrade description:</label>
+          <td>
+            <label class="eos-text-bold">Last upgrade description:</label>
           </td>
-          <td style="padding-top: 3px;">
+          <td style="padding-top: 2px;">
             <label>{{ lastUpgradeStatus.description }}</label>
           </td>
         </tr>
@@ -151,24 +151,39 @@ export default class EosHotfix extends Vue {
   public async uploadHotfixPackage() {
     if (this.hotfixPackage !== null) {
       this.$store.dispatch(
-        "systemConfig/showInfiniteLoader",
+        "systemConfig/showLoader",
         "Uploading the package..."
       );
       const formData = new FormData();
       formData.append("package", this.hotfixPackage);
-      const res = await Api.uploadFile(apiRegister.hotfix_upload, formData);
-      this.closeUploadForm();
-      this.isPackageAvailable = true;
-      this.$store.dispatch("systemConfig/hideLoader");
+      try {
+        const res = await Api.uploadFile(apiRegister.hotfix_upload, formData);
+      } catch (error) {
+        let errorMessage = "No response, please check the upload status";
+        if (error && error.error && error.error.message) {
+          errorMessage = error.message;
+        }
+        throw {
+          error: {
+            message: errorMessage
+          }
+        };
+      } finally {
+        this.closeUploadForm();
+        this.isPackageAvailable = true;
+        this.$store.dispatch("systemConfig/hideLoader");
+        await this.getLastUpgradeStatus();
+      }
     }
   }
   public async startUpgrade() {
     this.$store.dispatch(
-      "systemConfig/showInfiniteLoader",
+      "systemConfig/showLoader",
       "Hotfix upgrade in progress..."
     );
     const res = await Api.post(apiRegister.hotfix_start, {}, { timeout: -1 });
     this.$store.dispatch("systemConfig/hideLoader");
+    await this.getLastUpgradeStatus();
   }
   public closeUploadForm() {
     const fileInput: any = this.$refs.hotfixPackageFileInput;

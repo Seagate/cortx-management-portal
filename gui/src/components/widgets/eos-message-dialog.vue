@@ -46,7 +46,7 @@ export default class EosMessageDialog extends Vue {
 <style lang="scss" scoped>
 .eos-msg-dialog-container {
   background: #ffffff;
-  width: 424px;
+  width: 500px;
   max-height: 283px;
 }
 .eos-msg-dialog-header {
@@ -70,9 +70,11 @@ export default class EosMessageDialog extends Vue {
   font-size: 14px;
   line-height: 20px;
   color: rgba(0, 0, 0, 0.87);
+  overflow: auto;
+  word-wrap: break-word;
 }
 .eos-msg-dialog-header-title {
-  width: 347px;
+  width: 415px;
 }
 .eos-msg-dialog-close {
   width: 28px;

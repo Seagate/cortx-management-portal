@@ -50,7 +50,6 @@ export default class SystemConfiguration extends VuexModule {
   public isDataNetworkSettingsSkip: boolean = false;
   public loaderShow: boolean = false;
   public loaderMessage: string = "";
-  public loaderTimeout: any;
   public notifications: Notifications = {} as Notifications;
   public isLocalUser: boolean = false;
   public isLdapUser: boolean = false;
@@ -326,7 +325,7 @@ export default class SystemConfiguration extends VuexModule {
       let data = {};
       if (res && res.data && Array.isArray(res.data)) {
         const defaultConfig = res.data[0];
-        if (defaultConfig.is_summary) {
+        if (defaultConfig && defaultConfig.is_summary) {
           defaultConfig.is_summary = false;
         }
         data = defaultConfig;
@@ -538,19 +537,6 @@ export default class SystemConfiguration extends VuexModule {
       show: true,
       message
     });
-    clearTimeout(this.loaderTimeout);
-    this.loaderTimeout = setTimeout(() => {
-      this.context.dispatch("hideLoader");
-    }, 20000);
-  }
-
-  @Action
-  public async showInfiniteLoader(message: string) {
-    this.context.commit("loaderConfigMutation", {
-      show: true,
-      message
-    });
-    clearTimeout(this.loaderTimeout);
   }
 
   @Action
