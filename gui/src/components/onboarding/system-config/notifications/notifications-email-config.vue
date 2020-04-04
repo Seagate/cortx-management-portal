@@ -67,16 +67,11 @@
               id="lblDTNetworkServeradd"
               >Protocol*</label
             >
-            <select
-              name="cmdProtocol"
-              id="cmdProtocol"
-              class="eos-form__input_text"
-              v-model="protocol"
-            >
-              <option value="ssl">SSL</option>
-              <option value="tls">TLS</option>
-              <option value="starttls">STARTTLS</option>
-            </select>
+            <eos-dropdown
+              @update:selectedOption="handleDropdownSelect"
+              :options="protocolList"
+              :title="protocol ? protocol : undefined"
+            ></eos-dropdown>
           </div>
         </div>
       </div>
@@ -142,7 +137,7 @@
               >
               <label
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.minLength"
-                >Minimum 4 charactor required</label
+                >Minimum 4 character required</label
               >
             </div>
           </div>
@@ -197,6 +192,7 @@
               >Receiver email addresses*</label
             >
             <textarea
+              @change="setReceiverEmailAddresses"
               class="eos-form__input_textarea"
               id="txtEmailsenderemail"
               name="senderpassword"
@@ -208,7 +204,11 @@
               <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required"
                 >Email is required</label
               >
-              <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.email"
+              <label
+                v-if="
+                  $v.emailaddress.$dirty &&
+                    !$v.emailaddress.commaSeparatedEmailsRegex
+                "
                 >Enter valid comma ',' seperated emails</label
               >
             </div>
@@ -265,6 +265,7 @@ import {
   minLength,
   maxLength
 } from "vuelidate/lib/validators";
+import { commaSeparatedEmailsRegex } from "./../../../../common/regex-helpers";
 
 @Component({
   name: "eos-notification"
@@ -288,7 +289,7 @@ export default class EosNotifications extends Vue {
     },
     emailaddress: {
       required,
-      email
+      commaSeparatedEmailsRegex
     },
     smtpport: {
       required,
@@ -302,6 +303,20 @@ export default class EosNotifications extends Vue {
       senderemail: "",
       smtpport: 465,
       protocol: "ssl",
+      protocolList: [
+        {
+          label: "SSL",
+          value: "ssl"
+        },
+        {
+          label: "TLS",
+          value: "tls"
+        },
+        {
+          label: "STARTTLS",
+          value: "starttls"
+        }
+      ],
       senderpassword: "",
       confirmpassword: "",
       emailaddress: "",
@@ -314,6 +329,9 @@ export default class EosNotifications extends Vue {
     };
   }
 
+  private setReceiverEmailAddresses(e: any) {
+    this.$data.emailaddress = e.target.value.replace(/\s+/g, "");
+  }
   private mounted() {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
@@ -433,6 +451,9 @@ export default class EosNotifications extends Vue {
       email: this.$data.emailaddress
     };
     this.$emit("apply-settings", queryParams);
+  }
+  private handleDropdownSelect(selected: any) {
+    this.$data.protocol = selected.value;
   }
 }
 </script>

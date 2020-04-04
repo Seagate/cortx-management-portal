@@ -1,14 +1,16 @@
 <template>
   <v-container>
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblIpv4Dns">SSL upload</div>
-      <div
-        class="mt-6"
-        id="lblIpv4Msg"
-      >You need to upload ssl and key certificate here</div>
-      <eosUploadSSLConfig/>
+      <div class="title mt-0 font-weight-bold" id="lblSSLUpload">
+        SSL upload
+      </div>
+      <div class="mt-3" id="lblSSLUploadMsg">
+        You need to upload ssl and key certificate here
+      </div>
+      <v-divider class="mt-2" />
+      <eosUploadSSLConfig />
     </div>
-   </v-container>
+  </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
@@ -33,10 +35,6 @@ import EOSUploadSSLConfig from "./upload-ssl-config.vue";
     eosUploadSSLConfig: EOSUploadSSLConfig
   }
 })
-
-export default class EOSUploadSSL extends Vue {
-}
-
+export default class EOSUploadSSL extends Vue {}
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

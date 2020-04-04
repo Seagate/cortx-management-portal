@@ -47,7 +47,8 @@ export default class EosNtpSetting extends Vue {
       {
         params: {
           config_type: "date_time_settings"
-        }
+        },
+        timeout: -1
       }
     );
     this.$store.dispatch("systemConfig/hideLoader");

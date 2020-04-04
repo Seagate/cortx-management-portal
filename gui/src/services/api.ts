@@ -137,10 +137,15 @@ export abstract class Api {
       });
   }
   // Wrapper method for update api
-  public static async put(url: string, payload: object, id: string) {
+  public static async put(
+    url: string,
+    payload: object,
+    id: string,
+    config?: object
+  ) {
     const tempURL = id ? url + "/" + id : url;
     return await axios
-      .put(tempURL, payload)
+      .put(tempURL, payload, config)
       .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
       })

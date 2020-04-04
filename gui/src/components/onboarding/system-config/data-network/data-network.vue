@@ -1,17 +1,17 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblDns">Data network settings</div>
-      <div class="mt-6" id="lblMsg">
+      <div class="title mt-0 font-weight-bold" id="lblDataNetwork">Data network settings</div>
+      <div class="mt-3" id="lblMsg">
         Use the following options to finalize your Data network settings for
         mapping the system. You can set system to be managed in an IPv4
         network.Additionally the system can be configured to utilize DNS within
         your network. You can skip this section entirely if your network
         settings are complete.
       </div>
-      <div class="mt-8" id="lblChoseMsg">Chose which network settings you'd like to establish.</div>
+      <div class="mt-3" id="lblChoseMsg">Chose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
-      <div class="mt-8">
+      <div class="mt-6">
         <label class="eos-ckb-container">
           IPv4
           <input

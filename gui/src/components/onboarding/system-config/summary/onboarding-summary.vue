@@ -1,33 +1,29 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblNetworkIP4">
+      <div class="title mt-0 font-weight-bold" id="lblOnboardingSummary">
         Onboarding Summary
       </div>
-      <div class="mt-3" id="lblNetworkMsg">
+      <div class="mt-3" id="lblOnboardingSummaryMsg">
         Please verify the configurations below.
       </div>
       <v-divider class="mt-2" />
       <v-expansion-panels class="mt-5">
-        <v-expansion-panel v-if="managementData[0]">
+        <v-expansion-panel>
           <v-expansion-panel-header class="eos-text-lg font-weight-bold"
             >Management network settings</v-expansion-panel-header
           >
-          <v-expansion-panel-content>
-            <div class="row ma-0 mt-3">
-              <div class="col-3 body-2 column node-container mr-5">
-                <span class="font-weight-bold" id="lblIpv4Node">VIP</span>
+          <v-expansion-panel-content v-if="managementData[0]">
+            <div class="row ma-0">
+              <div class="col-3 body-2 column mr-5">
+                <span class="font-weight-bold">VIP</span>
                 <v-divider class="mt-2" />
-                <div class="eos-form-group mt-0 ml-0">
-                  <div class="mt-3">
-                    <div class="eos-text-lg">
-                      <label>IP address</label>
-                      <span class="ml-9">{{
-                        managementData[0].ip_address
-                      }}</span>
-                    </div>
-                  </div>
-                </div>
+                <table class="mt-3 eos-text-lg">
+                  <tr>
+                    <td class="table-data-label">IP Address:</td>
+                    <td>{{ managementData[0].ip_address }}</td>
+                  </tr>
+                </table>
               </div>
             </div>
           </v-expansion-panel-content>
@@ -37,36 +33,25 @@
             >Data network settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
-            <div class="row ma-0 mt-3">
+            <div class="row ma-0">
               <template v-for="(node, index) in dataNetwork">
-                <div
-                  class="col-3 body-2 column node-container mr-5"
-                  :key="index"
-                >
-                  <span class="font-weight-bold" id="lblIpv4Node">{{
-                    node.name
-                  }}</span>
+                <div class="col-3 body-2 column mr-5" :key="index">
+                  <span class="font-weight-bold">{{ node.name }}</span>
                   <v-divider class="mt-2" />
-                  <div class="eos-form-group mt-0 ml-0">
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label>IP Address</label>
-                        <span class="ml-9">{{ node.ip_address }}</span>
-                      </div>
-                    </div>
-                    <div class="mt-3" v-if="node.name !== 'VIP'">
-                      <div class="eos-text-lg">
-                        <label>Gateway</label>
-                        <span class="ml-12">{{ node.gateway }}</span>
-                      </div>
-                    </div>
-                    <div class="mt-3" v-if="node.name !== 'VIP'">
-                      <div class="eos-text-lg">
-                        <label>Netmask</label>
-                        <span class="ml-12">{{ node.netmask }}</span>
-                      </div>
-                    </div>
-                  </div>
+                  <table class="mt-3 eos-text-lg">
+                    <tr>
+                      <td class="table-data-label">IP Address:</td>
+                      <td>{{ node.ip_address }}</td>
+                    </tr>
+                    <tr v-if="node.name !== 'VIP'">
+                      <td>Gateway:</td>
+                      <td>{{ node.gateway }}</td>
+                    </tr>
+                    <tr v-if="node.name !== 'VIP'">
+                      <td>Netmask:</td>
+                      <td>{{ node.netmask }}</td>
+                    </tr>
+                  </table>
                 </div>
               </template>
             </div>
@@ -77,30 +62,21 @@
             >DNS settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
-            <div class="row ma-0 mt-3">
+            <div class="row ma-0">
               <template v-for="(node, index) in dnsData">
-                <div
-                  class="col-3 body-2 column node-container mr-5"
-                  :key="index"
-                >
-                  <span class="font-weight-bold" id="lblIpv4Node">{{
-                    node.name
-                  }}</span>
+                <div class="col-4 body-2 column mr-5" :key="index">
+                  <span class="font-weight-bold">{{ node.name }}</span>
                   <v-divider class="mt-2" />
-                  <div class="eos-form-group mt-0 ml-0">
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label>DNS servers</label>
-                        <span class="ml-10">{{ node.dns_servers }}</span>
-                      </div>
-                    </div>
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label>Search domains</label>
-                        <span class="ml-5">{{ node.search_domain }}</span>
-                      </div>
-                    </div>
-                  </div>
+                  <table class="mt-3 eos-text-lg">
+                    <tr>
+                      <td class="table-data-label">DNS servers:</td>
+                      <td>{{ node.dns_servers }}</td>
+                    </tr>
+                    <tr>
+                      <td>Search domains:</td>
+                      <td>{{ node.search_domain }}</td>
+                    </tr>
+                  </table>
                 </div>
               </template>
             </div>
@@ -111,24 +87,19 @@
             >NTP settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
-            <div class="row ma-0 mt-3">
+            <div class="row ma-0">
               <template>
-                <div class="col-3 body-2 column node-container mr-5">
-                  <span class="font-weight-bold" id="lblIpv4Node"></span>
-                  <div class="eos-form-group mt-0 ml-0">
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label>NTP address</label>
-                        <span class="ml-12">{{ serverAddress }}</span>
-                      </div>
-                    </div>
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label>Timezone</label>
-                        <span class="ml-12">{{ timezone }}</span>
-                      </div>
-                    </div>
-                  </div>
+                <div class="col-4 body-2 column mr-5">
+                  <table class="mt-3 eos-text-lg">
+                    <tr>
+                      <td class="table-data-label">NTP address:</td>
+                      <td>{{ serverAddress }}</td>
+                    </tr>
+                    <tr>
+                      <td>Timezone:</td>
+                      <td>{{ timezone }}</td>
+                    </tr>
+                  </table>
                 </div>
               </template>
             </div>
@@ -138,51 +109,32 @@
           <v-expansion-panel-header class="eos-text-lg font-weight-bold"
             >Notifications</v-expansion-panel-header
           >
-          <v-expansion-panel-content v-if="notificationData">
-            <div class="row ma-0 mt-3">
+          <v-expansion-panel-content v-if="notificationData.smtp_server">
+            <div class="row ma-0">
               <template>
-                <div class="col-3 body-2 column node-container mr-5">
-                  <span class="font-weight-bold" id="lblIpv4Node"></span>
-                  <div class="eos-form-group mt-0 ml-0">
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label>SMTP server</label>
-                        <span class="ml-12">{{
-                          notificationData.smtp_server
-                        }}</span>
-                      </div>
-                    </div>
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label>Sender email</label>
-                        <span class="ml-12">{{
-                          notificationData.smtp_sender_email
-                        }}</span>
-                      </div>
-                    </div>
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label>Receiver email</label>
-                        <span class="ml-10">{{ notificationData.email }}</span>
-                      </div>
-                    </div>
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label class="mr-10">Protocol</label>
-                        <span class="ml-12">{{
-                          notificationData.smtp_protocol
-                        }}</span>
-                      </div>
-                    </div>
-                    <div class="mt-3">
-                      <div class="eos-text-lg">
-                        <label class="mr-6">SMTP port</label>
-                        <span class="ml-12">{{
-                          notificationData.smtp_port
-                        }}</span>
-                      </div>
-                    </div>
-                  </div>
+                <div class="col-4 body-2 column mr-5">
+                  <table class="mt-3 eos-text-lg">
+                    <tr>
+                      <td class="table-data-label">SMTP server:</td>
+                      <td>{{ notificationData.smtp_server }}</td>
+                    </tr>
+                    <tr>
+                      <td>Sender email:</td>
+                      <td>{{ notificationData.smtp_sender_email }}</td>
+                    </tr>
+                    <tr>
+                      <td>Receiver email:</td>
+                      <td>{{ notificationData.email }}</td>
+                    </tr>
+                    <tr>
+                      <td>Protocol:</td>
+                      <td>{{ notificationData.smtp_protocol }}</td>
+                    </tr>
+                    <tr>
+                      <td>SMTP port:</td>
+                      <td>{{ notificationData.smtp_port }}</td>
+                    </tr>
+                  </table>
                 </div>
               </template>
             </div>
@@ -192,10 +144,13 @@
       <eos-confirmation-dialog
         :show="showConfirmDialog"
         title="Confirmation"
-        :message="'You are moving on new IP address ' + newUrl"
+        :message="
+          `<span>You are moving on new IP address <a href='${newUrl}' target='_blank'>${newUrl}</a></span>`
+        "
         severity="info"
         @closeDialog="closeConfirmDialog"
-        confirmButtonText="Continue"
+        confirmButtonText="Apply"
+        isMessageInHTML="true"
       ></eos-confirmation-dialog>
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
@@ -229,10 +184,13 @@ export default class EosOnboardingSummary extends Vue {
     this.$data.showConfirmDialog = true;
   }
   private async closeConfirmDialog(confirmation: string) {
+    this.$store.dispatch("systemConfig/showLoader", "Applying settings...");
     this.$data.showConfirmDialog = false;
     if (confirmation) {
+      await this.$store.dispatch("systemConfig/updateSummary", true);
+      await this.$store.dispatch("systemConfig/updateSummary", false);
+      this.$store.dispatch("systemConfig/hideLoader");
       this.$data.wizardRes(true);
-      this.$store.dispatch("systemConfig/updateSummary", true);
     } else {
       this.$data.wizardRes(false);
     }
@@ -290,7 +248,11 @@ export default class EosOnboardingSummary extends Vue {
         this.$data.serverAddress =
           systemconfig.date_time_settings.ntp.ntp_server_address;
       }
-      if (systemconfig.notifications && systemconfig.notifications.email) {
+      if (
+        systemconfig.notifications &&
+        systemconfig.notifications.email &&
+        systemconfig.notifications.email.smtp_server
+      ) {
         this.$data.notificationData = systemconfig.notifications.email;
       }
       const protocol = window.location.protocol;
@@ -304,4 +266,8 @@ export default class EosOnboardingSummary extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.table-data-label {
+  width: 130px;
+}
+</style>

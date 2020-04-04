@@ -1,11 +1,42 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="mt-6" id="lblVersion">
-        <span class="eos-text-bold"
-          >Last uploaded file: {{ status.filename
-          }}{{ status.date ? " : " + status.date : "" }}</span
-        >
+      <div
+        class="mt-3 pa-3 pb-0 eos-last-ssl-info-container eos-text-md"
+        v-if="lastSSLStatus.status"
+      >
+        <table>
+          <tr>
+            <td style="width: 180px;">
+              <label class="eos-text-bold">Last installation status:</label>
+            </td>
+            <td>
+              <label>{{ lastSSLStatus.status }}</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label class="eos-text-bold">Last certificate filename:</label>
+            </td>
+            <td>
+              <label>{{ lastSSLStatus.filename }}</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label class="eos-text-bold">Last certificate upload date:</label>
+            </td>
+            <td>{{ lastSSLStatus.date }}</td>
+          </tr>
+          <tr>
+            <td>
+              <label class="eos-text-bold">Serial number:</label>
+            </td>
+            <td>
+              <label>{{ lastSSLStatus.serial_number }}</label>
+            </td>
+          </tr>
+        </table>
       </div>
       <v-divider class="mt-2 mb-5" />
       <input
@@ -15,8 +46,8 @@
         v-on:change="handleFileUpload($event.target.files)"
         accept=".pem"
       />
-      <v-divider class="mt-5 mb-2" />
-      <div class="mt-8">
+      <v-divider class="mt-5" />
+      <div class="mt-4">
         <v-row>
           <v-col cols="12">
             <v-row>
@@ -29,7 +60,7 @@
               >
                 Upload certificate
               </button>
-              <span class="ml-7" v-if="$route.path !== '/onboarding'">
+              <span class="ml-5" v-if="$route.path !== '/onboarding'">
                 <EOSInstallSSL :installStatus="buttonStatus" />
               </span>
             </v-row>
@@ -91,7 +122,7 @@ export default class EOSUploadSSLConfig extends Vue {
   private data() {
     return {
       buttonStatus: false,
-      status: "",
+      lastSSLStatus: {},
       fileStatus: false,
       file: File,
       route: false
@@ -104,10 +135,10 @@ export default class EOSUploadSSLConfig extends Vue {
   private async getCertificateStatus() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching certificate...");
     const res = await Api.getAll(apiRegister.ssl_status);
-    this.$data.status = res.data;
-    if (this.$data.status.status === "installation_successful") {
+    this.$data.lastSSLStatus = res.data;
+    if (this.$data.lastSSLStatus.status === "installation_successful") {
       this.$data.buttonStatus = false;
-    } else if (this.$data.status.status === "not_installed") {
+    } else if (this.$data.lastSSLStatus.status === "not_installed") {
       this.$data.buttonStatus = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
@@ -122,4 +153,9 @@ export default class EOSUploadSSLConfig extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.eos-last-ssl-info-container {
+  border: 1px solid #e3e3e3;
+  border-radius: 5px;
+}
+</style>
