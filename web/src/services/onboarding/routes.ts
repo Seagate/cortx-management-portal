@@ -38,7 +38,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getAllSystemConfig(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -53,7 +53,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await saveSystemConfig(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -68,7 +68,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await sendTestEmail(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -83,7 +83,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getSystemConfig(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -98,7 +98,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await updateSystemConfig(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -113,7 +113,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await patchSystemConfig(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }

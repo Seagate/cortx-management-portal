@@ -12,7 +12,7 @@ export default [
       checkRequiredParams, // <-- this line
       async (req: Request, res: Response) => {
         const result = await getSessionKey(req.query.user);
-        res.status(HttpStatus.OK).send(result);
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -25,7 +25,7 @@ export default [
         const result = await getAdminUser(req, res).then((response: any) =>{
           console.log(response.headers);
         });;
-        res.status(HttpStatus.OK).send(result);
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -36,7 +36,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await logout(req, res);
-        res.status(HttpStatus.OK).send(result);        
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -47,7 +47,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await saveUser(req, res);
-        res.status(HttpStatus.OK).send();        
+        res.status(res.statusCode).send();
       }
     ]
   },
@@ -58,7 +58,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await license(req, res);
-        res.status(HttpStatus.OK).send();        
+        res.status(res.statusCode).send();
       }
     ]
   }

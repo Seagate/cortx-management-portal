@@ -32,7 +32,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getAlerts(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -47,7 +47,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getAlertsHistory(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -62,7 +62,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getAlertHistrorydetailsById(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -78,7 +78,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getAlertById(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -94,7 +94,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await updateAlert(req, res);
-          res.status(HttpStatus.NO_CONTENT).send();
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -110,7 +110,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await updateAlerts(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -126,7 +126,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getCommentsForAlert(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -142,7 +142,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await addCommentToAlert(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }

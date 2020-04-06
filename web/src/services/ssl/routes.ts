@@ -12,7 +12,7 @@ export default [
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await sslCertificateUpload(req, res);
-                res.status(HttpStatus.OK).send(result);
+                res.status(res.statusCode).send(result);
             }
         ]
     },
@@ -23,7 +23,7 @@ export default [
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await sslCertificateInstall(req, res);
-                res.status(HttpStatus.OK).send(result);
+                res.status(res.statusCode).send(result);
             }
         ]
     },
@@ -34,7 +34,7 @@ export default [
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await certificateAvailability(req, res);
-                res.status(HttpStatus.OK).send(result);
+                res.status(res.statusCode).send(result);
             }
         ]
     }

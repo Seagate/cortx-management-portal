@@ -32,7 +32,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getUDXRegistrationStatus(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -47,7 +47,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getIdentificationToken(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -62,7 +62,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getUDXDevices(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -77,7 +77,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await registerUDX(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }

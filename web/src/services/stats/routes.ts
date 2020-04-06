@@ -32,7 +32,7 @@ export default [
         try {
           let pathparam = req.params.statsparam;
           const result = await getStats(req, res, pathparam);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }

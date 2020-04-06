@@ -32,7 +32,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getAllAccounts(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -48,7 +48,7 @@ export default [
         try {
           console.log(req.params.name);
           const result = await getAllAccounts(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -63,7 +63,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await createAccount(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -78,7 +78,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await deleteAccount(req.params.name, req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -93,7 +93,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getAllIAMUsers(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -109,7 +109,7 @@ export default [
         try {
           console.log(req.params.name);
           const result = await getAllIAMUsers(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -124,7 +124,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await createIAMUser(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -139,7 +139,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await deleteIAMUser(req.params.username, req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -154,7 +154,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await updateAccount(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }

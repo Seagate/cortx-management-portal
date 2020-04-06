@@ -53,3 +53,35 @@ export class HTTP500Error extends HTTPCsmClientError {
     super(message);
   }
 }
+
+export class HTTP499Error extends HTTPCsmClientError {
+  readonly statusCode = 499;
+
+  constructor(message: string | object = "Call cancelled by client") {
+    super(message);
+  }
+}
+
+export class HTTP501Error extends HTTPCsmClientError {
+  readonly statusCode = HttpStatus.NOT_IMPLEMENTED;
+
+  constructor(message: string | object = "Not Implemented") {
+    super(message);
+  }
+}
+
+export class HTTP409Error extends HTTPCsmClientError {
+  readonly statusCode = HttpStatus.CONFLICT;
+
+  constructor(message: string | object = "Conflict") {
+    super(message);
+  }
+}
+
+export class HTTP422Error extends HTTPCsmClientError {
+  readonly statusCode = HttpStatus.UNPROCESSABLE_ENTITY;
+
+  constructor(message: string | object = "Unprocessable entity") {
+    super(message);
+  }
+}

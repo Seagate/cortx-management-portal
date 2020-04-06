@@ -12,7 +12,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await downloadAuditlog(req, res);        
-        res.status(HttpStatus.OK).send(result);
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -23,7 +23,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await showAuditlog(req, res);
-        res.status(HttpStatus.OK).send(result);
+        res.status(res.statusCode).send(result);
       }
     ]
   }

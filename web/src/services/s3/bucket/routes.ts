@@ -31,7 +31,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getBuckets(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -46,7 +46,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await createBucket(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -60,7 +60,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await deleteBucket(req, res);
-        res.status(HttpStatus.OK).send(result);
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -72,7 +72,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await updateBuketPolicy(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -86,7 +86,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await deleteBucketPolicy(req, res);
-        res.status(HttpStatus.OK).send(result);
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -98,7 +98,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getBucketsPolicy(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }

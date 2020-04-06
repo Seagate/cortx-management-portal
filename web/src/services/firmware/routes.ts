@@ -12,7 +12,7 @@ export default [
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await getLastUpgradeStatus(req, res);
-                res.status(HttpStatus.OK).send(result);
+                res.status(res.statusCode).send(result);
             }
         ]
     },
@@ -23,7 +23,7 @@ export default [
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await firmwareUpload(req, res);
-                res.status(HttpStatus.OK).send(result);
+                res.status(res.statusCode).send(result);
             }
         ]
     },
@@ -34,7 +34,7 @@ export default [
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await startUpgrade(req, res);
-                res.status(HttpStatus.OK).send(result);
+                res.status(res.statusCode).send(result);
             }
         ]
     },
@@ -45,7 +45,7 @@ export default [
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await packageAvailability(req, res);
-                res.status(HttpStatus.OK).send(result);
+                res.status(res.statusCode).send(result);
             }
         ]
     }

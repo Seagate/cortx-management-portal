@@ -31,7 +31,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getCapacity(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
