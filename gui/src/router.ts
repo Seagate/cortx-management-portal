@@ -217,7 +217,7 @@ const router = new Router({
           meta: {
             requiresAuth: true,
             isOnboardingReq: false,
-            requiredAccess: userPermissions.users + userPermissions.list
+            requiredAccess: userPermissions.sysconfig + userPermissions.update
           },
           children: [
             {
@@ -227,7 +227,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.users + userPermissions.list
+                requiredAccess: userPermissions.sysconfig + userPermissions.update
               }
             },
             {
@@ -237,7 +237,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.list
+                requiredAccess: userPermissions.sysconfig + userPermissions.update
               }
             },
             {
@@ -247,7 +247,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.list
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -257,7 +257,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.list
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -267,7 +267,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.list
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -277,7 +277,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.list
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -287,7 +287,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.list
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             }
           ]
@@ -308,7 +308,7 @@ const router = new Router({
           meta: {
             requiresAuth: true,
             isOnboardingReq: false,
-            requiredAccess: userPermissions.users + userPermissions.list
+            requiredAccess: userPermissions.sysconfig + userPermissions.list
           },
           children: [
             {
@@ -334,7 +334,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.list
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -344,7 +344,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.list
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -354,7 +354,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.list
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             },
           ]
@@ -376,7 +376,7 @@ const router = new Router({
           meta: {
             requiresAuth: true,
             isOnboardingReq: false,
-            requiredAccess: userPermissions.sysconfig + userPermissions.list
+            requiredAccess: userPermissions.maintenance + userPermissions.list
           }
         },
         {

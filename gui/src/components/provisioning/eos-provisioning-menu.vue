@@ -43,7 +43,8 @@ export default class EosProvisioningSubmenu extends Vue {
       title: "S3",
       actionName: "Manage",
       actionClickFunction: "goToS3",
-      disabled: false
+      disabled: false,
+      requiredAccess: "s3accounts"
     }
   ];
   private goToUserSettings() {

@@ -650,16 +650,16 @@ export default class EosUserSettingLocal extends Vue {
     this.$data.selectedItemToDelete = id;
     this.$data.showConfirmationDialog = true;
   }
-  private closeConfirmationDialog(confirmation: boolean) {
+  private async closeConfirmationDialog(confirmation: boolean) {
     this.$data.showConfirmationDialog = false;
     if (confirmation && this.$data.selectedItemToDelete) {
-      this.onDelete(this.$data.selectedItemToDelete);
+      await this.onDelete(this.$data.selectedItemToDelete);
     }
   }
   /**
    * This method create csm user
    */
-  private createUser() {
+  private async createUser() {
     this.$store.dispatch("systemConfig/showLoader", "Creating user...");
 
     this.$data.isUserCreate = !this.$data.isUserCreate;
@@ -672,16 +672,13 @@ export default class EosUserSettingLocal extends Vue {
       language: this.$data.language,
       timeout: 1
     };
-    this.$store
-      .dispatch("createUser/createCSMUserAction", queryParams)
-      .then((res: any) => {
-        this.getUserData();
-      })
-      .finally(() => {
-        this.clearCreateAccountForm();
-        this.$store.dispatch("systemConfig/hideLoader");
-      });
-    return this.$data.isUserCreate;
+    try {
+      await this.$store.dispatch("createUser/createCSMUserAction", queryParams);
+      await this.getUserData();
+    } finally {
+      this.clearCreateAccountForm();
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
   }
 
   private clearCreateAccountForm() {
@@ -692,7 +689,7 @@ export default class EosUserSettingLocal extends Vue {
   /**
    * Edit Csm User
    */
-  private editUser(selectedItem: any) {
+  private async editUser(selectedItem: any) {
     if (
       this.isAdminUser(selectedItem) ||
       selectedItem.username === this.$data.loggedInUserName
@@ -701,19 +698,13 @@ export default class EosUserSettingLocal extends Vue {
       delete selectedItem.confirmPassword;
     }
     this.$store.dispatch("systemConfig/showLoader", "Updating user details...");
-    this.$store
-      .dispatch("createUser/updateUserDetails", selectedItem)
-      .then((res: any) => {
-        this.getUserData();
-      })
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("Create User Fails");
-      })
-      .finally(() => {
-        this.closeEditUser();
-        this.$store.dispatch("systemConfig/hideLoader");
-      });
+    try {
+      await this.$store.dispatch("createUser/updateUserDetails", selectedItem);
+      await this.getUserData();
+    } finally {
+      this.closeEditUser();
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
   }
 
   private closeEditUser() {
@@ -733,40 +724,29 @@ export default class EosUserSettingLocal extends Vue {
     }
   }
 
-  private onDelete(id: string) {
+  private async onDelete(id: string) {
     this.$store.dispatch("systemConfig/showLoader", "Deleting user...");
 
-    this.$store
-      .dispatch("createUser/deleteUserAction", id)
-      .then(data => {
-        this.getUserData();
-      })
-      .catch(e => {
-        // tslint:disable-next-line: no-console
-        console.log("err logger: ", e);
-      })
-      .finally(() => {
-        this.$store.dispatch("systemConfig/hideLoader");
-      });
+    try {
+      await this.$store.dispatch("createUser/deleteUserAction", id);
+      await this.getUserData();
+    } finally {
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
   }
   private isAdminUser(item: any) {
     return item.roles.includes("root");
   }
-  private getUserData() {
+  private async getUserData() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
 
-    this.$store
-      .dispatch("createUser/getDataAction")
-      .then(data => {
-        this.$data.userData = data;
-      })
-      .catch(e => {
-        // tslint:disable-next-line: no-console
-        console.log("err logger: ", e);
-      })
-      .finally(() => {
-        this.$store.dispatch("systemConfig/hideLoader");
-      });
+    try {
+      this.$data.userData = await this.$store.dispatch(
+        "createUser/getDataAction"
+      );
+    } finally {
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
   }
 
   private isLoggedInUserAdmin() {

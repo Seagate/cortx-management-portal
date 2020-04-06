@@ -40,25 +40,29 @@ export default class EosMaintenanceMenu extends Vue {
       title: "System maintenance",
       actionName: "Manage",
       actionClickFunction: "goToSystemMaintenance",
-      disabled: false
+      disabled: false,
+      requiredAccess: "maintenance"
     },
     {
       title: "Firmware",
       actionName: "Manage",
       actionClickFunction: "goToFirmware",
-      disabled: false
+      disabled: false,
+      requiredAccess: "maintenance"
     },
     {
       title: "Software",
       actionName: "Manage",
       actionClickFunction: "goToSoftware",
-      disabled: false
+      disabled: false,
+      requiredAccess: "maintenance"
     },
     {
       title: "Audit log",
       actionName: "View/Download",
       actionClickFunction: "goToAuditLog",
-      disabled: false
+      disabled: false,
+      requiredAccess: "auditlog"
     }
   ];
   private goToSystemMaintenance() {

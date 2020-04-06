@@ -36,37 +36,44 @@ export default class EosSettingsMenu extends Vue {
       title: "Notifications",
       actionName: "Manage",
       actionClickFunction: "goToNotifications",
-      disabled: false
+      disabled: false,
+      requiredAccess: "sysconfig",
+      requiredSubAccess: "update"
     },
     {
       title: "Management network",
       actionName: "Manage",
       actionClickFunction: "goToManagementNetwork",
-      disabled: false
+      disabled: false,
+      requiredAccess: "maintenance",
     },
     {
       title: "Data network",
       actionName: "Manage",
       actionClickFunction: "goToDataNetwork",
-      disabled: false
+      disabled: false,
+      requiredAccess: "maintenance",
     },
     {
       title: "DNS",
       actionName: "Manage",
       actionClickFunction: "goToDNS",
-      disabled: false
+      disabled: false,
+      requiredAccess: "maintenance",
     },
     {
       title: "NTP",
       actionName: "Manage",
       actionClickFunction: "goToNTP",
-      disabled: false
+      disabled: false,
+      requiredAccess: "maintenance",
     },
     {
       title: "SSL Certificate",
       actionName: "Manage",
       actionClickFunction: "goToSSL",
-      disabled: false
+      disabled: false,
+      requiredAccess: "maintenance",
     }
   ];
   private goToNotifications() {

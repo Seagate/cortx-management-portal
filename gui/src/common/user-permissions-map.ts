@@ -11,4 +11,5 @@ export const userPermissions = {
   alerts: "alerts",
   stats: "stats",
   auditlog: "auditlog",
+  maintenance: "maintenance"
 };
