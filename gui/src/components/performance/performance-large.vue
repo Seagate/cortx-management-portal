@@ -16,14 +16,14 @@
   <div class="pa-5">
     <div class="eos-text-lg eos-text-bold">Performance</div>
     <button
-      :disabled="chartCount>=3"
+      :disabled="chartList.length>=3"
       type="button"
       @click="addChart()"
       class="mt-3 mb-2 eos-btn-primary"
     >Add Graph</button>
 
     <div :key="chartId" v-for="chartId in chartList">
-      <v-row class="eos-cursor-pointer" @click="removeChart(chartId)" v-if="chartCount>1">
+      <v-row class="eos-cursor-pointer" @click="removeChart(chartId)" v-if="chartList.length>1">
         <img class="eos-modal-close" :src="require('@/assets/close-green.svg')" />
       </v-row>
       <v-row class="eos-graph">
@@ -46,16 +46,15 @@ export default class EosPerformanceLarge extends Vue {
   private chartCount: number = 1;
   private chartList: string[] = ["chart1"];
   public addChart() {
-    if (this.chartCount <= 3) {
+    if (this.chartList.length <= 3) {
       this.chartCount++;
       this.chartList.push("chart" + this.chartCount);
     }
   }
   public removeChart(chartName: string) {
     const itemIndex = this.chartList.indexOf(chartName);
-    if (itemIndex !== -1 && this.chartCount > 1) {
+    if (itemIndex !== -1 && this.chartList.length > 1) {
       this.chartList.splice(itemIndex, 1);
-      this.chartCount--;
     }
   }
 }
