@@ -29,12 +29,17 @@
           class="ml-3"
           v-model="metric1"
           v-on:change="metric1Change"
-          :items="items"
+          :items="getMatric1"
           label="Metric 1"
         ></v-select>
       </v-col>
       <v-col cols="2">
-        <v-select :items="items" v-on:change="metric2Change" v-model="metric2" label="Metric 2"></v-select>
+        <v-select
+          :items="getMetric2"
+          v-on:change="metric2Change"
+          v-model="metric2"
+          label="Metric 2"
+        ></v-select>
       </v-col>
       <v-col cols="8">
         <v-tabs color="csmprimary" class="mb-4" style="border-bottom: 1px solid lightgrey;">
@@ -125,6 +130,27 @@ export default class EosLineChart extends Vue {
     };
   }
 
+  // public getter for Metric1 dropdown list
+  public get getMatric1(): any[] {
+    const tempMetricList = [];
+    for (const metric of this.$data.items) {
+      if (metric.value !== this.metric2 || metric.text === "-- No Metric --") {
+        tempMetricList.push(metric);
+      }
+    }
+    return tempMetricList;
+  }
+
+  // public getter for Metric2 dropdown list
+  public get getMetric2(): any[] {
+    const tempMetricList = [];
+    for (const metric of this.$data.items) {
+      if (metric.value !== this.metric1 || metric.text === "-- No Metric --") {
+        tempMetricList.push(metric);
+      }
+    }
+    return tempMetricList;
+  }
   // Function for handlling Metric1 dropdown change
   public metric1Change() {
     // set this parameter to true to show the component based loader
