@@ -650,6 +650,170 @@
             "type": "string"
           }
         ]
+      } ,
+      "get": {
+        "tags": [
+          "Get Bucket Policy"
+        ],
+        "summary": "Get Bucket Policy",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "bucket_name",
+            "in": "path",
+            "description": "Specifies the Bucket name",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Edit Bucket policy"
+        ],
+        "summary": "Forward the Edit bucket_policy request to Python server and send the Python server response to client",
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "404": {
+            "description": "policy Not Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "bucket_name",
+            "in": "path",
+            "description": "Specifies the bucket_name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "policy",
+            "in": "body",
+            "description": "bucket policy request",
+            "schema": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "policy": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/s3/bucket/{bucket_name}": {
+      "delete": {
+        "tags": [
+          "bucket delete"
+        ],
+        "summary": "bucket  delete",
+        "responses": {
+          "200": {
+            "description": "Bucket  Deleted Successfully."
+          },
+          "404": {
+            "description": "No Data Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "bucket_name",
+            "in": "path",
+            "description": "Specifies the bucket name",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/s3/bucket": {
+      "get": {
+        "tags": [
+          "Get Bucket"
+        ],
+        "summary": "Get the bucket list.",
+        "responses": {
+          "200": {
+            "description": "get all bucket list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bucket": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No Data Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        }
+      },
+      "post": {
+        "tags": [
+          "Add bucket"
+        ],
+        "summary": "Add bucket",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "bucket_name",
+            "in": "body",
+            "description": "bucket name",
+            "properties": {
+              "bucket_name": {
+                "type": "string",
+                "example": "udx-xyz"
+              }
+            }
+          }
+        ]
       }
     }
   },
