@@ -17,7 +17,10 @@
     <div v-for="navItem in navItems" :key="navItem.title">
       <eos-has-access
         :to="
-          $eosUserPermissions[navItem.requiredAccess] + $eosUserPermissions.list
+          $eosUserPermissions[navItem.requiredAccess] +
+            (navItem.requiredSubAccess
+              ? $eosUserPermissions[navItem.requiredSubAccess]
+              : $eosUserPermissions.list)
         "
       >
         <router-link
@@ -76,14 +79,15 @@ export default class EosNavBar extends Vue {
       path: "/settings",
       iconDefault: require("@/assets/navigation/settings-grey.svg"),
       iconActive: require("@/assets/navigation/settings-white.svg"),
-      requiredAccess: "users"
+      requiredAccess: "sysconfig",
+      requiredSubAccess: "update"
     },
     {
       title: "Maintenance",
       path: "/maintenance",
       iconDefault: require("@/assets/navigation/maintenance-grey.svg"),
       iconActive: require("@/assets/navigation/maintenance-white.svg"),
-      requiredAccess: "users"
+      requiredAccess: "sysconfig"
     }
   ];
 

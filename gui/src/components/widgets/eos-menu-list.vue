@@ -4,7 +4,10 @@
       <div v-if="item.requiredAccess">
         <eos-has-access
           :to="
-            $eosUserPermissions[item.requiredAccess] + $eosUserPermissions.list
+            $eosUserPermissions[item.requiredAccess] +
+              (item.requiredSubAccess
+                ? $eosUserPermissions[item.requiredSubAccess]
+                : $eosUserPermissions.list)
           "
         >
           <div class="eos-menu-card-layout">
