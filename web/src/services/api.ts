@@ -1,4 +1,4 @@
-/*****************************************************************************
+/* ****************************************************************************
  Filename:          api.ts
  Description:       API Service
 
@@ -11,7 +11,7 @@
  Portions are also trade secret. Any use, duplication, derivation, distribution
  or disclosure of this code, for any reason, not expressly authorized is
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
- *****************************************************************************/
+ **************************************************************************** */
 import http from 'http';
 import https from 'https';
 import { Request, Response } from "express";
@@ -325,6 +325,8 @@ export abstract class Api {
             if (apiresp.headers.authorization) {
                 resp.set("Authorization", apiresp.headers.authorization);
             }
+            
+            resp.status(apiresp.statusCode);
 
             apiresp.on('data', (chunk: any) => {
                 data += chunk;
@@ -408,6 +410,14 @@ export abstract class Api {
             return new HTTPError.HTTP403Error(response);
         } else if (statusCode == HttpStatus.NOT_FOUND) {
             return new HTTPError.HTTP404Error(response);
+        } else if (statusCode == 499) {
+            return new HTTPError.HTTP499Error(response);
+        } else if (statusCode == HttpStatus.NOT_IMPLEMENTED) {
+            return new HTTPError.HTTP501Error(response);
+        } else if (statusCode == HttpStatus.CONFLICT) {
+            return new HTTPError.HTTP409Error(response);
+        } else if (statusCode == HttpStatus.UNPROCESSABLE_ENTITY) {
+            return new HTTPError.HTTP422Error(response);
         } else {
             return new HTTPError.HTTP400Error(response);
         }

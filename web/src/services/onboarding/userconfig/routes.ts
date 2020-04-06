@@ -31,7 +31,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getUserConfig(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }
@@ -46,7 +46,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await saveUserConfig(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }        
@@ -61,7 +61,7 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await updateUserConfig(req, res);
-          res.status(HttpStatus.OK).send(result);
+          res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
         }        

@@ -25,7 +25,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getUsers(req, res);
-        res.status(HttpStatus.OK).send(result);        
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -36,7 +36,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await saveUser(req, res);
-        res.status(HttpStatus.OK).send(result);        
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -47,7 +47,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getUserById(req, res);
-        res.status(HttpStatus.OK).send(result);        
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -58,7 +58,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await updateUser(req, res);
-        res.status(HttpStatus.OK).send(result);        
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -69,7 +69,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await deleteUser(req, res);
-        res.status(HttpStatus.OK).send(result);        
+        res.status(res.statusCode).send(result);
       }
     ]
   },
@@ -80,7 +80,7 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getUserPermissions(req, res);
-        res.status(HttpStatus.OK).send(result);
+        res.status(res.statusCode).send(result);
       }
     ]
   }
