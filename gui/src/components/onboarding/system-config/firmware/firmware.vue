@@ -54,13 +54,13 @@
         id="file"
         ref="firmwarePackageFileInput"
         @change="handleFileUpload($event.target.files)"
-        accept =".iso"
+        accept =".bin"
       />
       <div
         class="eos-form-group-label eos-form-group-error-msg mt-3"
         v-if="firmwarePackageFormValidation.isDirty && !firmwarePackageFormValidation.isValid"
       >
-        <label>Package should be a '.iso' file.</label>
+        <label>Package should be a '.bin' file.</label>
       </div>
       <v-divider class="mt-5 mb-2" />
       <button
@@ -182,7 +182,7 @@ export default class EosFirmware extends Vue {
     const fileNameParts = fileName.split(".");
     if (
       fileNameParts.length > 1 &&
-      fileNameParts[fileNameParts.length - 1] === "iso"
+      fileNameParts[fileNameParts.length - 1] === "bin"
     ) {
       isFileNameValid = true;
     }
