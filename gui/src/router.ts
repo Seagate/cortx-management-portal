@@ -217,7 +217,7 @@ const router = new Router({
           meta: {
             requiresAuth: true,
             isOnboardingReq: false,
-            requiredAccess: userPermissions.sysconfig + userPermissions.update
+            requiredAccess: userPermissions.maintenance + userPermissions.list
           },
           children: [
             {
@@ -227,7 +227,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.update
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -237,7 +237,7 @@ const router = new Router({
               meta: {
                 requiresAuth: true,
                 isOnboardingReq: false,
-                requiredAccess: userPermissions.sysconfig + userPermissions.update
+                requiredAccess: userPermissions.maintenance + userPermissions.list
               }
             },
             {
