@@ -106,13 +106,23 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     cp -rs $BASE_DIR/src/* $TMPDIR/csm
     cp -rs $BASE_DIR/test/ $TMPDIR/csm
 
-    # Install EOS/py-utils
-    yum install eos-py-utils -y
+    # Setup Python virtual environment
+    VENV="${TMPDIR}/venv"
+    if [ -d "${VENV}/bin" ]; then
+        echo "Using existing Python virtual environment..."
+    else
+        echo "Setting up Python 3.6 virtual environment..."
+        python3.6 -m venv "${VENV}"
+    fi
+    source "${VENV}/bin/activate"
+    python --version
+    pip install --upgrade pip
+    pip install pyinstaller==3.5
 
     # Check python package
     req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
     echo "Installing python packages..."
-    pip3 install --user -r $req_file  > /dev/null || {
+    pip install -r $req_file || {
         echo "Unable to install package from $req_file"; exit 1;
     };
 
@@ -149,6 +159,9 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     sed -i -e "s|<PRODUCT>|${PRODUCT}|g" \
         -e "s|<CSM_PATH>|${TMPDIR}/csm|g" ${PYINSTALLER_FILE}
     pyinstaller --clean -y --distpath ${DIST}/csm --key ${KEY} ${PYINSTALLER_FILE}
+
+    deactivate
+
     CORE_BUILD_END_TIME=$(date +%s)
 fi
 
