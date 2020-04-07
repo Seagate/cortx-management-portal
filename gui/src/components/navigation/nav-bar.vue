@@ -79,8 +79,7 @@ export default class EosNavBar extends Vue {
       path: "/settings",
       iconDefault: require("@/assets/navigation/settings-grey.svg"),
       iconActive: require("@/assets/navigation/settings-white.svg"),
-      requiredAccess: "sysconfig",
-      requiredSubAccess: "update"
+      requiredAccess: "maintenance"
     },
     {
       title: "Maintenance",

@@ -263,21 +263,21 @@ export default class EosDataNetworkIpv4Config extends Vue {
         {
           id: 2,
           name: "VIP",
-          ip_address: "",
+          ip_address: null,
           netmask: "0.0.0.0",
           gateway: null
         },
         {
           id: 0,
           name: "Node 0",
-          ip_address: "",
+          ip_address: null,
           netmask: null,
           gateway: null
         },
         {
           id: 1,
           name: "Node 1",
-          ip_address: "",
+          ip_address: null,
           netmask: null,
           gateway: null
         }
@@ -287,11 +287,21 @@ export default class EosDataNetworkIpv4Config extends Vue {
     };
   }
 
-  private updateDataNetworkConfig() {
-    const queryParams: DataNetworkIpv4 = {
-      is_dhcp: this.$data.source === "DHCP",
+  private getDataNetworkQueryParams() {
+    let queryParams: DataNetworkIpv4 = {
+      is_dhcp: false,
       nodes: this.$data.ipv4Nodes
     };
+    if (this.$data.source === "DHCP") {
+      queryParams = {
+        is_dhcp: true,
+        nodes: this.$data.ipv4Nodes.filter((node: any) => node.name === "VIP")
+      };
+    }
+    return queryParams;
+  }
+  private updateDataNetworkConfig() {
+    const queryParams = this.getDataNetworkQueryParams();
     return this.$store.dispatch(
       "systemConfig/updateDataNetworkSettingIpv4",
       queryParams
@@ -323,19 +333,23 @@ export default class EosDataNetworkIpv4Config extends Vue {
     if (
       dataNetworkSettings &&
       dataNetworkSettings.ipv4 &&
-      dataNetworkSettings.ipv4.nodes
+      dataNetworkSettings.ipv4.nodes &&
+      Array.isArray(dataNetworkSettings.ipv4.nodes) &&
+      dataNetworkSettings.ipv4.nodes.length
     ) {
-      this.$data.ipv4Nodes = dataNetworkSettings.ipv4.nodes;
+      this.$data.ipv4Nodes = this.$data.ipv4Nodes.map((node: any) => {
+        const nodeData = dataNetworkSettings.ipv4.nodes.find(
+          (e: any) => e.name === node.name
+        );
+        return nodeData ? nodeData : node;
+      });
       this.$data.source =
         dataNetworkSettings.ipv4.is_dhcp === true ? "DHCP" : "manual";
     }
     return true;
   }
   private applySettings() {
-    const queryParams: DataNetworkIpv4 = {
-      is_dhcp: this.$data.source === "DHCP",
-      nodes: this.$data.ipv4Nodes
-    };
+    const queryParams = this.getDataNetworkQueryParams();
     this.$emit("apply-settings", queryParams);
   }
 }
