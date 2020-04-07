@@ -392,9 +392,11 @@ export abstract class Api {
                     logger.info('SUCCESS RESPONSE');
                     resolve(response);
                 } else {
-                    let err = Api.handleError(req.statusCode, response);
+                    const errResponseString = response.toString("utf-8");
+                    const errResponseJSONObj = JSON.parse(errResponseString);
+                    let err = Api.handleError(req.statusCode, errResponseJSONObj);
                     logger.error('ERROR RESPONSE: STATUS CODE: ' 
-                    + req.statusCode + ' ERROR: ' + JSON.stringify(err));
+                    + req.statusCode + ' ERROR: ' + errResponseString);
                     reject(err);
                 }
             });
