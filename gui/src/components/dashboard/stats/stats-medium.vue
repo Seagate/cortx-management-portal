@@ -38,15 +38,4 @@ import EosLineChart from "./../../widgets/line-chart.vue";
 })
 export default class EosStatsMedium extends Vue {}
 </script>
-<style lang="scss" scoped>
-@media screen and (min-height: 600px) {
-  #statsContainer {
-    padding-left: 20px;
-  }
-}
-@media screen and (min-height: 900px) {
-  #statsContainer {
-    padding: 20px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

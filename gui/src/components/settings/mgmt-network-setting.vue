@@ -1,16 +1,14 @@
 <template>
-  <v-container class="mt-0 ml-0">
-    <div class="pl-4 body-2">
-      <div class="eos-text-lg mt-0 font-weight-bold" id="lblNetworkIP4">
-        Management network settings: IPv4
-      </div>
-      <div class="mt-3" id="lblNetworkMsg">
-        You need to configure a single IP address for management of this system.
-      </div>
-      <v-divider class="mt-2" />
-      <eosNetworkSettingsIpv4 @apply-settings="applySettings" />
+  <div class="eos-p-2 body-2">
+    <div class="eos-text-lg mt-2 font-weight-bold" id="lblNetworkIP4">
+      Management network settings: IPv4
     </div>
-  </v-container>
+    <div class="mt-3" id="lblNetworkMsg">
+      You need to configure a single IP address for management of this system.
+    </div>
+    <v-divider class="mt-2" />
+    <eosNetworkSettingsIpv4 @apply-settings="applySettings" />
+  </div>
 </template>
 
 <script lang="ts">

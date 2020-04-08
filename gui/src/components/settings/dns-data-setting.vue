@@ -1,13 +1,11 @@
 <template>
-  <v-container class="mt-0 ml-0">
-    <div class="pl-4 body-2">
-      <div class="eos-text-lg mt-0 font-weight-bold" id="lblDns">
-        DNS resolver settings
-      </div>
+  <div class="eos-p-2 body-2">
+    <div class="eos-text-lg mt-2 font-weight-bold" id="lblDns">
+      DNS resolver settings
     </div>
     <v-divider class="mt-2" />
     <eosDnsSettingConfig @apply-settings="applySettings" />
-  </v-container>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";

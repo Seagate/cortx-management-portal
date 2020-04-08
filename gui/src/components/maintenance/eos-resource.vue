@@ -13,17 +13,13 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div>
-    <div
-      id="s3-configuration-title-container"
-      class="s3-configuration-page-title"
-    >
-      <label id="s3-account-form-title" class="headline font-weight-bold"
+  <div class="eos-p-2 body-2">
+    <div id="system-maintenance-title-container">
+      <label id="system-maintenance-title" class="eos-text-lg mt-2 font-weight-bold"
         >System maintenance</label
       >
     </div>
-
-    <v-container class="ml-0 pl-0">
+    <v-container>
       <div class="body-2">
         <v-card class="col-8 pa-5 elevation-0" outlined tile>
           <v-row class="row-container" align="center" no-gutters>
