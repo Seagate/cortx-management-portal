@@ -1,9 +1,7 @@
 <template>
   <v-container>
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">
-        User settings: Local
-      </div>
+      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">User settings: Local</div>
       <div class="mt-5">
         <span class="font-weight-regular" id="lblLocalMsgConfig">
           Use this table to create CSM users that have access to CSM
@@ -21,10 +19,7 @@
                 }"
               >
                 <label class="eos-form-group-label" for="Username">
-                  <eos-info-tooltip
-                    label="Username*"
-                    :message="accountNameTooltipMessage"
-                  />
+                  <eos-info-tooltip label="Username*" :message="accountNameTooltipMessage" />
                 </label>
                 <input
                   class="eos-form__input_text"
@@ -40,15 +35,13 @@
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.required
                     "
-                    >Account Name is required</label
-                  >
+                  >Account Name is required</label>
                   <label
                     v-else-if="
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.accountNameRegex
                     "
-                    >Invalid username</label
-                  >
+                  >Invalid username</label>
                 </div>
               </div>
               <div
@@ -58,10 +51,8 @@
                 }"
               >
                 <label class="eos-form-group-label" for="password">
-                  <eos-info-tooltip
-                    label="Password*"
-                    :message="passwordTooltipMessage"
-                /></label>
+                  <eos-info-tooltip label="Password*" :message="passwordTooltipMessage" />
+                </label>
                 <input
                   class="eos-form__input_text"
                   type="password"
@@ -76,15 +67,13 @@
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.required
                     "
-                    >Password is required</label
-                  >
+                  >Password is required</label>
                   <label
                     v-else-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.passwordRegex
                     "
-                    >Invalid password</label
-                  >
+                  >Invalid password</label>
                 </div>
               </div>
               <div
@@ -94,9 +83,7 @@
                     $v.createAccount.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password"
-                  >Confirm password*</label
-                >
+                <label class="eos-form-group-label" for="password">Confirm password*</label>
                 <input
                   class="eos-form__input_text"
                   type="password"
@@ -111,8 +98,7 @@
                       $v.createAccount.confirmPassword.$dirty &&
                         !$v.createAccount.confirmPassword.sameAsPassword
                     "
-                    >Passwords do not match</label
-                  >
+                  >Passwords do not match</label>
                 </div>
               </div>
             </v-col>
@@ -144,18 +130,14 @@
             </v-col>
           </v-row>
         </div>
-        <eos-has-access
-          :to="$eosUserPermissions.users + $eosUserPermissions.create"
-        >
+        <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.create">
           <button
             v-if="!isUserCreate"
             type="button"
             class="ma-5 eos-btn-primary"
             @click="addUser()"
             id="btnLocalAddNewUser"
-          >
-            Add new user
-          </button>
+          >Add new user</button>
           <button
             v-if="isUserCreate"
             type="button"
@@ -163,23 +145,17 @@
             @click="createUser()"
             id="btnLocalCreateUser"
             :disabled="$v.createAccount.$invalid || !checkedRoles"
-          >
-            Create
-          </button>
+          >Create</button>
           <button
             v-if="isUserCreate"
             type="button"
             class="eos-btn-tertiary"
             @click="addUser()"
             id="lblLocalCancel"
-          >
-            Cancel
-          </button>
+          >Cancel</button>
         </eos-has-access>
 
-        <eos-has-access
-          :to="$eosUserPermissions.users + $eosUserPermissions.list"
-        >
+        <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.list">
           <v-data-table
             calculate-widths
             :items="userData"
@@ -193,11 +169,7 @@
             <template v-slot:header="{}">
               <tr>
                 <th class="tableheader" width="10%" />
-                <th
-                  v-for="header in userHeader"
-                  :key="header.text"
-                  class="tableheader"
-                >
+                <th v-for="header in userHeader" :key="header.text" class="tableheader">
                   <span
                     class="headerText"
                     :class="
@@ -205,8 +177,7 @@
                         ? 'active'
                         : ''
                     "
-                    >{{ header.text }}</span
-                  >
+                  >{{ header.text }}</span>
                   <span
                     :class="
                       header.value === sortColumnName && isSortActive
@@ -271,9 +242,10 @@
                 </td>
                 <td>{{ props.item.username }}</td>
                 <td>
-                  <span v-for="(role, i) in props.item.roles" :key="role"
-                    >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span
-                  >
+                  <span
+                    v-for="(role, i) in props.item.roles"
+                    :key="role"
+                  >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span>
                 </td>
                 <td>
                   <span>
@@ -344,7 +316,8 @@
                             <eos-info-tooltip
                               label="Old password*"
                               :message="passwordTooltipMessage"
-                          /></label>
+                            />
+                          </label>
                           <input
                             class="eos-form__input_text"
                             type="password"
@@ -353,23 +326,19 @@
                             @input="$v.selectedItem.old_password.$touch"
                             id="txtLocalOldPass"
                           />
-                          <div
-                            class="eos-form-group-label eos-form-group-error-msg"
-                          >
+                          <div class="eos-form-group-label eos-form-group-error-msg">
                             <label
                               v-if="
                                 $v.selectedItem.old_password.$dirty &&
                                   !$v.selectedItem.old_password.required
                               "
-                              >Old password is required</label
-                            >
+                            >Old password is required</label>
                             <label
                               v-else-if="
                                 $v.selectedItem.old_password.$dirty &&
                                   !$v.selectedItem.old_password.passwordRegex
                               "
-                              >Invalid old password</label
-                            >
+                            >Invalid old password</label>
                           </div>
                         </div>
                         <div
@@ -383,7 +352,8 @@
                             <eos-info-tooltip
                               label="New password*"
                               :message="passwordTooltipMessage"
-                          /></label>
+                            />
+                          </label>
                           <input
                             class="eos-form__input_text"
                             type="password"
@@ -392,23 +362,19 @@
                             @input="$v.selectedItem.password.$touch"
                             id="txtLocalPass"
                           />
-                          <div
-                            class="eos-form-group-label eos-form-group-error-msg"
-                          >
+                          <div class="eos-form-group-label eos-form-group-error-msg">
                             <label
                               v-if="
                                 $v.selectedItem.password.$dirty &&
                                   !$v.selectedItem.password.required
                               "
-                              >Password is required</label
-                            >
+                            >Password is required</label>
                             <label
                               v-else-if="
                                 $v.selectedItem.password.$dirty &&
                                   !$v.selectedItem.password.passwordRegex
                               "
-                              >Invalid password</label
-                            >
+                            >Invalid password</label>
                           </div>
                         </div>
                         <div
@@ -418,9 +384,7 @@
                               $v.selectedItem.confirmPassword.$error
                           }"
                         >
-                          <label class="eos-form-group-label" for="password"
-                            >Confirm password*</label
-                          >
+                          <label class="eos-form-group-label" for="password">Confirm password*</label>
                           <input
                             class="eos-form__input_text"
                             type="password"
@@ -429,17 +393,14 @@
                             id="txtLocalConfirmNewPass"
                             @input="$v.selectedItem.confirmPassword.$touch"
                           />
-                          <div
-                            class="eos-form-group-label eos-form-group-error-msg"
-                          >
+                          <div class="eos-form-group-label eos-form-group-error-msg">
                             <label
                               v-if="
                                 $v.selectedItem.confirmPassword.$dirty &&
                                   !$v.selectedItem.confirmPassword
                                     .sameAsPassword
                               "
-                              >Passwords do not match</label
-                            >
+                            >Passwords do not match</label>
                           </div>
                         </div>
                       </v-col>
@@ -462,10 +423,7 @@
                                 selectedItem.username === loggedInUserName
                             "
                           />
-                          <span
-                            class="eos-rdb-tick"
-                            id="lblLocalManageInterface"
-                          ></span>
+                          <span class="eos-rdb-tick" id="lblLocalManageInterface"></span>
                         </label>
                         <br />
                         <label class="eos-rdb-container mt-2">
@@ -485,10 +443,7 @@
                                 selectedItem.username === loggedInUserName
                             "
                           />
-                          <span
-                            class="eos-rdb-tick"
-                            id="lblLocalMonitorInterface"
-                          ></span>
+                          <span class="eos-rdb-tick" id="lblLocalMonitorInterface"></span>
                         </label>
                       </v-col>
                     </v-row>
@@ -498,21 +453,14 @@
                     class="ma-5 eos-btn-primary"
                     @click="editUser(selectedItem)"
                     id="lblLocalApplyInterface"
-                    :disabled="
-                      $v.selectedItem.$invalid &&
-                        !$v.selectedItem.confirmPassword.$dirty
-                    "
-                  >
-                    Apply
-                  </button>
+                    :disabled="!isEditFormValid"
+                  >Apply</button>
                   <button
                     type="button"
                     class="eos-btn-tertiary"
                     @click="closeEditUser(props)"
                     id="lblLocalCanacelInterface"
-                  >
-                    Cancel
-                  </button>
+                  >Cancel</button>
                 </td>
               </tr>
             </template>
@@ -565,7 +513,14 @@ export default class EosUserSettingLocal extends Vue {
     },
     selectedItem: {
       password: { required, passwordRegex },
-      old_password: { required, passwordRegex },
+      old_password: {
+        required: requiredIf(function(this: any, form) {
+          return (
+            this.$data.selectedItem.username === this.$data.loggedInUserName
+          );
+        }),
+        passwordRegex
+      },
       confirmPassword: {
         sameAsPassword: sameAs("password")
       }
@@ -761,6 +716,9 @@ export default class EosUserSettingLocal extends Vue {
       isAdmin = this.isAdminUser(data);
     }
     return isAdmin;
+  }
+  get isEditFormValid() {
+    return this.$v.selectedItem.$anyDirty && this.$v.selectedItem.$invalid ? false : true;
   }
 }
 </script>
