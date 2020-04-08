@@ -13,9 +13,9 @@
  prohibited. All other rights are expressly reserved by Seagate Technology, LLC.
  *****************************************************************************/
 <template>
-  <div>
+  <div class="eos-p-2">
     <v-row style="border-bottom: 2px solid rgba(0, 0, 0, 0.12);">
-      <v-col cols="12">
+      <v-col class="pt-0" cols="12">
         <eos-stats-medium />
       </v-col>
     </v-row>

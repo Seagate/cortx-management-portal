@@ -34,6 +34,7 @@
         <td>{{ capacityDetails.avail }}</td>
       </tr>
     </table>
+
     <div class="mt-2 mb-2 eos-capacity-separator"></div>
     <table class="mt-3">
       <tr>
@@ -116,17 +117,11 @@ export default class EosCapacityGauge extends Vue {
   width: 110px;
 }
 @media screen and (min-height: 600px) {
-  #capacityContainer {
-    padding-left: 20px;
-  }
   .eos-capacity-container {
     height: 110px;
   }
 }
 @media screen and (min-height: 900px) {
-  #capacityContainer {
-    padding: 20px;
-  }
   .eos-capacity-container {
     height: 180px;
   }
