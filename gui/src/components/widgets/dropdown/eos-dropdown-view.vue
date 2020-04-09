@@ -26,7 +26,9 @@
         :key="option.value"
         @click="onMenuItemSelect(option)"
       >
-        <span class="eos-text-md">{{ option.label }}</span>
+        <span class="eos-text-md eos-dropdown-menu-item-text">{{
+          option.label
+        }}</span>
       </div>
     </div>
   </div>
@@ -78,14 +80,15 @@ export default class EosDropdown extends Vue {
 }
 .eos-dropdown-title:hover {
   background: #fafafa;
-  border-color: #9E9E9E;
+  border-color: #9e9e9e;
 }
 .eos-dropdown-title-active {
   background: #ffffff;
-  border-color: #6EBE49;
+  border-color: #6ebe49;
 }
 .eos-dropdown-title-text {
   margin-top: 0.188em;
+  font: inherit;
 }
 .eos-dropdown-menu {
   position: absolute;
@@ -94,7 +97,7 @@ export default class EosDropdown extends Vue {
   max-height: 188px;
   box-shadow: 8px 6px 8px rgba(0, 0, 0, 0.12);
   z-index: 4;
-  border: 1px solid #6EBE49;
+  border: 1px solid #6ebe49;
   box-sizing: border-box;
   border-radius: 4px;
   overflow: auto;
@@ -113,5 +116,8 @@ export default class EosDropdown extends Vue {
 }
 .eos-dropdown-menu-item.selected {
   background: rgba(0, 0, 0, 0.02);
+}
+.eos-dropdown-menu-item-text {
+  font: inherit;
 }
 </style>

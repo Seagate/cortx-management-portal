@@ -70,7 +70,7 @@
             <eos-dropdown
               @update:selectedOption="handleDropdownSelect"
               :options="protocolList"
-              :title="protocol ? protocol : undefined"
+              :title="protocolLabel ? protocolLabel : undefined"
             ></eos-dropdown>
           </div>
         </div>
@@ -303,6 +303,7 @@ export default class EosNotifications extends Vue {
       senderemail: "",
       smtpport: 465,
       protocol: "ssl",
+      protocolLabel: "SSL",
       protocolList: [
         {
           label: "SSL",
@@ -454,6 +455,7 @@ export default class EosNotifications extends Vue {
   }
   private handleDropdownSelect(selected: any) {
     this.$data.protocol = selected.value;
+    this.$data.protocolLabel = selected.label;
   }
 }
 </script>

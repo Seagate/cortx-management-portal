@@ -15,7 +15,9 @@
 <template>
   <div>
     <div id="auditlog" class="mb-4">
-      <label id="auditlog-title" class="eos-text-bold eos-text-lg">Audit log</label>
+      <label id="auditlog-title" class="eos-text-bold eos-text-lg"
+        >Audit log</label
+      >
       <div class="mt-1 eos-text-md">
         <label>You can download "audit logs" for the selected period.</label>
       </div>
@@ -24,50 +26,47 @@
 
     <div class="col-4 py-0">
       <div class="eos-form-group">
-        <label class="eos-form-group-label" for="cmdComponent" id="lblComponent">Component*</label>
-        <select
-          name="cmdComponent"
-          id="cmdComponent"
-          class="eos-form__input_text"
-          v-model="component"
+        <label class="eos-form-group-label" for="cmdComponent" id="lblComponent"
+          >Component*</label
         >
-          <option value="CSM">CSM</option>
-          <option value="S3">S3</option>
-        </select>
+        <eos-dropdown
+          @update:selectedOption="handleComponentDropdownSelect"
+          :options="componentList"
+          :title="component ? component : undefined"
+        ></eos-dropdown>
 
-        <label class="eos-form-group-label" for="cmdTimeRange" id="lblTimeRange">Time range*</label>
-        <select
-          name="cmdTimeRange"
-          id="cmdTimeRange"
-          class="eos-form__input_text"
-          v-model="timerange"
+        <label class="eos-form-group-label" for="cmdTimeRange" id="lblTimeRange"
+          >Time range*</label
         >
-          <option value="1">One day</option>
-          <option value="2">Two days</option>
-          <option value="3">Three days</option>
-          <option value="4">Four days</option>
-          <option value="5">Five days</option>
-          <option value="6">Six days</option>
-          <option value="7">Seven days</option>
-        </select>
+        <eos-dropdown
+          @update:selectedOption="handleTimerangeDropdownSelect"
+          :options="timerangeList"
+          :title="timerangeLabel ? timerangeLabel : undefined"
+        ></eos-dropdown>
       </div>
       <div class="mt-8 nav-btn">
-        <button type="button" class="eos-btn-primary mr-2" @click="downloadAuditLogs()">Download</button>
-        <button type="button" class="eos-btn-primary" @click="showAuditLogs()">Show as HTML</button>
+        <button
+          type="button"
+          class="eos-btn-primary mr-2"
+          @click="downloadAuditLogs()"
+        >
+          Download
+        </button>
+        <button type="button" class="eos-btn-primary" @click="showAuditLogs()">
+          Show as HTML
+        </button>
       </div>
     </div>
     <div class="ma-3 mt-5" v-if="showLog">
       <span class="eos-text-bold eos-text-lg">Logs</span>
       <v-divider class="my-2"></v-divider>
       <span class="mb-1 d-block" v-for="(log, index) in showLog" :key="index">
-        {{
-        log
-        }}
+        {{ log }}
       </span>
     </div>
   </div>
 </template>
- <script lang="ts">
+<script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import moment from "moment";
 
@@ -78,7 +77,48 @@ export default class EosAuditLog extends Vue {
   private data() {
     return {
       component: "CSM",
+      componentList: [
+        {
+          label: "CSM",
+          value: "CSM"
+        },
+        {
+          label: "S3",
+          value: "S3"
+        }
+      ],
       timerange: "1",
+      timerangeLabel: "One day",
+      timerangeList: [
+        {
+          label: "One day",
+          value: "1"
+        },
+        {
+          label: "Two days",
+          value: "2"
+        },
+        {
+          label: "Three days",
+          value: "3"
+        },
+        {
+          label: "Four days",
+          value: "4"
+        },
+        {
+          label: "Five days",
+          value: "5"
+        },
+        {
+          label: "Six days",
+          value: "6"
+        },
+        {
+          label: "Seven days",
+          value: "7"
+        }
+      ],
       to: moment().unix(),
       showLog: ""
     };
@@ -141,6 +181,13 @@ export default class EosAuditLog extends Vue {
         console.error("download failed");
       });
     this.$store.dispatch("systemConfig/hideLoader");
+  }
+  private handleTimerangeDropdownSelect(selected: any) {
+    this.$data.timerange = selected.value;
+    this.$data.timerangeLabel = selected.label;
+  }
+  private handleComponentDropdownSelect(selected: any) {
+    this.$data.component = selected.value;
   }
 }
 </script>

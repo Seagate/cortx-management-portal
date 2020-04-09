@@ -299,7 +299,7 @@ const router = new Router({
           meta: {
             requiresAuth: true,
             isOnboardingReq: false,
-            requiredAccess: userPermissions.sysconfig + userPermissions.list
+            requiredAccess: userPermissions.maintenance + userPermissions.list
           }
         },
         {
