@@ -58,7 +58,7 @@
           <v-tab @click="tabChange(43200)">
             <label class="tab-label">12 Hrs</label>
           </v-tab>
-          <v-tab @click="tabChange(43200)">
+          <v-tab @click="tabChange(86400)">
             <label class="tab-label">1 Day</label>
           </v-tab>
         </v-tabs>
@@ -128,6 +128,25 @@ export default class EosLineChart extends Vue {
         { value: "iops_write_bucket", text: "iops_write_bucket" }
       ]
     };
+  }
+
+  public getPollingInterval(prefetchDurInSec: number): number {
+    switch (prefetchDurInSec) {
+      case 1800:
+        return 10000;
+      case 3600:
+        return 20000;
+      case 7200:
+        return 40000;
+      case 21600:
+        return 120000;
+      case 43200:
+        return 240000;
+      case 86400:
+        return 480000;
+      default:
+        return 10000;
+    }
   }
 
   // public getter for Metric1 dropdown list
@@ -208,7 +227,7 @@ export default class EosLineChart extends Vue {
         from: this.fromTimeSec,
         to: this.toTimeSec,
         // interval: process.env.VUE_APP_INTERVAL,
-        total_sample: 100,
+        total_sample: 180,
         metric1: this.metric1,
         metric2: this.metric2
       };
@@ -243,6 +262,9 @@ export default class EosLineChart extends Vue {
                   columns: data ? data : [[]],
                   type: "line",
                   axes: y2Obj
+                },
+                color: {
+                  pattern: ["#1f77b4", "#FF0000"]
                 },
                 legend: {
                   position: "bottom"
@@ -333,7 +355,7 @@ export default class EosLineChart extends Vue {
         } else {
           clearInterval(that.throughputPoll);
         }
-      }, process.env.VUE_APP_GUI_POLLING_INTERVAL);
+      }, this.getPollingInterval(preFetchDurationInSec));
     } catch {
       this.isError = true;
     }
