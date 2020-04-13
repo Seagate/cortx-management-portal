@@ -125,7 +125,7 @@ export default class EosWelcome extends Vue {
   }
   private addLicense() {
     const licensekey = {
-      license_key: this.$data.key1.concat(
+      csm_onboarding_license_key: this.$data.key1.concat(
         this.$data.key2,
         this.$data.key3,
         this.$data.key4

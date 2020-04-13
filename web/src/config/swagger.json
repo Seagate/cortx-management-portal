@@ -1,908 +1,3766 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "version": "1.0.0"
-  },
-  "basePath": "/api/v1",
-  "schemes": [
-    "http"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "paths": {
-    "/sessionkey": {
-      "get": {
-        "tags": [
-          "Get SessionKey"
-        ],
-        "summary": "Gets Hard coded session key. In future this needs to be generated Login mechanism and this api will be scrapped",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "user",
-            "in": "query",
-            "description": "Specifies the user name",
-            "required": true,
-            "type": "string"
-          }
-        ]
-      }
-    },
-    "/alerts": {
-      "get": {
-        "tags": [
-          "Get Alerts"
-        ],
-        "summary": "Gets Alerts from Python API",
-        "responses": {
-          "200": {
-            "description": "Alerts",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "total_records": {
-                      "type": "integer",
-                      "description": "Alerts count"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing Valid Required Parameters"
-          },
-          "404": {
-            "description": "Alert Not Found"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "sortby",
-            "in": "query",
-            "description": "Specifies sort by option",
-            "required": true,
-            "type": "string",
-            "enum": [
-              "created_time"
-            ],
-            "default": "created_time"
-          },
-          {
-            "name": "dir",
-            "in": "query",
-            "description": "Specifies sort direction option",
-            "required": true,
-            "type": "string",
-            "enum": [
-              "asc",
-              "desc"
-            ],
-            "default": "desc"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "description": "Specifies offset of the result",
-            "required": true,
-            "type": "integer",
-            "default": 1
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Specifies limit for results per page",
-            "required": true,
-            "type": "integer",
-            "default": 10
-          }
-        ]
-      }
-    },
-    "/alerts/{alert_id}": {
-      "patch": {
-        "tags": [
-          "Edit Alerts"
-        ],
-        "summary": "Forward the Edit Alert request to Python server and send the Python server response to client.",
-        "responses": {
-          "204": {
-            "description": "OK (No Conent)"
-          },
-          "404": {
-            "description": "Alert Not Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "alert_id",
-            "in": "path",
-            "description": "Specifies the alert id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "alert",
-            "in": "body",
-            "description": "Alert request",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "acknowledged": {
-                  "type": "boolean"
-                },
-                "comments": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "/alerts/{alert_id}/comments": {
-      "get": {
-        "tags": [
-          "Get All comments on alert with alert id."
-        ],
-        "summary": "Get All comments on alert with alert id.",
-        "responses": {
-          "200": {
-            "description": "Alert comments list",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "comments": {
-                      "type": "object",
-                      "description": "List of comments on alert"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing Valid Required Parameters"
-          },
-          "404": {
-            "description": "Alert Not Found"
-          }
-        },
-        "content": {
-          "application/json": {}
-        }
-      },
-      "post": {
-        "tags": [
-          "Add comment to alert with alert id"
-        ],
-        "summary": "Add comment to alert with alert id.",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "comment_text",
-            "in": "body",
-            "description": "Comment text",
-            "schema": {
-              "type": "string",
-              "required": true
-            }
-          }
-        ]
-      }
-    },
-    "/stats/{statstype}": {
-      "get": {
-        "tags": [
-          "Get Stats"
-        ],
-        "summary": "Get statetics like throughput, latency, IOPs",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "statstype",
-            "in": "path",
-            "description": "Specifies the stats type",
-            "required": true,
-            "type": "string",
-            "enum": [
-              "throughput",
-              "latency",
-              "iops"
-            ],
-            "default": "throughput"
-          },
-          {
-            "name": "id",
-            "in": "query",
-            "description": "from (epoch) time",
-            "required": false,
-            "type": "integer",
-            "default": "1"
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "description": "from (epoch) time",
-            "required": true,
-            "type": "integer",
-            "default": "1571830389"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "description": "to (epoch) time",
-            "required": true,
-            "type": "integer",
-            "default": "1571830449"
-          },
-          {
-            "name": "interval",
-            "in": "query",
-            "description": "from (epoch) time",
-            "required": false,
-            "type": "integer",
-            "default": "10"
-          }
-        ]
-      }
-    },
-    "/config": {
-      "get": {
-        "tags": [
-          "Get System Config"
-        ],
-        "summary": "Get the System Configuration from mock server.",
-        "responses": {
-          "200": {
-            "description": "System Config",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "system_config": {
-                      "type": "object"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No Data Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        }
-      },
-      "post": {
-        "tags": [
-          "Save System Config"
-        ],
-        "summary": "Save the System configuration to the mock server.",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "system_config",
-            "in": "body",
-            "description": "system config",
-            "schema": {
-              "$ref": "#/definitions/system_config"
-            }
-          }
-        ]
-      }
-    },
-    "/networkmanagement": {
-      "get": {
-        "tags": [
-          "Get System Config for management network settings"
-        ],
-        "summary": "Get the System Configuration for management network settings.",
-        "responses": {
-          "200": {
-            "description": "System Config",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "system_config": {
-                      "type": "object"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No Data Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        }
-      },
-      "patch": {
-        "tags": [
-          "Save System Config for management network settings"
-        ],
-        "summary": "Save the System configuration for management network settings.",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "system_config",
-            "in": "body",
-            "description": "system config",
-            "schema": {
-              "$ref": "#/definitions/system_config"
-            }
-          }
-        ]
-      }
-    },
-    "/user/admin": {
-      "post": {
-        "tags": [
-          "Register the admin user"
-        ],
-        "summary": "Register and create profile for CSM admin user",
-        "responses": {
-          "200": {
-            "description": "Admin user created"
-          },
-          "404": {
-            "description": "No Data Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "admin user",
-            "in": "body",
-            "description": "CSM Admin User request",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "username": {
-                  "type": "string",
-                  "example": "admin"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "admin"
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "/login": {
-      "post": {
-        "tags": [
-          "CSM admin user login"
-        ],
-        "summary": "CSM admin user login",
-        "responses": {
-          "200": {
-            "description": "Admin user created"
-          },
-          "404": {
-            "description": "No Data Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "admin user",
-            "in": "body",
-            "description": "CSM Admin User request",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "username": {
-                  "type": "string",
-                  "example": "admin"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "admin"
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "/udx-device/registration-token": {
-      "get": {
-        "tags": [
-          "Get Registration token to register UDX device"
-        ],
-        "summary": "Get Registration token to register UDX device.",
-        "responses": {
-          "200": {
-            "description": "Registration token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "registrationToken": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No Data Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        }
-      }
-    },
-    "/udx-device": {
-      "get": {
-        "tags": [
-          "Get registered UDX device details"
-        ],
-        "summary": "Get registered UDX device details.",
-        "responses": {
-          "200": {
-            "description": "Registration token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "productID": {
-                      "type": "string"
-                    },
-                    "serialNumber": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string"
-                    },
-                    "uuid": {
-                      "type": "string"
-                    },
-                    "vendorID": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No Data Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        }
-      },
-      "post": {
-        "tags": [
-          "Register UDX device"
-        ],
-        "summary": "Register UDX device.",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "admin user",
-            "in": "body",
-            "description": "UDX device registration request",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "example": "localhost:4000"
-                },
-                "pin": {
-                  "type": "string",
-                  "example": "0000"
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "/s3/bucket_policy/{bucket_name}": {
-      "delete": {
-        "tags": [
-          "bucket delete"
-        ],
-        "summary": "bucket policy delete",
-        "responses": {
-          "200": {
-            "description": "Bucket Policy Deleted Successfully."
-          },
-          "404": {
-            "description": "No Data Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "bucket_name",
-            "in": "path",
-            "description": "Specifies the bucket name",
-            "required": true,
-            "type": "string"
-          }
-        ]
-      } ,
-      "get": {
-        "tags": [
-          "Get Bucket Policy"
-        ],
-        "summary": "Get Bucket Policy",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "bucket_name",
-            "in": "path",
-            "description": "Specifies the Bucket name",
-            "required": true,
-            "type": "string"
-          }
-        ]
-      },
-      "put": {
-        "tags": [
-          "Edit Bucket policy"
-        ],
-        "summary": "Forward the Edit bucket_policy request to Python server and send the Python server response to client",
-        "responses": {
-          "200": {
-            "description": "Ok"
-          },
-          "404": {
-            "description": "policy Not Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "bucket_name",
-            "in": "path",
-            "description": "Specifies the bucket_name",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "policy",
-            "in": "body",
-            "description": "bucket policy request",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "policy": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "/s3/bucket/{bucket_name}": {
-      "delete": {
-        "tags": [
-          "bucket delete"
-        ],
-        "summary": "bucket  delete",
-        "responses": {
-          "200": {
-            "description": "Bucket  Deleted Successfully."
-          },
-          "404": {
-            "description": "No Data Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "bucket_name",
-            "in": "path",
-            "description": "Specifies the bucket name",
-            "required": true,
-            "type": "string"
-          }
-        ]
-      }
-    },
-    "/s3/bucket": {
-      "get": {
-        "tags": [
-          "Get Bucket"
-        ],
-        "summary": "Get the bucket list.",
-        "responses": {
-          "200": {
-            "description": "get all bucket list",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "bucket": {
-                      "type": "object"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No Data Found"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        }
-      },
-      "post": {
-        "tags": [
-          "Add bucket"
-        ],
-        "summary": "Add bucket",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "bucket_name",
-            "in": "body",
-            "description": "bucket name",
-            "properties": {
-              "bucket_name": {
-                "type": "string",
-                "example": "udx-xyz"
-              }
-            }
-          }
-        ]
-      }
-    }
-  },
-  "definitions": {
-    "system_config": {
-      "type": "object",
-      "required": false,
-      "properties": {
-        "systemconfig": {
-          "type": "object",
-          "properties": {
-            "management_network": {
-              "type": "object",
-              "properties": {
-                "ipv4": {
-                  "type": "object",
-                  "required": false,
-                  "properties": {
-                    "isManual": {
-                      "type": "boolean"
-                    },
-                    "ipAddress": {
-                      "type": "string",
-                      "example": "127.0.0.1"
-                    },
-                    "netmask": {
-                      "type": "string",
-                      "example": "255.255.255.0"
-                    },
-                    "gateway": {
-                      "type": "string",
-                      "example": "255.255.255.0"
-                    }
-                  }
-                },
-                "ipv6": {
-                  "type": "object",
-                  "required": false,
-                  "properties": {
-                    "isManual": {
-                      "type": "boolean"
-                    },
-                    "gateway": {
-                      "type": "string",
-                      "example": "255.255.255.0"
-                    },
-                    "static_addr": {
-                      "type": "array",
-                      "items": {
-                        "ip_address": {
-                          "type": "string"
-                        }
-                      },
-                      "example": [
-                        {
-                          "ip_address": "127.0.0.1"
-                        },
-                        {
-                          "ip_address": "127.0.0.2"
-                        },
-                        {
-                          "ip_address": "127.0.0.3"
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            },
-            "data_network_setting": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "isExternalLoadBalancer": {
-                  "type": "boolean"
-                },
-                "networkPreference": {
-                  "type": "array",
-                  "items": "string",
-                  "example": [
-                    "ipv4",
-                    "ipv6"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "CSM"
+	},
+	"basePath": "/api/v1",
+	"schemes": ["http"],
+	"produces": ["application/json"],
+	"paths": {
+		"/preboarding/user": {
+			"post": {
+				"tags": ["Admin User"],
+				"summary": "Register and create profile for CSM admin user",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "User",
+					"in": "body",
+					"description": "CSM User request",
+					"schema": {
+						"type": "object",
+						"required": false,
+						"properties": {
+							"username": {
+								"type": "string",
+								"example": "admin"
+							},
+							"password": {
+								"type": "string",
+								"example": "admin"
+							}
+						}
+					}
+				}]
+			}
+		},
+		"/login": {
+			"post": {
+				"tags": ["User"],
+				"summary": "User login",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "User",
+					"in": "body",
+					"description": "CSM User request",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"username": {
+								"type": "string",
+								"example": ""
+							},
+							"password": {
+								"type": "string",
+								"example": ""
+							}
+						}
+					}
+				}]
+			}
+		},
+		"/logout": {
+			"post": {
+				"tags": ["User"],
+				"summary": "User Logout",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/sysconfig": {
+			"get": {
+				"tags": ["System Configuration"],
+				"summary": "Get the System Configuration",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["System Configuration"],
+				"summary": "Save the System configuration",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "system_config",
+					"in": "body",
+					"description": "system config",
+					"schema": {
+						"$ref": "#/definitions/system_config"
+					}
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/sysconfig/{config_id}": {
+			"get": {
+				"tags": ["System Configuration"],
+				"summary": "Get the System Configuration",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "config_id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"put": {
+				"tags": ["System Configuration"],
+				"summary": "Save the System configuration",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "config_id",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				}, {
+					"name": "system_config",
+					"in": "body",
+					"description": "system config",
+					"schema": {
+						"$ref": "#/definitions/system_config"
+					}
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"patch": {
+				"tags": ["System Configuration"],
+				"summary": "Save the system configuration by config type",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "config_id",
+						"in": "path",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "config_type",
+						"in": "query",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "system_config_type",
+						"in": "body",
+						"description": "Supported system config types : ['management_network_settings', 'data_network_settings', 'dns_network_settings', 'date_time_settings', 'notifications']",
+						"schema": {
+							"$ref": "#/definitions/system_config_type"
+						}
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/sysconfig_helpers/email_test": {
+			"post": {
+				"tags": ["System Configuration"],
+				"summary": "Send test email",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"in": "body",
+						"schema": {
+							"$ref": "#/definitions/notification_email"
+						}
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/license/onboarding": {
+			"post": {
+				"tags": ["System Configuration"],
+				"summary": "License Key Verification",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "license_key",
+						"in": "body",
+						"required": true,
+						"description": "license key",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"csm_onboarding_license_key": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				]
+			}
+		},
+		"/csm/users": {
+			"get": {
+				"tags": ["CSM User"],
+				"summary": "Get CSM users list",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["CSM User"],
+				"summary": "Create new CSM user",
+				"responses": {
+					"201": {
+						"description": "User has been created"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "User",
+					"in": "body",
+					"description": "Create new user request",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"username": {
+								"type": "string",
+								"example": "Test2"
+							},
+							"password": {
+								"type": "string",
+								"example": "password"
+							},
+							"interfaces": {
+								"type": "array",
+								"example": []
+							},
+							"roles": {
+								"type": "array",
+								"example": ["manage"]
+							},
+							"temperature": {
+								"type": "string",
+								"example": ""
+							},
+							"language": {
+								"type": "string",
+								"example": ""
+							},
+							"timeout": {
+								"type": "string",
+								"example": "1"
+							}
+						}
+					}
+				},{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/csm/users/{user_id}": {
+			"get": {
+				"tags": ["CSM User"],
+				"summary": "Get CSM user",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"description": "Specifies the user id",
+						"required": true,
+						"type": "string"
+					},	
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			},
+			"patch": {
+				"tags": ["CSM User"],
+				"summary": "Update CSM user credentials",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"description": "Specifies the user id",
+						"required": true,
+						"type": "string"
+					},	
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					},
+					{
+					"name": "edit csm user",
+					"in": "body",
+					"description": "Edit CSM user credentials",
+					"schema": {
+						"type": "object",
+						"required": false,
+						"properties": {
+							"id": {
+								"type": "string",
+								"example": "nkpcsm4"
+							},
+							"username": {
+								"type": "string",
+								"example": "nkpcsm4"
+							},
+							"user_type": {
+								"type": "string",
+								"example": "csm"
+							},
+							"roles": {
+								"type": "array",
+								"example": []
+							},
+							"password": {
+								"type": "string",
+								"example": "password"
+							},
+							"confirmPassword": {
+								"type": "string",
+								"example": "password"
+							}
+						}
+					}
+				}
+				]
+
+			},
+			"delete": {
+				"tags": ["CSM User"],
+				"summary": "Delete csm user",
+				"responses": {
+					"200": {
+						"description": "Ok"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"404": {
+						"description": "Users Not Found"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"description": "Specifies the user id",
+						"required": true,
+						"type": "string"
+					},
+				    {
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
+		"/permissions": {
+			"get": {
+				"tags": [
+					"CSM User"
+				],
+				"summary": "Get the User Permissions",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/s3_accounts": {
+			"get": {
+				"tags": ["S3"],
+				"summary": "Get S3 Accounts",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["S3"],
+				"summary": "Create new S3 Account",
+				"responses": {
+					"200": {
+						"description": "S3 Account has been created"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "S3 Account",
+					"in": "body",
+					"description": "Create new S3 Account request",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"account_name": {
+								"type": "string",
+								"example": ""
+							},
+							"account_email": {
+								"type": "string",
+								"example": ""
+							},
+							"password": {
+								"type": "string",
+								"example": ""
+							}
+						}
+					}
+				},{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/s3_accounts/{s3_account_id}": {
+			"patch": {
+				"tags": ["S3"],
+				"summary": "Update S3 account password",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "s3_account_id",
+						"in": "path",
+						"description": "Specifies the S3 Account Id",
+						"required": true,
+						"type": "string"
+					},	
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					},
+					{
+					"name": "Edit S3 Account",
+					"in": "body",
+					"description": "Edit S3 Account",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"password": {
+								"type": "string",
+								"example": ""
+							},
+							"reset_access_key": {
+								"type": "boolean",
+								"example": false
+							}
+						}
+					}
+				}
+				]
+			},
+			"delete": {
+				"tags": ["S3"],
+				"summary": "Delete S3 Account",
+				"responses": {
+					"200": {
+						"description": "Ok"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"404": {
+						"description": "Users Not Found"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "s3_account_id",
+						"in": "path",
+						"description": "Specifies the S3 Account id",
+						"required": true,
+						"type": "string"
+					},
+				    {
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
+		"/s3/bucket": {
+			"get": {
+			  "tags": [
+				"S3"
+			  ],
+			  "summary": "Get the bucket list.",
+			  "responses": {
+				"200": {
+					"description": "OK"
+				},
+				"201": {
+					"description": "No Content"
+				},
+				"400": {
+					"description": "Bad Request"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "No Data Found"
+				},
+				"409": {
+					"description": "Conflict"
+				},
+				"422": {
+					"description": "Unprocessable Entity"
+				},
+				"499": {
+					"description": "Call Cancelled"
+				},
+				"500": {
+					"description": "Internal Server Error"
+				},
+				"501": {
+					"description": "Not Implemented"
+				}
+			},
+			  "content": {
+				"application/json": {}
+			  },
+			  "parameters": [{
+				"name": "authorization",
+				"in": "header",
+				"required": true,
+				"type": "string"
+			}]
+			},
+			"post": {
+			  "tags": [
+				"S3"
+			  ],
+			  "summary": "Add bucket",
+			  "responses": {
+				"200": {
+				  "description": "OK"
+				},
+				"400": {
+				  "description": "Bad Request"
+				}
+			  },
+			  "content": {
+				"application/json": {}
+			  },
+			  "parameters": [
+				{
+				  "name": "bucket_name",
+				  "in": "body",
+				  "description": "bucket name",
+				  "properties": {
+					"bucket_name": {
+					  "type": "string",
+					  "example": "udx-xyz"
+					}
+				  }
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+			  ]
+			}
+		},
+		"/s3/bucket_policy/{bucket_name}": {
+			"delete": {
+				"tags": [
+				"S3"
+				],
+				"summary": "bucket policy delete",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+				"application/json": {}
+				},
+				"parameters": [
+				{
+					"name": "bucket_name",
+					"in": "path",
+					"description": "Specifies the bucket name",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+				]
+			} ,
+			"get": {
+				"tags": [
+				"S3"
+				],
+				"summary": "Get Bucket Policy",
+				"responses": {
+				"200": {
+					"description": "OK"
+				},
+				"400": {
+					"description": "Bad request"
+				}
+				},
+				"content": {
+				"application/json": {}
+				},
+				"parameters": [
+				{
+					"name": "bucket_name",
+					"in": "path",
+					"description": "Specifies the Bucket name",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+				]
+			},
+			"put": {
+				"tags": [
+				"S3"
+				],
+				"summary": "Edit Bucket Policy",
+				"responses": {
+				"200": {
+					"description": "Ok"
+				},
+				"404": {
+					"description": "policy Not Found"
+				},
+				"400": {
+					"description": "Bad Request"
+				}
+				},
+				"content": {
+				"application/json": {}
+				},
+				"parameters": [
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "bucket_name",
+					"in": "path",
+					"description": "Specifies the bucket_name",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "policy",
+					"in": "body",
+					"description": "bucket policy request",
+					"schema": {
+					"type": "object",
+					"required": false,
+					"properties": {
+						"policy": {
+						"type": "string"
+						}
+					}
+					}
+				}
+				]
+			}
+		},
+		"/s3/bucket/{bucket_name}": {
+		"delete": {
+			"tags": [
+			"S3"
+			],
+			"summary": "bucket  delete",
+			"responses": {
+				"200": {
+					"description": "OK"
+				},
+				"201": {
+					"description": "No Content"
+				},
+				"400": {
+					"description": "Bad Request"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "No Data Found"
+				},
+				"409": {
+					"description": "Conflict"
+				},
+				"422": {
+					"description": "Unprocessable Entity"
+				},
+				"499": {
+					"description": "Call Cancelled"
+				},
+				"500": {
+					"description": "Internal Server Error"
+				},
+				"501": {
+					"description": "Not Implemented"
+				}
+			},
+			"content": {
+			"application/json": {}
+			},
+			"parameters": [
+			{
+				"name": "bucket_name",
+				"in": "path",
+				"description": "Specifies the bucket name",
+				"required": true,
+				"type": "string"
+			},
+			{
+				"name": "authorization",
+				"in": "header",
+				"required": true,
+				"type": "string"
+			}
+			]
+		}
+		},
+		"/iam_users": {
+			"get": {
+				"tags": ["S3"],
+				"summary": "Get IAM users list",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["S3"],
+				"summary": "Create new IAM user",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "User",
+					"in": "body",
+					"description": "Create new user request",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"user_name": {
+								"type": "string",
+								"example": "iam_user"
+							},
+							"password": {
+								"type": "string",
+								"example": "password"
+							},
+							"require_reset": {
+								"type": "boolean"
+							}
+						}
+					}
+				},{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/iam_users/{user_id}": {
+			"delete": {
+				"tags": ["S3"],
+				"summary": "Delete IAM user",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "user_id",
+					"in": "path",
+					"description": "Specifies the IAM user id",
+					"required": true,
+					"type": "string"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},	
+		"/alerts": {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Gets Alerts",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "sortby",
+					"in": "query",
+					"description": "Specifies sort by option",
+					"required": true,
+					"type": "string",
+					"enum": ["created_time"],
+					"default": "created_time"
+				}, {
+					"name": "dir",
+					"in": "query",
+					"description": "Specifies sort direction option",
+					"required": true,
+					"type": "string",
+					"enum": ["asc", "desc"],
+					"default": "desc"
+				}, {
+					"name": "offset",
+					"in": "query",
+					"description": "Specifies offset of the result",
+					"required": true,
+					"type": "integer",
+					"default": 1
+				}, {
+					"name": "limit",
+					"in": "query",
+					"description": "Specifies limit for results per page",
+					"required": true,
+					"type": "integer",
+					"default": 10
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"patch": {
+				"tags": ["Alerts"],
+				"summary": "Acknowledge Alerts",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "alert_id list",
+					"in": "body",
+					"description": "Alert Id",
+					"required": true,
+					"schema": {
+						"type": "array",
+						"items": "string",
+						"example": ["alert_id"]
+					}
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/alerts/{alert_id}": {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Get Alert",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "alert_id",
+					"in": "path",
+					"description": "Specifies the alert id",
+					"required": true,
+					"type": "string"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"patch": {
+				"tags": ["Alerts"],
+				"summary": "Edit Alert",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "alert_id",
+					"in": "path",
+					"description": "Specifies the alert id",
+					"required": true,
+					"type": "string"
+				}, {
+					"name": "alert",
+					"in": "body",
+					"description": "Alert request",
+					"schema": {
+						"type": "object",
+						"required": false,
+						"properties": {
+							"acknowledged": {
+								"type": "boolean"
+							},
+							"comments": {
+								"type": "string",
+								"example": ""
+							}
+						}
+					}
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/alerts_history" : {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Get alert history",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},		
+		"/alerts_history/{alert_id}" : {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Get alert history for specific alert",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "alert_id",
+						"in": "path",
+						"description": "Specifies the alert id",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
+		"/alerts/{alert_uuid}/comments" : {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Get alert comments for specific alert",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "alert_uuid",
+						"in": "path",
+						"description": "Specifies the alert uuid",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["Alerts"],
+				"summary": "Add comments to the Alert",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "Comment",
+					"in": "body",
+					"description": "Add comments to the alert",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"comment_text": {
+								"type": "string",
+								"example": ""
+							}
+						}
+					}
+				},
+				{
+					"name": "alert_uuid",
+					"in": "path",
+					"description": "Specifies the alert id",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/system/health/summary": {
+			"get": {
+				"tags": ["Health"],
+				"summary": "Geat Health Summary of the system.",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/system/health/node": {
+			"get": {
+				"tags": ["Health"],
+				"summary": "Get Health of nodes",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "node_id",
+					"in": "query",
+					"description": "Specifies the node id",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/system/health/view": {
+			"get": {
+				"tags": ["Health"],
+				"summary": "Get Health of nodes with alerts",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "node_id",
+					"in": "query",
+					"description": "Specifies the node id",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/stats": {
+			"get": {
+				"tags": ["Stats"],
+				"summary": "Get statetics",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "panel",
+					"in": "query",
+					"description": "Panel",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "metric",
+					"in": "query",
+					"description": "Metric",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "id",
+					"in": "query",
+					"description": "stats id",
+					"required": false,
+					"type": "integer"
+				}, {
+					"name": "from",
+					"in": "query",
+					"description": "from (epoch) time",
+					"required": false,
+					"type": "integer"
+				}, {
+					"name": "to",
+					"in": "query",
+					"description": "to (epoch) time",
+					"required": false,
+					"type": "integer"
+				}, {
+					"name": "interval",
+					"in": "query",
+					"description": "interval (epoch) time",
+					"required": false,
+					"type": "integer"
+				}, {
+					"name": "total_sample",
+					"in": "query",
+					"description": "Total Sample",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "output_format",
+					"in": "query",
+					"description": "Output Format",
+					"required": false,
+					"type": "string",
+					"default": "gui"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/capacity": {
+			"get": {
+				"tags": ["Storage Capacity"],
+				"summary": "Get the Storage Capacity",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/udx-device/registration-token": {
+			"get": {
+				"tags": ["UDX Device"],
+				"summary": "Get Registration token to register UDX device.",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				}
+			}
+		},
+		"/udx-device": {
+			"get": {
+				"tags": ["UDX Device"],
+				"summary": "Get registered UDX device details.",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				}
+			},
+			"post": {
+				"tags": ["UDX Device"],
+				"summary": "Register UDX device.",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "admin user",
+					"in": "body",
+					"description": "UDX device registration request",
+					"schema": {
+						"type": "object",
+						"required": false,
+						"properties": {
+							"url": {
+								"type": "string",
+								"example": "localhost:4000"
+							},
+							"pin": {
+								"type": "string",
+								"example": "0000"
+							}
+						}
+					}
+				}]
+			}
+		},
+		"/auditlogs/show/{component}" : {
+			"get": {
+				"tags": ["Audit logs"],
+				"summary": "Get Audit logs",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "component",
+						"in": "path",
+						"description": "Specifies the component (csm or s3)",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "component",
+						"in": "path",
+						"description": "Specifies the component",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "start_date",
+						"in": "query",
+						"description": "epoch time",
+						"required": true,
+						"type": "integer"
+					}, {
+						"name": "end_date",
+						"in": "query",
+						"description": "epoch time",
+						"required": true,
+						"type": "integer"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
+		"/auditlogs/download/{component}" : {
+			"get": {
+				"tags": ["Audit logs"],
+				"summary": "Download Audit logs",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "component",
+						"in": "path",
+						"description": "Specifies the component (csm or s3)",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "component",
+						"in": "path",
+						"description": "Specifies the component",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "start_date",
+						"in": "query",
+						"description": "epoch time",
+						"required": true,
+						"type": "integer"
+					}, {
+						"name": "end_date",
+						"in": "query",
+						"description": "epoch time",
+						"required": true,
+						"type": "integer"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
+		"/upgrade/firmware/upload": {
+			"post": {
+			  "tags": [
+				"Firmware upgrade "
+			  ],
+			  "summary": "Firmaware upload",
+			  "responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "package",
+						"in": "formData",
+						"description": ".bin file",
+						"type": "file"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/upgrade/firmware/start": {
+			"post": {
+			  "tags": [
+				"Firmware upgrade "
+			  ],
+			  "summary": "Firmaware upgrade start",
+			  "responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+			  "parameters": [
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+			  ]
+			}
+		},
+		"/upgrade/firmware/last_upgrade_status": {
+			"get": {
+			  "tags": [
+				"Firmware upgrade "
+			  ],
+			  "summary": "Firmaware upgrade status",
+			  "responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+			  "parameters": [
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+			  ]
+			}
+		},
+		"/upgrade/firmware/availability": {
+			"get": {
+			  "tags": [
+				"Firmware upgrade "
+			  ],
+			  "summary": "Firmaware upgrade availability",
+			  "responses": {
+				"200": {
+					"description": "OK"
+				},
+				"201": {
+					"description": "No Content"
+				},
+				"400": {
+					"description": "Bad Request"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "No Data Found"
+				},
+				"409": {
+					"description": "Conflict"
+				},
+				"422": {
+					"description": "Unprocessable Entity"
+				},
+				"499": {
+					"description": "Call Cancelled"
+				},
+				"500": {
+					"description": "Internal Server Error"
+				},
+				"501": {
+					"description": "Not Implemented"
+				}
+			},
+			  "parameters": [
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+			  ]
+			}
+		},
+		"/tls/bundle/upload": {
+			"post": {
+			  "tags": [
+				"SSL Certificate"
+			  ],
+			  "summary": "SSL Certificate upload",
+			  "responses": {
+				"200": {
+					"description": "OK"
+				},
+				"201": {
+					"description": "No Content"
+				},
+				"400": {
+					"description": "Bad Request"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "No Data Found"
+				},
+				"409": {
+					"description": "Conflict"
+				},
+				"422": {
+					"description": "Unprocessable Entity"
+				},
+				"499": {
+					"description": "Call Cancelled"
+				},
+				"500": {
+					"description": "Internal Server Error"
+				},
+				"501": {
+					"description": "Not Implemented"
+				}
+			},
+			"produces": [
+				"application/json"
+			],
+			"parameters": [
+				{
+					"name": "pemfile",
+					"in": "formData",
+					"description": ".pem file",
+					"required": true,
+					"type": "file"
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+			]
+			}
+		},
+		"/tls/bundle/install": {
+			"post": {
+			  "tags": [
+				"SSL Certificate"
+			  ],
+			  "summary": "SSL Certificate install",
+			  "responses": {
+				"200": {
+					"description": "OK"
+				},
+				"201": {
+					"description": "No Content"
+				},
+				"400": {
+					"description": "Bad Request"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "No Data Found"
+				},
+				"409": {
+					"description": "Conflict"
+				},
+				"422": {
+					"description": "Unprocessable Entity"
+				},
+				"499": {
+					"description": "Call Cancelled"
+				},
+				"500": {
+					"description": "Internal Server Error"
+				},
+				"501": {
+					"description": "Not Implemented"
+				}
+			},
+			  "produces": [
+				"application/json"
+			],
+			"parameters": [
+				{
+					"name": "install",
+					"in": "body",
+					"description": "SSL certificate request",
+					"schema": {
+						"type": "object",
+						"required": false,
+						"properties": {
+							"install": {
+								"type": "boolean",
+								"example": true
+							}
+						}
+					}
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/tls/bundle/status": {
+			"get": {
+			  "tags": [
+				"SSL Certificate"
+			  ],
+			  "summary": "SSL Certificate status",
+			  "responses": {
+				"200": {
+					"description": "OK"
+				},
+				"201": {
+					"description": "No Content"
+				},
+				"400": {
+					"description": "Bad Request"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "No Data Found"
+				},
+				"409": {
+					"description": "Conflict"
+				},
+				"422": {
+					"description": "Unprocessable Entity"
+				},
+				"499": {
+					"description": "Call Cancelled"
+				},
+				"500": {
+					"description": "Internal Server Error"
+				},
+				"501": {
+					"description": "Not Implemented"
+				}
+			},
+			  "produces": [
+				"application/json"
+			],
+			"parameters": [
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/upgrade/hotfix/upload": {
+			"post": {
+				"tags": [
+					"Hotfix Upgrade"
+				],
+				"summary": "Upload Hotfix Upgrade",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "package",
+						"in": "formData",
+						"description": ".iso file",
+						"required": true,
+						"type": "file"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/upgrade/hotfix/start": {
+			"post": {
+				"tags": [
+					"Hotfix Upgrade"
+				],
+				"summary": "Start Hotfix Upgrade",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/upgrade/hotfix/status": {
+			"get": {
+				"tags": [
+					"Hotfix Upgrade"
+				],
+				"summary": "Get the Hotfix Status",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/maintenance/cluster/node_status": {
+			"get": {
+				"tags": [
+					"System Maintenance"
+				],
+				"summary": "Node Status",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/maintenance/cluster/start": {
+			"post": {
+				"tags": [
+					"System Maintenance"
+				],
+				"summary": "Start Node",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "resource_name",
+						"in": "body",
+						"required": true,
+						"description": "resource name",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"resource_name": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/maintenance/cluster/stop": {
+			"post": {
+				"tags": [
+					"System Maintenance"
+				],
+				"summary": "Stop Node",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "resource_name",
+						"in": "body",
+						"required": true,
+						"description": "resource name",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"resource_name": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/maintenance/cluster/shutdown": {
+			"post": {
+				"tags": [
+					"System Maintenance"
+				],
+				"summary": "Shutdown Node",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "resource_name",
+						"in": "body",
+						"required": true,
+						"description": "resource name",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"resource_name": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		}		
+	},
+	"definitions": {
+		"system_config": {
+			"type": "object",
+			"required": false,
+			"properties": {
+				"management_network_settings": {
+					"type": "object",
+					"properties": {
+						"ipv4": {
+							"type": "object",
+							"required": false,
+							"properties": {
+								"is_dhcp": {
+									"type": "boolean",
+									"example": true
+								},
+								"nodes": {
+									"type": "array",
+									"items": {
+										"id": {
+											"type": "integer"
+										},
+										"name": {
+											"type": "string"
+										},
+										"ip_address": {
+											"type": "string"
+										}
+									},
+									"example": [{
+										"id": 2,
+										"name": "VIP",
+										"ip_address": "10.237.65.67"
+									}]
+								}
+							}
+						}
+					}
+				},
+				"data_network_settings": {
+					"type": "object",
+					"properties": {
+						"ipv4": {
+							"type": "object",
+							"required": false,
+							"properties": {
+								"is_dhcp": {
+									"type": "boolean",
+									"example": false
+								},
+								"nodes": {
+									"type": "array",
+									"items": {
+										"id": {
+											"type": "integer"
+										},
+										"name": {
+											"type": "string"
+										},
+										"ip_address": {
+											"type": "string"
+										},
+										"gateway": {
+											"type": "string"
+										},
+										"netmask": {
+											"type": "string"
+										}
+									},
+									"example": [{
+										"id": 2,
+										"name": "VIP",
+										"ip_address": "10.237.65.67"
+									},
+									{
+										"id": 0,
+										"name": "Node 0",
+										"ip_address": "172.19.22.10",
+										"gateway": "255.255.255.0",
+										"netmask": "172.19.22.11"
+									},
+									{
+										"id": 1,
+										"name": "Node 1",
+										"ip_address": "172.19.22.12",
+										"gateway": "255.255.255.0",
+										"netmask": "172.19.22.11"
+									}]
+								}
+							}
+						}
+					}
+				},
+				"dns_network_settings": {
+					"type": "object",
+					"properties": {
+						"nodes": {
+							"type": "array",
+							"items": {
+								"id": {
+									"type": "integer"
+								},
+								"name": {
+									"type": "string"
+								},
+								"dns_servers": {
+									"type": "array"
+								},
+								"search_domain": {
+									"type": "array"
+								}
+							},
+							"example": [{
+								"id": 0,
+								"name": "Node 0",
+								"ip_address": "10.237.65.67",
+								"dns_servers": ["10.237.10.253", "10.237.10.254"],
+								"search_domain": ["pun.seagate.com"]
+							}]
+						}
+					}
+
+				},
+				"date_time_settings": {
+					"type": "object",
+					"properties": {
+						"ntp": {
+							"type": "object",
+					    	"properties": {
+								"ntp_server_address": {
+									"type": "string",
+									"example": "time.seagate.com"
+								},
+								"ntp_timezone_offset": {
+									"type": "string",
+									"example": "Asia/Kolkata"
+								}
+							}
+						}
+					}
+				},
+				"notifications": {
+					"type": "object",
+					"properties": {
+						"email": {
+							"type": "object",
+					    	"properties": {
+								"smtp_server": {
+									"type": "string",
+									"example": "smtp.gmail.com"
+								},
+								"smtp_port": {
+									"type": "integer",
+									"example": 465
+								},
+								"smtp_protocol": {
+									"type": "string",
+									"example": "SSL"
+								},
+								"smtp_sender_email": {
+									"type": "string",
+									"example": "abc@abc.com"
+								},
+								"smtp_sender_password": {
+									"type": "string",
+									"example": "test#password"
+								},
+								"email": {
+									"type": "string",
+									"example": "abc@abc.com, efg@efg.com"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"system_config_type": {
+			"type": "object",
+			"required": false,
+			"properties": {
+				"notifications": {
+					"type": "object",
+					"properties": {
+						"email": {
+							"type": "object",
+					    	"properties": {
+								"smtp_server": {
+									"type": "string",
+									"example": "smtp.gmail.com"
+								},
+								"smtp_port": {
+									"type": "integer",
+									"example": 465
+								},
+								"smtp_protocol": {
+									"type": "string",
+									"example": "SSL"
+								},
+								"smtp_sender_email": {
+									"type": "string",
+									"example": "abc@abc.com"
+								},
+								"smtp_sender_password": {
+									"type": "string",
+									"example": "test#password"
+								},
+								"email": {
+									"type": "string",
+									"example": "abc@abc.com, efg@efg.com"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"notification_email": {
+			"type": "object",
+			"required": true,
+			"properties": {
+				"smtp_server": {
+					"type": "string",
+					"required": true,
+					"example": "smtp.gmail.com"
+				},
+				"smtp_port": {
+					"type": "number",
+					"required": true,
+					"example": 465
+				},
+				"smtp_protocol": {
+					"type": "string",
+					"required": true,
+					"example": "ssl"
+				},
+				"smtp_sender_email": {
+					"type": "string",
+					"required": true,
+					"example": "a@b.com"
+				},
+				"smtp_sender_password": {
+					"type": "string",
+					"required": true,
+					"example": "test#password"
+				},
+				"email": {
+					"type": "string",
+					"required": true,
+					"example": "x@y.com"
+				}
+			}
+		}
+	}
 }
