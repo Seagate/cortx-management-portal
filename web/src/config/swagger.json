@@ -5,7 +5,6 @@
 		"title": "CSM"
 	},
 	"basePath": "/api/v1",
-	"schemes": ["http"],
 	"produces": ["application/json"],
 	"paths": {
 		"/preboarding/user": {
