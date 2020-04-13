@@ -51,12 +51,12 @@
             {
                 "paramname": "from",
                 "datatype": "number",
-                "required": true
+                "required": false
             },
             {
                 "paramname": "to",
                 "datatype": "number",
-                "required": true
+                "required": false
             },
             {
                 "paramname": "id",
@@ -69,13 +69,12 @@
                 "required": false
             },
             {
-                "paramname": "metric_list",
+                "paramname": "total_sample",
                 "datatype": "string",
-                "required": false,
-                "values": "read,write,total"
+                "required": false
             },
             {
-                "paramname": "format",
+                "paramname": "out_format",
                 "datatype": "string",
                 "required": false
             }
