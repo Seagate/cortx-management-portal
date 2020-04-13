@@ -201,18 +201,28 @@ export default class EosAlertHistory extends Vue {
       this.alert = res.data;
       try {
         if (this.alert.extended_info) {
+          /**
+           * The string in alert.extended_info is not a valid JSON string (as designed by backend).
+           * To make it a valid JSON string and convert to JSON object, we need to replace single quote
+           * with double quote. The below statement does that.
+           */
           const tempAlertExtendedInfoJSONString = this.alert.extended_info
             .split("'")
-            .join("'");
+            .join("\"");  // Do not change this to "'"
           this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
           this.alertExtendedInfo = this.alertDetails.info;
         }
 
         let tempAlertEventDetails = [];
         if (this.alert.event_details) {
+          /**
+           * The string in alert.event_details is not a valid JSON string (as designed by backend).
+           * To make it a valid JSON string and convert to JSON object, we need to replace single quote
+           * with double quote. The below statement does that.
+           */
           const tempAlertEventDetailsJSONString = this.alert.event_details
             .split("'")
-            .join("'");
+            .join("\"");  // Do not change this to "'"
           tempAlertEventDetails = JSON.parse(tempAlertEventDetailsJSONString);
         }
         if (tempAlertEventDetails.length > 0) {

@@ -543,7 +543,7 @@ export default class EosAccountManagement extends Vue {
     );
     await Api.delete(apiRegister.s3_account, this.accountToDelete);
     this.$store.dispatch("systemConfig/hideLoader");
-     this.$router.push("/login");
+    this.$router.push("/login");
   }
 }
 </script>
