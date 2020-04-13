@@ -308,6 +308,12 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
       await this.acknowledgeAll();
     }
   }
+
+  @Watch("$route.query.tm")
+  public queryParamChangeHandler(id: any) {
+    // Call action to get all alert data
+    this.onSortPaginate();
+  }
 }
 </script>
 

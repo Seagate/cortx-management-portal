@@ -25,18 +25,23 @@
         <eos-has-access
           :to="$eosUserPermissions.alerts + $eosUserPermissions.list"
         >
-        <div
-          class="eos-logout-icon-container"
-          @click="$router.push({ name: 'alerts-large' })"
-          v-if="!isRouterPathOnboarding"
-        >
-          <div v-if="alertNotifications.alertCount > 0">
-            <img :src="require('@/assets/navigation/alerts-dot-white.svg')" />
+          <div
+            class="eos-logout-icon-container"
+            @click="
+              $router.push({
+                name: 'alerts-large',
+                query: { tm: new Date().getTime() }
+              })
+            "
+            v-if="!isRouterPathOnboarding"
+          >
+            <div v-if="alertNotifications.alertCount > 0">
+              <img :src="require('@/assets/navigation/alerts-dot-white.svg')" />
+            </div>
+            <div v-else>
+              <img :src="require('@/assets/navigation/alerts-white.svg')" />
+            </div>
           </div>
-          <div v-else>
-            <img :src="require('@/assets/navigation/alerts-white.svg')" />
-          </div>
-        </div>
         </eos-has-access>
         <div style="padding-top: 1.125em;" class="pr-2">
           <label class="eos-username-label">{{ username }}</label>
@@ -48,10 +53,7 @@
         >
           <v-tooltip left max-width="300">
             <template v-slot:activator="{ on }">
-              <img
-                :src="require('@/assets/logout.svg/')"
-                v-on="on"
-              />
+              <img :src="require('@/assets/logout.svg/')" v-on="on" />
             </template>
             <span>Logout</span>
           </v-tooltip>
