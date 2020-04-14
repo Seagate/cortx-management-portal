@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="eos-text-lg eos-text-bold" id="lblUpdateHotfix">
-      Update hotfix
+      Update software
     </div>
     <div
       class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md"
@@ -10,7 +10,7 @@
       <table>
         <tr>
           <td style="width: 180px;">
-            <label class="eos-text-bold">Last upgrade status:</label>
+            <label class="eos-text-bold">Last update status:</label>
           </td>
           <td style="padding-top: 2px;">
             <label>{{ lastUpgradeStatus.status || "Not available" }}</label>
@@ -18,13 +18,13 @@
         </tr>
         <tr v-if="lastUpgradeStatus.version">
           <td>
-            <label class="eos-text-bold">Last upgrade version:</label>
+            <label class="eos-text-bold">Last update version:</label>
           </td>
           <td style="padding-top: 2px;">{{ lastUpgradeStatus.version }}</td>
         </tr>
         <tr v-if="lastUpgradeStatus.description">
           <td>
-            <label class="eos-text-bold">Last upgrade description:</label>
+            <label class="eos-text-bold">Last update description:</label>
           </td>
           <td style="padding-top: 2px;">
             <label>{{ lastUpgradeStatus.description }}</label>
@@ -34,7 +34,7 @@
     </div>
     <div class="mt-6 eos-text-md" id="lblUpdateHotfixMsg">
       <span class="eos-text-bold"
-        >It is important that you are using the hotfix for your system.</span
+        >It is important that you are using the software for your system.</span
       >
       Use the link below to see if there's a newer version.
       <br />If a newer version is available, download it to your device and then
@@ -49,7 +49,7 @@
         @click="showUploadForm = true"
         :disabled="!canInstallHotfix"
       >
-        Upload new hotfix file
+        Upload new software file
       </button>
       <button
         id="btnStartUpgrade"
@@ -58,7 +58,7 @@
         @click="startUpgrade()"
         :disabled="!isPackageAvailable"
       >
-        Start upgrade
+        Start update
       </button>
     </div>
     <div v-else>
@@ -179,7 +179,7 @@ export default class EosHotfix extends Vue {
   public async startUpgrade() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Hotfix upgrade in progress..."
+      "Software update in progress..."
     );
     const res = await Api.post(apiRegister.hotfix_start, {}, { timeout: -1 });
     this.$store.dispatch("systemConfig/hideLoader");
