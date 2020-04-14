@@ -9,9 +9,9 @@
         class="ml-4 white--text my-10"
         style="font-size: 26px;"
       >Welcome to the Storage Management Console.</div>
-      <div class="ml-4 white--text">We will guide you through the first-time setup of your system.</div>
+      <div class="ml-4 white--text">To set up your system, you must enter the License key.</div>
       <div class="ml-4 mt-1 mb-8 white--text">
-        By clicking the "Get started" button, you agree to the
+       Click Get started to agree
         <span class="csmprimary--text">EULA.</span>
       </div>
       <v-row class="eos-form-group">

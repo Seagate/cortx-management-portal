@@ -11,7 +11,7 @@
         Admin user configuration
       </div>
       <div class="ml-4 mb-7">
-        Configure the username and password for the admin user of this system.
+        Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.
       </div>
       <div class="ma-4">
         <form autocomplete="off" @submit.prevent="submitForm">
@@ -29,7 +29,7 @@
               >
                 <eos-info-tooltip
                   label="Admin username*"
-                  :message="accountNameTooltipMessage"
+                  :message="adminaccountNameTooltipMessage"
                 />
               </label>
               <div></div>
@@ -47,7 +47,7 @@
                     $v.createAccount.username.$dirty &&
                       !$v.createAccount.username.required
                   "
-                  >Username Name is required</label
+                  >Username is required.</label
                 >
                 <label
                   v-else-if="
@@ -162,7 +162,7 @@ import {
   accountNameRegex,
   passwordRegex,
   passwordTooltipMessage,
-  accountNameTooltipMessage
+  adminaccountNameTooltipMessage
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
 @Component({
@@ -190,7 +190,7 @@ export default class EosAdminUser extends Vue {
       invalidMessage: "",
       createUserInProgress: false,
       passwordTooltipMessage,
-      accountNameTooltipMessage
+      adminaccountNameTooltipMessage
     };
   }
   private gotToNextPage() {
