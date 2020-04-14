@@ -53,7 +53,7 @@
           Download
         </button>
         <button type="button" class="eos-btn-primary" @click="showAuditLogs()">
-          Show as HTML
+          Show
         </button>
       </div>
     </div>
