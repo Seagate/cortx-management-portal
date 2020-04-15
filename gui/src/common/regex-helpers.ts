@@ -33,3 +33,13 @@ const admintooltipmsg1 = "The username must be alphanumeric and can contain unde
 const admintooltip = admintooltipmsg.concat(admintooltipmsg1.toString());
 
 export const adminaccountNameTooltipMessage = "" + admintooltip;
+
+export const udxBucketNameRegex = helpers.regex(
+  "udxBucketNameRegex",
+  /^[a-z0-9-]{0,51}[a-z0-9]$/
+);
+
+export const udxURLRegex = helpers.regex(
+  "udxURLRegex",
+  /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+);
