@@ -72,6 +72,12 @@
                     !$v.registrationForm.url.required
                 "
               >URL is required</label>
+              <label
+                v-else-if="
+                  $v.registrationForm.url.$dirty &&
+                    !$v.registrationForm.url.udxURLRegex
+                "
+              >Invalid URL</label>
             </div>
           </div>
         </v-col>
@@ -337,7 +343,7 @@
             }"
           >
             <label class="eos-form-group-label" for="bucketName">
-              <eos-info-tooltip label="Bucket name*" :message="accountNameTooltipMessage" />
+              <eos-info-tooltip label="Bucket name*" :message="bucketNameTooltipMessage" />
             </label>
             <div class="eos-bucket-input-prefix">
               <label>udx-</label>
@@ -360,7 +366,7 @@
               <label
                 v-else-if="
                   $v.registrationForm.bucketName.$dirty &&
-                    !$v.registrationForm.bucketName.accountNameRegex
+                    !$v.registrationForm.bucketName.udxBucketNameRegex
                 "
               >Invalid bucket name</label>
             </div>
@@ -458,10 +464,13 @@ import { Component, Vue } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import {
+  udxURLRegex,
   accountNameRegex,
+  udxBucketNameRegex,
   passwordRegex,
   accountNameTooltipMessage,
-  passwordTooltipMessage
+  passwordTooltipMessage,
+  bucketNameTooltipMessage
 } from "../../common/regex-helpers";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
@@ -474,6 +483,7 @@ export default class EosUDXRegistration extends Vue {
   public registrationResponse: any = null;
   public passwordTooltipMessage: string = passwordTooltipMessage;
   public accountNameTooltipMessage: string = accountNameTooltipMessage;
+  public bucketNameTooltipMessage: string = bucketNameTooltipMessage;
 
   public registrationForm = {
     url: "",
@@ -492,7 +502,7 @@ export default class EosUDXRegistration extends Vue {
   @Validations()
   public validations = {
     registrationForm: {
-      url: { required },
+      url: { required, udxURLRegex },
       accountName: { required, accountNameRegex },
       accountEmail: { required, email },
       accountPassword: { required, passwordRegex },
@@ -504,7 +514,7 @@ export default class EosUDXRegistration extends Vue {
       iamUserConfirmPassword: {
         sameAsIAMUserPassword: sameAs("iamUserPassword")
       },
-      bucketName: { required, accountNameRegex }
+      bucketName: { required, udxBucketNameRegex }
     }
   };
 

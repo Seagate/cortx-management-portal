@@ -64,9 +64,11 @@ export default class EosUDX extends Vue {
       "systemConfig/showLoader",
       "Checking registration status..."
     );
-    const res = await Api.getAll(apiRegister.udx_registration);
-    if (res && res.data) {
-      this.isUDXRegistered = res.data.isRegistered;
+    try {
+      const res = await Api.getAll(apiRegister.udx_registration);
+      this.isUDXRegistered = true;
+    } catch (e) {
+      this.isUDXRegistered = false;
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
