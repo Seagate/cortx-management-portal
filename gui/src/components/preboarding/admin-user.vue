@@ -10,10 +10,13 @@
       >
         Admin user configuration
       </div>
-      <div class="ml-4 mb-7">
-        Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.
+      <div class="ml-4 my-3">
+        Configure the username and password for the user with administrative
+        rights. You must remember the admin user login credentials because the
+        admin user can be created only once.
       </div>
-      <div class="ma-4">
+      <v-divider class="mt-2" />
+      <div class="ma-4 mt-6">
         <form autocomplete="off" @submit.prevent="submitForm">
           <div class="mt-4">
             <div
@@ -29,7 +32,7 @@
               >
                 <eos-info-tooltip
                   label="Admin username*"
-                  :message="adminaccountNameTooltipMessage"
+                  :message="usernameTooltipMessage"
                 />
               </label>
               <div></div>
@@ -54,7 +57,7 @@
                     $v.createAccount.username.$dirty &&
                       !$v.createAccount.username.accountNameRegex
                   "
-                  >Invalid username</label
+                  >Invalid username.</label
                 >
               </div>
             </div>
@@ -91,14 +94,14 @@
                     $v.createAccount.password.$dirty &&
                       !$v.createAccount.password.required
                   "
-                  >Password is required</label
+                  >Password is required.</label
                 >
                 <label
                   v-else-if="
                     $v.createAccount.password.$dirty &&
                       !$v.createAccount.password.passwordRegex
                   "
-                  >Invalid password</label
+                  >Invalid password.</label
                 >
               </div>
             </div>
@@ -132,7 +135,7 @@
                     $v.createAccount.confirmPassword.$dirty &&
                       !$v.createAccount.confirmPassword.sameAsPassword
                   "
-                  >Passwords do not match</label
+                  >Passwords do not match.</label
                 >
               </div>
             </div>
@@ -162,7 +165,7 @@ import {
   accountNameRegex,
   passwordRegex,
   passwordTooltipMessage,
-  adminaccountNameTooltipMessage
+  usernameTooltipMessage
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
 @Component({
@@ -190,7 +193,7 @@ export default class EosAdminUser extends Vue {
       invalidMessage: "",
       createUserInProgress: false,
       passwordTooltipMessage,
-      adminaccountNameTooltipMessage
+      usernameTooltipMessage
     };
   }
   private gotToNextPage() {

@@ -2,49 +2,52 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="mt-2" v-if="source === 'ntp'">
-        <div
-          class="eos-form-group"
-          :class="{
-            'eos-form-group--error': $v.setDateTime.NtpServerAddress.$error
-          }"
-        >
-          <label
-            class="eos-form-group-label"
-            for="hostname"
-            id="lblDTNetworkServerAdd"
-            >NTP server address*</label
-          >
-          <input
-            class="eos-form__input_text"
-            type="text"
-            name="hostname"
-            v-model.trim="setDateTime.NtpServerAddress"
-            id="txtDTHostname"
-            @input="$v.setDateTime.NtpServerAddress.$touch"
-          />
-          <div class="eos-form-group-label eos-form-group-error-msg">
-            <label
-              v-if="
-                $v.setDateTime.NtpServerAddress.$dirty &&
-                  !$v.setDateTime.NtpServerAddress.required
-              "
-              >NTP server is required</label
-            >
+        <div class="row ma-0">
+          <div class="col-2 body-2 column">
+            <div class="mt-2 font-weight-bold">
+              <div class="eos-form-group">
+                <label id="lblDTNetworkServerAdd">NTP server address*: </label>
+              </div>
+              <div class="eos-form-group">
+                <label id="lblNTPTimeZoneAdd">NTP time zone offset*:</label>
+              </div>
+            </div>
           </div>
-        </div>
-        <!---->
-        <div class="eos-form-group">
-          <label
-            class="eos-form-group-label"
-            for="hostname"
-            id="lblNTPTimeZoneAdd"
-            >NTP time zone offset*</label
-          >
-          <eos-dropdown
-            @update:selectedOption="handleDropdownSelect"
-            :options="createOptionsForDropdown(timezoneList)"
-            :title="NtpTimezone ? NtpTimezone : undefined"
-          ></eos-dropdown>
+          <div class="col-4 body-2 column mr-5">
+            <div
+              class="eos-form-group"
+              :class="{
+                'eos-form-group--error': $v.setDateTime.NtpServerAddress.$error
+              }"
+            >
+              <input
+                class="eos-form__input_text"
+                type="text"
+                name="hostname"
+                v-model.trim="setDateTime.NtpServerAddress"
+                id="txtDTHostname"
+                @input="$v.setDateTime.NtpServerAddress.$touch"
+                placeholder="time.seagate.com"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="
+                    $v.setDateTime.NtpServerAddress.$dirty &&
+                      !$v.setDateTime.NtpServerAddress.required
+                  "
+                  >NTP server is required.</label
+                >
+              </div>
+            </div>
+            <!---->
+            <div class="eos-form-group">
+              <eos-dropdown
+                @update:selectedOption="handleDropdownSelect"
+                :options="createOptionsForDropdown(timezoneList)"
+                :title="NtpTimezone ? NtpTimezone : undefined"
+              ></eos-dropdown>
+            </div>
+          </div>
         </div>
       </div>
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>

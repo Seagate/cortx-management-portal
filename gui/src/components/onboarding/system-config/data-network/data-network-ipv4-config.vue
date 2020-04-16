@@ -49,17 +49,24 @@
                   :name="node.$model.id + 'ipaddress'"
                   v-model.trim="node.ip_address.$model"
                   @input="node.ip_address.$touch"
+                  placeholder="XXX.XXX.XXX.XXX"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
                     v-if="node.ip_address.$dirty && !node.ip_address.required"
-                    >IP address is required</label
+                    >IP address is required.</label
                   >
                   <label
                     v-else-if="
                       node.ip_address.$dirty && !node.ip_address.ipAddress
                     "
-                    >Invalid IP address</label
+                    >Invalid IP address.</label
+                  >
+                  <label
+                    v-else-if="
+                      node.ip_address.$dirty && !node.ip_address.isUnique
+                    "
+                    >IP address must be unique for VIP and nodes.</label
                   >
                 </div>
               </div>
@@ -99,24 +106,30 @@
               }"
             >
               <input
-                v-on:change="setipAddress"
                 class="eos-form__input_text"
                 type="text"
                 :id="node.$model.id + 'txtDataNetworkIpv4Ipaddress'"
                 :name="node.$model.id + 'ipaddress'"
                 v-model.trim="node.ip_address.$model"
                 @input="node.ip_address.$touch"
+                placeholder="XXX.XXX.XXX.XXX"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
                   v-if="node.ip_address.$dirty && !node.ip_address.required"
-                  >IP address is required</label
+                  >IP address is required.</label
                 >
                 <label
                   v-else-if="
                     node.ip_address.$dirty && !node.ip_address.ipAddress
                   "
-                  >Invalid IP address</label
+                  >Invalid IP address.</label
+                >
+                <label
+                  v-else-if="
+                    node.ip_address.$dirty && !node.ip_address.isUnique
+                  "
+                  >IP address must be unique for VIP and nodes.</label
                 >
               </div>
             </div>
@@ -135,14 +148,15 @@
                 :name="node.$model.id + 'netmask'"
                 v-model.trim="node.netmask.$model"
                 @input="node.netmask.$touch"
+                placeholder="XXX.XXX.XXX.XXX"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label v-if="node.netmask.$dirty && !node.netmask.required"
-                  >Netmask is required</label
+                  >Netmask is required.</label
                 >
                 <label
                   v-else-if="node.netmask.$dirty && !node.netmask.ipAddress"
-                  >Invalid netmask</label
+                  >Invalid netmask.</label
                 >
               </div>
             </div>
@@ -161,10 +175,11 @@
                 :name="node.$model.id + 'gateway'"
                 v-model.trim="node.gateway.$model"
                 @input="node.gateway.$touch"
+                placeholder="XXX.XXX.XXX.XXX"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label v-if="node.gateway.$dirty && !node.gateway.ipAddress"
-                  >Invalid gateway</label
+                  >Invalid gateway.</label
                 >
               </div>
             </div>
@@ -211,7 +226,20 @@ export default class EosDataNetworkIpv4Config extends Vue {
           required: requiredIf(function(this: any, form) {
             return this.$data.source === "manual";
           }),
-          ipAddress
+          ipAddress,
+          isUnique(value: string) {
+            // If IP address is not set
+            if (!value) {
+              return true;
+            }
+            // Check if IP address is already assigned to VIP, Node 0 or Node 1
+            const vueInstance: any = this;
+            return (
+              vueInstance.$data.ipv4Nodes.filter(
+                (e: any) => e.ip_address === value
+              ).length === 1
+            );
+          }
         },
         gateway: {
           ipAddress
@@ -225,14 +253,6 @@ export default class EosDataNetworkIpv4Config extends Vue {
       }
     }
   };
-  private setipAddress(e: any) {
-    if (!this.$v.ipv4Nodes.$model[1].ip_address) {
-      this.$v.ipv4Nodes.$model[1].ip_address = e.target.value;
-    }
-    if (!this.$v.ipv4Nodes.$model[2].ip_address) {
-      this.$v.ipv4Nodes.$model[2].ip_address = e.target.value;
-    }
-  }
   private setNetmask(e: any) {
     let target = e.target.value;
     if (!e.target.value) {

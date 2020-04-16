@@ -3,6 +3,9 @@
     <div class="eos-text-lg mt-2 font-weight-bold" id="lblDns">
       DNS resolver settings
     </div>
+    <div class="mt-3" id="lblDnsMsg">
+      Fields marked with * are mandatory.
+    </div>
     <v-divider class="mt-2" />
     <eosDnsSettingConfig @apply-settings="applySettings" />
   </div>

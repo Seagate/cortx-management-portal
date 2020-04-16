@@ -35,13 +35,13 @@
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.required
                     "
-                  >Account Name is required</label>
+                  >Account name is required.</label>
                   <label
                     v-else-if="
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.accountNameRegex
                     "
-                  >Invalid username</label>
+                  >Invalid username.</label>
                 </div>
               </div>
               <div
@@ -67,13 +67,13 @@
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.required
                     "
-                  >Password is required</label>
+                  >Password is required.</label>
                   <label
                     v-else-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.passwordRegex
                     "
-                  >Invalid password</label>
+                  >Invalid password.</label>
                 </div>
               </div>
               <div
@@ -98,7 +98,7 @@
                       $v.createAccount.confirmPassword.$dirty &&
                         !$v.createAccount.confirmPassword.sameAsPassword
                     "
-                  >Passwords do not match</label>
+                  >Passwords do not match.</label>
                 </div>
               </div>
             </v-col>
@@ -332,13 +332,13 @@
                                 $v.selectedItem.old_password.$dirty &&
                                   !$v.selectedItem.old_password.required
                               "
-                            >Old password is required</label>
+                            >Old password is required.</label>
                             <label
                               v-else-if="
                                 $v.selectedItem.old_password.$dirty &&
                                   !$v.selectedItem.old_password.passwordRegex
                               "
-                            >Invalid old password</label>
+                            >Invalid old password.</label>
                           </div>
                         </div>
                         <div
@@ -368,13 +368,13 @@
                                 $v.selectedItem.password.$dirty &&
                                   !$v.selectedItem.password.required
                               "
-                            >Password is required</label>
+                            >Password is required.</label>
                             <label
                               v-else-if="
                                 $v.selectedItem.password.$dirty &&
                                   !$v.selectedItem.password.passwordRegex
                               "
-                            >Invalid password</label>
+                            >Invalid password.</label>
                           </div>
                         </div>
                         <div
@@ -400,7 +400,7 @@
                                   !$v.selectedItem.confirmPassword
                                     .sameAsPassword
                               "
-                            >Passwords do not match</label>
+                            >Passwords do not match.</label>
                           </div>
                         </div>
                       </v-col>

@@ -1,15 +1,12 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblDataNetwork">Data network settings</div>
-      <div class="mt-3" id="lblMsg">
-        Use the following options to finalize your Data network settings for
-        mapping the system. You can set system to be managed in an IPv4
-        network.Additionally the system can be configured to utilize DNS within
-        your network. You can skip this section entirely if your network
-        settings are complete.
+      <div class="title mt-0 font-weight-bold" id="lblDataNetwork">
+        Data network settings
       </div>
-      <div class="mt-3" id="lblChoseMsg">Chose which network settings you'd like to establish.</div>
+      <div class="mt-3" id="lblMsg">
+        Use the data network settings to setup your system.
+      </div>
       <v-divider class="mt-2" />
       <div class="mt-6">
         <label class="eos-ckb-container">
@@ -25,9 +22,7 @@
         </label>
       </div>
       <div class="mt-2" id="lblDNSSetting">
-        Selecting IPv4 will allow you to view settings assigned by DHCP or to
-        assign static IPv4 data network for environments that do not support
-        DHCP.
+        Configure the IPv4 settings.
       </div>
       <div class="mt-6">
         <label class="eos-ckb-container">
@@ -44,7 +39,7 @@
         </label>
       </div>
       <div class="mt-2" id="lblMsgSkipStep">
-        You can skip this step if your management network settings are already
+        You can skip this step if your data network settings are already
         complete.
       </div>
       <v-divider class="mt-8" />
@@ -70,10 +65,6 @@ export default class EosDataNetwork extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      // Replace with
-      /*this.onNext().then({
-			res(true);
-		  })*/
       res(true);
     });
   }

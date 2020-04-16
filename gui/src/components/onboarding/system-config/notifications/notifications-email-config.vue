@@ -22,7 +22,7 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.smtpserver.$dirty && !$v.smtpserver.required"
-                >SMTP server is required</label
+                >SMTP server is required.</label
               >
             </div>
           </div>
@@ -49,10 +49,10 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.senderemail.$dirty && !$v.senderemail.required"
-                >Sender email is required</label
+                >Sender email is required.</label
               >
               <label v-if="$v.senderemail.$dirty && !$v.senderemail.email"
-                >Email id not valid</label
+                >Invalid email.</label
               >
             </div>
           </div>
@@ -99,10 +99,10 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.smtpport.$dirty && !$v.smtpport.required"
-                >Port is not valid</label
+                >SMTP port is required.</label
               >
               <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxLength"
-                >Max 4 charactor required</label
+                >SMTP port is not valid.</label
               >
             </div>
           </div>
@@ -133,11 +133,11 @@
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.required"
-                >Sender password is required</label
+                >Sender password is required.</label
               >
               <label
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.minLength"
-                >Minimum 4 character required</label
+                >Minimum 4 characters are required.</label
               >
             </div>
           </div>
@@ -171,7 +171,7 @@
                   $v.confirmpassword.$dirty &&
                     !$v.confirmpassword.sameAsPassword
                 "
-                >Confirm password do not match</label
+                >Confirm password do not match.</label
               >
             </div>
           </div>
@@ -202,14 +202,14 @@
             ></textarea>
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required"
-                >Email is required</label
+                >Email is required.</label
               >
               <label
                 v-if="
                   $v.emailaddress.$dirty &&
                     !$v.emailaddress.commaSeparatedEmailsRegex
                 "
-                >Enter valid comma ',' seperated emails</label
+                >Enter valid comma (,) separated emails.</label
               >
             </div>
           </div>

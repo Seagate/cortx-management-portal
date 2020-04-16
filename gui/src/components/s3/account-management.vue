@@ -27,13 +27,13 @@
                   $v.createAccountForm.account.account_name.$dirty &&
                     !$v.createAccountForm.account.account_name.required
                 "
-              >Account name is required</label>
+              >Account name is required.</label>
               <label
                 v-else-if="
                   $v.createAccountForm.account.account_name.$dirty &&
                     !$v.createAccountForm.account.account_name.accountNameRegex
                 "
-              >Invalid account name</label>
+              >Invalid account name.</label>
             </div>
           </div>
         </v-col>
@@ -60,13 +60,13 @@
                   $v.createAccountForm.account.account_email.$dirty &&
                     !$v.createAccountForm.account.account_email.required
                 "
-              >Email id is required</label>
+              >Email id is required.</label>
               <label
                 v-else-if="
                   $v.createAccountForm.account.account_email.$dirty &&
                     !$v.createAccountForm.account.account_email.email
                 "
-              >Invalid email id</label>
+              >Invalid email id.</label>
             </div>
           </div>
         </v-col>
@@ -97,13 +97,13 @@
                   $v.createAccountForm.account.password.$dirty &&
                     !$v.createAccountForm.account.password.required
                 "
-              >Password is required</label>
+              >Password is required.</label>
               <label
                 v-else-if="
                   $v.createAccountForm.account.password.$dirty &&
                     !$v.createAccountForm.account.password.passwordRegex
                 "
-              >Invalid password</label>
+              >Invalid password.</label>
             </div>
           </div>
         </v-col>
@@ -252,13 +252,13 @@
                         $v.editAccountForm.password.$dirty &&
                           !$v.editAccountForm.password.required
                       "
-                    >Password is required</label>
+                    >Password is required.</label>
                     <label
                       v-else-if="
                         $v.editAccountForm.password.$dirty &&
                           !$v.editAccountForm.password.passwordRegex
                       "
-                    >Invalid password</label>
+                    >Invalid password.</label>
                   </div>
                 </div>
               </v-col>
