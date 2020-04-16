@@ -8,6 +8,8 @@ DIST=$(realpath $BASE_DIR/dist)
 API_DIR="$BASE_DIR/src/web"
 CSM_PATH="/opt/seagate/eos/csm"
 EOS_PATH="/opt/seagate/eos/"
+DEBUG="DEBUG"
+INFO="INFO"
 
 usage() {
     echo """
@@ -16,6 +18,7 @@ usage: $PROG_NAME [-v <csm version>]
                             [-p <product_name>]
                             [-c <all|backend|frontend>] [-t]
                             [-d][-i]
+                            [-q <true|false>]
 
 Options:
     -v : Build rpm with version
@@ -26,11 +29,12 @@ Options:
     -t : Build rpm with test plan
     -d : Build dev env
     -i : Build csm with integration test
+    -q : Build csm with log level debug or info.
         """ 1>&2;
     exit 1;
 }
 
-while getopts ":g:v:b:p:k:c:tdi" o; do
+while getopts ":g:v:b:p:k:c:tdiq" o; do
     case "${o}" in
         v)
             VER=${OPTARG}
@@ -56,6 +60,9 @@ while getopts ":g:v:b:p:k:c:tdi" o; do
         i)
             INTEGRATION=true
             ;;
+        q)
+            QA=true
+            ;;
         *)
             usage
             ;;
@@ -72,6 +79,7 @@ cd $BASE_DIR
 [ -z "$TEST" ] && TEST=false
 [ -z "$INTEGRATION" ] && INTEGRATION=false
 [ -z "$DEV" ] && DEV=false
+[ -z "$QA" ] && QA=false
 
 echo "Using VERSION=${VER} BUILD=${BUILD} PRODUCT=${PRODUCT} TEST=${TEST}..."
 
@@ -215,6 +223,13 @@ sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/setup.yaml
+
+if [ "$QA" == true ]; then
+    sed -i -e "s|<LOG_LEVEL>|${DEBUG}|g" $DIST/csm/conf/etc/csm/csm.conf
+else
+    sed -i -e "s|<LOG_LEVEL>|${INFO}|g" $DIST/csm/conf/etc/csm/csm.conf
+fi
+
 ################### TAR & RPM BUILD ##############################
 
 # Remove existing directory tree and create fresh one.
