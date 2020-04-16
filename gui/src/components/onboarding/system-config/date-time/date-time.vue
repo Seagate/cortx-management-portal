@@ -4,6 +4,9 @@
       <div class="title mt-0 font-weight-bold" id="lblDTSetDateTime">
         Network time protocol (NTP) settings
       </div>
+      <div class="mt-3" id="lblMandatoryMsg">
+        Fields marked with * are mandatory.
+      </div>
       <v-divider class="mt-2" />
       <eosDateTimeConfig />
     </div>

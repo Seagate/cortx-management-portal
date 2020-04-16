@@ -41,19 +41,20 @@
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4Ipaddress'"
                   :name="node.$model.id + 'ipaddress'"
+                  placeholder="XXX.XXX.XXX.XXX"
                   v-model.trim="node.ip_address.$model"
                   @input="node.ip_address.$touch"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
                     v-if="node.ip_address.$dirty && !node.ip_address.required"
-                    >IP address is required</label
+                    >IP address is required.</label
                   >
                   <label
                     v-else-if="
                       node.ip_address.$dirty && !node.ip_address.ipAddress
                     "
-                    >Invalid IP address</label
+                    >Invalid IP address.</label
                   >
                 </div>
               </div>

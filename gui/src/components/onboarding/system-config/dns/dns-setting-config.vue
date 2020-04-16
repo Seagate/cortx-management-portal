@@ -5,22 +5,16 @@
         <div class="col-2 body-2 column node-container">
           <div class="mt-5 font-weight-bold">
             <div class="mt-6 dns-label">
-              <eos-info-tooltip
-                label="DNS servers*:"
-                message="Enter DNS server value as comma ',' separated"
-              />
+              <label>DNS servers*: </label>
             </div>
             <div class>
-              <eos-info-tooltip
-                label="Search domains*:"
-                message="Enter Search domain value as comma ',' separated"
-              />
+              <label>Search domains*: </label>
             </div>
           </div>
         </div>
         <template v-for="node in $v.dnsNodes.$each.$iter">
           <div
-            class="col-3 body-2 column node-container mr-5"
+            class="col-4 body-2 column node-container mr-5"
             v-if="node.$model.id === 0"
             :key="node.id"
           >
@@ -35,7 +29,7 @@
                   v-on:change="setDNSServers(node.$model.id)"
                   class="eos-form__input_textarea eos-form__input_textarea-custom"
                   rows="3"
-                  placeholder="Enter DNS server value as comma ',' separated"
+                  placeholder="Use a comma (,) to separate multiple DNS server values. Example, 1.1.1.1, example.com."
                   v-model.trim="node.dns_servers.$model"
                   @input="node.dns_servers.$touch"
                   :id="node.$model.id + 'txtDnsServer'"
@@ -44,7 +38,7 @@
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
                     v-if="node.dns_servers.$dirty && !node.dns_servers.required"
-                    >DNS address is required</label
+                    >DNS address is required.</label
                   >
                 </div>
               </div>
@@ -61,7 +55,7 @@
                   :name="node.$model.id + 'search-domain'"
                   v-model.trim="node.search_domain.$model"
                   rows="3"
-                  placeholder="Enter search domain value as comma ',' separated"
+                  placeholder="Use a comma (,) to separate multiple Search domain values. Example, 1.1.1.1, example.com."
                   @input="node.search_domain.$touch"
                 ></textarea>
                 <div class="eos-form-group-label eos-form-group-error-msg">
@@ -69,7 +63,7 @@
                     v-if="
                       node.search_domain.$dirty && !node.search_domain.required
                     "
-                    >Search domain is required</label
+                    >Search domain is required.</label
                   >
                 </div>
               </div>
@@ -220,7 +214,7 @@ export default class EosDnsSettingConfig extends Vue {
 </script>
 <style lang="scss" scoped>
 .node-container {
-  max-width: 25em;
+  max-width: 30em;
 }
 .dns-label {
   height: 95px;

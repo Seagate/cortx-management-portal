@@ -30,14 +30,14 @@
                   $v.createUserForm.iamUser.user_name.$dirty &&
                     !$v.createUserForm.iamUser.user_name.required
                 "
-                >Username is required</label
+                >Username is required.</label
               >
               <label
                 v-else-if="
                   $v.createUserForm.iamUser.user_name.$dirty &&
                     !$v.createUserForm.iamUser.user_name.accountNameRegex
                 "
-                >Invalid username</label
+                >Invalid username.</label
               >
             </div>
           </div>
@@ -71,14 +71,14 @@
                   $v.createUserForm.iamUser.password.$dirty &&
                     !$v.createUserForm.iamUser.password.required
                 "
-                >Password is required</label
+                >Password is required.</label
               >
               <label
                 v-else-if="
                   $v.createUserForm.iamUser.password.$dirty &&
                     !$v.createUserForm.iamUser.password.passwordRegex
                 "
-                >Invalid password</label
+                >Invalid password.</label
               >
             </div>
           </div>

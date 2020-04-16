@@ -59,10 +59,10 @@
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
                 v-if="$v.addCommentForm.comment_text.$dirty && !$v.addCommentForm.comment_text.required"
-              >Comment is required</label>
+              >Comment is required.</label>
               <label
                 v-else-if="$v.addCommentForm.comment_text.$dirty && !$v.addCommentForm.comment_text.maxLength"
-              >Comment cannot be more than 250 characters</label>
+              >Comment cannot be more than 250 characters.</label>
             </div>
           </div>
           <div style="height: 40px;margin-top:10px;">

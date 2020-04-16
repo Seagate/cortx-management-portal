@@ -4,7 +4,10 @@
       Management network settings: IPv4
     </div>
     <div class="mt-3" id="lblNetworkMsg">
-      You need to configure a single IP address for management of this system.
+      Configure the Virtual IP address for managing this system.
+    </div>
+    <div class="mt-3" id="lblMandatoryMsg">
+      Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
     <eosNetworkSettingsIpv4 @apply-settings="applySettings" />

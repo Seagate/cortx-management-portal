@@ -27,7 +27,7 @@
               v-if="
                 $v.loginForm.username.$dirty && !$v.loginForm.username.required
               "
-              >Username is required</span
+              >Username is required.</span
             >
           </div>
           <div
@@ -49,7 +49,7 @@
               v-if="
                 $v.loginForm.password.$dirty && !$v.loginForm.password.required
               "
-              >Password is required</span
+              >Password is required.</span
             >
           </div>
           <button

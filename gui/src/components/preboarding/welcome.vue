@@ -1,22 +1,23 @@
- <template>
+<template>
   <v-container class="pa-0 ma-0 col-12 black">
     <div height="70em" class="pl-10 py-5">
       <img src="../../assets/logo.png" />
     </div>
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
-      <div
-        class="ml-4 white--text my-10"
-        style="font-size: 26px;"
-      >Welcome to the Storage Management Console.</div>
-      <div class="ml-4 white--text">To set up your system, you must enter the License key.</div>
+      <div class="ml-4 white--text my-10" style="font-size: 26px;">
+        Welcome to the Storage Management Console.
+      </div>
+      <div class="ml-4 white--text">
+        To set up your system, you must enter the License key.
+      </div>
       <div class="ml-4 mt-1 mb-8 white--text">
-       Click Get started to agree
+        Click Get started to agree
         <span class="csmprimary--text">EULA.</span>
       </div>
-      <v-row class="eos-form-group">
-        <v-col>
-          <label class="white--text" for="label">License Key</label>
+      <v-row class="ml-4 eos-form-group">
+        <v-col class="mt-1" cols="3">
+          <label class="white--text" for="label">License Key*: </label>
         </v-col>
         <v-col>
           <input
@@ -66,7 +67,10 @@
       >
         <span>Get started</span>
       </button>
-      <LicenseAgreement @accepted="licenseAcceptedOrClosed" v-if="showLicenseAgreement"></LicenseAgreement>
+      <LicenseAgreement
+        @accepted="licenseAcceptedOrClosed"
+        v-if="showLicenseAgreement"
+      ></LicenseAgreement>
     </v-container>
   </v-container>
 </template>

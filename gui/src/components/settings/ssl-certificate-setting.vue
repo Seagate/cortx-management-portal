@@ -1,10 +1,13 @@
 <template>
   <div class="eos-p-2 body-2">
     <div class="eos-text-lg mt-2 font-weight-bold" id="lblSSLUpload">
-      SSL upload
+      SSL certificate upload
     </div>
     <div class="mt-3" id="lblSSLUploadMsg">
-      You need to upload ssl and key certificate here
+      By default, the system uses the SSL certificate provided by Seagate. To
+      use a different SSL certificate, click Choose File to browse and select
+      the appropriate SSL Certificate file. Click Upload certificate to upload
+      the selected SSL certificate.
     </div>
     <v-divider class="mt-2" />
     <eosUploadSSLConfig />

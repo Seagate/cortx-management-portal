@@ -4,7 +4,11 @@
       Data network settings: IPv4
     </div>
     <div class="mt-3" id="lblIpv4Msg">
-      You need to configure a single IP address for management of this system.
+      For Manual option, you must configure Virtual IP address and values for
+      Node 0 and Node 1.
+    </div>
+    <div class="mt-3" id="lblMandatoryMsg">
+      Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
     <eosDataNetworkIpv4Config @apply-settings="applySettings" />

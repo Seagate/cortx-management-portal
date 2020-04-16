@@ -30,14 +30,14 @@
                   $v.createBucketForm.bucket.bucket_name.$dirty &&
                     !$v.createBucketForm.bucket.bucket_name.required
                 "
-                >Bucket name is required</label
+                >Bucket name is required.</label
               >
               <label
                 v-else-if="
                   $v.createBucketForm.bucket.bucket_name.$dirty &&
                     !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
                 "
-                >Invalid bucket name</label
+                >Invalid bucket name.</label
               >
             </div>
           </div>
@@ -136,7 +136,7 @@
             ></textarea>
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.policyJSON.$dirty && !$v.policyJSON.required"
-                >Policy JSON is required</label
+                >Policy JSON is required.</label
               >
               <label
                 v-else-if="$v.policyJSON.$dirty && !$v.policyJSON.JSONValidator"

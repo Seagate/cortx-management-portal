@@ -3,12 +3,8 @@
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblNSManagement">Management network settings</div>
       <div class="mt-3" id="lblNSMsg">
-        Use the following screens to finalize your management network settings
-        for mapping the system. You can set system to be managed in an IPv4
-        network. You can skip this section entirely if your network settings are
-        complete.
+        Use the management network settings to setup your system.
       </div>
-      <div class="mt-3">Choose which network settings you'd like to establish.</div>
       <v-divider class="mt-2" />
       <div class="mt-6">
         <label class="eos-ckb-container" for="chkNsisipV4Status">
@@ -24,9 +20,7 @@
         </label>
       </div>
       <div class="mt-2">
-        Selecting IPv4 will allow you to view settings assigned by DHCP or to
-        assign static IPv4 data network for environments that do not support
-        DHCP.
+        Configure the IPv4 settings.
       </div>
 
       <div class="mt-6">
