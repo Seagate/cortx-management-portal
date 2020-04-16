@@ -24,7 +24,6 @@ import EosAdminUser from "./components/preboarding/admin-user.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
 import EosLogin from "./components/preboarding/login.vue";
 import EosUDX from "./components/udx/eos-udx.vue";
-import EosAutoLogin from "./components/preboarding/auto-login.vue";
 import EosHomebase from "./components/onboarding/homebase.vue";
 import EosOnboarding from "./components/onboarding/system-config/onboarding.vue";
 import EosDefault from "./components/eos-default.vue";
@@ -394,12 +393,6 @@ const router = new Router({
             isOnboardingReq: false,
             requiredAccess: userPermissions.sysconfig + userPermissions.list
           }
-        },
-        {
-          path: "clouduser",
-          name: "clouduser",
-          component: EosAutoLogin,
-          meta: { requiresAuth: false, isOnboardingReq: false }
         }
       ]
     },
