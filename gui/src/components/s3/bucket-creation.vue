@@ -107,7 +107,7 @@
     </v-dialog>
 
     <div class="eos-modal-container" v-if="showBucketPolicyDialog">
-      <div class="eos-modal">
+      <div class="eos-modal bucket-policy-editor">
         <div class="eos-modal-header">
           <label>JSON policy</label>
           <img
@@ -434,5 +434,7 @@ export default class EosBucketCreation extends Vue {
   display: flex;
   margin-top: 10px;
 }
-
+.bucket-policy-editor {
+  width: 600px;
+}
 </style>

@@ -58,32 +58,31 @@ import store from "./store/store";
 Vue.use(Router);
 
 // Note: requiresAuth: Flag for User Logged into the system
-//       isOnboardingReq: Flag for on-boarding complete
 const router = new Router({
   routes: [
     {
       path: "/preboarding",
       name: "preboarding",
       component: EosPreboarding,
-      meta: { requiresAuth: false, isOnboardingReq: false },
+      meta: { requiresAuth: false },
       children: [
         {
           path: "welcome",
           name: "welcome",
           component: EosWelcome,
-          meta: { requiresAuth: false, isOnboardingReq: false }
+          meta: { requiresAuth: false }
         },
         {
           path: "adminuser",
           name: "adminuser",
           component: EosAdminUser,
-          meta: { requiresAuth: false, isOnboardingReq: false }
+          meta: { requiresAuth: false }
         },
         {
           path: "login",
           name: "preboarding-login",
           component: EosLogin,
-          meta: { requiresAuth: false, isOnboardingReq: false }
+          meta: { requiresAuth: false }
         }
       ]
     },
@@ -91,12 +90,12 @@ const router = new Router({
       path: "/login",
       name: "normal-login",
       component: EosLogin,
-      meta: { requiresAuth: false, isOnboardingReq: false }
+      meta: { requiresAuth: false }
     },
     {
       path: "/",
       component: EosDefault,
-      meta: { requiresAuth: true, isOnboardingReq: false },
+      meta: { requiresAuth: true },
       children: [
         {
           path: "",
@@ -108,7 +107,6 @@ const router = new Router({
           component: Dashboard,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: false,
             requiredAccess: userPermissions.alerts + userPermissions.list
           }
         },
@@ -118,7 +116,6 @@ const router = new Router({
           component: EosAlertLarge,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: true,
             requiredAccess: userPermissions.alerts + userPermissions.list
           }
         },
@@ -128,7 +125,6 @@ const router = new Router({
           component: EosPerformanceLarge,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: true,
             requiredAccess: userPermissions.alerts + userPermissions.list
           }
         },
@@ -138,7 +134,6 @@ const router = new Router({
           component: EosAlertDetails,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: true,
             requiredAccess: userPermissions.alerts + userPermissions.list
           }
         },
@@ -148,20 +143,19 @@ const router = new Router({
           component: EosAlertHistory,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: true,
             requiredAccess: userPermissions.alerts + userPermissions.list
           }
         },
         {
           path: "provisioning",
           component: EosProvisioning,
-          meta: { requiresAuth: true, isOnboardingReq: false },
+          meta: { requiresAuth: true },
           children: [
             {
               path: "",
               name: "provisioning-menu",
               component: EosProvisioningMenu,
-              meta: { requiresAuth: true, isOnboardingReq: false }
+              meta: { requiresAuth: true }
             },
             {
               path: "s3",
@@ -169,7 +163,6 @@ const router = new Router({
               component: EosS3Management,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
                 requiredAccess:
                   userPermissions.s3accounts + userPermissions.list
               }
@@ -180,7 +173,6 @@ const router = new Router({
               component: EosUserSettingLocal,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
                 requiredAccess: userPermissions.users + userPermissions.list
               }
             }
@@ -189,24 +181,25 @@ const router = new Router({
         {
           path: "health",
           component: EosHealth,
-          meta: { requiresAuth: true, isOnboardingReq: false },
+          meta: { requiresAuth: true },
           children: [
             {
               path: "",
               name: "health",
               component: EosHealthSubmenu,
-              meta: { requiresAuth: true, isOnboardingReq: false },
+              meta: { requiresAuth: true }
             },
             {
               path: "healthview",
               name: "healthview",
               component: EosHealthView,
-              meta: { requiresAuth: true, isOnboardingReq: false },
-            }, {
+              meta: { requiresAuth: true }
+            },
+            {
               path: "healthview/:alert_id",
               name: "health-alerts-details",
               component: EosHealthAlertDetails,
-              meta: { requiresAuth: true, isOnboardingReq: false }
+              meta: { requiresAuth: true }
             }
           ]
         },
@@ -215,7 +208,6 @@ const router = new Router({
           component: EosSettings,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: false,
             requiredAccess: userPermissions.maintenance + userPermissions.list
           },
           children: [
@@ -225,8 +217,8 @@ const router = new Router({
               component: EosSettingsMenu,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -235,8 +227,8 @@ const router = new Router({
               component: EosNotifications,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -245,8 +237,8 @@ const router = new Router({
               component: EosMangementSetting,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -255,8 +247,8 @@ const router = new Router({
               component: EosDataNetworkSetting,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -265,8 +257,8 @@ const router = new Router({
               component: EosDnsDataSetting,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -275,8 +267,8 @@ const router = new Router({
               component: EosNtpSetting,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -285,8 +277,8 @@ const router = new Router({
               component: EOSUploadSSLSetting,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
             }
           ]
@@ -297,7 +289,6 @@ const router = new Router({
           component: EosUDX,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: false,
             requiredAccess: userPermissions.maintenance + userPermissions.list
           }
         },
@@ -306,7 +297,6 @@ const router = new Router({
           component: EosMaintenance,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: false,
             requiredAccess: userPermissions.sysconfig + userPermissions.list
           },
           children: [
@@ -314,7 +304,7 @@ const router = new Router({
               path: "",
               name: "maintenance-menu",
               component: EosMaintenanceMenu,
-              meta: { requiresAuth: true, isOnboardingReq: false }
+              meta: { requiresAuth: true }
             },
             {
               path: "auditlog",
@@ -322,7 +312,6 @@ const router = new Router({
               component: EosAuditLog,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
                 requiredAccess: userPermissions.auditlog + userPermissions.list
               }
             },
@@ -332,8 +321,8 @@ const router = new Router({
               component: EosResource,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -342,8 +331,8 @@ const router = new Router({
               component: EosFirmware,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
             },
             {
@@ -352,10 +341,10 @@ const router = new Router({
               component: EosSoftware,
               meta: {
                 requiresAuth: true,
-                isOnboardingReq: false,
-                requiredAccess: userPermissions.maintenance + userPermissions.list
+                requiredAccess:
+                  userPermissions.maintenance + userPermissions.list
               }
-            },
+            }
           ]
         },
         {
@@ -364,7 +353,6 @@ const router = new Router({
           component: EosHomebase,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: false,
             requiredAccess: userPermissions.sysconfig + userPermissions.list
           }
         },
@@ -374,7 +362,6 @@ const router = new Router({
           component: EosOnboarding,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: false,
             requiredAccess: userPermissions.maintenance + userPermissions.list
           }
         },
@@ -382,7 +369,7 @@ const router = new Router({
           path: "403",
           name: "403",
           component: EosUnauthorizedAccess,
-          meta: { requiresAuth: false, isOnboardingReq: false }
+          meta: { requiresAuth: true }
         },
         {
           path: "about",
@@ -390,7 +377,6 @@ const router = new Router({
           component: EosAbout,
           meta: {
             requiresAuth: true,
-            isOnboardingReq: false,
             requiredAccess: userPermissions.sysconfig + userPermissions.list
           }
         }
@@ -402,7 +388,6 @@ const router = new Router({
 
 // This code executes before any route happens
 router.beforeEach(async (to, from, next) => {
-  // TODO: isOnboardingReq flag handling is pending
   if (to.meta.requiresAuth) {
     // This route requires auth, check if logged in
     // if not, redirect to login page.
@@ -418,19 +403,20 @@ router.beforeEach(async (to, from, next) => {
         const routerApp: any = router.app.$root;
         if (
           to.meta.requiredAccess &&
-          // tslint:disable-next-line
           !routerApp.$hasAccessToCsm(to.meta.requiredAccess)
         ) {
+          // Redirect to Access Denied page
           next({
             path: "/403"
           });
+        } else {
+          next();
         }
       } catch (error) {
         next({
           path: "/login"
         });
       }
-      next();
     }
   } else {
     next(); // make sure to always call next()!

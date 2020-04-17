@@ -33,12 +33,6 @@
       </table>
     </div>
     <div class="mt-6 eos-text-md" id="lblUpdateHotfixMsg">
-      <span class="eos-text-bold"
-        >It is important that you are using the software for your system.</span
-      >
-      Use the link below to see if there's a newer version.
-      <br />If a newer version is available, download it to your device and then
-      install the file using button below.
     </div>
     <v-divider class="mt-2 mb-5" />
     <div v-if="!showUploadForm">
@@ -125,7 +119,7 @@ export default class EosHotfix extends Vue {
   public async getLastUpgradeStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Fetching last upgrade status..."
+      "Fetching last update status..."
     );
     const res: any = await Api.getAll(apiRegister.hotfix_status);
     this.lastUpgradeStatus = res && res.data ? res.data : null;

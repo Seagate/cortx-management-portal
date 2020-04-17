@@ -44,14 +44,14 @@ export default class EosMaintenanceMenu extends Vue {
       requiredAccess: "maintenance"
     },
     {
-      title: "Firmware",
+      title: "Firmware update",
       actionName: "Manage",
       actionClickFunction: "goToFirmware",
       disabled: false,
       requiredAccess: "maintenance"
     },
     {
-      title: "Software",
+      title: "Software update",
       actionName: "Manage",
       actionClickFunction: "goToSoftware",
       disabled: false,

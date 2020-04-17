@@ -2,26 +2,18 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblNotification">
-        Notifications
+        Notification settings
       </div>
       <div class="mt-3">
         <div class="font-weight-regular black--text" id="lblNotificationMsg">
-          The system will send out notifications of important events that may
-          happen throughout the life of the product. It is highly recommended
-          that you configure at least one notification path so that you can
-          quickly respond to any critical events that may arise in the system.
-          You can set up notifications to be sent via email, SNMP in the
-          following screens. You have the option to skip this step entirely, but
-          doing so is strongly discouraged.
+          You can receive notifications about system updates and alerts via
+          email. It is recommended to configure at least one email to receive
+          the notifications and alerts. You have an option to skip configuring
+          the notifications. However, it is not recommended. You should
+          configure at least one email to receive the system notifications and
+          alerts.
         </div>
 
-        <div
-          class="mt-3 font-weight-regular black--text"
-          id="lblNotificationMsgChoose"
-        >
-          Choose the notification options below that align best with your plans
-          for supporting data infrastructure within your network.
-        </div>
         <v-divider class="mt-3" />
         <div class="mt-6">
           <label class="eos-ckb-container" for="chkNotificationEmail">
@@ -39,10 +31,7 @@
             class="mt-2 font-weight-regular black--text"
             id="lblNotificationConfig"
           >
-            Selecting Email will allow you to configure both secure and
-            non-secure email servers for event notification. You can control the
-            severity of events that you wish to receive, and you will be able to
-            test out your notification settings.
+            Allows you to configure email servers for notifications.
           </div>
         </div>
         <div class="mt-5">
@@ -58,10 +47,8 @@
             <span class="eos-ckb-tick"></span>
           </label>
           <div class="mt-2 font-weight-regular black--text">
-            If you choose to set up notification paths later, you may skip this
-            step for now. However, skipping this step is strongly discouraged,
-            and it is highly recommended that you set event notifications up as
-            soon as possible to maintain the health of your system.
+            You can configure the notifications later. However, it is not
+            recommended.
           </div>
         </div>
       </div>

@@ -1,13 +1,13 @@
 <template>
   <div class="eos-p-2 body-2">
     <div class="eos-text-lg mt-2 font-weight-bold" id="lblEmail">
-      Notifications: Email
+      Notification settings: Email
     </div>
     <div class="mt-3" id="lblEmailMsg">
-      Selecting email will allow you to configure both secure and non-secure
-      email servers for event notification. You can control the severity of
-      events that you wish to receive, and you will be able to test out your
-      notification settings.
+      Allows you to configure email servers for notifications.
+    </div>
+    <div class="mt-3" id="lblMandatoryMsg">
+      Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
     <eosNotifications @apply-settings="applySettings" />

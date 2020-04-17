@@ -2,10 +2,10 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblOnboardingSummary">
-        Onboarding Summary
+        Onboarding summary
       </div>
       <div class="mt-3" id="lblOnboardingSummaryMsg">
-        Please verify the configurations below.
+        Verify the configurations below.
       </div>
       <v-divider class="mt-2" />
       <v-expansion-panels class="mt-5">
@@ -15,12 +15,12 @@
           >
           <v-expansion-panel-content v-if="managementData[0]">
             <div class="row ma-0">
-              <div class="col-3 body-2 column mr-5">
+              <div class="col-3 body-2 column mr-5 pt-0">
                 <span class="font-weight-bold">VIP</span>
                 <v-divider class="mt-2" />
                 <table class="mt-3 eos-text-lg">
                   <tr>
-                    <td class="table-data-label">IP Address:</td>
+                    <td class="table-data-label">IP address:</td>
                     <td>{{ managementData[0].ip_address }}</td>
                   </tr>
                 </table>
@@ -35,21 +35,21 @@
           <v-expansion-panel-content>
             <div class="row ma-0">
               <template v-for="(node, index) in dataNetwork">
-                <div class="col-3 body-2 column mr-5" :key="index">
+                <div class="col-3 body-2 column mr-5 pt-0" :key="index">
                   <span class="font-weight-bold">{{ node.name }}</span>
                   <v-divider class="mt-2" />
                   <table class="mt-3 eos-text-lg">
                     <tr>
-                      <td class="table-data-label">IP Address:</td>
+                      <td class="table-data-label">IP address:</td>
                       <td>{{ node.ip_address }}</td>
-                    </tr>
-                    <tr v-if="node.name !== 'VIP'">
-                      <td>Gateway:</td>
-                      <td>{{ node.gateway }}</td>
                     </tr>
                     <tr v-if="node.name !== 'VIP'">
                       <td>Netmask:</td>
                       <td>{{ node.netmask }}</td>
+                    </tr>
+                    <tr v-if="node.name !== 'VIP'">
+                      <td>Gateway:</td>
+                      <td>{{ node.gateway }}</td>
                     </tr>
                   </table>
                 </div>
@@ -64,12 +64,10 @@
           <v-expansion-panel-content>
             <div class="row ma-0">
               <template v-for="(node, index) in dnsData">
-                <div class="col-4 body-2 column mr-5" :key="index">
-                  <span class="font-weight-bold">{{ node.name }}</span>
-                  <v-divider class="mt-2" />
-                  <table class="mt-3 eos-text-lg">
+                <div class="col-8 body-2 column mr-5 pt-0" :key="index">
+                  <table class="eos-text-lg">
                     <tr>
-                      <td class="table-data-label">DNS servers:</td>
+                      <td class="dns-table-data-label">DNS servers:</td>
                       <td>{{ node.dns_servers }}</td>
                     </tr>
                     <tr>
@@ -86,18 +84,18 @@
           <v-expansion-panel-header class="eos-text-lg font-weight-bold"
             >NTP settings</v-expansion-panel-header
           >
-          <v-expansion-panel-content>
+          <v-expansion-panel-content v-if="ntpData.ntp_server_address">
             <div class="row ma-0">
               <template>
-                <div class="col-4 body-2 column mr-5">
-                  <table class="mt-3 eos-text-lg">
+                <div class="col-8 body-2 column mr-5 pt-0">
+                  <table class="eos-text-lg">
                     <tr>
-                      <td class="table-data-label">NTP address:</td>
-                      <td>{{ serverAddress }}</td>
+                      <td class="dns-table-data-label">Server address:</td>
+                      <td>{{ ntpData.ntp_server_address }}</td>
                     </tr>
                     <tr>
-                      <td>Timezone:</td>
-                      <td>{{ timezone }}</td>
+                      <td>Time zone offset:</td>
+                      <td>{{ ntpData.ntp_timezone_offset }}</td>
                     </tr>
                   </table>
                 </div>
@@ -112,8 +110,8 @@
           <v-expansion-panel-content v-if="notificationData.smtp_server">
             <div class="row ma-0">
               <template>
-                <div class="col-4 body-2 column mr-5">
-                  <table class="mt-3 eos-text-lg">
+                <div class="col-8 body-2 column mr-5 pt-0">
+                  <table class="eos-text-lg">
                     <tr>
                       <td class="table-data-label">SMTP server:</td>
                       <td>{{ notificationData.smtp_server }}</td>
@@ -147,7 +145,8 @@
         :message="
           `<span>You are moving on new IP address <a href='${newUrl}' target='_blank'>${newUrl}</a></span>`
         "
-        severity="info"
+        severity="warning"
+        submessage="Applying the changes will restart the system and the system will be moved to the new IP address."
         @closeDialog="closeConfirmDialog"
         confirmButtonText="Apply"
         isMessageInHTML="true"
@@ -169,8 +168,7 @@ import {
 export default class EosOnboardingSummary extends Vue {
   private data() {
     return {
-      serverAddress: "",
-      timezone: "",
+      ntpData: {},
       managementData: [],
       dataNetwork: [],
       dnsData: [],
@@ -241,12 +239,10 @@ export default class EosOnboardingSummary extends Vue {
       }
       if (
         systemconfig.date_time_settings &&
-        systemconfig.date_time_settings.ntp
+        systemconfig.date_time_settings.ntp &&
+        systemconfig.date_time_settings.ntp.ntp_server_address
       ) {
-        this.$data.timezone =
-          systemconfig.date_time_settings.ntp.ntp_timezone_offset;
-        this.$data.serverAddress =
-          systemconfig.date_time_settings.ntp.ntp_server_address;
+        this.$data.ntpData = systemconfig.date_time_settings.ntp;
       }
       if (
         systemconfig.notifications &&
@@ -269,5 +265,8 @@ export default class EosOnboardingSummary extends Vue {
 <style lang="scss" scoped>
 .table-data-label {
   width: 130px;
+}
+.dns-table-data-label {
+  width: 150px;
 }
 </style>
