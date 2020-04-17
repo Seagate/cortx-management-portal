@@ -4,7 +4,8 @@ export const accountNameRegex = helpers.regex(
   /^[a-zA-Z0-9_-]{4,56}$/
 );
 export const accountNameTooltipMessage =
-  "Min 4 to 56 characters. Only alphanumeric, underscore and hyphen are allowed.";
+// tslint:disable-next-line: max-line-length
+"The account name must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-).";
 
 export const usernameTooltipMessage =
   // tslint:disable-next-line
@@ -14,8 +15,8 @@ export const bucketNameRegex = helpers.regex(
   "bucketNameRegex",
   /^[a-z0-9][a-z0-9-]{3,54}[a-z0-9]$/
 );
-export const bucketNameTooltipMessage = `Min 4 to 56 characters. Only lowercase, numeric and hyphen are allowed.
-  Not starting or ending with '-'`;
+export const bucketNameTooltipMessage = `The bucket name must be of minimum 4 characters and maximum 56 characters.
+Only lowercase, numbers, and dash (-) are allowed. The bucket name cannot start and end with a dash (-).`;
 
 export const passwordRegex = helpers.regex(
   "passwordRegex",

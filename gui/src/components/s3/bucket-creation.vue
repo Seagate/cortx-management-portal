@@ -79,7 +79,7 @@
     <v-dialog
       v-model="showBucketCreateSuccessDialog"
       persistent
-      max-width="790"
+      max-width="400"
     >
       <v-card>
         <v-system-bar color="grey lighten-3">
@@ -124,7 +124,7 @@
             }"
           >
             <label class="eos-form-group-label" for="policyJSONTextarea">
-              Add your JSON here
+              Type to add new bucket policy or edit an existing policy in the text area below.
             </label>
             <textarea
               class="eos-form__input_textarea eos-form__input_textarea-custom"

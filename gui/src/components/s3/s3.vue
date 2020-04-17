@@ -8,15 +8,21 @@
         >S3 configuration</label
       >
       <eos-has-access
+        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
+      >
+        <div class="mt-1" style="color: #454545;font-size: 14px;">
+          <label>
+           Create an S3 account. You must log in to the system using S3 account credentials to manage S3 account, IAM users, and buckets.
+          </label>
+        </div>
+      </eos-has-access>
+
+      <eos-has-access
         :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label>
-            Use this table to create IAM users that have access to the buckets
-            you create in the next step. You can add as many as you like. The
-            access key and secret key for each user will be shown once you click
-            continue. You will have the opportunity to download a CSV at that
-            point.
+            Manage IAM users and buckets.
           </label>
         </div>
       </eos-has-access>

@@ -53,6 +53,7 @@
               name="accountEmail"
               v-model.trim="createAccountForm.account.account_email"
               @input="$v.createAccountForm.account.account_email.$touch"
+              placeholder="example@email.com"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
