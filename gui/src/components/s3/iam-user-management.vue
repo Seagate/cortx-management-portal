@@ -13,7 +13,7 @@
             <label class="eos-form-group-label" for="userName">
               <eos-info-tooltip
                 label="Username*"
-                :message="accountNameTooltipMessage"
+                :message="usernameTooltipMessage"
               />
             </label>
             <input
@@ -254,7 +254,7 @@ import {
   iamPathRegex,
   passwordRegex,
   passwordTooltipMessage,
-  accountNameTooltipMessage
+  usernameTooltipMessage
 } from "./../../common/regex-helpers";
 
 @Component({
@@ -293,7 +293,7 @@ export default class EosIAMUserManagement extends Vue {
   private user: IAMUser;
   private userToDelete: string = "";
   private passwordTooltipMessage: string = passwordTooltipMessage;
-  private accountNameTooltipMessage: string = accountNameTooltipMessage;
+  private usernameTooltipMessage: string = usernameTooltipMessage;
 
   constructor() {
     super();

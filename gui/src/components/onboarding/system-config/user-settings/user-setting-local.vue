@@ -19,7 +19,7 @@
                 }"
               >
                 <label class="eos-form-group-label" for="Username">
-                  <eos-info-tooltip label="Username*" :message="accountNameTooltipMessage" />
+                  <eos-info-tooltip label="Username*" :message="usernameTooltipMessage" />
                 </label>
                 <input
                   class="eos-form__input_text"
@@ -493,7 +493,7 @@ import {
   accountNameRegex,
   passwordRegex,
   passwordTooltipMessage,
-  accountNameTooltipMessage
+  usernameTooltipMessage
 } from "./../../../../common/regex-helpers";
 
 import { EVENT_BUS } from "./../../../../main";
@@ -567,7 +567,7 @@ export default class EosUserSettingLocal extends Vue {
       showConfirmationDialog: false,
       confirmationDialogMessage: "Are you sure you want to delete this user?",
       passwordTooltipMessage,
-      accountNameTooltipMessage,
+      usernameTooltipMessage,
       loggedInUserName: localStorage.getItem("username"),
       selectedItem: { password: "", old_password: "", confirmPassword: "" }
     };
