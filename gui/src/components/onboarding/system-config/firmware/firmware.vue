@@ -14,12 +14,17 @@
  *****************************************************************************/
 <template>
   <div>
-    <div class="eos-text-lg eos-text-bold" id="lblUpdateFirmware">Update firmware</div>
-    <div class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md" v-if="lastUpgradeStatus">
+    <div class="eos-text-lg eos-text-bold" id="lblUpdateFirmware">
+      Update firmware
+    </div>
+    <div
+      class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md"
+      v-if="lastUpgradeStatus"
+    >
       <table>
         <tr>
           <td style="width: 180px;">
-            <label class="eos-text-bold">Last Upgrade status:</label>
+            <label class="eos-text-bold">Last update status:</label>
           </td>
           <td style="padding-top: 3px;">
             <label>{{ lastUpgradeStatus.status.toUpperCase() }}</label>
@@ -27,11 +32,7 @@
         </tr>
       </table>
     </div>
-    <div class="mt-6 eos-text-md" id="lblUpdateFirmwareMsg">
-      <span class="eos-text-bold">It is important that you are using the firmware for your system.</span>
-      Use the link below to see if there's a newer version.
-      <br />If a newer version is available, download it to your device and then install the file using button below.
-    </div>
+    <div class="mt-6 eos-text-md" id="lblUpdateFirmwareMsg"></div>
     <v-divider class="mt-2 mb-5" />
     <div v-if="!showUploadForm">
       <button
@@ -39,14 +40,21 @@
         type="button"
         class="eos-btn-primary"
         @click="showUploadForm = true"
-      >Upload new firmware file</button>
+      >
+        Upload new firmware file
+      </button>
       <button
         id="btnStartUpgrade"
         type="button"
         class="ml-5 eos-btn-primary"
         @click="startUpgrade()"
-        :disabled="!isPackageAvailable || (lastUpgradeStatus && lastUpgradeStatus.status === 'in_progress')"
-      >Start upgrade</button>
+        :disabled="
+          !isPackageAvailable ||
+            (lastUpgradeStatus && lastUpgradeStatus.status === 'in_progress')
+        "
+      >
+        Start update
+      </button>
     </div>
     <div v-if="showUploadForm">
       <input
@@ -54,11 +62,14 @@
         id="file"
         ref="firmwarePackageFileInput"
         @change="handleFileUpload($event.target.files)"
-        accept =".bin"
+        accept=".bin"
       />
       <div
         class="eos-form-group-label eos-form-group-error-msg mt-3"
-        v-if="firmwarePackageFormValidation.isDirty && !firmwarePackageFormValidation.isValid"
+        v-if="
+          firmwarePackageFormValidation.isDirty &&
+            !firmwarePackageFormValidation.isValid
+        "
       >
         <label>Package should be a '.bin' file.</label>
       </div>
@@ -69,13 +80,17 @@
         class="mt-3 eos-btn-primary"
         @click="uploadFirmwarePackage()"
         :disabled="!firmwarePackage"
-      >Upload</button>
+      >
+        Upload
+      </button>
       <button
         id="btnCancelInstallFirmware"
         type="button"
         class="mt-3 ml-5 eos-btn-secondary"
         @click="closeUploadForm()"
-      >Cancel</button>
+      >
+        Cancel
+      </button>
     </div>
   </div>
 </template>
@@ -106,10 +121,11 @@ export default class EosFirmware extends Vue {
   public async getLastUpgradeStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Fetching last upgrade status..."
+      "Fetching last update status..."
     );
     const res: any = await Api.getAll(apiRegister.last_upgrade_status);
-    this.lastUpgradeStatus = res && res.data && res.data.status ? res.data : null;
+    this.lastUpgradeStatus =
+      res && res.data && res.data.status ? res.data : null;
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
@@ -117,7 +133,7 @@ export default class EosFirmware extends Vue {
     if (this.lastUpgradeStatus) {
       this.lastUpgradeStatus.status = "in_progress";
     }
-    this.$store.dispatch("systemConfig/showLoader", "Starting upgrade...");
+    this.$store.dispatch("systemConfig/showLoader", "Starting update...");
     const res: any = await Api.post(apiRegister.start_firmware_upgrade, {});
     this.lastUpgradeStatus = res && res.data ? res.data : null;
     this.$store.dispatch("systemConfig/hideLoader");

@@ -2,23 +2,46 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="row mt-5">
-        <div class="col-4 column node-container py-0">
+        <div class="col-2 body-2 column">
+          <div class="mt-2 font-weight-bold">
+            <div class="eos-form-group">
+              <label id="lblEmailSMTP">SMTP server*: </label>
+            </div>
+            <div class="eos-form-group">
+              <label id="lblEmailSenderEmail">Sender email*:</label>
+            </div>
+            <div class="eos-form-group">
+              <label id="lblEmailProtocol">Protocol*:</label>
+            </div>
+            <div class="eos-form-group">
+              <label id="lblEmailSMTPPort">SMTP port*:</label>
+            </div>
+            <div class="eos-form-group">
+              <label id="lblEmailSenderPass">Sender password*:</label>
+            </div>
+            <div class="eos-form-group">
+              <label id="lblEmailSenderConfirmPass">Confirm password*:</label>
+            </div>
+            <div class="eos-form-group">
+              <label id="lblEmailReceiverEmail">Receiver emails*:</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 body-2 column mr-5">
           <div
             class="eos-form-group"
             :class="{
               'eos-form-group--error': $v.smtpserver.$error
             }"
           >
-            <label class="eos-form-group-label" for="accountName"
-              >SMTP server*</label
-            >
             <input
               class="eos-form__input_text"
               type="text"
-              id="txtEmailSmtp"
+              id="txtEmailSmtpServer"
               name="smtpserver"
               v-model.trim="smtpserver"
               @input="$v.smtpserver.$touch"
+              placeholder="smtp.email.com"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.smtpserver.$dirty && !$v.smtpserver.required"
@@ -26,26 +49,21 @@
               >
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4 column node-container py-0">
+
           <div
             class="eos-form-group"
             :class="{
               'eos-form-group--error': $v.senderemail.$error
             }"
           >
-            <label class="eos-form-group-label" for="accountName"
-              >Sender email*</label
-            >
             <input
               class="eos-form__input_text"
               type="text"
               id="txtEmailsenderemail"
-              name="smtpsesenderemailrver"
+              name="senderEmail"
               v-model.trim="senderemail"
               @input="$v.senderemail.$touch"
+              placeholder="example@email.com"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.senderemail.$dirty && !$v.senderemail.required"
@@ -56,44 +74,34 @@
               >
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4 column node-container py-0">
-          <div class="eos-form-group">
-            <label
-              class="eos-form-group-label"
-              for="hostname"
-              id="lblDTNetworkServeradd"
-              >Protocol*</label
-            >
-            <eos-dropdown
-              @update:selectedOption="handleDropdownSelect"
-              :options="protocolList"
-              :title="protocolLabel ? protocolLabel : undefined"
-            ></eos-dropdown>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
             :class="{
               'eos-form-group--error': $v.smtpport.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="lblEmailSenderPass"
-              id="lblEmailSMTPPort"
-              >SMTP port*</label
-            >
+            <eos-dropdown
+              @update:selectedOption="handleDropdownSelect"
+              :options="protocolList"
+              :title="protocolLabel ? protocolLabel : undefined"
+            ></eos-dropdown>
+            <div class="eos-form-group-label eos-form-group-error-msg">
+              <label v-if="$v.protocol.$dirty && !$v.protocol.required"
+                >Protocol is required.</label
+              >
+            </div>
+          </div>
+          <div
+            class="eos-form-group"
+            :class="{
+              'eos-form-group--error': $v.smtpport.$error
+            }"
+          >
             <input
               class="eos-form__input_text"
               type="number"
-              id="txtEmailIpAddress"
-              name="smtp_port"
+              id="txtEmailSmtpPort"
+              name="smtpPort"
               v-model.trim="smtpport"
               @input="$v.smtpport.$touch"
             />
@@ -106,27 +114,17 @@
               >
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
             :class="{
               'eos-form-group--error': $v.senderpassword.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="lblEmailSenderPass"
-              id="lblEmailSenderPass"
-              >Sender password*</label
-            >
             <input
               class="eos-form__input_text"
               type="password"
               id="txtEmailSenderPass"
-              name="senderpassword"
+              name="senderPassword"
               v-model.trim="senderpassword"
               @input="$v.senderpassword.$touch"
             />
@@ -141,27 +139,17 @@
               >
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
             :class="{
               'eos-form-group--error': $v.confirmpassword.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="lblEmailSenderPass"
-              id="lblEmailSenderPass"
-              >Confirm password*</label
-            >
             <input
               class="eos-form__input_text"
               type="password"
               id="txtEmailConfirmPass"
-              name="senderpassword"
+              name="ConfirmPassword"
               v-model.trim="confirmpassword"
               @input="$v.confirmpassword.$touch"
             />
@@ -175,30 +163,20 @@
               >
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4 column node-container py-0">
           <div
             class="eos-form-group"
             :class="{
               'eos-form-group--error': $v.emailaddress.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="lblEmailSenderPass"
-              id="lblEmailSenderPass"
-              >Receiver email addresses*</label
-            >
             <textarea
               @change="setReceiverEmailAddresses"
               class="eos-form__input_textarea"
-              id="txtEmailsenderemail"
-              name="senderpassword"
+              id="txtEmailReceiverEmail"
+              name="receiverEmail"
               v-model.trim="emailaddress"
               @input="$v.emailaddress.$touch"
-              placeholder="Enter comma ',' seperated values"
+              placeholder="Use a comma (,) to separate multiple Receiver email values. Example, example@email.com, example2@email.com"
             ></textarea>
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required"
@@ -234,9 +212,6 @@
       </span>
     </div>
 
-    <p v-if="!isValid" class="red--text error-message">
-      Please enter valid values.
-    </p>
     <span class="d-none">{{ isValidForm }}{{ notificationGetter }}</span>
     <button
       type="button"
@@ -280,6 +255,9 @@ export default class EosNotifications extends Vue {
       required,
       email
     },
+    protocol: {
+      required
+    },
     senderpassword: {
       required,
       minLength: minLength(4)
@@ -302,8 +280,8 @@ export default class EosNotifications extends Vue {
       smtpserver: "",
       senderemail: "",
       smtpport: 465,
-      protocol: "ssl",
-      protocolLabel: "SSL",
+      protocol: "",
+      protocolLabel: "",
       protocolList: [
         {
           label: "SSL",
@@ -325,8 +303,7 @@ export default class EosNotifications extends Vue {
       testEmail: false,
       testEmailInProgress: false,
       testEmailMessage: "",
-      testEmailMessageError: false,
-      isValid: true
+      testEmailMessageError: false
     };
   }
 
@@ -347,14 +324,10 @@ export default class EosNotifications extends Vue {
     EVENT_BUS.$off("emitOnNext");
   }
   get isValidForm() {
-    let validate = false;
-    if (this.isConfirmPasswordValid) {
-      validate = true;
-    }
     // WizardHook: Emit event to sibling wizard footer component
     // to send information about data validation to enable/disable wizard footer
     EVENT_BUS.$emit("validForm", !this.$v.$invalid);
-    return validate;
+    return true;
   }
   get notificationGetter(): any {
     const notificationConfiguration = this.$store.getters[
@@ -373,6 +346,10 @@ export default class EosNotifications extends Vue {
         notificationConfiguration.notifications.email.smtp_port;
       this.$data.protocol =
         notificationConfiguration.notifications.email.smtp_protocol;
+      const protocolListItem = this.$data.protocolList.find(
+        (e: any) => e.value === this.$data.protocol
+      );
+      this.$data.protocolLabel = protocolListItem ? protocolListItem.label : "";
       this.$data.emailaddress =
         notificationConfiguration.notifications.email.email;
     }
@@ -412,7 +389,6 @@ export default class EosNotifications extends Vue {
         if (res) {
           if (res.status) {
             this.$data.testEmailInProgress = false;
-
             this.$data.testEmailMessage = "Success";
           } else {
             let failedRecipientsList = "";
@@ -432,15 +408,6 @@ export default class EosNotifications extends Vue {
         this.$data.testEmailMessageError = true;
         this.$data.testEmailInProgress = false;
       });
-  }
-  get isConfirmPasswordValid() {
-    if (
-      this.$data.confirmpassword &&
-      this.$data.senderpassword === this.$data.confirmpassword
-    ) {
-      return true;
-    }
-    return false;
   }
   private applySettings() {
     const queryParams: Email = {

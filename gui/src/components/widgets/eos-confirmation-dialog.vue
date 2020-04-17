@@ -120,7 +120,6 @@ export default class EosConfirmationDialog extends Vue {
   font-weight: 400;
   font-size: small;
   color: red;
-  float: right;
 }
 .severity-img {
   align-self: flex-start;
