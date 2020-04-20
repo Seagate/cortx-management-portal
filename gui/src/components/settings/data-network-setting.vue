@@ -11,7 +11,14 @@
       Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
-    <eosDataNetworkIpv4Config @apply-settings="applySettings" />
+    <eosDataNetworkIpv4Config @apply-settings="applySettingsConfirmation" />
+    <eos-confirmation-dialog
+      :show="showConfirmDialog"
+      message="Are you sure you want to apply these settings?"
+      severity="warning"
+      @closeDialog="applySettings"
+      confirmButtonText="Apply"
+    ></eos-confirmation-dialog>
   </div>
 </template>
 
@@ -30,7 +37,9 @@ import apiRegister from "../../services/api-register";
 export default class EosDataNetworkSetting extends Vue {
   private data() {
     return {
-      sysconfigData: {}
+      sysconfigData: {},
+      newConfigData: {},
+      showConfirmDialog: false
     };
   }
   private async mounted() {
@@ -51,19 +60,26 @@ export default class EosDataNetworkSetting extends Vue {
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
-  private async applySettings(data: object) {
-    this.$store.dispatch("systemConfig/showLoader", "Please wait");
-    const res = await Api.patch(
-      apiRegister.sysconfig,
-      { data_network_settings: { ipv4: data } },
-      this.$data.sysconfigData.config_id,
-      {
-        params: {
-          config_type: "data_network_settings"
-        },
-        timeout: -1
-      }
-    );
+  private async applySettingsConfirmation(data: any) {
+    this.$data.showConfirmDialog = true;
+    this.$data.newConfigData = data;
+  }
+  private async applySettings(confirmation: string) {
+    this.$store.dispatch("systemConfig/showLoader", "Applying settings...");
+    this.$data.showConfirmDialog = false;
+    if (confirmation) {
+      const res = await Api.patch(
+        apiRegister.sysconfig,
+        { data_network_settings: { ipv4: this.$data.newConfigData } },
+        this.$data.sysconfigData.config_id,
+        {
+          params: {
+            config_type: "data_network_settings"
+          },
+          timeout: -1
+        }
+      );
+    }
     this.$store.dispatch("systemConfig/hideLoader");
   }
 }

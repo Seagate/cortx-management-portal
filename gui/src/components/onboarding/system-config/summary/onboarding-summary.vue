@@ -11,6 +11,49 @@
       <v-expansion-panels class="mt-5">
         <v-expansion-panel>
           <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+            >SSL certificate upload</v-expansion-panel-header
+          >
+          <v-expansion-panel-content v-if="lastSSLStatus.status">
+            <div class="row ma-0">
+              <div class="col-8 body-2 column mr-5 pt-0">
+                <table class="eos-text-lg">
+                  <tr>
+                    <td style="width: 240px;">
+                      <label>Last installation status:</label>
+                    </td>
+                    <td>
+                      <label>{{ lastSSLStatus.status }}</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Last certificate filename:</label>
+                    </td>
+                    <td>
+                      <label>{{ lastSSLStatus.filename }}</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Last certificate upload date:</label>
+                    </td>
+                    <td>{{ lastSSLStatus.date }}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Serial number:</label>
+                    </td>
+                    <td>
+                      <label>{{ lastSSLStatus.serial_number }}</label>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
             >Management network settings</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="managementData[0]">
@@ -67,7 +110,7 @@
                 <div class="col-8 body-2 column mr-5 pt-0" :key="index">
                   <table class="eos-text-lg">
                     <tr>
-                      <td class="dns-table-data-label">DNS servers:</td>
+                      <td class="large-table-data-label">DNS servers:</td>
                       <td>{{ node.dns_servers }}</td>
                     </tr>
                     <tr>
@@ -90,7 +133,7 @@
                 <div class="col-8 body-2 column mr-5 pt-0">
                   <table class="eos-text-lg">
                     <tr>
-                      <td class="dns-table-data-label">Server address:</td>
+                      <td class="large-table-data-label">Server address:</td>
                       <td>{{ ntpData.ntp_server_address }}</td>
                     </tr>
                     <tr>
@@ -162,6 +205,10 @@ import {
   SystemConfigObject,
   DnsNetworkSettings
 } from "./../../../../models/system-configuration";
+
+import { Api } from "./../../../../services/api";
+import apiRegister from "./../../../../services/api-register";
+
 @Component({
   name: "eos-onboarding-summary"
 })
@@ -175,7 +222,8 @@ export default class EosOnboardingSummary extends Vue {
       newUrl: "",
       showConfirmDialog: false,
       wizardRes: undefined,
-      notificationData: {}
+      notificationData: {},
+      lastSSLStatus: {}
     };
   }
   private openConfirmDialog() {
@@ -201,12 +249,13 @@ export default class EosOnboardingSummary extends Vue {
     EVENT_BUS.$emit("validForm", validate);
     return validate;
   }
-  private mounted() {
+  private async mounted() {
     const vm = this;
     EVENT_BUS.$on("emitOnNext", (res: any) => {
       vm.openConfirmDialog();
       this.$data.wizardRes = res;
     });
+    await this.getCertificateStatus();
   }
   private destroyed() {
     // WizardHook: shut off on exit event listener
@@ -260,13 +309,19 @@ export default class EosOnboardingSummary extends Vue {
     }
     return true;
   }
+  private async getCertificateStatus() {
+    this.$store.dispatch("systemConfig/showLoader", "Fetching certificate...");
+    const res = await Api.getAll(apiRegister.ssl_status);
+    this.$data.lastSSLStatus = res.data;
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
 }
 </script>
 <style lang="scss" scoped>
 .table-data-label {
   width: 130px;
 }
-.dns-table-data-label {
+.large-table-data-label {
   width: 150px;
 }
 </style>

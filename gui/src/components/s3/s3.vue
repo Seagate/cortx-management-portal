@@ -12,7 +12,8 @@
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label>
-           Create an S3 account. You must log in to the system using S3 account credentials to manage S3 account, IAM users, and buckets.
+            Create an S3 account. You must log in to the system using S3 account
+            credentials to manage S3 account, IAM users, and buckets.
           </label>
         </div>
       </eos-has-access>

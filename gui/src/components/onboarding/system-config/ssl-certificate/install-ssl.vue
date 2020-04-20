@@ -12,7 +12,7 @@
     <eos-confirmation-dialog
       :show="showConfirmDialog"
       title="Confirmation"
-      message="Are you sure you want to install the certificate? If you install certificate you will redirect to login"
+      message="Are you sure you want to install the certificate? You will be redirected to login."
       severity="warning"
       @closeDialog="closeConfirmDialog"
       cancelButtonText="No"

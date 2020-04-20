@@ -20,7 +20,7 @@ export default {
   systemconfig: `api/${version}/systemconfig`,
   create_user: `api/${version}/preboarding/user`,
   login: `api/${version}/login`,
-  create_csmuser: `api/${version}/csm/users`,
+  csm_user: `api/${version}/csm/users`,
   logout: `/api/${version}/logout`,
   udx_registration: `api/${version}/udx_device/registration`,
   udx_registration_token: `api/${version}/udx_device/registration_token`,
