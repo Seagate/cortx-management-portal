@@ -1,473 +1,512 @@
 <template>
-  <v-container>
-    <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblLocalSetting">User settings: Local</div>
-      <div class="mt-5">
-        <span class="font-weight-regular" id="lblLocalMsgConfig">
-          Use this table to create CSM users that have access to CSM
-          functionality. You can add as many as you like.
-        </span>
+  <div class="eos-p-2 body-2">
+    <div class="title mt-2 font-weight-bold" id="lblLocalSetting">
+      User settings: Local
+    </div>
+    <div class="mt-5">
+      <span class="font-weight-regular" id="lblLocalMsgConfig">
+        Manage CSM users.
+      </span>
+    </div>
+    <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
+      <div v-if="isUserCreate">
+        <v-row>
+          <v-col class="pl-5">
+            <div
+              class="eos-form-group"
+              :class="{
+                'eos-form-group--error': $v.createAccount.username.$error
+              }"
+            >
+              <label class="eos-form-group-label" for="Username">
+                <eos-info-tooltip
+                  label="Username*"
+                  :message="usernameTooltipMessage"
+                />
+              </label>
+              <input
+                class="eos-form__input_text"
+                type="text"
+                name="txtCreateUsername"
+                v-model.trim="createAccount.username"
+                id="txtLocalHostname"
+                @input="$v.createAccount.username.$touch"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="
+                    $v.createAccount.username.$dirty &&
+                      !$v.createAccount.username.required
+                  "
+                  >Account name is required.</label
+                >
+                <label
+                  v-else-if="
+                    $v.createAccount.username.$dirty &&
+                      !$v.createAccount.username.accountNameRegex
+                  "
+                  >Invalid username.</label
+                >
+              </div>
+            </div>
+            <div
+              class="eos-form-group"
+              :class="{
+                'eos-form-group--error': $v.createAccount.password.$error
+              }"
+            >
+              <label class="eos-form-group-label" for="password">
+                <eos-info-tooltip
+                  label="Password*"
+                  :message="passwordTooltipMessage"
+                />
+              </label>
+              <input
+                class="eos-form__input_text"
+                type="password"
+                name="txtCreatePassword"
+                v-model.trim="createAccount.password"
+                @input="$v.createAccount.password.$touch"
+                id="txtLocalPass"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="
+                    $v.createAccount.password.$dirty &&
+                      !$v.createAccount.password.required
+                  "
+                  >Password is required.</label
+                >
+                <label
+                  v-else-if="
+                    $v.createAccount.password.$dirty &&
+                      !$v.createAccount.password.passwordRegex
+                  "
+                  >Invalid password.</label
+                >
+              </div>
+            </div>
+            <div
+              class="eos-form-group"
+              :class="{
+                'eos-form-group--error': $v.createAccount.confirmPassword.$error
+              }"
+            >
+              <label class="eos-form-group-label" for="password"
+                >Confirm password*</label
+              >
+              <input
+                class="eos-form__input_text"
+                type="password"
+                name="txtCreateConfirmPassword"
+                v-model="createAccount.confirmPassword"
+                id="txtLocalConfirmPass"
+                @input="$v.createAccount.confirmPassword.$touch"
+              />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="
+                    $v.createAccount.confirmPassword.$dirty &&
+                      !$v.createAccount.confirmPassword.sameAsPassword
+                  "
+                  >Passwords do not match.</label
+                >
+              </div>
+            </div>
+          </v-col>
+          <v-col>
+            <div class="mb-3">Roles</div>
+            <label class="eos-rdb-container">
+              Manage
+              <input
+                type="radio"
+                v-model="checkedRoles"
+                name="rbtCreateManage"
+                value="manage"
+                id="chkLocalManage"
+              />
+              <span class="eos-rdb-tick" id="lblLocalManage"></span>
+            </label>
+            <br />
+            <label class="eos-rdb-container mt-2">
+              Monitor
+              <input
+                type="radio"
+                v-model="checkedRoles"
+                name="rbtCreateMonitor"
+                value="monitor"
+                id="chkLocalMonitor"
+              />
+              <span class="eos-rdb-tick" id="lblLocalMonitor"></span>
+            </label>
+          </v-col>
+        </v-row>
       </div>
-      <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
-        <div v-if="isUserCreate">
-          <v-row>
-            <v-col class="pl-5">
-              <div
-                class="eos-form-group"
-                :class="{
-                  'eos-form-group--error': $v.createAccount.username.$error
-                }"
-              >
-                <label class="eos-form-group-label" for="Username">
-                  <eos-info-tooltip label="Username*" :message="usernameTooltipMessage" />
-                </label>
-                <input
-                  class="eos-form__input_text"
-                  type="text"
-                  name="txtCreateUsername"
-                  v-model.trim="createAccount.username"
-                  id="txtLocalHostname"
-                  @input="$v.createAccount.username.$touch"
-                />
-                <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
-                    v-if="
-                      $v.createAccount.username.$dirty &&
-                        !$v.createAccount.username.required
-                    "
-                  >Account name is required.</label>
-                  <label
-                    v-else-if="
-                      $v.createAccount.username.$dirty &&
-                        !$v.createAccount.username.accountNameRegex
-                    "
-                  >Invalid username.</label>
-                </div>
-              </div>
-              <div
-                class="eos-form-group"
-                :class="{
-                  'eos-form-group--error': $v.createAccount.password.$error
-                }"
-              >
-                <label class="eos-form-group-label" for="password">
-                  <eos-info-tooltip label="Password*" :message="passwordTooltipMessage" />
-                </label>
-                <input
-                  class="eos-form__input_text"
-                  type="password"
-                  name="txtCreatePassword"
-                  v-model.trim="createAccount.password"
-                  @input="$v.createAccount.password.$touch"
-                  id="txtLocalPass"
-                />
-                <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
-                    v-if="
-                      $v.createAccount.password.$dirty &&
-                        !$v.createAccount.password.required
-                    "
-                  >Password is required.</label>
-                  <label
-                    v-else-if="
-                      $v.createAccount.password.$dirty &&
-                        !$v.createAccount.password.passwordRegex
-                    "
-                  >Invalid password.</label>
-                </div>
-              </div>
-              <div
-                class="eos-form-group"
-                :class="{
-                  'eos-form-group--error':
-                    $v.createAccount.confirmPassword.$error
-                }"
-              >
-                <label class="eos-form-group-label" for="password">Confirm password*</label>
-                <input
-                  class="eos-form__input_text"
-                  type="password"
-                  name="txtCreateConfirmPassword"
-                  v-model="createAccount.confirmPassword"
-                  id="txtLocalConfirmPass"
-                  @input="$v.createAccount.confirmPassword.$touch"
-                />
-                <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
-                    v-if="
-                      $v.createAccount.confirmPassword.$dirty &&
-                        !$v.createAccount.confirmPassword.sameAsPassword
-                    "
-                  >Passwords do not match.</label>
-                </div>
-              </div>
-            </v-col>
-            <v-col>
-              <div class="mb-3">Roles</div>
-              <label class="eos-rdb-container">
-                Manage
-                <input
-                  type="radio"
-                  v-model="checkedRoles"
-                  name="rbtCreateManage"
-                  value="manage"
-                  id="chkLocalManage"
-                />
-                <span class="eos-rdb-tick" id="lblLocalManage"></span>
-              </label>
-              <br />
-              <label class="eos-rdb-container mt-2">
-                Monitor
-                <input
-                  type="radio"
-                  v-model="checkedRoles"
-                  name="rbtCreateMonitor"
-                  value="monitor"
-                  id="chkLocalMonitor"
-                />
-                <span class="eos-rdb-tick" id="lblLocalMonitor"></span>
-              </label>
-            </v-col>
-          </v-row>
-        </div>
-        <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.create">
-          <button
-            v-if="!isUserCreate"
-            type="button"
-            class="ma-5 eos-btn-primary"
-            @click="addUser()"
-            id="btnLocalAddNewUser"
-          >Add new user</button>
-          <button
-            v-if="isUserCreate"
-            type="button"
-            class="ma-5 eos-btn-primary"
-            @click="createUser()"
-            id="btnLocalCreateUser"
-            :disabled="$v.createAccount.$invalid || !checkedRoles"
-          >Create</button>
-          <button
-            v-if="isUserCreate"
-            type="button"
-            class="eos-btn-tertiary"
-            @click="addUser()"
-            id="lblLocalCancel"
-          >Cancel</button>
-        </eos-has-access>
+      <eos-has-access
+        :to="$eosUserPermissions.users + $eosUserPermissions.create"
+      >
+        <button
+          v-if="!isUserCreate"
+          type="button"
+          class="ma-5 eos-btn-primary"
+          @click="addUser()"
+          id="btnLocalAddNewUser"
+        >
+          Add new user
+        </button>
+        <button
+          v-if="isUserCreate"
+          type="button"
+          class="ma-5 eos-btn-primary"
+          @click="createUser()"
+          id="btnLocalCreateUser"
+          :disabled="$v.createAccount.$invalid || !checkedRoles"
+        >
+          Create
+        </button>
+        <button
+          v-if="isUserCreate"
+          type="button"
+          class="eos-btn-tertiary"
+          @click="addUser()"
+          id="lblLocalCancel"
+        >
+          Cancel
+        </button>
+      </eos-has-access>
 
-        <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.list">
-          <v-data-table
-            calculate-widths
-            :items="userData"
-            :single-expand="singleExpand"
-            :expanded.sync="expanded"
-            item-key="id"
-            show-expand
-            class="eos-table"
-            hide-default-header
-          >
-            <template v-slot:header="{}">
-              <tr>
-                <th class="tableheader" width="10%" />
-                <th v-for="header in userHeader" :key="header.text" class="tableheader">
-                  <span
-                    class="headerText"
-                    :class="
-                      header.value === sortColumnName && isSortActive
-                        ? 'active'
-                        : ''
+      <eos-has-access
+        :to="$eosUserPermissions.users + $eosUserPermissions.list"
+      >
+        <v-data-table
+          calculate-widths
+          :items="userData"
+          :single-expand="singleExpand"
+          :expanded.sync="expanded"
+          item-key="id"
+          show-expand
+          class="eos-table"
+          hide-default-header
+        >
+          <template v-slot:header="{}">
+            <tr>
+              <th class="tableheader" width="10%" />
+              <th
+                v-for="header in userHeader"
+                :key="header.text"
+                class="tableheader"
+              >
+                <span
+                  class="headerText"
+                  :class="
+                    header.value === sortColumnName && isSortActive
+                      ? 'active'
+                      : ''
+                  "
+                  >{{ header.text }}</span
+                >
+                <span
+                  :class="
+                    header.value === sortColumnName && isSortActive
+                      ? 'active'
+                      : 'notActive'
+                  "
+                >
+                  <img
+                    v-if="
+                      header.sortable && header.sortDir === alertStatus.desc
                     "
-                  >{{ header.text }}</span>
-                  <span
-                    :class="
-                      header.value === sortColumnName && isSortActive
-                        ? 'active'
-                        : 'notActive'
-                    "
+                    :src="require('@/assets/widget/table-sort-desc.svg/')"
+                    class="d-inline-block"
+                    style="vertical-align: bottom; margin-left: -0.3em;"
+                    height="20"
+                    width="20"
+                  />
+                  <img
+                    v-if="header.sortable && header.sortDir === alertStatus.asc"
+                    :src="require('@/assets/widget/table-sort-asc.svg/')"
+                    class="d-inline-block"
+                    style="vertical-align: bottom; margin-left: -0.3em;"
+                    height="20"
+                    width="20"
+                  />
+                </span>
+              </th>
+              <th class="tableheader" />
+            </tr>
+          </template>
+          <template v-slot:item="props">
+            <tr class="font-weight-small">
+              <td>
+                <span>
+                  <eos-has-access
+                    :to="$eosUserPermissions.users + $eosUserPermissions.update"
+                  >
+                    <div
+                      @click="onExpand(props)"
+                      v-if="
+                        isLoggedInUserAdmin() ||
+                          props.item.username === loggedInUserName
+                      "
+                    >
+                      <img
+                        v-if="props.isExpanded"
+                        title="Minimize"
+                        :src="require('@/assets/caret-down.svg')"
+                      />
+                      <img
+                        v-if="!props.isExpanded"
+                        title="Expand"
+                        :src="require('@/assets/caret-right.svg')"
+                      />
+                    </div>
+                  </eos-has-access>
+                </span>
+              </td>
+              <td>{{ props.item.username }}</td>
+              <td>
+                <span v-for="(role, i) in props.item.roles" :key="role"
+                  >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span
+                >
+              </td>
+              <td>
+                <span>
+                  <eos-has-access
+                    :to="$eosUserPermissions.users + $eosUserPermissions.update"
                   >
                     <img
                       v-if="
-                        header.sortable && header.sortDir === alertStatus.desc
+                        isLoggedInUserAdmin() ||
+                          props.item.username === loggedInUserName
                       "
-                      :src="require('@/assets/widget/table-sort-desc.svg/')"
-                      class="d-inline-block"
-                      style="vertical-align: bottom; margin-left: -0.3em;"
-                      height="20"
-                      width="20"
+                      class="mx-2 eos-cursor-pointer"
+                      @click="onExpand(props)"
+                      title="Edit"
+                      src="./../../../../assets/actions/edit-green.svg"
+                    />
+                  </eos-has-access>
+                  <eos-has-access
+                    :to="$eosUserPermissions.users + $eosUserPermissions.delete"
+                  >
+                    <img
+                      v-if="
+                        isLoggedInUserAdmin() &&
+                          props.item.username !== loggedInUserName
+                      "
+                      class="mx-2 eos-cursor-pointer"
+                      @click="onDeleteConfirmation(props.item.id)"
+                      title="Delete"
+                      src="./../../../../assets/actions/delete-green.svg"
                     />
                     <img
                       v-if="
-                        header.sortable && header.sortDir === alertStatus.asc
+                        props.item.username === loggedInUserName &&
+                          !isAdminUser(props.item)
                       "
-                      :src="require('@/assets/widget/table-sort-asc.svg/')"
-                      class="d-inline-block"
-                      style="vertical-align: bottom; margin-left: -0.3em;"
-                      height="20"
-                      width="20"
+                      class="mx-2 eos-cursor-pointer"
+                      @click="onDeleteConfirmation(props.item.id)"
+                      title="Delete"
+                      src="./../../../../assets/actions/delete-green.svg"
                     />
-                  </span>
-                </th>
-                <th class="tableheader" />
-              </tr>
-            </template>
-            <template v-slot:item="props">
-              <tr class="font-weight-small">
-                <td>
-                  <span>
-                    <eos-has-access
-                      :to="
-                        $eosUserPermissions.users + $eosUserPermissions.update
-                      "
-                    >
+                  </eos-has-access>
+                </span>
+              </td>
+            </tr>
+          </template>
+          <template v-slot:expanded-item="props">
+            <tr class="grey lighten-5" v-if="!isUserEdit">
+              <td colspan="5">
+                <div>
+                  <v-row>
+                    <v-col class="pl-5">
                       <div
-                        @click="onExpand(props)"
+                        class="eos-form-group"
                         v-if="
-                          isLoggedInUserAdmin() ||
+                          isAdminUser(props.item) ||
                             props.item.username === loggedInUserName
                         "
+                        :class="{
+                          'eos-form-group--error':
+                            $v.selectedItem.old_password.$error
+                        }"
                       >
-                        <img
-                          v-if="props.isExpanded"
-                          title="Minimize"
-                          :src="require('@/assets/caret-down.svg')"
+                        <label class="eos-form-group-label" for="password">
+                          <eos-info-tooltip
+                            label="Old password*"
+                            :message="passwordTooltipMessage"
+                          />
+                        </label>
+                        <input
+                          class="eos-form__input_text"
+                          type="password"
+                          name="txtEditOldPassword"
+                          v-model.trim="selectedItem.old_password"
+                          @input="$v.selectedItem.old_password.$touch"
+                          id="txtLocalOldPass"
                         />
-                        <img
-                          v-if="!props.isExpanded"
-                          title="Expand"
-                          :src="require('@/assets/caret-right.svg')"
-                        />
+                        <div
+                          class="eos-form-group-label eos-form-group-error-msg"
+                        >
+                          <label
+                            v-if="
+                              $v.selectedItem.old_password.$dirty &&
+                                !$v.selectedItem.old_password.required
+                            "
+                            >Old password is required.</label
+                          >
+                          <label
+                            v-else-if="
+                              $v.selectedItem.old_password.$dirty &&
+                                !$v.selectedItem.old_password.passwordRegex
+                            "
+                            >Invalid old password.</label
+                          >
+                        </div>
                       </div>
-                    </eos-has-access>
-                  </span>
-                </td>
-                <td>{{ props.item.username }}</td>
-                <td>
-                  <span
-                    v-for="(role, i) in props.item.roles"
-                    :key="role"
-                  >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span>
-                </td>
-                <td>
-                  <span>
-                    <eos-has-access
-                      :to="
-                        $eosUserPermissions.users + $eosUserPermissions.update
-                      "
-                    >
-                      <img
-                        v-if="
-                          isLoggedInUserAdmin() ||
-                            props.item.username === loggedInUserName
-                        "
-                        class="mx-2 eos-cursor-pointer"
-                        @click="onExpand(props)"
-                        title="Edit"
-                        src="./../../../../assets/actions/edit-green.svg"
-                      />
-                    </eos-has-access>
-                    <eos-has-access
-                      :to="
-                        $eosUserPermissions.users + $eosUserPermissions.delete
-                      "
-                    >
-                      <img
-                        v-if="
-                          isLoggedInUserAdmin() &&
-                            props.item.username !== loggedInUserName
-                        "
-                        class="mx-2 eos-cursor-pointer"
-                        @click="onDeleteConfirmation(props.item.id)"
-                        title="Delete"
-                        src="./../../../../assets/actions/delete-green.svg"
-                      />
-                      <img
-                        v-if="
-                          props.item.username === loggedInUserName &&
-                            !isAdminUser(props.item)
-                        "
-                        class="mx-2 eos-cursor-pointer"
-                        @click="onDeleteConfirmation(props.item.id)"
-                        title="Delete"
-                        src="./../../../../assets/actions/delete-green.svg"
-                      />
-                    </eos-has-access>
-                  </span>
-                </td>
-              </tr>
-            </template>
-            <template v-slot:expanded-item="props">
-              <tr class="grey lighten-5" v-if="!isUserEdit">
-                <td colspan="5">
-                  <div>
-                    <v-row>
-                      <v-col class="pl-5">
+                      <div
+                        class="eos-form-group"
+                        :class="{
+                          'eos-form-group--error':
+                            $v.selectedItem.password.$error
+                        }"
+                      >
+                        <label class="eos-form-group-label" for="password">
+                          <eos-info-tooltip
+                            label="New password*"
+                            :message="passwordTooltipMessage"
+                          />
+                        </label>
+                        <input
+                          class="eos-form__input_text"
+                          type="password"
+                          name="txtEditNewPassword"
+                          v-model.trim="selectedItem.password"
+                          @input="$v.selectedItem.password.$touch"
+                          id="txtLocalPass"
+                        />
                         <div
-                          class="eos-form-group"
-                          v-if="
-                            isAdminUser(props.item) ||
-                              props.item.username === loggedInUserName
+                          class="eos-form-group-label eos-form-group-error-msg"
+                        >
+                          <label
+                            v-if="
+                              $v.selectedItem.password.$dirty &&
+                                !$v.selectedItem.password.required
+                            "
+                            >Password is required.</label
+                          >
+                          <label
+                            v-else-if="
+                              $v.selectedItem.password.$dirty &&
+                                !$v.selectedItem.password.passwordRegex
+                            "
+                            >Invalid password.</label
+                          >
+                        </div>
+                      </div>
+                      <div
+                        class="eos-form-group"
+                        :class="{
+                          'eos-form-group--error':
+                            $v.selectedItem.confirmPassword.$error
+                        }"
+                      >
+                        <label class="eos-form-group-label" for="password"
+                          >Confirm password*</label
+                        >
+                        <input
+                          class="eos-form__input_text"
+                          type="password"
+                          name="txtEditConfirmPassword"
+                          v-model="selectedItem.confirmPassword"
+                          id="txtLocalConfirmNewPass"
+                          @input="$v.selectedItem.confirmPassword.$touch"
+                        />
+                        <div
+                          class="eos-form-group-label eos-form-group-error-msg"
+                        >
+                          <label
+                            v-if="
+                              $v.selectedItem.confirmPassword.$dirty &&
+                                !$v.selectedItem.confirmPassword.sameAsPassword
+                            "
+                            >Passwords do not match.</label
+                          >
+                        </div>
+                      </div>
+                    </v-col>
+                    <v-col>
+                      <div class="mb-3">Roles</div>
+                      <label class="eos-rdb-container">
+                        Manage
+                        <input
+                          type="radio"
+                          v-model="
+                            isAdminUser(props.item)
+                              ? selectedItem.roles[1]
+                              : selectedItem.roles[0]
                           "
-                          :class="{
-                            'eos-form-group--error':
-                              $v.selectedItem.old_password.$error
-                          }"
-                        >
-                          <label class="eos-form-group-label" for="password">
-                            <eos-info-tooltip
-                              label="Old password*"
-                              :message="passwordTooltipMessage"
-                            />
-                          </label>
-                          <input
-                            class="eos-form__input_text"
-                            type="password"
-                            name="txtEditOldPassword"
-                            v-model.trim="selectedItem.old_password"
-                            @input="$v.selectedItem.old_password.$touch"
-                            id="txtLocalOldPass"
-                          />
-                          <div class="eos-form-group-label eos-form-group-error-msg">
-                            <label
-                              v-if="
-                                $v.selectedItem.old_password.$dirty &&
-                                  !$v.selectedItem.old_password.required
-                              "
-                            >Old password is required.</label>
-                            <label
-                              v-else-if="
-                                $v.selectedItem.old_password.$dirty &&
-                                  !$v.selectedItem.old_password.passwordRegex
-                              "
-                            >Invalid old password.</label>
-                          </div>
-                        </div>
-                        <div
-                          class="eos-form-group"
-                          :class="{
-                            'eos-form-group--error':
-                              $v.selectedItem.password.$error
-                          }"
-                        >
-                          <label class="eos-form-group-label" for="password">
-                            <eos-info-tooltip
-                              label="New password*"
-                              :message="passwordTooltipMessage"
-                            />
-                          </label>
-                          <input
-                            class="eos-form__input_text"
-                            type="password"
-                            name="txtEditNewPassword"
-                            v-model.trim="selectedItem.password"
-                            @input="$v.selectedItem.password.$touch"
-                            id="txtLocalPass"
-                          />
-                          <div class="eos-form-group-label eos-form-group-error-msg">
-                            <label
-                              v-if="
-                                $v.selectedItem.password.$dirty &&
-                                  !$v.selectedItem.password.required
-                              "
-                            >Password is required.</label>
-                            <label
-                              v-else-if="
-                                $v.selectedItem.password.$dirty &&
-                                  !$v.selectedItem.password.passwordRegex
-                              "
-                            >Invalid password.</label>
-                          </div>
-                        </div>
-                        <div
-                          class="eos-form-group"
-                          :class="{
-                            'eos-form-group--error':
-                              $v.selectedItem.confirmPassword.$error
-                          }"
-                        >
-                          <label class="eos-form-group-label" for="password">Confirm password*</label>
-                          <input
-                            class="eos-form__input_text"
-                            type="password"
-                            name="txtEditConfirmPassword"
-                            v-model="selectedItem.confirmPassword"
-                            id="txtLocalConfirmNewPass"
-                            @input="$v.selectedItem.confirmPassword.$touch"
-                          />
-                          <div class="eos-form-group-label eos-form-group-error-msg">
-                            <label
-                              v-if="
-                                $v.selectedItem.confirmPassword.$dirty &&
-                                  !$v.selectedItem.confirmPassword
-                                    .sameAsPassword
-                              "
-                            >Passwords do not match.</label>
-                          </div>
-                        </div>
-                      </v-col>
-                      <v-col>
-                        <div class="mb-3">Roles</div>
-                        <label class="eos-rdb-container">
-                          Manage
-                          <input
-                            type="radio"
-                            v-model="
-                              isAdminUser(props.item)
-                                ? selectedItem.roles[1]
-                                : selectedItem.roles[0]
-                            "
-                            name="rbtEditManageInterface"
-                            value="manage"
-                            id="chkLocalManageInterface"
-                            :disabled="
-                              isAdminUser(props.item) ||
-                                selectedItem.username === loggedInUserName
-                            "
-                          />
-                          <span class="eos-rdb-tick" id="lblLocalManageInterface"></span>
-                        </label>
-                        <br />
-                        <label class="eos-rdb-container mt-2">
-                          Monitor
-                          <input
-                            type="radio"
-                            v-model="
-                              isAdminUser(props.item)
-                                ? selectedItem.roles[1]
-                                : selectedItem.roles[0]
-                            "
-                            name="rbtEditMonitorInterface"
-                            value="monitor"
-                            id="chkLocalMonitorInterface"
-                            :disabled="
-                              isAdminUser(props.item) ||
-                                selectedItem.username === loggedInUserName
-                            "
-                          />
-                          <span class="eos-rdb-tick" id="lblLocalMonitorInterface"></span>
-                        </label>
-                      </v-col>
-                    </v-row>
-                  </div>
-                  <button
-                    type="button"
-                    class="ma-5 eos-btn-primary"
-                    @click="editUser(selectedItem)"
-                    id="lblLocalApplyInterface"
-                    :disabled="!isEditFormValid"
-                  >Apply</button>
-                  <button
-                    type="button"
-                    class="eos-btn-tertiary"
-                    @click="closeEditUser(props)"
-                    id="lblLocalCanacelInterface"
-                  >Cancel</button>
-                </td>
-              </tr>
-            </template>
-          </v-data-table>
-        </eos-has-access>
-      </v-card>
-    </div>
+                          name="rbtEditManageInterface"
+                          value="manage"
+                          id="chkLocalManageInterface"
+                          :disabled="
+                            isAdminUser(props.item) ||
+                              selectedItem.username === loggedInUserName
+                          "
+                        />
+                        <span
+                          class="eos-rdb-tick"
+                          id="lblLocalManageInterface"
+                        ></span>
+                      </label>
+                      <br />
+                      <label class="eos-rdb-container mt-2">
+                        Monitor
+                        <input
+                          type="radio"
+                          v-model="
+                            isAdminUser(props.item)
+                              ? selectedItem.roles[1]
+                              : selectedItem.roles[0]
+                          "
+                          name="rbtEditMonitorInterface"
+                          value="monitor"
+                          id="chkLocalMonitorInterface"
+                          :disabled="
+                            isAdminUser(props.item) ||
+                              selectedItem.username === loggedInUserName
+                          "
+                        />
+                        <span
+                          class="eos-rdb-tick"
+                          id="lblLocalMonitorInterface"
+                        ></span>
+                      </label>
+                    </v-col>
+                  </v-row>
+                </div>
+                <button
+                  type="button"
+                  class="ma-5 eos-btn-primary"
+                  @click="editUser(selectedItem)"
+                  id="lblLocalApplyInterface"
+                  :disabled="!isEditFormValid"
+                >
+                  Apply
+                </button>
+                <button
+                  type="button"
+                  class="eos-btn-tertiary"
+                  @click="closeEditUser(props)"
+                  id="lblLocalCanacelInterface"
+                >
+                  Cancel
+                </button>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </eos-has-access>
+    </v-card>
     <eos-confirmation-dialog
       :show="showConfirmationDialog"
       title="Confirmation"
@@ -477,7 +516,7 @@
       cancelButtonText="No"
     ></eos-confirmation-dialog>
     <span class="d-none">{{ isValidForm }}</span>
-  </v-container>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
@@ -497,6 +536,8 @@ import {
 } from "./../../../../common/regex-helpers";
 
 import { EVENT_BUS } from "./../../../../main";
+import { Api } from "./../../../../services/api";
+import apiRegister from "./../../../../services/api-register";
 
 @Component({
   name: "eos-user-setting-local"
@@ -628,7 +669,7 @@ export default class EosUserSettingLocal extends Vue {
       timeout: 1
     };
     try {
-      await this.$store.dispatch("createUser/createCSMUserAction", queryParams);
+      await Api.post(apiRegister.csm_user, queryParams);
       await this.getUserData();
     } finally {
       this.clearCreateAccountForm();
@@ -654,7 +695,7 @@ export default class EosUserSettingLocal extends Vue {
     }
     this.$store.dispatch("systemConfig/showLoader", "Updating user details...");
     try {
-      await this.$store.dispatch("createUser/updateUserDetails", selectedItem);
+      const res = await Api.patch(apiRegister.csm_user, selectedItem, selectedItem.id);
       await this.getUserData();
     } finally {
       this.closeEditUser();
@@ -683,7 +724,7 @@ export default class EosUserSettingLocal extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Deleting user...");
 
     try {
-      await this.$store.dispatch("createUser/deleteUserAction", id);
+      await Api.delete(apiRegister.csm_user, id);
       await this.getUserData();
     } finally {
       this.$store.dispatch("systemConfig/hideLoader");
@@ -696,9 +737,10 @@ export default class EosUserSettingLocal extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
 
     try {
-      this.$data.userData = await this.$store.dispatch(
-        "createUser/getDataAction"
-      );
+      const res = await Api.getAll(apiRegister.csm_user);
+      if (res && res.data && res.data.users) {
+        this.$data.userData = res.data.users;
+      }
     } finally {
       this.$store.dispatch("systemConfig/hideLoader");
     }
@@ -718,7 +760,9 @@ export default class EosUserSettingLocal extends Vue {
     return isAdmin;
   }
   get isEditFormValid() {
-    return this.$v.selectedItem.$anyDirty && this.$v.selectedItem.$invalid ? false : true;
+    return this.$v.selectedItem.$anyDirty && this.$v.selectedItem.$invalid
+      ? false
+      : true;
   }
 }
 </script>

@@ -10,7 +10,14 @@
       Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
-    <eosNotifications @apply-settings="applySettings" />
+    <eosNotifications @apply-settings="applySettingsConfirmation" />
+    <eos-confirmation-dialog
+      :show="showConfirmDialog"
+      message="Are you sure you want to apply these settings?"
+      severity="warning"
+      @closeDialog="applySettings"
+      confirmButtonText="Apply"
+    ></eos-confirmation-dialog>
   </div>
 </template>
 
@@ -29,7 +36,9 @@ import apiRegister from "../../services/api-register";
 export default class EosNotificationEmailSettings extends Vue {
   private data() {
     return {
-      sysconfigData: {}
+      sysconfigData: {},
+      newConfigData: {},
+      showConfirmDialog: false
     };
   }
   private async mounted() {
@@ -50,18 +59,25 @@ export default class EosNotificationEmailSettings extends Vue {
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
-  private async applySettings(data: object) {
-    this.$store.dispatch("systemConfig/showLoader", "Please wait");
-    const res = await Api.patch(
-      apiRegister.sysconfig,
-      { notifications: { email: data } },
-      this.$data.sysconfigData.config_id,
-      {
-        params: {
-          config_type: "notifications"
+  private async applySettingsConfirmation(data: any) {
+    this.$data.showConfirmDialog = true;
+    this.$data.newConfigData = data;
+  }
+  private async applySettings(confirmation: string) {
+    this.$store.dispatch("systemConfig/showLoader", "Applying settings...");
+    this.$data.showConfirmDialog = false;
+    if (confirmation) {
+      const res = await Api.patch(
+        apiRegister.sysconfig,
+        { notifications: { email: this.$data.newConfigData } },
+        this.$data.sysconfigData.config_id,
+        {
+          params: {
+            config_type: "notifications"
+          }
         }
-      }
-    );
+      );
+    }
     this.$store.dispatch("systemConfig/hideLoader");
   }
 }

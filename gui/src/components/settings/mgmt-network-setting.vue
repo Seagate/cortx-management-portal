@@ -10,7 +10,18 @@
       Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
-    <eosNetworkSettingsIpv4 @apply-settings="applySettings" />
+    <eosNetworkSettingsIpv4 @apply-settings="applySettingsConfirmation" />
+    <eos-confirmation-dialog
+      :show="showConfirmDialog"
+      :message="
+        `<span>You are moving on new IP address <a href='${newUrl}' target='_blank'>${newUrl}</a></span>`
+      "
+      severity="warning"
+      submessage="Applying the changes will restart the system and the system will be moved to the new IP address."
+      @closeDialog="applySettings"
+      confirmButtonText="Apply"
+      isMessageInHTML="true"
+    ></eos-confirmation-dialog>
   </div>
 </template>
 
@@ -29,7 +40,10 @@ import apiRegister from "../../services/api-register";
 export default class EosMangementSetting extends Vue {
   private data() {
     return {
-      sysconfigData: {}
+      sysconfigData: {},
+      newConfigData: {},
+      showConfirmDialog: false,
+      newUrl: ""
     };
   }
   private async mounted() {
@@ -50,19 +64,36 @@ export default class EosMangementSetting extends Vue {
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
-  private async applySettings(data: object) {
-    this.$store.dispatch("systemConfig/showLoader", "Please wait");
-    const res = await Api.patch(
-      apiRegister.sysconfig,
-      { management_network_settings: { ipv4: data } },
-      this.$data.sysconfigData.config_id,
-      {
-        params: {
-          config_type: "management_network_settings"
-        },
-        timeout: -1
-      }
-    );
+  private async applySettingsConfirmation(data: any) {
+    let redirectUrl;
+    if (data.nodes && data.nodes.length) {
+      redirectUrl = data.nodes[0].ip_address;
+    }
+    const protocol = window.location.protocol;
+    const defaultUrl = window.location.hostname;
+    const port = window.location.port;
+    this.$data.newUrl = `${protocol}//${
+      redirectUrl ? redirectUrl : defaultUrl
+    }:${port}`;
+    this.$data.showConfirmDialog = true;
+    this.$data.newConfigData = data;
+  }
+  private async applySettings(confirmation: string) {
+    this.$store.dispatch("systemConfig/showLoader", "Applying settings...");
+    this.$data.showConfirmDialog = false;
+    if (confirmation) {
+      const res = await Api.patch(
+        apiRegister.sysconfig,
+        { management_network_settings: { ipv4: this.$data.newConfigData } },
+        this.$data.sysconfigData.config_id,
+        {
+          params: {
+            config_type: "management_network_settings"
+          },
+          timeout: -1
+        }
+      );
+    }
     this.$store.dispatch("systemConfig/hideLoader");
   }
 }
