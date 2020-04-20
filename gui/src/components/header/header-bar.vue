@@ -16,11 +16,11 @@
   <div class="eos-header-container">
     <div class="eos-header">
       <img
-        style="margin-left: 1.875em;"
-        :src="require('@/assets/udx-logo.svg/')"
+        class="eos-brand-logo"
+        :src="require('@/assets/seagate-green.svg/')"
       />
       <div class="eos-logo-separator"></div>
-      <img :src="require('@/assets/cloudstore.svg/')" />
+      <img :src="require('@/assets/lyve-drive-green.svg/')" />
       <div class="eos-header-right-aligned-items">
         <eos-has-access
           :to="$eosUserPermissions.alerts + $eosUserPermissions.list"
@@ -146,5 +146,9 @@ export default class HeaderBar extends Vue {
 .eos-logout-icon-container {
   padding: 1.125em 1.5em 1.125em 1.5em;
   cursor: pointer;
+}
+.eos-brand-logo {
+  margin-left: 3em;
+  margin-right: 1.9em;
 }
 </style>
