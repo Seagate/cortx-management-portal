@@ -338,7 +338,7 @@ export abstract class Api {
                     response = data;
                 }
                 if (sucessCodeRegex.test(apiresp.statusCode)) {
-                    logger.info('SUCCESS RESPONSE: ' + JSON.stringify(response));
+                    logger.info('SUCCESS RESPONSE');
                     resolve(response);
                 } else {
                     let err = Api.handleError(apiresp.statusCode, response);
