@@ -83,7 +83,7 @@
             <eos-dropdown
               @update:selectedOption="handleDropdownSelect"
               :options="protocolList"
-              :title="protocolLabel ? protocolLabel : undefined"
+              :title="protocol ? protocol : undefined"
             ></eos-dropdown>
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label v-if="$v.protocol.$dirty && !$v.protocol.required"
@@ -280,20 +280,19 @@ export default class EosNotifications extends Vue {
       smtpserver: "",
       senderemail: "",
       smtpport: 465,
-      protocol: "",
-      protocolLabel: "",
+      protocol: "SSL",
       protocolList: [
         {
           label: "SSL",
-          value: "ssl"
+          value: "SSL"
         },
         {
           label: "TLS",
-          value: "tls"
+          value: "TLS"
         },
         {
           label: "STARTTLS",
-          value: "starttls"
+          value: "STARTTLS"
         }
       ],
       senderpassword: "",
@@ -346,10 +345,6 @@ export default class EosNotifications extends Vue {
         notificationConfiguration.notifications.email.smtp_port;
       this.$data.protocol =
         notificationConfiguration.notifications.email.smtp_protocol;
-      const protocolListItem = this.$data.protocolList.find(
-        (e: any) => e.value === this.$data.protocol
-      );
-      this.$data.protocolLabel = protocolListItem ? protocolListItem.label : "";
       this.$data.emailaddress =
         notificationConfiguration.notifications.email.email;
     }
@@ -422,7 +417,6 @@ export default class EosNotifications extends Vue {
   }
   private handleDropdownSelect(selected: any) {
     this.$data.protocol = selected.value;
-    this.$data.protocolLabel = selected.label;
   }
 }
 </script>
