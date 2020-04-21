@@ -7,12 +7,12 @@
       class="eos-btn-primary"
       @click="openConfirmDialog()"
     >
-      Apply certificate
+      Install certificate
     </button>
     <eos-confirmation-dialog
       :show="showConfirmDialog"
       title="Confirmation"
-      message="Are you sure you want to install the certificate? You will be redirected to login."
+      message="Click Yes to install the SSL certificate. After installing the SSL certificate, you must login again."
       severity="warning"
       @closeDialog="closeConfirmDialog"
       cancelButtonText="No"

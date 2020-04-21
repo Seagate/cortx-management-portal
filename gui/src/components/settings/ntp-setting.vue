@@ -10,7 +10,7 @@
     <eosDateTimeConfig @apply-settings="applySettingsConfirmation" />
     <eos-confirmation-dialog
       :show="showConfirmDialog"
-      message="Are you sure you want to apply these settings?"
+      message="Are you sure you want to apply the settings?"
       severity="warning"
       @closeDialog="applySettings"
       confirmButtonText="Apply"

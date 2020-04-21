@@ -3,11 +3,18 @@
     <div class="title mt-2 font-weight-bold" id="lblLocalSetting">
       User settings: Local
     </div>
-    <div class="mt-5">
-      <span class="font-weight-regular" id="lblLocalMsgConfig">
-        Manage CSM users.
-      </span>
+    <div class="mt-1" id="lblLocalMsgConfig">
+      Manage users. Depending on the user role, you can create, modify, and
+      delete users. You can also change the password for the admin user.
     </div>
+    <div class="mt-1">
+      A role is a collection of permissions granted to a user.
+    </div>
+    <div class="mt-1">
+      Note: Only admin user can create and delete users and change the password
+      of the admin user.
+    </div>
+    <v-divider class="mt-2" />
     <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
       <div v-if="isUserCreate">
         <v-row>
@@ -246,7 +253,10 @@
                       @click="onExpand(props)"
                       v-if="
                         isLoggedInUserAdmin() ||
-                          props.item.username === loggedInUserName
+                          strEqualityCaseInsensitive(
+                            props.item.username,
+                            loggedInUserName
+                          )
                       "
                     >
                       <img
@@ -277,7 +287,10 @@
                     <img
                       v-if="
                         isLoggedInUserAdmin() ||
-                          props.item.username === loggedInUserName
+                          strEqualityCaseInsensitive(
+                            props.item.username,
+                            loggedInUserName
+                          )
                       "
                       class="mx-2 eos-cursor-pointer"
                       @click="onExpand(props)"
@@ -291,7 +304,10 @@
                     <img
                       v-if="
                         isLoggedInUserAdmin() &&
-                          props.item.username !== loggedInUserName
+                          !strEqualityCaseInsensitive(
+                            props.item.username,
+                            loggedInUserName
+                          )
                       "
                       class="mx-2 eos-cursor-pointer"
                       @click="onDeleteConfirmation(props.item.id)"
@@ -300,8 +316,10 @@
                     />
                     <img
                       v-if="
-                        props.item.username === loggedInUserName &&
-                          !isAdminUser(props.item)
+                        strEqualityCaseInsensitive(
+                          props.item.username,
+                          loggedInUserName
+                        ) && !isAdminUser(props.item)
                       "
                       class="mx-2 eos-cursor-pointer"
                       @click="onDeleteConfirmation(props.item.id)"
@@ -323,7 +341,10 @@
                         class="eos-form-group"
                         v-if="
                           isAdminUser(props.item) ||
-                            props.item.username === loggedInUserName
+                            strEqualityCaseInsensitive(
+                              props.item.username,
+                              loggedInUserName
+                            )
                         "
                         :class="{
                           'eos-form-group--error':
@@ -450,7 +471,10 @@
                           id="chkLocalManageInterface"
                           :disabled="
                             isAdminUser(props.item) ||
-                              selectedItem.username === loggedInUserName
+                              strEqualityCaseInsensitive(
+                                selectedItem.username,
+                                loggedInUserName
+                              )
                           "
                         />
                         <span
@@ -473,7 +497,10 @@
                           id="chkLocalMonitorInterface"
                           :disabled="
                             isAdminUser(props.item) ||
-                              selectedItem.username === loggedInUserName
+                              strEqualityCaseInsensitive(
+                                selectedItem.username,
+                                loggedInUserName
+                              )
                           "
                         />
                         <span
@@ -556,8 +583,9 @@ export default class EosUserSettingLocal extends Vue {
       password: { required, passwordRegex },
       old_password: {
         required: requiredIf(function(this: any, form) {
-          return (
-            this.$data.selectedItem.username === this.$data.loggedInUserName
+          return this.strEqualityCaseInsensitive(
+            this.$data.selectedItem.username,
+            this.$data.loggedInUserName
           );
         }),
         passwordRegex
@@ -688,14 +716,21 @@ export default class EosUserSettingLocal extends Vue {
   private async editUser(selectedItem: any) {
     if (
       this.isAdminUser(selectedItem) ||
-      selectedItem.username === this.$data.loggedInUserName
+      this.strEqualityCaseInsensitive(
+        selectedItem.username,
+        this.$data.loggedInUserName
+      )
     ) {
       delete selectedItem.roles;
       delete selectedItem.confirmPassword;
     }
     this.$store.dispatch("systemConfig/showLoader", "Updating user details...");
     try {
-      const res = await Api.patch(apiRegister.csm_user, selectedItem, selectedItem.id);
+      const res = await Api.patch(
+        apiRegister.csm_user,
+        selectedItem,
+        selectedItem.id
+      );
       await this.getUserData();
     } finally {
       this.closeEditUser();
@@ -749,12 +784,17 @@ export default class EosUserSettingLocal extends Vue {
   private isLoggedInUserAdmin() {
     let isAdmin;
     const data = this.$data.userData.find((element: any) => {
-      if (element.username === this.$data.loggedInUserName) {
+      if (
+        this.strEqualityCaseInsensitive(
+          element.username,
+          this.$data.loggedInUserName
+        )
+      ) {
         return true;
       }
     });
 
-    if (data.username === this.$data.loggedInUserName) {
+    if (data) {
       isAdmin = this.isAdminUser(data);
     }
     return isAdmin;
@@ -763,6 +803,11 @@ export default class EosUserSettingLocal extends Vue {
     return this.$v.selectedItem.$anyDirty && this.$v.selectedItem.$invalid
       ? false
       : true;
+  }
+  private strEqualityCaseInsensitive(first: string, second: string) {
+    return (
+      first.localeCompare(second, undefined, { sensitivity: "base" }) === 0
+    );
   }
 }
 </script>
