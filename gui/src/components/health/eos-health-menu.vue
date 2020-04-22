@@ -76,7 +76,7 @@ export default class EosHealthSubmenu extends Vue {
     try {
       this.$store.dispatch("systemConfig/showLoaderMessage", {
         show: true,
-        message: "Getting node health info..."
+        message: "Getting health info..."
       });
       const res = await Api.getAll(apiRegister.node_health);
       this.$store.dispatch("systemConfig/hideLoader");

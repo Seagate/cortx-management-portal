@@ -199,7 +199,7 @@ export default class EosHealthView extends Vue {
     try {
       this.$store.dispatch("systemConfig/showLoaderMessage", {
         show: true,
-        message: "Getting node alerts..."
+        message: "Getting health info..."
       });
       const enclosureName = this.$route.query.name
         ? this.$route.query.name
