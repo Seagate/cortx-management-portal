@@ -10,7 +10,7 @@ export default abstract class StatsUtility {
       throughput_read: { throughput_read: "y2" },
       throughput_write: { throughput_write: "y2" },
       throughput_total: { throughput_total: "y2" },
-      latency_total_request_time: { latency_total_request_time: "y2" },
+      latency_avarage_latency: { latency_avarage_latency: "y2" },
       latency_create_object: { latency_create_object: "y2" },
       latency_delete_object: { latency_delete_object: "y2" },
       latency_write_object: { latency_write_object: "y2" },
