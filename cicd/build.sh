@@ -133,6 +133,9 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     pip install -r $req_file || {
         echo "Unable to install package from $req_file"; exit 1;
     };
+    # Solving numpy libgfortran-ed201abd.so.3.0.0 dependency problem
+    pip uninstall -y numpy
+    pip install numpy --no-binary :all:
 
     echo " $BASE_DIR $DIST"
     [ "$DEV" == true ] && {
