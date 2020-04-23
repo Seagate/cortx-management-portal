@@ -64,7 +64,7 @@
 		"/login": {
 			"post": {
 				"tags": ["User"],
-				"summary": "User login",
+				"summary": "Admin User, CSM user and S3 User login",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -171,7 +171,7 @@
 		"/sysconfig": {
 			"get": {
 				"tags": ["System Configuration"],
-				"summary": "Get the System Configuration",
+				"summary": "Get the System Configuration: Accessible only by root user",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -219,7 +219,7 @@
 			},
 			"post": {
 				"tags": ["System Configuration"],
-				"summary": "Save the System configuration",
+				"summary": "Save the System configuration: Accessible only by root user",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -276,7 +276,7 @@
 		"/sysconfig/{config_id}": {
 			"get": {
 				"tags": ["System Configuration"],
-				"summary": "Get the System Configuration",
+				"summary": "Get the System Configuration: Accessible only by root user",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -389,7 +389,7 @@
 			},
 			"patch": {
 				"tags": ["System Configuration"],
-				"summary": "Save the system configuration by config type",
+				"summary": "Save the system configuration by config type: Accessible only by root user",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -519,7 +519,7 @@
 		"/license/onboarding": {
 			"post": {
 				"tags": ["System Configuration"],
-				"summary": "License Key Verification",
+				"summary": "License Key Verification: Accessible only by root user",
 				"produces": [
 					"application/json"
 				],
@@ -579,7 +579,7 @@
 		"/csm/users": {
 			"get": {
 				"tags": ["CSM User"],
-				"summary": "Get CSM users list",
+				"summary": "Get CSM user list: CSM user having permission manage and monitor can get CSM users list",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -627,7 +627,7 @@
 			},
 			"post": {
 				"tags": ["CSM User"],
-				"summary": "Create new CSM user",
+				"summary": "Create new CSM user: CSM user having permission manage can create new CSM user",
 				"responses": {
 					"201": {
 						"description": "User has been created"
@@ -691,7 +691,7 @@
 		"/csm/users/{user_id}": {
 			"get": {
 				"tags": ["CSM User"],
-				"summary": "Get CSM user",
+				"summary": "Get CSM user: CSM user having permission manage and monitor can get CSM user",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -747,7 +747,7 @@
 			},
 			"patch": {
 				"tags": ["CSM User"],
-				"summary": "Update CSM user credentials",
+				"summary": "Update CSM user credentials: CSM user having permission manage can update CSM user",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -814,7 +814,7 @@
 			},
 			"delete": {
 				"tags": ["CSM User"],
-				"summary": "Delete csm user",
+				"summary": "Delete csm user: CSM user having permission manage can delete existing CSM user",
 				"responses": {
 					"200": {
 						"description": "Ok"
@@ -850,7 +850,7 @@
 				"tags": [
 					"CSM User"
 				],
-				"summary": "Get the User Permissions",
+				"summary": "Get the User Permissions: Accessible to all the users",
 				"produces": [
 					"application/json"
 				],
@@ -902,7 +902,7 @@
 		"/s3_accounts": {
 			"get": {
 				"tags": ["S3"],
-				"summary": "Get S3 Accounts",
+				"summary": "Get S3 Accounts: Accessible to CSM users with manage and monitor permissions and S3 account",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -950,7 +950,7 @@
 			},
 			"post": {
 				"tags": ["S3"],
-				"summary": "Create new S3 Account",
+				"summary": "Create new S3 Account: Accessible to CSM users with manage permission and S3 account",
 				"responses": {
 					"200": {
 						"description": "S3 Account has been created"
@@ -998,7 +998,7 @@
 		"/s3_accounts/{s3_account_id}": {
 			"patch": {
 				"tags": ["S3"],
-				"summary": "Update S3 account password",
+				"summary": "Update S3 account password: Accessible to S3 account only",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1074,7 +1074,7 @@
 			},
 			"delete": {
 				"tags": ["S3"],
-				"summary": "Delete S3 Account",
+				"summary": "Delete S3 Account: Accessible to S3 account only",
 				"responses": {
 					"200": {
 						"description": "Ok"
@@ -1110,7 +1110,7 @@
 			  "tags": [
 				"S3"
 			  ],
-			  "summary": "Get the bucket list.",
+			  "summary": "Get the bucket list: Accessible to S3 account only",
 			  "responses": {
 				"200": {
 					"description": "OK"
@@ -1160,7 +1160,7 @@
 			  "tags": [
 				"S3"
 			  ],
-			  "summary": "Add bucket",
+			  "summary": "Add bucket: Accessible to S3 account only",
 			  "responses": {
 				"200": {
 				  "description": "OK"
@@ -1198,7 +1198,7 @@
 				"tags": [
 				"S3"
 				],
-				"summary": "bucket policy delete",
+				"summary": "bucket policy delete: Accessible to S3 account only",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1257,7 +1257,7 @@
 				"tags": [
 				"S3"
 				],
-				"summary": "Get Bucket Policy",
+				"summary": "Get Bucket Policy: Accessible to S3 account only",
 				"responses": {
 				"200": {
 					"description": "OK"
@@ -1289,7 +1289,7 @@
 				"tags": [
 				"S3"
 				],
-				"summary": "Edit Bucket Policy",
+				"summary": "Edit Bucket Policy: Accessible to S3 account only",
 				"responses": {
 				"200": {
 					"description": "Ok"
@@ -1340,7 +1340,7 @@
 			"tags": [
 			"S3"
 			],
-			"summary": "bucket  delete",
+			"summary": "bucket  delete: Accessible to S3 account only",
 			"responses": {
 				"200": {
 					"description": "OK"
@@ -1399,7 +1399,7 @@
 		"/iam_users": {
 			"get": {
 				"tags": ["S3"],
-				"summary": "Get IAM users list",
+				"summary": "Get IAM users list: Accessible to S3 account only",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1447,7 +1447,7 @@
 			},
 			"post": {
 				"tags": ["S3"],
-				"summary": "Create new IAM user",
+				"summary": "Create new IAM user: Accessible to S3 account only",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1518,7 +1518,7 @@
 		"/iam_users/{user_id}": {
 			"delete": {
 				"tags": ["S3"],
-				"summary": "Delete IAM user",
+				"summary": "Delete IAM user: Accessible to S3 account only",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1574,7 +1574,7 @@
 		"/alerts": {
 			"get": {
 				"tags": ["Alerts"],
-				"summary": "Gets Alerts",
+				"summary": "Gets Alerts: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1652,7 +1652,7 @@
 			},
 			"patch": {
 				"tags": ["Alerts"],
-				"summary": "Acknowledge Alerts",
+				"summary": "Acknowledge Alerts: Accessible to CSM users having manage permission",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1712,7 +1712,7 @@
 		"/alerts/{alert_id}": {
 			"get": {
 				"tags": ["Alerts"],
-				"summary": "Get Alert",
+				"summary": "Get Alert: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1766,7 +1766,7 @@
 			},
 			"patch": {
 				"tags": ["Alerts"],
-				"summary": "Edit Alert",
+				"summary": "Edit Alert: Accessible to CSM users having manage permission",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1839,7 +1839,7 @@
 		"/alerts_history" : {
 			"get": {
 				"tags": ["Alerts"],
-				"summary": "Get alert history",
+				"summary": "Get alert history: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1889,7 +1889,7 @@
 		"/alerts_history/{alert_id}" : {
 			"get": {
 				"tags": ["Alerts"],
-				"summary": "Get alert history for specific alert",
+				"summary": "Get alert history for specific alert: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1947,7 +1947,7 @@
 		"/alerts/{alert_uuid}/comments" : {
 			"get": {
 				"tags": ["Alerts"],
-				"summary": "Get alert comments for specific alert",
+				"summary": "Get alert comments for specific alert: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -2003,7 +2003,7 @@
 			},
 			"post": {
 				"tags": ["Alerts"],
-				"summary": "Add comments to the Alert",
+				"summary": "Add comments to the Alert: Accessible to CSM users having manage permission",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -2075,7 +2075,7 @@
 		"/system/health/summary": {
 			"get": {
 				"tags": ["Health"],
-				"summary": "Geat Health Summary of the system.",
+				"summary": "Get Health Summary of the system: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -2125,7 +2125,7 @@
 		"/system/health/node": {
 			"get": {
 				"tags": ["Health"],
-				"summary": "Get Health of nodes",
+				"summary": "Get Health of nodes: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -2181,7 +2181,7 @@
 		"/system/health/view": {
 			"get": {
 				"tags": ["Health"],
-				"summary": "Get Health of nodes with alerts",
+				"summary": "Get Health of nodes with alerts: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -2237,7 +2237,7 @@
 		"/stats": {
 			"get": {
 				"tags": ["Stats"],
-				"summary": "Get statetics",
+				"summary": "Get statetics: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -2336,7 +2336,7 @@
 		"/capacity": {
 			"get": {
 				"tags": ["Storage Capacity"],
-				"summary": "Get the Storage Capacity",
+				"summary": "Get the Storage Capacity: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -2535,7 +2535,7 @@
 		"/auditlogs/show/{component}" : {
 			"get": {
 				"tags": ["Audit logs"],
-				"summary": "Get Audit logs",
+				"summary": "Get Audit logs: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -2613,7 +2613,7 @@
 		"/auditlogs/download/{component}" : {
 			"get": {
 				"tags": ["Audit logs"],
-				"summary": "Download Audit logs",
+				"summary": "Download Audit logs: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
 						"description": "OK"

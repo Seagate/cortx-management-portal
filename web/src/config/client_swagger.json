@@ -1,0 +1,2081 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "CSM"
+	},
+	"basePath": "/api/v1",
+	"produces": ["application/json"],
+	"paths": {
+		"/login": {
+			"post": {
+				"tags": ["User"],
+				"summary": "Admin User, CSM user and S3 User login",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "User",
+					"in": "body",
+					"description": "CSM User request",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"username": {
+								"type": "string",
+								"example": ""
+							},
+							"password": {
+								"type": "string",
+								"example": ""
+							}
+						}
+					}
+				}]
+			}
+		},
+		"/logout": {
+			"post": {
+				"tags": ["User"],
+				"summary": "User Logout",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/csm/users": {
+			"get": {
+				"tags": ["CSM User"],
+				"summary": "Get CSM user list: CSM user having permission manage and monitor can get CSM users list",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["CSM User"],
+				"summary": "Create new CSM user: CSM user having permission manage can create new CSM user",
+				"responses": {
+					"201": {
+						"description": "User has been created"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "User",
+					"in": "body",
+					"description": "Create new user request",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"username": {
+								"type": "string",
+								"example": "Test2"
+							},
+							"password": {
+								"type": "string",
+								"example": "password"
+							},
+							"interfaces": {
+								"type": "array",
+								"example": []
+							},
+							"roles": {
+								"type": "array",
+								"example": ["manage"]
+							},
+							"temperature": {
+								"type": "string",
+								"example": ""
+							},
+							"language": {
+								"type": "string",
+								"example": ""
+							},
+							"timeout": {
+								"type": "string",
+								"example": "1"
+							}
+						}
+					}
+				},{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/csm/users/{user_id}": {
+			"get": {
+				"tags": ["CSM User"],
+				"summary": "Get CSM user: CSM user having permission manage and monitor can get CSM user",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"description": "Specifies the user id",
+						"required": true,
+						"type": "string"
+					},	
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			},
+			"patch": {
+				"tags": ["CSM User"],
+				"summary": "Update CSM user credentials: CSM user having permission manage can update CSM user",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"description": "Specifies the user id",
+						"required": true,
+						"type": "string"
+					},	
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					},
+					{
+					"name": "edit csm user",
+					"in": "body",
+					"description": "Edit CSM user credentials",
+					"schema": {
+						"type": "object",
+						"required": false,
+						"properties": {
+							"id": {
+								"type": "string",
+								"example": "nkpcsm4"
+							},
+							"username": {
+								"type": "string",
+								"example": "nkpcsm4"
+							},
+							"user_type": {
+								"type": "string",
+								"example": "csm"
+							},
+							"roles": {
+								"type": "array",
+								"example": []
+							},
+							"password": {
+								"type": "string",
+								"example": "password"
+							},
+							"confirmPassword": {
+								"type": "string",
+								"example": "password"
+							}
+						}
+					}
+				}
+				]
+
+			},
+			"delete": {
+				"tags": ["CSM User"],
+				"summary": "Delete csm user: CSM user having permission manage can delete existing CSM user",
+				"responses": {
+					"200": {
+						"description": "Ok"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"404": {
+						"description": "Users Not Found"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "user_id",
+						"in": "path",
+						"description": "Specifies the user id",
+						"required": true,
+						"type": "string"
+					},
+				    {
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
+		"/permissions": {
+			"get": {
+				"tags": [
+					"CSM User"
+				],
+				"summary": "Get the User Permissions: Accessible to all the users",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/s3_accounts": {
+			"get": {
+				"tags": ["S3"],
+				"summary": "Get S3 Accounts: Accessible to CSM users with manage and monitor permissions and S3 account",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["S3"],
+				"summary": "Create new S3 Account: Accessible to CSM users with manage permission and S3 account",
+				"responses": {
+					"200": {
+						"description": "S3 Account has been created"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "S3 Account",
+					"in": "body",
+					"description": "Create new S3 Account request",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"account_name": {
+								"type": "string",
+								"example": ""
+							},
+							"account_email": {
+								"type": "string",
+								"example": ""
+							},
+							"password": {
+								"type": "string",
+								"example": ""
+							}
+						}
+					}
+				},{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/s3_accounts/{s3_account_id}": {
+			"patch": {
+				"tags": ["S3"],
+				"summary": "Update S3 account password: Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "s3_account_id",
+						"in": "path",
+						"description": "Specifies the S3 Account Id",
+						"required": true,
+						"type": "string"
+					},	
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					},
+					{
+					"name": "Edit S3 Account",
+					"in": "body",
+					"description": "Edit S3 Account",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"password": {
+								"type": "string",
+								"example": ""
+							},
+							"reset_access_key": {
+								"type": "boolean",
+								"example": false
+							}
+						}
+					}
+				}
+				]
+			},
+			"delete": {
+				"tags": ["S3"],
+				"summary": "Delete S3 Account: Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "Ok"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"404": {
+						"description": "Users Not Found"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "s3_account_id",
+						"in": "path",
+						"description": "Specifies the S3 Account id",
+						"required": true,
+						"type": "string"
+					},
+				    {
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
+		"/s3/bucket": {
+			"get": {
+			  "tags": [
+				"S3"
+			  ],
+			  "summary": "Get the bucket list: Accessible to S3 account only",
+			  "responses": {
+				"200": {
+					"description": "OK"
+				},
+				"201": {
+					"description": "No Content"
+				},
+				"400": {
+					"description": "Bad Request"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "No Data Found"
+				},
+				"409": {
+					"description": "Conflict"
+				},
+				"422": {
+					"description": "Unprocessable Entity"
+				},
+				"499": {
+					"description": "Call Cancelled"
+				},
+				"500": {
+					"description": "Internal Server Error"
+				},
+				"501": {
+					"description": "Not Implemented"
+				}
+			},
+			  "content": {
+				"application/json": {}
+			  },
+			  "parameters": [{
+				"name": "authorization",
+				"in": "header",
+				"required": true,
+				"type": "string"
+			}]
+			},
+			"post": {
+			  "tags": [
+				"S3"
+			  ],
+			  "summary": "Add bucket: Accessible to S3 account only",
+			  "responses": {
+				"200": {
+				  "description": "OK"
+				},
+				"400": {
+				  "description": "Bad Request"
+				}
+			  },
+			  "content": {
+				"application/json": {}
+			  },
+			  "parameters": [
+				{
+				  "name": "bucket_name",
+				  "in": "body",
+				  "description": "bucket name",
+				  "properties": {
+					"bucket_name": {
+					  "type": "string",
+					  "example": "udx-xyz"
+					}
+				  }
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+			  ]
+			}
+		},
+		"/s3/bucket_policy/{bucket_name}": {
+			"delete": {
+				"tags": [
+				"S3"
+				],
+				"summary": "bucket policy delete: Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+				"application/json": {}
+				},
+				"parameters": [
+				{
+					"name": "bucket_name",
+					"in": "path",
+					"description": "Specifies the bucket name",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+				]
+			} ,
+			"get": {
+				"tags": [
+				"S3"
+				],
+				"summary": "Get Bucket Policy: Accessible to S3 account only",
+				"responses": {
+				"200": {
+					"description": "OK"
+				},
+				"400": {
+					"description": "Bad request"
+				}
+				},
+				"content": {
+				"application/json": {}
+				},
+				"parameters": [
+				{
+					"name": "bucket_name",
+					"in": "path",
+					"description": "Specifies the Bucket name",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}
+				]
+			},
+			"put": {
+				"tags": [
+				"S3"
+				],
+				"summary": "Edit Bucket Policy: Accessible to S3 account only",
+				"responses": {
+				"200": {
+					"description": "Ok"
+				},
+				"404": {
+					"description": "policy Not Found"
+				},
+				"400": {
+					"description": "Bad Request"
+				}
+				},
+				"content": {
+				"application/json": {}
+				},
+				"parameters": [
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "bucket_name",
+					"in": "path",
+					"description": "Specifies the bucket_name",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "policy",
+					"in": "body",
+					"description": "bucket policy request",
+					"schema": {
+					"type": "object",
+					"required": false,
+					"properties": {
+						"policy": {
+						"type": "string"
+						}
+					}
+					}
+				}
+				]
+			}
+		},
+		"/s3/bucket/{bucket_name}": {
+		"delete": {
+			"tags": [
+			"S3"
+			],
+			"summary": "bucket  delete: Accessible to S3 account only",
+			"responses": {
+				"200": {
+					"description": "OK"
+				},
+				"201": {
+					"description": "No Content"
+				},
+				"400": {
+					"description": "Bad Request"
+				},
+				"401": {
+					"description": "Unauthorized"
+				},
+				"403": {
+					"description": "Forbidden"
+				},
+				"404": {
+					"description": "No Data Found"
+				},
+				"409": {
+					"description": "Conflict"
+				},
+				"422": {
+					"description": "Unprocessable Entity"
+				},
+				"499": {
+					"description": "Call Cancelled"
+				},
+				"500": {
+					"description": "Internal Server Error"
+				},
+				"501": {
+					"description": "Not Implemented"
+				}
+			},
+			"content": {
+			"application/json": {}
+			},
+			"parameters": [
+			{
+				"name": "bucket_name",
+				"in": "path",
+				"description": "Specifies the bucket name",
+				"required": true,
+				"type": "string"
+			},
+			{
+				"name": "authorization",
+				"in": "header",
+				"required": true,
+				"type": "string"
+			}
+			]
+		}
+		},
+		"/iam_users": {
+			"get": {
+				"tags": ["S3"],
+				"summary": "Get IAM users list: Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["S3"],
+				"summary": "Create new IAM user: Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "User",
+					"in": "body",
+					"description": "Create new user request",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"user_name": {
+								"type": "string",
+								"example": "iam_user"
+							},
+							"password": {
+								"type": "string",
+								"example": "password"
+							},
+							"require_reset": {
+								"type": "boolean"
+							}
+						}
+					}
+				},{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/iam_users/{user_id}": {
+			"delete": {
+				"tags": ["S3"],
+				"summary": "Delete IAM user: Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "user_id",
+					"in": "path",
+					"description": "Specifies the IAM user id",
+					"required": true,
+					"type": "string"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},	
+		"/alerts": {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Gets Alerts: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "sortby",
+					"in": "query",
+					"description": "Specifies sort by option",
+					"required": true,
+					"type": "string",
+					"enum": ["created_time"],
+					"default": "created_time"
+				}, {
+					"name": "dir",
+					"in": "query",
+					"description": "Specifies sort direction option",
+					"required": true,
+					"type": "string",
+					"enum": ["asc", "desc"],
+					"default": "desc"
+				}, {
+					"name": "offset",
+					"in": "query",
+					"description": "Specifies offset of the result",
+					"required": true,
+					"type": "integer",
+					"default": 1
+				}, {
+					"name": "limit",
+					"in": "query",
+					"description": "Specifies limit for results per page",
+					"required": true,
+					"type": "integer",
+					"default": 10
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"patch": {
+				"tags": ["Alerts"],
+				"summary": "Acknowledge Alerts: Accessible to CSM users having manage permission",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "alert_id list",
+					"in": "body",
+					"description": "Alert Id",
+					"required": true,
+					"schema": {
+						"type": "array",
+						"items": "string",
+						"example": ["alert_id"]
+					}
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/alerts/{alert_id}": {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Get Alert: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "alert_id",
+					"in": "path",
+					"description": "Specifies the alert id",
+					"required": true,
+					"type": "string"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"patch": {
+				"tags": ["Alerts"],
+				"summary": "Edit Alert: Accessible to CSM users having manage permission",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "alert_id",
+					"in": "path",
+					"description": "Specifies the alert id",
+					"required": true,
+					"type": "string"
+				}, {
+					"name": "alert",
+					"in": "body",
+					"description": "Alert request",
+					"schema": {
+						"type": "object",
+						"required": false,
+						"properties": {
+							"acknowledged": {
+								"type": "boolean"
+							},
+							"comments": {
+								"type": "string",
+								"example": ""
+							}
+						}
+					}
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/alerts_history" : {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Get alert history: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},		
+		"/alerts_history/{alert_id}" : {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Get alert history for specific alert: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "alert_id",
+						"in": "path",
+						"description": "Specifies the alert id",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
+		"/alerts/{alert_uuid}/comments" : {
+			"get": {
+				"tags": ["Alerts"],
+				"summary": "Get alert comments for specific alert: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "alert_uuid",
+						"in": "path",
+						"description": "Specifies the alert uuid",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["Alerts"],
+				"summary": "Add comments to the Alert: Accessible to CSM users having manage permission",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "Comment",
+					"in": "body",
+					"description": "Add comments to the alert",
+					"schema": {
+						"type": "object",
+						"required": true,
+						"properties": {
+							"comment_text": {
+								"type": "string",
+								"example": ""
+							}
+						}
+					}
+				},
+				{
+					"name": "alert_uuid",
+					"in": "path",
+					"description": "Specifies the alert id",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/system/health/summary": {
+			"get": {
+				"tags": ["Health"],
+				"summary": "Get Health Summary of the system: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/system/health/node": {
+			"get": {
+				"tags": ["Health"],
+				"summary": "Get Health of nodes: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "node_id",
+					"in": "query",
+					"description": "Specifies the node id",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/system/health/view": {
+			"get": {
+				"tags": ["Health"],
+				"summary": "Get Health of nodes with alerts: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "node_id",
+					"in": "query",
+					"description": "Specifies the node id",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/stats": {
+			"get": {
+				"tags": ["Stats"],
+				"summary": "Get statetics: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "panel",
+					"in": "query",
+					"description": "Panel",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "metric",
+					"in": "query",
+					"description": "Metric",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "id",
+					"in": "query",
+					"description": "stats id",
+					"required": false,
+					"type": "integer"
+				}, {
+					"name": "from",
+					"in": "query",
+					"description": "from (epoch) time",
+					"required": false,
+					"type": "integer"
+				}, {
+					"name": "to",
+					"in": "query",
+					"description": "to (epoch) time",
+					"required": false,
+					"type": "integer"
+				}, {
+					"name": "interval",
+					"in": "query",
+					"description": "interval (epoch) time",
+					"required": false,
+					"type": "integer"
+				}, {
+					"name": "total_sample",
+					"in": "query",
+					"description": "Total Sample",
+					"required": false,
+					"type": "string"
+				}, {
+					"name": "output_format",
+					"in": "query",
+					"description": "Output Format",
+					"required": false,
+					"type": "string",
+					"default": "gui"
+				}, {
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/capacity": {
+			"get": {
+				"tags": ["Storage Capacity"],
+				"summary": "Get the Storage Capacity: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/auditlogs/show/{component}" : {
+			"get": {
+				"tags": ["Audit logs"],
+				"summary": "Get Audit logs: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "component",
+						"in": "path",
+						"description": "Specifies the component (csm or s3)",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "component",
+						"in": "path",
+						"description": "Specifies the component",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "start_date",
+						"in": "query",
+						"description": "epoch time",
+						"required": true,
+						"type": "integer"
+					}, {
+						"name": "end_date",
+						"in": "query",
+						"description": "epoch time",
+						"required": true,
+						"type": "integer"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
+		"/auditlogs/download/{component}" : {
+			"get": {
+				"tags": ["Audit logs"],
+				"summary": "Download Audit logs: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "component",
+						"in": "path",
+						"description": "Specifies the component (csm or s3)",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "component",
+						"in": "path",
+						"description": "Specifies the component",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "start_date",
+						"in": "query",
+						"description": "epoch time",
+						"required": true,
+						"type": "integer"
+					}, {
+						"name": "end_date",
+						"in": "query",
+						"description": "epoch time",
+						"required": true,
+						"type": "integer"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		}
+	}
+}
