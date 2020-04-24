@@ -15,29 +15,23 @@
 <template>
   <div>
     <div id="auditlog" class="mb-4">
-      <label id="auditlog-title" class="eos-text-bold eos-text-lg"
-        >Audit log</label
-      >
+      <label id="auditlog-title" class="eos-text-bold eos-text-lg">Audit log</label>
       <div class="mt-1 eos-text-md">
-        <label>You can download "audit logs" for the selected period.</label>
+        <label>Download or view audit logs for the selected time period.</label>
       </div>
     </div>
     <v-divider class="my-4" />
 
     <div class="col-4 py-0">
       <div class="eos-form-group">
-        <label class="eos-form-group-label" for="cmdComponent" id="lblComponent"
-          >Component*</label
-        >
+        <label class="eos-form-group-label" for="cmdComponent" id="lblComponent">Component*</label>
         <eos-dropdown
           @update:selectedOption="handleComponentDropdownSelect"
           :options="componentList"
           :title="component ? component : undefined"
         ></eos-dropdown>
 
-        <label class="eos-form-group-label" for="cmdTimeRange" id="lblTimeRange"
-          >Time range*</label
-        >
+        <label class="eos-form-group-label" for="cmdTimeRange" id="lblTimeRange">Time period*</label>
         <eos-dropdown
           @update:selectedOption="handleTimerangeDropdownSelect"
           :options="timerangeList"
@@ -45,24 +39,14 @@
         ></eos-dropdown>
       </div>
       <div class="mt-8 nav-btn">
-        <button
-          type="button"
-          class="eos-btn-primary mr-2"
-          @click="downloadAuditLogs()"
-        >
-          Download
-        </button>
-        <button type="button" class="eos-btn-primary" @click="showAuditLogs()">
-          Show
-        </button>
+        <button type="button" class="eos-btn-primary mr-2" @click="downloadAuditLogs()">Download</button>
+        <button type="button" class="eos-btn-primary" @click="showAuditLogs()">View</button>
       </div>
     </div>
     <div class="ma-3 mt-5" v-if="showLog">
       <span class="eos-text-bold eos-text-lg">Logs</span>
       <v-divider class="my-2"></v-divider>
-      <span class="mb-1 d-block" v-for="(log, index) in showLog" :key="index">
-        {{ log }}
-      </span>
+      <span class="mb-1 d-block" v-for="(log, index) in showLog" :key="index">{{ log }}</span>
     </div>
   </div>
 </template>

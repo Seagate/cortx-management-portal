@@ -17,6 +17,10 @@
     <div class="eos-text-lg eos-text-bold" id="lblUpdateFirmware">
       Update firmware
     </div>
+    <div class="mt-3" id="lblFirmwareUploadmsg">
+Update the storage enclosure firmware. Upload the firmware bundle file (.bin) received from Seagate. <br>
+Click Start update once the bundle file is uploaded successfully.
+      </div>  
     <div
       class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md"
       v-if="lastUpgradeStatus"
@@ -27,7 +31,9 @@
             <label class="eos-text-bold">Last update status:</label>
           </td>
           <td style="padding-top: 3px;">
-            <label>{{ lastUpgradeStatus.status.toUpperCase() }}</label>
+            <label>{{ lastUpgradeStatus.status? lastUpgradeStatus.status.toUpperCase(): "Not available" }}</label>
+            
+            
           </td>
         </tr>
       </table>
@@ -71,7 +77,7 @@
             !firmwarePackageFormValidation.isValid
         "
       >
-        <label>Package should be a '.bin' file.</label>
+        <label>Invalid file.</label>
       </div>
       <v-divider class="mt-5 mb-2" />
       <button
@@ -125,7 +131,7 @@ export default class EosFirmware extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.last_upgrade_status);
     this.lastUpgradeStatus =
-      res && res.data && res.data.status ? res.data : null;
+      res && res.data ? res.data : null;
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
