@@ -9,7 +9,7 @@ import HttpStatus from "http-status-codes";
 
 export default [
   {
-    path: "/api/v1/upgrade/hotfix/status",
+    path: "/api/v1/update/hotfix/status",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -20,7 +20,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/upgrade/hotfix/upload",
+    path: "/api/v1/update/hotfix/upload",
     method: "post",
     handler: [
       checkRequiredParams,
@@ -31,7 +31,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/upgrade/hotfix/start",
+    path: "/api/v1/update/hotfix/start",
     method: "post",
     handler: [
       checkRequiredParams,
