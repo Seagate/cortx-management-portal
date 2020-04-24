@@ -37,10 +37,10 @@ export default {
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
   addlicensekey: `/api/${version}/license/onboarding`,
-  hotfix_status: `/api/${version}/upgrade/hotfix/status`,
-  hotfix_upload: `/api/${version}/upgrade/hotfix/upload`,
-  hotfix_start: `/api/${version}/upgrade/hotfix/start`,
-  upload_firmware: `/api/${version}/upgrade/firmware/upload`, // TODO: change to right API
+  hotfix_status: `/api/${version}/update/hotfix/status`,
+  hotfix_upload: `/api/${version}/update/hotfix/upload`,
+  hotfix_start: `/api/${version}/update/hotfix/start`,
+  upload_firmware: `/api/${version}/update/firmware/upload`, // TODO: change to right API
   auditlogs: `/api/${version}/auditlogs`,
   maintenance: `/api/${version}/maintenance/cluster`,
   node_status: `/api/${version}/maintenance/cluster/node_status`,
@@ -53,9 +53,9 @@ export default {
   ssl_upload: `/api/${version}/tls/bundle/upload`,
   ssl_install: `/api/${version}/tls/bundle/install`,
   ssl_status: `/api/${version}/tls/bundle/status`,
-  start_firmware_upgrade: `/api/${version}/upgrade/firmware/start`,
-  firmware_package_availability: `/api/${version}/upgrade/firmware/availability`,
-  last_upgrade_status: `/api/${version}/upgrade/firmware/last_upgrade_status`,
+  start_firmware_upgrade: `/api/${version}/update/firmware/start`,
+  firmware_package_availability: `/api/${version}/update/firmware/availability`,
+  last_upgrade_status: `/api/${version}/update/firmware/last_upgrade_status`,
   health_view: `/api/${version}/system/health/view`,
   node_health: `/api/${version}/system/health/node`
 };

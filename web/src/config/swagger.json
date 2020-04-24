@@ -2688,10 +2688,10 @@
 				}]
 			}
 		},
-		"/upgrade/firmware/upload": {
+		"/update/firmware/upload": {
 			"post": {
 			  "tags": [
-				"Firmware upgrade "
+				"Firmware Update "
 			  ],
 			  "summary": "Firmaware upload",
 			  "responses": {
@@ -2745,12 +2745,12 @@
 				]
 			}
 		},
-		"/upgrade/firmware/start": {
+		"/update/firmware/start": {
 			"post": {
 			  "tags": [
-				"Firmware upgrade "
+				"Firmware Update "
 			  ],
-			  "summary": "Firmaware upgrade start",
+			  "summary": "Firmaware update start",
 			  "responses": {
 					"200": {
 						"description": "OK"
@@ -2796,12 +2796,12 @@
 			  ]
 			}
 		},
-		"/upgrade/firmware/last_upgrade_status": {
+		"/update/firmware/last_upgrade_status": {
 			"get": {
 			  "tags": [
-				"Firmware upgrade "
+				"Firmware Update "
 			  ],
-			  "summary": "Firmaware upgrade status",
+			  "summary": "Firmaware update status",
 			  "responses": {
 					"200": {
 						"description": "OK"
@@ -2847,12 +2847,12 @@
 			  ]
 			}
 		},
-		"/upgrade/firmware/availability": {
+		"/update/firmware/availability": {
 			"get": {
 			  "tags": [
-				"Firmware upgrade "
+				"Firmware Update "
 			  ],
-			  "summary": "Firmaware upgrade availability",
+			  "summary": "Firmaware update availability",
 			  "responses": {
 				"200": {
 					"description": "OK"
@@ -3080,12 +3080,12 @@
 				}]
 			}
 		},
-		"/upgrade/hotfix/upload": {
+		"/update/hotfix/upload": {
 			"post": {
 				"tags": [
-					"Hotfix Upgrade"
+					"Hotfix Update"
 				],
-				"summary": "Upload Hotfix Upgrade",
+				"summary": "Upload Hotfix update",
 				"produces": [
 					"application/json"
 				],
@@ -3141,12 +3141,12 @@
 				]
 			}
 		},
-		"/upgrade/hotfix/start": {
+		"/update/hotfix/start": {
 			"post": {
 				"tags": [
-					"Hotfix Upgrade"
+					"Hotfix Update"
 				],
-				"summary": "Start Hotfix Upgrade",
+				"summary": "Start Hotfix update",
 				"produces": [
 					"application/json"
 				],
@@ -3195,10 +3195,10 @@
 				]
 			}
 		},
-		"/upgrade/hotfix/status": {
+		"/update/hotfix/status": {
 			"get": {
 				"tags": [
-					"Hotfix Upgrade"
+					"Hotfix Update"
 				],
 				"summary": "Get the Hotfix Status",
 				"produces": [

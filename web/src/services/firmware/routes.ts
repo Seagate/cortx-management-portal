@@ -6,7 +6,7 @@ import HttpStatus from 'http-status-codes';
 
 export default [
     {
-        path: "/api/v1/upgrade/firmware/last_upgrade_status",
+        path: "/api/v1/update/firmware/last_upgrade_status",
         method: "get",
         handler: [
             checkRequiredParams,
@@ -17,7 +17,7 @@ export default [
         ]
     },
     {
-        path: "/api/v1/upgrade/firmware/upload",
+        path: "/api/v1/update/firmware/upload",
         method: "post",
         handler: [
             checkRequiredParams,
@@ -28,7 +28,7 @@ export default [
         ]
     },
     {
-        path: "/api/v1/upgrade/firmware/start",
+        path: "/api/v1/update/firmware/start",
         method: "post",
         handler: [
             checkRequiredParams,
@@ -39,7 +39,7 @@ export default [
         ]
     },
     {
-        path: "/api/v1/upgrade/firmware/availability",
+        path: "/api/v1/update/firmware/availability",
         method: "get",
         handler: [
             checkRequiredParams,
