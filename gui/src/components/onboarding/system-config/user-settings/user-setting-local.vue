@@ -766,7 +766,7 @@ export default class EosUserSettingLocal extends Vue {
     }
   }
   private isAdminUser(item: any) {
-    return item.roles.includes("root");
+    return item.roles.includes("admin");
   }
   private async getUserData() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
