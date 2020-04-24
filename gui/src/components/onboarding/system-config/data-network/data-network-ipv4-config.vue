@@ -224,7 +224,13 @@ export default class EosDataNetworkIpv4Config extends Vue {
       $each: {
         ip_address: {
           required: requiredIf(function(this: any, form) {
-            return this.$data.source === "manual";
+            if (
+              this.$data.source === "manual" ||
+              (this.$data.source === "DHCP" && form.name === "VIP")
+            ) {
+              return true;
+            }
+            return false;
           }),
           ipAddress,
           isUnique(value: string) {

@@ -1,7 +1,10 @@
 <template>
   <v-container class="white pa-0 ma-0" fluid>
-    <div height="70em" class="pl-0 py-0 col-12 black">
-      <img src="../../assets/logo.png" />
+    <div height="70em" class="pl-10 py-3 col-12 black">
+     <img
+        :src="require('@/assets/seagate-green.svg/')"
+      />
+      <img class="ml-3 mb-2":src="require('@/assets/lyve-drive-green.svg/')" />
     </div>
     <div class="body-2 ma-10">
       <div

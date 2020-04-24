@@ -1,7 +1,8 @@
 <template>
   <v-container class="pa-0 ma-0 col-12 black">
     <div height="70em" class="pl-10 py-5">
-      <img src="../../assets/logo.png" />
+      <img :src="require('@/assets/seagate-green.svg/')" />
+      <img class="ml-3 mb-2" :src="require('@/assets/lyve-drive-green.svg/')" />
     </div>
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
