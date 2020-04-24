@@ -1,19 +1,20 @@
 <template>
   <div>
-    <div class="eos-text-lg eos-text-bold" id="lblUpdateHotfix">
-      Update software
+    <div class="eos-text-lg eos-text-bold" id="lblUpdateHotfix">Update software</div>
+    <div class="mt-3" id="lblSoftwareUploadmsg">
+      Update the software. Upload the software bundle file (.iso) received from Seagate.
+      <br />
+Click Start update once the bundle file is uploaded successfully. After the software update, you must login again.
     </div>
-    <div
-      class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md"
-      v-if="lastUpgradeStatus"
-    >
+    <div class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md" v-if="lastUpgradeStatus">
       <table>
         <tr>
           <td style="width: 180px;">
             <label class="eos-text-bold">Last update status:</label>
           </td>
           <td style="padding-top: 2px;">
-            <label>{{ lastUpgradeStatus.status || "Not available" }}</label>
+            <label>{{ lastUpgradeStatus.status ? lastUpgradeStatus.status.toUpperCase(): "Not available" }}</label>
+
           </td>
         </tr>
         <tr v-if="lastUpgradeStatus.version">
@@ -32,8 +33,7 @@
         </tr>
       </table>
     </div>
-    <div class="mt-6 eos-text-md" id="lblUpdateHotfixMsg">
-    </div>
+    <div class="mt-6 eos-text-md" id="lblUpdateHotfixMsg"></div>
     <v-divider class="mt-2 mb-5" />
     <div v-if="!showUploadForm">
       <button
@@ -42,18 +42,14 @@
         class="eos-btn-primary"
         @click="showUploadForm = true"
         :disabled="!canInstallHotfix"
-      >
-        Upload new software file
-      </button>
+      >Upload new software file</button>
       <button
         id="btnStartUpgrade"
         type="button"
         class="ml-5 eos-btn-primary"
         @click="startUpgrade()"
         :disabled="!isPackageAvailable"
-      >
-        Start update
-      </button>
+      >Start update</button>
     </div>
     <div v-else>
       <input
@@ -70,7 +66,7 @@
             !hotfixPackageFormValidation.isValid
         "
       >
-        <label>Package should be a '.iso' file.</label>
+        <label>Invalid file.</label>
       </div>
       <v-divider class="mt-5 mb-2" />
       <button
@@ -79,17 +75,13 @@
         class="mt-3 eos-btn-primary"
         @click="uploadHotfixPackage()"
         :disabled="!hotfixPackage"
-      >
-        Upload
-      </button>
+      >Upload</button>
       <button
         id="btnCancelInstallHotfix"
         type="button"
         class="mt-3 ml-5 eos-btn-secondary"
         @click="closeUploadForm()"
-      >
-        Cancel
-      </button>
+      >Cancel</button>
     </div>
   </div>
 </template>
