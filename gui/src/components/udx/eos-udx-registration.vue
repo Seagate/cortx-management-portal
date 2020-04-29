@@ -430,7 +430,7 @@
         <div class="eos-reg-response-container">
           <table class="eos-text-md">
             <tr>
-              <td class="py-1 eos-text-bold udx-reg-resp-table-label"> S3 Account Access Key</td>
+              <td class="py-1 eos-text-bold udx-reg-resp-table-label">S3 Account Access Key</td>
               <td class="py-1">{{ registrationResponse.s3_account.access_key }}</td>
             </tr>
             <tr>
@@ -524,16 +524,20 @@ export default class EosUDXRegistration extends Vue {
 
   public async registerUDX() {
     this.$store.dispatch("systemConfig/showLoader", "Registering UDX...");
-    const res = await Api.post(apiRegister.udx_registration, {
-      url: this.registrationForm.url,
-      pin: "0000",
-      s3_account_name: this.registrationForm.accountName,
-      s3_account_email: this.registrationForm.accountEmail,
-      s3_account_password: this.registrationForm.accountPassword,
-      iam_user_name: this.registrationForm.iamUsername,
-      iam_user_password: this.registrationForm.iamUserPassword,
-      bucket_name: "udx-" + this.registrationForm.bucketName
-    });
+    const res = await Api.post(
+      apiRegister.udx_registration,
+      {
+        url: this.registrationForm.url,
+        pin: "0000",
+        s3_account_name: this.registrationForm.accountName,
+        s3_account_email: this.registrationForm.accountEmail,
+        s3_account_password: this.registrationForm.accountPassword,
+        iam_user_name: this.registrationForm.iamUsername,
+        iam_user_password: this.registrationForm.iamUserPassword,
+        bucket_name: "udx-" + this.registrationForm.bucketName
+      },
+      { timeout: 120000 }
+    );
     if (res && res.data) {
       this.registrationResponse = res.data;
     }
