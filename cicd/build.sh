@@ -10,6 +10,7 @@ CSM_PATH="/opt/seagate/eos/csm"
 EOS_PATH="/opt/seagate/eos/"
 DEBUG="DEBUG"
 INFO="INFO"
+PROVISIONER_CONFIG_PATH="/opt/seagate/eos-prvsnr/generated_configs"
 
 usage() {
     echo """
@@ -226,6 +227,7 @@ sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/setup.yaml
+sed -i -e "s|<PROVISIONER_CONFIG_PATH>|${PROVISIONER_CONFIG_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
 
 if [ "$QA" == true ]; then
     sed -i -e "s|<LOG_LEVEL>|${DEBUG}|g" $DIST/csm/conf/etc/csm/csm.conf
