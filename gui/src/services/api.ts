@@ -29,7 +29,7 @@ axios.interceptors.request.use(
     }
     if (config.timeout === -1) {
       config.timeout = 0;
-    } else {
+    } else if (config.timeout === 0) {
       config.timeout = 20000;
     }
     return config;
