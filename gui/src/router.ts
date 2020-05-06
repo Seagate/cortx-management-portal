@@ -21,8 +21,8 @@ import EosAlertDetails from "./components/alerts/alert-details.vue";
 import EosUserSettingLocal from "./components/onboarding/system-config/user-settings/user-setting-local.vue";
 import EosS3Management from "./components/s3/s3.vue";
 import EosAdminUser from "./components/preboarding/admin-user.vue";
-import EosGetStarted from "./components/preboarding/get-started.vue";
 import EosWelcome from "./components/preboarding/welcome.vue";
+import EosLicense from "./components/preboarding/license.vue";
 import EosLogin from "./components/preboarding/login.vue";
 import EosUDX from "./components/udx/eos-udx.vue";
 import EosHomebase from "./components/onboarding/homebase.vue";
@@ -68,15 +68,15 @@ const router = new Router({
       meta: { requiresAuth: false },
       children: [
         {
-          path: "getstarted",
-          name: "getstarted",
-          component: EosGetStarted,
-          meta: { requiresAuth: false }
-        },
-        {
           path: "welcome",
           name: "welcome",
           component: EosWelcome,
+          meta: { requiresAuth: false }
+        },
+        {
+          path: "license",
+          name: "license",
+          component: EosLicense,
           meta: { requiresAuth: false }
         },
         {
