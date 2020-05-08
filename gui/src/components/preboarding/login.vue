@@ -108,6 +108,10 @@ export default class EosLogin extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
     this.$store.commit("messageDialog/hide");
     this.$store.commit("userLogin/setUserPermissions", {});
+    const token = localStorage.getItem(this.$data.constStr.access_token);
+    if (token) {
+      this.navigate();
+    }
   }
   private handleEnterEvent() {
     if (
