@@ -49,11 +49,7 @@ export abstract class Api {
                 geturl += seperator + key + "=" + query[key];
             }
             const options = {
-                headers: {
-                    'user-agent': req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'authorization': authorization
-                }
+                headers: req.headers
             }
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
@@ -80,11 +76,7 @@ export abstract class Api {
                 geturl += seperator + key + "=" + query[key];
             }
             const options = {
-                headers: {
-                    'user-agent': req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'authorization': authorization,
-                    'responseType': 'blob'
-                }
+                headers: req.headers
             }
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleFileResponse(resolve, reject, resp)).on("error", (err: any) => {
@@ -114,11 +106,7 @@ export abstract class Api {
                 geturl += seperator + key + "=" + query[key];
             }
             const options = {
-                headers: {
-                    'user-agent': req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'authorization': authorization
-                }
+                headers: req.headers
             }
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
@@ -145,12 +133,7 @@ export abstract class Api {
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "PATCH",
-                headers: {
-                    'user-agent': req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization
-                }
+                headers: req.headers
             }
             logger.info('PATCH: ' + patchurl);
             let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
@@ -179,12 +162,7 @@ export abstract class Api {
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "put",
-                headers: {
-                    'user-agent': req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization
-                }
+                headers: req.headers
             }
             logger.info('PUT: ' + puturl);
             let httpRequest = http_agent.request(puturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
@@ -210,12 +188,7 @@ export abstract class Api {
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "POST",
-                headers: {
-                    'user-agent': req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization
-                }
+                headers: req.headers
             }
             logger.info('POST: ' + posturl);
             let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
@@ -277,12 +250,7 @@ export abstract class Api {
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "DELETE",
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization
-                }
+                headers: req.headers
             }
             logger.info('DELETE: ' + deleteUrl);
             let httpRequest = http_agent.request(deleteUrl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
