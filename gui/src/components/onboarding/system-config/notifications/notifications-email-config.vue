@@ -283,6 +283,10 @@ export default class EosNotifications extends Vue {
       protocol: "SSL",
       protocolList: [
         {
+          label: "None",
+          value: "None"
+        },
+        {
           label: "SSL",
           value: "SSL"
         },
