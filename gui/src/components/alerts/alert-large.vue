@@ -306,6 +306,7 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
     this.showConfirmationDialog = false;
     if (confirmation) {
       await this.acknowledgeAll();
+      this.$store.dispatch("alertDataAction");
     }
   }
 

@@ -316,6 +316,7 @@ export default class EosAlertDetails extends Vue {
         this.alertId
       );
       this.alert.acknowledged = tempAlertAcknowledged;
+      this.$store.dispatch("alertDataAction");
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.log(e);
