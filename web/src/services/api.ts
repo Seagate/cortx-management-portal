@@ -250,7 +250,12 @@ export abstract class Api {
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "DELETE",
-                headers: req.headers
+                headers: {
+                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
+                    'Content-Type': 'application/json',
+                    'Content-Length': requestData.length,
+                    'authorization': authorization
+                }
             }
             logger.info('DELETE: ' + deleteUrl);
             let httpRequest = http_agent.request(deleteUrl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
