@@ -470,7 +470,7 @@ import {
   passwordRegex,
   accountNameTooltipMessage,
   passwordTooltipMessage,
-  bucketNameTooltipMessage
+  udxBucketNameTooltipMessage
 } from "../../common/regex-helpers";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
@@ -483,7 +483,7 @@ export default class EosUDXRegistration extends Vue {
   public registrationResponse: any = null;
   public passwordTooltipMessage: string = passwordTooltipMessage;
   public accountNameTooltipMessage: string = accountNameTooltipMessage;
-  public bucketNameTooltipMessage: string = bucketNameTooltipMessage;
+  public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
 
   public registrationForm = {
     url: "",
