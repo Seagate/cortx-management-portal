@@ -20,11 +20,19 @@
       v-if="healthSummary.total - healthSummary.good > 0"
     >
       <div class="eos-summary-chip eos-chip-alert eos-float-l ml-2">
+         <v-tooltip top>
+           <template v-slot:activator="{ on }">
+
         <div class="summary-count">
-          <label
+          <label v-on="on"
             class="eos-text-sm"
           >{{ healthSummary.total - healthSummary.good}}</label>
+          
         </div>
+        </template>
+        <span>Number of alerts which are not resolved.</span>
+      </v-tooltip>
+
       </div>
     </div>
     <div

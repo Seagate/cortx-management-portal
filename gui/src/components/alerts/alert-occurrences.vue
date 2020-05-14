@@ -62,7 +62,7 @@
               />
             </span>
           </th>
-          <th class="tableheader"></th>
+          <th class="tableheader">Action</th>
         </tr>
       </template>
       <template v-slot:item="props">

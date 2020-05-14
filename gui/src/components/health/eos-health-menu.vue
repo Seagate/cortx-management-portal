@@ -14,6 +14,10 @@
  *****************************************************************************/
 <template>
   <div class="eos-p-2">
+    <div class="mt-3 font-weight-bold" id="lblDnsMsg">
+      Displays the health of the storage enclosure and the servers (nodes) connected to it.
+    </div>
+
     <div
       v-for="menuItem in healthData"
       :key="Object.keys(menuItem)[0]"
