@@ -17,6 +17,7 @@ import HttpStatus from 'http-status-codes';
 import * as HTTPError from '../utils/http-errors';
 import logger from './../config/winston';
 import FormData = require('form-data');
+import querystring = require('querystring');
 import fs = require('fs');
 import multiparty = require('multiparty');
 let base_url = process.env.CSM_AGENT_PROTOCOL + "://" + process.env.CSM_AGENT_HOST
@@ -46,7 +47,7 @@ export abstract class Api {
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             for (const key in query) {
                 let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
-                geturl += seperator + key + "=" + query[key];
+                geturl += seperator + key + "=" + querystring.stringify(query[key]);                
             }
             const options = {
                 headers: req.headers
@@ -73,7 +74,7 @@ export abstract class Api {
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             for (const key in query) {
                 let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
-                geturl += seperator + key + "=" + query[key];
+                geturl += seperator + key + "=" + querystring.stringify(query[key]);
             }
             const options = {
                 headers: req.headers
@@ -103,7 +104,7 @@ export abstract class Api {
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             for (const key in query) {
                 let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
-                geturl += seperator + key + "=" + query[key];
+                geturl += seperator + key + "=" + querystring.stringify(query[key]);
             }
             const options = {
                 headers: req.headers
