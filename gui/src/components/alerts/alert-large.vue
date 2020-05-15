@@ -139,7 +139,7 @@
                 props.item.severity === alertStatus.critical ||
                   props.item.severity === alertStatus.error
               "
-              title="critical | error"
+              v-bind:title="props.item.severity"
               class="eos-status-chip eos-chip-alert"
             ></div>
             <div
