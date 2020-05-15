@@ -71,6 +71,7 @@ export interface AlertQueryParam {
   acknowledged?: boolean;
   show_all?: boolean;
   show_active?: boolean;
+  sensor_info?: string;
 }
 
 export interface AlertEventDetail {

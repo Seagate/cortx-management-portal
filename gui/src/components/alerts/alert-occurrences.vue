@@ -175,10 +175,10 @@ export default class EosAlertOccurrences extends Vue {
     alertQueryParam.dir = sortInfo.sort_dir;
     alertQueryParam.offset = this.currentPage;
     alertQueryParam.limit = this.itemsPerPage;
+    alertQueryParam.sensor_info = this.sensor_info;
+
     this.$store.dispatch("systemConfig/showLoader", "Fetching alerts...");
-    const res = await Api.getAll(apiRegister.alerts_history, {
-      sensor_info: this.sensor_info
-    });
+    const res = await Api.getAll(apiRegister.alerts_history, alertQueryParam);
     if (res && res.data) {
       this.alertObject = res.data;
       if (this.alertObject.total_records > 200) {
