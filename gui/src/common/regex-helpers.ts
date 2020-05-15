@@ -38,7 +38,8 @@ export const udxBucketNameRegex = helpers.regex(
   "udxBucketNameRegex",
   /^[a-z0-9-]{0,51}[a-z0-9]$/
 );
-export const udxBucketNameTooltipMessage = `The bucket name must be of minimum 5 characters and maximum 56 characters.
+// tslint:disable-next-line
+export const udxBucketNameTooltipMessage = `To identify the S3 bucket correctly, the Bucket name will always use "udx" as its prefix. The bucket name must be of minimum 5 characters and maximum 56 characters.
   Only lowercase, numbers, and dash (-) are allowed. The bucket name cannot start and end with a dash (-).`;
 
 export const udxURLRegex = helpers.regex(
