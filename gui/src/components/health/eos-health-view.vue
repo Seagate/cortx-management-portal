@@ -119,16 +119,19 @@
                   props.item.severity === alertStatus.error
               "
               class="eos-status-chip eos-chip-alert"
+              v-bind:title="props.item.severity"
             ></div>
             <div
               style="margin: auto;"
               v-else-if="props.item.severity === alertStatus.warning"
               class="eos-status-chip eos-chip-warning"
+              title="warning"
             ></div>
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.informational"
               class="eos-status-chip eos-chip-information"
+              title="info"
             ></div>
           </td>
           <td>{{ props.item.description ? props.item.description : "--" }}</td>
