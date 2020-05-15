@@ -18,6 +18,16 @@
     <eos-has-access
       :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
     >
+    <div class="mt-3" id="lblDnsMsg" v-if="tabsInfo.selectedTab === 1">
+     All the alerts which are generated, by default are displayed under New Alerts.
+    </div> 
+     <div class="mt-3" id="lblDnsMsg" v-if="tabsInfo.selectedTab === 2">
+       Displays alerts which are either acknowledged or resolved.
+    </div> 
+     <div class="mt-3" id="lblDnsMsg" v-if="tabsInfo.selectedTab === 3">
+       Displays alerts which are both, acknowledged and resolved.
+    </div> 
+
       <button
         type="button"
         class="mt-3 mb-2 eos-btn-primary"
@@ -77,7 +87,7 @@
               />
             </span>
           </th>
-          <th class="tableheader"></th>
+          <th class="tableheader">Action</th>
         </tr>
       </template>
       <template v-slot:item="props">

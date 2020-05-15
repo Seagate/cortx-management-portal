@@ -175,6 +175,9 @@
     </template>
     <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
     <eos-tabs :tabsInfo="tabsInfo" />
+     <div class="mt-3" id="lblDnsMsg">
+      Displays all the alerts which are generated.
+    </div>
     <eos-alert-occurrences :sensor_info="sensor_info" />
   </div>
 </template>
