@@ -20,6 +20,7 @@ import FormData = require('form-data');
 import querystring = require('querystring');
 import fs = require('fs');
 import multiparty = require('multiparty');
+
 let base_url = process.env.CSM_AGENT_PROTOCOL + "://" + process.env.CSM_AGENT_HOST
     + (process.env.CSM_AGENT_PORT ? ":" + process.env.CSM_AGENT_PORT : "");
 const file_upload_dir = process.env.FILE_UPLOAD_FOLDER;
@@ -43,12 +44,13 @@ export abstract class Api {
             }
             console.log("GET: " + geturl);
             // -- end --
-            let query = req.query;
+
+            let urle = decodeURI(req.originalUrl);
+            var query_index = urle.indexOf('?');
+            var query_string = (query_index>=0)?urle.slice(query_index+1):'';
+            geturl += "?" + query_string;
+
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-            for (const key in query) {
-                let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
-                geturl += seperator + key + "=" + query[key];                
-            }
             const options = {
                 headers: {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
@@ -74,12 +76,12 @@ export abstract class Api {
             }
             console.log("GET: " + geturl);
             // -- end --
-            let query = req.query;
+            let urle = decodeURI(req.originalUrl);
+            var query_index = urle.indexOf('?');
+            var query_string = (query_index>=0)?urle.slice(query_index+1):'';
+            geturl += "?" + query_string;
+
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-            for (const key in query) {
-                let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
-                geturl += seperator + key + "=" + query[key];
-            }
             const options = {
                 headers: {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
@@ -108,12 +110,12 @@ export abstract class Api {
             }
             console.log("GET: " + geturl);
             // -- end --
-            let query = req.query;
+            let urle = decodeURI(req.originalUrl);
+            var query_index = urle.indexOf('?');
+            var query_string = (query_index>=0)?urle.slice(query_index+1):'';
+            geturl += "?" + query_string;
+
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-            for (const key in query) {
-                let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
-                geturl += seperator + key + "=" + query[key];
-            }
             const options = {
                 headers: {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
