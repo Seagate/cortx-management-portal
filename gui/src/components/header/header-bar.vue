@@ -22,7 +22,7 @@
       <div class="eos-logo-separator"></div>
       <img :src="require('@/assets/lyve-drive-green.svg/')" />
       <div class="mt-5 eos-brand-label pr-2">
-        <span class="font-weight-bold">EDGE</span>STORE
+        <span class="font-weight-bold">RACK</span> EDGE
       </div>
       <div class="eos-header-right-aligned-items">
         <eos-has-access

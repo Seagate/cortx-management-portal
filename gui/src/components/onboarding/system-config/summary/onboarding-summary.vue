@@ -54,54 +54,6 @@
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header class="eos-text-lg font-weight-bold"
-            >Management network settings</v-expansion-panel-header
-          >
-          <v-expansion-panel-content v-if="managementData[0]">
-            <div class="row ma-0">
-              <div class="col-3 body-2 column mr-5 pt-0">
-                <span class="font-weight-bold">VIP</span>
-                <v-divider class="mt-2" />
-                <table class="mt-3 eos-text-lg">
-                  <tr>
-                    <td class="table-data-label">IP address:</td>
-                    <td>{{ managementData[0].ip_address }}</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
-            >Data network settings</v-expansion-panel-header
-          >
-          <v-expansion-panel-content>
-            <div class="row ma-0">
-              <template v-for="(node, index) in dataNetwork">
-                <div class="col-3 body-2 column mr-5 pt-0" :key="index">
-                  <span class="font-weight-bold">{{ node.name }}</span>
-                  <v-divider class="mt-2" />
-                  <table class="mt-3 eos-text-lg">
-                    <tr>
-                      <td class="table-data-label">IP address:</td>
-                      <td>{{ node.ip_address }}</td>
-                    </tr>
-                    <tr v-if="node.name !== 'VIP'">
-                      <td>Netmask:</td>
-                      <td>{{ node.netmask }}</td>
-                    </tr>
-                    <tr v-if="node.name !== 'VIP'">
-                      <td>Gateway:</td>
-                      <td>{{ node.gateway }}</td>
-                    </tr>
-                  </table>
-                </div>
-              </template>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
             >DNS settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
