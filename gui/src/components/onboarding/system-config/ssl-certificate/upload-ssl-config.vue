@@ -105,7 +105,9 @@ export default class EOSUploadSSLConfig extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      res(true);
+      this.createManagementNetworkObj().then((result) => {
+        res(true);
+      });
     });
   }
   private destroyed() {
@@ -150,6 +152,9 @@ export default class EOSUploadSSLConfig extends Vue {
     const res = await Api.uploadFile(apiRegister.ssl_upload, formData);
     this.$data.buttonStatus = true;
     this.$store.dispatch("systemConfig/hideLoader");
+  }
+  private createManagementNetworkObj() {
+    return this.$store.dispatch("systemConfig/createManagementNetworkObj");
   }
 }
 </script>
