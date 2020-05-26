@@ -201,7 +201,6 @@ export default class EosMaintenance extends Vue {
               this.$data.resourceState.all.push(e.name);
             }
           });
-          this.$data.resourceState.all.push("cluster");
         }
       })
       .finally(() => {
@@ -263,7 +262,7 @@ export default class EosMaintenance extends Vue {
     this.$data.confirmationDialogMessage =
       "Are you sure, you want to shutdown the node?";
     this.$data.confirmationDialogSubMessage =
-      "Please note that if you shutdown the cluster then the entire application will stop";
+      "Please note that if you shutdown the node then the entire application will stop";
 
     this.$data.actionMethod = "shutdown";
     this.$data.confirmationDialogSeverity = "danger";
