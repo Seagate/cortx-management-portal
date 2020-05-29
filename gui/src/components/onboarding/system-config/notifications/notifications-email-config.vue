@@ -170,7 +170,6 @@
             }"
           >
             <textarea
-              @change="setReceiverEmailAddresses"
               class="eos-form__input_textarea"
               id="txtEmailReceiverEmail"
               name="receiverEmail"
@@ -310,14 +309,11 @@ export default class EosNotifications extends Vue {
     };
   }
 
-  private setReceiverEmailAddresses(e: any) {
-    this.$data.emailaddress = e.target.value.replace(/\s+/g, "");
-  }
   private mounted() {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      this.setEmailNotificationSettings().then(result => {
+      this.setEmailNotificationSettings().then((result) => {
         res(true);
       });
     });
@@ -351,19 +347,31 @@ export default class EosNotifications extends Vue {
         notificationConfiguration.notifications.email.smtp_protocol;
       this.$data.emailaddress =
         notificationConfiguration.notifications.email.email;
+      this.$data.senderpassword =
+        notificationConfiguration.notifications.email.smtp_sender_password;
+      this.$data.confirmpassword =
+        notificationConfiguration.notifications.email.smtp_sender_password;
     }
     return true;
   }
 
-  private setEmailNotificationSettings() {
+  private setReceiverEmailAddresses(e: any) {
+    return e.replace(/\s+/g, "");
+  }
+
+  private getNotificationQueryParams() {
     const queryParams: Email = {
       smtp_server: this.$data.smtpserver,
       smtp_port: this.$data.smtpport,
       smtp_protocol: this.$data.protocol,
       smtp_sender_email: this.$data.senderemail,
       smtp_sender_password: this.$data.senderpassword,
-      email: this.$data.emailaddress
+      email: this.setReceiverEmailAddresses(this.$data.emailaddress)
     };
+    return queryParams;
+  }
+  private setEmailNotificationSettings() {
+    const queryParams = this.getNotificationQueryParams();
     return this.$store.dispatch(
       "systemConfig/updateEmailNotificationUserConfig",
       queryParams
@@ -374,14 +382,8 @@ export default class EosNotifications extends Vue {
     this.$data.testEmailMessageError = false;
     this.$data.testEmailInProgress = true;
 
-    const queryParams: Email = {
-      smtp_server: this.$data.smtpserver,
-      smtp_port: this.$data.smtpport,
-      smtp_protocol: this.$data.protocol,
-      smtp_sender_email: this.$data.senderemail,
-      smtp_sender_password: this.$data.senderpassword,
-      email: this.$data.emailaddress
-    };
+    const queryParams = this.getNotificationQueryParams();
+
     this.$store
       .dispatch("systemConfig/sendTestEmailNotification", queryParams)
       .then((res: any) => {
@@ -409,14 +411,7 @@ export default class EosNotifications extends Vue {
       });
   }
   private applySettings() {
-    const queryParams: Email = {
-      smtp_server: this.$data.smtpserver,
-      smtp_port: this.$data.smtpport,
-      smtp_protocol: this.$data.protocol,
-      smtp_sender_email: this.$data.senderemail,
-      smtp_sender_password: this.$data.senderpassword,
-      email: this.$data.emailaddress
-    };
+    const queryParams = this.getNotificationQueryParams();
     this.$emit("apply-settings", queryParams);
   }
   private handleDropdownSelect(selected: any) {
