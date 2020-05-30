@@ -692,4 +692,12 @@ tbody tr:hover {
 .eos-resolved-filled-icon:active {
   background-image: url("../assets/resolved-filled-pressed.svg");
 }
+.eos-brand-label {
+  color: #6ebe49;
+  font-size: 28px;  
+  margin: auto 5px;
+}
+.eos-brand-div {
+  display: inline-flex;
+}
 /* Icon buttons styles --- End */
