@@ -6,12 +6,12 @@
       />
       <div class="eos-brand-div">
         <img class="ml-3" :src="require('@/assets/lyve-drive-green.svg/')" />
-        <span class="ml-1 eos-brand-label">RACK EDGE</span>
+        <span class="ml-1 eos-brand-label">RACK</span>
       </div>
     </div>
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
-      <div class="ml-4 white--text headline my-10">EXOS Edge Login</div>
+      <div class="ml-4 white--text headline my-10">RACK Login</div>
       <div class="ma-4">
         <form autocomplete="off">
           <div

@@ -6,7 +6,7 @@
       />
      <div class="eos-brand-div">
         <img class="ml-3" :src="require('@/assets/lyve-drive-green.svg/')" />
-        <span class="ml-1 eos-brand-label">RACK EDGE</span>
+        <span class="ml-1 eos-brand-label">RACK</span>
       </div>
     </div>
     <div class="body-2 ma-10">

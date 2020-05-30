@@ -22,7 +22,7 @@
       <div class="eos-logo-separator"></div>
       <img :src="require('@/assets/lyve-drive-green.svg/')" />
       <div class="ml-1 eos-brand-label pr-1">
-        <span>RACK EDGE</span>
+        <span>RACK</span>
       </div>
       <div class="eos-header-right-aligned-items">
         <eos-has-access
