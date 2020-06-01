@@ -12,10 +12,10 @@
             />
           </div>
           <div class="eos-modal-body ">
-            <div class="title-container">
-              {{ agreementText.description }}
+            <div class="title-container pr-3">
+              <div v-html="agreementText.description"></div>
             </div>
-            <div class="mt-8  nav-btn">
+            <div class="mt-5 nav-btn">
               <button
                 type="button"
                 class="eos-btn-primary mr-2"
@@ -61,9 +61,9 @@ export default class EosOnboardingFinish extends Vue {
 
 <style lang="scss" scoped>
 .eos-modal-onboarding {
-  width: 700px;
+  width: 730px;
   min-height: 214px;
-  height: 470px;
+  height: 535px;
   position: fixed;
 }
 .nav-btn {
@@ -78,7 +78,8 @@ export default class EosOnboardingFinish extends Vue {
   float: left;
 }
 .title-container {
-  height: 300px;
+  height: 376px;
   overflow: auto;
+  text-align: justify;
 }
 </style>
