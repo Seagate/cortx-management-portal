@@ -4,8 +4,8 @@ export const agreementText = {
   class="font-weight-bold text-center"
   style="margin: 0 100px;"
 >
-  LYVE DRIVE RACK BETA CYCLE PROGRAM PARTICIPATION AUTHORIZATION AND
-  WAIVER
+  LYVE CORTX AND LYVE DRIVE RACK EDGE BETA CYCLE PROGRAM
+  PARTICIPATION AUTHORIZATION AND WAIVER
 </div>
 <table class="mt-5">
   <tr>
@@ -23,14 +23,14 @@ export const agreementText = {
         Beta Test Program Description
       </div>
       <p>
-        LyveDrive RACK (“Product”) collects and stores machine
-        diagnostic information, including but not limited to
-        configuration collects information, user supplied contact
-        information, names of data volumes, IP addresses, access
-        control lists, diagnostics & performance information,
-        network configuration information, host/ server
-        configuration & performance information and related data
-        ("Collected Data") and transmits this information to
+        Lyve Cortx and Lyve Drive Rack Edge (“Product”) collects
+        and stores machine diagnostic information, including but
+        not limited to configuration collects information, user
+        supplied contact information, names of data volumes, IP
+        addresses, access control lists, diagnostics & performance
+        information, network configuration information, host/
+        server configuration & performance information and related
+        data ("Collected Data") and transmits this information to
         Seagate. You acknowledge that the Product is a Beta
         Product still under development, and is not intended for
         commercial sale or use, and is provided “As-Is”. The Beta
@@ -51,7 +51,7 @@ export const agreementText = {
         class="font-weight-bold"
         style="text-decoration: underline;"
       >
-        Authorization and Waive
+        Authorization and Waiver
       </div>
       <p>
         By signing below, You agree to allow Seagate to provide
@@ -79,22 +79,29 @@ export const agreementText = {
         understand this data privacy risk and potential loss of
         data. Seagate does not warrant the safety of such
         Collected Data and You are expressly waiving Seagate’s
-        liability for data put into Beta Product. If at some
-        future data You do not wish for Seagate to continue
-        collecting, storing and analyzing this machine diagnostic
-        information, You must contact Seagate and request that
-        Your data be removed from the diagnostics databases. If
-        You are enabling this tool on behalf of a company or other
-        legal entity, You are further certifying to Seagate that
-        You have appropriate authority to provide this consent on
-        behalf of that entity. If You do not consent to the
-        collection, transmission and/or use of the Collected Data,
-        the SupportAssist feature will be disabled, and the
-        benefits of proactive service requests, real-time
-        troubleshooting, automatic support case creation and
-        health checks, Prosupport Plus and Optimize service
-        delivery, and remote Storage Center upgrades will not be
-        available.
+        liability for data put into Beta Product.
+      </p>
+      <p>
+        If at some future data You do not wish for Seagate to
+        continue collecting, storing and analyzing this machine
+        diagnostic information, You must contact Seagate and
+        request that Your data be removed from the diagnostics
+        databases.
+      </p>
+      <p>
+        If You are enabling this tool on behalf of a company or
+        other legal entity, You are further certifying to Seagate
+        that You have appropriate authority to provide this
+        consent on behalf of that entity.
+      </p>
+      <p>
+        If You do not consent to the collection, transmission
+        and/or use of the Collected Data, the SupportAssist
+        feature will be disabled, and the benefits of proactive
+        service requests, real-time troubleshooting, automatic
+        support case creation and health checks, Prosupport Plus
+        and Optimize service delivery, and remote Storage Center
+        upgrades will not be available.
       </p>
       <div>
         At the end of this Beta Cycle, You agree to:
@@ -122,8 +129,11 @@ export const agreementText = {
   LLC and its Affiliates, and its Directors, Employees, Officers,
   Owners, and Agents. I, on behalf of myself and any entity I am
   authorized to represent, also agree to INDEMNIFY AND HOLD
-  HARMLESS the entities mentioned in this paragraph from any
-  liabilities or claims made by other individuals or entities as a
-  result of my participation in Seagate’s Beta Test Program.
+  HARMLESS.
+</p>
+<p>
+  The entities mentioned in this paragraph from any liabilities or
+  claims made by other individuals or entities as a result of my
+  participation in Seagate’s Beta Test Program.
 </p>`
 };
