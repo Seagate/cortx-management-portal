@@ -335,9 +335,8 @@ export default class EosLineChart extends Vue {
             id: 1,
             from:
               Math.round(new Date().getTime() / this.milliSecondDiviser) -
-              process.env.VUE_APP_FROM_TO_TIME_OFFSET,
+              preFetchDurationInSec / queryParams.total_sample,
             to: Math.round(new Date().getTime() / this.milliSecondDiviser),
-            // interval: process.env.VUE_APP_INTERVAL,
             total_sample: 1,
             metric1: this.metric1,
             metric2: this.metric2

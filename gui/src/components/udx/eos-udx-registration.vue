@@ -379,7 +379,7 @@
           <label class="eos-text-md">I agree to the following:</label>
           <br />
           <label class="eos-ckb-container" for="consentOne">
-            Dedicated UDX Bucket may be created in the account.
+           A dedicated UDX Bucket will be created in my account.
             <input
               type="checkbox"
               name="consentOne"
@@ -390,7 +390,7 @@
           </label>
           <br />
           <label class="eos-ckb-container" for="consentTwo">
-            UDX IAM User may be created with full access to UDX bucket (and not to other data).
+            An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.
             <input
               type="checkbox"
               name="consentTwo"
@@ -470,7 +470,7 @@ import {
   passwordRegex,
   accountNameTooltipMessage,
   passwordTooltipMessage,
-  bucketNameTooltipMessage
+  udxBucketNameTooltipMessage
 } from "../../common/regex-helpers";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
@@ -483,7 +483,7 @@ export default class EosUDXRegistration extends Vue {
   public registrationResponse: any = null;
   public passwordTooltipMessage: string = passwordTooltipMessage;
   public accountNameTooltipMessage: string = accountNameTooltipMessage;
-  public bucketNameTooltipMessage: string = bucketNameTooltipMessage;
+  public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
 
   public registrationForm = {
     url: "",

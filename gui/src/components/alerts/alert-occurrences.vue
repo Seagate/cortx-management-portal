@@ -62,7 +62,7 @@
               />
             </span>
           </th>
-          <th class="tableheader"></th>
+          <th class="tableheader">Action</th>
         </tr>
       </template>
       <template v-slot:item="props">
@@ -76,21 +76,25 @@
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.warning"
               class="eos-status-chip eos-chip-offline"
+              title="warning"
             ></div>
             <div
               style="margin: auto;"
               v-else-if="props.item.severity ===alertStatus.critical || props.item.severity === alertStatus.error"
               class="eos-status-chip eos-chip-alert"
+              v-bind:title="props.item.severity"
             ></div>
             <div
               style="margin: auto;"
               v-else-if="props.item.severity ===alertStatus.warning"
               class="eos-status-chip eos-chip-warning"
+              title="warning"
             ></div>
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.informational"
               class="eos-status-chip eos-chip-ok"
+              title="info"
             ></div>
              <div
               style="margin: auto;"
@@ -175,10 +179,10 @@ export default class EosAlertOccurrences extends Vue {
     alertQueryParam.dir = sortInfo.sort_dir;
     alertQueryParam.offset = this.currentPage;
     alertQueryParam.limit = this.itemsPerPage;
+    alertQueryParam.sensor_info = this.sensor_info;
+
     this.$store.dispatch("systemConfig/showLoader", "Fetching alerts...");
-    const res = await Api.getAll(apiRegister.alerts_history, {
-      sensor_info: this.sensor_info
-    });
+    const res = await Api.getAll(apiRegister.alerts_history, alertQueryParam);
     if (res && res.data) {
       this.alertObject = res.data;
       if (this.alertObject.total_records > 200) {

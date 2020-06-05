@@ -1,7 +1,9 @@
 <template>
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
-      <div class="title mt-0 font-weight-bold" id="lblNSManagement">Management network settings</div>
+      <div class="title mt-0 font-weight-bold" id="lblNSManagement">
+        Management network settings
+      </div>
       <div class="mt-3" id="lblNSMsg">
         Use the management network settings to setup your system.
       </div>
@@ -63,9 +65,7 @@ export default class EosNetworkSettings extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      this.createManagementNetworkObj().then(result => {
-        res(true);
-      });
+      res(true);
     });
   }
   public destroyed() {
@@ -84,9 +84,6 @@ export default class EosNetworkSettings extends Vue {
 
   public setMgmtNetworkSettingsType(status: any) {
     this.$store.commit("systemConfig/setNetworkManagementSettings", status);
-  }
-  public createManagementNetworkObj() {
-    return this.$store.dispatch("systemConfig/createManagementNetworkObj");
   }
 
   public get isipV4Status(): any {

@@ -21,8 +21,8 @@
       />
       <div class="eos-logo-separator"></div>
       <img :src="require('@/assets/lyve-drive-green.svg/')" />
-      <div class="mt-5 eos-brand-label pr-2">
-        <span class="font-weight-bold">EDGE</span>STORE
+      <div class="ml-1 eos-brand-label pr-1">
+        <span>RACK</span>
       </div>
       <div class="eos-header-right-aligned-items">
         <eos-has-access
@@ -154,8 +154,5 @@ export default class HeaderBar extends Vue {
   margin-left: 3em;
   margin-right: 1.9em;
 }
-.eos-brand-label {
-  color: #6ebe49;
-  font-size: 18px;
-}
+
 </style>

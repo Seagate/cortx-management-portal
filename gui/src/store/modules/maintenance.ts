@@ -50,6 +50,11 @@ export default class Maintenance extends VuexModule {
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
+      if (e && e.status === 499) {
+        return {
+          showInfo: true
+        };
+      }
     }
   }
   @Action
@@ -74,6 +79,11 @@ export default class Maintenance extends VuexModule {
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.error("err logger: ", e);
+      if (e && e.status === 499) {
+        return {
+          showInfo: true
+        };
+      }
     }
   }
 }

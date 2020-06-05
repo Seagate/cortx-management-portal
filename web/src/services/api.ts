@@ -1,10 +1,8 @@
 /* ****************************************************************************
  Filename:          api.ts
  Description:       API Service
-
  Creation Date:     24/09/2019
  Author:            Soniya Moholkar
-
  Do NOT modify or remove this copyright and confidentiality notice!
  Copyright (c) 2001 - $Date: 2015/01/14 $ Seagate Technology, LLC.
  The code contained herein is CONFIDENTIAL to Seagate Technology, LLC.
@@ -19,6 +17,7 @@ import HttpStatus from 'http-status-codes';
 import * as HTTPError from '../utils/http-errors';
 import logger from './../config/winston';
 import FormData = require('form-data');
+import querystring = require('querystring');
 import fs = require('fs');
 import multiparty = require('multiparty');
 
@@ -32,16 +31,12 @@ if (process.env.CSM_AGENT_PROTOCOL == 'http') {
 } else {
     http_agent = https;
 }
-
 var sucessCodeRegex = new RegExp('^2[0-9]*$');
-
 export abstract class Api {
-
     // Wrapper method to for get api
     public static async getAll(url: string, req: Request, resp: Response) {
         return new Promise((resolve, reject) => {
             let geturl = base_url + url;
-
             // Remove following code onde all the Python APIs are ready
             // -- Start --
             if (url.startsWith("/mock")) {
@@ -50,14 +45,15 @@ export abstract class Api {
             console.log("GET: " + geturl);
             // -- end --
 
-            let query = req.query;
+            let urle = decodeURI(req.originalUrl);
+            var query_index = urle.indexOf('?');
+            var query_string = (query_index>=0)?urle.slice(query_index+1):'';
+            geturl += "?" + query_string;
+
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-            for (const key in query) {
-                let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
-                geturl += seperator + key + "=" + query[key];
-            }
             const options = {
                 headers: {
+                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'authorization': authorization
                 }
@@ -69,12 +65,10 @@ export abstract class Api {
             });
         });
     }
-
     // Wrapper method to for get file api, unsed in upload/download functionality
     public static async getFile(url: string, req: Request, resp: Response) {
         return new Promise((resolve, reject) => {
             let geturl = base_url + url;
-
             // Remove following code onde all the Python APIs are ready
             // -- Start --
             if (url.startsWith("/mock")) {
@@ -82,20 +76,19 @@ export abstract class Api {
             }
             console.log("GET: " + geturl);
             // -- end --
+            let urle = decodeURI(req.originalUrl);
+            var query_index = urle.indexOf('?');
+            var query_string = (query_index>=0)?urle.slice(query_index+1):'';
+            geturl += "?" + query_string;
 
-            let query = req.query;
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-            for (const key in query) {
-                let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
-                geturl += seperator + key + "=" + query[key];
-            }
             const options = {
                 headers: {
-                    'authorization': authorization,
-                    'responseType': 'blob'
+                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
+                    'Content-Type': 'application/json',
+                    'authorization': authorization
                 }
             }
-
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleFileResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = err.message;
@@ -103,37 +96,33 @@ export abstract class Api {
             });
         });
     }
-
     // Wrapper method to for get api
     public static async get(url: string, req: Request, resp: Response, id: string | number) {
         return new Promise((resolve, reject) => {
             let geturl = base_url + url;
-
             // Remove following code onde all the Python APIs are ready
             // -- Start --
             if (url.startsWith("/mock")) {
                 geturl = mock_base_url + url;
             }
-
             if (id && id != "") {
                 geturl += "/" + id;
             }
             console.log("GET: " + geturl);
             // -- end --
+            let urle = decodeURI(req.originalUrl);
+            var query_index = urle.indexOf('?');
+            var query_string = (query_index>=0)?urle.slice(query_index+1):'';
+            geturl += "?" + query_string;
 
-            let query = req.query;
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-            for (const key in query) {
-                let seperator = (geturl.indexOf('?') == -1 ? '?' : '&');
-                geturl += seperator + key + "=" + query[key];
-            }
             const options = {
                 headers: {
+                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'authorization': authorization
                 }
             }
-
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -141,7 +130,6 @@ export abstract class Api {
             });
         });
     }
-
     public static async patch(url: string, req: Request, resp: Response, id: string | number) {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
@@ -151,22 +139,22 @@ export abstract class Api {
             if (url.startsWith("/mock")) {
                 patchurl = mock_base_url + url;
             }
-
             if (id && id != "") {
                 patchurl += "/" + id;
             }
             console.log("PATCH: " + patchurl);
             // -- end --
+            
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "PATCH",
                 headers: {
+                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'Content-Length': requestData.length,
                     'authorization': authorization
                 }
             }
-
             logger.info('PATCH: ' + patchurl);
             let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -176,7 +164,6 @@ export abstract class Api {
             httpRequest.end();
         });
     }
-
     public static async put(url: string, req: Request, resp: Response, id: string | number) {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
@@ -186,22 +173,22 @@ export abstract class Api {
             if (url.startsWith("/mock")) {
                 puturl = mock_base_url + url;
             }
-
             if (id && id != "") {
                 puturl += "/" + id;
             }
             console.log("put: " + puturl);
             // -- end --
+            
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "put",
                 headers: {
+                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'Content-Length': requestData.length,
                     'authorization': authorization
                 }
             }
-
             logger.info('PUT: ' + puturl);
             let httpRequest = http_agent.request(puturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -211,7 +198,6 @@ export abstract class Api {
             httpRequest.end();
         });
     }
-
     public static async post(url: string, req: Request, resp: Response, id?: string | number) {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
@@ -223,16 +209,17 @@ export abstract class Api {
             }
             console.log("POST: " + posturl);
             // -- end --
+            
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "POST",
                 headers: {
+                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'Content-Length': requestData.length,
                     'authorization': authorization
                 }
             }
-
             logger.info('POST: ' + posturl);
             let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 console.log("1. " + err);
@@ -243,7 +230,6 @@ export abstract class Api {
             httpRequest.end();
         });
     }
-
     public static async uploadFiles(url: string, req: Request, resp: Response, id?: string | number) {
         return new Promise((resolve, reject) => {
             const requestData = JSON.stringify(req.body);
@@ -255,37 +241,30 @@ export abstract class Api {
             }
             console.log("POST: " + posturl);
             // -- end --
-
             // -- Multiparty
             let form = new multiparty.Form({ uploadDir: file_upload_dir });
             form.parse(req, (err, fields, files) => {});
-
             form.on('file', function (name, file) {
                 const form = new FormData();
                 form.append(name, fs.createReadStream(file.path), {filename: file.originalFilename});
-
                 const headers = form.getHeaders();
                 headers['authorization'] = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-
+                
                 const options = {
                     method: 'POST',
                     headers: headers,
                 };
-
                 const httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                     let error = new HTTPError.HTTP500Error(err.message);
                     reject(error);
                 });
-
                 httpRequest.on("close", ()=> {
                     fs.unlink(file.path, (err) => {});
                 });
-
                 form.pipe(httpRequest);
             });
         });
     }
-    
     public static async delete(url: string, req: Request, resp: Response, id?: string | number) {
         return new Promise((resolve, reject) => {
             let deleteUrl = base_url + url + ((id) ? "/" + id : "");
@@ -296,17 +275,18 @@ export abstract class Api {
             }
             console.log("DELETE: " + deleteUrl);
             // -- end --
+            
             const requestData = req && req.body ? JSON.stringify(req.body) : "";
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "DELETE",
                 headers: {
+                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'Content-Length': requestData.length,
                     'authorization': authorization
                 }
             }
-
             logger.info('DELETE: ' + deleteUrl);
             let httpRequest = http_agent.request(deleteUrl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -316,18 +296,15 @@ export abstract class Api {
             httpRequest.end();
         });
     }
-
     private static handleResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
         return (apiresp: any) => {
             let data = '';
             let response: any;
-
             if (apiresp.headers.authorization) {
                 resp.set("Authorization", apiresp.headers.authorization);
             }
             
             resp.status(apiresp.statusCode);
-
             apiresp.on('data', (chunk: any) => {
                 data += chunk;
             });
@@ -349,12 +326,10 @@ export abstract class Api {
             });
         };
     }
-
     private static handleFileResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
         return (req: any) => {
             let data: any = [];
             let response: any;
-
             if (req.headers.authorization) {
                 resp.set("Authorization", req.headers.authorization);
             }
@@ -376,7 +351,6 @@ export abstract class Api {
             if (req.headers["x-content-type-options"]) resp.set("x-content-type-options", req.headers["x-content-type-options"]);
             if (req.headers["x-frame-options"]) resp.set("x-frame-options", req.headers["x-frame-options"]);
             if (req.headers["x-xss-protection"]) resp.set("x-xss-protection", req.headers["x-xss-protection"]);
-
             req.on('data', (chunk: any) => {
                 // Push chunk-data coming from server to response data object
                 data.push(chunk);
@@ -402,7 +376,6 @@ export abstract class Api {
             });
         };
     }
-
     private static handleError(statusCode: any, response: any): Error {
         if (statusCode == HttpStatus.BAD_REQUEST) {
             return new HTTPError.HTTP400Error(response);

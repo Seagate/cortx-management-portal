@@ -4,7 +4,10 @@
      <img
         :src="require('@/assets/seagate-green.svg/')"
       />
-      <img class="ml-3 mb-2":src="require('@/assets/lyve-drive-green.svg/')" />
+     <div class="eos-brand-div">
+        <img class="ml-3" :src="require('@/assets/lyve-drive-green.svg/')" />
+        <span class="ml-1 eos-brand-label">RACK</span>
+      </div>
     </div>
     <div class="body-2 ma-10">
       <div

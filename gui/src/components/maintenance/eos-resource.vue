@@ -15,7 +15,9 @@
 <template>
   <div class="eos-p-2 body-2">
     <div id="system-maintenance-title-container">
-      <label id="system-maintenance-title" class="eos-text-lg mt-2 font-weight-bold"
+      <label
+        id="system-maintenance-title"
+        class="eos-text-lg mt-2 font-weight-bold"
         >System maintenance</label
       >
     </div>
@@ -122,6 +124,15 @@
         @closeDialog="closeConfirmationDialog"
         cancelButtonText="No"
       ></eos-confirmation-dialog>
+      <eos-confirmation-dialog
+        :show="showInfoDialog"
+        title="Success"
+        :message="infoDialogMessage"
+        severity="info"
+        @closeDialog="closeInfoDialog"
+        confirmButtonText="Okay"
+        cancelButtonText=""
+      ></eos-confirmation-dialog>
       <div class="eos-text-primary mt-2">
         {{ actionMessage }}
       </div>
@@ -161,7 +172,9 @@ export default class EosMaintenance extends Vue {
       confirmationDialogSeverity: "danger",
       dropdownWidth: "200px",
       actionMessage: "",
-      dummyRes: { online: [], offline: [], all: [] }
+      showInfoDialog: false,
+      infoDialogMessage:
+        "The services have been restarted. Please refresh the page. You will have to login again."
     };
   }
   private mounted() {
@@ -188,15 +201,11 @@ export default class EosMaintenance extends Vue {
               this.$data.resourceState.all.push(e.name);
             }
           });
-          this.$data.resourceState.all.push("cluster");
         }
       })
       .finally(() => {
         this.$store.dispatch("systemConfig/hideLoader");
       });
-  }
-  private switchResource() {
-    this.$store.dispatch("maintenance/maintenanceAction");
   }
   private closeConfirmationDialog(confirmation: boolean) {
     this.$data.showConfirmationDialog = false;
@@ -211,7 +220,12 @@ export default class EosMaintenance extends Vue {
         })
         .then((res: any) => {
           if (res) {
+            if (res.message) {
             this.$data.actionMessage = res.message;
+            }
+            if (res.showInfo) {
+              this.$data.showInfoDialog = true;
+            }
           } else {
             throw new Error("Failed to perform the action");
           }
@@ -248,7 +262,7 @@ export default class EosMaintenance extends Vue {
     this.$data.confirmationDialogMessage =
       "Are you sure, you want to shutdown the node?";
     this.$data.confirmationDialogSubMessage =
-      "Please note that if you shutdown the cluster then the entire application will stop";
+      "Please note that if you shutdown the node then the entire application will stop";
 
     this.$data.actionMethod = "shutdown";
     this.$data.confirmationDialogSeverity = "danger";
@@ -267,6 +281,9 @@ export default class EosMaintenance extends Vue {
   }
   private handleStopSelect(selected: EosDropdownOption) {
     this.$data.resource.stop = selected.value;
+  }
+  private closeInfoDialog(confirmation: string) {
+    this.$data.showInfoDialog = false;
   }
 }
 </script>

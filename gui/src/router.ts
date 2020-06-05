@@ -74,8 +74,8 @@ const router = new Router({
           meta: { requiresAuth: false }
         },
         {
-          path: "license",
-          name: "license",
+          path: "gdpr",
+          name: "gdpr",
           component: EosLicense,
           meta: { requiresAuth: false }
         },
