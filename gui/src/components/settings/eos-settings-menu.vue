@@ -18,9 +18,9 @@
       :menuItems="subMenuItems"
       @clickFunctionHandler="clickHandler"
     ></eos-menu-list>
-    </div>
+  </div>
 </template>
- <script lang="ts">
+<script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import EosMenuList from "../widgets/eos-menu-list.vue";
 
@@ -41,39 +41,25 @@ export default class EosSettingsMenu extends Vue {
       requiredSubAccess: "update"
     },
     {
-      title: "Management network",
-      actionName: "Manage",
-      actionClickFunction: "goToManagementNetwork",
-      disabled: false,
-      requiredAccess: "maintenance",
-    },
-    {
-      title: "Data network",
-      actionName: "Manage",
-      actionClickFunction: "goToDataNetwork",
-      disabled: false,
-      requiredAccess: "maintenance",
-    },
-    {
       title: "DNS",
       actionName: "Manage",
       actionClickFunction: "goToDNS",
       disabled: false,
-      requiredAccess: "maintenance",
+      requiredAccess: "maintenance"
     },
     {
       title: "NTP",
       actionName: "Manage",
       actionClickFunction: "goToNTP",
       disabled: false,
-      requiredAccess: "maintenance",
+      requiredAccess: "maintenance"
     },
     {
       title: "SSL Certificate",
       actionName: "Manage",
       actionClickFunction: "goToSSL",
       disabled: false,
-      requiredAccess: "maintenance",
+      requiredAccess: "maintenance"
     }
   ];
   private goToNotifications() {
