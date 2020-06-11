@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-set -x
 BUILD_START_TIME=$(date +%s)
 BASE_DIR=$(realpath "$(dirname $0)/..")
 PROG_NAME=$(basename $0)
@@ -79,7 +78,7 @@ cd $BASE_DIR
 [ -z "$KEY" ] && KEY="cortx@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
-INTEGRATION=false
+[ -z "$INTEGRATION" ] && INTEGRATION=false
 [ -z "$DEV" ] && DEV=false
 [ -z "$QA" ] && QA=false
 
@@ -190,11 +189,6 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cp -R $BASE_DIR/src/web $GUI_DIR/
     cp -R $CONF/service/csm_web.service $GUI_DIR/conf/service/
     cp -R $BASE_DIR/src/eos/gui/.env $GUI_DIR/eos/gui/.env
-    echo "CONF===> $CONF"
-    echo "BASE_DIR===> $BASE_DIR"
-    echo "TMPDIR===> $TMPDIR"
-    echo "DIST===> $DIST"
-    echo "GUI_DIR===> $GUI_DIR"
     echo "Running Web Build"
     cd $GUI_DIR/web/
     npm install --production
