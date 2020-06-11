@@ -97,6 +97,7 @@ TMPDIR="$DIST/tmp"
 mkdir -p $TMPDIR
 
 CONF=$BASE_DIR/src/conf/
+
 cp $BASE_DIR/jenkins/csm_agent.spec $BASE_DIR/jenkins/csm_web.spec $TMPDIR
 COPY_END_TIME=$(date +%s)
 
@@ -189,7 +190,11 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cp -R $BASE_DIR/src/web $GUI_DIR/
     cp -R $CONF/service/csm_web.service $GUI_DIR/conf/service/
     cp -R $BASE_DIR/src/eos/gui/.env $GUI_DIR/eos/gui/.env
-
+    echo "CONF===> $CONF"
+    echo "BASE_DIR===> $BASE_DIR"
+    echo "TMPDIR===> $TMPDIR"
+    echo "DIST===> $DIST"
+    echo "GUI_DIR===> $GUI_DIR"
     echo "Running Web Build"
     cd $GUI_DIR/web/
     npm install --production
