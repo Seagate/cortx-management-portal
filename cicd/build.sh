@@ -223,7 +223,7 @@ sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
     -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
 
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/schema/commands.yaml
-sed -i -e "s|<EOS_PATH>|${EOS_PATH}|g" $DIST/csm/schema/commands.yaml
+sed -i -e "s|<COMPONENTS_PATH>|${COMPONENTS_PATH}|g" $DIST/csm/schema/commands.yaml
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service
