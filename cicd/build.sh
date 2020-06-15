@@ -6,8 +6,9 @@ BASE_DIR=$(realpath "$(dirname $0)/..")
 PROG_NAME=$(basename $0)
 DIST=$(realpath $BASE_DIR/dist)
 API_DIR="$BASE_DIR/src/web"
-CSM_PATH="/opt/seagate/eos/csm"
-EOS_PATH="/opt/seagate/eos"
+CSM_PATH="/opt/seagate/cortx/csm"
+COMPONENTS_PATH="/opt/seagate/cortx/"
+CORTX_PATH="/opt/seagate/cortx/"
 DEBUG="DEBUG"
 INFO="INFO"
 PROVISIONER_CONFIG_PATH="/opt/seagate/eos-prvsnr/generated_configs"
@@ -25,7 +26,7 @@ Options:
     -v : Build rpm with version
     -b : Build rpm with build number
     -k : Provide key for encryption of code
-    -p : Provide product name default eos
+    -p : Provide product name default cortx
     -c : Build rpm for [all|backend|frontend]
     -t : Build rpm with test plan
     -d : Build dev env
@@ -74,8 +75,8 @@ cd $BASE_DIR
 [ -z $"$BUILD" ] && BUILD="$(git rev-parse --short HEAD)" \
         || BUILD="${BUILD}_$(git rev-parse --short HEAD)"
 [ -z "$VER" ] && VER=$(cat $BASE_DIR/VERSION)
-[ -z "$PRODUCT" ] && PRODUCT="eos"
-[ -z "$KEY" ] && KEY="eos@ees@csm@pr0duct"
+[ -z "$PRODUCT" ] && PRODUCT="cortx"
+[ -z "$KEY" ] && KEY="cortx@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
 [ -z "$INTEGRATION" ] && INTEGRATION=false
@@ -96,6 +97,7 @@ TMPDIR="$DIST/tmp"
 mkdir -p $TMPDIR
 
 CONF=$BASE_DIR/src/conf/
+
 cp $BASE_DIR/jenkins/csm_agent.spec $BASE_DIR/jenkins/csm_web.spec $TMPDIR
 COPY_END_TIME=$(date +%s)
 
@@ -188,7 +190,6 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cp -R $BASE_DIR/src/web $GUI_DIR/
     cp -R $CONF/service/csm_web.service $GUI_DIR/conf/service/
     cp -R $BASE_DIR/src/eos/gui/.env $GUI_DIR/eos/gui/.env
-
     echo "Running Web Build"
     cd $GUI_DIR/web/
     npm install --production
@@ -222,7 +223,7 @@ sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
     -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
 
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/schema/commands.yaml
-sed -i -e "s|<EOS_PATH>|${EOS_PATH}|g" $DIST/csm/schema/commands.yaml
+sed -i -e "s|<COMPONENTS_PATH>|${COMPONENTS_PATH}|g" $DIST/csm/schema/commands.yaml
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service
