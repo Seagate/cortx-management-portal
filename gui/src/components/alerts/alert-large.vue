@@ -87,7 +87,7 @@
               />
             </span>
           </th>
-          <th class="tableheader">Action</th>
+          <th class="tableheader" style="min-width: 90px;">Action</th>
         </tr>
       </template>
       <template v-slot:item="props">
@@ -173,7 +173,7 @@
               class="eos-status-chip eos-chip-others"
             ></div>
           </td>
-          <td>{{ props.item.description ? props.item.description : "--" }}</td>
+          <td v-eos-alert-tbl-description="props.item.description"></td>
           <td>
             <img
               :src="require('@/assets/zoom-in.svg')"
@@ -222,10 +222,12 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
 import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
 import EosAlertComments from "./alert-comments.vue";
+import { alertTblDescriptionDirective } from "./alert-description-directive";
 
 @Component({
   name: "eos-alert-large",
-  components: { EosTabs, EosAlertComments }
+  components: { EosTabs, EosAlertComments },
+  directives: { "eos-alert-tbl-description": alertTblDescriptionDirective }
 })
 export default class EosAlertLarge extends Mixins(AlertsMixin) {
   public isShowCommentsDialog: boolean = false;

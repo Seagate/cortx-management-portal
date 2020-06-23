@@ -109,7 +109,7 @@
               class="eos-status-chip eos-chip-others"
             ></div>
             </td>
-            <td>{{props.item.description ? props.item.description : "--"}}</td>
+            <td v-eos-alert-tbl-description="props.item.description"></td>
           </tr>
         </template>
       </v-data-table>
@@ -120,10 +120,12 @@
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
 import EosHealthSummary from "../system/health-summary.vue";
+import { alertTblDescriptionDirective } from "./alert-description-directive";
 
 @Component({
   name: "eos-alert-medium",
-  components: { EosHealthSummary }
+  components: { EosHealthSummary },
+  directives: { "eos-alert-tbl-description": alertTblDescriptionDirective }
 })
 export default class EosAlertMedium extends Mixins(AlertsMixin) {
   public async mounted() {
