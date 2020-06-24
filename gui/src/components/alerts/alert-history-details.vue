@@ -104,7 +104,7 @@
             <label>{{ event_detail.name }}</label>
           </div>
           <div class="pa-2">
-            <label>Reason: {{ event_detail.event_reason }}</label>
+            <label v-eos-alert-detail-description="event_detail.event_reason"></label>
             <span
               v-if="event_detail.event_recommendation.length > 0"
               @click="event_detail.showRecommendation = !event_detail.showRecommendation"
@@ -158,6 +158,8 @@ import EosAlertComments from "./alert-comments.vue";
 import EosAlertOccurrences from "./alert-occurrences.vue";
 import EosAlertRelated from "./alert-related.vue";
 import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
+import { alertDetailDescriptionDirective } from "./alert-description-directive";
+
 @Component({
   name: "alert-history",
   components: {
@@ -166,7 +168,8 @@ import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
     EosAlertOccurrences,
     EosAlertRelated,
     EosTabs
-  }
+  },
+  directives: { "eos-alert-detail-description": alertDetailDescriptionDirective }
 })
 export default class EosAlertHistory extends Vue {
   public alertId: string = "";
