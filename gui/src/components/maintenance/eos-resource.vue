@@ -18,8 +18,7 @@
       <label
         id="system-maintenance-title"
         class="eos-text-lg mt-2 font-weight-bold"
-        >System maintenance</label
-      >
+      >System maintenance</label>
     </div>
     <v-container>
       <div class="body-2">
@@ -30,8 +29,7 @@
                 class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-                >Start service:
-              </label>
+              >Start service:</label>
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
               <eos-dropdown
@@ -48,9 +46,7 @@
                 class="eos-btn-primary"
                 :disabled="!resourceState.offline.length || !resource.start"
                 @click="startSelectedResource()"
-              >
-                Apply
-              </button>
+              >Apply</button>
             </v-col>
           </v-row>
           <v-row class="mt-5 row-container" align="center" no-gutters>
@@ -59,8 +55,7 @@
                 class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-                >Stop service:
-              </label>
+              >Stop service:</label>
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
               <div>
@@ -79,19 +74,16 @@
                 class="eos-btn-primary"
                 :disabled="!resourceState.online.length >= 1 || !resource.stop"
                 @click="stopSelectedResource()"
-              >
-                Apply
-              </button>
+              >Apply</button>
             </v-col>
           </v-row>
-          <v-row class="mt-5 row-container" align="center" no-gutters>
+          <v-row class="mt-5 row-container" align="center" no-gutters hidden>
             <v-col col="3" lg="3">
               <label
                 class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-                >Shutdown:
-              </label>
+              >Shutdown:</label>
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
               <eos-dropdown
@@ -108,9 +100,7 @@
                 class="eos-btn-primary"
                 :disabled="!resource.shutdown"
                 @click="shutdownSelectedResource()"
-              >
-                Apply
-              </button>
+              >Apply</button>
             </v-col>
           </v-row>
         </v-card>
@@ -131,11 +121,9 @@
         severity="info"
         @closeDialog="closeInfoDialog"
         confirmButtonText="Okay"
-        cancelButtonText=""
+        cancelButtonText
       ></eos-confirmation-dialog>
-      <div class="eos-text-primary mt-2">
-        {{ actionMessage }}
-      </div>
+      <div class="eos-text-primary mt-2">{{ actionMessage }}</div>
     </v-container>
   </div>
 </template>
@@ -155,7 +143,8 @@ export default class EosMaintenance extends Vue {
       resource: {
         stop: "",
         start: "",
-        shutdown: ""
+        shutdown: "",
+        hidden: true
       },
       actionMethod: "",
       resourceState: {
@@ -221,7 +210,7 @@ export default class EosMaintenance extends Vue {
         .then((res: any) => {
           if (res) {
             if (res.message) {
-            this.$data.actionMessage = res.message;
+              this.$data.actionMessage = res.message;
             }
             if (res.showInfo) {
               this.$data.showInfoDialog = true;
