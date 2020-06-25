@@ -1,10 +1,8 @@
 <template>
   <v-container class="white pa-0 ma-0" fluid>
     <div height="70em" class="pl-10 py-3 col-12 black">
-     <img
-        :src="require('@/assets/seagate-green.svg/')"
-      />
-     <div class="eos-brand-div">
+      <img :src="require('@/assets/seagate-green.svg/')" />
+      <div class="eos-brand-div">
         <img class="ml-3" :src="require('@/assets/lyve-drive-green.svg/')" />
         <span class="ml-1 eos-brand-label">RACK</span>
       </div>
@@ -28,7 +26,7 @@
             <div
               class="eos-form-group"
               :class="{
-                'eos-form-group--error': $v.createAccount.username.$error
+                'eos-form-group--error': $v.createAccount.username.$error,
               }"
             >
               <label
@@ -72,7 +70,7 @@
             <div
               class="eos-form-group"
               :class="{
-                'eos-form-group--error': $v.createAccount.password.$error
+                'eos-form-group--error': $v.createAccount.password.$error,
               }"
             >
               <label
@@ -116,7 +114,8 @@
             <div
               class="eos-form-group"
               :class="{
-                'eos-form-group--error': $v.createAccount.confirmPassword.$error
+                'eos-form-group--error':
+                  $v.createAccount.confirmPassword.$error,
               }"
             >
               <label
@@ -167,15 +166,17 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { UserLoginQueryParam } from "./../../models/user-login";
 import { Validations } from "vuelidate-property-decorators";
 import { required, sameAs } from "vuelidate/lib/validators";
+import { Api } from "../../services/api";
+import apiRegister from "../../services/api-register";
 import {
   accountNameRegex,
   passwordRegex,
   passwordTooltipMessage,
-  usernameTooltipMessage
+  usernameTooltipMessage,
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
 @Component({
-  name: "eos-admin-user"
+  name: "eos-admin-user",
 })
 export default class EosAdminUser extends Vue {
   @Validations()
@@ -184,52 +185,50 @@ export default class EosAdminUser extends Vue {
       username: { required, accountNameRegex },
       password: { required, passwordRegex },
       confirmPassword: {
-        sameAsPassword: sameAs("password")
-      }
-    }
+        sameAsPassword: sameAs("password"),
+      },
+    },
   };
   private data() {
     return {
       createAccount: {
         username: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
       },
       isValidResponse: true,
       invalidMessage: "",
       createUserInProgress: false,
       passwordTooltipMessage,
-      usernameTooltipMessage
+      usernameTooltipMessage,
     };
   }
-  private gotToNextPage() {
+  private async gotToNextPage() {
     const queryParams: UserLoginQueryParam = {
       username: this.$data.createAccount.username,
-      password: this.$data.createAccount.password
+      password: this.$data.createAccount.password,
     };
     this.$data.isValidResponse = true;
     this.$data.createUserInProgress = true;
     this.$data.invalidMessage = "";
 
     this.$store.dispatch("systemConfig/showLoader", "Creating admin user...");
-
-    this.$store
-      .dispatch("userLogin/createUserAction", queryParams)
-      .then((res: any) => {
-        if (res) {
-          this.$router.push({ name: "preboarding-login" });
-        } else {
-          throw new Error("Create admin user failed");
-        }
-      })
-      .catch((e: any) => {
-        this.$data.isValidResponse = false;
-        this.$data.invalidMessage = e.message;
-      })
-      .finally(() => {
-        this.$data.createUserInProgress = false;
-        this.$store.dispatch("systemConfig/hideLoader");
+    try {
+      const res = await Api.post(apiRegister.create_user, queryParams, {
+        timeout: 60000,
       });
+      if (res) {
+        this.$router.push({ name: "preboarding-login" });
+      } else {
+        throw new Error("Create admin user failed");
+      }
+    } catch (error) {
+      this.$data.isValidResponse = false;
+      this.$data.invalidMessage = error.data.message_text;
+    } finally {
+      this.$data.createUserInProgress = false;
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
   }
   private handleEnterEvent() {
     if (
@@ -242,6 +241,7 @@ export default class EosAdminUser extends Vue {
   }
 }
 </script>
+
 
 <style lang="scss" scoped>
 .eos-form__input_text {
