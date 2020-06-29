@@ -10,14 +10,12 @@
     "strictPropertyInitialization": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    "sourceMap": true,    
     "resolveJsonModule": true,
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "vuetify",
-      "webpack",
-      "webpack-env"
+      "vuetify"
     ],
     "paths": {
       "@/*": [

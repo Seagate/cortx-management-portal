@@ -26,7 +26,6 @@ import { userPermissions as userPermissionsMap } from "./common/user-permissions
 import EosInfoTooltip from "./components/widgets/eos-info-tooltip.vue";
 import EosConfirmationDialog from "./components/widgets/eos-confirmation-dialog.vue";
 import EosDropdown from "./components/widgets/dropdown/eos-dropdown-view.vue";
-import i18n from './i18n'
 
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
@@ -70,6 +69,5 @@ new Vue({
   router,
   store,
   vuetify,
-  i18n,
   render: h => h(App)
 }).$mount("#app");
