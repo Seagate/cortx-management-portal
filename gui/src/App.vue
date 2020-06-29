@@ -22,6 +22,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Loader from "./components/widgets/loader.vue";
+import i18n from "./i18n";
 
 @Component({
   name: "App",

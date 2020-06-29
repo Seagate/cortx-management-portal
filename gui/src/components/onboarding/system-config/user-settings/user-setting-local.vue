@@ -1,18 +1,16 @@
 <template>
   <div class="eos-p-2 body-2">
     <div class="title mt-2 font-weight-bold" id="lblLocalSetting">
-      User settings: Local
+      {{ $t("provisioning.users.user-setting") }}
     </div>
     <div class="mt-1" id="lblLocalMsgConfig">
-      Manage users. Depending on the user role, you can create, modify, and
-      delete users. You can also change the password for the admin user.
+      {{ $t("provisioning.users.description") }}
     </div>
     <div class="mt-1">
-      A role is a collection of permissions granted to a user.
+      {{ $t("provisioning.users.user-setting-description") }}
     </div>
     <div class="mt-1">
-      Note: Only admin user can create and delete users and change the password
-      of the admin user.
+      {{ $t("provisioning.users.user-setting-note") }}
     </div>
     <v-divider class="mt-2" />
     <v-card class="col-10 pb-5 mt-10 elevation-0" outlined tile>
@@ -122,9 +120,9 @@
             </div>
           </v-col>
           <v-col>
-            <div class="mb-3">Roles</div>
+            <div class="mb-3">{{ $t("provisioning.users.roles") }}</div>
             <label class="eos-rdb-container">
-              Manage
+              {{ $t("provisioning.users.manage") }}
               <input
                 type="radio"
                 v-model="checkedRoles"
@@ -136,7 +134,7 @@
             </label>
             <br />
             <label class="eos-rdb-container mt-2">
-              Monitor
+               {{ $t("provisioning.users.monitor") }}
               <input
                 type="radio"
                 v-model="checkedRoles"
@@ -159,7 +157,7 @@
           @click="addUser()"
           id="btnLocalAddNewUser"
         >
-          Add new user
+         {{ $t("provisioning.users.add-new-user") }}
         </button>
         <button
           v-if="isUserCreate"
@@ -169,7 +167,7 @@
           id="btnLocalCreateUser"
           :disabled="$v.createAccount.$invalid || !checkedRoles"
         >
-          Create
+          {{ $t("provisioning.users.create-btn") }}
         </button>
         <button
           v-if="isUserCreate"
@@ -178,7 +176,7 @@
           @click="addUser()"
           id="lblLocalCancel"
         >
-          Cancel
+          {{ $t("provisioning.users.cancel-btn") }}
         </button>
       </eos-has-access>
 
@@ -565,6 +563,7 @@ import {
 import { EVENT_BUS } from "./../../../../main";
 import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
+import i18n from "./../../../../i18n";
 
 @Component({
   name: "eos-user-setting-local"
@@ -638,7 +637,9 @@ export default class EosUserSettingLocal extends Vue {
       passwordTooltipMessage,
       usernameTooltipMessage,
       loggedInUserName: localStorage.getItem("username"),
-      selectedItem: { password: "", old_password: "", confirmPassword: "" }
+      selectedItem: { password: "", old_password: "", confirmPassword: "" },
+      fetchingUsersMessage: i18n.t("provisioning.users.fetching-users-msg"),
+
     };
   }
 
@@ -769,7 +770,7 @@ export default class EosUserSettingLocal extends Vue {
     return item.roles.includes("admin");
   }
   private async getUserData() {
-    this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
+    this.$store.dispatch("systemConfig/showLoader", this.$data.fetchingUsersMessage);
 
     try {
       const res = await Api.getAll(apiRegister.csm_user);
