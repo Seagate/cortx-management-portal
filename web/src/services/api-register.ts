@@ -40,6 +40,7 @@ export default {
   node_stop: `/api/${version}/maintenance/cluster/stop`,
   node_start: `/api/${version}/maintenance/cluster/start`,
   node_shutdown: `/api/${version}/maintenance/cluster/shutdown`,
+  node_replace: `/api/${version}/maintenance/replace_node`,
   health_summary: `/api/${version}/system/health/summary`,
   health_view: `/api/${version}/system/health/view`,
   node_health: `/api/${version}/system/health/node`,
