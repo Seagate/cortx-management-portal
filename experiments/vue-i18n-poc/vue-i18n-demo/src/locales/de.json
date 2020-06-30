@@ -1,0 +1,21 @@
+{
+    "provisioning": {
+      "users": {
+        "welcome": "Willkommen zur Vue-i18n Demo",
+        "user-setting": "Benutzereinstellungen: Lokal",
+        "description": "CSM-Benutzer verwalten",
+        "add-new-user": "Neuen Benutzer hinzufügen",
+        "roles": "Rollen",
+        "manage": "Verwalten",
+        "monitor": "Monitor",
+        "create-btn": "Erstellen",
+        "cancel-btn": "Stornieren",
+        "message": "Prüfung",
+        "createUserMsg": "Benutzer erstellen ...",
+        "user-setting-description": "Eine Rolle ist eine Sammlung von Berechtigungen, die einem Benutzer erteilt wurden.",
+        "user-setting-note": "Hinweis: Nur Administratorbenutzer können Benutzer erstellen und löschen und das Kennwort des Administratorbenutzers ändern.",
+        "fetching-users-msg": "Benutzer abrufen..."
+      }
+    }
+  }
+  

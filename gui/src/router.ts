@@ -105,10 +105,6 @@ const router = new Router({
       meta: { requiresAuth: true },
       children: [
         {
-          path: "",
-          redirect: "dashboard"
-        },
-        {
           path: "dashboard",
           name: "dashboard",
           component: Dashboard,
@@ -408,6 +404,21 @@ router.beforeEach(async (to, from, next) => {
       try {
         await store.dispatch("userLogin/getUserPermissionsAction");
         const routerApp: any = router.app.$root;
+        if (to.path === "/" && token) {
+
+          if (routerApp.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) {
+            next({ path: "dashboard" });
+          }
+          if (!routerApp.$hasAccessToCsm(userPermissions.stats + userPermissions.list) &&
+            routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
+            next({ path: "/provisioning/s3" });
+          }
+        }
+
+
+
+
+
         if (
           to.meta.requiredAccess &&
           !routerApp.$hasAccessToCsm(to.meta.requiredAccess)

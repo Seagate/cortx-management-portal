@@ -14,6 +14,7 @@ import audit from "./audit/routes";
 import firmware from "./firmware/routes";
 import ssl from "./ssl/routes";
 import software from "./software/routes";
+import about from "./about/routes";
 
 export default [
     ...loginRoutes,
@@ -32,4 +33,5 @@ export default [
     ...firmware,
     ...ssl,
     ...software,
+    ...about
 ];

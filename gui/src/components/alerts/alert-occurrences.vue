@@ -105,7 +105,7 @@
               class="eos-status-chip eos-chip-others"
             ></div>
           </td>
-          <td>{{props.item.description ? props.item.description : "--"}}</td>
+          <td v-eos-alert-tbl-description="props.item.description"></td>
           <td>
             <img
               :src="require('@/assets/zoom-in.svg')"
@@ -125,9 +125,11 @@ import EosHealthSummary from "../system/health-summary.vue";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { AlertQueryParam, AlertObject } from "./../../models/alert";
+import { alertTblDescriptionDirective } from "./alert-description-directive";
+
 @Component({
   name: "eos-alert-occurrences",
-  components: {}
+  directives: { "eos-alert-tbl-description": alertTblDescriptionDirective }
 })
 export default class EosAlertOccurrences extends Vue {
   public alertObject: AlertObject = {} as AlertObject;
