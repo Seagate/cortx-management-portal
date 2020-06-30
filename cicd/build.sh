@@ -102,7 +102,7 @@ COPY_END_TIME=$(date +%s)
 ################### Dependency ##########################
 
 # install dependency
-bash -x $BASE_DIR/jenkins/cicd/csm_dep.sh $DEV
+bash -x "$BASE_DIR/jenkins/cicd/csm_dep.sh" "$DEV"
 
 ################### Backend ##############################
 
@@ -139,8 +139,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
 
     sed -i -e "s|<PRODUCT>|${PRODUCT}|g" \
         -e "s|<CSM_PATH>|${TMPDIR}/csm|g" ${PYINSTALLER_FILE}
-    python3 -m PyInstaller --clean -y --distpath ${DIST}/csm --key ${KEY} ${PYINSTALLER_FILE}
-
+    python3 -m PyInstaller --clean -y --distpath "${DIST}/csm" --key "${KEY}" "${PYINSTALLER_FILE}"
     CORE_BUILD_END_TIME=$(date +%s)
 fi
 
