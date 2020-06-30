@@ -22,6 +22,7 @@ process.on("unhandledRejection", e => {
 });
 
 const router = express();
+router.use('/public', express.static('public'));
 router.use(cors());
 applyMiddleware(middleware, router);
 applyRoutes(routes, router);
