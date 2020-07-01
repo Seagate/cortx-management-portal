@@ -11,7 +11,7 @@ COMPONENTS_PATH="/opt/seagate/cortx/"
 CORTX_PATH="/opt/seagate/cortx/"
 DEBUG="DEBUG"
 INFO="INFO"
-PROVISIONER_CONFIG_PATH="/opt/seagate/eos-prvsnr/generated_configs"
+PROVISIONER_CONFIG_PATH="/opt/seagate/cortx/provisioner/generated_configs"
 
 usage() {
     echo """
