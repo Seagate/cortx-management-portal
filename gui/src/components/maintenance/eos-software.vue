@@ -1,20 +1,30 @@
 <template>
   <div>
-    <div class="eos-text-lg eos-text-bold" id="lblUpdateHotfix">Update software</div>
-    <div class="mt-3" id="lblSoftwareUploadmsg">
-      Update the software. Upload the software bundle file (.iso) received from Seagate.
-      <br />
-Click Start update once the bundle file is uploaded successfully. After the software update, you must login again.
+    <div class="eos-text-lg eos-text-bold" id="lblUpdateHotfix">
+      Update software
     </div>
-    <div class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md" v-if="lastUpgradeStatus">
+    <div class="mt-3" id="lblSoftwareUploadmsg">
+      Update the software. Upload the software bundle file (.iso) received from
+      Seagate.
+      <br />
+      Click Start update once the bundle file is uploaded successfully. After
+      the software update, you must login again.
+    </div>
+    <div
+      class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md"
+      v-if="lastUpgradeStatus"
+    >
       <table>
         <tr>
           <td style="width: 180px;">
             <label class="eos-text-bold">Last update status:</label>
           </td>
           <td style="padding-top: 2px;">
-            <label>{{ lastUpgradeStatus.status ? lastUpgradeStatus.status.toUpperCase(): "Not available" }}</label>
-
+            <label>{{
+              lastUpgradeStatus.status
+                ? lastUpgradeStatus.status.toUpperCase()
+                : "Not available"
+            }}</label>
           </td>
         </tr>
         <tr v-if="lastUpgradeStatus.version">
@@ -42,14 +52,18 @@ Click Start update once the bundle file is uploaded successfully. After the soft
         class="eos-btn-primary"
         @click="showUploadForm = true"
         :disabled="!canInstallHotfix"
-      >Upload new software file</button>
+      >
+        Upload new software file
+      </button>
       <button
         id="btnStartUpgrade"
         type="button"
         class="ml-5 eos-btn-primary"
         @click="startUpgrade()"
         :disabled="!isPackageAvailable"
-      >Start update</button>
+      >
+        Start update
+      </button>
     </div>
     <div v-else>
       <input
@@ -75,13 +89,17 @@ Click Start update once the bundle file is uploaded successfully. After the soft
         class="mt-3 eos-btn-primary"
         @click="uploadHotfixPackage()"
         :disabled="!hotfixPackage"
-      >Upload</button>
+      >
+        Upload
+      </button>
       <button
         id="btnCancelInstallHotfix"
         type="button"
         class="mt-3 ml-5 eos-btn-secondary"
         @click="closeUploadForm()"
-      >Cancel</button>
+      >
+        Cancel
+      </button>
     </div>
   </div>
 </template>
@@ -91,7 +109,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-hotfix"
+  name: "eos-hotfix",
 })
 export default class EosHotfix extends Vue {
   public lastUpgradeStatus: any = null;
@@ -101,7 +119,7 @@ export default class EosHotfix extends Vue {
   public hotfixPackage: File | null = null;
   public hotfixPackageFormValidation: any = {
     isDirty: false,
-    isValid: false
+    isValid: false,
   };
 
   public async mounted() {
@@ -146,13 +164,13 @@ export default class EosHotfix extends Vue {
         const res = await Api.uploadFile(apiRegister.hotfix_upload, formData);
       } catch (error) {
         let errorMessage = "No response, please check the upload status";
-        if (error && error.error && error.error.message) {
-          errorMessage = error.message;
+        if (error && error.error && error.data.message) {
+          errorMessage = error.data.message;
         }
         throw {
           error: {
-            message: errorMessage
-          }
+            message: errorMessage,
+          },
         };
       } finally {
         this.closeUploadForm();
