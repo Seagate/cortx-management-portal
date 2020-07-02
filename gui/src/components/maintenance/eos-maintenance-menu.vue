@@ -63,6 +63,13 @@ export default class EosMaintenanceMenu extends Vue {
       actionClickFunction: "goToAuditLog",
       disabled: false,
       requiredAccess: "auditlog"
+    },
+    {
+      title: "Node replacement",
+      actionName: "Manage",
+      actionClickFunction: "goToNodeReplacement",
+      disabled: false,
+      requiredAccess: "replace_node"
     }
   ];
   private goToSystemMaintenance() {
@@ -79,6 +86,9 @@ export default class EosMaintenanceMenu extends Vue {
   }
   private goToAbout() {
     this.$router.push({ name: "about" });
+  }
+  private goToNodeReplacement() {
+    this.$router.push({ name: "node_replacement" });
   }
   private clickFunctionHandler(actionClickFunction: string) {
     const vueInstance: any = this;

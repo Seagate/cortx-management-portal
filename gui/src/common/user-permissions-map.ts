@@ -11,5 +11,6 @@ export const userPermissions = {
   alerts: "alerts",
   stats: "stats",
   auditlog: "auditlog",
-  maintenance: "maintenance"
+  maintenance: "maintenance",
+  replace_node: "replace_node"
 };
