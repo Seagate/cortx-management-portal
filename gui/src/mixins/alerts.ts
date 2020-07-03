@@ -61,7 +61,8 @@ export default class AlertsMixin extends Vue {
       "systemConfig/showLoader",
       "Fetching alerts..."
     );
-
+    this.alertObject.alerts = [];
+    this.alertObject.total_records = 0;
     const res = await Api.getAll(apiRegister.all_alerts, alertQueryParam);
     if (res && res.data) {
       this.alertObject = res.data;

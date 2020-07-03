@@ -41,6 +41,7 @@ import { userPermissions } from "./common/user-permissions-map";
 import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
 import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
 import EosResource from "./components/maintenance/eos-resource.vue";
+import EosNodeReplacement from "./components/maintenance/eos-node-replacement.vue";
 import EosFirmware from "./components/onboarding/system-config/firmware/firmware.vue";
 import EosNotifications from "./components/settings/notifications-email-setting.vue";
 import EosSoftware from "./components/maintenance/eos-software.vue";
@@ -346,6 +347,16 @@ const router = new Router({
                 requiresAuth: true,
                 requiredAccess:
                   userPermissions.maintenance + userPermissions.list
+              }
+            },
+            {
+              path: "node_replacement",
+              name: "node_replacement",
+              component: EosNodeReplacement,
+              meta: {
+                requiresAuth: true,
+                requiredAccess:
+                  userPermissions.replace_node + userPermissions.create
               }
             }
           ]

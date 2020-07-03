@@ -21,7 +21,9 @@ import {
   shutdownNode,
   getHealthSummary,
   getHealthView,
-  getNodeHealth
+  getNodeHealth,
+  getNodeReplacementStatus,
+  replaceNode
 } from "./system-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
@@ -130,6 +132,36 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await shutdownNode(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/maintenance/replace_node",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getNodeReplacementStatus(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/maintenance/replace_node",
+    method: "post",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await replaceNode(req, res);
           res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
