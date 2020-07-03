@@ -7,11 +7,10 @@ PROG_NAME=$(basename $0)
 DIST=$(realpath $BASE_DIR/dist)
 API_DIR="$BASE_DIR/src/web"
 CSM_PATH="/opt/seagate/cortx/csm"
-COMPONENTS_PATH="/opt/seagate/cortx/"
 CORTX_PATH="/opt/seagate/cortx/"
 DEBUG="DEBUG"
 INFO="INFO"
-PROVISIONER_CONFIG_PATH="/opt/seagate/cortx/provisioner/generated_configs"
+PROVISIONER_CONFIG_PATH="${CORTX_PATH}provisioner/generated_configs"
 
 usage() {
     echo """
@@ -189,7 +188,7 @@ sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
     -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
 
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/schema/commands.yaml
-sed -i -e "s|<COMPONENTS_PATH>|${COMPONENTS_PATH}|g" $DIST/csm/schema/commands.yaml
+sed -i -e "s|<CORTX_PATH>|${CORTX_PATH}|g" $DIST/csm/schema/commands.yaml
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service
