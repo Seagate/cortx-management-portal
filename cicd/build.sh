@@ -101,6 +101,11 @@ CONF=$BASE_DIR/src/conf/
 cp $BASE_DIR/jenkins/csm_agent.spec $BASE_DIR/jenkins/csm_web.spec $TMPDIR
 COPY_END_TIME=$(date +%s)
 
+################### Dependency ##########################
+
+# install dependency
+bash -x "$BASE_DIR/jenkins/cicd/csm_dep.sh" "$DEV"
+
 ################### Backend ##############################
 
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
@@ -116,42 +121,6 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     mkdir -p $DIST/csm/lib $DIST/csm/bin $DIST/csm/conf $TMPDIR/csm
     cp -rs $BASE_DIR/src/* $TMPDIR/csm
     cp -rs $BASE_DIR/test/ $TMPDIR/csm
-
-    # Setup Python virtual environment
-    VENV="${TMPDIR}/venv"
-    if [ -d "${VENV}/bin" ]; then
-        echo "Using existing Python virtual environment..."
-    else
-        echo "Setting up Python 3.6 virtual environment..."
-        python3.6 -m venv "${VENV}"
-    fi
-    source "${VENV}/bin/activate"
-    python --version
-    pip install --upgrade pip
-    pip install pyinstaller==3.5
-
-    # Check python package
-    req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
-    echo "Installing python packages..."
-    pip install -r $req_file || {
-        echo "Unable to install package from $req_file"; exit 1;
-    };
-    # Solving numpy libgfortran-ed201abd.so.3.0.0 dependency problem
-    pip uninstall -y numpy
-    pip install numpy --no-binary :all:
-
-    echo " $BASE_DIR $DIST"
-    [ "$DEV" == true ] && {
-        echo """
-        ******* Create Dev env *********
-        Follow Instruction for Dev env
-            Copy $BASE_DIR/cli/schema to /opt/seagate/csm/cli
-            Copy $BASE_DIR/schema to /opt/seagate/csm/
-            Copy $BASE_DIR/src/conf/etc/csm/ to /etc/csm/
-        Dev env is created at $DIST/tmp/csm
-        """  1>&2;
-        exit
-    }
 
     CONF=$BASE_DIR/src/conf/
     cp -R $BASE_DIR/schema $DIST/csm/
@@ -172,10 +141,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
 
     sed -i -e "s|<PRODUCT>|${PRODUCT}|g" \
         -e "s|<CSM_PATH>|${TMPDIR}/csm|g" ${PYINSTALLER_FILE}
-    pyinstaller --clean -y --distpath ${DIST}/csm --key ${KEY} ${PYINSTALLER_FILE}
-
-    deactivate
-
+    python3 -m PyInstaller --clean -y --distpath "${DIST}/csm" --key "${KEY}" "${PYINSTALLER_FILE}"
     CORE_BUILD_END_TIME=$(date +%s)
 fi
 
