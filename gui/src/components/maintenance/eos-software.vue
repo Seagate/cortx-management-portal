@@ -137,6 +137,7 @@ export default class EosHotfix extends Vue {
       this.$data.isPackageAvailable = true;
     }
     if (this.lastUpgradeStatus.status === "in_progress") {
+      this.$data.isPackageAvailable = false;
       this.$data.canInstallHotfix = false;
     }
     this.$store.dispatch("systemConfig/hideLoader");

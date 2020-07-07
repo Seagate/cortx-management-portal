@@ -74,3 +74,19 @@ export const startNode = async (req: Request, res: Response) => {
 export const shutdownNode = async (req: Request, res: Response) => {
   return await Api.post(apiRegister.node_shutdown, req, res);
 };
+/**
+ * This is responsible to get node replacement status.
+ * @param req
+ * @param res
+ */
+export const getNodeReplacementStatus = async (req: Request, res: Response) => {
+  return await Api.getAll(apiRegister.node_replace, req, res);
+};
+/**
+ * This is responsible to replace node.
+ * @param req
+ * @param res
+ */
+export const replaceNode = async (req: Request, res: Response) => {
+  return await Api.post(apiRegister.node_replace, req, res);
+};

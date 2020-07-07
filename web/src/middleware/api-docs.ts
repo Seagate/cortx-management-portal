@@ -4,6 +4,10 @@ import swaggerDocument from "../config/swagger.json";
 import clientSwaggerDocument from "../config/client_swagger.json";
 
 export const handleAPIDocs = (router: Router) => {
-  router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-  router.use("/client-api-docs", swaggerUi.serve, swaggerUi.setup(clientSwaggerDocument));
+  const options = {
+    customCssUrl: '/public/custom.css',
+    customJs: '/public/custom.js'
+  };
+  router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+  router.use("/client-api-docs", swaggerUi.serve, swaggerUi.setup(clientSwaggerDocument, options));
 }

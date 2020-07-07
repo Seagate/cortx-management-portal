@@ -16,5 +16,6 @@
   "username": "username",
   "throughput": "throughput",
   "latency": "latency",
-  "iops": "iops"
+  "iops": "iops",
+  "alert": "alert"
 }

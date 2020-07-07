@@ -147,7 +147,8 @@
               style="margin: auto;"
               v-if="
                 props.item.severity === alertStatus.critical ||
-                  props.item.severity === alertStatus.error
+                  props.item.severity === alertStatus.error || 
+                  props.item.severity === alertStatus.alert
               "
               v-bind:title="props.item.severity"
               class="eos-status-chip eos-chip-alert"
@@ -168,8 +169,10 @@
               style="margin: auto;"
               v-if="(props.item.severity !== alertStatus.informational) 
               && (props.item.severity !== alertStatus.warning)
-              && (props.item.severity !== alertStatus.critical && props.item.severity !== alertStatus.error)"
-              title="other"
+              && (props.item.severity !== alertStatus.critical && 
+              props.item.severity !== alertStatus.error 
+              && props.item.severity !== alertStatus.alert)"
+              :title="props.item.severity"
               class="eos-status-chip eos-chip-others"
             ></div>
           </td>
