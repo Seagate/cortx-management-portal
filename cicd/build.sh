@@ -104,7 +104,6 @@ COPY_END_TIME=$(date +%s)
 
 # install dependency
 bash -x "$BASE_DIR/jenkins/cicd/csm_dep.sh" "$DEV"
-
 ################### Backend ##############################
 
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
