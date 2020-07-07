@@ -6,11 +6,11 @@ BASE_DIR=$(realpath "$(dirname $0)/..")
 PROG_NAME=$(basename $0)
 DIST=$(realpath $BASE_DIR/dist)
 API_DIR="$BASE_DIR/src/web"
-CSM_PATH="/opt/seagate/eos/csm"
-EOS_PATH="/opt/seagate/eos"
+CORTX_PATH="/opt/seagate/cortx/"
+CSM_PATH="${CORTX_PATH}csm"
 DEBUG="DEBUG"
 INFO="INFO"
-PROVISIONER_CONFIG_PATH="/opt/seagate/eos-prvsnr/generated_configs"
+PROVISIONER_CONFIG_PATH="${CORTX_PATH}provisioner/generated_configs"
 
 usage() {
     echo """
@@ -25,7 +25,7 @@ Options:
     -v : Build rpm with version
     -b : Build rpm with build number
     -k : Provide key for encryption of code
-    -p : Provide product name default eos
+    -p : Provide product name default cortx
     -c : Build rpm for [all|backend|frontend]
     -t : Build rpm with test plan
     -d : Build dev env
@@ -74,8 +74,8 @@ cd $BASE_DIR
 [ -z $"$BUILD" ] && BUILD="$(git rev-parse --short HEAD)" \
         || BUILD="${BUILD}_$(git rev-parse --short HEAD)"
 [ -z "$VER" ] && VER=$(cat $BASE_DIR/VERSION)
-[ -z "$PRODUCT" ] && PRODUCT="eos"
-[ -z "$KEY" ] && KEY="eos@ees@csm@pr0duct"
+[ -z "$PRODUCT" ] && PRODUCT="cortx"
+[ -z "$KEY" ] && KEY="cortx@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
 [ -z "$INTEGRATION" ] && INTEGRATION=false
@@ -96,9 +96,14 @@ TMPDIR="$DIST/tmp"
 mkdir -p $TMPDIR
 
 CONF=$BASE_DIR/src/conf/
+
 cp $BASE_DIR/jenkins/csm_agent.spec $BASE_DIR/jenkins/csm_web.spec $TMPDIR
 COPY_END_TIME=$(date +%s)
 
+################### Dependency ##########################
+
+# install dependency
+bash -x "$BASE_DIR/jenkins/cicd/csm_dep.sh" "$DEV"
 ################### Backend ##############################
 
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
@@ -114,42 +119,6 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     mkdir -p $DIST/csm/lib $DIST/csm/bin $DIST/csm/conf $TMPDIR/csm
     cp -rs $BASE_DIR/src/* $TMPDIR/csm
     cp -rs $BASE_DIR/test/ $TMPDIR/csm
-
-    # Setup Python virtual environment
-    VENV="${TMPDIR}/venv"
-    if [ -d "${VENV}/bin" ]; then
-        echo "Using existing Python virtual environment..."
-    else
-        echo "Setting up Python 3.6 virtual environment..."
-        python3.6 -m venv "${VENV}"
-    fi
-    source "${VENV}/bin/activate"
-    python --version
-    pip install --upgrade pip
-    pip install pyinstaller==3.5
-
-    # Check python package
-    req_file=$BASE_DIR/jenkins/pyinstaller/requirment.txt
-    echo "Installing python packages..."
-    pip install -r $req_file || {
-        echo "Unable to install package from $req_file"; exit 1;
-    };
-    # Solving numpy libgfortran-ed201abd.so.3.0.0 dependency problem
-    pip uninstall -y numpy
-    pip install numpy --no-binary :all:
-
-    echo " $BASE_DIR $DIST"
-    [ "$DEV" == true ] && {
-        echo """
-        ******* Create Dev env *********
-        Follow Instruction for Dev env
-            Copy $BASE_DIR/cli/schema to /opt/seagate/csm/cli
-            Copy $BASE_DIR/schema to /opt/seagate/csm/
-            Copy $BASE_DIR/src/conf/etc/csm/ to /etc/csm/
-        Dev env is created at $DIST/tmp/csm
-        """  1>&2;
-        exit
-    }
 
     CONF=$BASE_DIR/src/conf/
     cp -R $BASE_DIR/schema $DIST/csm/
@@ -170,10 +139,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
 
     sed -i -e "s|<PRODUCT>|${PRODUCT}|g" \
         -e "s|<CSM_PATH>|${TMPDIR}/csm|g" ${PYINSTALLER_FILE}
-    pyinstaller --clean -y --distpath ${DIST}/csm --key ${KEY} ${PYINSTALLER_FILE}
-
-    deactivate
-
+    python3 -m PyInstaller --clean -y --distpath "${DIST}/csm" --key "${KEY}" "${PYINSTALLER_FILE}"
     CORE_BUILD_END_TIME=$(date +%s)
 fi
 
@@ -188,7 +154,6 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cp -R $BASE_DIR/src/web $GUI_DIR/
     cp -R $CONF/service/csm_web.service $GUI_DIR/conf/service/
     cp -R $BASE_DIR/src/eos/gui/.env $GUI_DIR/eos/gui/.env
-
     echo "Running Web Build"
     cd $GUI_DIR/web/
     npm install --production
@@ -222,7 +187,7 @@ sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
     -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
 
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/schema/commands.yaml
-sed -i -e "s|<EOS_PATH>|${EOS_PATH}|g" $DIST/csm/schema/commands.yaml
+sed -i -e "s|<CORTX_PATH>|${CORTX_PATH}|g" $DIST/csm/schema/commands.yaml
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service

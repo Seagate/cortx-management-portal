@@ -47,6 +47,7 @@ export default {
   node_stop: `/api/${version}/maintenance/cluster/stop`,
   node_start: `/api/${version}/maintenance/cluster/start`,
   node_shutdown: `/api/${version}/maintenance/cluster/shutdown`,
+  node_replace: `/api/${version}/maintenance/replace_node`,
   health_summary: `/api/${version}/system/health/summary`,
   audit_alerts: `/api/${version}/audit_alerts`,
   send_test_email: `/api/${version}/sysconfig_helpers/email_test`,
