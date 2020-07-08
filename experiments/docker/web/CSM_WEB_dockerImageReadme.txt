@@ -4,7 +4,7 @@
 4) Copy the ssl certificate file from csm\jenkins\cicd location to workdir location 
 5) Put the dockerFile on the workdir location
 6) run "docker build --tag csm_web_docker_image ." (it will build the docker image.)
-7) run "docker run  -p 28100:28100 -it csm_web_docker_image /bin/bash" (it will run the docker )
+7) run "docker run  -p 28100:28100 --network="host" -it <csm_web docker Image name> /bin/bash" (it will run the docker )
 8) run this command in docker context "/opt/nodejs/node-v12.13.0-linux-x64/bin/node /opt/seagate/eos/csm/web/web-dist/server.js"
 9) run "ifconfig" in vm to know its ip address
 10) now our csm_web service is accecible from outside try https://<vm ipaddress>:28100/#/login (page should get loaded)
