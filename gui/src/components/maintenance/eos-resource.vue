@@ -18,7 +18,8 @@
       <label
         id="system-maintenance-title"
         class="eos-text-lg mt-2 font-weight-bold"
-      >System maintenance</label>
+        >System maintenance</label
+      >
     </div>
     <v-container>
       <div class="body-2">
@@ -29,7 +30,8 @@
                 class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-              >Start service:</label>
+                >Start service:</label
+              >
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
               <eos-dropdown
@@ -46,7 +48,9 @@
                 class="eos-btn-primary"
                 :disabled="!resourceState.offline.length || !resource.start"
                 @click="startSelectedResource()"
-              >Apply</button>
+              >
+                Apply
+              </button>
             </v-col>
           </v-row>
           <v-row class="mt-5 row-container" align="center" no-gutters>
@@ -55,7 +59,8 @@
                 class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-              >Stop service:</label>
+                >Stop service:</label
+              >
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
               <div>
@@ -74,7 +79,9 @@
                 class="eos-btn-primary"
                 :disabled="!resourceState.online.length >= 1 || !resource.stop"
                 @click="stopSelectedResource()"
-              >Apply</button>
+              >
+                Apply
+              </button>
             </v-col>
           </v-row>
           <v-row class="mt-5 row-container" align="center" no-gutters hidden>
@@ -83,7 +90,8 @@
                 class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-              >Shutdown:</label>
+                >Shutdown:</label
+              >
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
               <eos-dropdown
@@ -100,7 +108,9 @@
                 class="eos-btn-primary"
                 :disabled="!resource.shutdown"
                 @click="shutdownSelectedResource()"
-              >Apply</button>
+              >
+                Apply
+              </button>
             </v-col>
           </v-row>
         </v-card>
@@ -163,74 +173,96 @@ export default class EosMaintenance extends Vue {
       actionMessage: "",
       showInfoDialog: false,
       infoDialogMessage:
-        "The services have been restarted. Please refresh the page. You will have to login again."
+        "The services have been restarted. You will have to login again."
     };
   }
-  private mounted() {
+  private async mounted() {
+    await this.getNodeStatus();
+  }
+  private async getNodeStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Fetching system resources..."
     );
+    this.$data.resourceState = {
+      online: [],
+      offline: [],
+      all: []
+    };
+    try {
+    const res: any = await Api.getAll(apiRegister.node_status);
+    const nodeDetails = res && res.data ? res.data : null;
 
-    this.$store
-      .dispatch("maintenance/getNodeStatus")
-      .then((res: any) => {
-        if (res && res.node_status) {
-          if (!this.$data.resourceState) {
-            this.$data.resourceState = {};
-          }
-          res.node_status.forEach((e: any) => {
-            if (e.online) {
-              this.$data.resourceState.online.push(e.name);
-            }
-            if (e.standby) {
-              this.$data.resourceState.offline.push(e.name);
-            }
-            if (!e.shutdown) {
-              this.$data.resourceState.all.push(e.name);
-            }
-          });
+    if (nodeDetails && nodeDetails.node_status) {
+      nodeDetails.node_status.forEach((e: any) => {
+        if (e.online) {
+          this.$data.resourceState.online.push(e.name);
         }
-      })
-      .finally(() => {
-        this.$store.dispatch("systemConfig/hideLoader");
+        if (e.standby) {
+          this.$data.resourceState.offline.push(e.name);
+        }
+        if (!e.shutdown) {
+          this.$data.resourceState.all.push(e.name);
+        }
       });
+    }
+    } catch (error) {
+      this.handleClientCloseRequest(error);
+    } finally {
+    this.$store.dispatch("systemConfig/hideLoader");
   }
-  private closeConfirmationDialog(confirmation: boolean) {
+  }
+
+  private async closeConfirmationDialog(confirmation: boolean) {
     this.$data.showConfirmationDialog = false;
     if (confirmation) {
       this.$store.dispatch(
         "systemConfig/showLoader",
         `${this.$data.actionMethod} node...`
       );
-      this.$store
-        .dispatch(`maintenance/${this.$data.actionMethod}Node`, {
+      const apiRegisterInstance: any = apiRegister;
+      const nodeAction = `node_${this.$data.actionMethod}`;
+      try {
+        const res: any = await Api.post(apiRegisterInstance[nodeAction], {
           resource_name: this.$data.resource[this.$data.actionMethod]
-        })
-        .then((res: any) => {
-          if (res) {
-            if (res.message) {
-              this.$data.actionMessage = res.message;
-            }
-            if (res.showInfo) {
-              this.$data.showInfoDialog = true;
-            }
-          } else {
-            throw new Error("Failed to perform the action");
-          }
-        })
-        .catch((e: any) => {
-          this.$data.actionMessage = e.message;
-        })
-        .finally(() => {
-          this.$store.dispatch("systemConfig/hideLoader");
-          this.$data.resource = {
-            stop: "",
-            start: "",
-            shutdown: ""
-          };
         });
+        const nodeActionDetails = res && res.data ? res.data : null;
+
+        if (nodeActionDetails && nodeActionDetails.message) {
+          this.$data.actionMessage = res.message;
+        }
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
+      } catch (error) {
+        this.handleClientCloseRequest(error);
+      } finally {
+        this.$store.dispatch("systemConfig/hideLoader");
+        this.$data.resource = {
+          stop: "",
+          start: "",
+          shutdown: ""
+        };
+      }
+
+      await this.getNodeStatus();
     }
+  }
+
+  private handleClientCloseRequest(error: any) {
+        if (error && error.status === 499) {
+          this.$data.showInfoDialog = true;
+        } else {
+          let errorMessage = "No response, please refresh the page.";
+          if (error && error.error && error.data.message) {
+            errorMessage = error.data.message;
+          }
+          throw {
+            error: {
+              message: errorMessage
+            }
+          };
+        }
   }
   private stopSelectedResource(action: boolean) {
     this.$data.confirmationDialogMessage =
@@ -273,6 +305,7 @@ export default class EosMaintenance extends Vue {
   }
   private closeInfoDialog(confirmation: string) {
     this.$data.showInfoDialog = false;
+    location.reload();
   }
 }
 </script>
