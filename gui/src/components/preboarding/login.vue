@@ -11,7 +11,7 @@
     </div>
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
-      <div class="ml-4 white--text headline my-10">RACK Login</div>
+      <div class="ml-4 white--text headline my-10">{{ $t("login.login-label") }}</div>
       <div class="ma-4">
         <form autocomplete="off">
           <div
@@ -23,7 +23,7 @@
               type="text"
               id="username"
               name="username"
-              placeholder="Username"
+              :placeholder="userNamePlaceholder"
               v-model.trim="loginForm.username"
               @input="$v.loginForm.username.$touch"
               v-on:keyup.enter="handleEnterEvent()"
@@ -33,7 +33,7 @@
               v-if="
                 $v.loginForm.username.$dirty && !$v.loginForm.username.required
               "
-              >Username is required.</span
+              >{{ $t("login.user-name-required") }}</span
             >
           </div>
           <div
@@ -45,7 +45,7 @@
               type="password"
               id="password"
               name="password"
-              placeholder="Password"
+              :placeholder="passwordPlaceholder"
               v-model.trim="loginForm.password"
               @input="$v.loginForm.password.$touch"
               v-on:keyup.enter="handleEnterEvent()"
@@ -55,7 +55,7 @@
               v-if="
                 $v.loginForm.password.$dirty && !$v.loginForm.password.required
               "
-              >Password is required.</span
+              >{{ $t("login.password-required") }}</span
             >
           </div>
           <button
@@ -64,10 +64,10 @@
             @click="gotToNextPage()"
             :disabled="$v.loginForm.$invalid || loginInProgress"
           >
-            Login
+            {{ $t("login.login-btn") }}
           </button>
           <!--TODO: This is temporary error handling for Demo-->
-          <div v-if="!isValidLogin" class="red--text mt-1">Login failed !</div>
+          <div v-if="!isValidLogin" class="red--text mt-1">{{ $t("login.login-failed") }}</div>
         </form>
       </div>
     </v-container>
@@ -78,6 +78,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required } from "vuelidate/lib/validators";
 import { UserLoginQueryParam } from "./../../models/user-login";
+import i18n from "./../../i18n";
 
 @Component({
   name: "eos-login"
@@ -100,7 +101,10 @@ export default class EosLogin extends Vue {
     return {
       constStr: require("./../../common/const-string.json"),
       isValidLogin: true,
-      loginInProgress: false
+      loginInProgress: false,
+      userNamePlaceholder: i18n.t("login.user-name-placeholder"),
+      passwordPlaceholder: i18n.t("login.password-placeholder")
+
     };
   }
 

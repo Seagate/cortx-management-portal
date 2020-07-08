@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --dest ../../../dist/csm_gui/eos/gui/ui-dist",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
   "dependencies": {
     "@types/c3": "0.7.4",
@@ -19,6 +20,7 @@
     "moment-timezone": "0.5.27",
     "vue": "2.6.10",
     "vue-class-component": "7.0.2",
+    "vue-i18n": "8.17.3",
     "vue-native-websocket": "2.0.13",
     "vue-property-decorator": "8.2.1",
     "vue-router": "3.0.3",
@@ -30,12 +32,14 @@
   },
   "devDependencies": {
     "@mdi/font": "4.7.95",
+    "@types/webpack": "4.4.0",
     "@vue/cli-plugin-babel": "3.10.0",
     "@vue/cli-plugin-typescript": "3.10.0",
     "@vue/cli-service": "3.10.0",
     "sass": "1.18.0",
     "sass-loader": "7.1.0",
     "typescript": "3.4.3",
+    "vue-cli-plugin-i18n": "1.0.1",
     "vue-cli-plugin-vuetify": "0.6.1",
     "vue-template-compiler": "2.6.10",
     "vuetify-loader": "1.2.2"

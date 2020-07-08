@@ -1,0 +1,12 @@
+{
+  "login": {
+    "login-label" : "RACK Login",
+    "login-btn": "Login",
+    "user-name-placeholder": "Username",
+    "password-placeholder": "Password",
+    "user-name-required": "Username is required.",
+    "password-required": "Password is required.",
+    "login-failed": "Login failed !"
+
+  }
+}
