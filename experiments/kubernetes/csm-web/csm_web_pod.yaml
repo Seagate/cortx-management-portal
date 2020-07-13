@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csm-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csm-web
+  template:
+    metadata:
+      labels:
+        app: csm-web
+    spec:
+      containers:
+      - name: csm-web
+        image: ssc-vm-0665.colo.seagate.com:5000/csm-web
+        env:
+        - name: CSM_AGENT_HOST
+          value: "csm-agent-svc"
+        command: ["/opt/nodejs/node-v12.13.0-linux-x64/bin/node"]
+        args: ["/opt/seagate/eos/csm/web/web-dist/server.js"]
+        ports:
+        - containerPort: 28100
