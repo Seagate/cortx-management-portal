@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: csm-web-svc
+  labels:
+    app: csm-web
+spec:
+  type: NodePort
+  ports:
+  - port: 28100
+    nodePort: 32100
+  selector:
+    app: csm-web
