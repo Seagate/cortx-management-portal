@@ -192,14 +192,14 @@
           </div>
         </div>
       </div>
-      <button
+      <!--button
         type="button"
         class="eos-btn-primary mt-5"
         @click="sendTestEmail()"
-        :disabled="$v.$invalid || testEmailInProgress"
+        v-bind:disabled="true"
       >
         Send test email
-      </button>
+      </button-->
       <span
         v-if="testEmailMessage"
         class="ml-2"

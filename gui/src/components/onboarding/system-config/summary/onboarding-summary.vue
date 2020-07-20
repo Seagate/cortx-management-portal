@@ -8,97 +8,8 @@
         Verify the configurations below.
       </div>
       <v-divider class="mt-2" />
-      <v-expansion-panels class="mt-5">
-        <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
-            >SSL certificate upload</v-expansion-panel-header
-          >
-          <v-expansion-panel-content v-if="lastSSLStatus.status">
-            <div class="row ma-0">
-              <div class="col-8 body-2 column mr-5 pt-0">
-                <table class="eos-text-lg">
-                  <tr>
-                    <td style="width: 240px;">
-                      <label>Last installation status:</label>
-                    </td>
-                    <td>
-                      <label>{{ lastSSLStatus.status }}</label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>Last certificate filename:</label>
-                    </td>
-                    <td>
-                      <label>{{ lastSSLStatus.filename }}</label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>Last certificate upload date:</label>
-                    </td>
-                    <td>{{ lastSSLStatus.date }}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label>Serial number:</label>
-                    </td>
-                    <td>
-                      <label>{{ lastSSLStatus.serial_number }}</label>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
-            >DNS settings</v-expansion-panel-header
-          >
-          <v-expansion-panel-content>
-            <div class="row ma-0">
-              <template v-for="(node, index) in dnsData">
-                <div class="col-8 body-2 column mr-5 pt-0" :key="index">
-                  <table class="eos-text-lg">
-                    <tr>
-                      <td class="large-table-data-label">DNS servers:</td>
-                      <td>{{ node.dns_servers }}</td>
-                    </tr>
-                    <tr>
-                      <td>Search domains:</td>
-                      <td>{{ node.search_domain }}</td>
-                    </tr>
-                  </table>
-                </div>
-              </template>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
-            >NTP settings</v-expansion-panel-header
-          >
-          <v-expansion-panel-content v-if="ntpData.ntp_server_address">
-            <div class="row ma-0">
-              <template>
-                <div class="col-8 body-2 column mr-5 pt-0">
-                  <table class="eos-text-lg">
-                    <tr>
-                      <td class="large-table-data-label">Server address:</td>
-                      <td>{{ ntpData.ntp_server_address }}</td>
-                    </tr>
-                    <tr>
-                      <td>Time zone offset:</td>
-                      <td>{{ ntpData.ntp_timezone_offset }}</td>
-                    </tr>
-                  </table>
-                </div>
-              </template>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
+      <v-expansion-panels class="mt-5" v-bind:value="0">
+        <v-expansion-panel value="0">
           <v-expansion-panel-header class="eos-text-lg font-weight-bold"
             >Notifications</v-expansion-panel-header
           >
@@ -204,10 +115,17 @@ export default class EosOnboardingSummary extends Vue {
   private async mounted() {
     const vm = this;
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      vm.openConfirmDialog();
+      vm.updateSummary();
       this.$data.wizardRes = res;
     });
-    await this.getCertificateStatus();
+    // await this.getCertificateStatus();
+  }
+  private async updateSummary() {
+    this.$store.dispatch("systemConfig/showLoader", "Applying settings...");
+    // await this.$store.dispatch("systemConfig/updateSummary", true);
+    // await this.$store.dispatch("systemConfig/updateSummary", false);
+    this.$store.dispatch("systemConfig/hideLoader");
+    this.$data.wizardRes(true);
   }
   private destroyed() {
     // WizardHook: shut off on exit event listener
@@ -261,12 +179,12 @@ export default class EosOnboardingSummary extends Vue {
     }
     return true;
   }
-  private async getCertificateStatus() {
+  /*private async getCertificateStatus() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching certificate...");
     const res = await Api.getAll(apiRegister.ssl_status);
     this.$data.lastSSLStatus = res.data;
     this.$store.dispatch("systemConfig/hideLoader");
-  }
+  }*/
 }
 </script>
 <style lang="scss" scoped>

@@ -73,7 +73,9 @@ export default class EosNotifications extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      res(true);
+      this.createManagementNetworkObj().then((result) => {
+        res(true);
+      });
     });
   }
   public destroyed() {
@@ -121,6 +123,10 @@ export default class EosNotifications extends Vue {
       type: "skip",
       flag: status
     });
+  }
+
+  private createManagementNetworkObj() {
+    return this.$store.dispatch("systemConfig/createManagementNetworkObj");
   }
 }
 </script>

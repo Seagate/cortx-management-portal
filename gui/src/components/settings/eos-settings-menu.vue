@@ -44,21 +44,21 @@ export default class EosSettingsMenu extends Vue {
       title: "DNS",
       actionName: "Manage",
       actionClickFunction: "goToDNS",
-      disabled: false,
+      disabled: true,
       requiredAccess: "maintenance"
     },
     {
       title: "NTP",
       actionName: "Manage",
       actionClickFunction: "goToNTP",
-      disabled: false,
+      disabled: true,
       requiredAccess: "maintenance"
     },
     {
       title: "SSL Certificate",
       actionName: "Manage",
       actionClickFunction: "goToSSL",
-      disabled: false,
+      disabled: true,
       requiredAccess: "maintenance"
     }
   ];
