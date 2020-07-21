@@ -115,17 +115,9 @@ export default class EosOnboardingSummary extends Vue {
   private async mounted() {
     const vm = this;
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      vm.updateSummary();
-      this.$data.wizardRes = res;
+      res(true);
     });
     // await this.getCertificateStatus();
-  }
-  private async updateSummary() {
-    this.$store.dispatch("systemConfig/showLoader", "Applying settings...");
-    // await this.$store.dispatch("systemConfig/updateSummary", true);
-    // await this.$store.dispatch("systemConfig/updateSummary", false);
-    this.$store.dispatch("systemConfig/hideLoader");
-    this.$data.wizardRes(true);
   }
   private destroyed() {
     // WizardHook: shut off on exit event listener

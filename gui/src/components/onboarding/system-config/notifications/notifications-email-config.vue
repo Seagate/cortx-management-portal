@@ -314,7 +314,11 @@ export default class EosNotifications extends Vue {
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
       this.setEmailNotificationSettings().then((result) => {
-        res(true);
+        if (result.status === 200) {
+          res(true);
+        } else {
+          res(false);
+        }
       });
     });
   }

@@ -162,6 +162,7 @@ export default class SystemConfiguration extends VuexModule {
    */
   @Action
   public async updateEmailNotificationUserConfig(payload: any) {
+    let resp;
     try {
       this.context.commit("userConfigEmailNotificaionMutation", payload);
       const res = await Api.put(
@@ -172,12 +173,18 @@ export default class SystemConfiguration extends VuexModule {
       if (res && res.data) {
         const data = res.data;
         this.context.commit("systemConfigMutation", data);
-        return res;
+        resp = res;
       }
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
+    } catch (err) {
+      resp = err;
+      this.context.commit("messageDialog/show", {
+        type: "error",
+        title: "Error",
+        message:
+          err.data && err.data.message ? err.data.message : err.error.message
+      }, { root: true });
     }
+    return resp;
   }
   /**
    * @param queryParams {object},
