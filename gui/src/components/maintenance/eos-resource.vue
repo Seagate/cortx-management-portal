@@ -36,7 +36,7 @@
             <v-col col="3" md="auto" class="mx-3">
               <eos-dropdown
                 @update:selectedOption="handleStartSelect"
-                :options="createOptionsForDropdown(resourceState.offline)"
+                :options="createOptionsForDropdown(resourceState.standby)"
                 :width="dropdownWidth"
                 :title="resource.start ? resource.start : undefined"
               ></eos-dropdown>
@@ -46,7 +46,7 @@
                 type="button"
                 id="btnStartResource"
                 class="eos-btn-primary"
-                :disabled="!resourceState.offline.length || !resource.start"
+                :disabled="!resourceState.standby.length || !resource.start"
                 @click="startSelectedResource()"
               >
                 Apply
@@ -96,7 +96,7 @@
             <v-col col="3" md="auto" class="mx-3">
               <eos-dropdown
                 @update:selectedOption="handleShutdownSelect"
-                :options="createOptionsForDropdown(resourceState.all)"
+                :options="createOptionsForDropdown(resourceState.offline)"
                 :width="dropdownWidth"
                 :title="resource.shutdown ? resource.shutdown : undefined"
               ></eos-dropdown>
@@ -159,12 +159,9 @@ export default class EosMaintenance extends Vue {
       actionMethod: "",
       resourceState: {
         online: [],
-        offline: [],
-        all: []
+        standby: [],
+        offline: []
       },
-      online: [],
-      offline: [],
-      nodes: [],
       showConfirmationDialog: false,
       confirmationDialogMessage: "",
       confirmationDialogSubMessage: "",
@@ -186,8 +183,8 @@ export default class EosMaintenance extends Vue {
     );
     this.$data.resourceState = {
       online: [],
-      offline: [],
-      all: []
+      standby: [],
+      offline: []
     };
     try {
     const res: any = await Api.getAll(apiRegister.node_status);
@@ -196,13 +193,13 @@ export default class EosMaintenance extends Vue {
     if (nodeDetails && nodeDetails.node_status) {
       nodeDetails.node_status.forEach((e: any) => {
         if (e.online) {
+            if (e.standby) {
+              this.$data.resourceState.standby.push(e.name);
+            } else {
           this.$data.resourceState.online.push(e.name);
         }
-        if (e.standby) {
+          } else {
           this.$data.resourceState.offline.push(e.name);
-        }
-        if (!e.shutdown) {
-          this.$data.resourceState.all.push(e.name);
         }
       });
     }
