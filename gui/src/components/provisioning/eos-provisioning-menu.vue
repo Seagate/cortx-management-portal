@@ -33,14 +33,14 @@ import EosMenuList from "../widgets/eos-menu-list.vue";
 export default class EosProvisioningSubmenu extends Vue {
   public subMenuItems = [
     {
-      title: "User",
+      title: "Administrative Users",
       actionName: "Manage",
       actionClickFunction: "goToUserSettings",
       disabled: false,
       requiredAccess: "users"
     },
     {
-      title: "S3",
+      title: "S3 Accounts",
       actionName: "Manage",
       actionClickFunction: "goToS3",
       disabled: false,

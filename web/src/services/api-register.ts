@@ -56,4 +56,5 @@ export default {
   ssl_install: `/api/${version}/tls/bundle/install`,
   ssl_status: `/api/${version}/tls/bundle/status`,
   product_version: `/api/${version}/product_version`,
+  health_components: `/api/${version}/system/health/components`
 };

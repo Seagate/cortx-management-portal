@@ -21,7 +21,7 @@
     <table class="mt-3">
       <tr>
         <td class="width-25">
-          <div class="capacity-used-badge"></div>
+          <div v-bind:class="usedLegendClass"></div>
         </td>
         <td class="width-110">Used</td>
         <td>{{ capacityDetails.used }}</td>
@@ -55,12 +55,24 @@ import * as c3 from "c3";
   name: "eos-capacity-gauge"
 })
 export default class EosCapacityGauge extends Vue {
+
+  public usedLegendClass = "capacity-used-green";
+  public chartDataVal: number;
   public created() {
     const demoData = [["x", 0]];
-
     const capacityRes = this.$store
       .dispatch("performanceStats/getCapacityStats")
       .then(capacityC3Data => {
+        this.chartDataVal = capacityC3Data[0][1] ? capacityC3Data[0][1] : 0.00;
+        if (this.chartDataVal <= 50.00) {
+          this.usedLegendClass = "capacity-used-green";
+        }
+        if (this.chartDataVal > 50.00) {
+          this.usedLegendClass = "capacity-used-orange";
+        }
+        if (this.chartDataVal >= 90.00) {
+          this.usedLegendClass = "capacity-used-red";
+        }
         const chart = c3.generate({
           bindto: "#gauge_capacity",
           legend: {
@@ -96,10 +108,20 @@ export default class EosCapacityGauge extends Vue {
 <style lang="scss" scoped>
 @import "./../../../node_modules/c3/c3.min.css";
 
-.capacity-used-badge {
+.capacity-used-green {
   height: 13px;
   width: 13px;
   background: rgb(110, 190, 73);
+}
+.capacity-used-orange {
+  height: 13px;
+  width: 13px;
+  background-color:#F7A528 ;
+}
+.capacity-used-red {
+  height: 13px;
+  width: 13px;
+  background-color: #DC1F2E;
 }
 .capacity-available-badge {
   height: 13px;

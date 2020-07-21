@@ -22,6 +22,7 @@ import {
   getHealthSummary,
   getHealthView,
   getNodeHealth,
+  getHealthComponents,
   getNodeReplacementStatus,
   replaceNode
 } from "./system-controller";
@@ -63,6 +64,21 @@ export default [
         }
       }
     ]
+  },
+  {
+    path: "/api/v1/system/health/components",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getHealthComponents(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      },
+    ],
   },
   {
     path: "/api/v1/system/health/node",
