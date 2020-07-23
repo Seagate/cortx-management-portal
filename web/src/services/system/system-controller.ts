@@ -34,6 +34,11 @@ export const getHealthView = async (req: Request, res: Response)=> {
     return healthSummaryData;
 }
 
+export const getHealthComponents = async (req: Request, res: Response)=> {
+  let healthSummaryData = await Api.getAll(apiRegister.health_components, req, res);
+  return healthSummaryData;
+}
+
 export const getNodeHealth = async (req: Request, res: Response)=> {
     let healthSummaryData = await Api.getAll(apiRegister.node_health, req, res);
     return healthSummaryData;

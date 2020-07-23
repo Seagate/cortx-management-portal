@@ -329,13 +329,16 @@ export default class EosLineChart extends Vue {
         this.showComponentLoader = false;
       }
       const that = this;
+      // this elasticSerchOffset need to be substracted in "from time" of the request 
+      // to remove a corner case where elastic search stops giving data due to some time lag
+      const elasticSerchOffset = 5;
       that.throughputPoll = setInterval(() => {
         if (that.ispollThroughPut === true) {
           const query = {
             id: 1,
             from:
               Math.round(new Date().getTime() / this.milliSecondDiviser) -
-              preFetchDurationInSec / queryParams.total_sample,
+             ( preFetchDurationInSec / queryParams.total_sample + elasticSerchOffset),
             to: Math.round(new Date().getTime() / this.milliSecondDiviser),
             total_sample: 1,
             metric1: this.metric1,

@@ -33,7 +33,7 @@ import EosMenuList from "../widgets/eos-menu-list.vue";
 export default class EosSettingsMenu extends Vue {
   public subMenuItems = [
     {
-      title: "Notifications",
+      title: "Email Notifications",
       actionName: "Manage",
       actionClickFunction: "goToNotifications",
       disabled: false,

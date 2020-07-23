@@ -154,10 +154,20 @@
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span>User created</span>
+          <span>User created:access key and secret key</span>
         </v-card-title>
         <v-divider />
-
+        <div class="mt-2 pl-7" style="height: 30px;">
+          <img
+            class="eos-float-l mr-1"
+            :src="require('@/assets/actions/warning-orange.svg')"
+          />
+          <span
+            class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
+            >Save this information, you will not see it again. Download as CSV
+            and close.</span
+          >
+        </div>
         <table class="mt-2 ml-7 eos-text-md">
           <tr>
             <td class="py-2 eos-text-bold credentials-item-label">Username</td>
@@ -171,10 +181,30 @@
             <td class="py-2 eos-text-bold credentials-item-label">ARN</td>
             <td class="py-2">{{ user.arn }}</td>
           </tr>
+          <tr>
+            <td class="py-2 eos-text-bold credentials-item-label">
+              Access key
+            </td>
+            <td class="py-2">{{ user.access_key_id }}</td>
+          </tr>
+          <tr>
+            <td class="py-2 eos-text-bold credentials-item-label">
+              Secret key
+            </td>
+            <td class="py-2">{{ user.secret_key }}</td>
+          </tr>
         </table>
 
         <v-card-actions>
+          <a
+            class="ma-5 eos-btn-primary eos-download-csv-link"
+            :href="credentialsFileContent"
+            download="credentials.csv"
+            @click="isCredentialsFileDownloaded = true"
+            >Download as CSV</a
+          >
           <button
+            :disabled="!isCredentialsFileDownloaded"
             type="button"
             class="ma-5 eos-btn-primary"
             @click="closeUserDetailsDialog()"
@@ -287,13 +317,15 @@ export default class EosIAMUserManagement extends Vue {
   private showCreateUserForm: boolean;
   private showUserDetailsDialog: boolean;
   private showConfirmDeleteDialog: boolean;
-
+  private account: Account = {} as Account;
   private usersTableHeaderList: any[];
   private usersList: IAMUser[] = [];
   private user: IAMUser;
   private userToDelete: string = "";
   private passwordTooltipMessage: string = passwordTooltipMessage;
   private usernameTooltipMessage: string = usernameTooltipMessage;
+  private credentialsFileContent: string = "";
+  private isCredentialsFileDownloaded: boolean = false;
 
   constructor() {
     super();
@@ -342,15 +374,30 @@ export default class EosIAMUserManagement extends Vue {
     const res: any = await Api.post(apiRegister.s3_iam_user, tempUser);
     if (!res.error) {
       this.user = res.data;
+      this.isCredentialsFileDownloaded = false;
+      this.credentialsFileContent =
+      "data:text/plain;charset=utf-8," +
+      encodeURIComponent(this.getCredentialsFileContent());
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showUserDetailsDialog = true;
+  }
+  public getCredentialsFileContent(): string {
+    return (
+      "User name,Access key,Secret key\n" +
+      this.user.user_name +
+      "," +
+      this.user.access_key_id +
+      "," +
+      this.user.secret_key
+    );
   }
 
   public async closeUserDetailsDialog() {
     this.clearCreateUserForm();
     this.showUserDetailsDialog = false;
     this.showCreateUserForm = false;
+    this.isCredentialsFileDownloaded = false;
     await this.getAllUsers();
   }
 
@@ -408,5 +455,11 @@ export default class EosIAMUserManagement extends Vue {
 }
 .credentials-item-label {
   width: 10rem;
+}
+.eos-download-csv-link {
+  text-decoration: none;
+  display: inline-block;
+  padding-top: 10px;
+  color: #ffffff;
 }
 </style>

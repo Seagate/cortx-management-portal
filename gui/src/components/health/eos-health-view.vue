@@ -18,23 +18,33 @@
     <div>
       <div class="eos-health-summary-container">
         <div class="eos-text-lg eos-float-l eos-text-bold">{{componentName}}</div>
-
         <div
           class="eos-summary-chip eos-float-l eos-chip-ok ml-2"
-          v-if="( healthSummary.total?healthSummary.total:0 ) - ( healthSummary.good?healthSummary.good:0 )===0"
-        >
-          <div class="summary-count">
-            <label class="eos-text-sm">ok</label>
-          </div>
-        </div>
-        <div
-          class="eos-summary-chip eos-float-l eos-chip-alert ml-2"
-          v-if="( healthSummary.total?healthSummary.total:0 ) - ( healthSummary.good?healthSummary.good:0 )>0"
+          v-if="healthSummary.good && healthSummary.good > 0"
         >
           <div class="summary-count">
             <label
               class="eos-text-sm"
-            >{{( healthSummary.total?healthSummary.total:0 ) - ( healthSummary.good?healthSummary.good:0 )}}</label>
+            >{{ healthSummary.good?healthSummary.good:0 }}</label>
+          </div>
+        </div>
+        <div
+          class="eos-summary-chip eos-float-l eos-chip-warning ml-2"
+          v-if="healthSummary.warning && healthSummary.warning > 0">
+          <div class="summary-count">
+            <label
+              class="eos-text-sm"
+            >{{ healthSummary.warning?healthSummary.warning:0 }}</label>
+          </div>
+        </div>
+        <div
+          class="eos-summary-chip eos-float-l eos-chip-alert ml-2"
+          v-if="healthSummary.critical && healthSummary.critical > 0"
+        >
+          <div class="summary-count">
+            <label
+              class="eos-text-sm"
+            >{{ healthSummary.critical?healthSummary.critical:0 }}</label>
           </div>
         </div>
       </div>
@@ -42,12 +52,16 @@
 
     <v-data-table
       calculate-widths
-      :items="alertObject.alerts"
-      item-key="created_time"
+      :items="healthComponentData"
+      item-key="component_id"
       class="eos-table"
       hide-default-header
-      :hide-default-footer="true"
       id="tblHealthLarge"
+      height="400"
+      :items-per-page.sync="itemsPerPage"
+      :footer-props="{
+        'items-per-page-options': [50, 100, 150, 200]
+      }"
     >
       <template v-slot:header="{}">
         <tr>
@@ -66,89 +80,50 @@
       </template>
       <template v-slot:item="props">
         <tr style="color: #000000;">
-          <td style="white-space: nowrap;">{{ new Date(props.item.created_time * 1000) | timeago }}</td>
-          <td>
-            <div>
-              <span>
-                Resource type: {{ props.item.module_name }} | State:
-                {{ props.item.state }}
-              </span>
-            </div>
-            <div>
-              <span v-if="props.item.module_type === 'logical_volume'">
-                Volume group: {{ props.item.volume_group }} | Volume name:
-                {{ props.item.name }}
-              </span>
-              <span v-else-if="props.item.module_type === 'system'">
-                Version: {{ props.item.version }} | Nodename:
-                {{ props.item.name }}
-              </span>
-              <span v-else-if="props.item.module_type === 'volume'">
-                Size: {{ props.item.volume_size }} | Total size:
-                {{ props.item.volume_total_size }}
-              </span>
-              <span
-                v-else-if="props.item.module_type === 'current'"
-              >Sensor name: {{ props.item.name }}</span>
-              <span
-                v-else-if="props.item.module_name === 'enclosure:fru:psu'"
-              >Location: {{ props.item.location }}</span>
-              <span
-                v-else-if="
-                  props.item.module_name === 'enclosure:fru:fan' ||
-                    props.item.module_type === 'enclosure:fru:sideplane'
-                "
-              >
-                Name: {{ props.item.name }} | Location:
-                {{ props.item.location }}
-              </span>
-              <span v-else-if="props.item.module_name === 'enclosure:fru:disk'">
-                Serial number: {{ props.item.serial_number }} | Size:
-                {{ props.item.volume_size }}
-              </span>
-              <span
-                v-else-if="props.item.module_type === 'controller'"
-              >Serial number: {{ props.item.serial_number }}</span>
-            </div>
-          </td>
+          <td>{{props.item.component_id}}</td>
           <td>
             <div
-              style="margin: auto;"
               v-if="
-                props.item.severity === alertStatus.critical ||
-                  props.item.severity === alertStatus.error
+               props.item.health === 'OK' || props.item.health === 'NA' &&
+                props.item.component_info.severity !== alertStatus.warning
               "
-              class="eos-status-chip eos-chip-alert"
-              v-bind:title="props.item.severity"
+              class="eos-status-chip eos-chip-ok"
+              v-bind:title="props.item.health"
             ></div>
             <div
-              style="margin: auto;"
-              v-else-if="props.item.severity === alertStatus.warning"
+              v-if="
+                props.item.component_info.severity === alertStatus.critical ||
+                  props.item.component_info.severity === alertStatus.error
+              "
+              class="eos-status-chip eos-chip-alert"
+              v-bind:title="props.item.component_info.severity"
+            ></div>
+            <div
+              v-if="props.item.component_info.severity === alertStatus.warning"
               class="eos-status-chip eos-chip-warning"
               title="warning"
             ></div>
             <div
-              style="margin: auto;"
-              v-if="props.item.severity === alertStatus.informational"
+              v-else-if="props.item.component_info.severity === alertStatus.informational"
               class="eos-status-chip eos-chip-information"
               title="info"
             ></div>
+
           </td>
-          <td>{{ props.item.description ? props.item.description : "--" }}</td>
-          <td>
+          <td v-if="props.item.alert_uuid !== 'NA' && props.item.health !== 'OK' && props.item.health !== 'NA'">
             <img
               :src="require('@/assets/zoom-in.svg')"
               class="eos-cursor-pointer"
               @click="$router.push({ path: `healthview/${props.item.alert_uuid}`, query: { nodeId: componentName, source: 'healthView'}})"
             />
-            <img v-if="props.item.acknowledged" :src="require('@/assets/acknowledge-default.svg')" />
-            <img v-if="props.item.resolved" :src="require('@/assets/resolved-filled-default.svg')" />
-          </td>
+           </td>
+           <td v-else>NA</td>
         </tr>
       </template>
     </v-data-table>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
@@ -162,28 +137,20 @@ import { HealthSummary } from "../../models/system";
 export default class EosHealthView extends Vue {
   public alertTableHeaders: any = [
     {
-      text: "Time",
-      value: "created_time",
-      sortable: true,
-      sortDir: "desc"
-    },
-    {
-      text: "Alert target",
-      value: "alertTarget",
-      sortable: false
-    },
-    {
-      text: "Severity",
-      value: "severity",
+      text: "Component Id",
+      value: "component_id",
       sortable: true
     },
     {
-      text: "Description",
-      value: "description",
-      sortable: false
+      text: "Health",
+      value: "health",
+      sortable: true
     }
   ];
   public alertObject: AlertObject = {} as AlertObject;
+  public healthComponentData = [];
+  public itemsPerPage: number = 100;
+  public currentPage: number = 1;
   public healthSummary: HealthSummary = {
     good: 0,
     fault: 0,
@@ -207,15 +174,29 @@ export default class EosHealthView extends Vue {
       const enclosureName = this.$route.query.name
         ? this.$route.query.name
         : "";
-      const res = await Api.getAll(apiRegister.health_view, {
+      const res = await Api.getAll(apiRegister.health_components, {
         node_id: enclosureName
       });
       this.$store.dispatch("systemConfig/hideLoader");
       if (res && res.data) {
-        this.alertObject = res.data[0][Object.keys(res.data[0])[0]];
+        this.healthComponentData = res.data[0][Object.keys(res.data[0])[0]].components;
         this.healthSummary =
           res.data[0][Object.keys(res.data[0])[0]].health_summary;
+        this.healthComponentData.sort((a: any, b: any) => {
+          let result = 0;
+          const fa = a.health.toLowerCase();
+          const fb = b.health.toLowerCase();
+
+          if (fa < fb) {
+            result = -1;
+          }
+          if (fa > fb) {
+            result = 1;
+          }
+          return result;
+        });
       }
+
     } catch {
       this.$store.dispatch("systemConfig/hideLoader");
     }

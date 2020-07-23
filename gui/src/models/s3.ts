@@ -28,7 +28,7 @@ export interface IAMUser {
     password: string;
     arn: string;
     path: string;
-    access_key: string;
+    access_key_id: string;
     secret_key: string;
     require_reset: boolean;
 }

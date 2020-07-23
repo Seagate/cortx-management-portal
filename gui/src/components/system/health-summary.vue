@@ -14,26 +14,25 @@
  *****************************************************************************/
 <template>
   <div class="eos-health-summary-container">
-    <label class="eos-text-lg eos-text-bold eos-float-l">Health</label>
-    <div
-      class="eos-float-l"
-      v-if="healthSummary.total - healthSummary.good > 0"
-    >
-      <div class="eos-summary-chip eos-chip-alert eos-float-l ml-2">
+    <label class="eos-text-lg eos-text-bold eos-float-l">HW Health</label>
+    <div class="eos-float-l" v-if="healthSummary.good && healthSummary.good > 0">
+      <div class="eos-summary-chip eos-chip-ok eos-float-l ml-2">
         <div class="summary-count">
-          <label
-            class="eos-text-sm"
-          >{{ healthSummary.total - healthSummary.good}}</label>
+          <label class="eos-text-sm">{{ healthSummary.good?healthSummary.good:0 }}</label>
         </div>
       </div>
     </div>
-    <div
-      class="eos-float-l"
-      v-if="healthSummary.total - healthSummary.good === 0"
-    >
-      <div class="eos-summary-chip eos-chip-ok eos-float-l ml-2">
+    <div class="eos-float-l" v-if="healthSummary.warning && healthSummary.warning > 0">
+      <div class="eos-summary-chip eos-chip-warning eos-float-l ml-2">
         <div class="summary-count">
-          <label class="eos-text-sm">ok</label>
+          <label class="eos-text-sm">{{ healthSummary.warning? healthSummary.warning : 0 }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="eos-float-l" v-if="healthSummary.critical && healthSummary.critical > 0">
+      <div class="eos-summary-chip eos-chip-alert eos-float-l ml-2">
+        <div class="summary-count">
+          <label class="eos-text-sm">{{ healthSummary.critical? healthSummary.critical : 0 }}</label>
         </div>
       </div>
     </div>
@@ -55,7 +54,8 @@ export default class EosHealthSummary extends Vue {
     degraded: 0,
     total: 0,
     unrecoverable: 0,
-    critical: 0
+    critical: 0,
+    warning: 0,
   };
 
   public async mounted() {
@@ -80,6 +80,9 @@ export default class EosHealthSummary extends Vue {
         : 0;
       this.healthSummary.critical = healthSummaryResp.critical
         ? healthSummaryResp.critical
+        : 0;
+      this.healthSummary.warning = healthSummaryResp.warning
+        ? healthSummaryResp.warning
         : 0;
       this.healthSummary.unrecoverable = healthSummaryResp.unrecoverable
         ? healthSummaryResp.unrecoverable

@@ -700,4 +700,8 @@ tbody tr:hover {
 .eos-brand-div {
   display: inline-flex;
 }
+
+.black-container-height {
+  height : 100%
+}
 /* Icon buttons styles --- End */

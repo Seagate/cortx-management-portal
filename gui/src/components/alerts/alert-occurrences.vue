@@ -75,7 +75,7 @@
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.warning"
-              class="eos-status-chip eos-chip-offline"
+              class="eos-status-chip eos-chip-warning"
               title="warning"
             ></div>
             <div
@@ -93,7 +93,7 @@
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.informational"
-              class="eos-status-chip eos-chip-ok"
+              class="eos-status-chip eos-chip-information"
               title="info"
             ></div>
              <div

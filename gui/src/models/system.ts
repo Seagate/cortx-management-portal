@@ -20,4 +20,5 @@ export interface HealthSummary {
     total: number;
     unrecoverable: number;
     critical: number;
+    warning?: number;
 }

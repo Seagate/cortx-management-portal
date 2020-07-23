@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 ma-0 col-12 black">
+  <v-container class="pa-0 ma-0 col-12 black black-container-height">
     <div height="70em" class="pl-10 py-5">
       <img
         :src="require('@/assets/seagate-green.svg/')"

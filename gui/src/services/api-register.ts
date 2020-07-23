@@ -59,5 +59,6 @@ export default {
   last_upgrade_status: `/api/${version}/update/firmware/last_upgrade_status`,
   health_view: `/api/${version}/system/health/view`,
   node_health: `/api/${version}/system/health/node`,
-  version: `/api/${version}/product_version`
+  version: `/api/${version}/product_version`,
+  health_components: `api/${version}/system/health/components`
 };

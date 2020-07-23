@@ -32,22 +32,35 @@
         <label
           class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
         >{{Object.keys(menuItem)[0]}}</label>
+        
         <div
           class="eos-summary-chip eos-chip-ok eos-float-l ml-2"
-          v-if="(menuItem[Object.keys(menuItem)[0]].health_summary.total?menuItem[Object.keys(menuItem)[0]].health_summary.total:0)-(menuItem[Object.keys(menuItem)[0]].health_summary.good?menuItem[Object.keys(menuItem)[0]].health_summary.good:0)===0"
-        >
-          <div class="summary-count">
-            <label class="eos-text-sm">ok</label>
-          </div>
-        </div>
-        <div
-          class="eos-summary-chip eos-chip-alert eos-float-l ml-2"
-          v-if="(menuItem[Object.keys(menuItem)[0]].health_summary.total?menuItem[Object.keys(menuItem)[0]].health_summary.total:0)-(menuItem[Object.keys(menuItem)[0]].health_summary.good?menuItem[Object.keys(menuItem)[0]].health_summary.good:0) > 0"
+          v-if="menuItem[Object.keys(menuItem)[0]].health_summary.good && menuItem[Object.keys(menuItem)[0]].health_summary.good > 0"
         >
           <div class="summary-count">
             <label
               class="eos-text-sm"
-            >{{(menuItem[Object.keys(menuItem)[0]].health_summary.total?menuItem[Object.keys(menuItem)[0]].health_summary.total:0) - (menuItem[Object.keys(menuItem)[0]].health_summary.good?menuItem[Object.keys(menuItem)[0]].health_summary.good:0) }}</label>
+            >{{ menuItem[Object.keys(menuItem)[0]].health_summary.good?menuItem[Object.keys(menuItem)[0]].health_summary.good:0 }}</label>
+          </div>
+        </div>
+        <div
+          class="eos-summary-chip eos-chip-warning eos-float-l ml-2"
+          v-if="menuItem[Object.keys(menuItem)[0]].health_summary.warning && menuItem[Object.keys(menuItem)[0]].health_summary.warning > 0"
+        >
+          <div class="summary-count">
+            <label
+              class="eos-text-sm"
+            >{{menuItem[Object.keys(menuItem)[0]].health_summary.warning? menuItem[Object.keys(menuItem)[0]].health_summary.warning : 0 }}</label>
+          </div>
+        </div>
+        <div
+          class="eos-summary-chip eos-chip-alert eos-float-l ml-2"
+          v-if="menuItem[Object.keys(menuItem)[0]].health_summary.critical && menuItem[Object.keys(menuItem)[0]].health_summary.critical > 0"
+        >
+          <div class="summary-count">
+            <label
+              class="eos-text-sm"
+            >{{menuItem[Object.keys(menuItem)[0]].health_summary.critical? menuItem[Object.keys(menuItem)[0]].health_summary.critical : 0 }}</label>
           </div>
         </div>
         <button
