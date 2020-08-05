@@ -53,7 +53,7 @@
               </button>
             </v-col>
           </v-row>
-          <v-row class="mt-5 row-container" align="center" no-gutters>
+          <v-row class="mt-5 row-container" align="center" no-gutters  >
             <v-col col="3" lg="3">
               <label
                 class="eos-form-group-label font-weight-bold"
@@ -84,7 +84,7 @@
               </button>
             </v-col>
           </v-row>
-          <v-row class="mt-5 row-container" align="center" no-gutters hidden>
+          <v-row class="mt-5 row-container" align="center" no-gutters  >
             <v-col col="3" lg="3">
               <label
                 class="eos-form-group-label font-weight-bold"
@@ -153,8 +153,7 @@ export default class EosMaintenance extends Vue {
       resource: {
         stop: "",
         start: "",
-        shutdown: "",
-        hidden: true
+        shutdown: ""
       },
       actionMethod: "",
       resourceState: {
