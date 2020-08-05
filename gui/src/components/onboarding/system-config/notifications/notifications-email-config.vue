@@ -77,7 +77,7 @@
           <div
             class="eos-form-group"
             :class="{
-              'eos-form-group--error': $v.smtpport.$error
+              'eos-form-group--error': $v.protocol.$error
             }"
           >
             <eos-dropdown
@@ -109,7 +109,7 @@
               <label v-if="$v.smtpport.$dirty && !$v.smtpport.required"
                 >SMTP port is required.</label
               >
-              <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxLength"
+              <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxValue"
                 >SMTP port is not valid.</label
               >
             </div>
@@ -237,7 +237,8 @@ import {
   requiredIf,
   email,
   minLength,
-  maxLength
+  minValue,
+  maxValue
 } from "vuelidate/lib/validators";
 import { commaSeparatedEmailsRegex } from "./../../../../common/regex-helpers";
 
@@ -270,7 +271,8 @@ export default class EosNotifications extends Vue {
     },
     smtpport: {
       required,
-      maxLength: maxLength(65535)
+      minValue: minValue(0),
+      maxValue: maxValue(65535)
     }
   };
 
@@ -313,7 +315,7 @@ export default class EosNotifications extends Vue {
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
-      this.setEmailNotificationSettings().then((result) => {
+      this.setEmailNotificationSettings().then(result => {
         res(true);
       });
     });

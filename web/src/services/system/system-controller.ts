@@ -85,7 +85,7 @@ export const shutdownNode = async (req: Request, res: Response) => {
  * @param res
  */
 export const getNodeReplacementStatus = async (req: Request, res: Response) => {
-  return await Api.getAll(apiRegister.node_replace, req, res);
+  return await Api.getAll(apiRegister.node_replace_status, req, res);
 };
 /**
  * This is responsible to replace node.
