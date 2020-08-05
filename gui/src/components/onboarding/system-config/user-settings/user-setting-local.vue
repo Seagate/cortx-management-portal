@@ -461,11 +461,7 @@
                         Manage
                         <input
                           type="radio"
-                          v-model="
-                            isAdminUser(props.item)
-                              ? selectedItem.roles[1]
-                              : selectedItem.roles[0]
-                          "
+                          v-model="selectedItem.role"
                           name="rbtEditManageInterface"
                           value="manage"
                           id="chkLocalManageInterface"
@@ -487,11 +483,7 @@
                         Monitor
                         <input
                           type="radio"
-                          v-model="
-                            isAdminUser(props.item)
-                              ? selectedItem.roles[1]
-                              : selectedItem.roles[0]
-                          "
+                          v-model="selectedItem.role"
                           name="rbtEditMonitorInterface"
                           value="monitor"
                           id="chkLocalMonitorInterface"
@@ -542,7 +534,6 @@
       @closeDialog="closeConfirmationDialog"
       cancelButtonText="No"
     ></eos-confirmation-dialog>
-    <span class="d-none">{{ isValidForm }}</span>
   </div>
 </template>
 <script lang="ts">
@@ -562,7 +553,6 @@ import {
   usernameTooltipMessage
 } from "./../../../../common/regex-helpers";
 
-import { EVENT_BUS } from "./../../../../main";
 import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
 
@@ -571,7 +561,7 @@ import apiRegister from "./../../../../services/api-register";
 })
 export default class EosUserSettingLocal extends Vue {
   @Validations()
-  private validations = {
+  public validations = {
     createAccount: {
       username: { required, accountNameRegex },
       password: { required, passwordRegex },
@@ -596,7 +586,7 @@ export default class EosUserSettingLocal extends Vue {
     }
   };
 
-  private data() {
+  public data() {
     return {
       source: "manual",
       isUserCreate: false,
@@ -642,26 +632,10 @@ export default class EosUserSettingLocal extends Vue {
     };
   }
 
-  private mounted() {
-    // WizardHook: Open a listener for onNext event
-    // So when wizard footer clicks on the Next Button this component can perform its own workflow
-    this.getUserData();
+  public async mounted() {
+    await this.getUserData();
+  }
 
-    EVENT_BUS.$on("emitOnNext", (res: any) => {
-      res(true);
-    });
-  }
-  private destroyed() {
-    // WizardHook: shut off on exit event listener
-    EVENT_BUS.$off("emitOnNext");
-  }
-  get isValidForm() {
-    const validate = true;
-    // WizardHook: Emit event to sibling wizard footer component
-    // to send information about data validation to enable/disable wizard footer
-    EVENT_BUS.$emit("validForm", validate);
-    return validate;
-  }
   private addUser() {
     if (this.$data.isUserCreate) {
       this.clearCreateAccountForm();
@@ -684,9 +658,6 @@ export default class EosUserSettingLocal extends Vue {
    * This method create csm user
    */
   private async createUser() {
-    this.$store.dispatch("systemConfig/showLoader", "Creating user...");
-
-    this.$data.isUserCreate = !this.$data.isUserCreate;
     const queryParams: UserDetails = {
       username: this.$data.createAccount.username,
       password: this.$data.createAccount.password,
@@ -696,13 +667,13 @@ export default class EosUserSettingLocal extends Vue {
       language: this.$data.language,
       timeout: 1
     };
-    try {
-      await Api.post(apiRegister.csm_user, queryParams);
-      await this.getUserData();
-    } finally {
-      this.clearCreateAccountForm();
-      this.$store.dispatch("systemConfig/hideLoader");
-    }
+
+    this.$store.dispatch("systemConfig/showLoader", "Creating user...");
+    await Api.post(apiRegister.csm_user, queryParams);
+    this.$data.isUserCreate = !this.$data.isUserCreate;
+    this.clearCreateAccountForm();
+    this.$store.dispatch("systemConfig/hideLoader");
+    await this.getUserData();
   }
 
   private clearCreateAccountForm() {
@@ -714,6 +685,8 @@ export default class EosUserSettingLocal extends Vue {
    * Edit Csm User
    */
   private async editUser(selectedItem: any) {
+    selectedItem.roles = [selectedItem.role];
+    delete selectedItem.role;
     if (
       this.isAdminUser(selectedItem) ||
       this.strEqualityCaseInsensitive(
@@ -725,17 +698,14 @@ export default class EosUserSettingLocal extends Vue {
       delete selectedItem.confirmPassword;
     }
     this.$store.dispatch("systemConfig/showLoader", "Updating user details...");
-    try {
-      const res = await Api.patch(
-        apiRegister.csm_user,
-        selectedItem,
-        selectedItem.id
-      );
-      await this.getUserData();
-    } finally {
-      this.closeEditUser();
-      this.$store.dispatch("systemConfig/hideLoader");
-    }
+    const res = await Api.patch(
+      apiRegister.csm_user,
+      selectedItem,
+      selectedItem.id
+    );
+    this.closeEditUser();
+    this.$store.dispatch("systemConfig/hideLoader");
+    await this.getUserData();
   }
 
   private closeEditUser() {
@@ -748,7 +718,7 @@ export default class EosUserSettingLocal extends Vue {
       props.expand(props.item);
       this.$data.selectedItem = {
         ...props.item,
-        roles: [...props.item.roles]
+        role: this.isAdminUser(props.item) ? props.item.roles[1] : props.item.roles[0]
       };
     } else {
       props.expand(false);
@@ -757,28 +727,21 @@ export default class EosUserSettingLocal extends Vue {
 
   private async onDelete(id: string) {
     this.$store.dispatch("systemConfig/showLoader", "Deleting user...");
-
-    try {
-      await Api.delete(apiRegister.csm_user, id);
-      await this.getUserData();
-    } finally {
-      this.$store.dispatch("systemConfig/hideLoader");
-    }
+    await Api.delete(apiRegister.csm_user, id);
+    this.$store.dispatch("systemConfig/hideLoader");
+    await this.getUserData();
   }
+
   private isAdminUser(item: any) {
     return item.roles.includes("admin");
   }
   private async getUserData() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
-
-    try {
-      const res = await Api.getAll(apiRegister.csm_user);
-      if (res && res.data && res.data.users) {
-        this.$data.userData = res.data.users;
-      }
-    } finally {
-      this.$store.dispatch("systemConfig/hideLoader");
+    const res = await Api.getAll(apiRegister.csm_user);
+    if (res && res.data && res.data.users) {
+      this.$data.userData = res.data.users;
     }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 
   private isLoggedInUserAdmin() {
