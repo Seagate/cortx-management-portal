@@ -155,7 +155,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/maintenance/cluster/replace_node",
+    path: "/api/v1/maintenance/cluster/replace_node_status",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -170,7 +170,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/maintenance/cluster/replace_node_status",
+    path: "/api/v1/maintenance/cluster/replace_node",
     method: "post",
     handler: [
       checkRequiredParams,
