@@ -10,27 +10,14 @@ const createURL = (text: string) => {
 const alertTblDescriptionDirective: DirectiveOptions = {
     bind: (el, binding, vnode) => {
         let content = "--";
-        if (binding.value) {
-            const descContent = binding.value.split("-;");
-            if (descContent.length === 2) {
-                content = createURL(descContent[1]) + "<br />" + descContent[0];
-            } else {
-                content = descContent[0];
-            }
+        if (binding.value.support_message) {
+            content = createURL(binding.value.support_message);
         }
-        el.innerHTML = content;
-    }
-};
-
-const alertDetailDescriptionDirective: DirectiveOptions = {
-    bind: (el, binding, vnode) => {
-        let content = "--";
-        if (binding.value) {
-            const descContent = binding.value.split("-;");
-            if (descContent.length === 2) {
-                content = createURL(descContent[1]) + "<br />Reason: " + descContent[0];
+        if (binding.value.description) {
+            if (binding.value.support_message) {
+                content = binding.value.description + "<br />" + content;
             } else {
-                content = "Reason: " + descContent[0];
+                content = binding.value.description;
             }
         }
         el.innerHTML = content;
@@ -38,6 +25,5 @@ const alertDetailDescriptionDirective: DirectiveOptions = {
 };
 
 export {
-    alertTblDescriptionDirective,
-    alertDetailDescriptionDirective
+    alertTblDescriptionDirective
 };

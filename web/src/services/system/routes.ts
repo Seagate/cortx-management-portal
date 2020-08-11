@@ -26,9 +26,8 @@ import {
   getNodeReplacementStatus,
   replaceNode
 } from "./system-controller";
-import { checkRequiredParams } from './../../middleware/validator';
-import HttpStatus from 'http-status-codes';
-
+import { checkRequiredParams } from "./../../middleware/validator";
+import HttpStatus from "http-status-codes";
 
 /**
  * It has all the REST APIs to get the system related details.
@@ -156,7 +155,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/maintenance/replace_node",
+    path: "/api/v1/maintenance/cluster/replace_node_status",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -171,7 +170,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/maintenance/replace_node",
+    path: "/api/v1/maintenance/cluster/replace_node",
     method: "post",
     handler: [
       checkRequiredParams,

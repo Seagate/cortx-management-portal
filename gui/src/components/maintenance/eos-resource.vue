@@ -84,7 +84,7 @@
               </button>
             </v-col>
           </v-row>
-          <v-row class="mt-5 row-container" align="center" no-gutters hidden>
+          <v-row class="mt-5 row-container" align="center" no-gutters>
             <v-col col="3" lg="3">
               <label
                 class="eos-form-group-label font-weight-bold"
@@ -113,6 +113,14 @@
               </button>
             </v-col>
           </v-row>
+          <div
+            class="eos-text-md mt-5 font-weight-bold"
+            id="lblShutdownNode"
+            v-if="shutdownNode"
+          >
+            Note: {{ shutdownNode }} is in shutdown state. You need to start it
+            manually.
+          </div>
         </v-card>
       </div>
       <eos-confirmation-dialog
@@ -153,8 +161,7 @@ export default class EosMaintenance extends Vue {
       resource: {
         stop: "",
         start: "",
-        shutdown: "",
-        hidden: true
+        shutdown: ""
       },
       actionMethod: "",
       resourceState: {
@@ -162,6 +169,7 @@ export default class EosMaintenance extends Vue {
         standby: [],
         offline: []
       },
+      shutdownNode: "",
       showConfirmationDialog: false,
       confirmationDialogMessage: "",
       confirmationDialogSubMessage: "",
@@ -186,6 +194,7 @@ export default class EosMaintenance extends Vue {
       standby: [],
       offline: []
     };
+    this.$data.shutdownNode = "";
     try {
     const res: any = await Api.getAll(apiRegister.node_status);
     const nodeDetails = res && res.data ? res.data : null;
@@ -198,8 +207,9 @@ export default class EosMaintenance extends Vue {
             } else {
           this.$data.resourceState.online.push(e.name);
         }
+            this.$data.resourceState.offline.push(e.name);
           } else {
-          this.$data.resourceState.offline.push(e.name);
+            this.$data.shutdownNode = e.name;
         }
       });
     }

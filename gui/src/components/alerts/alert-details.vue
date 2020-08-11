@@ -132,7 +132,7 @@
             <label>{{ event_detail.name }}</label>
           </div>
           <div class="pa-2">
-            <label v-eos-alert-detail-description="event_detail.event_reason"></label>
+            <label>Reason: {{ event_detail.event_reason }}</label>
             <span
               v-if="event_detail.event_recommendation.length > 0"
               @click="
@@ -193,7 +193,6 @@ import AlertExtendedInfoComp from "./alert-extended-info.vue";
 import EosAlertComments from "./alert-comments.vue";
 import EosAlertOccurrences from "./alert-occurrences.vue";
 import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
-import { alertDetailDescriptionDirective } from "./alert-description-directive";
 
 @Component({
   name: "eos-alert-details",
@@ -202,8 +201,7 @@ import { alertDetailDescriptionDirective } from "./alert-description-directive";
     EosAlertComments,
     EosAlertOccurrences,
     EosTabs
-  },
-  directives: { "eos-alert-detail-description": alertDetailDescriptionDirective }
+  }
 })
 export default class EosAlertDetails extends Vue {
   public alertId: string = "";

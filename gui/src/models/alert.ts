@@ -47,6 +47,7 @@ interface Alert {
   enclosure_id: number;
   module_name: string;
   description: string;
+  support_message: string;
   health: string;
   health_recommendation: string;
   location: string;

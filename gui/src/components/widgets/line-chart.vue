@@ -14,12 +14,19 @@
  *****************************************************************************/
 <template>
   <v-card id="lineChartContainer" class="ma-0 elevation-0" width="100%" tile>
-    <div class="loader-container" v-if="showComponentLoader && $route.name!=='dashboard'">
+    <div
+      class="loader-container"
+      v-if="showComponentLoader && $route.name !== 'dashboard'"
+    >
       <div class="loader-message">
         <label>{{ message }}</label>
       </div>
       <div class="loader-body">
-        <v-progress-linear indeterminate color="csmprimary" background-color="csmdisabled"></v-progress-linear>
+        <v-progress-linear
+          indeterminate
+          color="csmprimary"
+          background-color="csmdisabled"
+        ></v-progress-linear>
       </div>
     </div>
 
@@ -42,7 +49,11 @@
         ></v-select>
       </v-col>
       <v-col cols="8">
-        <v-tabs color="csmprimary" class="mb-4" style="border-bottom: 1px solid lightgrey;">
+        <v-tabs
+          color="csmprimary"
+          class="mb-4"
+          style="border-bottom: 1px solid lightgrey;"
+        >
           <v-tab @click="tabChange(1800)">
             <label class="tab-label">1/2 Hrs</label>
           </v-tab>
@@ -329,7 +340,7 @@ export default class EosLineChart extends Vue {
         this.showComponentLoader = false;
       }
       const that = this;
-      // this elasticSerchOffset need to be substracted in "from time" of the request 
+      // this elasticSerchOffset need to be substracted in "from time" of the request
       // to remove a corner case where elastic search stops giving data due to some time lag
       const elasticSerchOffset = 5;
       that.throughputPoll = setInterval(() => {
@@ -338,7 +349,8 @@ export default class EosLineChart extends Vue {
             id: 1,
             from:
               Math.round(new Date().getTime() / this.milliSecondDiviser) -
-             ( preFetchDurationInSec / queryParams.total_sample + elasticSerchOffset),
+              (preFetchDurationInSec / queryParams.total_sample +
+                elasticSerchOffset),
             to: Math.round(new Date().getTime() / this.milliSecondDiviser),
             total_sample: 1,
             metric1: this.metric1,

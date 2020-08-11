@@ -100,7 +100,7 @@
             class="ma-5 eos-btn-primary"
             @click="closeBucketCreateSuccessDialog()"
           >
-            Okay
+            Ok
           </button>
         </v-card-actions>
       </v-card>

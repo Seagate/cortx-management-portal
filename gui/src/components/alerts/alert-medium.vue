@@ -113,7 +113,7 @@
               class="eos-status-chip eos-chip-others"
             ></div>
             </td>
-            <td v-eos-alert-tbl-description="props.item.description"></td>
+            <td v-eos-alert-tbl-description="props.item"></td>
           </tr>
         </template>
       </v-data-table>

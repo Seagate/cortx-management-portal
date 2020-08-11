@@ -123,6 +123,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
     CONF=$BASE_DIR/src/conf/
     cp -R $BASE_DIR/schema $DIST/csm/
     cp -R $BASE_DIR/templates $DIST/csm/
+    cp -R "$BASE_DIR/src/scripts" "$DIST/csm/"
     mkdir -p  $DIST/csm/cli/
     cp -R $BASE_DIR/src/cli/schema $DIST/csm/cli/
 
@@ -186,7 +187,6 @@ sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
     -e "s|<CSM_PATH>|${CSM_PATH}|g" \
     -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
 
-sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/schema/commands.yaml
 sed -i -e "s|<CORTX_PATH>|${CORTX_PATH}|g" $DIST/csm/schema/commands.yaml
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
