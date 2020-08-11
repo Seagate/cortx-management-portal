@@ -359,7 +359,7 @@
 					{
 					"name": "edit csm user",
 					"in": "body",
-					"description": "Edit CSM user credentials",
+					"description": "Edit CSM user credentials. The 'old_password' property is required for users who change their own password. The superuser can skip this field for all other users.",
 					"schema": {
 						"type": "object",
 						"required": false,
@@ -384,9 +384,9 @@
 								"type": "string",
 								"example": "password"
 							},
-							"confirmPassword": {
+							"old_password": {
 								"type": "string",
-								"example": "password"
+								"example": "old_password"
 							}
 						}
 					}
