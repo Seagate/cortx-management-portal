@@ -1,9 +1,10 @@
 <template>
-  <v-container v-if="!isUserLoggedIn" class="pa-0 ma-0 col-12 black black-container-height">
+  <v-container
+    v-if="!isUserLoggedIn"
+    class="pa-0 ma-0 col-12 black black-container-height"
+  >
     <div height="70em" class="pl-10 py-5">
-      <img
-        :src="require('@/assets/seagate-green.svg/')"
-      />
+      <img :src="require('@/assets/seagate-green.svg/')" />
       <div class="eos-brand-div">
         <img class="ml-3" :src="require('@/assets/lyve-drive-green.svg/')" />
         <span class="ml-1 eos-brand-label">RACK</span>
@@ -105,8 +106,9 @@ export default class EosLogin extends Vue {
     };
   }
 
-  @Watch('$route', { immediate: true, deep: true }) onUrlChange(newVal: any) {  
-    this.$data.isUserLoggedIn = !!(localStorage.getItem('username'));
+  @Watch("$route", { immediate: true, deep: true })
+  private onUrlChange(newVal: any) {
+    this.$data.isUserLoggedIn = !!localStorage.getItem("username");
   }
 
   private mounted() {
