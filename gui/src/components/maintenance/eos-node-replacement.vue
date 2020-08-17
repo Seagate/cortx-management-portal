@@ -96,6 +96,12 @@
                 v-model.trim="ipHostname"
                 @input="$v.ipHostname.$touch"
               />
+              <div class="eos-form-group-label eos-form-group-error-msg">
+                <label
+                  v-if="$v.ipHostname.$dirty && !$v.ipHostname.ipOrDomainRegex"
+                  >Invalid IP/Hostname.</label
+                >
+            </div>
             </div>
             <div
               class="eos-form-group"
@@ -124,7 +130,7 @@
         id="btnStartUpgrade"
         type="button"
         class="mb-10 eos-btn-primary eos-float-l"
-        @click="replaceNode()"
+        @click="replaceSelectedResource"
         style="margin-top: 2px;"
         :disabled="!selectedNode.value"
       >
@@ -149,6 +155,7 @@ import apiRegister from "../../services/api-register";
 import { LastNodeReplacementStatus } from "../../models/node-replacement";
 import { Validations } from "vuelidate-property-decorators";
 import { minValue, maxValue, helpers } from "vuelidate/lib/validators";
+import { ipOrDomainRegex } from "./../../common/regex-helpers";
 
 @Component({
   name: "eos-node-replacement"
@@ -156,7 +163,9 @@ import { minValue, maxValue, helpers } from "vuelidate/lib/validators";
 export default class EosNodeReplacement extends Vue {
   @Validations()
   public validations = {
-    ipHostname: {},
+    ipHostname: {
+      ipOrDomainRegex
+    },
     sshPort: {
       minValue: minValue(0),
       maxValue: maxValue(65535)
@@ -226,6 +235,14 @@ export default class EosNodeReplacement extends Vue {
     });
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getLastNodeReplacementStatus();
+  }
+
+  public replaceSelectedResource() {
+    this.$data.confirmationDialogMessage =
+      "Are you sure, you want to replace the node?";
+
+    this.$data.confirmationDialogSeverity = "danger";
+    this.$data.showConfirmationDialog = true;
   }
 
   public async closeConfirmationDialog(confirmation: boolean) {
