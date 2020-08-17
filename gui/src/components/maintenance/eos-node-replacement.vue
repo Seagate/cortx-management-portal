@@ -96,6 +96,7 @@
                 v-model.trim="ipHostname"
                 @input="$v.ipHostname.$touch"
               />
+
               <div class="eos-form-group-label eos-form-group-error-msg">
                 <label
                   v-if="$v.ipHostname.$dirty && !$v.ipHostname.ipOrDomainRegex"
