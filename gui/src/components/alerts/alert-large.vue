@@ -138,7 +138,7 @@
               >
               <div>
               <span v-if="props.item.module_type === 'iem'"
-                >Source Id : {{ props.item.source_id  }} | Component Id: {{ props.item.component_id }} | Module Id:{{ props.item.module_id }} </span
+                >Source: {{ props.item.source  }} | Component: {{ props.item.component }} | Module: {{ props.item.module }} </span
               ></div>
             </div>
           </td>
