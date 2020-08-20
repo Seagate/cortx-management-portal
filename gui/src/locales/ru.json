@@ -1,0 +1,11 @@
+{
+    "login": {
+      "login-label": "Вход в RACK",
+      "login-btn": "Авторизоваться",
+      "user-name-placeholder": "Имя пользователя",
+      "password-placeholder": "Пароль",
+      "user-name-required": "Требуется имя пользователя.",
+      "password-required": "Необходим пароль.",
+      "login-failed": "Ошибка авторизации!"
+    }
+  }
