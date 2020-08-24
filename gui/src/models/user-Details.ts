@@ -26,4 +26,6 @@ export interface UserDetails {
     temperature: string;
     language: string;
     timeout: number;
+    email?: string;
+    alert_notification?: boolean;
 }

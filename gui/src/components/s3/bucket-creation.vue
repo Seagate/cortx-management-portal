@@ -15,83 +15,162 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
-    <div v-if="showCreateBucketForm" class="pa-2">
-      <v-row>
-        <v-col class="py-0 pr-0">
-          <div
-            class="eos-form-group"
-            :class="{
-              'eos-form-group--error':
-                $v.createBucketForm.bucket.bucket_name.$error
-            }"
-          >
-            <label class="eos-form-group-label" for="bucketName">
-              <eos-info-tooltip
-                label="Bucket name*"
-                :message="bucketNameTooltipMessage"
-              />
-            </label>
-            <input
-              class="eos-form__input_text"
-              type="text"
-              id="bucketName"
-              name="bucketName"
-              v-model.trim="createBucketForm.bucket.bucket_name"
-              @input="$v.createBucketForm.bucket.bucket_name.$touch"
-            />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label
-                v-if="
-                  $v.createBucketForm.bucket.bucket_name.$dirty &&
-                    !$v.createBucketForm.bucket.bucket_name.required
-                "
-                >Bucket name is required.</label
-              >
-              <label
-                v-else-if="
-                  $v.createBucketForm.bucket.bucket_name.$dirty &&
-                    !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
-                "
-                >Invalid bucket name.</label
-              >
-            </div>
-          </div>
-        </v-col>
-      </v-row>
+  <div class="body-2">
+    <div
+      id="s3-configuration-title-container"
+      class="mt-2 s3-configuration-page-title"
+    >
+      <label id="s3-account-form-title" class="headline font-weight-bold"
+        >S3 configuration</label
+      >
+      <eos-has-access
+        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
+      >
+        <div class="mt-1" style="color: #454545;font-size: 14px;">
+          <label>
+            Create an S3 account. You must log in to the system using S3 account
+            credentials to manage S3 account, IAM users, and buckets.
+          </label>
+        </div>
+      </eos-has-access>
 
-      <v-row>
-        <v-col>
+      <eos-has-access
+        :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+      >
+        <div class="mt-1" style="color: #454545;font-size: 14px;">
+          <label>
+            Manage IAM users and buckets.
+          </label>
+        </div>
+      </eos-has-access>
+    </div>
+    <v-divider class="mt-2" />
+    <v-row>
+      <v-col class="py-0 pr-0 col-9">
+        <eos-has-access
+          :to="$eosUserPermissions.s3buckets + $eosUserPermissions.list"
+        >
+          <v-data-table
+            calculate-widths
+            :items="bucketsList"
+            item-key="name"
+            class="eos-table"
+            :hide-default-header="true"
+            :hide-default-footer="true"
+            :disable-pagination="true"
+          >
+            <template v-slot:header="{}">
+              <tr>
+                <th
+                  v-for="header in bucketsTableHeaderList"
+                  :key="header.text"
+                  class="tableheader"
+                >
+                  <span>{{ header.text }}</span>
+                </th>
+                <th class="tableheader" />
+              </tr>
+            </template>
+
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item.name }}</td>
+                <td>
+                  <img
+                    @click="openBucketPolicyDialog(props.item.name)"
+                    class="eos-cursor-pointer"
+                    src="@/assets/actions/edit-green.svg"
+                  />
+                  <img
+                    @click="openConfirmDeleteDialog(props.item.name)"
+                    class="eos-cursor-pointer ml-5"
+                    src="@/assets/actions/delete-green.svg"
+                  />
+                </td>
+              </tr>
+            </template>
+          </v-data-table>
+        </eos-has-access>
+      </v-col>
+      <v-col class="pb-0 col-3">
+        <div v-if="showCreateBucketForm" class="pa-2">
+          <v-row>
+            <v-col class="py-0 pr-0">
+              <div
+                class="eos-form-group-custom"
+                :class="{
+                  'eos-form-group--error':
+                    $v.createBucketForm.bucket.bucket_name.$error
+                }"
+              >
+                <label class="eos-form-group-label" for="bucketName">
+                  <eos-info-tooltip
+                    label="Bucket name*"
+                    :message="bucketNameTooltipMessage"
+                  />
+                </label>
+                <input
+                  class="eos-form__input_text"
+                  type="text"
+                  id="bucketName"
+                  name="bucketName"
+                  v-model.trim="createBucketForm.bucket.bucket_name"
+                  @input="$v.createBucketForm.bucket.bucket_name.$touch"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="
+                      $v.createBucketForm.bucket.bucket_name.$dirty &&
+                        !$v.createBucketForm.bucket.bucket_name.required
+                    "
+                    >Bucket name is required.</label
+                  >
+                  <label
+                    v-else-if="
+                      $v.createBucketForm.bucket.bucket_name.$dirty &&
+                        !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
+                    "
+                    >Invalid bucket name.</label
+                  >
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <button
+                type="button"
+                class="eos-btn-primary"
+                @click="createBucket()"
+                :disabled="$v.createBucketForm.$invalid"
+              >
+                Create bucket
+              </button>
+              <button
+                type="button"
+                class="eos-btn-tertiary"
+                @click="closeCreateBucketForm()"
+              >
+                Cancel
+              </button>
+            </v-col>
+          </v-row>
+        </div>
+        <eos-has-access
+          :to="$eosUserPermissions.s3buckets + $eosUserPermissions.create"
+        >
           <button
             type="button"
             class="eos-btn-primary"
-            @click="createBucket()"
-            :disabled="$v.createBucketForm.$invalid"
+            v-if="!showCreateBucketForm"
+            @click="openCreateBucketForm()"
           >
-            Create bucket
+            Create
           </button>
-          <button
-            type="button"
-            class="eos-btn-tertiary"
-            @click="closeCreateBucketForm()"
-          >
-            Cancel
-          </button>
-        </v-col>
-      </v-row>
-    </div>
-    <eos-has-access
-      :to="$eosUserPermissions.s3buckets + $eosUserPermissions.create"
-    >
-      <button
-        type="button"
-        class="mt-2 mb-2 eos-btn-primary"
-        v-if="!showCreateBucketForm"
-        @click="openCreateBucketForm()"
-      >
-        Create
-      </button>
-    </eos-has-access>
+        </eos-has-access>
+      </v-col>
+    </v-row>
+
     <v-dialog
       v-model="showBucketCreateSuccessDialog"
       persistent
@@ -140,7 +219,8 @@
             }"
           >
             <label class="eos-form-group-label" for="policyJSONTextarea">
-              Type to add new bucket policy or edit an existing policy in the text area below.
+              Type to add new bucket policy or edit an existing policy in the
+              text area below.
             </label>
             <textarea
               class="eos-form__input_textarea eos-form__input_textarea-custom"
@@ -188,50 +268,6 @@
         </div>
       </div>
     </div>
-    <eos-has-access
-      :to="$eosUserPermissions.s3buckets + $eosUserPermissions.list"
-    >
-      <v-data-table
-        calculate-widths
-        :items="bucketsList"
-        item-key="name"
-        class="eos-table"
-        :hide-default-header="true"
-        :hide-default-footer="true"
-        :disable-pagination="true"
-      >
-        <template v-slot:header="{}">
-          <tr>
-            <th
-              v-for="header in bucketsTableHeaderList"
-              :key="header.text"
-              class="tableheader"
-            >
-              <span>{{ header.text }}</span>
-            </th>
-            <th class="tableheader" />
-          </tr>
-        </template>
-
-        <template v-slot:item="props">
-          <tr>
-            <td>{{ props.item.name }}</td>
-            <td>
-              <img
-                @click="openBucketPolicyDialog(props.item.name)"
-                class="eos-cursor-pointer"
-                src="@/assets/actions/edit-green.svg"
-              />
-              <img
-                @click="openConfirmDeleteDialog(props.item.name)"
-                class="eos-cursor-pointer ml-5"
-                src="@/assets/actions/delete-green.svg"
-              />
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
-    </eos-has-access>
 
     <eos-confirmation-dialog
       :show="showConfirmDeleteDialog"

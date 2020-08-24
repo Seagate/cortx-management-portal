@@ -23,144 +23,210 @@
         <span class="ml-1 eos-brand-label">RACK</span>
       </div>
     </div>
-    <div class="body-2 ma-10">
+    <div class="body-2 ma-5">
       <div
-        class="ml-4 mt-4 mb-1 black--text font-weight-bold"
+        class="ml-4 mb-1 black--text font-weight-bold"
         style="font-size: 18px"
       >
         Admin user configuration
       </div>
-      <div class="ml-4 my-3">
+      <div class="ml-4 my-2">
         Configure the username and password for the user with administrative
         rights. You must remember the admin user login credentials because the
         admin user can be created only once.
       </div>
       <v-divider class="mt-2" />
-      <div class="ma-4 mt-6">
+      <div class="ma-4">
         <form autocomplete="off" @submit.prevent="submitForm">
-          <div class="mt-4">
-            <div
-              class="eos-form-group"
-              :class="{
-                'eos-form-group--error': $v.createAccount.username.$error,
-              }"
-            >
-              <label
-                class="eos-form-group-label"
-                for="Username"
-                id="lblAdminUsername"
-              >
-                <eos-info-tooltip
-                  label="Admin username*"
-                  :message="usernameTooltipMessage"
+          <v-row>
+            <v-col class="py-0 col-xs-6 col-sm-3">
+              <div>
+                <div
+                  class="eos-form-group"
+                  :class="{
+                    'eos-form-group--error': $v.createAccount.username.$error
+                  }"
+                >
+                  <label
+                    class="eos-form-group-label"
+                    for="Username"
+                    id="lblAdminUsername"
+                  >
+                    <eos-info-tooltip
+                      label="Username*"
+                      :message="usernameTooltipMessage"
+                    />
+                  </label>
+                  <div></div>
+                  <input
+                    class="eos-form__input_text"
+                    type="text"
+                    name="username"
+                    id="adminUsername"
+                    v-model.trim="createAccount.username"
+                    @input="$v.createAccount.username.$touch"
+                  />
+                  <div class="eos-form-group-label eos-form-group-error-msg">
+                    <label
+                      v-if="
+                        $v.createAccount.username.$dirty &&
+                          !$v.createAccount.username.required
+                      "
+                      >Username is required.</label
+                    >
+                    <label
+                      v-else-if="
+                        $v.createAccount.username.$dirty &&
+                          !$v.createAccount.username.accountNameRegex
+                      "
+                      >Invalid username.</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </v-col>
+            <v-col class="py-0 col-xs-6 col-sm-3">
+              <div>
+                <div
+                  class="eos-form-group"
+                  :class="{
+                    'eos-form-group--error': $v.createAccount.email.$error
+                  }"
+                >
+                  <label
+                    class="eos-form-group-label"
+                    for="Email"
+                    id="lblAdminEmail"
+                    >Email*</label
+                  >
+                  <div></div>
+                  <input
+                    class="eos-form__input_text"
+                    type="email"
+                    name="email"
+                    id="adminEmail"
+                    v-model.trim="createAccount.email"
+                    @input="$v.createAccount.email.$touch"
+                  />
+                  <div class="eos-form-group-label eos-form-group-error-msg">
+                    <label
+                      v-if="
+                        $v.createAccount.email.$dirty &&
+                          !$v.createAccount.email.required
+                      "
+                      >Email is required.</label
+                    >
+                    <label
+                      v-else-if="
+                        $v.createAccount.email.$dirty &&
+                          !$v.createAccount.email.email
+                      "
+                      >Invalid email.</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="py-0 col-xs-6 col-sm-3">
+              <div>
+                <div
+                  class="eos-form-group"
+                  :class="{
+                    'eos-form-group--error': $v.createAccount.password.$error
+                  }"
+                >
+                  <label
+                    class="eos-form-group-label"
+                    for="password"
+                    id="lblAdminPassword"
+                  >
+                    <eos-info-tooltip
+                      label="Password*"
+                      :message="passwordTooltipMessage"
+                    />
+                  </label>
+                  <div></div>
+                  <input
+                    class="eos-form__input_text"
+                    type="password"
+                    name="password"
+                    id="adminPassword"
+                    v-model.trim="createAccount.password"
+                    @input="$v.createAccount.password.$touch"
+                  />
+                  <div class="eos-form-group-label eos-form-group-error-msg">
+                    <label
+                      v-if="
+                        $v.createAccount.password.$dirty &&
+                          !$v.createAccount.password.required
+                      "
+                      >Password is required.</label
+                    >
+                    <label
+                      v-else-if="
+                        $v.createAccount.password.$dirty &&
+                          !$v.createAccount.password.passwordRegex
+                      "
+                      >Invalid password.</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </v-col>
+            <v-col class="py-0 col-xs-6 col-sm-3">
+              <div>
+                <div
+                  class="eos-form-group"
+                  :class="{
+                    'eos-form-group--error':
+                      $v.createAccount.confirmPassword.$error
+                  }"
+                >
+                  <label
+                    class="eos-form-group-label"
+                    for="confirmPassword"
+                    id="lblConfirmAdminPassword"
+                    >Confirm password*</label
+                  >
+                  <div></div>
+                  <input
+                    class="eos-form__input_text"
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmAdminPassword"
+                    v-model.trim="createAccount.confirmPassword"
+                    @input="$v.createAccount.confirmPassword.$touch"
+                    v-on:keyup.enter="handleEnterEvent()"
+                  />
+                  <div class="eos-form-group-label eos-form-group-error-msg">
+                    <label
+                      v-if="
+                        $v.createAccount.confirmPassword.$dirty &&
+                          !$v.createAccount.confirmPassword.sameAsPassword
+                      "
+                      >Passwords do not match.</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="pt-0">
+              <label class="eos-ckb-container" for="emailCheckID">
+                Subscribe to email notifications
+                <input
+                  type="checkbox"
+                  name="emailCheckID"
+                  v-model="createAccount.alert_notification"
+                  id="emailCheckID"
                 />
+                <span class="eos-ckb-tick"></span>
               </label>
-              <div></div>
-              <input
-                class="eos-form__input_text"
-                type="text"
-                name="username"
-                id="adminUsername"
-                v-model.trim="createAccount.username"
-                @input="$v.createAccount.username.$touch"
-              />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label
-                  v-if="
-                    $v.createAccount.username.$dirty &&
-                      !$v.createAccount.username.required
-                  "
-                  >Username is required.</label
-                >
-                <label
-                  v-else-if="
-                    $v.createAccount.username.$dirty &&
-                      !$v.createAccount.username.accountNameRegex
-                  "
-                  >Invalid username.</label
-                >
-              </div>
-            </div>
-          </div>
-          <div class="mt-4">
-            <div
-              class="eos-form-group"
-              :class="{
-                'eos-form-group--error': $v.createAccount.password.$error,
-              }"
-            >
-              <label
-                class="eos-form-group-label"
-                for="password"
-                id="lblAdminPassword"
-              >
-                <eos-info-tooltip
-                  label="Password*"
-                  :message="passwordTooltipMessage"
-                />
-              </label>
-              <div></div>
-              <input
-                class="eos-form__input_text"
-                type="password"
-                name="password"
-                id="adminPassword"
-                v-model.trim="createAccount.password"
-                @input="$v.createAccount.password.$touch"
-              />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label
-                  v-if="
-                    $v.createAccount.password.$dirty &&
-                      !$v.createAccount.password.required
-                  "
-                  >Password is required.</label
-                >
-                <label
-                  v-else-if="
-                    $v.createAccount.password.$dirty &&
-                      !$v.createAccount.password.passwordRegex
-                  "
-                  >Invalid password.</label
-                >
-              </div>
-            </div>
-          </div>
-          <div class="mt-4">
-            <div
-              class="eos-form-group"
-              :class="{
-                'eos-form-group--error':
-                  $v.createAccount.confirmPassword.$error,
-              }"
-            >
-              <label
-                class="eos-form-group-label"
-                for="confirmPassword"
-                id="lblConfirmAdminPassword"
-                >Confirm password*</label
-              >
-              <div></div>
-              <input
-                class="eos-form__input_text"
-                type="password"
-                name="confirmPassword"
-                id="confirmAdminPassword"
-                v-model.trim="createAccount.confirmPassword"
-                @input="$v.createAccount.confirmPassword.$touch"
-                v-on:keyup.enter="handleEnterEvent()"
-              />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label
-                  v-if="
-                    $v.createAccount.confirmPassword.$dirty &&
-                      !$v.createAccount.confirmPassword.sameAsPassword
-                  "
-                  >Passwords do not match.</label
-                >
-              </div>
-            </div>
-          </div>
+            </v-col>
+          </v-row>
           <button
             type="button"
             class="eos-btn-primary"
@@ -181,7 +247,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { UserLoginQueryParam } from "./../../models/user-login";
 import { Validations } from "vuelidate-property-decorators";
-import { required, sameAs } from "vuelidate/lib/validators";
+import { required, sameAs, email } from "vuelidate/lib/validators";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import {
@@ -189,10 +255,11 @@ import {
   passwordRegex,
   passwordTooltipMessage,
   usernameTooltipMessage,
+  commaSeparatedEmailsRegex
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
 @Component({
-  name: "eos-admin-user",
+  name: "eos-admin-user"
 })
 export default class EosAdminUser extends Vue {
   @Validations()
@@ -201,9 +268,10 @@ export default class EosAdminUser extends Vue {
       username: { required, accountNameRegex },
       password: { required, passwordRegex },
       confirmPassword: {
-        sameAsPassword: sameAs("password"),
+        sameAsPassword: sameAs("password")
       },
-    },
+      email: { required, email }
+    }
   };
   private data() {
     return {
@@ -211,18 +279,22 @@ export default class EosAdminUser extends Vue {
         username: "",
         password: "",
         confirmPassword: "",
+        email: "",
+        alert_notification: true
       },
       isValidResponse: true,
       invalidMessage: "",
       createUserInProgress: false,
       passwordTooltipMessage,
-      usernameTooltipMessage,
+      usernameTooltipMessage
     };
   }
   private async gotToNextPage() {
-    const queryParams: UserLoginQueryParam = {
+    const queryParams = {
       username: this.$data.createAccount.username,
       password: this.$data.createAccount.password,
+      email: this.$data.createAccount.email,
+      alert_notification: this.$data.createAccount.alert_notification
     };
     this.$data.isValidResponse = true;
     this.$data.createUserInProgress = true;
@@ -231,7 +303,7 @@ export default class EosAdminUser extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Creating admin user...");
     try {
       const res = await Api.post(apiRegister.create_user, queryParams, {
-        timeout: 60000,
+        timeout: 60000
       });
       if (res) {
         this.$router.push({ name: "preboarding-login" });
@@ -257,7 +329,6 @@ export default class EosAdminUser extends Vue {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .eos-form__input_text {

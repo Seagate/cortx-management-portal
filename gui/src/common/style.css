@@ -307,15 +307,12 @@ textarea:focus {
   border-radius: 50%;
   background: #6ebe49;
 }
-.eos-rdb-container:hover input ~ .eos-rdb-tick:after {
-  display: block;
-}
 .eos-rdb-container:hover input:checked ~ .eos-rdb-tick {
   background: #ffffff;
   border: 2px solid #6ebe49;
 }
 .eos-rdb-container:hover input:checked ~ .eos-rdb-tick:after {
-  display: none;
+  display: block;
 }
 .eos-rdb-container input:disabled ~ .eos-rdb-tick {
   opacity: 20%;
@@ -710,7 +707,7 @@ tbody tr:hover {
 }
 .eos-brand-label {
   color: #6ebe49;
-  font-size: 28px;  
+  font-size: 28px;
   margin: auto 5px;
 }
 .eos-brand-div {
@@ -718,6 +715,6 @@ tbody tr:hover {
 }
 
 .black-container-height {
-  height : 100%
+  height: 100%;
 }
 /* Icon buttons styles --- End */

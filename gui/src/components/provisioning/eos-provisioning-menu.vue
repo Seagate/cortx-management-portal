@@ -16,48 +16,83 @@
 */
 <template>
   <div>
-    <eos-menu-list
-      :menuItems="subMenuItems"
-      @clickFunctionHandler="clickFunctionHandler"
-    ></eos-menu-list>
+    <eos-tabs :tabsInfo="tabsInfo" />
+    <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.list">
+      <EosUserSettingLocal v-if="showUserTab" />
+    </eos-has-access>
+
+    <eos-has-access
+      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+    >
+      <S3Account v-if="showAccountTab" />
+    </eos-has-access>
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import EosMenuList from "../widgets/eos-menu-list.vue";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import EosUserSettingLocal from "../onboarding/system-config/user-settings/user-setting-local.vue";
+import EosTabs, { TabsInfo } from "../widgets/eos-tabs.vue";
+import S3Account from "../s3/account-management.vue";
 
 @Component({
   name: "eos-provisioning-submenu",
   components: {
-    EosMenuList
+    EosUserSettingLocal,
+    EosTabs,
+    S3Account
   }
 })
 export default class EosProvisioningSubmenu extends Vue {
-  public subMenuItems = [
-    {
-      title: "Administrative Users",
-      actionName: "Manage",
-      actionClickFunction: "goToUserSettings",
-      disabled: false,
-      requiredAccess: "users"
-    },
-    {
-      title: "S3 Accounts",
-      actionName: "Manage",
-      actionClickFunction: "goToS3",
-      disabled: false,
-      requiredAccess: "s3accounts"
-    }
-  ];
-  private goToUserSettings() {
-    this.$router.push({ name: "usersettinglocal" });
-  }
-  private goToS3() {
-    this.$router.push({ name: "s3" });
-  }
-  private clickFunctionHandler(actionClickFunction: string) {
+  public tabsInfo: TabsInfo = {
+    tabs: [
+      {
+        id: 1,
+        label: "Administrative user",
+        show: true,
+        requiredAccess: "users"
+      },
+      {
+        id: 2,
+        label: "S3 Account",
+        show: true,
+        requiredAccess: "s3accounts"
+      }
+    ],
+    selectedTab: 1
+  };
+  private showUserTab: boolean = true;
+  private showAccountTab: boolean = false;
+
+  public mounted() {
+    /*
+    Set `show` property to true/false based on the user access
+    We can directly use Vue prototype method using `this`, but the linter
+    shows this as an error e.g. `Property '$hasAccessToCsm' does not exist on type 'Vue'`
+    That is why we need to create `vueInstance` constant with `any` type and use the
+    methods or global variables declared using `Vue.prototype`.
+    */
+
     const vueInstance: any = this;
-    vueInstance[actionClickFunction]();
+    this.tabsInfo.tabs = this.tabsInfo.tabs.map((tab: any) => {
+      tab.show = vueInstance.$hasAccessToCsm(
+        vueInstance.$eosUserPermissions[tab.requiredAccess] +
+          vueInstance.$eosUserPermissions.list
+      );
+      return tab;
+    });
+  }
+  @Watch("tabsInfo.selectedTab")
+  public onPropertyChanged(value: number, oldValue: number) {
+    switch (value) {
+      case 1:
+        this.showUserTab = true;
+        this.showAccountTab = false;
+        break;
+      case 2:
+        this.showUserTab = false;
+        this.showAccountTab = true;
+        break;
+    }
   }
 }
 </script>

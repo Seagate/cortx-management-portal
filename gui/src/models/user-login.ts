@@ -17,4 +17,5 @@
 export interface UserLoginQueryParam {
     username: string;
     password: string;
+    email?: string;
 }

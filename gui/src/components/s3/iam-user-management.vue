@@ -15,151 +15,239 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
-    <div v-if="showCreateUserForm" class="pa-2">
-      <v-row>
-        <v-col class="py-0 pr-0">
-          <div
-            class="eos-form-group"
-            :class="{
-              'eos-form-group--error':
-                $v.createUserForm.iamUser.user_name.$error
-            }"
-          >
-            <label class="eos-form-group-label" for="userName">
-              <eos-info-tooltip
-                label="Username*"
-                :message="usernameTooltipMessage"
-              />
-            </label>
-            <input
-              class="eos-form__input_text"
-              type="text"
-              id="userName"
-              name="userName"
-              v-model.trim="createUserForm.iamUser.user_name"
-              @input="$v.createUserForm.iamUser.user_name.$touch"
-            />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label
-                v-if="
-                  $v.createUserForm.iamUser.user_name.$dirty &&
-                    !$v.createUserForm.iamUser.user_name.required
-                "
-                >Username is required.</label
-              >
-              <label
-                v-else-if="
-                  $v.createUserForm.iamUser.user_name.$dirty &&
-                    !$v.createUserForm.iamUser.user_name.accountNameRegex
-                "
-                >Invalid username.</label
-              >
-            </div>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="py-0 pr-0">
-          <div
-            class="eos-form-group"
-            :class="{
-              'eos-form-group--error': $v.createUserForm.iamUser.password.$error
-            }"
-          >
-            <label class="eos-form-group-label" for="userPassword">
-              <eos-info-tooltip
-                label="Password*"
-                :message="passwordTooltipMessage"
-              />
-            </label>
-            <input
-              class="eos-form__input_text"
-              type="password"
-              id="userPassword"
-              name="userPassword"
-              v-model.trim="createUserForm.iamUser.password"
-              @input="$v.createUserForm.iamUser.password.$touch"
-            />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label
-                v-if="
-                  $v.createUserForm.iamUser.password.$dirty &&
-                    !$v.createUserForm.iamUser.password.required
-                "
-                >Password is required.</label
-              >
-              <label
-                v-else-if="
-                  $v.createUserForm.iamUser.password.$dirty &&
-                    !$v.createUserForm.iamUser.password.passwordRegex
-                "
-                >Invalid password.</label
-              >
-            </div>
-          </div>
-        </v-col>
-        <v-col class="py-0 pl-0">
-          <div
-            class="eos-form-group"
-            :class="{
-              'eos-form-group--error': $v.createUserForm.confirmPassword.$error
-            }"
-          >
-            <label class="eos-form-group-label" for="confirmPassword"
-              >Confirm password*</label
-            >
-            <input
-              class="eos-form__input_text"
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              v-model.trim="createUserForm.confirmPassword"
-              @input="$v.createUserForm.confirmPassword.$touch"
-            />
-            <span
-              class="eos-form-group-label eos-form-group-error-msg"
-              v-if="
-                $v.createUserForm.confirmPassword.$dirty &&
-                  !$v.createUserForm.confirmPassword.sameAsPassword
-              "
-              >Passwords do not match</span
-            >
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="pt-0">
-          <button
-            type="button"
-            class="eos-btn-primary"
-            @click="createUser()"
-            :disabled="$v.createUserForm.$invalid"
-          >
-            Create user
-          </button>
-          <button
-            type="button"
-            class="eos-btn-tertiary"
-            @click="closeCreateUserForm()"
-          >
-            Cancel
-          </button>
-        </v-col>
-      </v-row>
-    </div>
-    <eos-has-access
-      :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.create"
+  <div class="body-2">
+    <div
+      id="s3-configuration-title-container"
+      class="mt-2 s3-configuration-page-title"
     >
-      <button
-        type="button"
-        class="mt-2 mb-2 eos-btn-primary"
-        v-if="!showCreateUserForm"
-        @click="openCreateUserForm()"
+      <label id="s3-account-form-title" class="headline font-weight-bold"
+        >S3 configuration</label
       >
-        Create
-      </button>
-    </eos-has-access>
+      <eos-has-access
+        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
+      >
+        <div class="mt-1" style="color: #454545;font-size: 14px;">
+          <label>
+            Create an S3 account. You must log in to the system using S3 account
+            credentials to manage S3 account, IAM users, and buckets.
+          </label>
+        </div>
+      </eos-has-access>
+
+      <eos-has-access
+        :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+      >
+        <div class="mt-1" style="color: #454545;font-size: 14px;">
+          <label>
+            Manage IAM users and buckets.
+          </label>
+        </div>
+      </eos-has-access>
+    </div>
+    <v-divider class="mt-2" />
+    <v-row>
+      <v-col class="py-0 pr-0 col-9">
+        <eos-has-access
+          :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+        >
+          <v-data-table
+            calculate-widths
+            :items="usersList"
+            item-key="user_name"
+            class="eos-table"
+            :hide-default-header="true"
+            :hide-default-footer="true"
+            :disable-pagination="true"
+          >
+            <template v-slot:header="{}">
+              <tr>
+                <th
+                  v-for="header in usersTableHeaderList"
+                  :key="header.text"
+                  class="tableheader"
+                >
+                  <span>{{ header.text }}</span>
+                </th>
+                <th class="tableheader" />
+              </tr>
+            </template>
+
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item.user_name }}</td>
+                <td>{{ props.item.user_id }}</td>
+                <td>{{ props.item.arn }}</td>
+                <td>
+                  <eos-has-access
+                    :to="
+                      $eosUserPermissions.s3iamusers +
+                        $eosUserPermissions.delete
+                    "
+                  >
+                    <img
+                      @click="openConfirmDeleteDialog(props.item.user_name)"
+                      class="eos-cursor-pointer"
+                      src="./../../assets/actions/delete-green.svg"
+                    />
+                  </eos-has-access>
+                </td>
+              </tr>
+            </template>
+          </v-data-table>
+        </eos-has-access>
+      </v-col>
+      <v-col class="py-0 col-3">
+        <div v-if="showCreateUserForm" class="pa-2">
+          <v-row>
+            <v-col class="pr-0 pb-0">
+              <div
+                class="eos-form-group-custom"
+                :class="{
+                  'eos-form-group--error':
+                    $v.createUserForm.iamUser.user_name.$error
+                }"
+              >
+                <label class="eos-form-group-label" for="userName">
+                  <eos-info-tooltip
+                    label="Username*"
+                    :message="usernameTooltipMessage"
+                  />
+                </label>
+                <input
+                  class="eos-form__input_text"
+                  type="text"
+                  id="userName"
+                  name="userName"
+                  v-model.trim="createUserForm.iamUser.user_name"
+                  @input="$v.createUserForm.iamUser.user_name.$touch"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="
+                      $v.createUserForm.iamUser.user_name.$dirty &&
+                        !$v.createUserForm.iamUser.user_name.required
+                    "
+                    >Username is required.</label
+                  >
+                  <label
+                    v-else-if="
+                      $v.createUserForm.iamUser.user_name.$dirty &&
+                        !$v.createUserForm.iamUser.user_name.accountNameRegex
+                    "
+                    >Invalid username.</label
+                  >
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="pr-0 pb-0">
+              <div
+                class="eos-form-group-custom"
+                :class="{
+                  'eos-form-group--error':
+                    $v.createUserForm.iamUser.password.$error
+                }"
+              >
+                <label class="eos-form-group-label" for="userPassword">
+                  <eos-info-tooltip
+                    label="Password*"
+                    :message="passwordTooltipMessage"
+                  />
+                </label>
+                <input
+                  class="eos-form__input_text"
+                  type="password"
+                  id="userPassword"
+                  name="userPassword"
+                  v-model.trim="createUserForm.iamUser.password"
+                  @input="$v.createUserForm.iamUser.password.$touch"
+                />
+                <div class="eos-form-group-label eos-form-group-error-msg">
+                  <label
+                    v-if="
+                      $v.createUserForm.iamUser.password.$dirty &&
+                        !$v.createUserForm.iamUser.password.required
+                    "
+                    >Password is required.</label
+                  >
+                  <label
+                    v-else-if="
+                      $v.createUserForm.iamUser.password.$dirty &&
+                        !$v.createUserForm.iamUser.password.passwordRegex
+                    "
+                    >Invalid password.</label
+                  >
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="pr-0">
+              <div
+                class="eos-form-group-custom"
+                :class="{
+                  'eos-form-group--error':
+                    $v.createUserForm.confirmPassword.$error
+                }"
+              >
+                <label class="eos-form-group-label" for="confirmPassword"
+                  >Confirm password*</label
+                >
+                <input
+                  class="eos-form__input_text"
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  v-model.trim="createUserForm.confirmPassword"
+                  @input="$v.createUserForm.confirmPassword.$touch"
+                />
+                <span
+                  class="eos-form-group-label eos-form-group-error-msg"
+                  v-if="
+                    $v.createUserForm.confirmPassword.$dirty &&
+                      !$v.createUserForm.confirmPassword.sameAsPassword
+                  "
+                  >Passwords do not match</span
+                >
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <button
+                type="button"
+                class="eos-btn-primary"
+                @click="createUser()"
+                :disabled="$v.createUserForm.$invalid"
+              >
+                Create user
+              </button>
+              <button
+                type="button"
+                class="eos-btn-tertiary"
+                @click="closeCreateUserForm()"
+              >
+                Cancel
+              </button>
+            </v-col>
+          </v-row>
+        </div>
+        <eos-has-access
+          :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.create"
+        >
+          <button
+            type="button"
+            class="mt-5 eos-btn-primary"
+            v-if="!showCreateUserForm"
+            @click="openCreateUserForm()"
+          >
+            Create
+          </button>
+        </eos-has-access>
+      </v-col>
+    </v-row>
+
     <v-dialog v-model="showUserDetailsDialog" persistent max-width="790">
       <v-card>
         <v-system-bar color="greay lighten-3">
@@ -231,53 +319,6 @@
       </v-card>
     </v-dialog>
 
-    <eos-has-access
-      :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
-    >
-      <v-data-table
-        calculate-widths
-        :items="usersList"
-        item-key="user_name"
-        class="eos-table"
-        :hide-default-header="true"
-        :hide-default-footer="true"
-        :disable-pagination="true"
-      >
-        <template v-slot:header="{}">
-          <tr>
-            <th
-              v-for="header in usersTableHeaderList"
-              :key="header.text"
-              class="tableheader"
-            >
-              <span>{{ header.text }}</span>
-            </th>
-            <th class="tableheader" />
-          </tr>
-        </template>
-
-        <template v-slot:item="props">
-          <tr>
-            <td>{{ props.item.user_name }}</td>
-            <td>{{ props.item.user_id }}</td>
-            <td>{{ props.item.arn }}</td>
-            <td>
-              <eos-has-access
-                :to="
-                  $eosUserPermissions.s3iamusers + $eosUserPermissions.delete
-                "
-              >
-                <img
-                  @click="openConfirmDeleteDialog(props.item.user_name)"
-                  class="eos-cursor-pointer"
-                  src="./../../assets/actions/delete-green.svg"
-                />
-              </eos-has-access>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
-    </eos-has-access>
     <eos-confirmation-dialog
       :show="showConfirmDeleteDialog"
       title="Confirmation"
@@ -392,8 +433,8 @@ export default class EosIAMUserManagement extends Vue {
       this.user = res.data;
       this.isCredentialsFileDownloaded = false;
       this.credentialsFileContent =
-      "data:text/plain;charset=utf-8," +
-      encodeURIComponent(this.getCredentialsFileContent());
+        "data:text/plain;charset=utf-8," +
+        encodeURIComponent(this.getCredentialsFileContent());
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showUserDetailsDialog = true;
