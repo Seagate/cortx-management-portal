@@ -68,3 +68,8 @@ export const ipOrDomainRegex = helpers.regex(
   // tslint:disable-next-line
   /(?:^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z]$|(^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?))$)/
 );
+
+export const applianceNameRegex = helpers.regex(
+  "applianceNameRegex",
+  /^[A-Za-z0-9_-]+$/
+);

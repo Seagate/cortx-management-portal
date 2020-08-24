@@ -70,6 +70,26 @@
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+            >Appliance Name</v-expansion-panel-header
+          >
+          <v-expansion-panel-content v-if="applianceName">
+            <div class="row ma-0">
+              <template>
+                <div class="col-8 body-2 column mr-5 pt-0">
+                  <table class="eos-text-lg">
+                    <tr>
+                      <td class="large-table-data-label">Appliance name:</td>
+                      <td>{{ applianceName }}</td>
+                    </tr>
+                  </table>
+                </div>
+              </template>
+            </div>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+
+        <v-expansion-panel>
+          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
             >DNS settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
@@ -191,7 +211,8 @@ export default class EosOnboardingSummary extends Vue {
       showConfirmDialog: false,
       wizardRes: undefined,
       notificationData: {},
-      lastSSLStatus: {}
+      lastSSLStatus: {},
+      applianceName: ""
     };
   }
   private openConfirmDialog() {
@@ -234,6 +255,9 @@ export default class EosOnboardingSummary extends Vue {
     let redirectUrl;
 
     if (systemconfig) {
+      if (systemconfig.appliance_name) {
+        this.$data.applianceName = systemconfig.appliance_name;
+      }
       if (
         systemconfig.management_network_settings &&
         systemconfig.management_network_settings.ipv4 &&

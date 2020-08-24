@@ -73,7 +73,10 @@ export default class SystemConfiguration extends VuexModule {
   public userConfigLdapMutation(payload: any) {
     this.systemConfigDetails.ldap = { ...payload };
   }
-
+  @Mutation
+  public userConfigApplianceMutation(payload: any) {
+    this.systemConfigDetails.appliance_name = payload;
+  }
   @Mutation
   public userConfigEmailNotificaionMutation(payload: any) {
     if (!this.systemConfigDetails.notifications) {
@@ -142,6 +145,29 @@ export default class SystemConfiguration extends VuexModule {
   public async updateLdapUserConfig(payload: any) {
     try {
       this.context.commit("userConfigLdapMutation", payload);
+      const res = await Api.put(
+        apiRegister.sysconfig,
+        this.systemConfigDetails,
+        this.systemConfigDetails.config_id
+      );
+      if (res && res.data) {
+        const data = res.data;
+        this.context.commit("systemConfigMutation", data);
+        return res;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
+    }
+  }
+  /**
+   * @param queryParams {object},
+   * This action for update user config.
+   */
+  @Action
+  public async updateApplianceConfig(payload: any) {
+    try {
+      this.context.commit("userConfigApplianceMutation", payload);
       const res = await Api.put(
         apiRegister.sysconfig,
         this.systemConfigDetails,

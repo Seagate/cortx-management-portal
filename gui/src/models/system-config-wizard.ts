@@ -15,20 +15,20 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 export const wizardConfig = {
-  currentComponent: "EOSUploadSSL",
+  currentComponent: "EosApplianceName",
   steps: [
     {
       sequence: 1,
       isSubstep: false,
-      component: "EOSUploadSSL",
-      path: "onboarding/system-config/ssl-certificate/upload-ssl.vue",
+      component: "EosApplianceName",
+      path: "onboarding/system-config/appliance-name/appliance-name.vue",
       isByPassed: false,
       header: {
         state: "completed",
-        name: "SSL upload"
+        name: "ApplianceName"
       },
       footer: {
-        nextComponent: "EosDnsSettings",
+        nextComponent: "EosApplianceName",
         prevComponent: "homebase",
         nextBtnText: "Continue",
         prevBtnText: "",
@@ -37,6 +37,24 @@ export const wizardConfig = {
     },
     {
       sequence: 2,
+      isSubstep: false,
+      component: "EOSUploadSSL",
+      path: "onboarding/system-config/ssl-certificate/upload-ssl.vue",
+      isByPassed: false,
+      header: {
+        state: "untouched",
+        name: "SSL upload"
+      },
+      footer: {
+        nextComponent: "EosDnsSettings",
+        prevComponent: "EosApplianceName",
+        nextBtnText: "Continue",
+        prevBtnText: "Back to previous step",
+        api: "/systemconfig"
+      }
+    },
+    {
+      sequence: 3,
       isSubstep: false,
       component: "EosDnsSettings",
       path: "onboarding/system-config/dns/dns-setting.vue",
@@ -54,7 +72,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 3,
+      sequence: 4,
       isSubstep: false,
       component: "EosDateTime",
       path: "onboarding/system-config/date-time/date-time.vue",
@@ -72,7 +90,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 4,
+      sequence: 5,
       isSubstep: false,
       component: "EosNotifications",
       path: "onboarding/system-config/notifications/notifications.vue",
@@ -90,7 +108,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 5,
+      sequence: 6,
       isSubstep: true,
       component: "EosNotificationsEmail",
       path: "onboarding/system-config/notifications/notifications-email.vue",
@@ -105,7 +123,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 6,
+      sequence: 7,
       isSubstep: true,
       component: "EosNotificationsSyslog",
       path: "onboarding/system-config/notifications/notifications-syslog.vue",
@@ -120,7 +138,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 7,
+      sequence: 8,
       isSubstep: false,
       component: "EosOnboardingSummary",
       path: "onboarding/system-config/summary/onboarding-summary.vue",
@@ -138,7 +156,7 @@ export const wizardConfig = {
       }
     },
     {
-      sequence: 8,
+      sequence: 9,
       isSubstep: false,
       component: "EosOnboardingFinish",
       path: "onboarding/finish.vue",

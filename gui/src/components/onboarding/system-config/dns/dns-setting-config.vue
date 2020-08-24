@@ -21,10 +21,10 @@
         <div class="col-2 body-2 column node-container">
           <div class="mt-5 font-weight-bold">
             <div class="mt-6 dns-label">
-              <label>DNS servers*: </label>
+              <label>DNS servers*:</label>
             </div>
             <div class>
-              <label>Search domains*: </label>
+              <label>Search domains*:</label>
             </div>
           </div>
         </div>

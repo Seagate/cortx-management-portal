@@ -91,7 +91,6 @@ export interface DateTimeSettings {
   is_ntp: boolean;
   ntp: Ntp;
 }
-
 export interface Ldap {
   user_search_base: string;
   server: string;
@@ -133,6 +132,7 @@ export interface SystemConfigObject {
   notifications: Notifications;
   wizard_metadata: WizardData;
   is_summary: boolean;
+  appliance_name: string;
 }
 
 export interface Header {
