@@ -19,12 +19,8 @@
     v-if="!isUserLoggedIn"
     class="pa-0 ma-0 col-12 black black-container-height"
   >
-    <div height="70em" class="pl-10 py-5">
-      <img :src="require('@/assets/seagate-green.svg/')" />
-      <div class="eos-brand-div">
-        <img class="ml-3" :src="require('@/assets/lyve-drive-green.svg/')" />
-        <span class="ml-1 eos-brand-label">{{ $t("login.login-label") }}</span>
-      </div>
+    <div class="cortx-header pl-10 py-3">
+      <div class="cortx-brand-logo"></div>
     </div>
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
@@ -208,4 +204,5 @@ export default class EosLogin extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

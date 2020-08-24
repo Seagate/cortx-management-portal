@@ -718,3 +718,29 @@ tbody tr:hover {
   height: 100%;
 }
 /* Icon buttons styles --- End */
+
+/* Cortx brand */
+.cortx-header {
+  display: flex;
+  flex-wrap: nowrap;
+  background-color: #000000;
+  height: 50px;
+}
+
+.cortx-brand-logo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cortx-brand-logo:before {
+  content: '';
+  background-image: url('./../assets/lyve-drive-green.svg');
+  background-position: left center;
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background-repeat: no-repeat;
+}

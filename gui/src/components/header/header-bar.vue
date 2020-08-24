@@ -16,16 +16,8 @@
 */
 <template>
   <div class="eos-header-container">
-    <div class="eos-header">
-      <img
-        class="eos-brand-logo"
-        :src="require('@/assets/seagate-green.svg/')"
-      />
-      <div class="eos-logo-separator"></div>
-      <img :src="require('@/assets/lyve-drive-green.svg/')" />
-      <div class="ml-1 eos-brand-label pr-1">
-        <span>RACK</span>
-      </div>
+    <div class="cortx-header py-3">
+      <div class="cortx-brand-logo"></div>
       <div class="eos-header-right-aligned-items">
         <eos-has-access
           :to="$eosUserPermissions.alerts + $eosUserPermissions.list"
@@ -48,7 +40,7 @@
             </div>
           </div>
         </eos-has-access>
-        <div style="padding-top: 1.125em;" class="pr-2">
+        <div class="pr-2">
           <label class="eos-username-label">{{ username }}</label>
         </div>
         <div
@@ -125,12 +117,6 @@ export default class HeaderBar extends Vue {
   right: 0;
   z-index: 5;
 }
-.eos-header {
-  display: flex;
-  flex-wrap: nowrap;
-  background-color: #000000;
-  height: 4em;
-}
 .eos-logo-separator {
   margin: 1em 1.206em 1em 1.206em;
   border: 1px solid #454545;
@@ -149,12 +135,7 @@ export default class HeaderBar extends Vue {
   flex-wrap: nowrap;
 }
 .eos-logout-icon-container {
-  padding: 1.125em 1.5em 1.125em 1.5em;
+  padding: 0 1.5em 1.125em 1.5em;
   cursor: pointer;
 }
-.eos-brand-logo {
-  margin-left: 3em;
-  margin-right: 1.9em;
-}
-
 </style>

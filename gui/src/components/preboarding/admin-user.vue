@@ -16,12 +16,8 @@
 */
 <template>
   <v-container class="white pa-0 ma-0" fluid>
-    <div height="70em" class="pl-10 py-3 col-12 black">
-      <img :src="require('@/assets/seagate-green.svg/')" />
-      <div class="eos-brand-div">
-        <img class="ml-3" :src="require('@/assets/lyve-drive-green.svg/')" />
-        <span class="ml-1 eos-brand-label">RACK</span>
-      </div>
+    <div class="cortx-header pl-10 py-3 col-12 black">
+      <div class="cortx-brand-logo"></div>
     </div>
     <div class="body-2 ma-5">
       <div

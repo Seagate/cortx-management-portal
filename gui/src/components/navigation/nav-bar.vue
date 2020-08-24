@@ -38,6 +38,11 @@
         </router-link>
       </eos-has-access>
     </div>
+    <div class="eos-nav-bottom">
+      <div class="eos-brand-text">Powered by</div>
+      <img class="eos-nav-item-icon-default eos-img-responsive"
+        :src="require('@/assets/Cortx-logo-GRN.svg/')" />
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -100,7 +105,7 @@ export default class EosNavBar extends Vue {
 <style lang="scss" scoped>
 .eos-nav {
   position: fixed;
-  top: 4em;
+  top: 50px;
   left: 0;
   bottom: 0;
   z-index: 5;
@@ -142,5 +147,21 @@ export default class EosNavBar extends Vue {
 }
 .eos-nav-item.eos-nav-item-active .eos-nav-item-icon-active {
   display: block;
+}
+
+.eos-img-responsive {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  padding: 5px;
+}
+.eos-brand-text {
+  color: #6ebe49;
+  margin: auto 5px;
+}
+.eos-nav-bottom {
+  position: absolute;
+  bottom: 10px;
+  background-color: #000000;
 }
 </style>

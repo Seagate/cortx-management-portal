@@ -18,11 +18,7 @@
   <div class="eos-p-2">
     <div class="eos-text-lg eos-text-bold" id="lblAbout">About us</div>
     <div style="display: inline-block;">
-      <img
-        class="eos-brand-logo mt-2"
-        :src="require('@/assets/seagate-green.svg/')"
-      />
-      <img :src="require('@/assets/lyve-drive-green.svg/')" class="ml-2 mb-2" />
+      <img :src="require('@/assets/lyve-drive-green.svg/')" class="ml-2 mb-2 eos-lyve-drive" />
     </div>
     <v-divider class="mt-2 mb-5" />
     <v-container>
@@ -88,4 +84,11 @@ export default class Eosaboutpage extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+img.eos-lyve-drive {
+  height: 30px; 
+  width: 340px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+</style>
