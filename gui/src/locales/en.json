@@ -8,5 +8,38 @@
       "password-required": "Password is required.",
       "login-failed": "Login failed !"
   
+    },
+    "csmuser": {
+      "user-setting-label" : "User settings: Local",
+      "manage-user-text" : " Manage users. Depending on the user role, you can create, modify, and delete users. You can also change the password for the admin user.",
+      "role-text":"A role is a collection of permissions granted to a user.",
+      "note-label" :"Note: Only admin user can create and delete users and change the password of the admin user.",
+      "add-user-button":"Add new user",
+      "username":"Username*",
+      "password":"Password*",
+      "newpassword":"New password*",
+      "confirm-password":"Confirm password",
+      "roles":"Roles",
+      "manage":"Manage",
+      "monitor":"Monitor",
+      "username-required": "Account name is required.",
+      "username-invalid": "Invalid username.",
+      "password-required": "Password is required.",
+      "password-invalid": "Invalid password.",
+      "confirm-password-invalid":"Passwords do not match.",
+      "create-user":"Create",
+      "cancel-user" :"Cancel",
+      "update":"Update",
+      "apply": "Apply",
+      "old-pass-required":"Old password is required.",
+      "old-password-invalid":"Invalid old password.",
+      "delete":"Delete",
+      "edit":"Edit",
+      "email":"Email*",
+      "email-required":"Email is required.",
+      "email-invalid":"Invalid Email ID.",
+      "email-notification":"Subscribe to email notifications",
+      "usernameTooltipMessage": "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-).",
+      "passwordTooltipMessage":"Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, One number"
     }
   }
