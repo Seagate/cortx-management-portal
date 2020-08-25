@@ -16,24 +16,30 @@
 */
 // Interface for CSM schema for S3 account
 export interface Account {
-    account_name: string;
-    account_email: string;
-    password: string;
-    access_key: string;
-    secret_key: string;
+  account_name: string;
+  account_email: string;
+  password: string;
+  access_key: string;
+  secret_key: string;
+}
+export interface AccessKey {
+  user_name: string;
+  access_key_id: string;
+  status: string;
+  last_used: number;
 }
 
 export interface IAMUser {
-    user_name: string;
-    user_id: string;
-    password: string;
-    arn: string;
-    path: string;
-    access_key_id: string;
-    secret_key: string;
-    require_reset: boolean;
+  user_name: string;
+  user_id: string;
+  password: string;
+  arn: string;
+  path: string;
+  access_key_id: string;
+  secret_key: string;
+  require_reset: boolean;
 }
 
 export interface Bucket {
-    bucket_name: string;
+  bucket_name: string;
 }

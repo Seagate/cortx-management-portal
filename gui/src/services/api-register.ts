@@ -30,6 +30,7 @@ export default {
   s3_account: `/api/${version}/s3_accounts`,
   s3_iam_user: `/api/${version}/iam_users`,
   s3_bucket: `/api/${version}/s3/bucket`,
+  s3_access_keys: `/api/${version}/s3/access_keys`,
   stats: `api/${version}/stats`,
   throughput: `api/${version}/stats/throughput`,
   latency: `api/${version}/stats/latency`,

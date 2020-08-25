@@ -31,6 +31,7 @@ export default {
   s3_accounts: `/api/${version}/s3_accounts`,
   iam_users: `/api/${version}/iam_users`,
   s3_bucket: `/api/${version}/s3/bucket`,
+  s3_access_keys: `/api/${version}/s3/access_keys`,
   capacity: `/api/${version}/capacity`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,

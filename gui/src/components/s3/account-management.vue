@@ -103,6 +103,12 @@
             </template>
           </v-data-table>
         </eos-has-access>
+
+        <eos-has-access
+          :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+        >
+          <cortx-access-key-management></cortx-access-key-management>
+        </eos-has-access>
       </v-col>
       <v-col class="py-0 col-5">
         <div v-if="showCreateAccountForm" class="pa-2">
@@ -470,6 +476,7 @@ import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import { Account } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import CortxAccessKeyManagement from "./access-key-management.vue";
 import {
   accountNameRegex,
   passwordRegex,
@@ -478,7 +485,8 @@ import {
 } from "./../../common/regex-helpers";
 
 @Component({
-  name: "eos-account-management"
+  name: "eos-account-management",
+  components: { CortxAccessKeyManagement }
 })
 export default class EosAccountManagement extends Vue {
   public createAccountForm = {
