@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+body #app {
+    font-family: 'Roboto', sans-serif;
+}
+
+.cortx-header .cortx-brand-logo:before {
+    background-image: url('lyve-drive-green.svg');
+}
