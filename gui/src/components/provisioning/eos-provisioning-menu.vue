@@ -71,8 +71,16 @@ export default class EosProvisioningSubmenu extends Vue {
     That is why we need to create `vueInstance` constant with `any` type and use the
     methods or global variables declared using `Vue.prototype`.
     */
-
     const vueInstance: any = this;
+    if (
+      vueInstance.$hasAccessToCsm(
+        vueInstance.$eosUserPermissions.s3accounts +
+          vueInstance.$eosUserPermissions.update
+      )
+    ) {
+      this.$router.push("/provisioning/s3");
+    }
+
     this.tabsInfo.tabs = this.tabsInfo.tabs.map((tab: any) => {
       tab.show = vueInstance.$hasAccessToCsm(
         vueInstance.$eosUserPermissions[tab.requiredAccess] +

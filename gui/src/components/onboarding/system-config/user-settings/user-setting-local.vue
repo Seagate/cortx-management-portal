@@ -850,6 +850,7 @@ export default class EosUserSettingLocal extends Vue {
       delete selectedItem.roles;
       delete selectedItem.confirmPassword;
     }
+    delete selectedItem.username;
     this.$store.dispatch("systemConfig/showLoader", "Updating user details...");
     const res = await Api.patch(
       apiRegister.csm_user,

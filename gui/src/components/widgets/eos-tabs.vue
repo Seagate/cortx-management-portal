@@ -59,7 +59,7 @@ export default class EosTabs extends Vue {
 }
 .eos-tabs-container > div {
   min-width: 173px;
-  height: 39px;
+  height: 35px;
   text-align: center;
   font-style: normal;
   font-weight: normal;

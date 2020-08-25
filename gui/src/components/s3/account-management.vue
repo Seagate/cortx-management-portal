@@ -59,8 +59,6 @@
             class="eos-table"
             show-expand
             :hide-default-header="true"
-            :hide-default-footer="true"
-            :disable-pagination="true"
           >
             <template v-slot:header="{}">
               <tr>
