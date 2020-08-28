@@ -17,9 +17,7 @@
 <template>
   <div class="eos-p-2">
     <div class="eos-text-lg eos-text-bold" id="lblAbout">About us</div>
-    <div style="display: inline-block;">
-      <img :src="require(`@/assets/${brandType}.svg/`)" class="ml-2 mb-2 eos-lyve-drive" />
-    </div>
+    <div class="cortx-brand-logo"></div>
     <v-divider class="mt-2 mb-5" />
     <v-container>
       <div class="body-2"></div>
@@ -73,14 +71,8 @@ import apiRegister from "../../services/api-register";
 })
 export default class Eosaboutpage extends Vue {
   public versionDetails: any = null;
-  public brandType: string = ""; 
 
   public async mounted() {
-    if (process.env.VUE_APP_BRANDNAME === "cortx") {
-      this.brandType = "Cortx-logo-GRN";
-    } else {
-      this.brandType = "lyve-drive-green";
-    }
     await this.getVersion();
   }
 

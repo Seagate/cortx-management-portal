@@ -30,6 +30,7 @@ usage() {
 usage: $PROG_NAME [-v <csm version>]
                             [-b <build no>] [-k <key>]
                             [-p <product_name>]
+                            [-l <brand_name>]
                             [-c <all|backend|frontend>] [-t]
                             [-d][-i]
                             [-q <true|false>]
@@ -39,6 +40,7 @@ Options:
     -b : Build rpm with build number
     -k : Provide key for encryption of code
     -p : Provide product name default cortx
+    -l : Provide Brand name default cortx
     -c : Build rpm for [all|backend|frontend]
     -t : Build rpm with test plan
     -d : Build dev env
@@ -48,7 +50,7 @@ Options:
     exit 1;
 }
 
-while getopts ":g:v:b:p:k:c:tdiq" o; do
+while getopts ":g:v:b:p:l:k:c:tdiq" o; do
     case "${o}" in
         v)
             VER=${OPTARG}
@@ -58,6 +60,9 @@ while getopts ":g:v:b:p:k:c:tdiq" o; do
             ;;
         p)
             PRODUCT=${OPTARG}
+            ;;
+        l)
+            BRAND=${OPTARG}
             ;;
         k)
             KEY=${OPTARG}
@@ -88,6 +93,7 @@ cd $BASE_DIR
         || BUILD="${BUILD}_$(git rev-parse --short HEAD)"
 [ -z "$VER" ] && VER=$(cat $BASE_DIR/VERSION)
 [ -z "$PRODUCT" ] && PRODUCT="cortx"
+[ -z "$BRAND" ] && BRAND="ldr"
 [ -z "$KEY" ] && KEY="cortx@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
@@ -168,6 +174,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cp -R $BASE_DIR/src/web $GUI_DIR/
     cp -R $CONF/service/csm_web.service $GUI_DIR/conf/service/
     cp -R $BASE_DIR/src/eos/gui/.env $GUI_DIR/eos/gui/.env
+    sed -e '/#/!s/\(VUE_APP_BRANDNAME[[:space:]]*=[[:space:]]*\)\(.*\)/\1"'$BRAND'"/' $GUI_DIR/eos/gui/.env
     echo "Running Web Build"
     cd $GUI_DIR/web/
     npm install --production
