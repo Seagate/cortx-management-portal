@@ -1,19 +1,15 @@
-/*
-* CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-* You should have received a copy of the GNU Affero General Public License
-* along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing,
-* please email opensource@seagate.com or cortx-questions@seagate.com.
-*/
+/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
+Seagate Technology LLC and/or its Affiliates * This program is free software:
+you can redistribute it and/or modify * it under the terms of the GNU Affero
+General Public License as published * by the Free Software Foundation, either
+version 3 of the License, or * (at your option) any later version. * This
+program is distributed in the hope that it will be useful, * but WITHOUT ANY
+WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
+details. * You should have received a copy of the GNU Affero General Public
+License * along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing, * please email
+opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div>
     <div class="udx-page-title">
@@ -30,19 +26,13 @@
       </div>
       <div id="udx-reg-token" class="mt-1">
         <label id="udx-reg-token-part-1" class="float-left">
-          {{
-          registrationToken.substring(0, 4)
-          }}
+          {{ registrationToken.substring(0, 4) }}
         </label>
         <label id="udx-reg-token-part-2" class="float-left ml-2">
-          {{
-          registrationToken.substring(4, 8)
-          }}
+          {{ registrationToken.substring(4, 8) }}
         </label>
         <label id="udx-reg-token-part-3" class="float-left ml-2">
-          {{
-          registrationToken.substring(8, 12)
-          }}
+          {{ registrationToken.substring(8, 12) }}
         </label>
       </div>
     </div>
@@ -52,12 +42,14 @@
           <div
             class="eos-form-group"
             :class="{
-              'eos-form-group--error':
-                $v.registrationForm.url.$error
+              'eos-form-group--error': $v.registrationForm.url.$error
             }"
           >
             <label class="eos-form-group-label" for="url">
-              <eos-info-tooltip label="URL*" message="Enter the URL provided by your UDX portal." />
+              <eos-info-tooltip
+                label="URL*"
+                message="Enter the URL provided by your UDX portal."
+              />
             </label>
             <input
               class="eos-form__input_text"
@@ -73,13 +65,15 @@
                   $v.registrationForm.url.$dirty &&
                     !$v.registrationForm.url.required
                 "
-              >URL is required</label>
+                >URL is required</label
+              >
               <label
                 v-else-if="
                   $v.registrationForm.url.$dirty &&
                     !$v.registrationForm.url.udxURLRegex
                 "
-              >Invalid URL</label>
+                >Invalid URL</label
+              >
             </div>
           </div>
         </v-col>
@@ -95,12 +89,14 @@
           <div
             class="eos-form-group"
             :class="{
-              'eos-form-group--error':
-                $v.registrationForm.accountName.$error
+              'eos-form-group--error': $v.registrationForm.accountName.$error
             }"
           >
             <label class="eos-form-group-label" for="accountName">
-              <eos-info-tooltip label="Account name*" :message="accountNameTooltipMessage" />
+              <eos-info-tooltip
+                label="Account name*"
+                :message="accountNameTooltipMessage"
+              />
             </label>
             <input
               class="eos-form__input_text"
@@ -116,13 +112,15 @@
                   $v.registrationForm.accountName.$dirty &&
                     !$v.registrationForm.accountName.required
                 "
-              >Account name is required</label>
+                >Account name is required</label
+              >
               <label
                 v-else-if="
                   $v.registrationForm.accountName.$dirty &&
                     !$v.registrationForm.accountName.accountNameRegex
                 "
-              >Invalid account name</label>
+                >Invalid account name</label
+              >
             </div>
           </div>
         </v-col>
@@ -130,11 +128,12 @@
           <div
             class="eos-form-group"
             :class="{
-              'eos-form-group--error':
-                $v.registrationForm.accountEmail.$error
+              'eos-form-group--error': $v.registrationForm.accountEmail.$error
             }"
           >
-            <label class="eos-form-group-label" for="accountEmail">Email id*</label>
+            <label class="eos-form-group-label" for="accountEmail"
+              >Email id*</label
+            >
             <input
               class="eos-form__input_text"
               type="text"
@@ -149,13 +148,15 @@
                   $v.registrationForm.accountEmail.$dirty &&
                     !$v.registrationForm.accountEmail.required
                 "
-              >Email id is required</label>
+                >Email id is required</label
+              >
               <label
                 v-else-if="
                   $v.registrationForm.accountEmail.$dirty &&
                     !$v.registrationForm.accountEmail.email
                 "
-              >Invalid email id</label>
+                >Invalid email id</label
+              >
             </div>
           </div>
         </v-col>
@@ -170,7 +171,10 @@
             }"
           >
             <label class="eos-form-group-label" for="accountPassword">
-              <eos-info-tooltip label="Password*" :message="passwordTooltipMessage" />
+              <eos-info-tooltip
+                label="Password*"
+                :message="passwordTooltipMessage"
+              />
             </label>
             <input
               class="eos-form__input_text"
@@ -186,13 +190,15 @@
                   $v.registrationForm.accountPassword.$dirty &&
                     !$v.registrationForm.accountPassword.required
                 "
-              >Password is required</label>
+                >Password is required</label
+              >
               <label
                 v-else-if="
                   $v.registrationForm.accountPassword.$dirty &&
                     !$v.registrationForm.accountPassword.passwordRegex
                 "
-              >Invalid password</label>
+                >Invalid password</label
+              >
             </div>
           </div>
         </v-col>
@@ -204,7 +210,9 @@
                 $v.registrationForm.accountConfirmPassword.$error
             }"
           >
-            <label class="eos-form-group-label" for="accountConfirmPassword">Confirm password*</label>
+            <label class="eos-form-group-label" for="accountConfirmPassword"
+              >Confirm password*</label
+            >
             <input
               class="eos-form__input_text"
               type="password"
@@ -217,9 +225,11 @@
               class="eos-form-group-label eos-form-group-error-msg"
               v-if="
                 $v.registrationForm.accountConfirmPassword.$dirty &&
-                  !$v.registrationForm.accountConfirmPassword.sameAsAccountPassword
+                  !$v.registrationForm.accountConfirmPassword
+                    .sameAsAccountPassword
               "
-            >Passwords do not match</span>
+              >Passwords do not match</span
+            >
           </div>
         </v-col>
       </v-row>
@@ -234,12 +244,14 @@
           <div
             class="eos-form-group"
             :class="{
-              'eos-form-group--error':
-                $v.registrationForm.iamUsername.$error
+              'eos-form-group--error': $v.registrationForm.iamUsername.$error
             }"
           >
             <label class="eos-form-group-label" for="iamUsername">
-              <eos-info-tooltip label="Username*" :message="accountNameTooltipMessage" />
+              <eos-info-tooltip
+                label="Username*"
+                :message="accountNameTooltipMessage"
+              />
             </label>
             <input
               class="eos-form__input_text"
@@ -255,13 +267,15 @@
                   $v.registrationForm.iamUsername.$dirty &&
                     !$v.registrationForm.iamUsername.required
                 "
-              >Username is required</label>
+                >Username is required</label
+              >
               <label
                 v-else-if="
                   $v.registrationForm.iamUsername.$dirty &&
                     !$v.registrationForm.iamUsername.accountNameRegex
                 "
-              >Invalid username</label>
+                >Invalid username</label
+              >
             </div>
           </div>
         </v-col>
@@ -276,7 +290,10 @@
             }"
           >
             <label class="eos-form-group-label" for="iamUserPassword">
-              <eos-info-tooltip label="Password*" :message="passwordTooltipMessage" />
+              <eos-info-tooltip
+                label="Password*"
+                :message="passwordTooltipMessage"
+              />
             </label>
             <input
               class="eos-form__input_text"
@@ -292,13 +309,15 @@
                   $v.registrationForm.iamUserPassword.$dirty &&
                     !$v.registrationForm.iamUserPassword.required
                 "
-              >Password is required</label>
+                >Password is required</label
+              >
               <label
                 v-else-if="
                   $v.registrationForm.iamUserPassword.$dirty &&
                     !$v.registrationForm.iamUserPassword.passwordRegex
                 "
-              >Invalid password</label>
+                >Invalid password</label
+              >
             </div>
           </div>
         </v-col>
@@ -310,7 +329,9 @@
                 $v.registrationForm.iamUserConfirmPassword.$error
             }"
           >
-            <label class="eos-form-group-label" for="iamUserConfirmPassword">Confirm password*</label>
+            <label class="eos-form-group-label" for="iamUserConfirmPassword"
+              >Confirm password*</label
+            >
             <input
               class="eos-form__input_text"
               type="password"
@@ -323,9 +344,11 @@
               class="eos-form-group-label eos-form-group-error-msg"
               v-if="
                 $v.registrationForm.iamUserConfirmPassword.$dirty &&
-                  !$v.registrationForm.iamUserConfirmPassword.sameAsIAMUserPassword
+                  !$v.registrationForm.iamUserConfirmPassword
+                    .sameAsIAMUserPassword
               "
-            >Passwords do not match</span>
+              >Passwords do not match</span
+            >
           </div>
         </v-col>
       </v-row>
@@ -340,12 +363,14 @@
           <div
             class="eos-form-group"
             :class="{
-              'eos-form-group--error':
-                $v.registrationForm.bucketName.$error
+              'eos-form-group--error': $v.registrationForm.bucketName.$error
             }"
           >
             <label class="eos-form-group-label" for="bucketName">
-              <eos-info-tooltip label="Bucket name*" :message="bucketNameTooltipMessage" />
+              <eos-info-tooltip
+                label="Bucket name*"
+                :message="bucketNameTooltipMessage"
+              />
             </label>
             <div class="eos-bucket-input-prefix">
               <label>udx-</label>
@@ -364,13 +389,15 @@
                   $v.registrationForm.bucketName.$dirty &&
                     !$v.registrationForm.bucketName.required
                 "
-              >Bucket name is required</label>
+                >Bucket name is required</label
+              >
               <label
                 v-else-if="
                   $v.registrationForm.bucketName.$dirty &&
                     !$v.registrationForm.bucketName.udxBucketNameRegex
                 "
-              >Invalid bucket name</label>
+                >Invalid bucket name</label
+              >
             </div>
           </div>
         </v-col>
@@ -381,7 +408,7 @@
           <label class="eos-text-md">I agree to the following:</label>
           <br />
           <label class="eos-ckb-container" for="consentOne">
-           A dedicated UDX Bucket will be created in my account.
+            A dedicated UDX Bucket will be created in my account.
             <input
               type="checkbox"
               name="consentOne"
@@ -392,7 +419,8 @@
           </label>
           <br />
           <label class="eos-ckb-container" for="consentTwo">
-            An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.
+            An UDX IAM User will be created having complete access only to the
+            UDX bucket, and not to other data.
             <input
               type="checkbox"
               name="consentTwo"
@@ -409,20 +437,35 @@
             type="button"
             class="eos-btn-primary"
             @click="registerUDX()"
-            :disabled="$v.registrationForm.$invalid || !registrationForm.consentOne || !registrationForm.consentTwo"
-          >Register</button>
+            :disabled="
+              $v.registrationForm.$invalid ||
+                !registrationForm.consentOne ||
+                !registrationForm.consentTwo
+            "
+          >
+            Register
+          </button>
           <button
             type="button"
             class="ml-8 eos-btn-secondary"
             @click="clearRegistrationForm()"
-          >Clear</button>
+          >
+            Clear
+          </button>
         </v-col>
       </v-row>
     </div>
     <div class="eos-modal-container" v-if="registrationResponse">
       <div class="eos-modal" style="width: 600px;">
         <div class="eos-modal-header">
-          <label>Details</label>
+          <img
+            class="eos-float-l mr-1 "
+            :src="require('@/assets/actions/warning-orange.svg')"
+          />
+          <span class="eos-float-l eos-text-md eos-text-bold eos-text-warning "
+            >Save this information, you will not see it again. Download as
+            CSV.</span
+          >
           <img
             class="eos-modal-close"
             :src="require('@/assets/close-green.svg')"
@@ -432,29 +475,55 @@
         <div class="eos-reg-response-container">
           <table class="eos-text-md">
             <tr>
-              <td class="py-1 eos-text-bold udx-reg-resp-table-label">S3 Account Access Key</td>
-              <td class="py-1">{{ registrationResponse.s3_account.access_key }}</td>
+              <td class="py-1 eos-text-bold udx-reg-resp-table-label">
+                S3 Account Access Key
+              </td>
+              <td class="py-1">
+                {{ registrationResponse.s3_account.access_key }}
+              </td>
             </tr>
             <tr>
-              <td class="py-1 eos-text-bold udx-reg-resp-table-label">S3 Account Secret Key</td>
-              <td class="py-1">{{ registrationResponse.s3_account.secret_key }}</td>
+              <td class="py-1 eos-text-bold udx-reg-resp-table-label">
+                S3 Account Secret Key
+              </td>
+              <td class="py-1">
+                {{ registrationResponse.s3_account.secret_key }}
+              </td>
             </tr>
             <tr>
-              <td class="py-1 eos-text-bold udx-reg-resp-table-label">IAM User Access Key</td>
-              <td class="py-1">{{ registrationResponse.iam_user.access_key }}</td>
+              <td class="py-1 eos-text-bold udx-reg-resp-table-label">
+                IAM User Access Key
+              </td>
+              <td class="py-1">
+                {{ registrationResponse.iam_user.access_key }}
+              </td>
             </tr>
             <tr>
-              <td class="py-1 eos-text-bold udx-reg-resp-table-label">IAM User Secret Key</td>
-              <td class="py-1">{{ registrationResponse.iam_user.secret_key }}</td>
+              <td class="py-1 eos-text-bold udx-reg-resp-table-label">
+                IAM User Secret Key
+              </td>
+              <td class="py-1">
+                {{ registrationResponse.iam_user.secret_key }}
+              </td>
             </tr>
           </table>
         </div>
         <div class="eos-modal-footer">
+          <a
+            class=" eos-btn-primary eos-download-csv-link ml-5"
+            :href="credentialsFileContent"
+            download="credentials.csv"
+            @click="isCredentialsFileDownloaded = true"
+            >Download as CSV</a
+          >
           <button
+            :disabled="!isCredentialsFileDownloaded"
             type="button"
-            class="eos-btn-primary eos-float-r"
+            class="eos-btn-primary ml-5"
             @click="closeRegResponseDetailsDialog()"
-          >Ok</button>
+          >
+            Ok
+          </button>
         </div>
       </div>
     </div>
@@ -486,6 +555,8 @@ export default class EosUDXRegistration extends Vue {
   public passwordTooltipMessage: string = passwordTooltipMessage;
   public accountNameTooltipMessage: string = accountNameTooltipMessage;
   public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
+  private credentialsFileContent: string = "";
+  private isCredentialsFileDownloaded: boolean = false;
 
   public registrationForm = {
     url: "",
@@ -542,11 +613,28 @@ export default class EosUDXRegistration extends Vue {
     );
     if (res && res.data) {
       this.registrationResponse = res.data;
+      this.isCredentialsFileDownloaded = false;
+      this.credentialsFileContent =
+        "data:text/plain;charset=utf-8," +
+        encodeURIComponent(this.getCredentialsFileContent());
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
+  public getCredentialsFileContent(): string {
+    return (
+      "S3 Account Access Key,S3 Account Secrete key,IAM User Access Key , IAM User Secrete key\n" +
+      this.registrationResponse.s3_account.access_key +
+      "," +
+      this.registrationResponse.s3_account.secret_key +
+      "," +
+      this.registrationResponse.iam_user.access_key +
+      "," +
+      this.registrationResponse.iam_user.secret_key
+    );
+  }
 
   public closeRegResponseDetailsDialog() {
+    this.isCredentialsFileDownloaded = false;
     this.registrationResponse = null;
     this.$emit("complete");
   }
@@ -615,5 +703,11 @@ export default class EosUDXRegistration extends Vue {
 .eos-bucket-input {
   width: 290px;
   float: left;
+}
+.eos-download-csv-link {
+  text-decoration: none;
+  display: inline-block;
+  padding-top: 10px;
+  color: #ffffff;
 }
 </style>
