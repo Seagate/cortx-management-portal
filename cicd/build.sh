@@ -18,7 +18,7 @@ BUILD_START_TIME=$(date +%s)
 BASE_DIR=$(realpath "$(dirname $0)/..")
 PROG_NAME=$(basename $0)
 DIST=$(realpath $BASE_DIR/dist)
-API_DIR="$BASE_DIR/src/web"
+API_DIR="$BASE_DIR/web"
 CORTX_PATH="/opt/seagate/cortx/"
 CSM_PATH="${CORTX_PATH}csm"
 DEBUG="DEBUG"
@@ -108,54 +108,10 @@ TMPDIR="$DIST/tmp"
 }
 mkdir -p $TMPDIR
 
-CONF=$BASE_DIR/src/conf/
+CONF=$BASE_DIR/conf/
 
-cp $BASE_DIR/jenkins/csm_agent.spec $BASE_DIR/jenkins/csm_web.spec $TMPDIR
+cp $BASE_DIR/cicd/csm_web.spec $TMPDIR
 COPY_END_TIME=$(date +%s)
-
-################### Dependency ##########################
-
-# install dependency
-bash -x "$BASE_DIR/jenkins/cicd/csm_dep.sh" "$DEV"
-################### Backend ##############################
-
-if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
-    # Build CSM Backend
-    CORE_BUILD_START_TIME=$(date +%s)
-    mkdir -p $DIST/csm/conf/service
-    cp $CONF/setup.yaml $DIST/csm/conf
-    cp -R $CONF/etc $DIST/csm/conf
-    cp -R $CONF/service/csm_agent.service $DIST/csm/conf/service
-    cd $TMPDIR
-
-    # Copy Backend files
-    mkdir -p $DIST/csm/lib $DIST/csm/bin $DIST/csm/conf $TMPDIR/csm
-    cp -rs $BASE_DIR/src/* $TMPDIR/csm
-    cp -rs $BASE_DIR/test/ $TMPDIR/csm
-
-    CONF=$BASE_DIR/src/conf/
-    cp -R $BASE_DIR/schema $DIST/csm/
-    cp -R $BASE_DIR/templates $DIST/csm/
-    cp -R "$BASE_DIR/src/scripts" "$DIST/csm/"
-    mkdir -p  $DIST/csm/cli/
-    cp -R $BASE_DIR/src/cli/schema $DIST/csm/cli/
-
-    # Create spec for pyinstaller
-    [ "$TEST" == true ] && {
-        PYINSTALLER_FILE=$TMPDIR/${PRODUCT}_csm_test.spec
-        cp $BASE_DIR/jenkins/pyinstaller/product_csm_test.spec ${PYINSTALLER_FILE}
-        mkdir -p $DIST/csm/test
-        cp -R $BASE_DIR/test/plans $BASE_DIR/test/test_data $DIST/csm/test
-    } || {
-        PYINSTALLER_FILE=$TMPDIR/${PRODUCT}_csm.spec
-        cp $BASE_DIR/jenkins/pyinstaller/product_csm.spec ${PYINSTALLER_FILE}
-    }
-
-    sed -i -e "s|<PRODUCT>|${PRODUCT}|g" \
-        -e "s|<CSM_PATH>|${TMPDIR}/csm|g" ${PYINSTALLER_FILE}
-    python3 -m PyInstaller --clean -y --distpath "${DIST}/csm" --key "${KEY}" "${PYINSTALLER_FILE}"
-    CORE_BUILD_END_TIME=$(date +%s)
-fi
 
 ################### WEB & UI ##############################
 
@@ -165,9 +121,9 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     # Copy frontend files
     GUI_DIR=$DIST/csm_gui
     mkdir -p $GUI_DIR/eos/gui/ $GUI_DIR/conf/service/
-    cp -R $BASE_DIR/src/web $GUI_DIR/
-    cp -R $CONF/service/csm_web.service $GUI_DIR/conf/service/
-    cp -R $BASE_DIR/src/eos/gui/.env $GUI_DIR/eos/gui/.env
+    cp -R $BASE_DIR/web $GUI_DIR/
+    cp -R $CONF/csm_web.service $GUI_DIR/conf/service/
+    cp -R $BASE_DIR/gui/.env $GUI_DIR/eos/gui/.env
     echo "Running Web Build"
     cd $GUI_DIR/web/
     npm install --production
@@ -181,7 +137,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
 
     UI_BUILD_START_TIME=$(date +%s)
     echo "Running UI Build"
-    cd $BASE_DIR/src/eos/gui
+    cd $BASE_DIR/gui
     npm install
     npm run build
     cp -R  $GUI_DIR/eos/gui/.env $GUI_DIR/eos/gui/ui-dist
@@ -191,27 +147,11 @@ fi
 
 ################## Add CSM_PATH #################################
 
-# Genrate spec file for CSM
-sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_agent/g" \
-    -e "s|<CSM_PATH>|${CSM_PATH}|g" \
-    -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_agent.spec
-
 sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
     -e "s|<CSM_PATH>|${CSM_PATH}|g" \
     -e "s/<PRODUCT>/${PRODUCT}/g" $TMPDIR/csm_web.spec
 
-sed -i -e "s|<CORTX_PATH>|${CORTX_PATH}|g" $DIST/csm/schema/commands.yaml
-sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
-sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/etc/rsyslog.d/2-emailsyslog.conf.tmpl
 sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm_gui/conf/service/csm_web.service
-sed -i -e "s|<CSM_PATH>|${CSM_PATH}|g" $DIST/csm/conf/setup.yaml
-sed -i -e "s|<PROVISIONER_CONFIG_PATH>|${PROVISIONER_CONFIG_PATH}|g" $DIST/csm/conf/etc/csm/csm.conf
-
-if [ "$QA" == true ]; then
-    sed -i -e "s|<LOG_LEVEL>|${DEBUG}|g" $DIST/csm/conf/etc/csm/csm.conf
-else
-    sed -i -e "s|<LOG_LEVEL>|${INFO}|g" $DIST/csm/conf/etc/csm/csm.conf
-fi
 
 ################### TAR & RPM BUILD ##############################
 
@@ -224,7 +164,6 @@ mkdir -p ${DIST}/rpmbuild/SOURCES
 cd ${DIST}
 # Create tar for csm
 echo "Creating tar for csm build"
-tar -czf ${DIST}/rpmbuild/SOURCES/${PRODUCT}-csm_agent-${VER}.tar.gz csm
 tar -czf ${DIST}/rpmbuild/SOURCES/${PRODUCT}-csm_web-${VER}.tar.gz csm_gui
 TAR_END_TIME=$(date +%s)
 
@@ -232,23 +171,15 @@ TAR_END_TIME=$(date +%s)
 RPM_BUILD_START_TIME=$(date +%s)
 TOPDIR=$(realpath ${DIST}/rpmbuild)
 
-# CSM Backend RPM
-if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
-    echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" \
-            -bb $BASE_DIR/jenkins/csm_agent.spec
-    rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $TMPDIR/csm_agent.spec
-fi
-
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     # CSM Frontend RPM
     echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" \
-            -bb $BASE_DIR/jenkins/csm_web.spec
+            -bb $BASE_DIR/cicd/csm_web.spec
     rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" -bb $TMPDIR/csm_web.spec
 fi
 RPM_BUILD_END_TIME=$(date +%s)
 
 # Remove temporary directory
-\rm -rf ${DIST}/csm
 \rm -rf ${DIST}/csm_gui
 \rm -rf ${TMPDIR}
 BUILD_END_TIME=$(date +%s)
@@ -256,28 +187,9 @@ BUILD_END_TIME=$(date +%s)
 echo "CSM RPMs ..."
 find $BASE_DIR -name *.rpm
 
-[ "$INTEGRATION" == true ] && {
-    INTEGRATION_TEST_START=$(date +%s)
-    bash $BASE_DIR/jenkins/cicd/csm_cicd.sh $DIST/rpmbuild/RPMS/x86_64 $BASE_DIR $CSM_PATH
-    RESULT=$(cat /tmp/result.txt)
-    cat /tmp/result.txt
-    echo $RESULT
-    [ "Failed" == $RESULT ] && {
-        echo "CICD Failed"
-        exit 1
-    }
-    INTEGRATION_TEST_STOP=$(date +%s)
-}
-
 COPY_DIFF=$(( $COPY_END_TIME - $COPY_START_TIME ))
 printf "COPY TIME!!!!!!!!!!!!"
 printf "%02d:%02d:%02d\n" $(( COPY_DIFF / 3600 )) $(( ( COPY_DIFF / 60 ) % 60 )) $(( COPY_DIFF % 60 ))
-
-if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "backend" ]; then
-    CORE_DIFF=$(( $CORE_BUILD_END_TIME - $CORE_BUILD_START_TIME ))
-    printf "CORE BUILD TIME!!!!!!!!!!!!"
-    printf "%02d:%02d:%02d\n" $(( CORE_DIFF / 3600 )) $(( ( CORE_DIFF / 60 ) % 60 )) $(( CORE_DIFF % 60 ))
-fi
 
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     WEB_DIFF=$(( $WEB_BUILD_END_TIME - $WEB_BUILD_START_TIME ))
