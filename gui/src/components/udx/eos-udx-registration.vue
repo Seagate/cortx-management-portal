@@ -1,15 +1,19 @@
-/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
-Seagate Technology LLC and/or its Affiliates * This program is free software:
-you can redistribute it and/or modify * it under the terms of the GNU Affero
-General Public License as published * by the Free Software Foundation, either
-version 3 of the License, or * (at your option) any later version. * This
-program is distributed in the hope that it will be useful, * but WITHOUT ANY
-WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
-A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
-details. * You should have received a copy of the GNU Affero General Public
-License * along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing, * please email
-opensource@seagate.com or cortx-questions@seagate.com. */
+/*
+* CORTX-CSM: CORTX Management web and CLI interface.
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing,
+* please email opensource@seagate.com or cortx-questions@seagate.com.
+*/
 <template>
   <div>
     <div class="udx-page-title">
@@ -455,77 +459,89 @@ opensource@seagate.com or cortx-questions@seagate.com. */
         </v-col>
       </v-row>
     </div>
-    <div class="eos-modal-container" v-if="registrationResponse">
-      <div class="eos-modal" style="width: 600px;">
-        <div class="eos-modal-header">
-          <img
-            class="eos-float-l mr-1 "
-            :src="require('@/assets/actions/warning-orange.svg')"
-          />
-          <span class="eos-float-l eos-text-md eos-text-bold eos-text-warning "
-            >Save this information, you will not see it again. Download as
-            CSV.</span
-          >
-          <img
-            class="eos-modal-close"
-            :src="require('@/assets/close-green.svg')"
-            @click="closeRegResponseDetailsDialog()"
-          />
-        </div>
-        <div class="eos-reg-response-container">
-          <table class="eos-text-md">
+    <div v-if="registrationResponse">
+      <v-dialog v-model="showAccountDetailsDialog" persistent max-width="790">
+        <v-card>
+          <v-system-bar color="greay lighten-3">
+            <v-spacer></v-spacer>
+            <v-icon
+              @click="closeRegResponseDetailsDialog()"
+              style="cursor: pointer;"
+              >mdi-close</v-icon
+            >
+          </v-system-bar>
+          <v-card-title class="title mt-6 ml-3">
+            <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
+            <span>Account created: access key and secret key</span>
+          </v-card-title>
+          <v-divider />
+
+          <div class="mt-2 pl-7" style="height: 30px;">
+            <img
+              class="eos-float-l mr-1"
+              :src="require('@/assets/actions/warning-orange.svg')"
+            />
+            <span
+              class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
+              >Save this information, you will not see it again. Download as CSV
+              and close.</span
+            >
+          </div>
+
+          <table class="mt-2 ml-7 eos-text-md">
             <tr>
-              <td class="py-1 eos-text-bold udx-reg-resp-table-label">
-                S3 Account Access Key
+              <td class="py-2 eos-text-bold credentials-item-label">
+                S3 account access key:
               </td>
-              <td class="py-1">
+              <td class="py-2">
                 {{ registrationResponse.s3_account.access_key }}
               </td>
             </tr>
             <tr>
-              <td class="py-1 eos-text-bold udx-reg-resp-table-label">
-                S3 Account Secret Key
+              <td class="py-2 eos-text-bold credentials-item-label">
+                S3 account secret sey:
               </td>
-              <td class="py-1">
+              <td class="py-2">
                 {{ registrationResponse.s3_account.secret_key }}
               </td>
             </tr>
             <tr>
-              <td class="py-1 eos-text-bold udx-reg-resp-table-label">
-                IAM User Access Key
+              <td class="py-2 eos-text-bold credentials-item-label">
+                IAM user access key:
               </td>
-              <td class="py-1">
+              <td class="py-2">
                 {{ registrationResponse.iam_user.access_key }}
               </td>
             </tr>
             <tr>
-              <td class="py-1 eos-text-bold udx-reg-resp-table-label">
-                IAM User Secret Key
+              <td class="py-2 eos-text-bold credentials-item-label">
+                IAM user secret Key:
               </td>
-              <td class="py-1">
+              <td class="py-2">
                 {{ registrationResponse.iam_user.secret_key }}
               </td>
             </tr>
           </table>
-        </div>
-        <div class="eos-modal-footer">
-          <a
-            class=" eos-btn-primary eos-download-csv-link ml-5"
-            :href="credentialsFileContent"
-            download="credentials.csv"
-            @click="isCredentialsFileDownloaded = true"
-            >Download as CSV</a
-          >
-          <button
-            :disabled="!isCredentialsFileDownloaded"
-            type="button"
-            class="eos-btn-primary ml-5"
-            @click="closeRegResponseDetailsDialog()"
-          >
-            Ok
-          </button>
-        </div>
-      </div>
+
+          <v-card-actions>
+            <a
+              class="ma-5 eos-btn-primary eos-download-csv-link"
+              :href="credentialsFileContent"
+              download="credentials.csv"
+              @click="isCredentialsFileDownloaded = true"
+              >Download as CSV</a
+            >
+            <button
+              :disabled="!isCredentialsFileDownloaded"
+              type="button"
+              class="ma-5 eos-btn-primary"
+              @click="closeRegResponseDetailsDialog()"
+            >
+              Ok
+            </button>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -556,7 +572,12 @@ export default class EosUDXRegistration extends Vue {
   public accountNameTooltipMessage: string = accountNameTooltipMessage;
   public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
   private credentialsFileContent: string = "";
-  private isCredentialsFileDownloaded: boolean = false;
+  private isCredentialsFileDownloaded: boolean=false;
+  private showAccountDetailsDialog: boolean;
+  // constructor() {
+  //   super();
+  //   this.showAccountDetailsDialog = false;
+  // }
 
   public registrationForm = {
     url: "",
@@ -618,7 +639,9 @@ export default class EosUDXRegistration extends Vue {
         "data:text/plain;charset=utf-8," +
         encodeURIComponent(this.getCredentialsFileContent());
     }
+
     this.$store.dispatch("systemConfig/hideLoader");
+    this.showAccountDetailsDialog = true;
   }
   public getCredentialsFileContent(): string {
     return (
@@ -634,6 +657,7 @@ export default class EosUDXRegistration extends Vue {
   }
 
   public closeRegResponseDetailsDialog() {
+    this.showAccountDetailsDialog = false;
     this.isCredentialsFileDownloaded = false;
     this.registrationResponse = null;
     this.$emit("complete");
