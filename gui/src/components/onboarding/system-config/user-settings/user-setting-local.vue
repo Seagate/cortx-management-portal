@@ -476,13 +476,6 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   <label
                     v-if="
                       $v.selectedItem.password.$dirty &&
-                        !$v.selectedItem.password.required
-                    "
-                    >{{ $t("csmuser.password-required") }}</label
-                  >
-                  <label
-                    v-else-if="
-                      $v.selectedItem.password.$dirty &&
                         !$v.selectedItem.password.passwordRegex
                     "
                     >{{ $t("csmuser.password-invalid") }}</label
@@ -695,7 +688,7 @@ export default class EosUserSettingLocal extends Vue {
       email: { required, email }
     },
     selectedItem: {
-      password: { required, passwordRegex },
+      password: { passwordRegex },
       old_password: {
         required: requiredIf(function(this: any, form) {
           return this.strEqualityCaseInsensitive(
@@ -920,7 +913,7 @@ export default class EosUserSettingLocal extends Vue {
   }
 
   get isEditFormValid() {
-    return this.$v.selectedItem.$anyDirty && this.$v.selectedItem.$invalid
+    return this.$v.selectedItem.$invalid
       ? false
       : true;
   }
