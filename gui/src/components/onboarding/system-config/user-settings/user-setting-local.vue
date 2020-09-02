@@ -118,7 +118,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                     >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span
                   >
                 </td>
-                <td>
+                <td class="action-col-width">
                   <span>
                     <img
                       v-if="
@@ -993,5 +993,8 @@ tbody tr:active {
 }
 .selected-row {
   background: #f5f5f5 !important;
+}
+.action-col-width {
+  min-width: 110px;
 }
 </style>
