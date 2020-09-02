@@ -93,7 +93,7 @@ cd $BASE_DIR
         || BUILD="${BUILD}_$(git rev-parse --short HEAD)"
 [ -z "$VER" ] && VER=$(cat $BASE_DIR/VERSION)
 [ -z "$PRODUCT" ] && PRODUCT="cortx"
-[ -z "$BRAND" ] && BRAND="ldr"
+[ -z "$BRAND" ] && BRAND="LDR"
 [ -z "$KEY" ] && KEY="cortx@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
@@ -131,7 +131,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cp -R $CONF/csm_web.service $GUI_DIR/conf/service/
     cp -R $BASE_DIR/gui/.env $GUI_DIR/gui/.env
     # update .env file
-    sed -e '/#/!s/\(VUE_APP_BRANDNAME[[:space:]]*=[[:space:]]*\)\(.*\)/\1"'$BRAND'"/' $GUI_DIR/gui/.env
+    sed -i '/#/!s/\(VUE_APP_BRANDNAME[[:space:]]*=[[:space:]]*\)\(.*\)/\1"'$BRAND'"/' $GUI_DIR/gui/.env
     echo "Running Web Build"
     cd $GUI_DIR/web/
     npm install --production
