@@ -17,7 +17,9 @@
 <template>
   <div id="statsContainer">
     <div style="height: 30px;">
-      <div class="eos-text-lg eos-text-bold eos-float-l">Performance</div>
+      <div class="eos-text-lg eos-text-bold eos-float-l" id="stats-performance">
+        Performance
+      </div>
       <img
         :src="require('@/assets/zoom-in.svg')"
         @click="$router.push('/performance')"
