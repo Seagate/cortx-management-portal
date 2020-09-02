@@ -23,8 +23,8 @@
       <label id="s3-account-form-title" class="headline font-weight-bold"
         >S3 configuration</label
       >
-      <eos-has-access
-        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
+      <cortx-has-access
+        :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label>
@@ -32,23 +32,23 @@
             credentials to manage S3 account, IAM users, and buckets.
           </label>
         </div>
-      </eos-has-access>
+      </cortx-has-access>
 
-      <eos-has-access
-        :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+      <cortx-has-access
+        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label>
             Manage IAM users and buckets.
           </label>
         </div>
-      </eos-has-access>
+      </cortx-has-access>
     </div>
     <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 col-7">
-        <eos-has-access
-          :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list"
         >
           <v-data-table
             :headers="accountsTableHeaderList"
@@ -56,7 +56,7 @@
             :expanded.sync="expanded"
             v-bind:single-expand="true"
             item-key="account_name"
-            class="eos-table"
+            class="cortx-table"
             show-expand
             :hide-default-header="true"
           >
@@ -73,67 +73,67 @@
             </template>
             <template v-slot:item.data-table-expand="{ item }">
               <div style="width: 90px;">
-                <eos-has-access
+                <cortx-has-access
                   class="mx-2"
                   :to="
-                    $eosUserPermissions.s3accounts + $eosUserPermissions.update
+                    $cortxUserPermissions.s3accounts + $cortxUserPermissions.update
                   "
                 >
                   <img
                     v-on:click="onEditBtnClick(item)"
-                    class="eos-cursor-pointer"
+                    class="cortx-cursor-pointer"
                     src="@/assets/actions/edit-green.svg"
                   />
-                </eos-has-access>
-                <eos-has-access
+                </cortx-has-access>
+                <cortx-has-access
                   class="mx-2"
                   :to="
-                    $eosUserPermissions.s3accounts + $eosUserPermissions.delete
+                    $cortxUserPermissions.s3accounts + $cortxUserPermissions.delete
                   "
                 >
                   <img
                     @click="openConfirmDeleteDialog(item.account_name)"
-                    class="eos-cursor-pointer"
+                    class="cortx-cursor-pointer"
                     src="@/assets/actions/delete-green.svg"
                   />
-                </eos-has-access>
+                </cortx-has-access>
               </div>
             </template>
           </v-data-table>
-        </eos-has-access>
+        </cortx-has-access>
 
-        <eos-has-access
-          :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
         >
           <cortx-access-key-management></cortx-access-key-management>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-5">
         <div v-if="showCreateAccountForm" class="pa-2">
           <v-row>
             <v-col class="pl-4 col-6 pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccountForm.account.account_name.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountName">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="accountName">
+                  <cortx-info-tooltip
                     label="Account name*"
                     :message="accountNameTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   id="accountName"
                   name="accountName"
                   v-model.trim="createAccountForm.account.account_name"
                   @input="$v.createAccountForm.account.account_name.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createAccountForm.account.account_name.$dirty &&
@@ -154,17 +154,17 @@
             </v-col>
             <v-col class="pl-4 col-6 pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccountForm.account.account_email.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountEmail"
+                <label class="cortx-form-group-label" for="accountEmail"
                   >Email*</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   id="accountEmail"
                   name="accountEmail"
@@ -172,7 +172,7 @@
                   @input="$v.createAccountForm.account.account_email.$touch"
                   placeholder="example@email.com"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createAccountForm.account.account_email.$dirty &&
@@ -194,27 +194,27 @@
           <v-row>
             <v-col class="pl-4 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccountForm.account.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountPassword">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="accountPassword">
+                  <cortx-info-tooltip
                     label="Password*"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="accountPassword"
                   name="accountPassword"
                   v-model.trim="createAccountForm.account.password"
                   @input="$v.createAccountForm.account.password.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createAccountForm.account.password.$dirty &&
@@ -234,17 +234,17 @@
             </v-col>
             <v-col class="pl-4 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccountForm.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="confirmPassword"
+                <label class="cortx-form-group-label" for="confirmPassword"
                   >Confirm password*</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
@@ -252,7 +252,7 @@
                   @input="$v.createAccountForm.confirmPassword.$touch"
                 />
                 <span
-                  class="eos-form-group-label eos-form-group-error-msg"
+                  class="cortx-form-group-label cortx-form-group-error-msg"
                   v-if="
                     $v.createAccountForm.confirmPassword.$dirty &&
                       !$v.createAccountForm.confirmPassword.sameAsPassword
@@ -266,7 +266,7 @@
             <v-col class="pt-0">
               <button
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="createAccount()"
                 :disabled="$v.createAccountForm.$invalid"
               >
@@ -274,7 +274,7 @@
               </button>
               <button
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeCreateAccountForm()"
               >
                 Cancel
@@ -286,26 +286,26 @@
           <v-row>
             <v-col class="pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.editAccountForm.password.$error
+                  'cortx-form-group--error': $v.editAccountForm.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountPasswordEdit">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="accountPasswordEdit">
+                  <cortx-info-tooltip
                     label="Password*"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="accountPasswordEdit"
                   name="accountPasswordEdit"
                   v-model.trim="editAccountForm.password"
                   @input="$v.editAccountForm.password.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.editAccountForm.password.$dirty &&
@@ -325,17 +325,17 @@
             </v-col>
             <v-col class="pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.editAccountForm.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="confirmPasswordEdit"
+                <label class="cortx-form-group-label" for="confirmPasswordEdit"
                   >Confirm password*</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="confirmPasswordEdit"
                   name="confirmPasswordEdit"
@@ -343,7 +343,7 @@
                   @input="$v.editAccountForm.confirmPassword.$touch"
                 />
                 <span
-                  class="eos-form-group-label eos-form-group-error-msg"
+                  class="cortx-form-group-label cortx-form-group-error-msg"
                   v-if="
                     $v.editAccountForm.confirmPassword.$dirty &&
                       !$v.editAccountForm.confirmPassword.sameAsPassword
@@ -358,7 +358,7 @@
               <button
                 type="button"
                 id="btnEditPassword"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="editAccount()"
                 :disabled="$v.editAccountForm.$invalid"
               >
@@ -367,7 +367,7 @@
               <button
                 type="button"
                 id="btncancelEditpass"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeEditAccountForm()"
               >
                 Cancel
@@ -375,18 +375,18 @@
             </v-col>
           </v-row>
         </div>
-        <eos-has-access
-          :to="$eosUserPermissions.s3accounts + $eosUserPermissions.create"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.create"
         >
           <button
             type="button"
-            class="mt-4 mb-2 eos-btn-primary"
+            class="mt-4 mb-2 cortx-btn-primary"
             v-if="!showCreateAccountForm"
             @click="openCreateAccountForm()"
           >
             Add new account
           </button>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
     </v-row>
 
@@ -406,31 +406,31 @@
 
         <div class="mt-2 pl-7" style="height: 30px;">
           <img
-            class="eos-float-l mr-1"
+            class="cortx-float-l mr-1"
             :src="require('@/assets/actions/warning-orange.svg')"
           />
           <span
-            class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
+            class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
             >Save this information, you will not see it again. Download as CSV
             and close.</span
           >
         </div>
 
-        <table class="mt-2 ml-7 eos-text-md">
+        <table class="mt-2 ml-7 cortx-text-md">
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label">
               Account name
             </td>
             <td class="py-2">{{ account.account_name }}</td>
           </tr>
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label">
               Access key
             </td>
             <td class="py-2">{{ account.access_key }}</td>
           </tr>
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label">
               Secret key
             </td>
             <td class="py-2">{{ account.secret_key }}</td>
@@ -439,7 +439,7 @@
 
         <v-card-actions>
           <a
-            class="ma-5 eos-btn-primary eos-download-csv-link"
+            class="ma-5 cortx-btn-primary cortx-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
             @click="isCredentialsFileDownloaded = true"
@@ -448,7 +448,7 @@
           <button
             :disabled="!isCredentialsFileDownloaded"
             type="button"
-            class="ma-5 eos-btn-primary"
+            class="ma-5 cortx-btn-primary"
             @click="closeAccountDetailsDialog()"
           >
             Ok
@@ -457,14 +457,14 @@
       </v-card>
     </v-dialog>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmDeleteDialog"
       title="Confirmation"
       message="Are you sure you want to delete the account?"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -483,10 +483,10 @@ import {
 } from "./../../common/regex-helpers";
 
 @Component({
-  name: "eos-account-management",
+  name: "cortx-account-management",
   components: { CortxAccessKeyManagement }
 })
-export default class EosAccountManagement extends Vue {
+export default class CortxAccountManagement extends Vue {
   public createAccountForm = {
     account: {} as Account,
     confirmPassword: ""
@@ -721,7 +721,7 @@ tbody tr:active {
   color: #000;
   font-size: 16px;
 }
-.eos-download-csv-link {
+.cortx-download-csv-link {
   text-decoration: none;
   display: inline-block;
   padding-top: 10px;

@@ -40,7 +40,7 @@
             :key="header.text"
             :class="[
                 'tableheader',
-                header.sortable ? 'eos-cursor-pointer' : ''
+                header.sortable ? 'cortx-cursor-pointer' : ''
               ]"
             @click="onSort(header)"
           >
@@ -77,25 +77,25 @@
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.warning"
-              class="eos-status-chip eos-chip-warning"
+              class="cortx-status-chip cortx-chip-warning"
               title="warning"
             ></div>
             <div
               style="margin: auto;"
               v-else-if="props.item.severity ===alertStatus.critical || props.item.severity === alertStatus.error"
-              class="eos-status-chip eos-chip-alert"
+              class="cortx-status-chip cortx-chip-alert"
               v-bind:title="props.item.severity"
             ></div>
             <div
               style="margin: auto;"
               v-else-if="props.item.severity ===alertStatus.warning"
-              class="eos-status-chip eos-chip-warning"
+              class="cortx-status-chip cortx-chip-warning"
               title="warning"
             ></div>
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.informational"
-              class="eos-status-chip eos-chip-information"
+              class="cortx-status-chip cortx-chip-information"
               title="info"
             ></div>
              <div
@@ -104,14 +104,14 @@
               && (props.item.severity !== alertStatus.warning)
               && (props.item.severity !== alertStatus.critical && props.item.severity !== alertStatus.error)"
               title="other"
-              class="eos-status-chip eos-chip-others"
+              class="cortx-status-chip cortx-chip-others"
             ></div>
           </td>
-          <td v-eos-alert-tbl-description="props.item"></td>
+          <td v-cortx-alert-tbl-description="props.item"></td>
           <td>
             <img
               :src="require('@/assets/zoom-in.svg')"
-              class="eos-cursor-pointer"
+              class="cortx-cursor-pointer"
               @click="$router.push('/alerts_history/' + props.item.alert_uuid)"
             />
           </td>
@@ -123,17 +123,17 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
-import EosHealthSummary from "../system/health-summary.vue";
+import CortxHealthSummary from "../system/health-summary.vue";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { AlertQueryParam, AlertObject } from "./../../models/alert";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
 
 @Component({
-  name: "eos-alert-occurrences",
-  directives: { "eos-alert-tbl-description": alertTblDescriptionDirective }
+  name: "cortx-alert-occurrences",
+  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
 })
-export default class EosAlertOccurrences extends Vue {
+export default class CortxAlertOccurrences extends Vue {
   public alertObject: AlertObject = {} as AlertObject;
   public hidePagination: boolean = true;
   public alertOccurrencesTableHeaders: any = [];

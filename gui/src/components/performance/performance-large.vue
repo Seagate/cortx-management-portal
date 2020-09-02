@@ -16,20 +16,20 @@
 */
  <template>
   <div class="pa-5">
-    <div class="eos-text-lg eos-text-bold">Performance</div>
+    <div class="cortx-text-lg cortx-text-bold">Performance</div>
     <button
       :disabled="chartList.length>=3"
       type="button"
       @click="addChart()"
-      class="mt-3 mb-2 eos-btn-primary"
+      class="mt-3 mb-2 cortx-btn-primary"
     >Add Graph</button>
 
     <div :key="chartId" v-for="chartId in chartList">
-      <v-row class="eos-cursor-pointer" @click="removeChart(chartId)" v-if="chartList.length>1">
-        <img class="eos-modal-close" :src="require('@/assets/close-green.svg')" />
+      <v-row class="cortx-cursor-pointer" @click="removeChart(chartId)" v-if="chartList.length>1">
+        <img class="cortx-modal-close" :src="require('@/assets/close-green.svg')" />
       </v-row>
-      <v-row class="eos-graph">
-        <eos-line-chart :chartId="chartId" />
+      <v-row class="cortx-graph">
+        <cortx-line-chart :chartId="chartId" />
       </v-row>
     </div>
     <div id="lastItem"></div>
@@ -37,14 +37,14 @@
 </template>
  <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosLineChart from "../widgets/line-chart.vue";
+import CortxLineChart from "../widgets/line-chart.vue";
 @Component({
-  name: "eos-performance-large",
+  name: "cortx-performance-large",
   components: {
-    eosLineChart: EosLineChart
+    cortxLineChart: CortxLineChart
   }
 })
-export default class EosPerformanceLarge extends Vue {
+export default class CortxPerformanceLarge extends Vue {
   private chartCount: number = 1;
   private chartList: string[] = ["chart1"];
   public addChart() {

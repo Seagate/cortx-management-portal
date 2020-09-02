@@ -27,15 +27,15 @@ opensource@seagate.com or cortx-questions@seagate.com. */
     <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 col-xs-6 col-sm-7">
-        <eos-has-access
-          :to="$eosUserPermissions.users + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.users + $cortxUserPermissions.list"
         >
           <v-data-table
             :items="userData"
             :single-expand="singleExpand"
             :expanded.sync="expanded"
             item-key="id"
-            class="eos-table"
+            class="cortx-table"
             hide-default-header
           >
             <template v-slot:header="{}">
@@ -128,14 +128,14 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                             loggedInUserName
                           )
                       "
-                      class="ml-2 eos-cursor-pointer"
+                      class="ml-2 cortx-cursor-pointer"
                       @click="onEditBtnClick(props)"
                       title="Edit"
                       src="./../../../../assets/actions/edit-green.svg"
                     />
-                    <eos-has-access
+                    <cortx-has-access
                       :to="
-                        $eosUserPermissions.users + $eosUserPermissions.delete
+                        $cortxUserPermissions.users + $cortxUserPermissions.delete
                       "
                     >
                       <img
@@ -146,7 +146,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                               loggedInUserName
                             )
                         "
-                        class="ml-2 eos-cursor-pointer"
+                        class="ml-2 cortx-cursor-pointer"
                         @click="onDeleteConfirmation(props.item.id)"
                         title="Delete"
                         src="./../../../../assets/actions/delete-green.svg"
@@ -158,57 +158,57 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                             loggedInUserName
                           ) && !isAdminUser(props.item)
                         "
-                        class="mx-2 eos-cursor-pointer"
+                        class="mx-2 cortx-cursor-pointer"
                         @click="onDeleteConfirmation(props.item.id)"
                         title="Delete"
                         src="./../../../../assets/actions/delete-green.svg"
                       />
-                    </eos-has-access>
+                    </cortx-has-access>
                   </span>
                 </td>
               </tr>
             </template>
           </v-data-table>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-xs-6 pr-0 col-sm-5">
-        <eos-has-access
-          :to="$eosUserPermissions.users + $eosUserPermissions.create"
+        <cortx-has-access
+          :to="$cortxUserPermissions.users + $cortxUserPermissions.create"
         >
           <button
             v-if="!isUserCreate && !isUserEdit"
             type="button"
-            class="mt-4 eos-btn-primary"
+            class="mt-4 cortx-btn-primary"
             @click="onAddNewUser()"
             id="btnLocalAddNewUser"
           >
             {{ $t("csmuser.add-user-button") }}
           </button>
-        </eos-has-access>
+        </cortx-has-access>
         <div v-if="isUserCreate">
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.createAccount.username.$error
+                  'cortx-form-group--error': $v.createAccount.username.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Username">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="Username">
+                  <cortx-info-tooltip
                     label="Username*"
                     :message="usernameTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   name="txtCreateUsername"
                   v-model.trim="createAccount.username"
                   id="txtLocalHostname"
                   @input="$v.createAccount.username.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createAccount.username.$dirty &&
@@ -228,14 +228,14 @@ opensource@seagate.com or cortx-questions@seagate.com. */
             </v-col>
             <v-col class="pl-5 pb-0 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.createAccount.email.$error
+                  'cortx-form-group--error': $v.createAccount.email.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Email">{{ $t("csmuser.email") }}</label>
+                <label class="cortx-form-group-label" for="Email">{{ $t("csmuser.email") }}</label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="email"
                   name="email"
                   v-model.trim="createAccount.email"
@@ -243,7 +243,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   @input="$v.createAccount.email.$touch"
                   placeholder="example@email.com"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createAccount.email.$dirty &&
@@ -265,26 +265,26 @@ opensource@seagate.com or cortx-questions@seagate.com. */
           <v-row>
             <v-col class="pl-5 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.createAccount.password.$error
+                  'cortx-form-group--error': $v.createAccount.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="password">
+                  <cortx-info-tooltip
                     :label="$t('csmuser.password')"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   name="txtCreatePassword"
                   v-model.trim="createAccount.password"
                   @input="$v.createAccount.password.$touch"
                   id="txtLocalPass"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createAccount.password.$dirty &&
@@ -304,24 +304,24 @@ opensource@seagate.com or cortx-questions@seagate.com. */
             </v-col>
             <v-col class="pl-5 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccount.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password"
+                <label class="cortx-form-group-label" for="password"
                   >{{ $t("csmuser.confirm-password") }}*</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   name="txtCreateConfirmPassword"
                   v-model="createAccount.confirmPassword"
                   id="txtLocalConfirmPass"
                   @input="$v.createAccount.confirmPassword.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createAccount.confirmPassword.$dirty &&
@@ -336,7 +336,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
           <v-row class="ml-3">
             <div>{{ $t("csmuser.roles") }}</div>
             <v-col class="pt-0 col-2">
-              <label class="eos-rdb-container">
+              <label class="cortx-rdb-container">
                   {{ $t("csmuser.manage") }}
                 <input
                   type="radio"
@@ -345,11 +345,11 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   value="manage"
                   id="chkLocalManage"
                 />
-                <span class="eos-rdb-tick" id="lblLocalManage"></span>
+                <span class="cortx-rdb-tick" id="lblLocalManage"></span>
               </label>
             </v-col>
             <v-col class="pt-0 ml-3 col-3">
-              <label class="eos-rdb-container">
+              <label class="cortx-rdb-container">
                 {{ $t("csmuser.monitor") }}
                 <input
                   type="radio"
@@ -358,13 +358,13 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   value="monitor"
                   id="chkLocalMonitor"
                 />
-                <span class="eos-rdb-tick" id="lblLocalMonitor"></span>
+                <span class="cortx-rdb-tick" id="lblLocalMonitor"></span>
               </label>
             </v-col>
           </v-row>
           <v-row class="ml-0">
             <v-col>
-              <label class="eos-ckb-container" for="emailCheckID">
+              <label class="cortx-ckb-container" for="emailCheckID">
                 {{ $t("csmuser.email-notification") }}
                 <input
                   type="checkbox"
@@ -372,7 +372,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   v-model="createAccount.alert_notification"
                   id="emailCheckID"
                 />
-                <span class="eos-ckb-tick"></span>
+                <span class="cortx-ckb-tick"></span>
               </label>
             </v-col>
           </v-row>
@@ -381,7 +381,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
               <button
                 v-if="isUserCreate"
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="createUser()"
                 id="btnLocalCreateUser"
                 :disabled="$v.createAccount.$invalid || !checkedRoles"
@@ -391,7 +391,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
               <button
                 v-if="isUserCreate"
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="onAddNewUser()"
                 id="lblLocalCancel"
               >
@@ -404,9 +404,9 @@ opensource@seagate.com or cortx-questions@seagate.com. */
         <div v-if="isUserEdit">
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
-              <label class="eos-form-group-label" for="Email"> {{ $t("csmuser.username") }}</label>
+              <label class="cortx-form-group-label" for="Email"> {{ $t("csmuser.username") }}</label>
               <input
-                class="eos-form__input_text"
+                class="cortx-form__input_text"
                 type="text"
                 name="text"
                 v-model.trim="selectedItem.username"
@@ -416,14 +416,14 @@ opensource@seagate.com or cortx-questions@seagate.com. */
             </v-col>
             <v-col class="pl-5 pb-0 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.selectedItem.email.$error
+                  'cortx-form-group--error': $v.selectedItem.email.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Email">{{ $t("csmuser.email") }}</label>
+                <label class="cortx-form-group-label" for="Email">{{ $t("csmuser.email") }}</label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="email"
                   name="email"
                   v-model.trim="selectedItem.email"
@@ -431,7 +431,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   @input="$v.selectedItem.email.$touch"
                   placeholder="example@email.com"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.selectedItem.email.$dirty &&
@@ -453,26 +453,26 @@ opensource@seagate.com or cortx-questions@seagate.com. */
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.selectedItem.password.$error
+                  'cortx-form-group--error': $v.selectedItem.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="password">
+                  <cortx-info-tooltip
                     label="New password*"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   name="txtEditNewPassword"
                   v-model.trim="selectedItem.password"
                   @input="$v.selectedItem.password.$touch"
                   id="txtLocalPass"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.selectedItem.password.$dirty &&
@@ -492,24 +492,24 @@ opensource@seagate.com or cortx-questions@seagate.com. */
             </v-col>
             <v-col class="pl-5 pb-0 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.selectedItem.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password"
+                <label class="cortx-form-group-label" for="password"
                   >{{ $t("csmuser.confirm-password") }}</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   name="txtEditConfirmPassword"
                   v-model="selectedItem.confirmPassword"
                   id="txtLocalConfirmNewPass"
                   @input="$v.selectedItem.confirmPassword.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.selectedItem.confirmPassword.$dirty &&
@@ -524,7 +524,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 v-if="
                   isAdminUser(selectedItem) ||
                     strEqualityCaseInsensitive(
@@ -533,24 +533,24 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                     )
                 "
                 :class="{
-                  'eos-form-group--error': $v.selectedItem.old_password.$error
+                  'cortx-form-group--error': $v.selectedItem.old_password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="password">
+                  <cortx-info-tooltip
                     label="Old password*"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   name="txtEditOldPassword"
                   v-model.trim="selectedItem.old_password"
                   @input="$v.selectedItem.old_password.$touch"
                   id="txtLocalOldPass"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.selectedItem.old_password.$dirty &&
@@ -572,7 +572,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
           <v-row class="ml-3">
             <div>{{ $t("csmuser.roles") }}</div>
             <v-col class="pt-0 col-2">
-              <label class="eos-rdb-container">
+              <label class="cortx-rdb-container">
                 {{ $t("csmuser.manage") }}
                 <input
                   type="radio"
@@ -588,11 +588,11 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                       )
                   "
                 />
-                <span class="eos-rdb-tick" id="lblLocalManageInterface"></span>
+                <span class="cortx-rdb-tick" id="lblLocalManageInterface"></span>
               </label>
             </v-col>
             <v-col class="pt-0 ml-3 col-3">
-              <label class="eos-rdb-container">
+              <label class="cortx-rdb-container">
                  {{ $t("csmuser.monitor") }}
                 <input
                   type="radio"
@@ -608,13 +608,13 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                       )
                   "
                 />
-                <span class="eos-rdb-tick" id="lblLocalMonitorInterface"></span>
+                <span class="cortx-rdb-tick" id="lblLocalMonitorInterface"></span>
               </label>
             </v-col>
           </v-row>
           <v-row class="ml-0">
             <v-col>
-              <label class="eos-ckb-container" for="emailCheckID">
+              <label class="cortx-ckb-container" for="emailCheckID">
                  {{ $t("csmuser.email-notification") }}
                 <input
                   type="checkbox"
@@ -622,7 +622,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   v-model="selectedItem.alert_notification"
                   id="emailCheckID"
                 />
-                <span class="eos-ckb-tick"></span>
+                <span class="cortx-ckb-tick"></span>
               </label>
             </v-col>
           </v-row>
@@ -630,7 +630,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
             <v-col class="ml-3">
               <button
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="editUser(selectedItem)"
                 id="lblLocalApplyInterface"
                 :disabled="!isEditFormValid"
@@ -639,7 +639,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
               </button>
               <button
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeEditUserForm()"
                 id="lblLocalCanacelInterface"
               >
@@ -650,14 +650,14 @@ opensource@seagate.com or cortx-questions@seagate.com. */
         </div>
       </v-col>
     </v-row>
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmationDialog"
       title="Confirmation"
       :message="confirmationDialogMessage"
       severity="warning"
       @closeDialog="closeConfirmationDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -681,9 +681,9 @@ import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
 
 @Component({
-  name: "eos-user-setting-local"
+  name: "cortx-user-setting-local"
 })
-export default class EosUserSettingLocal extends Vue {
+export default class CortxUserSettingLocal extends Vue {
   @Validations()
   public validations = {
     createAccount: {

@@ -15,32 +15,32 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-nav">
+  <div class="cortx-nav">
     <div v-for="navItem in navItems" :key="navItem.title">
-      <eos-has-access
+      <cortx-has-access
         :to="
-          $eosUserPermissions[navItem.requiredAccess] +
+          $cortxUserPermissions[navItem.requiredAccess] +
             (navItem.requiredSubAccess
-              ? $eosUserPermissions[navItem.requiredSubAccess]
-              : $eosUserPermissions.list)
+              ? $cortxUserPermissions[navItem.requiredSubAccess]
+              : $cortxUserPermissions.list)
         "
       >
         <router-link
           :to="navItem.path"
           tag="div"
-          class="eos-nav-item"
-          active-class="eos-nav-item-active"
+          class="cortx-nav-item"
+          active-class="cortx-nav-item-active"
           :key="navItem.title"
         >
-          <img class="eos-nav-item-icon-default" :src="navItem.iconDefault" />
-          <img class="eos-nav-item-icon-active" :src="navItem.iconActive" />
+          <img class="cortx-nav-item-icon-default" :src="navItem.iconDefault" />
+          <img class="cortx-nav-item-icon-active" :src="navItem.iconActive" />
           <label>{{ navItem.title }}</label>
         </router-link>
-      </eos-has-access>
+      </cortx-has-access>
     </div>
-    <div class="eos-nav-bottom">
-      <div class="eos-brand-text">Powered by</div>
-      <img class="eos-nav-item-icon-default eos-img-responsive"
+    <div class="cortx-nav-bottom">
+      <div class="cortx-brand-text">Powered by</div>
+      <img class="cortx-nav-item-icon-default cortx-img-responsive"
         :src="require('@/assets/Cortx-logo-GRN.svg/')" />
     </div>
   </div>
@@ -49,9 +49,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-nav-bar"
+  name: "cortx-nav-bar"
 })
-export default class EosNavBar extends Vue {
+export default class CortxNavBar extends Vue {
   public navItems = [
     {
       title: "Dashboard",
@@ -103,7 +103,7 @@ export default class EosNavBar extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.eos-nav {
+.cortx-nav {
   position: fixed;
   top: 50px;
   left: 0;
@@ -113,7 +113,7 @@ export default class EosNavBar extends Vue {
   padding-top: 0.75em;
   background: #000000;
 }
-.eos-nav-item {
+.cortx-nav-item {
   display: flex;
   flex-wrap: nowrap;
   background-color: #000000;
@@ -128,38 +128,38 @@ export default class EosNavBar extends Vue {
   padding-right: 10px;
   cursor: pointer;
 }
-.eos-nav-item > label {
+.cortx-nav-item > label {
   margin-left: 5px;
   cursor: pointer;
 }
-.eos-nav-item-active {
+.cortx-nav-item-active {
   background: #454545 !important;
   color: #ffffff !important;
 }
-.eos-nav-item-icon-default {
+.cortx-nav-item-icon-default {
   display: block;
 }
-.eos-nav-item.eos-nav-item-active .eos-nav-item-icon-default {
+.cortx-nav-item.cortx-nav-item-active .cortx-nav-item-icon-default {
   display: none;
 }
-.eos-nav-item-icon-active {
+.cortx-nav-item-icon-active {
   display: none;
 }
-.eos-nav-item.eos-nav-item-active .eos-nav-item-icon-active {
+.cortx-nav-item.cortx-nav-item-active .cortx-nav-item-icon-active {
   display: block;
 }
 
-.eos-img-responsive {
+.cortx-img-responsive {
   width: 100%;
   max-width: 100%;
   height: auto;
   padding: 5px;
 }
-.eos-brand-text {
+.cortx-brand-text {
   color: #6ebe49;
   margin: auto 5px;
 }
-.eos-nav-bottom {
+.cortx-nav-bottom {
   position: absolute;
   bottom: 10px;
   background-color: #000000;

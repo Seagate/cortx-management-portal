@@ -30,7 +30,7 @@
       </div>
         <button
         type="button"
-        class="eos-btn-primary-dark ml-4"
+        class="cortx-btn-primary-dark ml-4"
         @click="showLicenseAgreement = true"
       >
         <span>Get started</span>
@@ -47,10 +47,10 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import LicenseAgreement from "./license-agreement.vue";
 
 @Component({
-  name: "eos-welcome",
+  name: "cortx-welcome",
   components: { LicenseAgreement }
 })
-export default class EosLicense extends Vue {
+export default class CortxLicense extends Vue {
   private data() {
     return {
       showLicenseAgreement: false,
@@ -72,7 +72,7 @@ export default class EosLicense extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.eos-form-group {
+.cortx-form-group {
   width: 500px;
   min-height: 88px;
 }

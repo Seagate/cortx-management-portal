@@ -23,8 +23,8 @@
       <label id="s3-account-form-title" class="headline font-weight-bold"
         >S3 configuration</label
       >
-      <eos-has-access
-        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
+      <cortx-has-access
+        :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label>
@@ -32,29 +32,29 @@
             credentials to manage S3 account, IAM users, and buckets.
           </label>
         </div>
-      </eos-has-access>
+      </cortx-has-access>
 
-      <eos-has-access
-        :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+      <cortx-has-access
+        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label>
             Manage IAM users and buckets.
           </label>
         </div>
-      </eos-has-access>
+      </cortx-has-access>
     </div>
     <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 pr-0 col-9">
-        <eos-has-access
-          :to="$eosUserPermissions.s3buckets + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3buckets + $cortxUserPermissions.list"
         >
           <v-data-table
             calculate-widths
             :items="bucketsList"
             item-key="name"
-            class="eos-table"
+            class="cortx-table"
             :hide-default-header="true"
             :hide-default-footer="true"
             :disable-pagination="true"
@@ -78,46 +78,46 @@
                 <td>
                   <img
                     @click="openBucketPolicyDialog(props.item.name)"
-                    class="eos-cursor-pointer"
+                    class="cortx-cursor-pointer"
                     src="@/assets/actions/edit-green.svg"
                   />
                   <img
                     @click="openConfirmDeleteDialog(props.item.name)"
-                    class="eos-cursor-pointer ml-5"
+                    class="cortx-cursor-pointer ml-5"
                     src="@/assets/actions/delete-green.svg"
                   />
                 </td>
               </tr>
             </template>
           </v-data-table>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
       <v-col class="pb-0 col-3">
         <div v-if="showCreateBucketForm" class="pa-2">
           <v-row>
             <v-col class="py-0 pr-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createBucketForm.bucket.bucket_name.$error
                 }"
               >
-                <label class="eos-form-group-label" for="bucketName">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="bucketName">
+                  <cortx-info-tooltip
                     label="Bucket name*"
                     :message="bucketNameTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   id="bucketName"
                   name="bucketName"
                   v-model.trim="createBucketForm.bucket.bucket_name"
                   @input="$v.createBucketForm.bucket.bucket_name.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createBucketForm.bucket.bucket_name.$dirty &&
@@ -140,7 +140,7 @@
             <v-col>
               <button
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="createBucket()"
                 :disabled="$v.createBucketForm.$invalid"
               >
@@ -148,7 +148,7 @@
               </button>
               <button
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeCreateBucketForm()"
               >
                 Cancel
@@ -156,18 +156,18 @@
             </v-col>
           </v-row>
         </div>
-        <eos-has-access
-          :to="$eosUserPermissions.s3buckets + $eosUserPermissions.create"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3buckets + $cortxUserPermissions.create"
         >
           <button
             type="button"
-            class="eos-btn-primary"
+            class="cortx-btn-primary"
             v-if="!showCreateBucketForm"
             @click="openCreateBucketForm()"
           >
             Create
           </button>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
     </v-row>
 
@@ -192,7 +192,7 @@
         <v-card-actions>
           <button
             type="button"
-            class="ma-5 eos-btn-primary"
+            class="ma-5 cortx-btn-primary"
             @click="closeBucketCreateSuccessDialog()"
           >
             Ok
@@ -201,36 +201,36 @@
       </v-card>
     </v-dialog>
 
-    <div class="eos-modal-container" v-if="showBucketPolicyDialog">
-      <div class="eos-modal bucket-policy-editor">
-        <div class="eos-modal-header">
+    <div class="cortx-modal-container" v-if="showBucketPolicyDialog">
+      <div class="cortx-modal bucket-policy-editor">
+        <div class="cortx-modal-header">
           <label>JSON policy</label>
           <img
-            class="eos-modal-close"
+            class="cortx-modal-close"
             :src="require('@/assets/close-green.svg')"
             @click="closeBucketPolicyDialog()"
           />
         </div>
-        <div class="eos-modal-body">
+        <div class="cortx-modal-body">
           <div
-            class="eos-form-group eos-form-group-custom"
+            class="cortx-form-group cortx-form-group-custom"
             :class="{
-              'eos-form-group--error': $v.policyJSON.$error
+              'cortx-form-group--error': $v.policyJSON.$error
             }"
           >
-            <label class="eos-form-group-label" for="policyJSONTextarea">
+            <label class="cortx-form-group-label" for="policyJSONTextarea">
               Type to add new bucket policy or edit an existing policy in the
               text area below.
             </label>
             <textarea
-              class="eos-form__input_textarea eos-form__input_textarea-custom"
+              class="cortx-form__input_textarea cortx-form__input_textarea-custom"
               name="policyJSONTextarea"
               id="policyJSONTextarea"
               rows="10"
               v-model="policyJSON"
               @input="$v.policyJSON.$touch"
             ></textarea>
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.policyJSON.$dirty && !$v.policyJSON.required"
                 >Policy JSON is required.</label
               >
@@ -243,7 +243,7 @@
           <div class="mt-3 policy-container">
             <button
               type="button"
-              class="eos-btn-primary"
+              class="cortx-btn-primary"
               :disabled="!$v.policyJSON.JSONValidator"
               @click="updateBucketPolicy()"
             >
@@ -251,7 +251,7 @@
             </button>
             <button
               type="button"
-              class="eos-btn-primary ml-2"
+              class="cortx-btn-primary ml-2"
               :disabled="!$v.policyJSON.JSONValidator"
               @click="deleteBucketPolicy()"
             >
@@ -259,7 +259,7 @@
             </button>
             <button
               type="button"
-              class="eos-btn-tertiary"
+              class="cortx-btn-tertiary"
               @click="closeBucketPolicyDialog()"
             >
               Cancel
@@ -269,14 +269,14 @@
       </div>
     </div>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmDeleteDialog"
       title="Confirmation"
       message="Are you sure you want to delete the bucket?"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -293,9 +293,9 @@ import {
 } from "./../../common/regex-helpers";
 
 @Component({
-  name: "eos-bucket-creation"
+  name: "cortx-bucket-creation"
 })
-export default class EosBucketCreation extends Vue {
+export default class CortxBucketCreation extends Vue {
   public createBucketForm = {
     bucket: {} as Bucket
   };

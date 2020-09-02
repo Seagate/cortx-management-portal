@@ -15,12 +15,12 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-tabs-container">
+  <div class="cortx-tabs-container">
     <div
       v-for="tab in tabsInfo.tabs"
       v-bind:key="tab.id"
       v-if="tab.show"
-      :class="tab.id === tabsInfo.selectedTab ? 'eos-tab-active' : 'eos-tab'"
+      :class="tab.id === tabsInfo.selectedTab ? 'cortx-tab-active' : 'cortx-tab'"
       @click="tabsInfo.selectedTab = tab.id"
     >
       {{ tab.label }}
@@ -44,20 +44,20 @@ export interface TabsInfo {
 }
 
 @Component({
-  name: "eos-tabs"
+  name: "cortx-tabs"
 })
-export default class EosTabs extends Vue {
+export default class CortxTabs extends Vue {
   @Prop({ required: true })
   public tabsInfo: TabsInfo;
 }
 </script>
 <style lang="scss" scoped>
-.eos-tabs-container {
+.cortx-tabs-container {
   border-bottom: 1px solid #e8e8e8;
   display: flex;
   flex-wrap: nowrap;
 }
-.eos-tabs-container > div {
+.cortx-tabs-container > div {
   min-width: 173px;
   height: 35px;
   text-align: center;
@@ -68,11 +68,11 @@ export default class EosTabs extends Vue {
   color: rgba(0, 0, 0, 0.87);
   cursor: pointer;
 }
-.eos-tabs-container > div.eos-tab-active {
+.cortx-tabs-container > div.cortx-tab-active {
   font-weight: bold;
   border-bottom: 4px solid #6ebe49;
 }
-.eos-tabs-container > div.eos-tab:hover {
+.cortx-tabs-container > div.cortx-tab:hover {
   border-bottom: 1px solid #454545;
 }
 </style>

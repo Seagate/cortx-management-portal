@@ -28,22 +28,22 @@
         Fields marked with * are mandatory.
       </div>
       <v-divider class="mt-2" />
-      <eosDataNetworkIpv4Config />
+      <cortxDataNetworkIpv4Config />
     </div>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosDataNetworkIpv4Config from "./data-network-ipv4-config.vue";
+import CortxDataNetworkIpv4Config from "./data-network-ipv4-config.vue";
 
 @Component({
-  name: "eos-data-network-ipv4",
+  name: "cortx-data-network-ipv4",
   components: {
-    eosDataNetworkIpv4Config: EosDataNetworkIpv4Config
+    cortxDataNetworkIpv4Config: CortxDataNetworkIpv4Config
   }
 })
-export default class EosDataNetworkIpv4 extends Vue {}
+export default class CortxDataNetworkIpv4 extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

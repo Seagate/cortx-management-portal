@@ -15,21 +15,21 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2" v-if="alert">
-    <div class="eos-back-to-alerts-btn" @click="$router.push('/alerts')">
+  <div class="cortx-p-2" v-if="alert">
+    <div class="cortx-back-to-alerts-btn" @click="$router.push('/alerts')">
       <img :src="require('@/assets/arrow-left.svg')" />
       <span class="mt-1">Alerts</span>
     </div>
     <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);" class="mt-4 mb-3">
       <div style="height: 30px;">
-        <div class="eos-float-l" v-if="alert && alertExtendedInfo">
-          <label class="eos-text-lg eos-text-bold">Id:&nbsp;</label>
+        <div class="cortx-float-l" v-if="alert && alertExtendedInfo">
+          <label class="cortx-text-lg cortx-text-bold">Id:&nbsp;</label>
           <label>{{ alertExtendedInfo.resource_id }}</label>
-          <label class="eos-text-lg eos-text-bold">&nbsp;| Name:&nbsp;</label>
+          <label class="cortx-text-lg cortx-text-bold">&nbsp;| Name:&nbsp;</label>
           <label>{{ alert.module_type }}</label>
         </div>
       </div>
-      <div class="eos-text-md eos-text-bold">
+      <div class="cortx-text-md cortx-text-bold">
         <div>
           <label>Cluster {{ alertExtendedInfo.cluster_id }}</label>
           <label>&nbsp;| Site {{ alertExtendedInfo.site_id }}</label>
@@ -67,32 +67,32 @@
         <label v-if="alert">{{ new Date(alert.created_time*1000) | timeago }}</label>
       </div>
       <div style="height: 30px;" class="mt-2">
-        <div class="eos-float-l">
+        <div class="cortx-float-l">
           <img
             v-if="alert.resolved"
-            class="eos-float-l"
+            class="cortx-float-l"
             :src="require('@/assets/resolved-filled-default.svg')"
           />
-          <img v-else class="eos-float-l" :src="require('@/assets/resolved-filled-disabled.svg')" />
+          <img v-else class="cortx-float-l" :src="require('@/assets/resolved-filled-disabled.svg')" />
           <label
-            :class="alert.resolved ? '' : 'eos-alert-status-chip-disabled'"
+            :class="alert.resolved ? '' : 'cortx-alert-status-chip-disabled'"
             style="float: left;"
           >Resolved |</label>
           <img
             v-if="alert.acknowledged"
-            class="eos-float-l"
+            class="cortx-float-l"
             :src="require('@/assets/acknowledge-default.svg')"
           />
-          <img v-else class="eos-float-l" :src="require('@/assets/acknowledge-disabled.svg')" />
+          <img v-else class="cortx-float-l" :src="require('@/assets/acknowledge-disabled.svg')" />
           <label
-            :class="alert.acknowledged ? '' : 'eos-alert-status-chip-disabled'"
+            :class="alert.acknowledged ? '' : 'cortx-alert-status-chip-disabled'"
             style="float: left;"
           >Acknowledged</label>
         </div>
-        <div class="eos-float-r">
+        <div class="cortx-float-r">
           <label
             @click="showAlertDetailsDialog = true"
-            class="eos-text-md eos-cursor-pointer"
+            class="cortx-text-md cortx-cursor-pointer"
             style="color: #6EBE49;"
           >Details</label>
         </div>
@@ -128,23 +128,23 @@
       </div>
     </template>
     <template v-if="showAlertDetailsDialog">
-      <div class="eos-modal-container">
-        <div class="eos-modal" style="width: 56.250em;">
-          <div class="eos-modal-header">
+      <div class="cortx-modal-container">
+        <div class="cortx-modal" style="width: 56.250em;">
+          <div class="cortx-modal-header">
             <label>Alert Details</label>
             <img
-              class="eos-modal-close"
+              class="cortx-modal-close"
               :src="require('@/assets/close-green.svg')"
               @click="showAlertDetailsDialog = false"
             />
           </div>
-          <div class="eos-modal-body" style="height: 21.875em;overflow: auto;">
+          <div class="cortx-modal-body" style="height: 21.875em;overflow: auto;">
             <AlertExtendedInfoComp :alertExtendedInfo="alertDetails" />
           </div>
         </div>
       </div>
     </template>
-    <eos-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
+    <cortx-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
   </div>
 </template>
 
@@ -156,22 +156,22 @@ import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { AlertEventDetail, AlertExtendedInfo } from "../../models/alert";
 import AlertExtendedInfoComp from "./alert-extended-info.vue";
-import EosAlertComments from "./alert-comments.vue";
-import EosAlertOccurrences from "./alert-occurrences.vue";
-import EosAlertRelated from "./alert-related.vue";
-import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
+import CortxAlertComments from "./alert-comments.vue";
+import CortxAlertOccurrences from "./alert-occurrences.vue";
+import CortxAlertRelated from "./alert-related.vue";
+import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
 
 @Component({
   name: "alert-history",
   components: {
     AlertExtendedInfoComp,
-    EosAlertComments,
-    EosAlertOccurrences,
-    EosAlertRelated,
-    EosTabs
+    CortxAlertComments,
+    CortxAlertOccurrences,
+    CortxAlertRelated,
+    CortxTabs
   }
 })
-export default class EosAlertHistory extends Vue {
+export default class CortxAlertHistory extends Vue {
   public alertId: string = "";
   public alert: any = null;
   public alertEventDetails: AlertEventDetail[] = [];
@@ -295,7 +295,7 @@ export default class EosAlertHistory extends Vue {
 </script>
 
 <style lang="scss" scoped >
-.eos-back-to-alerts-btn {
+.cortx-back-to-alerts-btn {
   display: flex;
   cursor: pointer;
   width: 80px;
@@ -305,7 +305,7 @@ export default class EosAlertHistory extends Vue {
   font-size: 14px;
   line-height: 22px;
 }
-.eos-alert-status-chip-disabled {
+.cortx-alert-status-chip-disabled {
   color: #b7b7b7;
 }
 </style>

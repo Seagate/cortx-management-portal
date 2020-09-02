@@ -61,9 +61,9 @@ import { Syslog } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({
-  name: "eos-data-network-ipv4"
+  name: "cortx-data-network-ipv4"
 })
-export default class EosDataNetworkIpv4 extends Vue {
+export default class CortxDataNetworkIpv4 extends Vue {
   private data() {
     return {
       syslogipaddr: "",

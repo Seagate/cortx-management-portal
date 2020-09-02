@@ -17,12 +17,12 @@
 <template>
   <div>
     <v-container>
-      <div class="eos-modal-container">
-        <div class="eos-modal eos-modal-onboarding">
-          <div class="eos-modal-header">
+      <div class="cortx-modal-container">
+        <div class="cortx-modal cortx-modal-onboarding">
+          <div class="cortx-modal-header">
             <label>Success</label>
           </div>
-          <div class="eos-modal-body ">
+          <div class="cortx-modal-body ">
             <div class="title title-container">
               <img
                 class="mr-2 success-img"
@@ -35,7 +35,7 @@
             <div class="mt-8 nav-btn">
               <button
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="$router.push('/dashboard')"
               >
                 Go to dashboard
@@ -51,9 +51,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-onboarding-finish"
+  name: "cortx-onboarding-finish"
 })
-export default class EosOnboardingFinish extends Vue {
+export default class CortxOnboardingFinish extends Vue {
   private logout() {
     // Invalidate session from Server, remove localStorage token and re-route to login page
     this.$store
@@ -80,7 +80,7 @@ export default class EosOnboardingFinish extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.eos-modal-onboarding {
+.cortx-modal-onboarding {
   width: 500px;
   min-height: 214px;
 }

@@ -29,7 +29,7 @@
       </div>
       <button
         type="button"
-        class="eos-btn-primary-dark ml-4"
+        class="cortx-btn-primary-dark ml-4"
         @click="$router.push('gdpr')"
       >
         <span>Start</span>
@@ -41,9 +41,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-get-started"
+  name: "cortx-get-started"
 })
-export default class EosWelcome extends Vue {}
+export default class CortxWelcome extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

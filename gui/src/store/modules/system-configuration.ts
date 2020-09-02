@@ -97,11 +97,11 @@ export default class SystemConfiguration extends VuexModule {
   public setNotificationsType(notificationType: any) {
     if (notificationType.type === "email") {
       this.isEmailSettings = notificationType.flag;
-      this.componentNameToSearch = "EosNotificationsEmail";
+      this.componentNameToSearch = "CortxNotificationsEmail";
     }
     if (notificationType.type === "syslog") {
       this.isSysLogSettings = notificationType.flag;
-      this.componentNameToSearch = "EosNotificationsSyslog";
+      this.componentNameToSearch = "CortxNotificationsSyslog";
     }
     if (notificationType.type === "skip") {
       this.isNotificationSettingSkip = notificationType.flag;
@@ -118,11 +118,11 @@ export default class SystemConfiguration extends VuexModule {
   @Mutation
   public setUser(userType: any) {
     if (userType.type === "local") {
-      this.componentNameToSearch = "EosUserSettingLocal";
+      this.componentNameToSearch = "CortxUserSettingLocal";
       this.isLocalUser = userType.flag;
     }
     if (userType.type === "ldap") {
-      this.componentNameToSearch = "EosUserSettingLdap";
+      this.componentNameToSearch = "CortxUserSettingLdap";
       this.isLdapUser = userType.flag;
     }
     if (userType.type === "skip") {
@@ -304,11 +304,11 @@ export default class SystemConfiguration extends VuexModule {
   public setNetworkManagementSettings(networkType: any) {
     if (networkType.type === "ipV4") {
       this.isipV4 = networkType.flag;
-      this.componentNameToSearch = "EosNetworkSettingsIpv4";
+      this.componentNameToSearch = "CortxNetworkSettingsIpv4";
     }
     if (networkType.type === "ipV6") {
       this.isipV6 = networkType.flag;
-      this.componentNameToSearch = "EosNetworkSettingsIpv6";
+      this.componentNameToSearch = "CortxNetworkSettingsIpv6";
     }
     const stepIndex = findStepIndexFromComponentName(
       this.componentNameToSearch,
@@ -332,11 +332,11 @@ export default class SystemConfiguration extends VuexModule {
   public setDataNetworkSettings(networkType: any) {
     if (networkType.type === "ipV4") {
       this.isDataipV4 = networkType.flag;
-      this.componentNameToSearch = "EosDataNetworkIpv4";
+      this.componentNameToSearch = "CortxDataNetworkIpv4";
     }
     if (networkType.type === "ipV6") {
       this.isDataipV6 = networkType.flag;
-      this.componentNameToSearch = "EosDataNetworkIpv6";
+      this.componentNameToSearch = "CortxDataNetworkIpv6";
     }
     const stepIndex = findStepIndexFromComponentName(
       this.componentNameToSearch,

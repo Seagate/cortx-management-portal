@@ -15,8 +15,8 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2 body-2">
-    <div class="eos-text-lg mt-2 font-weight-bold" id="lblSSLUpload">
+  <div class="cortx-p-2 body-2">
+    <div class="cortx-text-lg mt-2 font-weight-bold" id="lblSSLUpload">
       SSL certificate upload
     </div>
     <div class="mt-3" id="lblSSLUploadMsg">
@@ -26,19 +26,19 @@
       the selected SSL certificate.
     </div>
     <v-divider class="mt-2" />
-    <eosUploadSSLConfig />
+    <cortxUploadSSLConfig />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EOSUploadSSLConfig from "../onboarding/system-config/ssl-certificate/upload-ssl-config.vue";
+import CortxUploadSSLConfig from "../onboarding/system-config/ssl-certificate/upload-ssl-config.vue";
 
 @Component({
   name: "upload-ssl-setting",
   components: {
-    eosUploadSSLConfig: EOSUploadSSLConfig
+    cortxUploadSSLConfig: CortxUploadSSLConfig
   }
 })
-export default class EOSUploadSSLSetting extends Vue {}
+export default class CortxUploadSSLSetting extends Vue {}
 </script>
 <style lang="scss" scoped></style>

@@ -15,17 +15,17 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div v-if="show" class="eos-modal-container">
-    <div class="eos-modal eos-modal-confirmation">
-      <div class="eos-modal-header">
+  <div v-if="show" class="cortx-modal-container">
+    <div class="cortx-modal cortx-modal-confirmation">
+      <div class="cortx-modal-header">
         <label>{{ title }}</label>
         <img
-          class="eos-modal-close"
+          class="cortx-modal-close"
           :src="require('@/assets/close-green.svg')"
           @click="$emit('closeDialog', false)"
         />
       </div>
-      <div class="eos-modal-body">
+      <div class="cortx-modal-body">
         <div class="title title-container">
           <img class="severity-img mr-2" :src="severityIcons[severity]" />
           <span v-if="isMessageInHTML" class="finish-text" v-html="message"></span>
@@ -38,11 +38,11 @@
         <div class="mt-8 nav-btn">
           <button
             type="button"
-            class="eos-btn-primary"
+            class="cortx-btn-primary"
             v-if="confirmButtonText"
             :disabled="confirmButtonDisabled"
             :class="
-              severity === 'danger' ? 'eos-btn-danger' : 'eos-btn-primary'
+              severity === 'danger' ? 'cortx-btn-danger' : 'cortx-btn-primary'
             "
             @click="$emit('closeDialog', true)"
           >
@@ -52,7 +52,7 @@
             type="button"
             v-if="cancelButtonText"
             :disabled="cancelButtonDisabled"
-            class="eos-btn-tertiary"
+            class="cortx-btn-tertiary"
             @click="$emit('closeDialog', false)"
           >
             {{ cancelButtonText }}
@@ -67,9 +67,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-confirmation-dialog"
+  name: "cortx-confirmation-dialog"
 })
-export default class EosConfirmationDialog extends Vue {
+export default class CortxConfirmationDialog extends Vue {
   @Prop({ required: true, default: false })
   public show!: boolean;
 
@@ -113,12 +113,12 @@ export default class EosConfirmationDialog extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.eos-info-icon {
+.cortx-info-icon {
   cursor: pointer;
   height: 20px;
   padding-bottom: 2px;
 }
-.eos-modal-confirmation {
+.cortx-modal-confirmation {
   width: 600px;
   min-height: 214px;
 }

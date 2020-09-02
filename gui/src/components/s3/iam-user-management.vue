@@ -23,8 +23,8 @@
       <label id="s3-account-form-title" class="headline font-weight-bold"
         >S3 configuration</label
       >
-      <eos-has-access
-        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
+      <cortx-has-access
+        :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label>
@@ -32,29 +32,29 @@
             credentials to manage S3 account, IAM users, and buckets.
           </label>
         </div>
-      </eos-has-access>
+      </cortx-has-access>
 
-      <eos-has-access
-        :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+      <cortx-has-access
+        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label>
             Manage IAM users and buckets.
           </label>
         </div>
-      </eos-has-access>
+      </cortx-has-access>
     </div>
     <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 pr-0 col-9">
-        <eos-has-access
-          :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
         >
           <v-data-table
             calculate-widths
             :items="usersList"
             item-key="user_name"
-            class="eos-table"
+            class="cortx-table"
             :hide-default-header="true"
             :hide-default-footer="true"
             :disable-pagination="true"
@@ -78,50 +78,50 @@
                 <td>{{ props.item.user_id }}</td>
                 <td>{{ props.item.arn }}</td>
                 <td>
-                  <eos-has-access
+                  <cortx-has-access
                     :to="
-                      $eosUserPermissions.s3iamusers +
-                        $eosUserPermissions.delete
+                      $cortxUserPermissions.s3iamusers +
+                        $cortxUserPermissions.delete
                     "
                   >
                     <img
                       @click="openConfirmDeleteDialog(props.item.user_name)"
-                      class="eos-cursor-pointer"
+                      class="cortx-cursor-pointer"
                       src="./../../assets/actions/delete-green.svg"
                     />
-                  </eos-has-access>
+                  </cortx-has-access>
                 </td>
               </tr>
             </template>
           </v-data-table>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-3">
         <div v-if="showCreateUserForm" class="pa-2">
           <v-row>
             <v-col class="pr-0 pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createUserForm.iamUser.user_name.$error
                 }"
               >
-                <label class="eos-form-group-label" for="userName">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="userName">
+                  <cortx-info-tooltip
                     label="Username*"
                     :message="usernameTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   id="userName"
                   name="userName"
                   v-model.trim="createUserForm.iamUser.user_name"
                   @input="$v.createUserForm.iamUser.user_name.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createUserForm.iamUser.user_name.$dirty &&
@@ -143,27 +143,27 @@
           <v-row>
             <v-col class="pr-0 pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createUserForm.iamUser.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="userPassword">
-                  <eos-info-tooltip
+                <label class="cortx-form-group-label" for="userPassword">
+                  <cortx-info-tooltip
                     label="Password*"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="userPassword"
                   name="userPassword"
                   v-model.trim="createUserForm.iamUser.password"
                   @input="$v.createUserForm.iamUser.password.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="
                       $v.createUserForm.iamUser.password.$dirty &&
@@ -185,17 +185,17 @@
           <v-row>
             <v-col class="pr-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createUserForm.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="confirmPassword"
+                <label class="cortx-form-group-label" for="confirmPassword"
                   >Confirm password*</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
@@ -203,7 +203,7 @@
                   @input="$v.createUserForm.confirmPassword.$touch"
                 />
                 <span
-                  class="eos-form-group-label eos-form-group-error-msg"
+                  class="cortx-form-group-label cortx-form-group-error-msg"
                   v-if="
                     $v.createUserForm.confirmPassword.$dirty &&
                       !$v.createUserForm.confirmPassword.sameAsPassword
@@ -217,7 +217,7 @@
             <v-col>
               <button
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="createUser()"
                 :disabled="$v.createUserForm.$invalid"
               >
@@ -225,7 +225,7 @@
               </button>
               <button
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeCreateUserForm()"
               >
                 Cancel
@@ -233,18 +233,18 @@
             </v-col>
           </v-row>
         </div>
-        <eos-has-access
-          :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.create"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.create"
         >
           <button
             type="button"
-            class="mt-5 eos-btn-primary"
+            class="mt-5 cortx-btn-primary"
             v-if="!showCreateUserForm"
             @click="openCreateUserForm()"
           >
             Create
           </button>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
     </v-row>
 
@@ -263,36 +263,36 @@
         <v-divider />
         <div class="mt-2 pl-7" style="height: 30px;">
           <img
-            class="eos-float-l mr-1"
+            class="cortx-float-l mr-1"
             :src="require('@/assets/actions/warning-orange.svg')"
           />
           <span
-            class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
+            class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
             >Save this information, you will not see it again. Download as CSV
             and close.</span
           >
         </div>
-        <table class="mt-2 ml-7 eos-text-md">
+        <table class="mt-2 ml-7 cortx-text-md">
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">Username</td>
+            <td class="py-2 cortx-text-bold credentials-item-label">Username</td>
             <td class="py-2">{{ user.user_name }}</td>
           </tr>
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">User id</td>
+            <td class="py-2 cortx-text-bold credentials-item-label">User id</td>
             <td class="py-2">{{ user.user_id }}</td>
           </tr>
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">ARN</td>
+            <td class="py-2 cortx-text-bold credentials-item-label">ARN</td>
             <td class="py-2">{{ user.arn }}</td>
           </tr>
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label">
               Access key
             </td>
             <td class="py-2">{{ user.access_key_id }}</td>
           </tr>
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label">
               Secret key
             </td>
             <td class="py-2">{{ user.secret_key }}</td>
@@ -301,7 +301,7 @@
 
         <v-card-actions>
           <a
-            class="ma-5 eos-btn-primary eos-download-csv-link"
+            class="ma-5 cortx-btn-primary cortx-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
             @click="isCredentialsFileDownloaded = true"
@@ -310,7 +310,7 @@
           <button
             :disabled="!isCredentialsFileDownloaded"
             type="button"
-            class="ma-5 eos-btn-primary"
+            class="ma-5 cortx-btn-primary"
             @click="closeUserDetailsDialog()"
           >
             Ok
@@ -319,14 +319,14 @@
       </v-card>
     </v-dialog>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmDeleteDialog"
       title="Confirmation"
       message="Are you sure you want to delete the user?"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -345,9 +345,9 @@ import {
 } from "./../../common/regex-helpers";
 
 @Component({
-  name: "eos-iam-user-management"
+  name: "cortx-iam-user-management"
 })
-export default class EosIAMUserManagement extends Vue {
+export default class CortxIAMUserManagement extends Vue {
   public createUserForm = {
     iamUser: {
       path: "/"
@@ -513,7 +513,7 @@ export default class EosIAMUserManagement extends Vue {
 .credentials-item-label {
   width: 10rem;
 }
-.eos-download-csv-link {
+.cortx-download-csv-link {
   text-decoration: none;
   display: inline-block;
   padding-top: 10px;
