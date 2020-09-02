@@ -16,17 +16,30 @@
 */
  <template>
   <div class="pa-5">
-    <div class="eos-text-lg eos-text-bold">Performance</div>
+    <div class="eos-text-lg eos-text-bold" id="performance-text">
+      Performance
+    </div>
     <button
-      :disabled="chartList.length>=3"
+      id="peformance-addgraphbtn"
+      :disabled="chartList.length >= 3"
       type="button"
       @click="addChart()"
       class="mt-3 mb-2 eos-btn-primary"
-    >Add Graph</button>
+    >
+      Add Graph
+    </button>
 
     <div :key="chartId" v-for="chartId in chartList">
-      <v-row class="eos-cursor-pointer" @click="removeChart(chartId)" v-if="chartList.length>1">
-        <img class="eos-modal-close" :src="require('@/assets/close-green.svg')" />
+      <v-row
+        id="performance-remove-chart"
+        class="eos-cursor-pointer"
+        @click="removeChart(chartId)"
+        v-if="chartList.length > 1"
+      >
+        <img
+          class="eos-modal-close"
+          :src="require('@/assets/close-green.svg')"
+        />
       </v-row>
       <v-row class="eos-graph">
         <eos-line-chart :chartId="chartId" />
@@ -35,7 +48,7 @@
     <div id="lastItem"></div>
   </div>
 </template>
- <script lang="ts">
+<script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import EosLineChart from "../widgets/line-chart.vue";
 @Component({
@@ -62,5 +75,4 @@ export default class EosPerformanceLarge extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
