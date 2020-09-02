@@ -620,7 +620,6 @@ export default class EosUDXRegistration extends Vue {
       this.$v.registrationForm.$reset();
     }
   }
-
   public async getRegistrationToken() {
     this.$store.dispatch(
       "systemConfig/showLoader",
