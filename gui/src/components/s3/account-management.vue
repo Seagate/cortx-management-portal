@@ -44,7 +44,6 @@
         </div>
       </eos-has-access>
     </div>
-    <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 col-7">
         <eos-has-access
@@ -59,6 +58,16 @@
             class="eos-table"
             show-expand
             :hide-default-header="true"
+            :hide-default-footer="
+              $hasAccessToCsm(
+                `${$eosUserPermissions.s3iamusers}${$eosUserPermissions.list}`
+              )
+            "
+            :disable-pagination="
+              $hasAccessToCsm(
+                `${$eosUserPermissions.s3iamusers}${$eosUserPermissions.list}`
+              )
+            "
           >
             <template v-slot:header="{}">
               <tr>

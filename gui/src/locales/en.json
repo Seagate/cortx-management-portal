@@ -12,13 +12,14 @@
     "access-key": {
       "add-btn": "Add/Generate",
       "table-headers": {
+        "user_name": "Username",
         "access_key": "Access key",
         "secret_key": "Secret key",
         "last_used": "Last updated"
       },
       "get-message": "Fetching all S3 access keys...",
       "create-message": "Creating access key...",
-      "delete-confirmation": "Are you sure you want to delete $$$ access key?",
+      "delete-confirmation": "Are you sure you want to delete {key} access key?",
       "delete-message": "Deleting access key "
     },
     "download-csv-dialog": {

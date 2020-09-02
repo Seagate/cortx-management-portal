@@ -1,19 +1,19 @@
 /*
- * CORTX-CSM: CORTX Management web and CLI interface.
- * Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- * For any questions about this software or licensing,
- * please email opensource@seagate.com or cortx-questions@seagate.com.
- */
+* CORTX-CSM: CORTX Management web and CLI interface.
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing,
+* please email opensource@seagate.com or cortx-questions@seagate.com.
+*/
 <template>
   <div class="mt-5">
     <v-divider class="mt-2 mb-5" />
@@ -30,7 +30,7 @@
     </div>
 
     <eos-has-access
-      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+      :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
     >
       <v-data-table
         :headers="accessKeyTableHeaderList"
@@ -64,7 +64,7 @@
               <eos-has-access
                 class="mx-2"
                 :to="
-                  $eosUserPermissions.s3accounts + $eosUserPermissions.delete
+                  $eosUserPermissions.s3iamusers + $eosUserPermissions.delete
                 "
               >
                 <img
@@ -95,7 +95,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import { AccessKey } from "../../models/s3";
@@ -105,10 +105,10 @@ import CortxDownloadCsvDialog from "./download-csv-dialog.vue";
 import i18n from "./../../i18n";
 
 @Component({
-  name: "cortx-access-key-management",
+  name: "cortx-access-key-management-iam",
   components: { CortxDownloadCsvDialog }
 })
-export default class CortxAccessKeyManagement extends Vue {
+export default class CortxAccessKeyManagementIAM extends Vue {
   private showConfirmDeleteDialog: boolean;
   private confirmDeleteDialogMessage: string = "";
   private showAccessKeyDetailsDialog: boolean;
@@ -117,6 +117,9 @@ export default class CortxAccessKeyManagement extends Vue {
   private accessKeyDetails: any = {};
   private accountToDelete: string = "";
   private MAX_ACCESS_KEYS: number = 2;
+
+  @Prop({ required: true, default: "" })
+  private userNameIAM!: string;
 
   constructor() {
     super();
@@ -139,18 +142,27 @@ export default class CortxAccessKeyManagement extends Vue {
     ];
   }
 
-  public async mounted() {
-    await this.getAllAccessKeys();
-  }
   public async createAccessKey() {
+    if (!this.userNameIAM) {
+      return;
+    }
     this.$store.dispatch(
       "systemConfig/showLoader",
       i18n.t("s3.access-key.create-message")
     );
-    const res = await Api.post(apiRegister.s3_access_keys, {});
+    const res = await Api.post(
+      apiRegister.s3_access_keys,
+      {},
+      {
+        params: { user_name: this.userNameIAM }
+      }
+    );
     const createAccessKeyDetails = res && res.data ? res.data : {};
 
     this.accessKeyDetails = {
+      [`${i18n.t(
+        "s3.access-key.table-headers.user_name"
+      )}`]: createAccessKeyDetails.user_name,
       [`${i18n.t(
         "s3.access-key.table-headers.access_key"
       )}`]: createAccessKeyDetails.access_key_id,
@@ -164,12 +176,18 @@ export default class CortxAccessKeyManagement extends Vue {
     await this.getAllAccessKeys();
   }
 
+  @Watch("userNameIAM")
   public async getAllAccessKeys() {
+    if (!this.userNameIAM) {
+      return;
+    }
     this.$store.dispatch(
       "systemConfig/showLoader",
       i18n.t("s3.access-key.get-message")
     );
-    const res: any = await Api.getAll(apiRegister.s3_access_keys);
+    const res: any = await Api.getAll(apiRegister.s3_access_keys, {
+      user_name: this.userNameIAM
+    });
     this.accessKeyList = res && res.data ? res.data.access_keys : [];
     this.$store.dispatch("systemConfig/hideLoader");
   }
@@ -190,11 +208,16 @@ export default class CortxAccessKeyManagement extends Vue {
     }
   }
   private async deleteAccessKey() {
+    if (!this.userNameIAM) {
+      return;
+    }
     this.$store.dispatch(
       "systemConfig/showLoader",
       i18n.t("s3.access-key.delete-message") + this.accountToDelete
     );
-    await Api.delete(apiRegister.s3_access_keys, this.accountToDelete);
+    await Api.delete(apiRegister.s3_access_keys, this.accountToDelete, {
+      params: { user_name: this.userNameIAM }
+    });
     this.accountToDelete = "";
     this.confirmDeleteDialogMessage = "";
     this.$store.dispatch("systemConfig/hideLoader");

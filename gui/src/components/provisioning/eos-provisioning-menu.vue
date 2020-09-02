@@ -53,7 +53,7 @@ export default class EosProvisioningSubmenu extends Vue {
       },
       {
         id: 2,
-        label: "S3 Account",
+        label: "S3 account",
         show: true,
         requiredAccess: "s3accounts"
       }
