@@ -20,7 +20,7 @@
       <label
         id="system-maintenance-title"
         class="eos-text-lg mt-2 font-weight-bold"
-        >System maintenance</label
+        >{{$t("systemMaintenance.page-title")}}</label
       >
     </div>
     <v-container>
@@ -32,7 +32,7 @@
                 class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-                >Start service:</label
+                >{{$t("systemMaintenance.start-service")}}</label
               >
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
@@ -51,7 +51,7 @@
                 :disabled="!resourceState.standby.length || !resource.start"
                 @click="startSelectedResource()"
               >
-                Apply
+                {{ $t("systemMaintenance.apply-btn") }}
               </button>
             </v-col>
           </v-row>
@@ -61,7 +61,7 @@
                 class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-                >Stop service:</label
+                >{{ $t("systemMaintenance.stop-service") }}</label
               >
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
@@ -82,7 +82,7 @@
                 :disabled="!resourceState.online.length >= 1 || !resource.stop"
                 @click="stopSelectedResource()"
               >
-                Apply
+                {{ $t("systemMaintenance.apply-btn") }}
               </button>
             </v-col>
           </v-row>
@@ -92,7 +92,7 @@
                 class="eos-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-                >Shutdown:</label
+                >{{ $t("systemMaintenance.shutdown") }}</label
               >
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
@@ -111,7 +111,7 @@
                 :disabled="!resource.shutdown"
                 @click="shutdownSelectedResource()"
               >
-                Apply
+                {{ $t("systemMaintenance.apply-btn") }}
               </button>
             </v-col>
           </v-row>
@@ -119,9 +119,7 @@
             class="eos-text-md mt-5 font-weight-bold"
             id="lblShutdownNode"
             v-if="shutdownNode"
-          >
-            Note: {{ shutdownNode }} is in shutdown state. You need to start it
-            manually.
+          >{{ $t('systemMaintenance.shutdown-note', { node: shutdownNode }) }}
           </div>
         </v-card>
       </div>
@@ -153,6 +151,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import EosDropdown from "../widgets/dropdown/eos-dropdown-view.vue";
 import { EosDropdownOption } from "../widgets/dropdown/eos-dropdown-model";
+import i18n from "./../../i18n";
 @Component({
   name: "eos-resource",
   components: { EosDropdown }
@@ -179,8 +178,7 @@ export default class EosMaintenance extends Vue {
       dropdownWidth: "200px",
       actionMessage: "",
       showInfoDialog: false,
-      infoDialogMessage:
-        "The services have been restarted. You will have to login again."
+      infoDialogMessage: i18n.t("systemMaintenance.system-info-dialog-message")
     };
   }
   private async mounted() {
@@ -189,7 +187,7 @@ export default class EosMaintenance extends Vue {
   private async getNodeStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Fetching system resources..."
+      i18n.t("systemMaintenance.fetching-system-message")
     );
     this.$data.resourceState = {
       online: [],
@@ -262,7 +260,7 @@ export default class EosMaintenance extends Vue {
         if (error && error.status === 499) {
           this.$data.showInfoDialog = true;
         } else {
-          let errorMessage = "No response, please refresh the page.";
+          let errorMessage = i18n.t("systemMaintenance.error-message-onclose");
           if (error && error.error && error.data.message) {
             errorMessage = error.data.message;
           }
@@ -275,27 +273,27 @@ export default class EosMaintenance extends Vue {
   }
   private stopSelectedResource(action: boolean) {
     this.$data.confirmationDialogMessage =
-      "Are you sure, you want to stop the node?";
+      i18n.t("systemMaintenance.confirm-message-node-stop");
 
-    this.$data.actionMethod = "stop";
-    this.$data.confirmationDialogSeverity = "danger";
+    this.$data.actionMethod = i18n.t("systemMaintenance.stop-action-method");
+    this.$data.confirmationDialogSeverity = i18n.t("systemMaintenance.danger-severity");
     this.$data.showConfirmationDialog = true;
   }
   private startSelectedResource(action: boolean) {
-    this.$data.actionMethod = "start";
+    this.$data.actionMethod = i18n.t("systemMaintenance.start-action-method");
     this.$data.confirmationDialogMessage =
-      "Are you sure, you want to start the node?";
-    this.$data.confirmationDialogSeverity = "info";
+      i18n.t("systemMaintenance.confirm-message-node-start");
+    this.$data.confirmationDialogSeverity = i18n.t("systemMaintenance.info-severity");
     this.$data.showConfirmationDialog = true;
   }
   private shutdownSelectedResource(action: boolean) {
     this.$data.confirmationDialogMessage =
-      "Are you sure, you want to shutdown the node?";
+      i18n.t("systemMaintenance.confirm-message-node-shutdown");
     this.$data.confirmationDialogSubMessage =
-      "Please note that if you shutdown the node then the entire application will stop";
+      i18n.t("systemMaintenance.confirm-message-shutdown-sub");
 
-    this.$data.actionMethod = "shutdown";
-    this.$data.confirmationDialogSeverity = "danger";
+    this.$data.actionMethod = i18n.t("systemMaintenance.shutdown-action-method");
+    this.$data.confirmationDialogSeverity = i18n.t("systemMaintenance.danger-severity");
     this.$data.showConfirmationDialog = true;
   }
   private createOptionsForDropdown(list: string[]) {

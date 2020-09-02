@@ -28,7 +28,7 @@ export const wizardConfig = {
         name: "ApplianceName"
       },
       footer: {
-        nextComponent: "EosApplianceName",
+        nextComponent: "EOSUploadSSL",
         prevComponent: "homebase",
         nextBtnText: "Continue",
         prevBtnText: "",
