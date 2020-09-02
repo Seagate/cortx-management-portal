@@ -73,7 +73,7 @@ import apiRegister from "../../services/api-register";
 })
 export default class Eosaboutpage extends Vue {
   public versionDetails: any = null;
-  public brandType: string = ""; 
+  public brandType: string = "";
 
   public async mounted() {
     if (process.env.VUE_APP_BRANDNAME === "cortx") {
