@@ -38,7 +38,7 @@
         </router-link>
       </eos-has-access>
     </div>
-    <div class="eos-nav-bottom">
+    <div class="eos-nav-bottom" v-if="brandName">
       <div class="eos-brand-text">Powered by</div>
       <img class="eos-nav-item-icon-default eos-img-responsive"
         :src="require('@/assets/Cortx-logo-GRN.svg/')" />
@@ -52,6 +52,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "eos-nav-bar"
 })
 export default class EosNavBar extends Vue {
+  public brandName: boolean = false;
   public navItems = [
     {
       title: "Dashboard",
@@ -96,6 +97,10 @@ export default class EosNavBar extends Vue {
       requiredAccess: "sysconfig"
     }
   ];
+
+  public mounted() {
+    this.brandName = process.env.VUE_APP_BRANDNAME !== "cortx";
+  }
 
   get alertNotifications() {
     return this.$store.state.alertNotification.socket;

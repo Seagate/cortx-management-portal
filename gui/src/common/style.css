@@ -735,6 +735,7 @@ tbody tr:hover {
 
 .cortx-brand-logo:before {
   content: '';
+  background-image: url('../assets/Cortx-logo-GRN.svg');
   background-position: left center;
   width: 100%;
   height: 30px;
