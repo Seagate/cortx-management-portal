@@ -27,7 +27,7 @@
         :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
+          <label id="s3-account-form-text">
             Create an S3 account. You must log in to the system using S3 account
             credentials to manage S3 account, IAM users, and buckets.
           </label>
@@ -38,7 +38,7 @@
         :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
+          <label id="s3-account-manage-lbl">
             Manage IAM users and buckets.
           </label>
         </div>
@@ -57,6 +57,7 @@
             v-bind:single-expand="true"
             item-key="account_name"
             class="eos-table"
+            id="s3-datatable"
             show-expand
             :hide-default-header="true"
           >
@@ -80,6 +81,7 @@
                   "
                 >
                   <img
+                    id="s3-edit-account"
                     v-on:click="onEditBtnClick(item)"
                     class="eos-cursor-pointer"
                     src="@/assets/actions/edit-green.svg"
@@ -92,6 +94,7 @@
                   "
                 >
                   <img
+                    id="s3-delete-account"
                     @click="openConfirmDeleteDialog(item.account_name)"
                     class="eos-cursor-pointer"
                     src="@/assets/actions/delete-green.svg"
@@ -109,7 +112,11 @@
         </eos-has-access>
       </v-col>
       <v-col class="py-0 col-5">
-        <div v-if="showCreateAccountForm" class="pa-2">
+        <div
+          v-if="showCreateAccountForm"
+          class="pa-2"
+          id="s3-create-account-form"
+        >
           <v-row>
             <v-col class="pl-4 col-6 pb-0">
               <div
@@ -119,7 +126,11 @@
                     $v.createAccountForm.account.account_name.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountName">
+                <label
+                  class="eos-form-group-label"
+                  for="accountName"
+                  id="s3-lblaccountname"
+                >
                   <eos-info-tooltip
                     label="Account name*"
                     :message="accountNameTooltipMessage"
@@ -135,6 +146,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                    id="s3-accountname-reuired"
                     v-if="
                       $v.createAccountForm.account.account_name.$dirty &&
                         !$v.createAccountForm.account.account_name.required
@@ -142,6 +154,7 @@
                     >Account name is required.</label
                   >
                   <label
+                    id="s3account-invalid"
                     v-else-if="
                       $v.createAccountForm.account.account_name.$dirty &&
                         !$v.createAccountForm.account.account_name
@@ -160,7 +173,10 @@
                     $v.createAccountForm.account.account_email.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountEmail"
+                <label
+                  class="eos-form-group-label"
+                  for="accountEmail"
+                  id="s3-lblemail"
                   >Email*</label
                 >
                 <input
@@ -174,6 +190,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                    id="s3-email-required"
                     v-if="
                       $v.createAccountForm.account.account_email.$dirty &&
                         !$v.createAccountForm.account.account_email.required
@@ -181,6 +198,7 @@
                     >Email id is required.</label
                   >
                   <label
+                    id="s3-email-invalid"
                     v-else-if="
                       $v.createAccountForm.account.account_email.$dirty &&
                         !$v.createAccountForm.account.account_email.email
@@ -200,7 +218,11 @@
                     $v.createAccountForm.account.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountPassword">
+                <label
+                  class="eos-form-group-label"
+                  for="accountPassword"
+                  id="s3-lblpassword"
+                >
                   <eos-info-tooltip
                     label="Password*"
                     :message="passwordTooltipMessage"
@@ -216,6 +238,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                    id="s3-password-required"
                     v-if="
                       $v.createAccountForm.account.password.$dirty &&
                         !$v.createAccountForm.account.password.required
@@ -223,6 +246,7 @@
                     >Password is required.</label
                   >
                   <label
+                    id="s3-password-invalid"
                     v-else-if="
                       $v.createAccountForm.account.password.$dirty &&
                         !$v.createAccountForm.account.password.passwordRegex
@@ -240,7 +264,10 @@
                     $v.createAccountForm.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="confirmPassword"
+                <label
+                  class="eos-form-group-label"
+                  for="confirmPassword"
+                  id="s3-lblconfirmpassword"
                   >Confirm password*</label
                 >
                 <input
@@ -252,6 +279,7 @@
                   @input="$v.createAccountForm.confirmPassword.$touch"
                 />
                 <span
+                  id="s3-password-notmatch"
                   class="eos-form-group-label eos-form-group-error-msg"
                   v-if="
                     $v.createAccountForm.confirmPassword.$dirty &&
@@ -265,6 +293,7 @@
           <v-row>
             <v-col class="pt-0">
               <button
+                id="s3-crete-accountbtn"
                 type="button"
                 class="eos-btn-primary"
                 @click="createAccount()"
@@ -273,6 +302,7 @@
                 Create account
               </button>
               <button
+                id="s3-account-cancelbtn"
                 type="button"
                 class="eos-btn-tertiary"
                 @click="closeCreateAccountForm()"
@@ -291,7 +321,11 @@
                   'eos-form-group--error': $v.editAccountForm.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountPasswordEdit">
+                <label
+                  class="eos-form-group-label"
+                  for="accountPasswordEdit"
+                  id="s3-editpasswordlbl"
+                >
                   <eos-info-tooltip
                     label="Password*"
                     :message="passwordTooltipMessage"
@@ -307,6 +341,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                    id="s3-editpassword-required"
                     v-if="
                       $v.editAccountForm.password.$dirty &&
                         !$v.editAccountForm.password.required
@@ -314,6 +349,7 @@
                     >Password is required.</label
                   >
                   <label
+                    id="s3-editpassword-invalid"
                     v-else-if="
                       $v.editAccountForm.password.$dirty &&
                         !$v.editAccountForm.password.passwordRegex
@@ -331,7 +367,10 @@
                     $v.editAccountForm.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="confirmPasswordEdit"
+                <label
+                  class="eos-form-group-label"
+                  for="confirmPasswordEdit"
+                  id="s3-editconfrimpassword"
                   >Confirm password*</label
                 >
                 <input
@@ -343,6 +382,7 @@
                   @input="$v.editAccountForm.confirmPassword.$touch"
                 />
                 <span
+                  id="s3-editpassword-notmatch"
                   class="eos-form-group-label eos-form-group-error-msg"
                   v-if="
                     $v.editAccountForm.confirmPassword.$dirty &&
@@ -379,6 +419,7 @@
           :to="$eosUserPermissions.s3accounts + $eosUserPermissions.create"
         >
           <button
+            id="s3-addnewuserbtn"
             type="button"
             class="mt-4 mb-2 eos-btn-primary"
             v-if="!showCreateAccountForm"
@@ -390,11 +431,19 @@
       </v-col>
     </v-row>
 
-    <v-dialog v-model="showAccountDetailsDialog" persistent max-width="790">
+    <v-dialog
+      v-model="showAccountDetailsDialog"
+      persistent
+      max-width="790"
+      id="s3-accesskey-dialog"
+    >
       <v-card>
         <v-system-bar color="greay lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="closeAccountDetailsDialog()" style="cursor: pointer;"
+          <v-icon
+            id="s3-closedialogbox"
+            @click="closeAccountDetailsDialog()"
+            style="cursor: pointer;"
             >mdi-close</v-icon
           >
         </v-system-bar>
@@ -410,13 +459,14 @@
             :src="require('@/assets/actions/warning-orange.svg')"
           />
           <span
+            id="s3-warning-text"
             class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
             >Save this information, you will not see it again. Download as CSV
             and close.</span
           >
         </div>
 
-        <table class="mt-2 ml-7 eos-text-md">
+        <table class="mt-2 ml-7 eos-text-md" id="s3-secretekey-data">
           <tr>
             <td class="py-2 eos-text-bold credentials-item-label">
               Account name
@@ -439,6 +489,7 @@
 
         <v-card-actions>
           <a
+            id="s3-download-csv"
             class="ma-5 eos-btn-primary eos-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
@@ -446,6 +497,7 @@
             >Download as CSV</a
           >
           <button
+            id="s3-closedialogboxbtn"
             :disabled="!isCredentialsFileDownloaded"
             type="button"
             class="ma-5 eos-btn-primary"
@@ -458,6 +510,7 @@
     </v-dialog>
 
     <eos-confirmation-dialog
+      id="s3-confirmation-dialog"
       :show="showConfirmDeleteDialog"
       title="Confirmation"
       message="Are you sure you want to delete the account?"
