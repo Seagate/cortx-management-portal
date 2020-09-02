@@ -17,13 +17,15 @@
 <template>
   <div>
     <div class="udx-page-title">
-      <label class="eos-text-lg eos-text-bold">{{ $t("udx-registration.udx-registration") }}</label>
+      <label class="eos-text-lg eos-text-bold">{{
+        $t("udx-registration.udx-registration")
+      }}</label>
     </div>
     <div id="udx-reg-token-container" class="mt-4" v-if="registrationToken">
       <div class="udx-reg-token-lbl">
-        <label class="eos-text-lg eos-float-l">{{
-          $t("udx-registration.registration-token")
-        }}</label>
+        <label class="eos-text-lg eos-float-l">
+          {{ $t("udx-registration.registration-token") }}
+        </label>
         <label class="eos-float-l mt-1 ml-1">
           <eos-info-tooltip
             message="On your UDX web portal choose 'Add Device' and then enter the identification token below."
@@ -31,15 +33,15 @@
         </label>
       </div>
       <div id="udx-reg-token" class="mt-1">
-        <label id="udx-reg-token-part-1" class="float-left">
-          {{ registrationToken.substring(0, 4) }}
-        </label>
-        <label id="udx-reg-token-part-2" class="float-left ml-2">
-          {{ registrationToken.substring(4, 8) }}
-        </label>
-        <label id="udx-reg-token-part-3" class="float-left ml-2">
-          {{ registrationToken.substring(8, 12) }}
-        </label>
+        <label id="udx-reg-token-part-1" class="float-left">{{
+          registrationToken.substring(0, 4)
+        }}</label>
+        <label id="udx-reg-token-part-2" class="float-left ml-2">{{
+          registrationToken.substring(4, 8)
+        }}</label>
+        <label id="udx-reg-token-part-3" class="float-left ml-2">{{
+          registrationToken.substring(8, 12)
+        }}</label>
       </div>
     </div>
     <div class="mt-3">
@@ -87,9 +89,9 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="eos-text-md eos-text-bold">{{
-            $t("udx-registration.s3-details")
-          }}</label>
+          <label class="eos-text-md eos-text-bold">
+            {{ $t("udx-registration.s3-details") }}
+          </label>
         </v-col>
       </v-row>
       <v-row>
@@ -139,9 +141,9 @@
               'eos-form-group--error': $v.registrationForm.accountEmail.$error
             }"
           >
-            <label class="eos-form-group-label" for="accountEmail">{{
-              $t("udx-registration.email")
-            }}</label>
+            <label class="eos-form-group-label" for="accountEmail">
+              {{ $t("udx-registration.email") }}
+            </label>
             <input
               class="eos-form__input_text"
               type="text"
@@ -218,9 +220,9 @@
                 $v.registrationForm.accountConfirmPassword.$error
             }"
           >
-            <label class="eos-form-group-label" for="accountConfirmPassword">{{
-              $t("udx-registration.confirm-pass")
-            }}</label>
+            <label class="eos-form-group-label" for="accountConfirmPassword">
+              {{ $t("udx-registration.confirm-pass") }}
+            </label>
             <input
               class="eos-form__input_text"
               type="password"
@@ -244,9 +246,9 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="eos-text-md eos-text-bold">{{
-            $t("registration.iam-details")
-          }}</label>
+          <label class="eos-text-md eos-text-bold">
+            {{ $t("registration.iam-details") }}
+          </label>
         </v-col>
       </v-row>
       <v-row>
@@ -339,9 +341,9 @@
                 $v.registrationForm.iamUserConfirmPassword.$error
             }"
           >
-            <label class="eos-form-group-label" for="iamUserConfirmPassword">{{
-              $t("udx-registration.confirm-pass")
-            }}</label>
+            <label class="eos-form-group-label" for="iamUserConfirmPassword">
+              {{ $t("udx-registration.confirm-pass") }}
+            </label>
             <input
               class="eos-form__input_text"
               type="password"
@@ -415,9 +417,7 @@
       <v-divider class="mb-5" />
       <v-row>
         <v-col class="py-0">
-          <label class="eos-text-md">
-            {{ $t("registration.iagreetext") }}</label
-          >
+          <label class="eos-text-md">{{ $t("registration.iagreetext") }}</label>
           <br />
           <label class="eos-ckb-container" for="consentOne">
             {{ $t("udx-registration.firstcheck-text") }}
@@ -470,7 +470,7 @@
       :show="showAccessKeyDetailsDialog"
       :title="$t('s3.download-csv-dialog.created')"
       :tableContent="accessKeyDetails"
-      @closeDialog="showAccessKeyDetailsDialog = false"
+      @closeDialog="closeDialogbox()"
     ></cortx-download-csv-dialog>
   </div>
 </template>
@@ -621,7 +621,7 @@ export default class EosUDXRegistration extends Vue {
     }
   }
 
-  private async getRegistrationToken() {
+  public async getRegistrationToken() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Fetching registration token..."
@@ -631,6 +631,10 @@ export default class EosUDXRegistration extends Vue {
       this.registrationToken = res.data.registrationToken;
     }
     this.$store.dispatch("systemConfig/hideLoader");
+  }
+  public async closeDialogbox() {
+     this.$emit("complete");
+     this.showAccessKeyDetailsDialog = false;
   }
 }
 </script>
