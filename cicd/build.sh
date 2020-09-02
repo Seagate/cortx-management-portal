@@ -120,17 +120,17 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
 
     # Copy frontend files
     GUI_DIR=$DIST/csm_gui
-    mkdir -p $GUI_DIR/eos/gui/ $GUI_DIR/conf/service/
+    mkdir -p $GUI_DIR/gui/ $GUI_DIR/conf/service/
     cp -R $BASE_DIR/web $GUI_DIR/
     cp -R $CONF/csm_web.service $GUI_DIR/conf/service/
-    cp -R $BASE_DIR/gui/.env $GUI_DIR/eos/gui/.env
+    cp -R $BASE_DIR/gui/.env $GUI_DIR/gui/.env
     echo "Running Web Build"
     cd $GUI_DIR/web/
     npm install --production
     npm run build-ts
 
     #Delete src folder from web
-    echo " Deleting web src and eos/gui directory--" ${DIST}/csm/web/src
+    echo " Deleting web src and gui directory--" ${DIST}/csm/web/src
     cp -R  $GUI_DIR/web/.env $GUI_DIR/web/web-dist
     rm -rf $GUI_DIR/web/src
     WEB_BUILD_END_TIME=$(date +%s)
@@ -140,11 +140,11 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cd $BASE_DIR/gui
     npm install
     npm run build
-    cp -R  $GUI_DIR/eos/gui/.env $GUI_DIR/eos/gui/ui-dist
+    cp -R  $GUI_DIR/gui/.env $GUI_DIR/gui/ui-dist
 
     UI_BUILD_END_TIME=$(date +%s)
 fi
-
+#exit
 ################## Add CSM_PATH #################################
 
 sed -i -e "s/<RPM_NAME>/${PRODUCT}-csm_web/g" \
@@ -170,7 +170,6 @@ TAR_END_TIME=$(date +%s)
 # Generate RPMs
 RPM_BUILD_START_TIME=$(date +%s)
 TOPDIR=$(realpath ${DIST}/rpmbuild)
-
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     # CSM Frontend RPM
     echo rpmbuild --define "version $VER" --define "dist $BUILD" --define "_topdir $TOPDIR" \

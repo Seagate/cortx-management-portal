@@ -33,7 +33,7 @@ CSM Tools
 %build
 
 %install
-mkdir -p ${RPM_BUILD_ROOT}<CSM_PATH>/eos/gui ${RPM_BUILD_ROOT}<CSM_PATH>/conf/service/
+mkdir -p ${RPM_BUILD_ROOT}<CSM_PATH>/gui ${RPM_BUILD_ROOT}<CSM_PATH>/conf/service/
 cp -rp ./* ${RPM_BUILD_ROOT}<CSM_PATH>
 exit 0
 
@@ -41,12 +41,11 @@ exit 0
 CSM_DIR=<CSM_PATH>
 CFG_DIR=$CSM_DIR/conf
 PRODUCT=<PRODUCT>
-WEB_PRODUCT_DIR='eos'
-[ -d "${CSM_DIR}/${WEB_PRODUCT_DIR}/gui" ] && {
+[ -d "${CSM_DIR}/gui" ] && {
     cp -f $CFG_DIR/service/csm_web.service /etc/systemd/system/csm_web.service
 
     ENV=$CSM_DIR/web/web-dist/.env
-    sed -i "s|CSM_UI_PATH=\"/\"|CSM_UI_PATH=\"${CSM_DIR}/${WEB_PRODUCT_DIR}/gui/ui-dist\"|g" $ENV
+    sed -i "s|CSM_UI_PATH=\"/\"|CSM_UI_PATH=\"${CSM_DIR}/gui/ui-dist\"|g" $ENV
     sed -i "s/NODE_ENV=\"development\"/NODE_ENV=\"production\"/g" $ENV
 }
 exit 0
