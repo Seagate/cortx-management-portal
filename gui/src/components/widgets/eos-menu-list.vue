@@ -27,12 +27,13 @@
           "
         >
           <div class="eos-menu-card-layout">
-            <label
+            <label id="menu-list-title"
               class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
             >
               {{ item.title }}</label
             >
             <button
+              id="menu-actionbtn"
               type="button"
               class="eos-btn-tertiary eos-float-r"
               @click="$emit('clickFunctionHandler', item.actionClickFunction)"
@@ -45,12 +46,13 @@
       </div>
       <div v-else>
         <div class="eos-menu-card-layout">
-          <label
+          <label id="menu-itemlbl"
             class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
           >
             {{ item.title }}</label
           >
           <button
+          id="menu-actionmanagebtn"
             type="button"
             class="eos-btn-tertiary eos-float-r"
             @click="$emit('clickFunctionHandler', item.actionClickFunction)"
