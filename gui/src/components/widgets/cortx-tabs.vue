@@ -20,6 +20,7 @@
       v-for="tab in tabsInfo.tabs"
       v-bind:key="tab.id"
       v-if="tab.show"
+      :id="'tabnumber' + tab.id"
       :class="tab.id === tabsInfo.selectedTab ? 'cortx-tab-active' : 'cortx-tab'"
       @click="tabsInfo.selectedTab = tab.id"
     >

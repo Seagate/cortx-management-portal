@@ -17,7 +17,7 @@
 <template>
   <div id="statsContainer">
     <div style="height: 30px;">
-      <div class="cortx-text-lg cortx-text-bold cortx-float-l">Performance</div>
+      <div class="cortx-text-lg cortx-text-bold cortx-float-l" id="stats-performance">Performance</div>
       <img
         :src="require('@/assets/zoom-in.svg')"
         @click="$router.push('/performance')"

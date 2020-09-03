@@ -19,7 +19,7 @@
     <div id="auditlog" class="mb-4">
       <label id="auditlog-title" class="cortx-text-bold cortx-text-lg">Audit log</label>
       <div class="mt-1 cortx-text-md">
-        <label>Download or view audit logs for the selected time period.</label>
+        <label id="auditlogtextlbl">Download or view audit logs for the selected time period.</label>
       </div>
     </div>
     <v-divider class="my-4" />
@@ -27,28 +27,28 @@
     <div class="col-4 py-0">
       <div class="cortx-form-group">
         <label class="cortx-form-group-label" for="cmdComponent" id="lblComponent">Component*</label>
-        <cortx-dropdown
+        <cortx-dropdown id="auditlog-component"
           @update:selectedOption="handleComponentDropdownSelect"
           :options="componentList"
           :title="component ? component : undefined"
         ></cortx-dropdown>
 
         <label class="cortx-form-group-label" for="cmdTimeRange" id="lblTimeRange">Time period*</label>
-        <cortx-dropdown
+        <cortx-dropdown id="auditlog-timeperiod"
           @update:selectedOption="handleTimerangeDropdownSelect"
           :options="timerangeList"
           :title="timerangeLabel ? timerangeLabel : undefined"
         ></cortx-dropdown>
       </div>
       <div class="mt-8 nav-btn">
-        <button type="button" class="cortx-btn-primary mr-2" @click="downloadAuditLogs()">Download</button>
-        <button type="button" class="cortx-btn-primary" @click="showAuditLogs()">View</button>
+        <button type="button" class="cortx-btn-primary mr-2" @click="downloadAuditLogs()" id="auditlog-downlodbtn">Download</button>
+        <button type="button" class="cortx-btn-primary" @click="showAuditLogs()" id="auditlog-viewbtn">View</button>
       </div>
     </div>
     <div class="ma-3 mt-5" v-if="showLog">
-      <span class="cortx-text-bold cortx-text-lg">Logs</span>
+      <span class="cortx-text-bold cortx-text-lg" id="auditlogtext">Logs</span>
       <v-divider class="my-2"></v-divider>
-      <span class="mb-1 d-block" v-for="(log, index) in showLog" :key="index">{{ log }}</span>
+      <span class="mb-1 d-block" v-for="(log, index) in showLog" :key="index" id="auditlog-data">{{ log }}</span>
     </div>
   </div>
 </template>

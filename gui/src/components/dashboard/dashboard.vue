@@ -54,4 +54,3 @@ export default class Dashboard extends Vue {}
   position: relative;
 }
 </style>
-

@@ -27,7 +27,7 @@
         :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
+          <label id="bucket-textlbl">
             Create an S3 account. You must log in to the system using S3 account
             credentials to manage S3 account, IAM users, and buckets.
           </label>
@@ -38,7 +38,7 @@
         :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
+          <label id="bucket-manangelbl">
             Manage IAM users and buckets.
           </label>
         </div>
@@ -55,16 +55,18 @@
             :items="bucketsList"
             item-key="name"
             class="cortx-table"
+            id="bucket-datatable"
             :hide-default-header="true"
             :hide-default-footer="true"
             :disable-pagination="true"
           >
             <template v-slot:header="{}">
-              <tr>
+              <tr id="bucket-tableheading">
                 <th
                   v-for="header in bucketsTableHeaderList"
                   :key="header.text"
                   class="tableheader"
+                  id="table-name"
                 >
                   <span>{{ header.text }}</span>
                 </th>
@@ -73,15 +75,17 @@
             </template>
 
             <template v-slot:item="props">
-              <tr>
-                <td>{{ props.item.name }}</td>
+              <tr id="bucket-data">
+                <td id="bucket-name">{{ props.item.name }}</td>
                 <td>
                   <img
+                    id="bucket-edit-icon"
                     @click="openBucketPolicyDialog(props.item.name)"
                     class="cortx-cursor-pointer"
                     src="@/assets/actions/edit-green.svg"
                   />
                   <img
+                    id="bucket-delete-icon"
                     @click="openConfirmDeleteDialog(props.item.name)"
                     class="cortx-cursor-pointer ml-5"
                     src="@/assets/actions/delete-green.svg"
@@ -103,7 +107,11 @@
                     $v.createBucketForm.bucket.bucket_name.$error
                 }"
               >
-                <label class="cortx-form-group-label" for="bucketName">
+                <label
+                  class="cortx-form-group-label"
+                  for="bucketName"
+                  id="bucket-namelbl"
+                >
                   <cortx-info-tooltip
                     label="Bucket name*"
                     :message="bucketNameTooltipMessage"
@@ -119,6 +127,7 @@
                 />
                 <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
+                    id="bucket-name-required"
                     v-if="
                       $v.createBucketForm.bucket.bucket_name.$dirty &&
                         !$v.createBucketForm.bucket.bucket_name.required
@@ -126,6 +135,7 @@
                     >Bucket name is required.</label
                   >
                   <label
+                    id="bucket-name-invalid"
                     v-else-if="
                       $v.createBucketForm.bucket.bucket_name.$dirty &&
                         !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
@@ -139,6 +149,7 @@
           <v-row>
             <v-col>
               <button
+                id="bucket-create-btn"
                 type="button"
                 class="cortx-btn-primary"
                 @click="createBucket()"
@@ -147,6 +158,7 @@
                 Create bucket
               </button>
               <button
+                id="bucket-cancel-btn"
                 type="button"
                 class="cortx-btn-tertiary"
                 @click="closeCreateBucketForm()"
@@ -160,6 +172,7 @@
           :to="$cortxUserPermissions.s3buckets + $cortxUserPermissions.create"
         >
           <button
+            id="bucket-addbucket-formbtn"
             type="button"
             class="cortx-btn-primary"
             v-if="!showCreateBucketForm"
@@ -172,6 +185,7 @@
     </v-row>
 
     <v-dialog
+      id="bucket-create-succeaadialogbox"
       v-model="showBucketCreateSuccessDialog"
       persistent
       max-width="400"
@@ -180,6 +194,7 @@
         <v-system-bar color="grey lighten-3">
           <v-spacer></v-spacer>
           <v-icon
+            id="bucket-closedialogbox"
             @click="closeBucketCreateSuccessDialog()"
             style="cursor: pointer;"
             >mdi-close</v-icon
@@ -187,10 +202,13 @@
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span>Bucket created successfully.</span>
+          <span id="bucket-created-success-mgs"
+            >Bucket created successfully.</span
+          >
         </v-card-title>
         <v-card-actions>
           <button
+            id="bucket-closedialodbox"
             type="button"
             class="ma-5 cortx-btn-primary"
             @click="closeBucketCreateSuccessDialog()"
@@ -201,11 +219,16 @@
       </v-card>
     </v-dialog>
 
-    <div class="cortx-modal-container" v-if="showBucketPolicyDialog">
+    <div
+      class="cortx-modal-container"
+      v-if="showBucketPolicyDialog"
+      id="bucket-policy"
+    >
       <div class="cortx-modal bucket-policy-editor">
         <div class="cortx-modal-header">
-          <label>JSON policy</label>
+          <label id="bucket-json-policy-lbl">JSON policy</label>
           <img
+            id="close-bucket-policydialog"
             class="cortx-modal-close"
             :src="require('@/assets/close-green.svg')"
             @click="closeBucketPolicyDialog()"
@@ -218,7 +241,11 @@
               'cortx-form-group--error': $v.policyJSON.$error
             }"
           >
-            <label class="cortx-form-group-label" for="policyJSONTextarea">
+            <label
+              class="cortx-form-group-label"
+              for="policyJSONTextarea"
+              id="bucket-policy-text"
+            >
               Type to add new bucket policy or edit an existing policy in the
               text area below.
             </label>
@@ -231,10 +258,13 @@
               @input="$v.policyJSON.$touch"
             ></textarea>
             <div class="cortx-form-group-label cortx-form-group-error-msg">
-              <label v-if="$v.policyJSON.$dirty && !$v.policyJSON.required"
+              <label
+                id="policy-required-msg"
+                v-if="$v.policyJSON.$dirty && !$v.policyJSON.required"
                 >Policy JSON is required.</label
               >
               <label
+                id="policy-jsonerror"
                 v-else-if="$v.policyJSON.$dirty && !$v.policyJSON.JSONValidator"
                 >{{ JSONError }}</label
               >
@@ -242,6 +272,7 @@
           </div>
           <div class="mt-3 policy-container">
             <button
+              id="update-bucketpolicy"
               type="button"
               class="cortx-btn-primary"
               :disabled="!$v.policyJSON.JSONValidator"
@@ -250,6 +281,7 @@
               Update
             </button>
             <button
+              id="delete-bucket-policy"
               type="button"
               class="cortx-btn-primary ml-2"
               :disabled="!$v.policyJSON.JSONValidator"
@@ -258,6 +290,7 @@
               Delete
             </button>
             <button
+              id="cancel-bucket-policy"
               type="button"
               class="cortx-btn-tertiary"
               @click="closeBucketPolicyDialog()"
@@ -270,6 +303,7 @@
     </div>
 
     <cortx-confirmation-dialog
+      id="bucket-confirmation-dialog"
       :show="showConfirmDeleteDialog"
       title="Confirmation"
       message="Are you sure you want to delete the bucket?"

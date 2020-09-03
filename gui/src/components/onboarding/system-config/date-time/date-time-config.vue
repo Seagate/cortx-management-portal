@@ -46,7 +46,7 @@
                 placeholder="time.seagate.com"
               />
               <div class="cortx-form-group-label cortx-form-group-error-msg">
-                <label
+                <label id="ntp-server-required"
                   v-if="
                     $v.setDateTime.NtpServerAddress.$dirty &&
                       !$v.setDateTime.NtpServerAddress.required
@@ -58,6 +58,7 @@
             <!---->
             <div class="cortx-form-group">
               <cortx-dropdown
+                id="ntp-dropdown"
                 @update:selectedOption="handleDropdownSelect"
                 :options="createOptionsForDropdown(timezoneList)"
                 :title="NtpTimezone ? NtpTimezone : undefined"
@@ -69,6 +70,7 @@
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
     <button
+     id="ntp-applybtn"
       type="button"
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"

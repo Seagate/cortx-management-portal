@@ -21,7 +21,7 @@
       @clickFunctionHandler="clickFunctionHandler"
     ></cortx-menu-list>
     <div class="cortx-wrap-height-menu-card-layout">
-      <button type="button" class="cortx-btn-tertiary" @click="goToAbout()">
+      <button type="button" class="cortx-btn-tertiary" @click="goToAbout()" id="aboutmenu">
         About
       </button>
     </div>

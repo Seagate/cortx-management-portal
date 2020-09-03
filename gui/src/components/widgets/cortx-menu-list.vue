@@ -27,12 +27,13 @@
           "
         >
           <div class="cortx-menu-card-layout">
-            <label
+            <label id="menu-list-title"
               class="cortx-text-lg cortx-text-bold cortx-float-l cortx-menu-card-title"
             >
               {{ item.title }}</label
             >
             <button
+              id="menu-actionbtn"
               type="button"
               class="cortx-btn-tertiary cortx-float-r"
               @click="$emit('clickFunctionHandler', item.actionClickFunction)"
@@ -45,12 +46,13 @@
       </div>
       <div v-else>
         <div class="cortx-menu-card-layout">
-          <label
+          <label id="menu-itemlbl"
             class="cortx-text-lg cortx-text-bold cortx-float-l cortx-menu-card-title"
           >
             {{ item.title }}</label
           >
           <button
+          id="menu-actionmanagebtn"
             type="button"
             class="cortx-btn-tertiary cortx-float-r"
             @click="$emit('clickFunctionHandler', item.actionClickFunction)"

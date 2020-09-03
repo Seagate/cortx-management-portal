@@ -28,7 +28,7 @@
         <v-card class="col-8 pa-5 elevation-0" outlined tile>
           <v-row class="row-container" align="center" no-gutters>
             <v-col col="3" lg="3">
-              <label
+              <label id="maintenance-startlbl"
                 class="cortx-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
@@ -37,6 +37,7 @@
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
               <cortx-dropdown
+                id="maintenance-startnode-dropdown"
                 @update:selectedOption="handleStartSelect"
                 :options="createOptionsForDropdown(resourceState.standby)"
                 :width="dropdownWidth"
@@ -57,7 +58,7 @@
           </v-row>
           <v-row class="mt-5 row-container" align="center" no-gutters>
             <v-col col="3" lg="3">
-              <label
+              <label id="maintenance-stoplbl"
                 class="cortx-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
@@ -67,6 +68,7 @@
             <v-col col="3" md="auto" class="mx-3">
               <div>
                 <cortx-dropdown
+                  id="maintenance-stoptnode-dropdown"
                   @update:selectedOption="handleStopSelect"
                   :options="createOptionsForDropdown(resourceState.online)"
                   :width="dropdownWidth"
@@ -89,6 +91,7 @@
           <v-row class="mt-5 row-container" align="center" no-gutters>
             <v-col col="3" lg="3">
               <label
+                id="maintenance-shutdownlbl"
                 class="cortx-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
@@ -97,6 +100,7 @@
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
               <cortx-dropdown
+                id="maintenance-shutdowntnode-dropdown"
                 @update:selectedOption="handleShutdownSelect"
                 :options="createOptionsForDropdown(resourceState.offline)"
                 :width="dropdownWidth"

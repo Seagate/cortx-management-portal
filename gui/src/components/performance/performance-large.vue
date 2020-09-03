@@ -16,17 +16,30 @@
 */
  <template>
   <div class="pa-5">
-    <div class="cortx-text-lg cortx-text-bold">Performance</div>
+    <div class="cortx-text-lg cortx-text-bold" id="performance-text">
+      Performance
+    </div>
     <button
-      :disabled="chartList.length>=3"
+      id="peformance-addgraphbtn"
+      :disabled="chartList.length >= 3"
       type="button"
       @click="addChart()"
       class="mt-3 mb-2 cortx-btn-primary"
-    >Add Graph</button>
+    >
+      Add Graph
+    </button>
 
     <div :key="chartId" v-for="chartId in chartList">
-      <v-row class="cortx-cursor-pointer" @click="removeChart(chartId)" v-if="chartList.length>1">
-        <img class="cortx-modal-close" :src="require('@/assets/close-green.svg')" />
+      <v-row
+        id="performance-remove-chart"
+        class="cortx-cursor-pointer"
+        @click="removeChart(chartId)"
+        v-if="chartList.length > 1"
+      >
+        <img
+          class="cortx-modal-close"
+          :src="require('@/assets/close-green.svg')"
+        />
       </v-row>
       <v-row class="cortx-graph">
         <cortx-line-chart :chartId="chartId" />
@@ -35,7 +48,7 @@
     <div id="lastItem"></div>
   </div>
 </template>
- <script lang="ts">
+<script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxLineChart from "../widgets/line-chart.vue";
 @Component({
@@ -62,5 +75,4 @@ export default class CortxPerformanceLarge extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

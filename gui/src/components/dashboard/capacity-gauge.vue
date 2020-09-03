@@ -20,30 +20,30 @@
       <div class="cortx-text-lg cortx-text-bold">Capacity</div>
     </div>
     <div class="cortx-capacity-container" id="gauge_capacity"></div>
-    <table class="mt-3">
-      <tr>
+    <table class="mt-3" id="capacity-table">
+      <tr id="capacity-used">
         <td class="width-25">
           <div v-bind:class="usedLegendClass"></div>
         </td>
-        <td class="width-110">Used</td>
+        <td class="width-110" id="capacity-used-text">Used</td>
         <td>{{ capacityDetails.used }}</td>
       </tr>
-      <tr>
+      <tr id="capacity-available">
         <td>
           <div class="capacity-available-badge"></div>
         </td>
-        <td>Available</td>
+        <td id="capacity-available-text">Available</td>
         <td>{{ capacityDetails.avail }}</td>
       </tr>
     </table>
 
     <div class="mt-2 mb-2 cortx-capacity-separator"></div>
-    <table class="mt-3">
-      <tr>
+    <table class="mt-3" id="capacity-total-table">
+      <tr id="capacity-total">
         <td class="width-25">
           <div></div>
         </td>
-        <td class="width-110">Total</td>
+        <td class="width-110" id="capacity-total-text">Total</td>
         <td>{{ capacityDetails.size }}</td>
       </tr>
     </table>
