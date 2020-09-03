@@ -516,6 +516,7 @@
             {{ $t("udx-registration.register-btn") }}
           </button>
           <button
+            id="udx-clearbtn"
             type="button"
             class="ml-8 eos-btn-secondary"
             @click="clearRegistrationForm()"
