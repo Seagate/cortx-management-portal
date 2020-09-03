@@ -535,7 +535,6 @@
     ></cortx-download-csv-dialog>
   </div>
 </template>
-
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
