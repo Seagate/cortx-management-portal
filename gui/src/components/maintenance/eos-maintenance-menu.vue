@@ -21,7 +21,7 @@
       @clickFunctionHandler="clickFunctionHandler"
     ></eos-menu-list>
     <div class="eos-wrap-height-menu-card-layout">
-      <button type="button" class="eos-btn-tertiary" @click="goToAbout()">
+      <button type="button" class="eos-btn-tertiary" @click="goToAbout()" id="aboutmenu">
         About
       </button>
     </div>
