@@ -18,6 +18,7 @@
         "last_used": "Last updated"
       },
       "get-message": "Fetching all S3 access keys...",
+      "get-message-iam": "Fetching all IAM access keys...",
       "create-message": "Creating access key...",
       "delete-confirmation": "Are you sure you want to delete {key} access key?",
       "delete-message": "Deleting access key "

@@ -23,7 +23,7 @@
         id="btnAddAccessKey"
         class="eos-btn-primary "
         @click="createAccessKey()"
-        :disabled="accessKeyList.length >= MAX_ACCESS_KEYS"
+        :disabled="accessKeyList.length >= MAX_ACCESS_KEYS || !this.userNameIAM"
       >
         {{ $t("s3.access-key.add-btn") }}
       </button>
@@ -178,12 +178,13 @@ export default class CortxAccessKeyManagementIAM extends Vue {
 
   @Watch("userNameIAM")
   public async getAllAccessKeys() {
+    this.accessKeyList = [];
     if (!this.userNameIAM) {
       return;
     }
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.access-key.get-message")
+      i18n.t("s3.access-key.get-message-iam")
     );
     const res: any = await Api.getAll(apiRegister.s3_access_keys, {
       user_name: this.userNameIAM
