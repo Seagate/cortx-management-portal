@@ -20,6 +20,7 @@
       <div class="eos-modal-header">
         <label>{{ title }}</label>
         <img
+          id="confirmation-dialogclose"
           class="eos-modal-close"
           :src="require('@/assets/close-green.svg')"
           @click="$emit('closeDialog', false)"
@@ -37,6 +38,7 @@
         </div>
         <div class="mt-8 nav-btn">
           <button
+           id="confirmation-dialogbox-btn"
             type="button"
             class="eos-btn-primary"
             v-if="confirmButtonText"
@@ -49,6 +51,7 @@
             {{ confirmButtonText }}
           </button>
           <button
+            id="confirmation-dialog-cancel-btn"
             type="button"
             v-if="cancelButtonText"
             :disabled="cancelButtonDisabled"
