@@ -99,7 +99,7 @@ export default class EosNavBar extends Vue {
   ];
 
   public mounted() {
-    this.brandName = process.env.VUE_APP_BRANDNAME !== "cortx";
+    this.brandName = process.env.VUE_APP_BRANDNAME !== "CORTX";
   }
 
   get alertNotifications() {
