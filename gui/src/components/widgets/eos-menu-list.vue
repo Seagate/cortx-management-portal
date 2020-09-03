@@ -27,13 +27,13 @@
           "
         >
           <div class="eos-menu-card-layout">
-            <label id="menu-list-title"
+            <label :id="'menu-' + item.title"
               class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
             >
               {{ item.title }}</label
             >
             <button
-              id="menu-actionbtn"
+              :id="item.title"
               type="button"
               class="eos-btn-tertiary eos-float-r"
               @click="$emit('clickFunctionHandler', item.actionClickFunction)"
@@ -52,7 +52,7 @@
             {{ item.title }}</label
           >
           <button
-          id="menu-actionmanagebtn"
+            id="menu-actionmanagebtn"
             type="button"
             class="eos-btn-tertiary eos-float-r"
             @click="$emit('clickFunctionHandler', item.actionClickFunction)"

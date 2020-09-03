@@ -20,7 +20,7 @@
       v-for="tab in tabsInfo.tabs"
       v-bind:key="tab.id"
       v-if="tab.show"
-      :id="'tabnumber' + tab.id"
+      :id="tab.label"
       :class="tab.id === tabsInfo.selectedTab ? 'eos-tab-active' : 'eos-tab'"
       @click="tabsInfo.selectedTab = tab.id"
     >

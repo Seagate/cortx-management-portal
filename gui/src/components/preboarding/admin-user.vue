@@ -20,13 +20,13 @@
       <div class="cortx-brand-logo"></div>
     </div>
     <div class="body-2 ma-5">
-      <div
+      <div id="admin-configuration-title"
         class="ml-4 mb-1 black--text font-weight-bold"
         style="font-size: 18px"
       >
         Admin user configuration
       </div>
-      <div class="ml-4 my-2">
+      <div class="ml-4 my-2" id="admin-configuarion-text">
         Configure the username and password for the user with administrative
         rights. You must remember the admin user login credentials because the
         admin user can be created only once.
@@ -63,14 +63,14 @@
                     @input="$v.createAccount.username.$touch"
                   />
                   <div class="eos-form-group-label eos-form-group-error-msg">
-                    <label
+                    <label id="admin-username-required"
                       v-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.required
                       "
                       >Username is required.</label
                     >
-                    <label
+                    <label id="admin-username-invalid"
                       v-else-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.accountNameRegex
@@ -105,14 +105,14 @@
                     @input="$v.createAccount.email.$touch"
                   />
                   <div class="eos-form-group-label eos-form-group-error-msg">
-                    <label
+                    <label id="admin-email-required"
                       v-if="
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.required
                       "
                       >Email is required.</label
                     >
-                    <label
+                    <label id="admin-email-invalid"
                       v-else-if="
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.email
@@ -153,14 +153,14 @@
                     @input="$v.createAccount.password.$touch"
                   />
                   <div class="eos-form-group-label eos-form-group-error-msg">
-                    <label
+                    <label id="admin-password-required"
                       v-if="
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.required
                       "
                       >Password is required.</label
                     >
-                    <label
+                    <label id="admin-password-invalid"
                       v-else-if="
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.passwordRegex
@@ -197,7 +197,7 @@
                     v-on:keyup.enter="handleEnterEvent()"
                   />
                   <div class="eos-form-group-label eos-form-group-error-msg">
-                    <label
+                    <label id="admin-confirmpass-notmatch"
                       v-if="
                         $v.createAccount.confirmPassword.$dirty &&
                           !$v.createAccount.confirmPassword.sameAsPassword
@@ -211,7 +211,7 @@
           </v-row>
           <v-row>
             <v-col class="pt-0">
-              <label class="eos-ckb-container" for="emailCheckID">
+              <label class="eos-ckb-container" for="emailCheckID" id="admin-emailnotificationlbl">
                 Subscribe to email notifications
                 <input
                   type="checkbox"
@@ -224,6 +224,7 @@
             </v-col>
           </v-row>
           <button
+            id="admin-createadminuser"
             type="button"
             class="eos-btn-primary"
             @click="gotToNextPage()"
@@ -232,7 +233,7 @@
             Apply and continue
           </button>
         </form>
-        <div v-if="!isValidResponse" class="red--text mt-2">
+        <div v-if="!isValidResponse" class="red--text mt-2" id="admin-invalidmsg">
           {{ invalidMessage }}
         </div>
       </div>
