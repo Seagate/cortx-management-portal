@@ -82,10 +82,10 @@
               placeholder="example@email.com"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.senderemail.$dirty && !$v.senderemail.required"
+              <label v-if="$v.senderemail.$dirty && !$v.senderemail.required" id="notification-email-required"
                 >Sender email is required.</label
               >
-              <label v-if="$v.senderemail.$dirty && !$v.senderemail.email"
+              <label v-if="$v.senderemail.$dirty && !$v.senderemail.email" id="notification-email-invalid"
                 >Invalid email.</label
               >
             </div>
@@ -102,7 +102,7 @@
               :title="protocol ? protocol : undefined"
             ></eos-dropdown>
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.protocol.$dirty && !$v.protocol.required"
+              <label v-if="$v.protocol.$dirty && !$v.protocol.required" id="notification-protocol-required"
                 >Protocol is required.</label
               >
             </div>
@@ -122,10 +122,10 @@
               @input="$v.smtpport.$touch"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.smtpport.$dirty && !$v.smtpport.required"
+              <label v-if="$v.smtpport.$dirty && !$v.smtpport.required" id="notification-smtpport-required"
                 >SMTP port is required.</label
               >
-              <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxValue"
+              <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxValue" id="notification-smtpport-invalid"
                 >SMTP port is not valid.</label
               >
             </div>
@@ -146,10 +146,11 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
-                v-if="$v.senderpassword.$dirty && !$v.senderpassword.required"
+                v-if="$v.senderpassword.$dirty && !$v.senderpassword.required" id="notification-senderpassword-required"
                 >Sender password is required.</label
               >
               <label
+               id="notification-senderpassword"
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.minLength"
                 >Minimum 4 characters are required.</label
               >
@@ -170,7 +171,7 @@
               @input="$v.confirmpassword.$touch"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label
+              <label id="notification-confirmpassword-required"
                 v-if="
                   $v.confirmpassword.$dirty &&
                     !$v.confirmpassword.sameAsPassword
@@ -194,7 +195,7 @@
               placeholder="Use a comma (,) to separate multiple Receiver email values. Example, example@email.com, example2@email.com"
             ></textarea>
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required"
+              <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required" 
                 >Email is required.</label
               >
               <label
@@ -209,6 +210,7 @@
         </div>
       </div>
       <button
+        id="notification-sendtestemailbtn"
         type="button"
         class="eos-btn-primary mt-5"
         @click="sendTestEmail()"
@@ -217,6 +219,7 @@
         Send test email
       </button>
       <span
+        id="notification-emailmsg"
         v-if="testEmailMessage"
         class="ml-2"
         :class="[
@@ -227,8 +230,9 @@
       </span>
     </div>
 
-    <span class="d-none">{{ isValidForm }}{{ notificationGetter }}</span>
+    <span class="d-none" id="notification-notificationdata">{{ isValidForm }}{{ notificationGetter }}</span>
     <button
+      id="notification-applybtn"
       type="button"
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"

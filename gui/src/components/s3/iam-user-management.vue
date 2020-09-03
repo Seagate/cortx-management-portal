@@ -27,7 +27,7 @@
         :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
+          <label id="iam-heading-text">
             Create an S3 account. You must log in to the system using S3 account
             credentials to manage S3 account, IAM users, and buckets.
           </label>
@@ -38,7 +38,7 @@
         :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
       >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
+          <label id="iam-managelbl">
             Manage IAM users and buckets.
           </label>
         </div>
@@ -51,6 +51,7 @@
           :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
         >
           <v-data-table
+            id="iam-datatable"
             calculate-widths
             :items="usersList"
             item-key="user_name"
@@ -60,20 +61,20 @@
             :disable-pagination="true"
           >
             <template v-slot:header="{}">
-              <tr>
+              <tr id="iam-tableheader">
                 <th
                   v-for="header in usersTableHeaderList"
                   :key="header.text"
                   class="tableheader"
                 >
-                  <span>{{ header.text }}</span>
+                  <span id="iam-header-data">{{ header.text }}</span>
                 </th>
                 <th class="tableheader" />
               </tr>
             </template>
 
             <template v-slot:item="props">
-              <tr>
+              <tr id="iam-tabledata">
                 <td
                   @click.stop="handleRowClick(props.item)"
                   class="eos-cursor-pointer"
@@ -100,6 +101,7 @@
                     "
                   >
                     <img
+                      id="iam-delete-user"
                       @click="openConfirmDeleteDialog(props.item.user_name)"
                       class="eos-cursor-pointer"
                       src="./../../assets/actions/delete-green.svg"
@@ -129,7 +131,11 @@
                     $v.createUserForm.iamUser.user_name.$error
                 }"
               >
-                <label class="eos-form-group-label" for="userName">
+                <label
+                  class="eos-form-group-label"
+                  for="userName"
+                  id="iam-userlbl"
+                >
                   <eos-info-tooltip
                     label="Username*"
                     :message="usernameTooltipMessage"
@@ -145,6 +151,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                    id="iam-usernamename-required"
                     v-if="
                       $v.createUserForm.iamUser.user_name.$dirty &&
                         !$v.createUserForm.iamUser.user_name.required
@@ -152,6 +159,7 @@
                     >Username is required.</label
                   >
                   <label
+                    id="iam-username-invalid"
                     v-else-if="
                       $v.createUserForm.iamUser.user_name.$dirty &&
                         !$v.createUserForm.iamUser.user_name.accountNameRegex
@@ -171,7 +179,11 @@
                     $v.createUserForm.iamUser.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="userPassword">
+                <label
+                  class="eos-form-group-label"
+                  for="userPassword"
+                  id="iam-passwordlbl"
+                >
                   <eos-info-tooltip
                     label="Password*"
                     :message="passwordTooltipMessage"
@@ -187,6 +199,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                    id="iam-password-required"
                     v-if="
                       $v.createUserForm.iamUser.password.$dirty &&
                         !$v.createUserForm.iamUser.password.required
@@ -194,6 +207,7 @@
                     >Password is required.</label
                   >
                   <label
+                    id="iam-password-invalid"
                     v-else-if="
                       $v.createUserForm.iamUser.password.$dirty &&
                         !$v.createUserForm.iamUser.password.passwordRegex
@@ -213,7 +227,10 @@
                     $v.createUserForm.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="confirmPassword"
+                <label
+                  class="eos-form-group-label"
+                  for="confirmPassword"
+                  id="iam-confirmpasslbl"
                   >Confirm password*</label
                 >
                 <input
@@ -225,6 +242,7 @@
                   @input="$v.createUserForm.confirmPassword.$touch"
                 />
                 <span
+                  id="iam-confirmpass-notmatch"
                   class="eos-form-group-label eos-form-group-error-msg"
                   v-if="
                     $v.createUserForm.confirmPassword.$dirty &&
@@ -238,6 +256,7 @@
           <v-row>
             <v-col>
               <button
+                id="iam-create-userbtn"
                 type="button"
                 class="eos-btn-primary"
                 @click="createUser()"
@@ -246,6 +265,7 @@
                 Create user
               </button>
               <button
+                id="iam-usercancelbtn"
                 type="button"
                 class="eos-btn-tertiary"
                 @click="closeCreateUserForm()"
@@ -259,6 +279,7 @@
           :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.create"
         >
           <button
+            id="iam-user-create-formbtn"
             type="button"
             class="mt-5 eos-btn-primary"
             v-if="!showCreateUserForm"
@@ -270,17 +291,27 @@
       </v-col>
     </v-row>
 
-    <v-dialog v-model="showUserDetailsDialog" persistent max-width="790">
+    <v-dialog
+      v-model="showUserDetailsDialog"
+      persistent
+      max-width="790"
+      id="iam-opendialogbox"
+    >
       <v-card>
         <v-system-bar color="greay lighten-3">
           <v-spacer></v-spacer>
-          <v-icon @click="closeUserDetailsDialog()" style="cursor: pointer;"
+          <v-icon
+            @click="closeUserDetailsDialog()"
+            style="cursor: pointer;"
+            id="iam-closedialogbox"
             >mdi-close</v-icon
           >
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span>User created:access key and secret key</span>
+          <span id="iam-acceskeytext"
+            >User created:access key and secret key</span
+          >
         </v-card-title>
         <v-divider />
         <div class="mt-2 pl-7" style="height: 30px;">
@@ -289,31 +320,32 @@
             :src="require('@/assets/actions/warning-orange.svg')"
           />
           <span
+            id="iam-csvfileinfo"
             class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
             >Save this information, you will not see it again. Download as CSV
             and close.</span
           >
         </div>
-        <table class="mt-2 ml-7 eos-text-md">
-          <tr>
+        <table class="mt-2 ml-7 eos-text-md" id="iam-user-data">
+          <tr id="iam-username">
             <td class="py-2 eos-text-bold credentials-item-label">Username</td>
             <td class="py-2">{{ user.user_name }}</td>
           </tr>
-          <tr>
+          <tr id="iam-userid">
             <td class="py-2 eos-text-bold credentials-item-label">User id</td>
             <td class="py-2">{{ user.user_id }}</td>
           </tr>
-          <tr>
+          <tr id="iamARN">
             <td class="py-2 eos-text-bold credentials-item-label">ARN</td>
             <td class="py-2">{{ user.arn }}</td>
           </tr>
-          <tr>
+          <tr id="iam-accesskeyid">
             <td class="py-2 eos-text-bold credentials-item-label">
               Access key
             </td>
             <td class="py-2">{{ user.access_key_id }}</td>
           </tr>
-          <tr>
+          <tr id="iam-secretkey">
             <td class="py-2 eos-text-bold credentials-item-label">
               Secret key
             </td>
@@ -323,6 +355,7 @@
 
         <v-card-actions>
           <a
+            id="iam-downloadcsvfile"
             class="ma-5 eos-btn-primary eos-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
@@ -330,6 +363,7 @@
             >Download as CSV</a
           >
           <button
+            id="iam-closedialogbox-okbtn"
             :disabled="!isCredentialsFileDownloaded"
             type="button"
             class="ma-5 eos-btn-primary"
@@ -342,6 +376,7 @@
     </v-dialog>
 
     <eos-confirmation-dialog
+      id="iam-confirmation-dialogbox"
       :show="showConfirmDeleteDialog"
       title="Confirmation"
       message="Are you sure you want to delete the user?"
