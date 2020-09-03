@@ -52,7 +52,7 @@
       </div>
       <v-divider class="pt-5" />
     </div>
-    <span class="d-none">{{ isValidForm }}</span>
+    <span class="d-none" id="notification-syslogbtn">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">

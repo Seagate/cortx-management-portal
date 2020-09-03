@@ -21,10 +21,10 @@
         <div class="col-2 body-2 column node-container">
           <div class="mt-5 font-weight-bold">
             <div class="mt-6 dns-label">
-              <label>DNS servers*:</label>
+              <label id="dns-serverlbl">DNS servers*:</label>
             </div>
             <div class>
-              <label>Search domains*:</label>
+              <label id="dns-domainslbl">Search domains*:</label>
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@
                   :name="node.$model.id + 'dnsname'"
                 ></textarea>
                 <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
+                  <label id="dns-addess-reuired"
                     v-if="node.dns_servers.$dirty && !node.dns_servers.required"
                     >DNS address is required.</label
                   >
@@ -75,7 +75,7 @@
                   @input="node.search_domain.$touch"
                 ></textarea>
                 <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
+                  <label id="dns-searchdomain-reuired"
                     v-if="
                       node.search_domain.$dirty && !node.search_domain.required
                     "
@@ -90,6 +90,7 @@
     </div>
     <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     <button
+      id="dns-applybtn"
       type="button"
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"

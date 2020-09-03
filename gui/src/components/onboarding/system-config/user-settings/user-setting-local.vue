@@ -31,6 +31,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
           :to="$eosUserPermissions.users + $eosUserPermissions.list"
         >
           <v-data-table
+            id="localuser-tabledata"
             :items="userData"
             :single-expand="singleExpand"
             :expanded.sync="expanded"
@@ -45,7 +46,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   :key="header.text"
                   class="tableheader"
                 >
-                  <span
+                  <span id="localuser-tableheading"
                     class="headerText"
                     :class="
                       header.value === sortColumnName && isSortActive
@@ -62,6 +63,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                     "
                   >
                     <img
+                      id="localuser-table-desc"
                       v-if="
                         header.sortable && header.sortDir === alertStatus.desc
                       "
@@ -72,6 +74,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                       width="20"
                     />
                     <img
+                      id="localuser-table-asc"
                       v-if="
                         header.sortable && header.sortDir === alertStatus.asc
                       "
@@ -95,7 +98,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                 "
                 @click="toggleSelection(props.item.id)"
               >
-                <td>
+                <td id="localuser-name">
                   {{ props.item.username }}
                   <v-tooltip right max-width="300">
                     <template v-slot:activator="{ on }">
@@ -107,10 +110,10 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                         :src="require('@/assets/actions/email.svg/')"
                       />
                     </template>
-                    <span>{{ $t("csmuser.email-notification") }}</span>
+                    <span id="localuser-emailnotification">{{ $t("csmuser.email-notification") }}</span>
                   </v-tooltip>
                 </td>
-                <td>
+                <td id="localuser-email">
                   {{ props.item.email }}
                 </td>
                 <td>
@@ -129,6 +132,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                           )
                       "
                       class="ml-2 eos-cursor-pointer"
+                      id="localuser-editicon"
                       @click="onEditBtnClick(props)"
                       title="Edit"
                       src="./../../../../assets/actions/edit-green.svg"
@@ -147,11 +151,13 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                             )
                         "
                         class="ml-2 eos-cursor-pointer"
+                        id="localuser-deleteicon"
                         @click="onDeleteConfirmation(props.item.id)"
                         title="Delete"
                         src="./../../../../assets/actions/delete-green.svg"
                       />
                       <img
+                      id="localuser-deleteadmin"
                         v-if="
                           strEqualityCaseInsensitive(
                             props.item.username,
@@ -194,7 +200,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   'eos-form-group--error': $v.createAccount.username.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Username">
+                <label class="eos-form-group-label" for="Username" id="lblusername">
                   <eos-info-tooltip
                     label="Username*"
                     :message="usernameTooltipMessage"
@@ -210,6 +216,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                  id="localusername-required"
                     v-if="
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.required
@@ -217,6 +224,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                     >{{ $t("csmuser.username-required") }}</label
                   >
                   <label
+                  id="localuser-invalid"
                     v-else-if="
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.accountNameRegex
@@ -233,7 +241,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   'eos-form-group--error': $v.createAccount.email.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Email">{{ $t("csmuser.email") }}</label>
+                <label class="eos-form-group-label" for="Email" id="localuseremaillbl">{{ $t("csmuser.email") }}</label>
                 <input
                   class="eos-form__input_text"
                   type="email"
@@ -245,6 +253,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                  id="localuser-email-reuired"
                     v-if="
                       $v.createAccount.email.$dirty &&
                         !$v.createAccount.email.required
@@ -252,6 +261,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                     >{{ $t("csmuser.email-required") }}</label
                   >
                   <label
+                  id="localuser-email-invalid"
                     v-else-if="
                       $v.createAccount.email.$dirty &&
                         !$v.createAccount.email.email
@@ -270,7 +280,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   'eos-form-group--error': $v.createAccount.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password">
+                <label class="eos-form-group-label" for="password" id="localuser-passwordlbl">
                   <eos-info-tooltip
                     :label="$t('csmuser.password')"
                     :message="passwordTooltipMessage"
@@ -286,6 +296,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                  id="localuser-password-reuired"
                     v-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.required
@@ -293,6 +304,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                     >{{ $t("csmuser.password-required") }}</label
                   >
                   <label
+                  id="localuser-password-invalid"
                     v-else-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.passwordRegex
@@ -310,7 +322,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                     $v.createAccount.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password"
+                <label class="eos-form-group-label" for="password" id="localuser-confirmpasslbl"
                   >{{ $t("csmuser.confirm-password") }}*</label
                 >
                 <input
@@ -323,6 +335,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                  id="localuser-confirmpassword-notmatch"
                     v-if="
                       $v.createAccount.confirmPassword.$dirty &&
                         !$v.createAccount.confirmPassword.sameAsPassword
@@ -336,7 +349,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
           <v-row class="ml-3">
             <div>{{ $t("csmuser.roles") }}</div>
             <v-col class="pt-0 col-2">
-              <label class="eos-rdb-container">
+              <label class="eos-rdb-container" id="localuser-managelbl">
                   {{ $t("csmuser.manage") }}
                 <input
                   type="radio"
@@ -349,7 +362,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
               </label>
             </v-col>
             <v-col class="pt-0 ml-3 col-3">
-              <label class="eos-rdb-container">
+              <label class="eos-rdb-container" id="localuser-monitorlbl">
                 {{ $t("csmuser.monitor") }}
                 <input
                   type="radio"
@@ -404,7 +417,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
         <div v-if="isUserEdit">
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
-              <label class="eos-form-group-label" for="Email"> {{ $t("csmuser.username") }}</label>
+              <label class="eos-form-group-label" for="Email" id="localuser-editusernamelbl"> {{ $t("csmuser.username") }}</label>
               <input
                 class="eos-form__input_text"
                 type="text"
@@ -421,7 +434,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   'eos-form-group--error': $v.selectedItem.email.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Email">{{ $t("csmuser.email") }}</label>
+                <label class="eos-form-group-label" for="Email" id="localuser-editemaillbl">{{ $t("csmuser.email") }}</label>
                 <input
                   class="eos-form__input_text"
                   type="email"
@@ -433,6 +446,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
+                  id="localuser-editmail-reuired"
                     v-if="
                       $v.selectedItem.email.$dirty &&
                         !$v.selectedItem.email.required
@@ -440,6 +454,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                     >{{ $t("csmuser.email-required") }}</label
                   >
                   <label
+                  id="localuser-editemail-invalid"
                     v-else-if="
                       $v.selectedItem.email.$dirty &&
                         !$v.selectedItem.email.email
@@ -458,7 +473,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   'eos-form-group--error': $v.selectedItem.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password">
+                <label class="eos-form-group-label" for="password" id="localuser-editpasslbl">
                   <eos-info-tooltip
                     label="New password*"
                     :message="passwordTooltipMessage"
@@ -473,14 +488,14 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   id="txtLocalPass"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
+                  <label id="localuser-editpass-reuired"
                     v-if="
                       $v.selectedItem.password.$dirty &&
                         !$v.selectedItem.password.required
                     "
                     >{{ $t("csmuser.password-required") }}</label
                   >
-                  <label
+                  <label id="localuser-editpass-invalid"
                     v-else-if="
                       $v.selectedItem.password.$dirty &&
                         !$v.selectedItem.password.passwordRegex
@@ -498,7 +513,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                     $v.selectedItem.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password"
+                <label class="eos-form-group-label" for="password" id="localuser-editconfirmpasslbl"
                   >{{ $t("csmuser.confirm-password") }}</label
                 >
                 <input
@@ -510,7 +525,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   @input="$v.selectedItem.confirmPassword.$touch"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
+                  <label  id="localuser-editconfirmpass-notmatch"
                     v-if="
                       $v.selectedItem.confirmPassword.$dirty &&
                         !$v.selectedItem.confirmPassword.sameAsPassword
@@ -536,7 +551,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   'eos-form-group--error': $v.selectedItem.old_password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password">
+                <label class="eos-form-group-label" for="password" id="localuser-oldpasswordlbl">
                   <eos-info-tooltip
                     label="Old password*"
                     :message="passwordTooltipMessage"
@@ -551,14 +566,14 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   id="txtLocalOldPass"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
+                  <label id="localuser-oldpass-reuired"
                     v-if="
                       $v.selectedItem.old_password.$dirty &&
                         !$v.selectedItem.old_password.required
                     "
                     >{{ $t("csmuser.old-pass-required") }}</label
                   >
-                  <label
+                  <label id="localuser-oldpass-invalid"
                     v-else-if="
                       $v.selectedItem.old_password.$dirty &&
                         !$v.selectedItem.old_password.passwordRegex
@@ -651,6 +666,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
       </v-col>
     </v-row>
     <eos-confirmation-dialog
+      id="localuser-dialog"
       :show="showConfirmationDialog"
       title="Confirmation"
       :message="confirmationDialogMessage"
