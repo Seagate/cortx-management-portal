@@ -177,7 +177,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                    id="iam-password-reuired"
+                    id="iam-password-required"
                     v-if="
                       $v.createUserForm.iamUser.password.$dirty &&
                         !$v.createUserForm.iamUser.password.required

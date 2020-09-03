@@ -1,15 +1,19 @@
-/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
-Seagate Technology LLC and/or its Affiliates * This program is free software:
-you can redistribute it and/or modify * it under the terms of the GNU Affero
-General Public License as published * by the Free Software Foundation, either
-version 3 of the License, or * (at your option) any later version. * This
-program is distributed in the hope that it will be useful, * but WITHOUT ANY
-WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
-A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
-details. * You should have received a copy of the GNU Affero General Public
-License * along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing, * please email
-opensource@seagate.com or cortx-questions@seagate.com. */
+/*
+* CORTX-CSM: CORTX Management web and CLI interface.
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing,
+* please email opensource@seagate.com or cortx-questions@seagate.com.
+*/
 <template>
   <div class="body-2">
     <div class="title mt-2 font-weight-bold" id="lblLocalSetting">
@@ -253,7 +257,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                  id="localuser-email-reuired"
+                  id="localuser-email-required"
                     v-if="
                       $v.createAccount.email.$dirty &&
                         !$v.createAccount.email.required
@@ -296,7 +300,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                  id="localuser-password-reuired"
+                  id="localuser-password-required"
                     v-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.required
@@ -446,7 +450,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                  id="localuser-editmail-reuired"
+                  id="localuser-editmail-required"
                     v-if="
                       $v.selectedItem.email.$dirty &&
                         !$v.selectedItem.email.required
@@ -488,7 +492,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   id="txtLocalPass"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label id="localuser-editpass-reuired"
+                  <label id="localuser-editpass-required"
                     v-if="
                       $v.selectedItem.password.$dirty &&
                         !$v.selectedItem.password.required
@@ -566,7 +570,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
                   id="txtLocalOldPass"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label id="localuser-oldpass-reuired"
+                  <label id="localuser-oldpass-required"
                     v-if="
                       $v.selectedItem.old_password.$dirty &&
                         !$v.selectedItem.old_password.required

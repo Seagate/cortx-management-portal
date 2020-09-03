@@ -82,7 +82,7 @@
               placeholder="example@email.com"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.senderemail.$dirty && !$v.senderemail.required" id="notification-email-reuired"
+              <label v-if="$v.senderemail.$dirty && !$v.senderemail.required" id="notification-email-required"
                 >Sender email is required.</label
               >
               <label v-if="$v.senderemail.$dirty && !$v.senderemail.email" id="notification-email-invalid"
@@ -102,7 +102,7 @@
               :title="protocol ? protocol : undefined"
             ></eos-dropdown>
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.protocol.$dirty && !$v.protocol.required" id="notification-protocol-reuired"
+              <label v-if="$v.protocol.$dirty && !$v.protocol.required" id="notification-protocol-required"
                 >Protocol is required.</label
               >
             </div>
@@ -122,7 +122,7 @@
               @input="$v.smtpport.$touch"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.smtpport.$dirty && !$v.smtpport.required" id="notification-smtpport-reuired"
+              <label v-if="$v.smtpport.$dirty && !$v.smtpport.required" id="notification-smtpport-required"
                 >SMTP port is required.</label
               >
               <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxValue" id="notification-smtpport-invalid"
@@ -146,7 +146,7 @@
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
               <label
-                v-if="$v.senderpassword.$dirty && !$v.senderpassword.required" id="notification-senderpassword-reuired"
+                v-if="$v.senderpassword.$dirty && !$v.senderpassword.required" id="notification-senderpassword-required"
                 >Sender password is required.</label
               >
               <label
@@ -171,7 +171,7 @@
               @input="$v.confirmpassword.$touch"
             />
             <div class="eos-form-group-label eos-form-group-error-msg">
-              <label id="notification-confirmpassword-reuired"
+              <label id="notification-confirmpassword-required"
                 v-if="
                   $v.confirmpassword.$dirty &&
                     !$v.confirmpassword.sameAsPassword

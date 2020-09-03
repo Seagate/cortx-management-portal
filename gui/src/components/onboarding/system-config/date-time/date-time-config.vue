@@ -46,7 +46,7 @@
                 placeholder="time.seagate.com"
               />
               <div class="eos-form-group-label eos-form-group-error-msg">
-                <label id="ntp-server-reuired"
+                <label id="ntp-server-required"
                   v-if="
                     $v.setDateTime.NtpServerAddress.$dirty &&
                       !$v.setDateTime.NtpServerAddress.required
