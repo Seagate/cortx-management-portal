@@ -18,8 +18,9 @@
   <div id="alertMediumContainer">
     <eos-health-summary />
     <div style="height: 30px;">
-      <div class="eos-alert-title">New alerts</div>
+      <div class="eos-alert-title" id="alert-new-alerts">New alerts</div>
       <img
+        id="alert-zoom"
         :src="require('@/assets/zoom-in.svg')"
         class="eos-alert-navigate"
         @click="$router.push('/alerts')"
@@ -33,7 +34,7 @@
         height="250"
         :items-per-page.sync="itemsPerPage"
         :footer-props="{
-        'items-per-page-options': [50, 100, 150, 200]
+          'items-per-page-options': [50, 100, 150, 200]
         }"
         :page.sync="currentPage"
         :update:page="currentPage"
@@ -58,6 +59,7 @@
               <span>{{ header.text }}</span>
               <span v-if="header.value === sortInfo.header">
                 <img
+                  id="alert-desc"
                   v-if="sortInfo.sort_dir === alertStatus.desc"
                   :src="require('@/assets/widget/table-sort-desc.svg/')"
                   class="d-inline-block"
@@ -66,6 +68,7 @@
                   width="20"
                 />
                 <img
+                  id="alert-asc"
                   v-if="sortInfo.sort_dir === alertStatus.asc"
                   :src="require('@/assets/widget/table-sort-asc.svg/')"
                   class="d-inline-block"
@@ -79,16 +82,24 @@
         </template>
         <template v-slot:item="props">
           <tr style="color: #000000;">
-            <td style="white-space: nowrap;">{{ new Date(props.item.created_time*1000) | timeago }}</td>
             <td style="white-space: nowrap;">
-              <span>{{ props.item.module_type + " | " + props.item.state }}</span>
+              {{ new Date(props.item.created_time * 1000) | timeago }}
+            </td>
+            <td style="white-space: nowrap;">
+              <span>{{
+                props.item.module_type + " | " + props.item.state
+              }}</span>
             </td>
             <td>
               <div
                 style="margin: auto;"
-                v-if="props.item.severity ===alertStatus.critical || 
+                v-if="
+                  props.item.severity === alertStatus.critical ||
+                    props.item.severity === alertStatus.error ||
                 props.item.severity === alertStatus.error || 
-                props.item.severity === alertStatus.alert" 
+                    props.item.severity === alertStatus.error ||
+                    props.item.severity === alertStatus.alert
+                "
                 v-bind:title="props.item.severity"
                 class="eos-status-chip eos-chip-alert"
               ></div>
@@ -104,16 +115,18 @@
                 title="info"
                 class="eos-status-chip eos-chip-information"
               ></div>
-               <div
-              style="margin: auto;"
-              v-if="(props.item.severity !== alertStatus.informational) 
-              && (props.item.severity !== alertStatus.warning)
-              && (props.item.severity !== alertStatus.critical 
-              && props.item.severity !== alertStatus.error 
-              && props.item.severity !== alertStatus.alert)"
-              :title="props.item.severity"
-              class="eos-status-chip eos-chip-others"
-            ></div>
+              <div
+                style="margin: auto;"
+                v-if="
+                  props.item.severity !== alertStatus.informational &&
+                    props.item.severity !== alertStatus.warning &&
+                    (props.item.severity !== alertStatus.critical &&
+                      props.item.severity !== alertStatus.error &&
+                      props.item.severity !== alertStatus.alert)
+                "
+                :title="props.item.severity"
+                class="eos-status-chip eos-chip-others"
+              ></div>
             </td>
             <td v-eos-alert-tbl-description="props.item"></td>
           </tr>
