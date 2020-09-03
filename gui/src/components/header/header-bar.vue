@@ -33,17 +33,18 @@
             v-if="!isRouterPathOnboarding"
           >
             <div v-if="alertNotifications.alertCount > 0">
-              <img :src="require('@/assets/navigation/alerts-dot-white.svg')" />
+              <img :src="require('@/assets/navigation/alerts-dot-white.svg')"  id="alert-dotwhite"/>
             </div>
             <div v-else>
-              <img :src="require('@/assets/navigation/alerts-white.svg')" />
+              <img :src="require('@/assets/navigation/alerts-white.svg')"  id="alert-whiteicon"/>
             </div>
           </div>
         </eos-has-access>
         <div class="pr-2">
-          <label class="eos-username-label">{{ username }}</label>
+          <label class="eos-username-label" id="header-username">{{ username }}</label>
         </div>
         <div
+          id="logouticon"
           class="eos-logout-icon-container"
           @click="logout()"
           v-if="!isRouterPathOnboarding"
@@ -52,7 +53,7 @@
             <template v-slot:activator="{ on }">
               <img :src="require('@/assets/logout.svg/')" v-on="on" />
             </template>
-            <span>Logout</span>
+            <span id="logoutlbl">Logout</span>
           </v-tooltip>
         </div>
       </div>
