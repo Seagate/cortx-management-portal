@@ -24,10 +24,11 @@
       <div class="ml-4 white--text my-10" style="font-size: 26px;">
         Welcome to LyveDrive Rack.
       </div>
-      <div class="ml-4 mt-1 mb-8 white--text">
+      <div class="ml-4 mt-1 mb-8 white--text" id="welcome-pagetext">
         Click on Start to proceed with on onboarding steps.
       </div>
       <button
+        id="welcome-startbtn"
         type="button"
         class="eos-btn-primary-dark ml-4"
         @click="$router.push('gdpr')"

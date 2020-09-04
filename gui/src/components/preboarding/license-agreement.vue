@@ -22,6 +22,7 @@
           <div class="eos-modal-header">
             <label> {{ agreementText.title }}</label>
             <img
+              id="license-cancelagreementicon"
               class="eos-modal-close"
               :src="require('@/assets/close-green.svg')"
               @click="cancelAgreement"
@@ -33,6 +34,7 @@
             </div>
             <div class="mt-5 nav-btn">
               <button
+                id="license-acceptagreement"
                 type="button"
                 class="eos-btn-primary mr-2"
                 @click="acceptAgreement"
@@ -41,6 +43,7 @@
               </button>
 
               <button
+                id="license-cancelagreementbtn"
                 type="button"
                 class="eos-btn-tertiary"
                 @click="cancelAgreement"
