@@ -99,7 +99,7 @@ cd $BASE_DIR
 [ -z "$VER" ] && VER=$(cat $BASE_DIR/VERSION)
 [ -z "$PRODUCT" ] && PRODUCT="cortx"
 [ -z "$BRAND" ] && BRAND="CORTX"
-[ -z "$BRANDPATH" ] && BRANDPATH="../../../abcd/123/"
+[ -z "$BRANDPATH" ] && BRANDPATH=""
 [ -z "$KEY" ] && KEY="cortx@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
