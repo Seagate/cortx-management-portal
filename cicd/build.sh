@@ -144,8 +144,10 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     UI_BUILD_START_TIME=$(date +%s)
     echo "Running UI Build"
     # update .env file
-    sed -i '/#/!s/\(VUE_APP_BRANDNAME[[:space:]]*=[[:space:]]*\)\(.*\)/\1"'$BRAND'"/' $GUI_DIR/gui/.env
-    cp -R  $GUI_DIR/gui/.env $GUI_DIR/gui/ui-dist
+    cp -R $BASE_DIR/gui/.env $DIST/.env
+    sed -i '/#/!s/\(VUE_APP_BRANDNAME[[:space:]]*=[[:space:]]*\)\(.*\)/\1"'$BRAND'"/' $BASE_DIR/gui/.env
+    cp -R $BASE_DIR/gui/.env $GUI_DIR/gui/.env
+    cp -R $GUI_DIR/gui/.env $GUI_DIR/gui/ui-dist
     cd $BASE_DIR/gui
     npm install
     npm run build
@@ -173,6 +175,7 @@ cd ${DIST}
 # Create tar for csm
 echo "Creating tar for csm build"
 tar -czf ${DIST}/rpmbuild/SOURCES/${PRODUCT}-csm_web-${VER}.tar.gz csm_gui
+cp -R $DIST/.env $BASE_DIR/gui/.env
 TAR_END_TIME=$(date +%s)
 
 # Generate RPMs
