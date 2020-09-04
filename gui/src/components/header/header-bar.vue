@@ -51,7 +51,7 @@
         >
           <v-tooltip left max-width="300">
             <template v-slot:activator="{ on }">
-              <img :src="require('@/assets/logout.svg/')" v-on="on" />
+              <img :src="require('@/assets/logout.svg/')" v-on="on"  id="logout-icon"/>
             </template>
             <span id="logoutlbl">Logout</span>
           </v-tooltip>

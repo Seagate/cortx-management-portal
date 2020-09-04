@@ -69,6 +69,7 @@
       <div style="height: 30px;" class="mt-2">
         <div class="eos-float-l">
           <img
+           id="alert-resolved-icon"
             v-if="alert.resolved"
             class="eos-float-l"
             :src="require('@/assets/resolved-filled-default.svg')"
@@ -79,18 +80,19 @@
             style="float: left;"
           >Resolved |</label>
           <img
+            id="alert-acknowledge-icon"
             v-if="alert.acknowledged"
             class="eos-float-l"
             :src="require('@/assets/acknowledge-default.svg')"
           />
-          <img v-else class="eos-float-l" :src="require('@/assets/acknowledge-disabled.svg')" />
+          <img v-else class="eos-float-l" :src="require('@/assets/acknowledge-disabled.svg')"  id="alert-acknowledge-disabled-icon"/>
           <label
             :class="alert.acknowledged ? '' : 'eos-alert-status-chip-disabled'"
             style="float: left;"
           >Acknowledged</label>
         </div>
         <div class="eos-float-r">
-          <label
+          <label id="alert-details"
             @click="showAlertDetailsDialog = true"
             class="eos-text-md eos-cursor-pointer"
             style="color: #6EBE49;"
@@ -107,7 +109,7 @@
           </div>
           <div class="pa-2">
             <label>Reason: {{ event_detail.event_reason }}</label>
-            <span
+            <span id="alert-recommentation"
               v-if="event_detail.event_recommendation.length > 0"
               @click="event_detail.showRecommendation = !event_detail.showRecommendation"
               style="color: #6EBE49;cursor: pointer;font-size: 12px;"
@@ -132,7 +134,7 @@
         <div class="eos-modal" style="width: 56.250em;">
           <div class="eos-modal-header">
             <label>Alert Details</label>
-            <img
+            <img id="alert-showalert-details-dialogbox"
               class="eos-modal-close"
               :src="require('@/assets/close-green.svg')"
               @click="showAlertDetailsDialog = false"
