@@ -130,8 +130,6 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cp -R $BASE_DIR/web $GUI_DIR/
     cp -R $CONF/csm_web.service $GUI_DIR/conf/service/
     cp -R $BASE_DIR/gui/.env $GUI_DIR/gui/.env
-    # update .env file
-    sed -i '/#/!s/\(VUE_APP_BRANDNAME[[:space:]]*=[[:space:]]*\)\(.*\)/\1"'$BRAND'"/' $GUI_DIR/gui/.env
     echo "Running Web Build"
     cd $GUI_DIR/web/
     npm install --production
@@ -145,10 +143,12 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
 
     UI_BUILD_START_TIME=$(date +%s)
     echo "Running UI Build"
+    # update .env file
+    sed -i '/#/!s/\(VUE_APP_BRANDNAME[[:space:]]*=[[:space:]]*\)\(.*\)/\1"'$BRAND'"/' $GUI_DIR/gui/.env
+    cp -R  $GUI_DIR/gui/.env $GUI_DIR/gui/ui-dist
     cd $BASE_DIR/gui
     npm install
     npm run build
-    cp -R  $GUI_DIR/gui/.env $GUI_DIR/gui/ui-dist
 
     UI_BUILD_END_TIME=$(date +%s)
 fi
