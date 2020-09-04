@@ -33,7 +33,7 @@
               {{ item.title }}</label
             >
             <button
-              :id="item.title"
+              :id="item.actionClickFunction"
               type="button"
               class="eos-btn-tertiary eos-float-r"
               @click="$emit('clickFunctionHandler', item.actionClickFunction)"
