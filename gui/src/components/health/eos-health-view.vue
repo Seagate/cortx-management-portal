@@ -86,14 +86,21 @@
           <td>
             <div
               v-if="
-               props.item.health === 'OK' || props.item.health === 'NA' &&
-                props.item.component_info.severity !== alertStatus.warning
+               props.item.health === 'OK' || props.item.health === 'NA'
               "
               class="eos-status-chip eos-chip-ok"
               v-bind:title="props.item.health"
             ></div>
             <div
-              v-if="
+              v-else-if="
+                props.item.component_info.severity === alertStatus.informational &&
+                  (props.item.health !== 'OK' || props.item.health !== 'NA')
+              "
+              class="eos-status-chip eos-chip-warning"
+              title="warning"
+            ></div>
+            <div
+              v-else-if="
                 props.item.component_info.severity === alertStatus.critical ||
                   props.item.component_info.severity === alertStatus.error
               "
@@ -101,14 +108,14 @@
               v-bind:title="props.item.component_info.severity"
             ></div>
             <div
-              v-if="props.item.component_info.severity === alertStatus.warning"
+              v-else-if="props.item.component_info.severity === alertStatus.warning"
               class="eos-status-chip eos-chip-warning"
-              title="warning"
+              v-bind:title="props.item.component_info.severity"
             ></div>
             <div
               v-else-if="props.item.component_info.severity === alertStatus.informational"
               class="eos-status-chip eos-chip-information"
-              title="info"
+              v-bind:title="props.item.component_info.severity"
             ></div>
 
           </td>
