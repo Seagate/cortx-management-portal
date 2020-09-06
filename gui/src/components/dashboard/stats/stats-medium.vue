@@ -21,6 +21,7 @@
         Performance
       </div>
       <img
+        id="stats-medium-zoomicon"
         :src="require('@/assets/zoom-in.svg')"
         @click="$router.push('/performance')"
         class="eos-float-r eos-cursor-pointer"

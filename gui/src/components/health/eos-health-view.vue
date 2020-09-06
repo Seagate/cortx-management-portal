@@ -114,6 +114,7 @@
           </td>
           <td v-if="props.item.alert_uuid !== 'NA' && props.item.health !== 'OK' && props.item.health !== 'NA'">
             <img
+             id="healthview-zoomicon"
               :src="require('@/assets/zoom-in.svg')"
               class="eos-cursor-pointer"
               @click="$router.push({ path: `healthview/${props.item.alert_uuid}`, query: { nodeId: componentName, source: 'healthView'}})"
