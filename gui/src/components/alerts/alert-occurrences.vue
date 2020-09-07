@@ -110,6 +110,7 @@
           <td v-eos-alert-tbl-description="props.item"></td>
           <td>
             <img
+             id="alert-occurrencess-zoomicon"
               :src="require('@/assets/zoom-in.svg')"
               class="eos-cursor-pointer"
               @click="$router.push('/alerts_history/' + props.item.alert_uuid)"

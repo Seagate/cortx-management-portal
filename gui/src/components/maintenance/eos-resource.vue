@@ -127,6 +127,7 @@
         </v-card>
       </div>
       <eos-confirmation-dialog
+      id="resource-confirmation-dialog"
         :show="showConfirmationDialog"
         title="Confirmation"
         :message="confirmationDialogMessage"
@@ -136,6 +137,7 @@
         cancelButtonText="No"
       ></eos-confirmation-dialog>
       <eos-confirmation-dialog
+       id="resource-success-dialogbox"
         :show="showInfoDialog"
         title="Success"
         :message="infoDialogMessage"
