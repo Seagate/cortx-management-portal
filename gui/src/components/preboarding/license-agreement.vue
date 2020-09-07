@@ -17,18 +17,18 @@
 <template>
   <div>
     <v-container>
-      <div class="eos-modal-container">
-        <div class="eos-modal eos-modal-onboarding">
-          <div class="eos-modal-header">
+      <div class="cortx-modal-container">
+        <div class="cortx-modal cortx-modal-onboarding">
+          <div class="cortx-modal-header">
             <label> {{ agreementText.title }}</label>
             <img
               id="license-cancelagreementicon"
-              class="eos-modal-close"
+              class="cortx-modal-close"
               :src="require('@/assets/close-green.svg')"
               @click="cancelAgreement"
             />
           </div>
-          <div class="eos-modal-body ">
+          <div class="cortx-modal-body ">
             <div class="title-container pr-3">
               <div v-html="agreementText.description"></div>
             </div>
@@ -36,7 +36,7 @@
               <button
                 id="license-acceptagreement"
                 type="button"
-                class="eos-btn-primary mr-2"
+                class="cortx-btn-primary mr-2"
                 @click="acceptAgreement"
               >
                 Accept
@@ -45,7 +45,7 @@
               <button
                 id="license-cancelagreementbtn"
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="cancelAgreement"
               >
                 Cancel
@@ -61,9 +61,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { agreementText } from "./../../common/license-agreement-text";
 @Component({
-  name: "eos-onboarding-finish"
+  name: "cortx-onboarding-finish"
 })
-export default class EosOnboardingFinish extends Vue {
+export default class CortxOnboardingFinish extends Vue {
   private data() {
     return {
       agreementText
@@ -79,7 +79,7 @@ export default class EosOnboardingFinish extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.eos-modal-onboarding {
+.cortx-modal-onboarding {
   width: 730px;
   min-height: 214px;
   height: 535px;

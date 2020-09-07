@@ -16,16 +16,16 @@
 */
 <template>
   <v-overlay color="rgba(0, 0, 0, 0.75)" :value="$store.state.messageDialog.showDialog">
-    <div class="eos-msg-dialog-container">
+    <div class="cortx-msg-dialog-container">
       <div
-        class="eos-msg-dialog-header"
-        :class="{ 'eos-chip-warning': $store.state.messageDialog.type === 'warning', 'eos-chip-alert': $store.state.messageDialog.type === 'error' }"
+        class="cortx-msg-dialog-header"
+        :class="{ 'cortx-chip-warning': $store.state.messageDialog.type === 'warning', 'cortx-chip-alert': $store.state.messageDialog.type === 'error' }"
       >
-        <label class="eos-msg-dialog-header-title">{{ $store.state.messageDialog.title }}</label>
-        <div class="eos-msg-dialog-close" @click="closeDialog()"></div>
+        <label class="cortx-msg-dialog-header-title">{{ $store.state.messageDialog.title }}</label>
+        <div class="cortx-msg-dialog-close" @click="closeDialog()"></div>
       </div>
-      <div class="eos-msg-dialog-body">
-        <div class="eos-msg-dialog-message">
+      <div class="cortx-msg-dialog-body">
+        <div class="cortx-msg-dialog-message">
           <label>{{ $store.state.messageDialog.message }}</label>
         </div>
       </div>
@@ -37,21 +37,21 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-message-dialog"
+  name: "cortx-message-dialog"
 })
-export default class EosMessageDialog extends Vue {
+export default class CortxMessageDialog extends Vue {
   public closeDialog() {
     this.$store.commit("messageDialog/hide");
   }
 }
 </script>
 <style lang="scss" scoped>
-.eos-msg-dialog-container {
+.cortx-msg-dialog-container {
   background: #ffffff;
   width: 500px;
   max-height: 283px;
 }
-.eos-msg-dialog-header {
+.cortx-msg-dialog-header {
   height: 66px;
   display: flex;
   flex-wrap: nowrap;
@@ -62,11 +62,11 @@ export default class EosMessageDialog extends Vue {
   font-size: 18px;
   line-height: 26px;
 }
-.eos-msg-dialog-body {
+.cortx-msg-dialog-body {
   max-height: 217px;
   padding: 24px;
 }
-.eos-msg-dialog-message {
+.cortx-msg-dialog-message {
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -75,10 +75,10 @@ export default class EosMessageDialog extends Vue {
   overflow: auto;
   word-wrap: break-word;
 }
-.eos-msg-dialog-header-title {
+.cortx-msg-dialog-header-title {
   width: 415px;
 }
-.eos-msg-dialog-close {
+.cortx-msg-dialog-close {
   width: 28px;
   height: 28px;
   position: relative;
@@ -88,22 +88,22 @@ export default class EosMessageDialog extends Vue {
   cursor: pointer;
 }
 
-.eos-msg-dialog-close:before,
-.eos-msg-dialog-close:after {
+.cortx-msg-dialog-close:before,
+.cortx-msg-dialog-close:after {
   content: "";
   position: absolute;
   z-index: -1;
   background: #ffffff;
 }
 
-.eos-msg-dialog-close:before {
+.cortx-msg-dialog-close:before {
   top: 6px;
   left: 13px;
   width: 2px;
   height: 16px;
 }
 
-.eos-msg-dialog-close:after {
+.cortx-msg-dialog-close:after {
   top: 13px;
   left: 6px;
   height: 2px;

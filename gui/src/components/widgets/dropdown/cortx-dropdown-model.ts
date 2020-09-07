@@ -14,16 +14,7 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-<template>
-  <router-view class="eos-p-2"></router-view>
-</template>
- <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-
-@Component({
-  name: "eos-settings"
-})
-export default class EosSettings extends Vue {}
-</script>
-<style lang="scss" scoped>
-</style>
+export interface CortxDropdownOption {
+    label: string;
+    value: any;
+}

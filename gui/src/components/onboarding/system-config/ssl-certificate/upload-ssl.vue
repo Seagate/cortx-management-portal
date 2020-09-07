@@ -27,7 +27,7 @@
         the selected SSL certificate.
       </div>
       <v-divider class="mt-2" />
-      <eosUploadSSLConfig />
+      <cortxUploadSSLConfig />
     </div>
   </v-container>
 </template>
@@ -46,14 +46,14 @@ import {
   ipAddress,
   requiredIf
 } from "vuelidate/lib/validators";
-import EOSUploadSSLConfig from "./upload-ssl-config.vue";
+import CortxUploadSSLConfig from "./upload-ssl-config.vue";
 
 @Component({
   name: "uploade-ssl",
   components: {
-    eosUploadSSLConfig: EOSUploadSSLConfig
+    cortxUploadSSLConfig: CortxUploadSSLConfig
   }
 })
-export default class EOSUploadSSL extends Vue {}
+export default class CortxUploadSSL extends Vue {}
 </script>
 <style lang="scss" scoped></style>

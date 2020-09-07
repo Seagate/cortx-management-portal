@@ -16,90 +16,80 @@
 */
 <template>
   <div>
-    <eos-menu-list
+    <cortx-menu-list
       :menuItems="subMenuItems"
-      @clickFunctionHandler="clickFunctionHandler"
-    ></eos-menu-list>
-    <div class="eos-wrap-height-menu-card-layout">
-      <button type="button" class="eos-btn-tertiary" @click="goToAbout()" id="aboutmenu">
-        About
-      </button>
-    </div>
+      @clickFunctionHandler="clickHandler"
+    ></cortx-menu-list>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
-import EosMenuList from "../widgets/eos-menu-list.vue";
+import CortxMenuList from "../widgets/cortx-menu-list.vue";
+
 @Component({
-  name: "eos-maintenance-menu",
+  name: "cortx-settings-menu",
   components: {
-    EosMenuList
+    CortxMenuList
   }
 })
-export default class EosMaintenanceMenu extends Vue {
+export default class CortxSettingsMenu extends Vue {
   public subMenuItems = [
     {
-      title: "System maintenance",
+      title: "Email Notifications",
       actionName: "Manage",
-      actionClickFunction: "goToSystemMaintenance",
+      actionClickFunction: "goToNotifications",
+      disabled: false,
+      requiredAccess: "sysconfig",
+      requiredSubAccess: "update"
+    },
+    {
+      title: "DNS",
+      actionName: "Manage",
+      actionClickFunction: "goToDNS",
       disabled: false,
       requiredAccess: "maintenance"
     },
     {
-      title: "Firmware update",
+      title: "NTP",
       actionName: "Manage",
-      actionClickFunction: "goToFirmware",
+      actionClickFunction: "goToNTP",
       disabled: false,
       requiredAccess: "maintenance"
     },
     {
-      title: "Software update",
+      title: "SSL Certificate",
       actionName: "Manage",
-      actionClickFunction: "goToSoftware",
+      actionClickFunction: "goToSSL",
       disabled: false,
       requiredAccess: "maintenance"
-    },
-    {
-      title: "Audit log",
-      actionName: "View/Download",
-      actionClickFunction: "goToAuditLog",
-      disabled: false,
-      requiredAccess: "auditlog"
-    },
-    {
-      title: "Node replacement",
-      actionName: "Manage",
-      actionClickFunction: "goToNodeReplacement",
-      disabled: false,
-      requiredAccess: "replace_node"
     }
   ];
-  private goToSystemMaintenance() {
-    this.$router.push({ name: "resource" });
+  private goToNotifications() {
+    this.$router.push({ name: "notifications" });
   }
-  private goToFirmware() {
-    this.$router.push({ name: "firmware" });
+  private goToManagementNetwork() {
+    this.$router.push({ name: "management-network" });
   }
-  private goToSoftware() {
-    this.$router.push({ name: "software" });
+  private goToDataNetwork() {
+    this.$router.push({ name: "data-network" });
   }
-  private goToAuditLog() {
-    this.$router.push({ name: "auditlog" });
+  private goToDNS() {
+    this.$router.push({ name: "dns" });
   }
-  private goToAbout() {
-    this.$router.push({ name: "about" });
+  private goToNTP() {
+    this.$router.push({ name: "ntp" });
   }
-  private goToNodeReplacement() {
-    this.$router.push({ name: "node_replacement" });
+  private goToSSL() {
+    this.$router.push({ name: "ssl-upload" });
   }
-  private clickFunctionHandler(actionClickFunction: string) {
+  private clickHandler(actionClickFunction: string) {
     const vueInstance: any = this;
     vueInstance[actionClickFunction]();
   }
 }
 </script>
 <style lang="scss" scoped>
-.eos-wrap-height-menu-card-layout {
+.cortx-wrap-height-menu-card-layout {
   width: 56.25em;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
