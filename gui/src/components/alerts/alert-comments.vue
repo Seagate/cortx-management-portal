@@ -19,7 +19,7 @@
     <div class="cortx-modal">
       <div class="cortx-modal-header">
         <label>Comments</label>
-        <img
+        <img id="alert-closeadd-comment-dialog"
           class="cortx-modal-close"
           :src="require('@/assets/close-green.svg')"
           @click="closeAddCommentsDialog()"
@@ -54,6 +54,7 @@
             style="width: 100%;"
           >
             <textarea
+             id="alert-comment-textarea"
               class="cortx-form__input_textarea"
               v-model.trim="addCommentForm.comment_text"
               @input="$v.addCommentForm.comment_text.$touch"
@@ -69,11 +70,13 @@
           </div>
           <div style="height: 40px;margin-top:10px;">
             <button
+             id="alert-close-comment-dialogbtn"
               type="button"
               class="cortx-btn-secondary cortx-float-r ml-3"
               @click="closeAddCommentsDialog()"
             >Cancel</button>
             <button
+              id="alert-save-commnetbtn"
               type="button"
               class="cortx-btn-primary cortx-float-r"
               @click="saveComment()"

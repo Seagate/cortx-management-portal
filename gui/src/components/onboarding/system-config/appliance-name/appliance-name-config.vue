@@ -48,6 +48,7 @@
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
     <button
+     id="appliance-appybtn"
       type="button"
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"

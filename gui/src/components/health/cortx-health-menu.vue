@@ -66,6 +66,7 @@
           </div>
         </div>
         <button
+          id="view-healthbtn"
           type="button"
           class="cortx-btn-tertiary cortx-float-r"
           @click="$router.push({ name: 'healthview', query: { name: Object.keys(menuItem)[0] }})"

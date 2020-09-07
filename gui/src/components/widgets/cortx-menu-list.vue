@@ -27,13 +27,13 @@
           "
         >
           <div class="cortx-menu-card-layout">
-            <label id="menu-list-title"
+            <label :id="'menu-' + item.title"
               class="cortx-text-lg cortx-text-bold cortx-float-l cortx-menu-card-title"
             >
               {{ item.title }}</label
             >
             <button
-              id="menu-actionbtn"
+              :id="item.actionClickFunction"
               type="button"
               class="cortx-btn-tertiary cortx-float-r"
               @click="$emit('clickFunctionHandler', item.actionClickFunction)"
@@ -52,7 +52,7 @@
             {{ item.title }}</label
           >
           <button
-          id="menu-actionmanagebtn"
+            id="menu-actionmanagebtn"
             type="button"
             class="cortx-btn-tertiary cortx-float-r"
             @click="$emit('clickFunctionHandler', item.actionClickFunction)"

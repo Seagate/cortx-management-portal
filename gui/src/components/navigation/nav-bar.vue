@@ -34,7 +34,7 @@
         >
           <img class="cortx-nav-item-icon-default" :src="navItem.iconDefault" />
           <img class="cortx-nav-item-icon-active" :src="navItem.iconActive" />
-          <label>{{ navItem.title }}</label>
+          <label  :id="navItem.title">{{ navItem.title }}</label>
         </router-link>
       </cortx-has-access>
     </div>

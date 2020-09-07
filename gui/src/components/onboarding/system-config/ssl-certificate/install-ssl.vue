@@ -26,6 +26,7 @@
       Install certificate
     </button>
     <cortx-confirmation-dialog
+      id="ssl-dialogbox"
       :show="showConfirmDialog"
       title="Confirmation"
       message="Click Yes to install the SSL certificate. After installing the SSL certificate, you must login again."

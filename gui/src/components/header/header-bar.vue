@@ -33,26 +33,27 @@
             v-if="!isRouterPathOnboarding"
           >
             <div v-if="alertNotifications.alertCount > 0">
-              <img :src="require('@/assets/navigation/alerts-dot-white.svg')" />
+              <img :src="require('@/assets/navigation/alerts-dot-white.svg')"  id="alert-dotwhite"/>
             </div>
             <div v-else>
-              <img :src="require('@/assets/navigation/alerts-white.svg')" />
+              <img :src="require('@/assets/navigation/alerts-white.svg')"  id="alert-whiteicon"/>
             </div>
           </div>
         </cortx-has-access>
         <div class="pr-2">
-          <label class="cortx-username-label">{{ username }}</label>
+          <label class="cortx-username-label" id="header-username">{{ username }}</label>
         </div>
         <div
+          id="logouticon"
           class="cortx-logout-icon-container"
           @click="logout()"
           v-if="!isRouterPathOnboarding"
         >
           <v-tooltip left max-width="300">
             <template v-slot:activator="{ on }">
-              <img :src="require('@/assets/logout.svg/')" v-on="on" />
+              <img :src="require('@/assets/logout.svg/')" v-on="on"  id="logout-icon"/>
             </template>
-            <span>Logout</span>
+            <span id="logoutlbl">Logout</span>
           </v-tooltip>
         </div>
       </div>

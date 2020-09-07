@@ -34,6 +34,7 @@
             </div>
             <div class="mt-8 nav-btn">
               <button
+               id="finish-onboarding-setting"
                 type="button"
                 class="cortx-btn-primary"
                 @click="$router.push('/dashboard')"

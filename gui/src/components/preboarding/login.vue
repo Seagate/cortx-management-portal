@@ -24,7 +24,7 @@
     </div>
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
-      <div class="ml-4 white--text headline my-10">RACK Login</div>
+      <div class="ml-4 white--text headline my-10" id="login-racklogin-title">RACK Login</div>
       <div class="ma-4">
         <form autocomplete="off">
           <div
@@ -42,6 +42,7 @@
               v-on:keyup.enter="handleEnterEvent()"
             />
             <span
+             id="login-username-required"
               class="cortx-form-group-label cortx-form-group-error-msg"
               v-if="
                 $v.loginForm.username.$dirty && !$v.loginForm.username.required
@@ -63,7 +64,7 @@
               @input="$v.loginForm.password.$touch"
               v-on:keyup.enter="handleEnterEvent()"
             />
-            <span
+            <span id="login-password-required"
               class="cortx-form-group-label cortx-form-group-error-msg"
               v-if="
                 $v.loginForm.password.$dirty && !$v.loginForm.password.required
@@ -72,6 +73,7 @@
             >
           </div>
           <button
+            id="login-userbtn"
             type="button"
             class="cortx-btn-primary-dark"
             @click="gotToNextPage()"
@@ -80,7 +82,7 @@
           {{ $t("login.login-btn") }}
           </button>
           <!--TODO: This is temporary error handling for Demo-->
-          <div v-if="!isValidLogin" class="red--text mt-1">{{ $t("login.login-failed") }}</div>
+          <div v-if="!isValidLogin" class="red--text mt-1" id="login-failsmsg">{{ $t("login.login-failed") }}</div>
         </form>
       </div>
     </v-container>

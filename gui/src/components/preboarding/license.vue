@@ -29,6 +29,7 @@
         <span class="csmprimary--text">EULA.</span>
       </div>
         <button
+        id="show-license-agreement-dialogbtn"
         type="button"
         class="cortx-btn-primary-dark ml-4"
         @click="showLicenseAgreement = true"
@@ -36,6 +37,7 @@
         <span>Get started</span>
       </button>
       <LicenseAgreement
+       id="license-agreement-close"
         @accepted="licenseAcceptedOrClosed"
         v-if="showLicenseAgreement"
       ></LicenseAgreement>

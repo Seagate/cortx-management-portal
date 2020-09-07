@@ -19,6 +19,7 @@
     <div style="height: 30px;">
       <div class="cortx-text-lg cortx-text-bold cortx-float-l" id="stats-performance">Performance</div>
       <img
+        id="stats-medium-zoomicon"
         :src="require('@/assets/zoom-in.svg')"
         @click="$router.push('/performance')"
         class="cortx-float-r cortx-cursor-pointer"

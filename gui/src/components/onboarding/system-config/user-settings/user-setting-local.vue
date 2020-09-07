@@ -125,7 +125,7 @@
                     >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span
                   >
                 </td>
-                <td>
+                <td class="action-col-width">
                   <span>
                     <img
                       v-if="
@@ -495,13 +495,6 @@
                   <label id="localuser-editpass-required"
                     v-if="
                       $v.selectedItem.password.$dirty &&
-                        !$v.selectedItem.password.required
-                    "
-                    >{{ $t("csmuser.password-required") }}</label
-                  >
-                  <label id="localuser-editpass-invalid"
-                    v-else-if="
-                      $v.selectedItem.password.$dirty &&
                         !$v.selectedItem.password.passwordRegex
                     "
                     >{{ $t("csmuser.password-invalid") }}</label
@@ -552,12 +545,12 @@
                     )
                 "
                 :class="{
-                  'cortx-form-group--error': $v.selectedItem.old_password.$error
+                  'cortx-form-group--error': $v.selectedItem.current_password.$error
                 }"
               >
                 <label class="cortx-form-group-label" for="password" id="localuser-oldpasswordlbl">
                   <cortx-info-tooltip
-                    label="Old password*"
+                    label="Current password*"
                     :message="passwordTooltipMessage"
                   />
                 </label>
@@ -565,22 +558,22 @@
                   class="cortx-form__input_text"
                   type="password"
                   name="txtEditOldPassword"
-                  v-model.trim="selectedItem.old_password"
-                  @input="$v.selectedItem.old_password.$touch"
+                  v-model.trim="selectedItem.current_password"
+                  @input="$v.selectedItem.current_password.$touch"
                   id="txtLocalOldPass"
                 />
                 <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label id="localuser-oldpass-required"
                     v-if="
-                      $v.selectedItem.old_password.$dirty &&
-                        !$v.selectedItem.old_password.required
+                      $v.selectedItem.current_password.$dirty &&
+                        !$v.selectedItem.current_password.required
                     "
                     >{{ $t("csmuser.old-pass-required") }}</label
                   >
                   <label id="localuser-oldpass-invalid"
                     v-else-if="
-                      $v.selectedItem.old_password.$dirty &&
-                        !$v.selectedItem.old_password.passwordRegex
+                      $v.selectedItem.current_password.$dirty &&
+                        !$v.selectedItem.current_password.passwordRegex
                     "
                     >{{ $t("csmuser.old-password-invalid") }}</label
                   >
@@ -715,8 +708,8 @@ export default class CortxUserSettingLocal extends Vue {
       email: { required, email }
     },
     selectedItem: {
-      password: { required, passwordRegex },
-      old_password: {
+      password: { passwordRegex },
+      current_password: {
         required: requiredIf(function(this: any, form) {
           return this.strEqualityCaseInsensitive(
             this.$data.selectedItem.username,
@@ -788,7 +781,7 @@ export default class CortxUserSettingLocal extends Vue {
       loggedInUserName: localStorage.getItem("username"),
       selectedItem: {
         password: "",
-        old_password: "",
+        current_password: "",
         confirmPassword: "",
         email: "",
         alert_notification: ""
@@ -940,9 +933,7 @@ export default class CortxUserSettingLocal extends Vue {
   }
 
   get isEditFormValid() {
-    return this.$v.selectedItem.$anyDirty && this.$v.selectedItem.$invalid
-      ? false
-      : true;
+    return !this.$v.selectedItem.$invalid;
   }
 
   private strEqualityCaseInsensitive(first: string, second: string) {
@@ -1022,5 +1013,8 @@ tbody tr:active {
 }
 .selected-row {
   background: #f5f5f5 !important;
+}
+.action-col-width {
+  min-width: 110px;
 }
 </style>
