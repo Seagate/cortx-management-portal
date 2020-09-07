@@ -16,13 +16,13 @@
 */
 <template>
   <div id="alertMediumContainer">
-    <eos-health-summary />
+    <cortx-health-summary />
     <div style="height: 30px;">
-      <div class="eos-alert-title" id="alert-new-alerts">New alerts</div>
+      <div class="cortx-alert-title" id="alert-new-alerts">New alerts</div>
       <img
         id="alert-zoom"
         :src="require('@/assets/zoom-in.svg')"
-        class="eos-alert-navigate"
+        class="cortx-alert-navigate"
         @click="$router.push('/alerts')"
       />
     </div>
@@ -52,7 +52,7 @@
               :key="header.text"
               :class="[
                 'tableheader',
-                header.sortable ? 'eos-cursor-pointer' : ''
+                header.sortable ? 'cortx-cursor-pointer' : ''
               ]"
               @click="onSort(header)"
             >
@@ -101,34 +101,32 @@
                     props.item.severity === alertStatus.alert
                 "
                 v-bind:title="props.item.severity"
-                class="eos-status-chip eos-chip-alert"
+                class="cortx-status-chip cortx-chip-alert"
               ></div>
               <div
                 style="margin: auto;"
                 v-else-if="props.item.severity === alertStatus.warning"
                 title="warning"
-                class="eos-status-chip eos-chip-warning"
+                class="cortx-status-chip cortx-chip-warning"
               ></div>
               <div
                 style="margin: auto;"
                 v-if="props.item.severity === alertStatus.informational"
                 title="info"
-                class="eos-status-chip eos-chip-information"
+                class="cortx-status-chip cortx-chip-information"
               ></div>
-              <div
-                style="margin: auto;"
-                v-if="
-                  props.item.severity !== alertStatus.informational &&
-                    props.item.severity !== alertStatus.warning &&
-                    (props.item.severity !== alertStatus.critical &&
-                      props.item.severity !== alertStatus.error &&
-                      props.item.severity !== alertStatus.alert)
-                "
-                :title="props.item.severity"
-                class="eos-status-chip eos-chip-others"
-              ></div>
+               <div
+              style="margin: auto;"
+              v-if="(props.item.severity !== alertStatus.informational) 
+              && (props.item.severity !== alertStatus.warning)
+              && (props.item.severity !== alertStatus.critical 
+              && props.item.severity !== alertStatus.error 
+              && props.item.severity !== alertStatus.alert)"
+              :title="props.item.severity"
+              class="cortx-status-chip cortx-chip-others"
+            ></div>
             </td>
-            <td v-eos-alert-tbl-description="props.item"></td>
+            <td v-cortx-alert-tbl-description="props.item"></td>
           </tr>
         </template>
       </v-data-table>
@@ -138,15 +136,15 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
-import EosHealthSummary from "../system/health-summary.vue";
+import CortxHealthSummary from "../system/health-summary.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
 
 @Component({
-  name: "eos-alert-medium",
-  components: { EosHealthSummary },
-  directives: { "eos-alert-tbl-description": alertTblDescriptionDirective }
+  name: "cortx-alert-medium",
+  components: { CortxHealthSummary },
+  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
 })
-export default class EosAlertMedium extends Mixins(AlertsMixin) {
+export default class CortxAlertMedium extends Mixins(AlertsMixin) {
   public async mounted() {
     if (this.alertPageFilter !== "new") {
       this.alertPageFilter = "new";
@@ -192,14 +190,14 @@ export default class EosAlertMedium extends Mixins(AlertsMixin) {
 }
 </script>
 <style lang="scss" scoped>
-.eos-alert-title {
+.cortx-alert-title {
   font-style: normal;
   font-weight: bold;
   font-size: 18px;
   color: rgba(0, 0, 0, 0.87);
   float: left;
 }
-.eos-alert-navigate {
+.cortx-alert-navigate {
   float: right;
   cursor: pointer;
 }

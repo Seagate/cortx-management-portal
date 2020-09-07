@@ -17,9 +17,9 @@
 <template>
   <div id="capacityContainer">
     <div>
-      <div class="eos-text-lg eos-text-bold" id="capacitytext">Capacity</div>
+      <div class="cortx-text-lg cortx-text-bold">Capacity</div>
     </div>
-    <div class="eos-capacity-container" id="gauge_capacity"></div>
+    <div class="cortx-capacity-container" id="gauge_capacity"></div>
     <table class="mt-3" id="capacity-table">
       <tr id="capacity-used">
         <td class="width-25">
@@ -37,7 +37,7 @@
       </tr>
     </table>
 
-    <div class="mt-2 mb-2 eos-capacity-separator"></div>
+    <div class="mt-2 mb-2 cortx-capacity-separator"></div>
     <table class="mt-3" id="capacity-total-table">
       <tr id="capacity-total">
         <td class="width-25">
@@ -54,9 +54,9 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
 import * as c3 from "c3";
 @Component({
-  name: "eos-capacity-gauge"
+  name: "cortx-capacity-gauge"
 })
-export default class EosCapacityGauge extends Vue {
+export default class CortxCapacityGauge extends Vue {
 
   public usedLegendClass = "capacity-used-green";
   public chartDataVal: number;
@@ -130,7 +130,7 @@ export default class EosCapacityGauge extends Vue {
   width: 13px;
   background: rgb(158, 158, 158);
 }
-.eos-capacity-separator {
+.cortx-capacity-separator {
   width: 100%;
   border-top: 1px solid #e3e3e3;
 }
@@ -141,12 +141,12 @@ export default class EosCapacityGauge extends Vue {
   width: 110px;
 }
 @media screen and (min-height: 600px) {
-  .eos-capacity-container {
+  .cortx-capacity-container {
     height: 110px;
   }
 }
 @media screen and (min-height: 900px) {
-  .eos-capacity-container {
+  .cortx-capacity-container {
     height: 180px;
   }
 }

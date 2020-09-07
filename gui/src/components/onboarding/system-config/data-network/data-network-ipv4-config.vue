@@ -19,12 +19,12 @@
     <div class="pl-4 body-2">
       <div class="font-weight-bold mt-5">
         Source:
-        <label class="eos-rdb-container ml-9">
+        <label class="cortx-rdb-container ml-9">
           Manual
           <input type="radio" name="source" v-model="source" value="manual" />
-          <span class="eos-rdb-tick" id="lblIp4Manual"></span>
+          <span class="cortx-rdb-tick" id="lblIp4Manual"></span>
         </label>
-        <label class="eos-rdb-container ml-6">
+        <label class="cortx-rdb-container ml-6">
           DHCP
           <input
             type="radio"
@@ -33,7 +33,7 @@
             value="DHCP"
             id="txtIP4DHCP"
           />
-          <span class="eos-rdb-tick" id="lblIp4DHCP"></span>
+          <span class="cortx-rdb-tick" id="lblIp4DHCP"></span>
         </label>
       </div>
 
@@ -53,13 +53,13 @@
           >
             <div class="mt-5">
               <div
-                class="eos-form-group eos-form-group-custom"
+                class="cortx-form-group cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': node.ip_address.$error
+                  'cortx-form-group--error': node.ip_address.$error
                 }"
               >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4Ipaddress'"
                   :name="node.$model.id + 'ipaddress'"
@@ -67,7 +67,7 @@
                   @input="node.ip_address.$touch"
                   placeholder="XXX.XXX.XXX.XXX"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="node.ip_address.$dirty && !node.ip_address.required"
                     >IP address is required.</label
@@ -116,13 +116,13 @@
             }}</span>
             <v-divider class="mt-2" />
             <div
-              class="eos-form-group eos-form-group-custom mt-3"
+              class="cortx-form-group cortx-form-group-custom mt-3"
               :class="{
-                'eos-form-group--error': node.ip_address.$error
+                'cortx-form-group--error': node.ip_address.$error
               }"
             >
               <input
-                class="eos-form__input_text"
+                class="cortx-form__input_text"
                 type="text"
                 :id="node.$model.id + 'txtDataNetworkIpv4Ipaddress'"
                 :name="node.$model.id + 'ipaddress'"
@@ -130,7 +130,7 @@
                 @input="node.ip_address.$touch"
                 placeholder="XXX.XXX.XXX.XXX"
               />
-              <div class="eos-form-group-label eos-form-group-error-msg">
+              <div class="cortx-form-group-label cortx-form-group-error-msg">
                 <label
                   v-if="node.ip_address.$dirty && !node.ip_address.required"
                   >IP address is required.</label
@@ -151,14 +151,14 @@
             </div>
 
             <div
-              class="eos-form-group eos-form-group-custom mt-3"
+              class="cortx-form-group cortx-form-group-custom mt-3"
               :class="{
-                'eos-form-group--error': node.netmask.$error
+                'cortx-form-group--error': node.netmask.$error
               }"
             >
               <input
                 v-on:change="setNetmask"
-                class="eos-form__input_text"
+                class="cortx-form__input_text"
                 type="text"
                 :id="node.$model.id + 'txtDataNetworkIpv4netmask'"
                 :name="node.$model.id + 'netmask'"
@@ -166,7 +166,7 @@
                 @input="node.netmask.$touch"
                 placeholder="XXX.XXX.XXX.XXX"
               />
-              <div class="eos-form-group-label eos-form-group-error-msg">
+              <div class="cortx-form-group-label cortx-form-group-error-msg">
                 <label v-if="node.netmask.$dirty && !node.netmask.required"
                   >Netmask is required.</label
                 >
@@ -178,14 +178,14 @@
             </div>
 
             <div
-              class="eos-form-group eos-form-group-custom mt-3"
+              class="cortx-form-group cortx-form-group-custom mt-3"
               :class="{
-                'eos-form-group--error': node.gateway.$error
+                'cortx-form-group--error': node.gateway.$error
               }"
             >
               <input
                 v-on:change="setGateway"
-                class="eos-form__input_text"
+                class="cortx-form__input_text"
                 type="text"
                 :id="node.$model.id + 'txtDataNetworkIpv4Gateway'"
                 :name="node.$model.id + 'gateway'"
@@ -193,7 +193,7 @@
                 @input="node.gateway.$touch"
                 placeholder="XXX.XXX.XXX.XXX"
               />
-              <div class="eos-form-group-label eos-form-group-error-msg">
+              <div class="cortx-form-group-label cortx-form-group-error-msg">
                 <label v-if="node.gateway.$dirty && !node.gateway.ipAddress"
                   >Invalid gateway.</label
                 >
@@ -209,7 +209,7 @@
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"
       @click="applySettings()"
-      class="eos-btn-primary eos-float-l my-10"
+      class="cortx-btn-primary cortx-float-l my-10"
     >
       Apply
     </button>
@@ -231,9 +231,9 @@ import {
 } from "vuelidate/lib/validators";
 import { EVENT_BUS } from "./../../../../main";
 @Component({
-  name: "eos-data-network-ipv4-config"
+  name: "cortx-data-network-ipv4-config"
 })
-export default class EosDataNetworkIpv4Config extends Vue {
+export default class CortxDataNetworkIpv4Config extends Vue {
   @Validations()
   private validations = {
     ipv4Nodes: {

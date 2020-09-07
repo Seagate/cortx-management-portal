@@ -16,36 +16,36 @@
 */
 <template>
   <div>
-    <eos-tabs :tabsInfo="tabsInfo" />
-    <eos-has-access
-      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+    <cortx-tabs :tabsInfo="tabsInfo" />
+    <cortx-has-access
+      :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list"
     >
       <S3Account v-if="showAccountTab" />
-    </eos-has-access>
-    <eos-has-access
-      :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+    </cortx-has-access>
+    <cortx-has-access
+      :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
     >
       <IAMUser v-if="showIAMUserTab" />
-    </eos-has-access>
-    <eos-has-access
-      :to="$eosUserPermissions.s3buckets + $eosUserPermissions.list"
+    </cortx-has-access>
+    <cortx-has-access
+      :to="$cortxUserPermissions.s3buckets + $cortxUserPermissions.list"
     >
       <S3Bucket v-if="showBucketTab" />
-    </eos-has-access>
+    </cortx-has-access>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import EosTabs, { TabsInfo } from "../widgets/eos-tabs.vue";
+import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
 import S3Account from "./account-management.vue";
 import IAMUser from "./iam-user-management.vue";
 import S3Bucket from "./bucket-creation.vue";
 
 @Component({
-  name: "eos-s3-management",
-  components: { EosTabs, S3Account, IAMUser, S3Bucket }
+  name: "cortx-s3-management",
+  components: { CortxTabs, S3Account, IAMUser, S3Bucket }
 })
-export default class EosS3Management extends Vue {
+export default class CortxS3Management extends Vue {
   public tabsInfo: TabsInfo = {
     tabs: [
       {
@@ -86,8 +86,8 @@ export default class EosS3Management extends Vue {
     const vueInstance: any = this;
     this.tabsInfo.tabs = this.tabsInfo.tabs.map((tab: any) => {
       tab.show = vueInstance.$hasAccessToCsm(
-        vueInstance.$eosUserPermissions[tab.requiredAccess] +
-          vueInstance.$eosUserPermissions.list
+        vueInstance.$cortxUserPermissions[tab.requiredAccess] +
+          vueInstance.$cortxUserPermissions.list
       );
       return tab;
     });

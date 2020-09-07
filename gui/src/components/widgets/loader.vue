@@ -34,9 +34,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-loader"
+  name: "cortx-loader"
 })
-export default class EosLoader extends Vue {
+export default class CortxLoader extends Vue {
   @Prop({ required: true })
   public show!: boolean;
 

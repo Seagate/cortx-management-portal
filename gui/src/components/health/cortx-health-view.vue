@@ -16,36 +16,36 @@
 */
 <template>
   <div class="pa-5">
-    <div class="eos-text-lg eos-text-bold pr-2">Health View</div>
+    <div class="cortx-text-lg cortx-text-bold pr-2">Health View</div>
     <div>
-      <div class="eos-health-summary-container">
-        <div class="eos-text-lg eos-float-l eos-text-bold">{{componentName}}</div>
+      <div class="cortx-health-summary-container">
+        <div class="cortx-text-lg cortx-float-l cortx-text-bold">{{componentName}}</div>
         <div
-          class="eos-summary-chip eos-float-l eos-chip-ok ml-2"
+          class="cortx-summary-chip cortx-float-l cortx-chip-ok ml-2"
           v-if="healthSummary.good && healthSummary.good > 0"
         >
           <div class="summary-count">
             <label
-              class="eos-text-sm"
+              class="cortx-text-sm"
             >{{ healthSummary.good?healthSummary.good:0 }}</label>
           </div>
         </div>
         <div
-          class="eos-summary-chip eos-float-l eos-chip-warning ml-2"
+          class="cortx-summary-chip cortx-float-l cortx-chip-warning ml-2"
           v-if="healthSummary.warning && healthSummary.warning > 0">
           <div class="summary-count">
             <label
-              class="eos-text-sm"
+              class="cortx-text-sm"
             >{{ healthSummary.warning?healthSummary.warning:0 }}</label>
           </div>
         </div>
         <div
-          class="eos-summary-chip eos-float-l eos-chip-alert ml-2"
+          class="cortx-summary-chip cortx-float-l cortx-chip-alert ml-2"
           v-if="healthSummary.critical && healthSummary.critical > 0"
         >
           <div class="summary-count">
             <label
-              class="eos-text-sm"
+              class="cortx-text-sm"
             >{{ healthSummary.critical?healthSummary.critical:0 }}</label>
           </div>
         </div>
@@ -56,7 +56,7 @@
       calculate-widths
       :items="healthComponentData"
       item-key="component_id"
-      class="eos-table"
+      class="cortx-table"
       hide-default-header
       id="tblHealthLarge"
       height="400"
@@ -72,7 +72,7 @@
             :key="header.text"
             :class="[
               'tableheader',
-              header.sortable ? 'eos-cursor-pointer' : ''
+              header.sortable ? 'cortx-cursor-pointer' : ''
             ]"
           >
             <span>{{ header.text }}</span>
@@ -88,7 +88,7 @@
               v-if="
                props.item.health === 'OK' || props.item.health === 'NA'
               "
-              class="eos-status-chip eos-chip-ok"
+              class="cortx-status-chip cortx-chip-ok"
               v-bind:title="props.item.health"
             ></div>
             <div
@@ -118,7 +118,7 @@
             <img
              id="healthview-zoomicon"
               :src="require('@/assets/zoom-in.svg')"
-              class="eos-cursor-pointer"
+              class="cortx-cursor-pointer"
               @click="$router.push({ path: `healthview/${props.item.alert_uuid}`, query: { nodeId: componentName, source: 'healthView'}})"
             />
            </td>
@@ -137,9 +137,9 @@ import apiRegister from "./../../services/api-register";
 import { AlertQueryParam, AlertObject } from "./../../models/alert";
 import { HealthSummary } from "../../models/system";
 @Component({
-  name: "eos-health-view"
+  name: "cortx-health-view"
 })
-export default class EosHealthView extends Vue {
+export default class CortxHealthView extends Vue {
   public alertTableHeaders: any = [
     {
       text: "Component Id",
@@ -213,13 +213,13 @@ export default class EosHealthView extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.eos-health-summary-container {
+.cortx-health-summary-container {
   height: 1.875em;
 }
-.eos-health-summary-container {
+.cortx-health-summary-container {
   height: 1.875em;
 }
-.eos-summary-chip {
+.cortx-summary-chip {
   display: flex;
   min-height: 16px;
   min-width: 16px;

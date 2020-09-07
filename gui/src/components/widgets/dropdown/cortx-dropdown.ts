@@ -14,7 +14,9 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export interface EosDropdownOption {
-    label: string;
-    value: any;
-}
+import CortxDropdown from "./cortx-dropdown-view.vue";
+import { CortxDropdownOption } from "./cortx-dropdown-model";
+
+export {
+    CortxDropdown, CortxDropdownOption
+};
