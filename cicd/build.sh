@@ -150,10 +150,8 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     UI_BUILD_START_TIME=$(date +%s)
     echo "Running UI Build"
     # update .env file
-    cp -R $BASE_DIR/gui/.env $DIST/.env
     sed -i '/#/!s/\(VUE_APP_BRANDNAME[[:space:]]*=[[:space:]]*\)\(.*\)/\1"'$BRAND'"/' $BASE_DIR/gui/.env
-    cp -R $BASE_DIR/gui/.env $GUI_DIR/gui/.env
-    cp -R $GUI_DIR/gui/.env $GUI_DIR/gui/ui-dist
+    cp -R $BASE_DIR/gui/.env $GUI_DIR/gui/ui-dist
     cd $BASE_DIR/gui
     # if branadh path is valid, copy branding all files
     if [[ $BRANDPATH ]]; then
