@@ -25,19 +25,19 @@
       </div>
     </div>
     <v-divider class="mt-2" />
-    <eosDnsSettingConfig />
+    <cortxDnsSettingConfig />
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosDnsSettingConfig from "./dns-setting-config.vue";
+import CortxDnsSettingConfig from "./dns-setting-config.vue";
 
 @Component({
-  name: "eos-dns-setting",
+  name: "cortx-dns-setting",
   components: {
-    eosDnsSettingConfig: EosDnsSettingConfig
+    cortxDnsSettingConfig: CortxDnsSettingConfig
   }
 })
-export default class EosDnsSetting extends Vue {}
+export default class CortxDnsSetting extends Vue {}
 </script>
 <style lang="scss" scoped></style>

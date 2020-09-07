@@ -15,38 +15,38 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2 body-2">
-    <div class="eos-text-lg mt-2 font-weight-bold" id="lblDTSetDateTime">
+  <div class="cortx-p-2 body-2">
+    <div class="cortx-text-lg mt-2 font-weight-bold" id="lblDTSetDateTime">
       Network time protocol (NTP) settings
     </div>
     <div class="mt-3" id="lblMandatoryMsg">
       Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
-    <eosDateTimeConfig @apply-settings="applySettingsConfirmation" />
-    <eos-confirmation-dialog
+    <cortxDateTimeConfig @apply-settings="applySettingsConfirmation" />
+    <cortx-confirmation-dialog
       :show="showConfirmDialog"
       message="Are you sure you want to apply the settings?"
       severity="warning"
       @closeDialog="applySettings"
       confirmButtonText="Apply"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosDateTimeConfig from "../onboarding/system-config/date-time/date-time-config.vue";
+import CortxDateTimeConfig from "../onboarding/system-config/date-time/date-time-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-date-time",
+  name: "cortx-date-time",
   components: {
-    eosDateTimeConfig: EosDateTimeConfig
+    cortxDateTimeConfig: CortxDateTimeConfig
   }
 })
-export default class EosNtpSetting extends Vue {
+export default class CortxNtpSetting extends Vue {
   private data() {
     return {
       sysconfigData: {},

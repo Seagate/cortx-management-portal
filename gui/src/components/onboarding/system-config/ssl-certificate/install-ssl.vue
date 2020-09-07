@@ -20,12 +20,12 @@
       :disabled="!installStatus"
       id="btnInstallFirmware"
       type="button"
-      class="eos-btn-primary"
+      class="cortx-btn-primary"
       @click="openConfirmDialog()"
     >
       Install certificate
     </button>
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       id="ssl-dialogbox"
       :show="showConfirmDialog"
       title="Confirmation"
@@ -33,7 +33,7 @@
       severity="warning"
       @closeDialog="closeConfirmDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </v-container>
 </template>
 <script lang="ts">
@@ -48,9 +48,9 @@ import { EVENT_BUS } from "./../../../../main";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers } from "vuelidate/lib/validators";
 @Component({
-  name: "eos-install-ssl"
+  name: "cortx-install-ssl"
 })
-export default class EOSInstallSSL extends Vue {
+export default class CortxInstallSSL extends Vue {
   @Prop({ required: true })
   public installStatus: any;
   private showConfirmDialog: boolean;

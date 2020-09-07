@@ -19,7 +19,7 @@
     <div class="d-flex justify-space-between align-center">
       <label
         id="iam-accesskey-datatable-title"
-        class="eos-text-lg font-weight-bold"
+        class="cortx-text-lg font-weight-bold"
         ><span v-if="userNameIAM">
           {{
             $t("s3.access-key.iam-table-title", { userNameIAM })
@@ -29,7 +29,7 @@
       <button
         type="button"
         id="iam-accesskey-add-btn"
-        class="eos-btn-primary "
+        class="cortx-btn-primary "
         @click="createAccessKey()"
         :disabled="accessKeyList.length >= MAX_ACCESS_KEYS || !this.userNameIAM"
       >
@@ -37,15 +37,15 @@
       </button>
     </div>
 
-    <eos-has-access
-      :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+    <cortx-has-access
+      :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
     >
       <v-data-table
         id="iam-accesskey-datatable"
         :headers="accessKeyTableHeaderList"
         :items="accessKeyList"
         item-key="access_key_id"
-        class="eos-table"
+        class="cortx-table"
         :hide-default-header="true"
         :hide-default-footer="true"
         :disable-pagination="true"
@@ -70,32 +70,32 @@
               XXXX
             </td>
             <td>
-              <eos-has-access
+              <cortx-has-access
                 class="mx-2"
                 :to="
-                  $eosUserPermissions.s3iamusers + $eosUserPermissions.delete
+                  $cortxUserPermissions.s3iamusers + $cortxUserPermissions.delete
                 "
               >
                 <img
                   :id="'iam-accesskey-datatable-delete-' + item.access_key_id"
                   @click="openConfirmDeleteDialog(item.access_key_id)"
-                  class="eos-cursor-pointer"
+                  class="cortx-cursor-pointer"
                   src="@/assets/actions/delete-green.svg"
                 />
-              </eos-has-access>
+              </cortx-has-access>
             </td></tr
         ></template>
       </v-data-table>
-    </eos-has-access>
+    </cortx-has-access>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmDeleteDialog"
       :title="$t('common.confirm-dialog.title')"
       :message="confirmDeleteDialogMessage"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
     <cortx-download-csv-dialog
       :show="showAccessKeyDetailsDialog"
       :title="$t('s3.download-csv-dialog.created')"

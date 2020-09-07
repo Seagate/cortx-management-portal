@@ -15,15 +15,48 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <router-view class="eos-p-1"></router-view>
+  <div>
+    <header-bar />
+    <div class="header-margin" v-if="isRouterPathOnboading">
+      <router-view></router-view>
+    </div>
+    <div v-else>
+      <cortx-nav-bar />
+      <div class="header-margin navbar-margin">
+        <router-view></router-view>
+      </div>
+    </div>
+    <CortxMessageDialog />
+  </div>
 </template>
- <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import HeaderBar from "./header/header-bar.vue";
+import CortxNavBar from "./navigation/nav-bar.vue";
+import { SystemConfigObject } from "../models/system-configuration";
+import CortxMessageDialog from "./widgets/cortx-message-dialog.vue";
 
 @Component({
-  name: "eos-provisioning"
+  name: "Default",
+  components: {
+    HeaderBar,
+    CortxNavBar,
+    CortxMessageDialog
+  }
 })
-export default class EosProvisioning extends Vue {}
+export default class CortxDefault extends Vue {
+  get isRouterPathOnboading() {
+    return this.$route.name === "onboarding";
+  }
+}
 </script>
+
 <style lang="scss" scoped>
+.header-margin {
+  margin-top: 3em;
+}
+.navbar-margin {
+  margin-left: 8.75em;
+}
 </style>

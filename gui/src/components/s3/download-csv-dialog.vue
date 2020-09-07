@@ -22,7 +22,7 @@
         <v-icon
           id="download-csv-dialog-cancel-btn"
           @click="closeAccountDetailsDialog()"
-          class="eos-cursor-pointer"
+          class="cortx-cursor-pointer"
           >mdi-close</v-icon
         >
       </v-system-bar>
@@ -34,19 +34,19 @@
 
       <div class="mt-2 pl-7 dialog-message-container">
         <img
-          class="eos-float-l mr-1"
+          class="cortx-float-l mr-1"
           :src="require('@/assets/actions/warning-orange.svg')"
         />
         <span
-          class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
+          class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
           >{{ $t("s3.download-csv-dialog.message") }}</span
         >
       </div>
 
-      <table class="mt-2 ml-7 eos-text-md">
+      <table class="mt-2 ml-7 cortx-text-md">
         <template v-for="[item, value] in Object.entries(tableContent)">
           <tr :key="item">
-            <td class="py-2 eos-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label">
               {{ item }}
             </td>
             <td class="py-2">{{ value }}</td>
@@ -57,7 +57,7 @@
       <v-card-actions>
         <a
           id="download-csv-dialog-btn"
-          class="ma-5 eos-btn-primary eos-download-csv-link"
+          class="ma-5 cortx-btn-primary cortx-download-csv-link"
           :href="credentialsFileContent"
           download="credentials.csv"
           @click="isCredentialsFileDownloaded = true"
@@ -67,7 +67,7 @@
           id="download-csv-dialog-ok-btn"
           :disabled="!isCredentialsFileDownloaded"
           type="button"
-          class="ma-5 eos-btn-primary"
+          class="ma-5 cortx-btn-primary"
           @click="closeAccountDetailsDialog()"
         >
           Ok
@@ -163,7 +163,7 @@ tbody tr:active {
   color: #000;
   font-size: 16px;
 }
-.eos-download-csv-link {
+.cortx-download-csv-link {
   text-decoration: none;
   display: inline-block;
   padding-top: 10px;

@@ -15,15 +15,15 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <router-view class="eos-p-2"></router-view>
+  <router-view class="cortx-p-2"></router-view>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-health"
+  name: "cortx-provisioning"
 })
-export default class EosHealth extends Vue {}
+export default class CortxProvisioning extends Vue {}
 </script>
 <style lang="scss" scoped>
 </style>

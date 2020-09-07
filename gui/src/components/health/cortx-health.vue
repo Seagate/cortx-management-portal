@@ -15,39 +15,15 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <span class="d-flex">
-    {{ label }}
-    <v-tooltip right max-width="305">
-      <template v-slot:activator="{ on }">
-        <img
-          class="eos-info-icon"
-          v-on="on"
-          :src="require('@/assets/actions/info-green.svg')"
-        />
-      </template>
-      <span>{{ message }}</span>
-    </v-tooltip>
-  </span>
+  <router-view class="cortx-p-2"></router-view>
 </template>
-
-<script lang="ts">
+ <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-info-tooltip"
+  name: "cortx-health"
 })
-export default class EosInfoTooltip extends Vue {
-  @Prop({ required: false })
-  public label!: string;
-
-  @Prop({ required: false })
-  public message!: string;
-}
+export default class CortxHealth extends Vue {}
 </script>
 <style lang="scss" scoped>
-.eos-info-icon {
-  cursor: pointer;
-  height: 20px;
-  padding-bottom: 2px;
-}
 </style>

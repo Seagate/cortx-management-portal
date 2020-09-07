@@ -15,48 +15,15 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
-    <header-bar />
-    <div class="header-margin" v-if="isRouterPathOnboading">
-      <router-view></router-view>
-    </div>
-    <div v-else>
-      <eos-nav-bar />
-      <div class="header-margin navbar-margin">
-        <router-view></router-view>
-      </div>
-    </div>
-    <EOSMessageDialog />
-  </div>
+  <router-view></router-view>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import HeaderBar from "./header/header-bar.vue";
-import EosNavBar from "./navigation/nav-bar.vue";
-import { SystemConfigObject } from "../models/system-configuration";
-import EOSMessageDialog from "./widgets/eos-message-dialog.vue";
+ <script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "Default",
-  components: {
-    HeaderBar,
-    EosNavBar,
-    EOSMessageDialog
-  }
+  name: "cortx-preboarding"
 })
-export default class EosDefault extends Vue {
-  get isRouterPathOnboading() {
-    return this.$route.name === "onboarding";
-  }
-}
+export default class CortxPreboarding extends Vue {}
 </script>
-
 <style lang="scss" scoped>
-.header-margin {
-  margin-top: 3.1em;
-}
-.navbar-margin {
-  margin-left: 8.75em;
-}
 </style>

@@ -15,20 +15,39 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <eos-alert-details />
+  <span class="d-flex">
+    {{ label }}
+    <v-tooltip right max-width="305">
+      <template v-slot:activator="{ on }">
+        <img
+          class="cortx-info-icon"
+          v-on="on"
+          :src="require('@/assets/actions/info-green.svg')"
+        />
+      </template>
+      <span>{{ message }}</span>
+    </v-tooltip>
+  </span>
 </template>
- <script lang="ts">
+
+<script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Api } from "./../../services/api";
-import apiRegister from "./../../services/api-register";
-import { AlertObject } from "../../models/alert";
-import EosAlertDetails from "./../alerts/alert-details.vue";
 
 @Component({
-  name: "eos-health-alert-details",
-  components: { EosAlertDetails }
+  name: "cortx-info-tooltip"
 })
-export default class EosHealthAlertDetails extends Vue {}
+export default class CortxInfoTooltip extends Vue {
+  @Prop({ required: false })
+  public label!: string;
+
+  @Prop({ required: false })
+  public message!: string;
+}
 </script>
 <style lang="scss" scoped>
+.cortx-info-icon {
+  cursor: pointer;
+  height: 20px;
+  padding-bottom: 2px;
+}
 </style>

@@ -1,26 +1,26 @@
 /*
- * CORTX-CSM: CORTX Management web and CLI interface.
- * Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- * For any questions about this software or licensing,
- * please email opensource@seagate.com or cortx-questions@seagate.com.
- */
+* CORTX-CSM: CORTX Management web and CLI interface.
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing,
+* please email opensource@seagate.com or cortx-questions@seagate.com.
+*/
 <template>
   <div class="mt-7">
     <div class="d-flex justify-end">
       <button
         type="button"
         id="s3-accesskey-add-btn"
-        class="eos-btn-primary "
+        class="cortx-btn-primary "
         @click="createAccessKey()"
         :disabled="accessKeyList.length >= MAX_ACCESS_KEYS"
       >
@@ -28,15 +28,15 @@
       </button>
     </div>
 
-    <eos-has-access
-      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+    <cortx-has-access
+      :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list"
     >
       <v-data-table
         id="s3-accesskey-datatable"
         :headers="accessKeyTableHeaderList"
         :items="accessKeyList"
         item-key="access_key_id"
-        class="eos-table"
+        class="cortx-table"
         :hide-default-header="true"
         :hide-default-footer="true"
         :disable-pagination="true"
@@ -61,32 +61,39 @@
               XXXX
             </td>
             <td>
-              <eos-has-access
+              <span v-if="item.last_used">{{
+                new Date(item.last_used * 1000) | timeago
+              }}</span>
+              <span v-else>--</span>
+            </td>
+            <td>
+              <cortx-has-access
                 class="mx-2"
                 :to="
-                  $eosUserPermissions.s3accounts + $eosUserPermissions.delete
+                  $cortxUserPermissions.s3accounts +
+                    $cortxUserPermissions.delete
                 "
               >
                 <img
                   :id="'s3-accesskey-datatable-delete-' + item.access_key_id"
                   @click="openConfirmDeleteDialog(item.access_key_id)"
-                  class="eos-cursor-pointer"
+                  class="cortx-cursor-pointer"
                   src="@/assets/actions/delete-green.svg"
                 />
-              </eos-has-access>
+              </cortx-has-access>
             </td></tr
         ></template>
       </v-data-table>
-    </eos-has-access>
+    </cortx-has-access>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmDeleteDialog"
       :title="$t('common.confirm-dialog.title')"
       :message="confirmDeleteDialogMessage"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
     <cortx-download-csv-dialog
       :show="showAccessKeyDetailsDialog"
       :title="$t('s3.download-csv-dialog.created')"
