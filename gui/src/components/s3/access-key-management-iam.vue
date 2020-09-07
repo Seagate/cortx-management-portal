@@ -19,7 +19,7 @@
     <div class="d-flex justify-space-between align-center">
       <label
         id="iam-accesskey-datatable-title"
-        class="cortx-text-lg font-weight-bold"
+        class="cortx-text-lg font-weight-bold ml-2"
         ><span v-if="userNameIAM">
           {{
             $t("s3.access-key.iam-table-title", { userNameIAM })

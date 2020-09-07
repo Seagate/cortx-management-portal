@@ -49,23 +49,15 @@
                 :class="{
                   'grey lighten-3': props.item.user_name === selectedIAMUser
                 }"
-              >
-                <td
-                  @click.stop="handleRowClick(props.item)"
                   class="cortx-cursor-pointer"
                 >
+                <td @click.stop="handleRowClick(props.item)">
                   {{ props.item.user_name }}
                 </td>
-                <td
-                  @click.stop="handleRowClick(props.item)"
-                  class="cortx-cursor-pointer"
-                >
+                <td @click.stop="handleRowClick(props.item)">
                   {{ props.item.user_id }}
                 </td>
-                <td
-                  @click.stop="handleRowClick(props.item)"
-                  class="cortx-cursor-pointer"
-                >
+                <td @click.stop="handleRowClick(props.item)">
                   {{ props.item.arn }}
                 </td>
                 <td>

@@ -67,10 +67,10 @@
           </v-data-table>
         </cortx-has-access>
       </v-col>
-      <v-col class="pb-0 col-3">
+      <v-col class="py-0 col-3">
         <div v-if="showCreateBucketForm" class="pa-2">
           <v-row>
-            <v-col class="py-0 pr-0">
+            <v-col class="pr-0 pb-0">
               <div
                 class="cortx-form-group-custom"
                 :class="{
@@ -145,7 +145,7 @@
           <button
             id="bucket-addbucket-formbtn"
             type="button"
-            class="cortx-btn-primary"
+            class="mt-4 cortx-btn-primary"
             v-if="!showCreateBucketForm"
             @click="openCreateBucketForm()"
           >
