@@ -96,7 +96,7 @@
                 props.item.severity === alertStatus.informational ||
                   props.item.severity === 'NA' || props.item.severity === ''
               "
-              class="eos-status-chip eos-chip-warning"
+              class="cortx-status-chip cortx-chip-warning"
               title="warning"
             ></div>
             <div
@@ -104,12 +104,12 @@
                 props.item.severity === alertStatus.critical ||
                   props.item.severity === alertStatus.error
               "
-              class="eos-status-chip eos-chip-alert"
+              class="cortx-status-chip cortx-chip-alert"
               v-bind:title="props.item.severity"
             ></div>
             <div
               v-else-if="props.item.severity === alertStatus.warning"
-              class="eos-status-chip eos-chip-warning"
+              class="cortx-status-chip cortx-chip-warning"
               v-bind:title="props.item.severity"
             ></div>
 
