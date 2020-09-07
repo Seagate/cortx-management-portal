@@ -17,13 +17,13 @@
 <template>
   <div class="body-2">
     <div class="title mt-2 font-weight-bold" id="lblLocalSetting">
-     {{ $t("csmuser.user-setting-label") }}
+      {{ $t("csmuser.user-setting-label") }}
     </div>
     <div class="mt-1" id="lblLocalMsgConfig">
-     {{ $t("csmuser.manage-user-text") }}
+      {{ $t("csmuser.manage-user-text") }}
     </div>
     <div class="mt-1">
-     {{ $t("csmuser.role-text") }}
+      {{ $t("csmuser.role-text") }}
     </div>
     <div class="mt-1">
       {{ $t("csmuser.note-label") }}
@@ -50,7 +50,8 @@
                   :key="header.text"
                   class="tableheader"
                 >
-                  <span id="localuser-tableheading"
+                  <span
+                    id="localuser-tableheading"
                     class="headerText"
                     :class="
                       header.value === sortColumnName && isSortActive
@@ -114,7 +115,9 @@
                         :src="require('@/assets/actions/email.svg/')"
                       />
                     </template>
-                    <span id="localuser-emailnotification">{{ $t("csmuser.email-notification") }}</span>
+                    <span id="localuser-emailnotification">{{
+                      $t("csmuser.email-notification")
+                    }}</span>
                   </v-tooltip>
                 </td>
                 <td id="localuser-email">
@@ -161,7 +164,7 @@
                         src="./../../../../assets/actions/delete-green.svg"
                       />
                       <img
-                      id="localuser-deleteadmin"
+                        id="localuser-deleteadmin"
                         v-if="
                           strEqualityCaseInsensitive(
                             props.item.username,
@@ -204,7 +207,11 @@
                   'eos-form-group--error': $v.createAccount.username.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Username" id="lblusername">
+                <label
+                  class="eos-form-group-label"
+                  for="Username"
+                  id="lblusername"
+                >
                   <eos-info-tooltip
                     label="Username*"
                     :message="usernameTooltipMessage"
@@ -220,7 +227,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                  id="localusername-required"
+                    id="localusername-required"
                     v-if="
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.required
@@ -228,7 +235,7 @@
                     >{{ $t("csmuser.username-required") }}</label
                   >
                   <label
-                  id="localuser-invalid"
+                    id="localuser-invalid"
                     v-else-if="
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.accountNameRegex
@@ -245,7 +252,12 @@
                   'eos-form-group--error': $v.createAccount.email.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Email" id="localuseremaillbl">{{ $t("csmuser.email") }}</label>
+                <label
+                  class="eos-form-group-label"
+                  for="Email"
+                  id="localuseremaillbl"
+                  >{{ $t("csmuser.email") }}</label
+                >
                 <input
                   class="eos-form__input_text"
                   type="email"
@@ -257,7 +269,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                  id="localuser-email-required"
+                    id="localuser-email-required"
                     v-if="
                       $v.createAccount.email.$dirty &&
                         !$v.createAccount.email.required
@@ -265,7 +277,7 @@
                     >{{ $t("csmuser.email-required") }}</label
                   >
                   <label
-                  id="localuser-email-invalid"
+                    id="localuser-email-invalid"
                     v-else-if="
                       $v.createAccount.email.$dirty &&
                         !$v.createAccount.email.email
@@ -284,7 +296,11 @@
                   'eos-form-group--error': $v.createAccount.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password" id="localuser-passwordlbl">
+                <label
+                  class="eos-form-group-label"
+                  for="password"
+                  id="localuser-passwordlbl"
+                >
                   <eos-info-tooltip
                     :label="$t('csmuser.password')"
                     :message="passwordTooltipMessage"
@@ -300,7 +316,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                  id="localuser-password-required"
+                    id="localuser-password-required"
                     v-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.required
@@ -308,7 +324,7 @@
                     >{{ $t("csmuser.password-required") }}</label
                   >
                   <label
-                  id="localuser-password-invalid"
+                    id="localuser-password-invalid"
                     v-else-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.passwordRegex
@@ -326,7 +342,10 @@
                     $v.createAccount.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password" id="localuser-confirmpasslbl"
+                <label
+                  class="eos-form-group-label"
+                  for="password"
+                  id="localuser-confirmpasslbl"
                   >{{ $t("csmuser.confirm-password") }}*</label
                 >
                 <input
@@ -339,7 +358,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                  id="localuser-confirmpassword-notmatch"
+                    id="localuser-confirmpassword-notmatch"
                     v-if="
                       $v.createAccount.confirmPassword.$dirty &&
                         !$v.createAccount.confirmPassword.sameAsPassword
@@ -354,7 +373,7 @@
             <div>{{ $t("csmuser.roles") }}</div>
             <v-col class="pt-0 col-2">
               <label class="eos-rdb-container" id="localuser-managelbl">
-                  {{ $t("csmuser.manage") }}
+                {{ $t("csmuser.manage") }}
                 <input
                   type="radio"
                   v-model="checkedRoles"
@@ -403,7 +422,7 @@
                 id="btnLocalCreateUser"
                 :disabled="$v.createAccount.$invalid || !checkedRoles"
               >
-                 {{ $t("csmuser.create-user") }}
+                {{ $t("csmuser.create-user") }}
               </button>
               <button
                 v-if="isUserCreate"
@@ -412,7 +431,7 @@
                 @click="onAddNewUser()"
                 id="lblLocalCancel"
               >
-                 {{ $t("csmuser.cancel-user") }}
+                {{ $t("csmuser.cancel-user") }}
               </button>
             </v-col>
           </v-row>
@@ -421,7 +440,13 @@
         <div v-if="isUserEdit">
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
-              <label class="eos-form-group-label" for="Email" id="localuser-editusernamelbl"> {{ $t("csmuser.username") }}</label>
+              <label
+                class="eos-form-group-label"
+                for="Email"
+                id="localuser-editusernamelbl"
+              >
+                {{ $t("csmuser.username") }}</label
+              >
               <input
                 class="eos-form__input_text"
                 type="text"
@@ -438,7 +463,12 @@
                   'eos-form-group--error': $v.selectedItem.email.$error
                 }"
               >
-                <label class="eos-form-group-label" for="Email" id="localuser-editemaillbl">{{ $t("csmuser.email") }}</label>
+                <label
+                  class="eos-form-group-label"
+                  for="Email"
+                  id="localuser-editemaillbl"
+                  >{{ $t("csmuser.email") }}</label
+                >
                 <input
                   class="eos-form__input_text"
                   type="email"
@@ -450,7 +480,7 @@
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
                   <label
-                  id="localuser-editmail-required"
+                    id="localuser-editmail-required"
                     v-if="
                       $v.selectedItem.email.$dirty &&
                         !$v.selectedItem.email.required
@@ -458,7 +488,7 @@
                     >{{ $t("csmuser.email-required") }}</label
                   >
                   <label
-                  id="localuser-editemail-invalid"
+                    id="localuser-editemail-invalid"
                     v-else-if="
                       $v.selectedItem.email.$dirty &&
                         !$v.selectedItem.email.email
@@ -470,71 +500,96 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col class="pl-5 pb-0 col-6">
-              <div
-                class="eos-form-group-custom"
-                :class="{
-                  'eos-form-group--error': $v.selectedItem.password.$error
-                }"
-              >
-                <label class="eos-form-group-label" for="password" id="localuser-editpasslbl">
-                  <eos-info-tooltip
-                    label="New password*"
-                    :message="passwordTooltipMessage"
-                  />
-                </label>
-                <input
-                  class="eos-form__input_text"
-                  type="password"
-                  name="txtEditNewPassword"
-                  v-model.trim="selectedItem.password"
-                  @input="$v.selectedItem.password.$touch"
-                  id="txtLocalPass"
-                />
-                <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label id="localuser-editpass-required"
-                    v-if="
-                      $v.selectedItem.password.$dirty &&
-                        !$v.selectedItem.password.passwordRegex
-                    "
-                    >{{ $t("csmuser.password-invalid") }}</label
-                  >
-                </div>
-              </div>
-            </v-col>
-            <v-col class="pl-5 pb-0 col-6">
-              <div
-                class="eos-form-group-custom"
-                :class="{
-                  'eos-form-group--error':
-                    $v.selectedItem.confirmPassword.$error
-                }"
-              >
-                <label class="eos-form-group-label" for="password" id="localuser-editconfirmpasslbl"
-                  >{{ $t("csmuser.confirm-password") }}</label
+            <v-expansion-panels class="ml-5 mr-4 mt-3">
+              <v-expansion-panel>
+                <v-expansion-panel-header class="pl-3"
+                  >Change password</v-expansion-panel-header
                 >
-                <input
-                  class="eos-form__input_text"
-                  type="password"
-                  name="txtEditConfirmPassword"
-                  v-model="selectedItem.confirmPassword"
-                  id="txtLocalConfirmNewPass"
-                  @input="$v.selectedItem.confirmPassword.$touch"
-                />
-                <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label  id="localuser-editconfirmpass-notmatch"
-                    v-if="
-                      $v.selectedItem.confirmPassword.$dirty &&
-                        !$v.selectedItem.confirmPassword.sameAsPassword
-                    "
-                    >{{ $t("csmuser.confirm-password-invalid") }}</label
-                  >
-                </div>
-              </div>
-            </v-col>
+                <v-expansion-panel-content>
+                  <v-row>
+                    <v-col class="pb-0 col-6">
+                      <div
+                        class="eos-form-group-custom"
+                        :class="{
+                          'eos-form-group--error':
+                            $v.selectedItem.password.$error
+                        }"
+                      >
+                        <label
+                          class="eos-form-group-label"
+                          for="password"
+                          id="localuser-editpasslbl"
+                        >
+                          <eos-info-tooltip
+                            label="New password"
+                            :message="passwordTooltipMessage"
+                          />
+                        </label>
+                        <input
+                          class="eos-form__input_text"
+                          type="password"
+                          name="txtEditNewPassword"
+                          v-model.trim="selectedItem.password"
+                          @input="$v.selectedItem.password.$touch"
+                          id="txtLocalPass"
+                        />
+                        <div
+                          class="eos-form-group-label eos-form-group-error-msg"
+                        >
+                          <label
+                            id="localuser-editpass-required"
+                            v-if="
+                              $v.selectedItem.password.$dirty &&
+                                !$v.selectedItem.password.passwordRegex
+                            "
+                            >{{ $t("csmuser.password-invalid") }}</label
+                          >
+                        </div>
+                      </div>
+                    </v-col>
+                    <v-col class="pb-0 col-6">
+                      <div
+                        class="eos-form-group-custom"
+                        :class="{
+                          'eos-form-group--error':
+                            $v.selectedItem.confirmPassword.$error
+                        }"
+                      >
+                        <label
+                          class="eos-form-group-label"
+                          for="password"
+                          id="localuser-editconfirmpasslbl"
+                          >{{ $t("csmuser.confirm-password") }}</label
+                        >
+                        <input
+                          class="eos-form__input_text"
+                          type="password"
+                          name="txtEditConfirmPassword"
+                          v-model="selectedItem.confirmPassword"
+                          id="txtLocalConfirmNewPass"
+                          @input="$v.selectedItem.confirmPassword.$touch"
+                        />
+                        <div
+                          class="eos-form-group-label eos-form-group-error-msg"
+                        >
+                          <label
+                            id="localuser-editconfirmpass-notmatch"
+                            v-if="
+                              $v.selectedItem.confirmPassword.$dirty &&
+                                !$v.selectedItem.confirmPassword.sameAsPassword
+                            "
+                            >{{ $t("csmuser.confirm-password-invalid") }}</label
+                          >
+                        </div>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
           </v-row>
           <v-row>
-            <v-col class="pl-5 pb-0 col-6">
+            <v-col class="pl-5 pb-0 col-6 mt-2">
               <div
                 class="eos-form-group-custom"
                 v-if="
@@ -545,13 +600,18 @@
                     )
                 "
                 :class="{
-                  'eos-form-group--error': $v.selectedItem.current_password.$error
+                  'eos-form-group--error':
+                    $v.selectedItem.current_password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="password" id="localuser-oldpasswordlbl">
+                <label
+                  class="eos-form-group-label"
+                  for="password"
+                  id="localuser-oldpasswordlbl"
+                >
                   <eos-info-tooltip
                     label="Current password*"
-                    :message="passwordTooltipMessage"
+                    :message="currentPasswordTooltip"
                   />
                 </label>
                 <input
@@ -563,25 +623,36 @@
                   id="txtLocalOldPass"
                 />
                 <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label id="localuser-oldpass-required"
+                  <label
+                    id="localuser-oldpass-required"
                     v-if="
                       $v.selectedItem.current_password.$dirty &&
                         !$v.selectedItem.current_password.required
                     "
-                    >{{ $t("csmuser.old-pass-required") }}</label
+                    >{{ $t("csmuser.current-pass-required") }}</label
                   >
-                  <label id="localuser-oldpass-invalid"
+                  <label
+                    id="localuser-oldpass-invalid"
                     v-else-if="
                       $v.selectedItem.current_password.$dirty &&
                         !$v.selectedItem.current_password.passwordRegex
                     "
-                    >{{ $t("csmuser.old-password-invalid") }}</label
+                    >{{ $t("csmuser.current-password-invalid") }}</label
                   >
                 </div>
               </div>
             </v-col>
           </v-row>
-          <v-row class="ml-3">
+          <v-row
+            class="ml-3 mt-1"
+            v-if="
+              !isAdminUser(selectedItem) ||
+                !strEqualityCaseInsensitive(
+                  selectedItem.username,
+                  loggedInUserName
+                )
+            "
+          >
             <div>{{ $t("csmuser.roles") }}</div>
             <v-col class="pt-0 col-2">
               <label class="eos-rdb-container">
@@ -605,7 +676,7 @@
             </v-col>
             <v-col class="pt-0 ml-3 col-3">
               <label class="eos-rdb-container">
-                 {{ $t("csmuser.monitor") }}
+                {{ $t("csmuser.monitor") }}
                 <input
                   type="radio"
                   v-model="selectedItem.role"
@@ -627,7 +698,7 @@
           <v-row class="ml-0">
             <v-col>
               <label class="eos-ckb-container" for="emailCheckID">
-                 {{ $t("csmuser.email-notification") }}
+                {{ $t("csmuser.email-notification") }}
                 <input
                   type="checkbox"
                   name="emailCheckID"
@@ -671,6 +742,38 @@
       @closeDialog="closeConfirmationDialog"
       cancelButtonText="No"
     ></eos-confirmation-dialog>
+    <div class="eos-modal-container" v-if="showUserSuccessDialog">
+      <div class="eos-modal eos-modal-onboarding">
+        <div class="eos-modal-header">
+          <label>{{ $t("csmuser.user-success-label") }}</label>
+          <img
+            class="eos-modal-close"
+            :src="require('@/assets/close-green.svg')"
+            id="user-closedialog-icon"
+            @click="showUserSuccessDialog = false"
+          />
+        </div>
+        <div class="eos-modal-body">
+          <div class="title title-container">
+            <img
+              class="mr-2 success-img"
+              :src="require('@/assets/resolved-default.svg')"
+            />
+            <span>{{ successDialogText }}</span>
+          </div>
+        </div>
+        <div class="eos-modal-footer">
+          <button
+            type="button"
+            class="eos-btn-primary eos-float-l ml-4"
+            id="user-dialog-close-btn"
+            @click="showUserSuccessDialog = false"
+          >
+            {{ $t("csmuser.user-success-dialog-btn") }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -687,7 +790,7 @@ import {
 } from "vuelidate/lib/validators";
 import {
   accountNameRegex,
-  passwordRegex,
+  passwordRegex
 } from "./../../../../common/regex-helpers";
 
 import { Api } from "./../../../../services/api";
@@ -741,7 +844,7 @@ export default class EosUserSettingLocal extends Vue {
         password: "",
         confirmPassword: "",
         email: "",
-        alert_notification: true
+        alert_notification: false
       },
       web: "",
       cli: "",
@@ -756,6 +859,7 @@ export default class EosUserSettingLocal extends Vue {
       expanded: [],
       usernameTooltipMessage: i18n.t("csmuser.usernameTooltipMessage"),
       passwordTooltipMessage: i18n.t("csmuser.passwordTooltipMessage"),
+      currentPasswordTooltip: i18n.t("csmuser.currentPasswordTooltipMsg"),
       selectedRows: [],
       userHeader: [
         {
@@ -785,7 +889,9 @@ export default class EosUserSettingLocal extends Vue {
         confirmPassword: "",
         email: "",
         alert_notification: ""
-      }
+      },
+      showUserSuccessDialog: false,
+      successDialogText: ""
     };
   }
 
@@ -832,6 +938,8 @@ export default class EosUserSettingLocal extends Vue {
     await Api.post(apiRegister.csm_user, queryParams);
     this.$data.isUserCreate = !this.$data.isUserCreate;
     this.clearCreateAccountForm();
+    this.$data.showUserSuccessDialog = true;
+    this.$data.successDialogText = i18n.t("csmuser.user-success-message");
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getUserData();
   }
@@ -871,6 +979,10 @@ export default class EosUserSettingLocal extends Vue {
       selectedItem.id
     );
     this.closeEditUserForm();
+    this.$data.showUserSuccessDialog = true;
+    this.$data.successDialogText = i18n.t(
+      "csmuser.user-update-success-message"
+    );
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getUserData();
   }
@@ -905,6 +1017,10 @@ export default class EosUserSettingLocal extends Vue {
   private async onDelete(id: string) {
     this.$store.dispatch("systemConfig/showLoader", "Deleting user...");
     await Api.delete(apiRegister.csm_user, id);
+    this.$data.showUserSuccessDialog = true;
+    this.$data.successDialogText = i18n.t(
+      "csmuser.user-delete-success-message"
+    );
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getUserData();
   }
@@ -949,6 +1065,10 @@ export default class EosUserSettingLocal extends Vue {
       this.$data.selectedRows = [];
       this.$data.selectedRows.push(rowId);
     }
+  }
+
+  private async closeUserSuccessDialog() {
+    this.$emit("closeDialog", true);
   }
 }
 </script>
