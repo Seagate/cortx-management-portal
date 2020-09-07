@@ -25,7 +25,7 @@
       </div>
       <v-divider class="mt-2" />
       <div class="mt-6">
-        <label class="eos-ckb-container" for="chkNsisipV4Status">
+        <label class="cortx-ckb-container" for="chkNsisipV4Status">
           IPv4
           <input
             type="checkbox"
@@ -34,7 +34,7 @@
             v-model="isipV4Status"
             id="chkNsisipV4Status"
           />
-          <span class="eos-ckb-tick"></span>
+          <span class="cortx-ckb-tick"></span>
         </label>
       </div>
       <div class="mt-2">
@@ -42,7 +42,7 @@
       </div>
 
       <div class="mt-6">
-        <label class="eos-ckb-container" for="chkNSStatus">
+        <label class="cortx-ckb-container" for="chkNSStatus">
           Skip management network settings
           <input
             type="checkbox"
@@ -52,7 +52,7 @@
             value="skip"
             id="chkNSStatus"
           />
-          <span class="eos-ckb-tick" id="lblNSSkipSetting"></span>
+          <span class="cortx-ckb-tick" id="lblNSSkipSetting"></span>
         </label>
       </div>
       <div class="mt-2" id="lblNSMsgSkipSetting">
@@ -69,9 +69,9 @@ import { SystemConfigObject } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({
-  name: "eos-network-settings"
+  name: "cortx-network-settings"
 })
-export default class EosNetworkSettings extends Vue {
+export default class CortxNetworkSettings extends Vue {
   public data() {
     return {
       isSkip: false

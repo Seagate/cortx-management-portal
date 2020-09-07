@@ -24,22 +24,22 @@
         Fields marked with * are mandatory.
       </div>
       <v-divider class="mt-2" />
-      <eosDateTimeConfig />
+      <cortxDateTimeConfig />
     </div>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosDateTimeConfig from "./date-time-config.vue";
+import CortxDateTimeConfig from "./date-time-config.vue";
 
 @Component({
-  name: "eos-date-time",
+  name: "cortx-date-time",
   components: {
-    eosDateTimeConfig: EosDateTimeConfig
+    cortxDateTimeConfig: CortxDateTimeConfig
   }
 })
-export default class EosDateTime extends Vue {}
+export default class CortxDateTime extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

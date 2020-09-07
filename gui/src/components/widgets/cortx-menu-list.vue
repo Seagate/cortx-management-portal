@@ -18,43 +18,43 @@
   <div>
     <div v-for="item in menuItems" :key="item.id">
       <div v-if="item.requiredAccess">
-        <eos-has-access
+        <cortx-has-access
           :to="
-            $eosUserPermissions[item.requiredAccess] +
+            $cortxUserPermissions[item.requiredAccess] +
               (item.requiredSubAccess
-                ? $eosUserPermissions[item.requiredSubAccess]
-                : $eosUserPermissions.list)
+                ? $cortxUserPermissions[item.requiredSubAccess]
+                : $cortxUserPermissions.list)
           "
         >
-          <div class="eos-menu-card-layout">
-            <label id="menu-list-title"
-              class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
+          <div class="cortx-menu-card-layout">
+            <label :id="'menu-' + item.title"
+              class="cortx-text-lg cortx-text-bold cortx-float-l cortx-menu-card-title"
             >
               {{ item.title }}</label
             >
             <button
-              id="menu-actionbtn"
+              :id="item.actionClickFunction"
               type="button"
-              class="eos-btn-tertiary eos-float-r"
+              class="cortx-btn-tertiary cortx-float-r"
               @click="$emit('clickFunctionHandler', item.actionClickFunction)"
               :disabled="item.disabled"
             >
               {{ item.actionName }}
             </button>
           </div>
-        </eos-has-access>
+        </cortx-has-access>
       </div>
       <div v-else>
-        <div class="eos-menu-card-layout">
+        <div class="cortx-menu-card-layout">
           <label id="menu-itemlbl"
-            class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
+            class="cortx-text-lg cortx-text-bold cortx-float-l cortx-menu-card-title"
           >
             {{ item.title }}</label
           >
           <button
-          id="menu-actionmanagebtn"
+            id="menu-actionmanagebtn"
             type="button"
-            class="eos-btn-tertiary eos-float-r"
+            class="cortx-btn-tertiary cortx-float-r"
             @click="$emit('clickFunctionHandler', item.actionClickFunction)"
             :disabled="item.disabled"
           >
@@ -69,15 +69,15 @@
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 
 @Component({
-  name: "eos-menu-list"
+  name: "cortx-menu-list"
 })
-export default class EosMenuList extends Vue {
+export default class CortxMenuList extends Vue {
   @Prop({ required: true, default: false })
   public menuItems!: object[];
 }
 </script>
 <style lang="scss" scoped>
-.eos-menu-card-layout {
+.cortx-menu-card-layout {
   height: 4em;
   width: 56.25em;
   padding: 1em 0.5em;

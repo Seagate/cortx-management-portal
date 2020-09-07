@@ -15,20 +15,20 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-dropdown-container" tabindex="1" @blur="isMenuOpen = false" :style="{ width: width }">
-    <div :class="['eos-dropdown-title', isMenuOpen ? 'eos-dropdown-title-active' : '']" @click="isMenuOpen = !isMenuOpen">
-      <span class="eos-text-md eos-float-l eos-dropdown-title-text">{{ selectedOption && selectedOption.label ? selectedOption.label : title }}</span>
-      <img v-if="isMenuOpen" class="eos-float-r ml-2" :src="require('@/assets/caret-up.svg')" />
-      <img v-else class="eos-float-r ml-2" :src="require('@/assets/caret-down.svg')" />
+  <div class="cortx-dropdown-container" tabindex="1" @blur="isMenuOpen = false" :style="{ width: width }">
+    <div :class="['cortx-dropdown-title', isMenuOpen ? 'cortx-dropdown-title-active' : '']" @click="isMenuOpen = !isMenuOpen">
+      <span class="cortx-text-md cortx-float-l cortx-dropdown-title-text">{{ selectedOption && selectedOption.label ? selectedOption.label : title }}</span>
+      <img v-if="isMenuOpen" class="cortx-float-r ml-2" :src="require('@/assets/caret-up.svg')" />
+      <img v-else class="cortx-float-r ml-2" :src="require('@/assets/caret-down.svg')" />
     </div>
-    <div class="eos-dropdown-menu" v-show="isMenuOpen">
+    <div class="cortx-dropdown-menu" v-show="isMenuOpen">
       <div
-        :class="['eos-dropdown-menu-item', selectedOption && selectedOption.value === option.value ? 'selected' : '']"
+        :class="['cortx-dropdown-menu-item', selectedOption && selectedOption.value === option.value ? 'selected' : '']"
         v-for="option in options"
         :key="option.value"
         @click="onMenuItemSelect(option)"
       >
-        <span class="eos-text-md eos-dropdown-menu-item-text">{{
+        <span class="cortx-text-md cortx-dropdown-menu-item-text">{{
           option.label
         }}</span>
       </div>
@@ -38,40 +38,40 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { EosDropdownOption } from "./eos-dropdown";
+import { CortxDropdownOption } from "./cortx-dropdown";
 
 @Component({
-  name: "eos-dropdown"
+  name: "cortx-dropdown"
 })
-export default class EosDropdown extends Vue {
+export default class CortxDropdown extends Vue {
   @Prop()
-  public selectedOption: EosDropdownOption;
+  public selectedOption: CortxDropdownOption;
 
   @Prop({ required: false, default: "-- Select --" })
   public title: string;
 
   @Prop({ required: true })
-  public options: EosDropdownOption[];
+  public options: CortxDropdownOption[];
 
   @Prop({ required: false, default: "325px" })
   public width: string;
 
   public isMenuOpen: boolean = false;
 
-  public onMenuItemSelect(selectedOption: EosDropdownOption) {
+  public onMenuItemSelect(selectedOption: CortxDropdownOption) {
     this.$emit("update:selectedOption", selectedOption);
     this.isMenuOpen = false;
   }
 }
 </script>
 <style lang="scss" scoped>
-.eos-dropdown-container {
+.cortx-dropdown-container {
   display: inline-block;
   outline: none;
   position: relative;
   height: 40px;
 }
-.eos-dropdown-title {
+.cortx-dropdown-title {
   display: inline-block;
   background: #ffffff;
   border: 1px solid #b7b7b7;
@@ -80,19 +80,19 @@ export default class EosDropdown extends Vue {
   cursor: pointer;
   width: 100%;
 }
-.eos-dropdown-title:hover {
+.cortx-dropdown-title:hover {
   background: #fafafa;
   border-color: #9e9e9e;
 }
-.eos-dropdown-title-active {
+.cortx-dropdown-title-active {
   background: #ffffff;
   border-color: #6ebe49;
 }
-.eos-dropdown-title-text {
+.cortx-dropdown-title-text {
   margin-top: 0.188em;
   font: inherit;
 }
-.eos-dropdown-menu {
+.cortx-dropdown-menu {
   position: absolute;
   background: #ffffff;
   width: 100%;
@@ -105,7 +105,7 @@ export default class EosDropdown extends Vue {
   overflow: auto;
   margin-top: -6px;
 }
-.eos-dropdown-menu-item {
+.cortx-dropdown-menu-item {
   width: 100%;
   min-height: 36px;
   padding-top: 4px;
@@ -113,13 +113,13 @@ export default class EosDropdown extends Vue {
   padding-right: 0.625em;
   cursor: pointer;
 }
-.eos-dropdown-menu-item:hover {
+.cortx-dropdown-menu-item:hover {
   background: rgba(0, 0, 0, 0.02);
 }
-.eos-dropdown-menu-item.selected {
+.cortx-dropdown-menu-item.selected {
   background: rgba(0, 0, 0, 0.02);
 }
-.eos-dropdown-menu-item-text {
+.cortx-dropdown-menu-item-text {
   font: inherit;
 }
 </style>

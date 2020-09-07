@@ -68,9 +68,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-bucketconfigsummary"
+  name: "cortx-bucketconfigsummary"
 })
-export default class EOSConfigurationSummary extends Vue {
+export default class CortxConfigurationSummary extends Vue {
   private data() {
     return {
       Account: [

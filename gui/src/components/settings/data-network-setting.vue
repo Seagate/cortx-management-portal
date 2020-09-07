@@ -15,8 +15,8 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2 body-2">
-    <div class="eos-text-lg mt-2 font-weight-bold" id="lblIpv4DataNetwork">
+  <div class="cortx-p-2 body-2">
+    <div class="cortx-text-lg mt-2 font-weight-bold" id="lblIpv4DataNetwork">
       Data network settings: IPv4
     </div>
     <div class="mt-3" id="lblIpv4Msg">
@@ -27,30 +27,30 @@
       Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
-    <eosDataNetworkIpv4Config @apply-settings="applySettingsConfirmation" />
-    <eos-confirmation-dialog
+    <cortxDataNetworkIpv4Config @apply-settings="applySettingsConfirmation" />
+    <cortx-confirmation-dialog
       :show="showConfirmDialog"
       message="Are you sure you want to apply the settings?"
       severity="warning"
       @closeDialog="applySettings"
       confirmButtonText="Apply"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosDataNetworkIpv4Config from "../onboarding/system-config/data-network/data-network-ipv4-config.vue";
+import CortxDataNetworkIpv4Config from "../onboarding/system-config/data-network/data-network-ipv4-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-data-network-setting",
+  name: "cortx-data-network-setting",
   components: {
-    eosDataNetworkIpv4Config: EosDataNetworkIpv4Config
+    cortxDataNetworkIpv4Config: CortxDataNetworkIpv4Config
   }
 })
-export default class EosDataNetworkSetting extends Vue {
+export default class CortxDataNetworkSetting extends Vue {
   private data() {
     return {
       sysconfigData: {},

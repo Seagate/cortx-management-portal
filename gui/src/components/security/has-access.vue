@@ -23,9 +23,9 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
-  name: "eos-has-access"
+  name: "cortx-has-access"
 })
-export default class EosHasAccess extends Vue {
+export default class CortxHasAccess extends Vue {
   @Prop({ required: true })
   public to: string;
 }

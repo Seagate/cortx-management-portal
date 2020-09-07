@@ -15,17 +15,17 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2">
-    <div class="eos-text-lg eos-text-bold" id="lblAbout">About us</div>
+  <div class="cortx-p-2">
+    <div class="cortx-text-lg cortx-text-bold" id="lblAbout">About us</div>
     <div class="cortx-brand-logo"></div>
     <v-divider class="mt-2 mb-5" />
     <v-container>
       <div class="body-2"></div>
-      <div class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md">
+      <div class="mt-3 pa-3 cortx-last-upgrade-info-container cortx-text-md">
         <table>
           <tr>
             <td style="width: 100px;">
-              <label class="eos-text-bold">Name:</label>
+              <label class="cortx-text-bold">Name:</label>
             </td>
             <td style="padding-top: 2px;">
               <label>{{ versionDetails.NAME }}</label>
@@ -33,7 +33,7 @@
           </tr>
           <tr>
             <td>
-              <label class="eos-text-bold">Version:</label>
+              <label class="cortx-text-bold">Version:</label>
             </td>
             <td style="padding-top: 2px;">
               <label>{{ versionDetails.VERSION }}</label>
@@ -41,7 +41,7 @@
           </tr>
           <tr>
             <td>
-              <label class="eos-text-bold">Build:</label>
+              <label class="cortx-text-bold">Build:</label>
             </td>
             <td style="padding-top: 2px;">
               <label>{{ versionDetails.BUILD }}</label>
@@ -49,7 +49,7 @@
           </tr>
           <tr>
             <td>
-              <label class="eos-text-bold">Release:</label>
+              <label class="cortx-text-bold">Release:</label>
             </td>
             <td style="padding-top: 2px;">
               <label>{{ versionDetails.RELEASE }}</label>
@@ -67,9 +67,9 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-about",
+  name: "cortx-about",
 })
-export default class Eosaboutpage extends Vue {
+export default class Cortxaboutpage extends Vue {
   public versionDetails: any = null;
 
   public async mounted() {
@@ -83,7 +83,7 @@ export default class Eosaboutpage extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-img.eos-lyve-drive {
+img.cortx-lyve-drive {
   height: 30px; 
   width: 340px;
   margin-top: 20px;

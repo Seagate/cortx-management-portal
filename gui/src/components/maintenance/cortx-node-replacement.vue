@@ -15,8 +15,8 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2 body-2">
-    <div class="eos-text-lg mt-2 font-weight-bold" id="lblIpv4DataNetwork">
+  <div class="cortx-p-2 body-2">
+    <div class="cortx-text-lg mt-2 font-weight-bold" id="lblIpv4DataNetwork">
       Node replacement
     </div>
     <div v-if="canReplaceNode">
@@ -30,14 +30,14 @@
     <v-divider class="mt-2 mb-4" />
 
     <div
-      class="mt-4 pa-3 eos-last-upgrade-info-container eos-text-md"
+      class="mt-4 pa-3 cortx-last-upgrade-info-container cortx-text-md"
       v-if="lastNodeReplacementStatus.status"
     >
-      <label class="eos-text-bold">Last node replacement status</label>
+      <label class="cortx-text-bold">Last node replacement status</label>
       <button
         id="btnStartUpgrade"
         type="button"
-        class="ml-3 eos-btn-secondary"
+        class="ml-3 cortx-btn-secondary"
         @click="getLastNodeReplacementStatus()"
         style="height: 25px; padding-left: 10px; padding-right: 10px;"
       >
@@ -52,7 +52,7 @@
       }}</label>
     </div>
     <div
-      class="eos-text-md mt-2 font-weight-bold"
+      class="cortx-text-md mt-2 font-weight-bold"
       id="lblIpv4DataNetwork"
       v-if="!canReplaceNode"
     >
@@ -65,33 +65,33 @@
         <div class="row mt-5">
           <div class="col-1 body-2 column mr-3">
             <div class="mt-2 font-weight-bold">
-              <div class="eos-form-group">
+              <div class="cortx-form-group">
                 <label id="lblReplcNode">Node*: </label>
               </div>
-              <div class="eos-form-group">
+              <div class="cortx-form-group">
                 <label id="lblReplcipHostname">IP/Hostname:</label>
               </div>
-              <div class="eos-form-group">
+              <div class="cortx-form-group">
                 <label id="lblReplcProtocol">Port:</label>
               </div>
             </div>
           </div>
           <div class="col-4 body-2 column mr-5">
-            <div class="eos-form-group">
-              <eos-dropdown
+            <div class="cortx-form-group">
+              <cortx-dropdown
                 :selectedOption.sync="selectedNode"
                 :options="nodes"
-                class="eos-float-l"
-              ></eos-dropdown>
+                class="cortx-float-l"
+              ></cortx-dropdown>
             </div>
             <div
-              class="eos-form-group"
+              class="cortx-form-group"
               :class="{
-                'eos-form-group--error': $v.ipHostname.$error
+                'cortx-form-group--error': $v.ipHostname.$error
               }"
             >
               <input
-                class="eos-form__input_text"
+                class="cortx-form__input_text"
                 type="text"
                 id="txtReplcipHostname"
                 name="ipHostname"
@@ -99,7 +99,7 @@
                 @input="$v.ipHostname.$touch"
               />
 
-              <div class="eos-form-group-label eos-form-group-error-msg">
+              <div class="cortx-form-group-label cortx-form-group-error-msg">
                 <label
                   v-if="$v.ipHostname.$dirty && !$v.ipHostname.ipOrDomainRegex"
                   >Invalid IP/Hostname.</label
@@ -107,20 +107,20 @@
             </div>
             </div>
             <div
-              class="eos-form-group"
+              class="cortx-form-group"
               :class="{
-                'eos-form-group--error': $v.sshPort.$error
+                'cortx-form-group--error': $v.sshPort.$error
               }"
             >
               <input
-                class="eos-form__input_text"
+                class="cortx-form__input_text"
                 type="number"
                 id="txtReplcsshPort"
                 name="sshPort"
                 v-model.trim="sshPort"
                 @input="$v.sshPort.$touch"
               />
-              <div class="eos-form-group-label eos-form-group-error-msg">
+              <div class="cortx-form-group-label cortx-form-group-error-msg">
                 <label v-if="$v.sshPort.$dirty && !$v.sshPort.maxValue"
                   >SSH port is not valid.</label
                 >
@@ -132,7 +132,7 @@
       <button
         id="btnStartUpgrade"
         type="button"
-        class="mb-10 eos-btn-primary eos-float-l"
+        class="mb-10 cortx-btn-primary cortx-float-l"
         @click="replaceSelectedResource"
         style="margin-top: 2px;"
         :disabled="!selectedNode.value"
@@ -140,7 +140,7 @@
         Replace node
       </button>
     </v-container>
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmationDialog"
       title="Confirmation"
       :message="confirmationDialogMessage"
@@ -148,7 +148,7 @@
       :severity="confirmationDialogSeverity"
       @closeDialog="closeConfirmationDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -161,9 +161,9 @@ import { minValue, maxValue, helpers } from "vuelidate/lib/validators";
 import { ipOrDomainRegex } from "./../../common/regex-helpers";
 
 @Component({
-  name: "eos-node-replacement"
+  name: "cortx-node-replacement"
 })
-export default class EosNodeReplacement extends Vue {
+export default class CortxNodeReplacement extends Vue {
   @Validations()
   public validations = {
     ipHostname: {
@@ -258,10 +258,10 @@ export default class EosNodeReplacement extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.eos-node-replacement-title {
+.cortx-node-replacement-title {
   height: 46px;
 }
-.eos-last-upgrade-info-container {
+.cortx-last-upgrade-info-container {
   border: 1px solid #e3e3e3;
   border-radius: 5px;
 }
