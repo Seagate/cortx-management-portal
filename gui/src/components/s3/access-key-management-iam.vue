@@ -15,12 +15,20 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="mt-5">
-    <v-divider class="mt-2 mb-5" />
-    <div class="d-flex justify-end">
+  <div class="mt-7">
+    <div class="d-flex justify-space-between align-center">
+      <label
+        id="iam-accesskey-datatable-title"
+        class="eos-text-lg font-weight-bold"
+        ><span v-if="userNameIAM">
+          {{
+            $t("s3.access-key.iam-table-title", { userNameIAM })
+          }}
+        </span></label
+      >
       <button
         type="button"
-        id="btnAddAccessKey"
+        id="iam-accesskey-add-btn"
         class="eos-btn-primary "
         @click="createAccessKey()"
         :disabled="accessKeyList.length >= MAX_ACCESS_KEYS || !this.userNameIAM"
@@ -33,6 +41,7 @@
       :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
     >
       <v-data-table
+        id="iam-accesskey-datatable"
         :headers="accessKeyTableHeaderList"
         :items="accessKeyList"
         item-key="access_key_id"
@@ -53,14 +62,14 @@
           </tr>
         </template>
         <template v-slot:item="{ item }">
-          <tr style="color: #000000;">
-            <td style="white-space: nowrap;">
+          <tr>
+            <td :id="'iam-accesskey-datatable-' + item.access_key_id">
               {{ item.access_key_id }}
             </td>
-            <td style="white-space: nowrap;">
+            <td>
               XXXX
             </td>
-            <td style="white-space: nowrap;">
+            <td>
               <eos-has-access
                 class="mx-2"
                 :to="
@@ -68,6 +77,7 @@
                 "
               >
                 <img
+                  :id="'iam-accesskey-datatable-delete-' + item.access_key_id"
                   @click="openConfirmDeleteDialog(item.access_key_id)"
                   class="eos-cursor-pointer"
                   src="@/assets/actions/delete-green.svg"

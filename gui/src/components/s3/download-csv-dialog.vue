@@ -19,7 +19,10 @@
     <v-card>
       <v-system-bar color="greay lighten-3">
         <v-spacer></v-spacer>
-        <v-icon @click="closeAccountDetailsDialog()" class="eos-cursor-pointer"
+        <v-icon
+          id="download-csv-dialog-cancel-btn"
+          @click="closeAccountDetailsDialog()"
+          class="eos-cursor-pointer"
           >mdi-close</v-icon
         >
       </v-system-bar>
@@ -53,6 +56,7 @@
 
       <v-card-actions>
         <a
+          id="download-csv-dialog-btn"
           class="ma-5 eos-btn-primary eos-download-csv-link"
           :href="credentialsFileContent"
           download="credentials.csv"
@@ -60,6 +64,7 @@
           >{{ $t("s3.download-csv-dialog.btn") }}</a
         >
         <button
+          id="download-csv-dialog-ok-btn"
           :disabled="!isCredentialsFileDownloaded"
           type="button"
           class="ma-5 eos-btn-primary"

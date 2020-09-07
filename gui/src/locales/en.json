@@ -21,7 +21,8 @@
       "get-message-iam": "Fetching all IAM access keys...",
       "create-message": "Creating access key...",
       "delete-confirmation": "Are you sure you want to delete {key} access key?",
-      "delete-message": "Deleting access key "
+      "delete-message": "Deleting access key ",
+      "iam-table-title": "Access keys for user {userNameIAM}"
     },
     "download-csv-dialog": {
       "created": "Access key created",
@@ -84,7 +85,7 @@
     "shutdown-action-method": "shutdown",
     "confirm-message-node-start": "Are you sure, you want to start the node?",
     "confirm-message-node-shutdown": "Are you sure, you want to shutdown the node?",
-    "confirm-message-shutdown-sub":"Please note that if you shutdown the node then the entire application will stop",
+    "confirm-message-shutdown-sub": "Please note that if you shutdown the node then the entire application will stop",
     "shutdown-note": "Note: {node} is in shutdown state. You need to start it manually."
   }
 }

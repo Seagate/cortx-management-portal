@@ -16,35 +16,6 @@
 */
 <template>
   <div class="body-2">
-    <div
-      id="s3-configuration-title-container"
-      class="mt-2 s3-configuration-page-title"
-    >
-      <label id="s3-account-form-title" class="headline font-weight-bold"
-        >S3 configuration</label
-      >
-      <eos-has-access
-        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label id="bucket-textlbl">
-            Create an S3 account. You must log in to the system using S3 account
-            credentials to manage S3 account, IAM users, and buckets.
-          </label>
-        </div>
-      </eos-has-access>
-
-      <eos-has-access
-        :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label id="bucket-manangelbl">
-            Manage IAM users and buckets.
-          </label>
-        </div>
-      </eos-has-access>
-    </div>
-    <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 pr-0 col-9">
         <eos-has-access

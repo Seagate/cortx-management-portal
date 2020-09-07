@@ -54,7 +54,7 @@ export default class EosDefault extends Vue {
 
 <style lang="scss" scoped>
 .header-margin {
-  margin-top: 4em;
+  margin-top: 3.1em;
 }
 .navbar-margin {
   margin-left: 8.75em;

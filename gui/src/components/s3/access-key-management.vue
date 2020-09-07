@@ -15,12 +15,11 @@
  * please email opensource@seagate.com or cortx-questions@seagate.com.
  */
 <template>
-  <div class="mt-5">
-    <v-divider class="mt-2 mb-5" />
+  <div class="mt-7">
     <div class="d-flex justify-end">
       <button
         type="button"
-        id="btnAddAccessKey"
+        id="s3-accesskey-add-btn"
         class="eos-btn-primary "
         @click="createAccessKey()"
         :disabled="accessKeyList.length >= MAX_ACCESS_KEYS"
@@ -33,6 +32,7 @@
       :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
     >
       <v-data-table
+        id="s3-accesskey-datatable"
         :headers="accessKeyTableHeaderList"
         :items="accessKeyList"
         item-key="access_key_id"
@@ -53,14 +53,14 @@
           </tr>
         </template>
         <template v-slot:item="{ item }">
-          <tr style="color: #000000;">
-            <td style="white-space: nowrap;">
+          <tr>
+            <td :id="'s3-accesskey-datatable-' + item.access_key_id">
               {{ item.access_key_id }}
             </td>
-            <td style="white-space: nowrap;">
+            <td>
               XXXX
             </td>
-            <td style="white-space: nowrap;">
+            <td>
               <eos-has-access
                 class="mx-2"
                 :to="
@@ -68,6 +68,7 @@
                 "
               >
                 <img
+                  :id="'s3-accesskey-datatable-delete-' + item.access_key_id"
                   @click="openConfirmDeleteDialog(item.access_key_id)"
                   class="eos-cursor-pointer"
                   src="@/assets/actions/delete-green.svg"
