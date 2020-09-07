@@ -171,6 +171,7 @@
         </v-expansion-panel>
       </v-expansion-panels>
       <eos-confirmation-dialog
+        id="apply-onboarding-setting"
         :show="showConfirmDialog"
         title="Confirmation"
         :message="

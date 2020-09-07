@@ -30,7 +30,7 @@
        Displays alerts which are both, acknowledged and resolved.
     </div> 
 
-      <button
+      <button id="alert-acknowlegeall"
         type="button"
         class="mt-3 mb-2 eos-btn-primary"
         v-if="tabsInfo.selectedTab === 1"
@@ -189,6 +189,7 @@
               :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
             >
               <img
+               id="alertlarge-show-commnetdialogbox"
                 v-if="!(props.item.acknowledged && props.item.resolved)"
                 :src="require('@/assets/comment-filled-default.svg')"
                 class="eos-cursor-pointer"
@@ -218,6 +219,7 @@
       severity="warning"
       @closeDialog="closeConfirmationDialog"
       cancelButtonText="No"
+      id="alrtlarge-conirmationbox"
     ></eos-confirmation-dialog>
   </div>
 </template>
