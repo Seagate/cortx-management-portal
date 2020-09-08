@@ -765,7 +765,7 @@
         <div class="eos-modal-footer">
           <button
             type="button"
-            class="eos-btn-primary eos-float-l ml-4"
+            class="eos-btn-primary eos-float-r mr-4"
             id="user-dialog-close-btn"
             @click="showUserSuccessDialog = false"
           >
@@ -939,7 +939,8 @@ export default class EosUserSettingLocal extends Vue {
     this.$data.isUserCreate = !this.$data.isUserCreate;
     this.clearCreateAccountForm();
     this.$data.showUserSuccessDialog = true;
-    this.$data.successDialogText = i18n.t("csmuser.user-success-message");
+    this.$data.successDialogText = `${queryParams.username}
+    ${i18n.t("csmuser.user-success-message")}`;
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getUserData();
   }
@@ -980,9 +981,9 @@ export default class EosUserSettingLocal extends Vue {
     );
     this.closeEditUserForm();
     this.$data.showUserSuccessDialog = true;
-    this.$data.successDialogText = i18n.t(
+    this.$data.successDialogText = `${selectedItem.id}${i18n.t(
       "csmuser.user-update-success-message"
-    );
+    )}`;
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getUserData();
   }
@@ -1018,9 +1019,9 @@ export default class EosUserSettingLocal extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Deleting user...");
     await Api.delete(apiRegister.csm_user, id);
     this.$data.showUserSuccessDialog = true;
-    this.$data.successDialogText = i18n.t(
+    this.$data.successDialogText = `${id}${i18n.t(
       "csmuser.user-delete-success-message"
-    );
+    )}`;
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getUserData();
   }
@@ -1136,5 +1137,10 @@ tbody tr:active {
 }
 .action-col-width {
   min-width: 110px;
+}
+.title-container {
+  overflow: auto;
+  text-align: justify;
+  display: flex;
 }
 </style>
