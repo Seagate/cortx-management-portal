@@ -188,7 +188,7 @@ cd ${DIST}
 # Create tar for csm
 echo "Creating tar for csm build"
 tar -czf ${DIST}/rpmbuild/SOURCES/${PRODUCT}-csm_web-${VER}.tar.gz csm_gui
-cp -R $DIST/.env $BASE_DIR/gui/.env
+git reset --hard
 TAR_END_TIME=$(date +%s)
 
 # Generate RPMs
