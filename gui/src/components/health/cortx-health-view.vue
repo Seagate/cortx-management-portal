@@ -86,29 +86,31 @@
           <td>
             <div
               v-if="
-               props.item.health === 'OK' || props.item.health === 'NA' &&
-                props.item.component_info.severity !== alertStatus.warning
+               props.item.health === 'OK' || props.item.health === 'NA'
               "
               class="cortx-status-chip cortx-chip-ok"
               v-bind:title="props.item.health"
             ></div>
             <div
-              v-if="
-                props.item.component_info.severity === alertStatus.critical ||
-                  props.item.component_info.severity === alertStatus.error
+              v-else-if="
+                props.item.severity === alertStatus.informational ||
+                  props.item.severity === 'NA' || props.item.severity === ''
               "
-              class="cortx-status-chip cortx-chip-alert"
-              v-bind:title="props.item.component_info.severity"
-            ></div>
-            <div
-              v-if="props.item.component_info.severity === alertStatus.warning"
               class="cortx-status-chip cortx-chip-warning"
               title="warning"
             ></div>
             <div
-              v-else-if="props.item.component_info.severity === alertStatus.informational"
-              class="cortx-status-chip cortx-chip-information"
-              title="info"
+              v-else-if="
+                props.item.severity === alertStatus.critical ||
+                  props.item.severity === alertStatus.error
+              "
+              class="cortx-status-chip cortx-chip-alert"
+              v-bind:title="props.item.severity"
+            ></div>
+            <div
+              v-else-if="props.item.severity === alertStatus.warning"
+              class="cortx-status-chip cortx-chip-warning"
+              v-bind:title="props.item.severity"
             ></div>
 
           </td>
