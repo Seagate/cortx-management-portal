@@ -37,8 +37,6 @@
           <v-data-table
             id="localuser-tabledata"
             :items="userData"
-            :single-expand="singleExpand"
-            :expanded.sync="expanded"
             item-key="id"
             class="cortx-table"
             hide-default-header
@@ -834,7 +832,6 @@ export default class CortxUserSettingLocal extends Vue {
       isUserCreate: false,
       isUserEdit: false,
       page: 1, // Page counter, in sync with data table
-      singleExpand: true, // Expanded single row property
       itemsPerPage: 5, // Total rows per page, in sync with data table
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
@@ -856,7 +853,6 @@ export default class CortxUserSettingLocal extends Vue {
       timeout: "",
       checkedRoles: "manage",
       checkedInterfaces: [],
-      expanded: [],
       usernameTooltipMessage: i18n.t("csmuser.usernameTooltipMessage"),
       passwordTooltipMessage: i18n.t("csmuser.passwordTooltipMessage"),
       currentPasswordTooltip: i18n.t("csmuser.currentPasswordTooltipMsg"),
@@ -881,7 +877,7 @@ export default class CortxUserSettingLocal extends Vue {
       userData: [],
       selectedItemToDelete: "",
       showConfirmationDialog: false,
-      confirmationDialogMessage: "Are you sure you want to delete this user?",
+      confirmationDialogMessage: i18n.t("csmuser.user-delete-confirm-msg"),
       loggedInUserName: localStorage.getItem("username"),
       selectedItem: {
         password: "",
@@ -1066,10 +1062,6 @@ export default class CortxUserSettingLocal extends Vue {
       this.$data.selectedRows = [];
       this.$data.selectedRows.push(rowId);
     }
-  }
-
-  private async closeUserSuccessDialog() {
-    this.$emit("closeDialog", true);
   }
 }
 </script>

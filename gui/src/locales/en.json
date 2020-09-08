@@ -69,7 +69,8 @@
     "user-delete-success-message":" user deleted successfully.",
     "user-update-success-message":" user updated successfully.",
     "user-success-label": "Success",
-    "user-success-dialog-btn": "Ok"
+    "user-success-dialog-btn": "Ok",
+    "user-delete-confirm-msg": "Are you sure you want to delete this user?"
   },
   "systemMaintenance": {
     "page-title": "System maintenance",
