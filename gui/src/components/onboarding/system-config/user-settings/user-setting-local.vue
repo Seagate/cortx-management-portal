@@ -102,7 +102,7 @@
                 @click="toggleSelection(props.item.id)"
               >
                 <td id="localuser-name">
-                  {{ props.item.username }}
+                  <span>{{ props.item.username }}</span>
                   <v-tooltip right max-width="300">
                     <template v-slot:activator="{ on }">
                       <img
@@ -741,7 +741,7 @@
       cancelButtonText="No"
     ></cortx-confirmation-dialog>
     <div class="cortx-modal-container" v-if="showUserSuccessDialog">
-      <div class="cortx-modal cortx-modal-onboarding">
+      <div class="cortx-modal cortx-modal-user">
         <div class="cortx-modal-header">
           <label>{{ $t("csmuser.user-success-label") }}</label>
           <img
@@ -961,7 +961,7 @@ export default class CortxUserSettingLocal extends Vue {
     if (
       this.isAdminUser(selectedItem) ||
       this.strEqualityCaseInsensitive(
-        selectedItem.username,
+        selectedItem.id,
         this.$data.loggedInUserName
       )
     ) {
@@ -1018,6 +1018,7 @@ export default class CortxUserSettingLocal extends Vue {
     this.$data.successDialogText = `${id}${i18n.t(
       "csmuser.user-delete-success-message"
     )}`;
+    this.$data.isUserEdit = false;
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getUserData();
   }
@@ -1128,11 +1129,16 @@ tbody tr:active {
   background: #f5f5f5 !important;
 }
 .action-col-width {
-  min-width: 110px;
+  min-width: 120px;
 }
 .title-container {
   overflow: auto;
-  text-align: justify;
   display: flex;
+}
+.cortx-modal-user {
+  width: 550px;
+  min-width: 400px;
+  position: fixed;
+  min-height: 214px;
 }
 </style>
