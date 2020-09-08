@@ -114,7 +114,7 @@
                       />
                     </template>
                     <span id="localuser-emailnotification">{{
-                      $t("csmuser.email-notification")
+                      $t("csmuser.email-notification-tooltip")
                     }}</span>
                   </v-tooltip>
                 </td>
