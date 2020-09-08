@@ -28,6 +28,7 @@
     }
   },
   "common": {
+    "title": "Cortx",
     "confirm-dialog": {
       "title": "Confirmation"
     }
