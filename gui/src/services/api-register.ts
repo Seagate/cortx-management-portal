@@ -52,6 +52,8 @@ export default {
   node_shutdown: `/api/${version}/maintenance/cluster/shutdown`,
   node_replace: `/api/${version}/maintenance/cluster/replace_node`,
   node_replace_status: `/api/${version}/maintenance/cluster/replace_node_status`,
+  node_controller_stop: `api/${version}/maintenance/storage_controller/stop`,
+  node_controller_start: `api/${version}/maintenance/storage_controller/start`,
   health_summary: `/api/${version}/system/health/summary`,
   audit_alerts: `/api/${version}/audit_alerts`,
   send_test_email: `/api/${version}/sysconfig_helpers/email_test`,
@@ -65,4 +67,5 @@ export default {
   node_health: `/api/${version}/system/health/node`,
   version: `/api/${version}/product_version`,
   health_components: `api/${version}/system/health/components`
+
 };
