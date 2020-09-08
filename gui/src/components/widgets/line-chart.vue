@@ -79,7 +79,7 @@
         </v-tabs>
       </v-col>
     </v-row>
-    <div class="eos-chart-container" :id="chartId">
+    <div class="cortx-chart-container" :id="chartId">
       <div v-if="isError" class="no-stats-data">
         <div id="permancedatalbl">Unable To Fetch Performance Data</div>
       </div>
@@ -102,9 +102,9 @@ export interface StatsQueryParams {
 }
 
 @Component({
-  name: "eos-line-chart"
+  name: "cortx-line-chart"
 })
-export default class EosLineChart extends Vue {
+export default class CortxLineChart extends Vue {
   @Prop({ required: true })
   public chartId: string;
   private chart: any;
@@ -425,7 +425,7 @@ export default class EosLineChart extends Vue {
   margin-top: 1rem;
 }
 @media screen and (min-height: 600px) {
-  .eos-chart-container {
+  .cortx-chart-container {
     height: 190px;
   }
   .loader-container {
@@ -434,7 +434,7 @@ export default class EosLineChart extends Vue {
   }
 }
 @media screen and (min-height: 900px) {
-  .eos-chart-container {
+  .cortx-chart-container {
     height: 320px;
   }
   .loader-container {

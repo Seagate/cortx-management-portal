@@ -23,11 +23,11 @@ import * as moment from "moment";
 import "@/common/style.css";
 import { errorHandler } from "./common/error-handler";
 import Vuelidate from "vuelidate";
-import EosHasAccess from "./components/security/has-access.vue";
+import CortxHasAccess from "./components/security/has-access.vue";
 import { userPermissions as userPermissionsMap } from "./common/user-permissions-map";
-import EosInfoTooltip from "./components/widgets/eos-info-tooltip.vue";
-import EosConfirmationDialog from "./components/widgets/eos-confirmation-dialog.vue";
-import EosDropdown from "./components/widgets/dropdown/eos-dropdown-view.vue";
+import CortxInfoTooltip from "./components/widgets/cortx-info-tooltip.vue";
+import CortxConfirmationDialog from "./components/widgets/cortx-confirmation-dialog.vue";
+import CortxDropdown from "./components/widgets/dropdown/cortx-dropdown-view.vue";
 import i18n from "./i18n";
 
 Vue.use(Vuelidate);
@@ -61,12 +61,12 @@ Vue.prototype.$hasAccessToCsm = function(role: string) {
   return false;
 };
 
-Vue.component("eos-has-access", EosHasAccess);
-Vue.component("eos-info-tooltip", EosInfoTooltip);
-Vue.component("eos-confirmation-dialog", EosConfirmationDialog);
-Vue.component("eos-dropdown", EosDropdown);
+Vue.component("cortx-has-access", CortxHasAccess);
+Vue.component("cortx-info-tooltip", CortxInfoTooltip);
+Vue.component("cortx-confirmation-dialog", CortxConfirmationDialog);
+Vue.component("cortx-dropdown", CortxDropdown);
 
-Vue.prototype.$eosUserPermissions = userPermissionsMap;
+Vue.prototype.$cortxUserPermissions = userPermissionsMap;
 
 new Vue({
   router,

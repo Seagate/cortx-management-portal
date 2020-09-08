@@ -18,13 +18,13 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div
-        class="mt-3 pa-3 pb-0 eos-last-ssl-info-container eos-text-md"
+        class="mt-3 pa-3 pb-0 cortx-last-ssl-info-container cortx-text-md"
         v-if="lastSSLStatus.status"
       >
         <table>
           <tr>
             <td style="width: 180px;">
-              <label class="eos-text-bold">Last installation status:</label>
+              <label class="cortx-text-bold">Last installation status:</label>
             </td>
             <td>
               <label>{{ lastSSLStatus.status }}</label>
@@ -32,7 +32,7 @@
           </tr>
           <tr>
             <td>
-              <label class="eos-text-bold">Last certificate filename:</label>
+              <label class="cortx-text-bold">Last certificate filename:</label>
             </td>
             <td>
               <label>{{ lastSSLStatus.filename }}</label>
@@ -40,13 +40,13 @@
           </tr>
           <tr>
             <td>
-              <label class="eos-text-bold">Last certificate upload date:</label>
+              <label class="cortx-text-bold">Last certificate upload date:</label>
             </td>
             <td>{{ lastSSLStatus.date }}</td>
           </tr>
           <tr>
             <td>
-              <label class="eos-text-bold">Serial number:</label>
+              <label class="cortx-text-bold">Serial number:</label>
             </td>
             <td>
               <label>{{ lastSSLStatus.serial_number }}</label>
@@ -71,13 +71,13 @@
                 :disabled="!fileStatus"
                 id="btnUploadSSL"
                 type="button"
-                class="eos-btn-primary mt-3"
+                class="cortx-btn-primary mt-3"
                 @click="uploadCertificate()"
               >
                 Upload certificate
               </button>
               <span class="ml-5" v-if="$route.path !== '/onboarding'">
-                <EOSInstallSSL :installStatus="buttonStatus" />
+                <CortxInstallSSL :installStatus="buttonStatus" />
               </span>
             </v-row>
           </v-col>
@@ -91,7 +91,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
-import EOSInstallSSL from "./install-ssl.vue";
+import CortxInstallSSL from "./install-ssl.vue";
 import {
   SystemConfigObject,
   DnsNetworkSettings
@@ -108,10 +108,10 @@ import {
 @Component({
   name: "upload-ssl-config",
   components: {
-    EOSInstallSSL
+    CortxInstallSSL
   }
 })
-export default class EOSUploadSSLConfig extends Vue {
+export default class CortxUploadSSLConfig extends Vue {
   @Validations()
   private validations = {
     file: { required }
@@ -170,7 +170,7 @@ export default class EOSUploadSSLConfig extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.eos-last-ssl-info-container {
+.cortx-last-ssl-info-container {
   border: 1px solid #e3e3e3;
   border-radius: 5px;
 }

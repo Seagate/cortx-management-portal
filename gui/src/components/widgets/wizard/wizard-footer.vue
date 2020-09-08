@@ -38,14 +38,14 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { EVENT_BUS } from "./../../../main";
 
 @Component({
-  name: "eos-wizard-footer",
+  name: "cortx-wizard-footer",
   props: {
     footerObj: Object
   }
 })
 // Overall: EVENT_BUS is used here to have a comunication between footer and middle component (siblings)
 // this.emit is used to have a communication between footer and wizard component (parent)
-export default class EosWizardFooter extends Vue {
+export default class CortxWizardFooter extends Vue {
   private mounted() {
     // Listen to middle components form validation event so that footer can enable or disable next button
     EVENT_BUS.$on("validForm", (res: any) => {

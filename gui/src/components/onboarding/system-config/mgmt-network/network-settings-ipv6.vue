@@ -113,9 +113,9 @@ import {
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({
-  name: "eos-network-settings-ipv4"
+  name: "cortx-network-settings-ipv4"
 })
-export default class EosNetworkSettingsIpv4 extends Vue {
+export default class CortxNetworkSettingsIpv4 extends Vue {
   private data() {
     return {
       source: "manual",

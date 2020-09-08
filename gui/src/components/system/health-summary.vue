@@ -15,26 +15,26 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-health-summary-container">
-    <label class="eos-text-lg eos-text-bold eos-float-l">HW Health</label>
-    <div class="eos-float-l" v-if="healthSummary.good && healthSummary.good > 0">
-      <div class="eos-summary-chip eos-chip-ok eos-float-l ml-2">
+  <div class="cortx-health-summary-container">
+    <label class="cortx-text-lg cortx-text-bold cortx-float-l">HW Health</label>
+    <div class="cortx-float-l" v-if="healthSummary.good && healthSummary.good > 0">
+      <div class="cortx-summary-chip cortx-chip-ok cortx-float-l ml-2">
         <div class="summary-count">
-          <label class="eos-text-sm">{{ healthSummary.good?healthSummary.good:0 }}</label>
+          <label class="cortx-text-sm">{{ healthSummary.good?healthSummary.good:0 }}</label>
         </div>
       </div>
     </div>
-    <div class="eos-float-l" v-if="healthSummary.warning && healthSummary.warning > 0">
-      <div class="eos-summary-chip eos-chip-warning eos-float-l ml-2">
+    <div class="cortx-float-l" v-if="healthSummary.warning && healthSummary.warning > 0">
+      <div class="cortx-summary-chip cortx-chip-warning cortx-float-l ml-2">
         <div class="summary-count">
-          <label class="eos-text-sm">{{ healthSummary.warning? healthSummary.warning : 0 }}</label>
+          <label class="cortx-text-sm">{{ healthSummary.warning? healthSummary.warning : 0 }}</label>
         </div>
       </div>
     </div>
-    <div class="eos-float-l" v-if="healthSummary.critical && healthSummary.critical > 0">
-      <div class="eos-summary-chip eos-chip-alert eos-float-l ml-2">
+    <div class="cortx-float-l" v-if="healthSummary.critical && healthSummary.critical > 0">
+      <div class="cortx-summary-chip cortx-chip-alert cortx-float-l ml-2">
         <div class="summary-count">
-          <label class="eos-text-sm">{{ healthSummary.critical? healthSummary.critical : 0 }}</label>
+          <label class="cortx-text-sm">{{ healthSummary.critical? healthSummary.critical : 0 }}</label>
         </div>
       </div>
     </div>
@@ -47,9 +47,9 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-health-summary"
+  name: "cortx-health-summary"
 })
-export default class EosHealthSummary extends Vue {
+export default class CortxHealthSummary extends Vue {
   public healthSummary: HealthSummary = {
     good: 0,
     fault: 0,
@@ -94,10 +94,10 @@ export default class EosHealthSummary extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.eos-health-summary-container {
+.cortx-health-summary-container {
   height: 1.875em;
 }
-.eos-summary-chip {
+.cortx-summary-chip {
   display: flex;
   min-height: 16px;
   min-width: 16px;

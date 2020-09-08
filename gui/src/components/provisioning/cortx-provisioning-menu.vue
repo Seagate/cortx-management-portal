@@ -16,33 +16,33 @@
 */
 <template>
   <div>
-    <eos-tabs :tabsInfo="tabsInfo" />
-    <eos-has-access :to="$eosUserPermissions.users + $eosUserPermissions.list">
-      <EosUserSettingLocal v-if="showUserTab" />
-    </eos-has-access>
+    <cortx-tabs :tabsInfo="tabsInfo" />
+    <cortx-has-access :to="$cortxUserPermissions.users + $cortxUserPermissions.list">
+      <CortxUserSettingLocal v-if="showUserTab" />
+    </cortx-has-access>
 
-    <eos-has-access
-      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+    <cortx-has-access
+      :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list"
     >
       <S3Account v-if="showAccountTab" />
-    </eos-has-access>
+    </cortx-has-access>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import EosUserSettingLocal from "../onboarding/system-config/user-settings/user-setting-local.vue";
-import EosTabs, { TabsInfo } from "../widgets/eos-tabs.vue";
+import CortxUserSettingLocal from "../onboarding/system-config/user-settings/user-setting-local.vue";
+import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
 import S3Account from "../s3/account-management.vue";
 
 @Component({
-  name: "eos-provisioning-submenu",
+  name: "cortx-provisioning-submenu",
   components: {
-    EosUserSettingLocal,
-    EosTabs,
+    CortxUserSettingLocal,
+    CortxTabs,
     S3Account
   }
 })
-export default class EosProvisioningSubmenu extends Vue {
+export default class CortxProvisioningSubmenu extends Vue {
   public tabsInfo: TabsInfo = {
     tabs: [
       {
@@ -74,8 +74,8 @@ export default class EosProvisioningSubmenu extends Vue {
     const vueInstance: any = this;
     if (
       vueInstance.$hasAccessToCsm(
-        vueInstance.$eosUserPermissions.s3accounts +
-          vueInstance.$eosUserPermissions.update
+        vueInstance.$cortxUserPermissions.s3accounts +
+          vueInstance.$cortxUserPermissions.update
       )
     ) {
       this.$router.push("/provisioning/s3");
@@ -83,8 +83,8 @@ export default class EosProvisioningSubmenu extends Vue {
 
     this.tabsInfo.tabs = this.tabsInfo.tabs.map((tab: any) => {
       tab.show = vueInstance.$hasAccessToCsm(
-        vueInstance.$eosUserPermissions[tab.requiredAccess] +
-          vueInstance.$eosUserPermissions.list
+        vueInstance.$cortxUserPermissions[tab.requiredAccess] +
+          vueInstance.$cortxUserPermissions.list
       );
       return tab;
     });
