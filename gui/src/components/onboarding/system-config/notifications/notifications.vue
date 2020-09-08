@@ -32,7 +32,7 @@
 
         <v-divider class="mt-3" />
         <div class="mt-6">
-          <label class="eos-ckb-container" for="chkNotificationEmail">
+          <label class="cortx-ckb-container" for="chkNotificationEmail">
             Email
             <input
               type="checkbox"
@@ -41,7 +41,7 @@
               :disabled="isSkip"
               id="chkNotificationEmail"
             />
-            <span class="eos-ckb-tick"></span>
+            <span class="cortx-ckb-tick"></span>
           </label>
           <div
             class="mt-2 font-weight-regular black--text"
@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="mt-5">
-          <label class="eos-ckb-container" for="chkNotificationSkip">
+          <label class="cortx-ckb-container" for="chkNotificationSkip">
             Skip this step
             <input
               type="checkbox"
@@ -60,7 +60,7 @@
               :disabled="isEmailSettingsStatus || isSysLogSettingsStatus"
               id="chkNotificationSkip"
             />
-            <span class="eos-ckb-tick"></span>
+            <span class="cortx-ckb-tick"></span>
           </label>
           <div class="mt-2 font-weight-regular black--text">
             You can configure the notifications later. However, it is not
@@ -77,9 +77,9 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({
-  name: "eos-notifications"
+  name: "cortx-notifications"
 })
-export default class EosNotifications extends Vue {
+export default class CortxNotifications extends Vue {
   public data() {
     return {
       isSkip: false

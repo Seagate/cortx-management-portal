@@ -21,7 +21,7 @@
       <button
         type="button"
         id="btnAddAccessKey"
-        class="eos-btn-primary "
+        class="cortx-btn-primary "
         @click="createAccessKey()"
         :disabled="accessKeyList.length >= MAX_ACCESS_KEYS"
       >
@@ -29,14 +29,14 @@
       </button>
     </div>
 
-    <eos-has-access
-      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+    <cortx-has-access
+      :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list"
     >
       <v-data-table
         :headers="accessKeyTableHeaderList"
         :items="accessKeyList"
         item-key="access_key_id"
-        class="eos-table"
+        class="cortx-table"
         :hide-default-header="true"
         :hide-default-footer="true"
         :disable-pagination="true"
@@ -67,31 +67,31 @@
               <span v-else>--</span>
             </td>
             <td style="white-space: nowrap;">
-              <eos-has-access
+              <cortx-has-access
                 class="mx-2"
                 :to="
-                  $eosUserPermissions.s3accounts + $eosUserPermissions.delete
+                  $cortxUserPermissions.s3accounts + $cortxUserPermissions.delete
                 "
               >
                 <img
                   @click="openConfirmDeleteDialog(item.access_key_id)"
-                  class="eos-cursor-pointer"
+                  class="cortx-cursor-pointer"
                   src="@/assets/actions/delete-green.svg"
                 />
-              </eos-has-access>
+              </cortx-has-access>
             </td></tr
         ></template>
       </v-data-table>
-    </eos-has-access>
+    </cortx-has-access>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmDeleteDialog"
       :title="$t('common.confirm-dialog.title')"
       :message="confirmDeleteDialogMessage"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
     <cortx-download-csv-dialog
       :show="showAccessKeyDetailsDialog"
       :title="$t('s3.download-csv-dialog.created')"
