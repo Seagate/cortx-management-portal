@@ -1,27 +1,27 @@
 /*
-* CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-* You should have received a copy of the GNU Affero General Public License
-* along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing,
-* please email opensource@seagate.com or cortx-questions@seagate.com.
-*/
+ * CORTX-CSM: CORTX Management web and CLI interface.
+ * Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * For any questions about this software or licensing,
+ * please email opensource@seagate.com or cortx-questions@seagate.com.
+ */
 <template>
   <div>
     <div class="udx-page-title">
-      <label class="cortx-text-lg cortx-text-bold">UDX Registration</label>
+      <label class="cortx-text-lg cortx-text-bold" id="udx-title">UDX Registration</label>
     </div>
     <div id="udx-reg-token-container" class="mt-4" v-if="registrationToken">
       <div class="udx-reg-token-lbl">
-        <label class="cortx-text-lg cortx-float-l">Your registration token</label>
+        <label class="cortx-text-lg cortx-float-l" id="udx-tocken-title">Your registration token</label>
         <label class="cortx-float-l mt-1 ml-1">
           <cortx-info-tooltip
             message="On your UDX web portal choose 'Add Device' and then enter the identification token below."
@@ -29,21 +29,15 @@
         </label>
       </div>
       <div id="udx-reg-token" class="mt-1">
-        <label id="udx-reg-token-part-1" class="float-left">
-          {{
+        <label id="udx-reg-token-part-1" class="float-left">{{
           registrationToken.substring(0, 4)
-          }}
-        </label>
-        <label id="udx-reg-token-part-2" class="float-left ml-2">
-          {{
+        }}</label>
+        <label id="udx-reg-token-part-2" class="float-left ml-2">{{
           registrationToken.substring(4, 8)
-          }}
-        </label>
-        <label id="udx-reg-token-part-3" class="float-left ml-2">
-          {{
+        }}</label>
+        <label id="udx-reg-token-part-3" class="float-left ml-2">{{
           registrationToken.substring(8, 12)
-          }}
-        </label>
+        }}</label>
       </div>
     </div>
     <div class="mt-3">
@@ -69,17 +63,21 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
+                id="udx-url-required"
                 v-if="
                   $v.registrationForm.url.$dirty &&
                     !$v.registrationForm.url.required
                 "
-              >URL is required</label>
+                >{{ $t("udx-registration.udx-url-required") }}</label
+              >
               <label
+                id="udx-url-invalid"
                 v-else-if="
                   $v.registrationForm.url.$dirty &&
                     !$v.registrationForm.url.udxURLRegex
                 "
-              >Invalid URL</label>
+                >{{ $t("udx-registration.invalid-url") }}</label
+              >
             </div>
           </div>
         </v-col>
@@ -87,7 +85,7 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="cortx-text-md cortx-text-bold">S3 Account details</label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-account-detailslbl">S3 Account details</label>
         </v-col>
       </v-row>
       <v-row>
@@ -99,7 +97,7 @@
                 $v.registrationForm.accountName.$error
             }"
           >
-            <label class="cortx-form-group-label" for="accountName">
+            <label class="cortx-form-group-label" for="accountName" udx-account-namelbl>
               <cortx-info-tooltip label="Account name*" :message="accountNameTooltipMessage" />
             </label>
             <input
@@ -112,17 +110,21 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
+                id="udx-s3-accountname-required"
                 v-if="
                   $v.registrationForm.accountName.$dirty &&
                     !$v.registrationForm.accountName.required
                 "
-              >Account name is required</label>
+                >{{ $t("udx-registration.accountname-required") }}</label
+              >
               <label
+                id="udx-url-invalid"
                 v-else-if="
                   $v.registrationForm.accountName.$dirty &&
                     !$v.registrationForm.accountName.accountNameRegex
                 "
-              >Invalid account name</label>
+                >{{ $t("udx-registration.invalid-name") }}</label
+              >
             </div>
           </div>
         </v-col>
@@ -145,17 +147,21 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
+                id="udx-email-required"
                 v-if="
                   $v.registrationForm.accountEmail.$dirty &&
                     !$v.registrationForm.accountEmail.required
                 "
-              >Email id is required</label>
+                >{{ $t("udx-registration.email-reqiured") }}</label
+              >
               <label
+                id="udx-email-invalid"
                 v-else-if="
                   $v.registrationForm.accountEmail.$dirty &&
                     !$v.registrationForm.accountEmail.email
                 "
-              >Invalid email id</label>
+                >{{ $t("udx-registration.invalid-email") }}</label
+              >
             </div>
           </div>
         </v-col>
@@ -169,7 +175,7 @@
                 $v.registrationForm.accountPassword.$error
             }"
           >
-            <label class="cortx-form-group-label" for="accountPassword">
+            <label class="cortx-form-group-label" for="accountPassword" id="udx-accounpasswordlbl">
               <cortx-info-tooltip label="Password*" :message="passwordTooltipMessage" />
             </label>
             <input
@@ -182,17 +188,21 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
+                id="udx-accountpass-required"
                 v-if="
                   $v.registrationForm.accountPassword.$dirty &&
                     !$v.registrationForm.accountPassword.required
                 "
-              >Password is required</label>
+                >{{ $t("udx-registration.password-required") }}</label
+              >
               <label
+                id="udx-accountpass-invalid"
                 v-else-if="
                   $v.registrationForm.accountPassword.$dirty &&
                     !$v.registrationForm.accountPassword.passwordRegex
                 "
-              >Invalid password</label>
+                >{{ $t("udx-registration.invalid-password") }}</label
+              >
             </div>
           </div>
         </v-col>
@@ -217,16 +227,18 @@
               class="cortx-form-group-label cortx-form-group-error-msg"
               v-if="
                 $v.registrationForm.accountConfirmPassword.$dirty &&
-                  !$v.registrationForm.accountConfirmPassword.sameAsAccountPassword
+                  !$v.registrationForm.accountConfirmPassword
+                    .sameAsAccountPassword
               "
-            >Passwords do not match</span>
+              >{{ $t("udx-registration.password-match") }}</span
+            >
           </div>
         </v-col>
       </v-row>
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="cortx-text-md cortx-text-bold">IAM User details</label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-iam-detailslbl">IAM User details</label>
         </v-col>
       </v-row>
       <v-row>
@@ -238,7 +250,7 @@
                 $v.registrationForm.iamUsername.$error
             }"
           >
-            <label class="cortx-form-group-label" for="iamUsername">
+            <label class="cortx-form-group-label" for="iamUsername" id="udx-iamuserlbl">
               <cortx-info-tooltip label="Username*" :message="accountNameTooltipMessage" />
             </label>
             <input
@@ -251,17 +263,21 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
+                id="udx-iamusername-required"
                 v-if="
                   $v.registrationForm.iamUsername.$dirty &&
                     !$v.registrationForm.iamUsername.required
                 "
-              >Username is required</label>
+                >{{ $t("udx-registration.username-required") }}</label
+              >
               <label
+                id="udx-iamusername-invalid"
                 v-else-if="
                   $v.registrationForm.iamUsername.$dirty &&
                     !$v.registrationForm.iamUsername.accountNameRegex
                 "
-              >Invalid username</label>
+                >{{ $t("udx-registration.invalid-user") }}</label
+              >
             </div>
           </div>
         </v-col>
@@ -275,7 +291,7 @@
                 $v.registrationForm.iamUserPassword.$error
             }"
           >
-            <label class="cortx-form-group-label" for="iamUserPassword">
+            <label class="cortx-form-group-label" for="iamUserPassword" id="udx-iamuserpasswordlbl">
               <cortx-info-tooltip label="Password*" :message="passwordTooltipMessage" />
             </label>
             <input
@@ -288,17 +304,21 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
+                id="udx-iampassword-required"
                 v-if="
                   $v.registrationForm.iamUserPassword.$dirty &&
                     !$v.registrationForm.iamUserPassword.required
                 "
-              >Password is required</label>
+                >{{ $t("udx-registration.password-required") }}</label
+              >
               <label
+                id="udx-iampassword-invalid"
                 v-else-if="
                   $v.registrationForm.iamUserPassword.$dirty &&
                     !$v.registrationForm.iamUserPassword.passwordRegex
                 "
-              >Invalid password</label>
+                >{{ $t("udx-registration.invalid-password") }}</label
+              >
             </div>
           </div>
         </v-col>
@@ -310,7 +330,7 @@
                 $v.registrationForm.iamUserConfirmPassword.$error
             }"
           >
-            <label class="cortx-form-group-label" for="iamUserConfirmPassword">Confirm password*</label>
+            <label class="cortx-form-group-label" for="iamUserConfirmPassword" id="udx-confirm-passwordlbl">Confirm password*</label>
             <input
               class="cortx-form__input_text"
               type="password"
@@ -323,16 +343,18 @@
               class="cortx-form-group-label cortx-form-group-error-msg"
               v-if="
                 $v.registrationForm.iamUserConfirmPassword.$dirty &&
-                  !$v.registrationForm.iamUserConfirmPassword.sameAsIAMUserPassword
+                  !$v.registrationForm.iamUserConfirmPassword
+                    .sameAsIAMUserPassword
               "
-            >Passwords do not match</span>
+              >{{ $t("udx-registration.password-match") }}</span
+            >
           </div>
         </v-col>
       </v-row>
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="cortx-text-md cortx-text-bold">S3 Bucket details</label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-s3-detailslbl">S3 Bucket details</label>
         </v-col>
       </v-row>
       <v-row>
@@ -344,7 +366,7 @@
                 $v.registrationForm.bucketName.$error
             }"
           >
-            <label class="cortx-form-group-label" for="bucketName">
+            <label class="cortx-form-group-label" for="bucketName" id="udx-bucket-namelbl">
               <cortx-info-tooltip label="Bucket name*" :message="bucketNameTooltipMessage" />
             </label>
             <div class="cortx-bucket-input-prefix">
@@ -360,17 +382,21 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
+                id="udx-bucketname-required"
                 v-if="
                   $v.registrationForm.bucketName.$dirty &&
                     !$v.registrationForm.bucketName.required
                 "
-              >Bucket name is required</label>
+                >{{ $t("udx-registration.bucket-required") }}</label
+              >
               <label
+                id="udx-bucketname-invalid"
                 v-else-if="
                   $v.registrationForm.bucketName.$dirty &&
                     !$v.registrationForm.bucketName.udxBucketNameRegex
                 "
-              >Invalid bucket name</label>
+                >{{ $t("udx-registration.invalid-bucketname") }}</label
+              >
             </div>
           </div>
         </v-col>
@@ -378,9 +404,9 @@
       <v-divider class="mb-5" />
       <v-row>
         <v-col class="py-0">
-          <label class="cortx-text-md">I agree to the following:</label>
+          <label class="cortx-text-md" id="udx-agreelbl">I agree to the following:</label>
           <br />
-          <label class="cortx-ckb-container" for="consentOne">
+          <label class="cortx-ckb-container" for="consentOne" id="udx-firstcheck">
            A dedicated UDX Bucket will be created in my account.
             <input
               type="checkbox"
@@ -391,7 +417,7 @@
             <span class="cortx-ckb-tick"></span>
           </label>
           <br />
-          <label class="cortx-ckb-container" for="consentTwo">
+          <label class="cortx-ckb-container" for="consentTwo" id="udx-secondcheck">
             An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.
             <input
               type="checkbox"
@@ -406,16 +432,26 @@
       <v-row class="mt-2">
         <v-col>
           <button
+            id="udx-registrationbtn"
             type="button"
             class="cortx-btn-primary"
             @click="registerUDX()"
-            :disabled="$v.registrationForm.$invalid || !registrationForm.consentOne || !registrationForm.consentTwo"
-          >Register</button>
+            :disabled="
+              $v.registrationForm.$invalid ||
+                !registrationForm.consentOne ||
+                !registrationForm.consentTwo
+            "
+          >
+            {{ $t("udx-registration.register-btn") }}
+          </button>
           <button
+            id="udx-clearbtn"
             type="button"
             class="ml-8 cortx-btn-secondary"
             @click="clearRegistrationForm()"
-          >Clear</button>
+          >
+            {{ $t("udx-registration.clear") }}
+          </button>
         </v-col>
       </v-row>
     </div>
@@ -423,7 +459,7 @@
       <div class="cortx-modal" style="width: 600px;">
         <div class="cortx-modal-header">
           <label>Details</label>
-          <img
+          <img id="udx-close-dialogbox"
             class="cortx-modal-close"
             :src="require('@/assets/close-green.svg')"
             @click="closeRegResponseDetailsDialog()"
@@ -433,24 +469,25 @@
           <table class="cortx-text-md">
             <tr>
               <td class="py-1 cortx-text-bold udx-reg-resp-table-label">S3 Account Access Key</td>
-              <td class="py-1">{{ registrationResponse.s3_account.access_key }}</td>
+              <td class="py-1" id="udx-s3accesskey">{{ registrationResponse.s3_account.access_key }}</td>
             </tr>
             <tr>
               <td class="py-1 cortx-text-bold udx-reg-resp-table-label">S3 Account Secret Key</td>
-              <td class="py-1">{{ registrationResponse.s3_account.secret_key }}</td>
+              <td class="py-1" id="udx-s3secretekey">{{ registrationResponse.s3_account.secret_key }}</td>
             </tr>
             <tr>
               <td class="py-1 cortx-text-bold udx-reg-resp-table-label">IAM User Access Key</td>
-              <td class="py-1">{{ registrationResponse.iam_user.access_key }}</td>
+              <td class="py-1" id="udx-iamaccesskey">{{ registrationResponse.iam_user.access_key }}</td>
             </tr>
             <tr>
               <td class="py-1 cortx-text-bold udx-reg-resp-table-label">IAM User Secret Key</td>
-              <td class="py-1">{{ registrationResponse.iam_user.secret_key }}</td>
+              <td class="py-1" id="udx-iamsecretkey">{{ registrationResponse.iam_user.secret_key }}</td>
             </tr>
           </table>
         </div>
         <div class="cortx-modal-footer">
           <button
+          id="udx-close-details-dialog"
             type="button"
             class="cortx-btn-primary cortx-float-r"
             @click="closeRegResponseDetailsDialog()"
@@ -460,11 +497,12 @@
     </div>
   </div>
 </template>
-
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
+import CortxDownloadCsvDialog from "./../s3/download-csv-dialog.vue";
+import i18n from "./../../i18n";
 import {
   udxURLRegex,
   accountNameRegex,
@@ -486,7 +524,37 @@ export default class CortxUDXRegistration extends Vue {
   public passwordTooltipMessage: string = passwordTooltipMessage;
   public accountNameTooltipMessage: string = accountNameTooltipMessage;
   public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
-
+  private showAccessKeyDetailsDialog: boolean;
+  private accessKeyDetails: any = {};
+  private accessKeyTableHeaderList: any[];
+  constructor() {
+    super();
+    this.showAccessKeyDetailsDialog = false;
+    this.accessKeyDetails = {};
+    this.accessKeyTableHeaderList = [
+      {
+        text: i18n.t("s3.access-key.table-headers.access_key"),
+        value: "access_key",
+        sortable: false
+      },
+      {
+        text: i18n.t("s3.access-key.table-headers.secret_key"),
+        value: "secret_key",
+        sortable: false
+      },
+      {
+        text: i18n.t("s3.access-key.table-headers.iam_access_key"),
+        value: "IAM access_key",
+        sortable: false
+      },
+      {
+        text: i18n.t("s3.access-key.table-headers.iam_secret_key"),
+        value: "IAM secret_key",
+        sortable: false
+      },
+      { text: "", value: "data-table-expand" }
+    ];
+  }
   public registrationForm = {
     url: "",
     accountName: "",
@@ -542,13 +610,19 @@ export default class CortxUDXRegistration extends Vue {
     );
     if (res && res.data) {
       this.registrationResponse = res.data;
+      this.accessKeyDetails = {
+        [`${i18n.t("s3.access-key.table-headers.access_key")}`]: this
+          .registrationResponse.s3_account.access_key,
+        [`${i18n.t("s3.access-key.table-headers.secret_key")}`]: this
+          .registrationResponse.s3_account.secret_key,
+        [`${i18n.t("s3.access-key.table-headers.iam_access_key")}`]: this
+          .registrationResponse.iam_user.access_key,
+        [`${i18n.t("s3.access-key.table-headers.iam_secret_key")}`]: this
+          .registrationResponse.iam_user.secret_key
+      };
+      this.showAccessKeyDetailsDialog = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
-  }
-
-  public closeRegResponseDetailsDialog() {
-    this.registrationResponse = null;
-    this.$emit("complete");
   }
 
   public clearRegistrationForm() {
@@ -567,8 +641,7 @@ export default class CortxUDXRegistration extends Vue {
       this.$v.registrationForm.$reset();
     }
   }
-
-  private async getRegistrationToken() {
+  public async getRegistrationToken() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Fetching registration token..."
@@ -578,6 +651,10 @@ export default class CortxUDXRegistration extends Vue {
       this.registrationToken = res.data.registrationToken;
     }
     this.$store.dispatch("systemConfig/hideLoader");
+  }
+  public async closeDialogbox() {
+    this.$emit("complete");
+    this.showAccessKeyDetailsDialog = false;
   }
 }
 </script>
