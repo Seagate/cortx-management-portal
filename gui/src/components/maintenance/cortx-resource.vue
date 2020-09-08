@@ -15,11 +15,11 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2 body-2">
+  <div class="cortx-p-2 body-2">
     <div id="system-maintenance-title-container">
       <label
         id="system-maintenance-title"
-        class="eos-text-lg mt-2 font-weight-bold"
+        class="cortx-text-lg mt-2 font-weight-bold"
         >{{$t("systemMaintenance.page-title")}}</label
       >
     </div>
@@ -29,26 +29,26 @@
           <v-row class="row-container" align="center" no-gutters>
             <v-col col="3" lg="3">
               <label id="maintenance-startlbl"
-                class="eos-form-group-label font-weight-bold"
+                class="cortx-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
                 >{{$t("systemMaintenance.start-service")}}</label
               >
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
-              <eos-dropdown
+              <cortx-dropdown
                 id="maintenance-startnode-dropdown"
                 @update:selectedOption="handleStartSelect"
                 :options="createOptionsForDropdown(resourceState.standby)"
                 :width="dropdownWidth"
                 :title="resource.start ? resource.start : undefined"
-              ></eos-dropdown>
+              ></cortx-dropdown>
             </v-col>
             <v-col md="2">
               <button
                 type="button"
                 id="btnStartResource"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 :disabled="!resourceState.standby.length || !resource.start"
                 @click="startSelectedResource()"
               >
@@ -59,7 +59,7 @@
           <v-row class="mt-5 row-container" align="center" no-gutters>
             <v-col col="3" lg="3">
               <label id="maintenance-stoplbl"
-                class="eos-form-group-label font-weight-bold"
+                class="cortx-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
                 >{{ $t("systemMaintenance.stop-service") }}</label
@@ -67,20 +67,20 @@
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
               <div>
-                <eos-dropdown
+                <cortx-dropdown
                   id="maintenance-stoptnode-dropdown"
                   @update:selectedOption="handleStopSelect"
                   :options="createOptionsForDropdown(resourceState.online)"
                   :width="dropdownWidth"
                   :title="resource.stop ? resource.stop : undefined"
-                ></eos-dropdown>
+                ></cortx-dropdown>
               </div>
             </v-col>
             <v-col md="2">
               <button
                 type="button"
                 id="btnStopResource"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 :disabled="!resourceState.online.length >= 1 || !resource.stop"
                 @click="stopSelectedResource()"
               >
@@ -90,27 +90,28 @@
           </v-row>
           <v-row class="mt-5 row-container" align="center" no-gutters>
             <v-col col="3" lg="3">
-              <label  id="maintenance-shutdownlbl"
-                class="eos-form-group-label font-weight-bold"
+              <label
+                id="maintenance-shutdownlbl"
+                class="cortx-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
                 >{{ $t("systemMaintenance.shutdown") }}</label
               >
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
-              <eos-dropdown
+              <cortx-dropdown
                 id="maintenance-shutdowntnode-dropdown"
                 @update:selectedOption="handleShutdownSelect"
                 :options="createOptionsForDropdown(resourceState.offline)"
                 :width="dropdownWidth"
                 :title="resource.shutdown ? resource.shutdown : undefined"
-              ></eos-dropdown>
+              ></cortx-dropdown>
             </v-col>
             <v-col md="2">
               <button
                 type="button"
                 id="btnShutdownResource"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 :disabled="!resource.shutdown"
                 @click="shutdownSelectedResource()"
               >
@@ -119,14 +120,14 @@
             </v-col>
           </v-row>
           <div
-            class="eos-text-md mt-5 font-weight-bold"
+            class="cortx-text-md mt-5 font-weight-bold"
             id="lblShutdownNode"
             v-if="shutdownNode"
           >{{ $t('systemMaintenance.shutdown-note', { node: shutdownNode }) }}
           </div>
         </v-card>
       </div>
-      <eos-confirmation-dialog
+      <cortx-confirmation-dialog
       id="resource-confirmation-dialog"
         :show="showConfirmationDialog"
         title="Confirmation"
@@ -135,8 +136,8 @@
         :severity="confirmationDialogSeverity"
         @closeDialog="closeConfirmationDialog"
         cancelButtonText="No"
-      ></eos-confirmation-dialog>
-      <eos-confirmation-dialog
+      ></cortx-confirmation-dialog>
+      <cortx-confirmation-dialog
        id="resource-success-dialogbox"
         :show="showInfoDialog"
         title="Success"
@@ -145,8 +146,8 @@
         @closeDialog="closeInfoDialog"
         confirmButtonText="Okay"
         cancelButtonText
-      ></eos-confirmation-dialog>
-      <div class="eos-text-primary mt-2">{{ actionMessage }}</div>
+      ></cortx-confirmation-dialog>
+      <div class="cortx-text-primary mt-2">{{ actionMessage }}</div>
     </v-container>
   </div>
 </template>
@@ -154,14 +155,14 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import EosDropdown from "../widgets/dropdown/eos-dropdown-view.vue";
-import { EosDropdownOption } from "../widgets/dropdown/eos-dropdown-model";
+import CortxDropdown from "../widgets/dropdown/cortx-dropdown-view.vue";
+import { CortxDropdownOption } from "../widgets/dropdown/cortx-dropdown-model";
 import i18n from "./../../i18n";
 @Component({
-  name: "eos-resource",
-  components: { EosDropdown }
+  name: "cortx-resource",
+  components: { CortxDropdown }
 })
-export default class EosMaintenance extends Vue {
+export default class CortxMaintenance extends Vue {
   private data() {
     return {
       resource: {
@@ -306,13 +307,13 @@ export default class EosMaintenance extends Vue {
       return { label: e, value: e };
     });
   }
-  private handleShutdownSelect(selected: EosDropdownOption) {
+  private handleShutdownSelect(selected: CortxDropdownOption) {
     this.$data.resource.shutdown = selected.value;
   }
-  private handleStartSelect(selected: EosDropdownOption) {
+  private handleStartSelect(selected: CortxDropdownOption) {
     this.$data.resource.start = selected.value;
   }
-  private handleStopSelect(selected: EosDropdownOption) {
+  private handleStopSelect(selected: CortxDropdownOption) {
     this.$data.resource.stop = selected.value;
   }
   private closeInfoDialog(confirmation: string) {

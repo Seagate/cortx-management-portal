@@ -16,20 +16,20 @@
 */
 <template>
   <div class="pt-1 onboarding-container">
-    <eosWizard :configData="systemConfigData" :sortBy="'sequence'" />
+    <cortxWizard :configData="systemConfigData" :sortBy="'sequence'" />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosWizard from "../../widgets/wizard/wizard.vue";
+import CortxWizard from "../../widgets/wizard/wizard.vue";
 
 @Component({
-  name: "eos-onboarding",
+  name: "cortx-onboarding",
   components: {
-    eosWizard: EosWizard
+    cortxWizard: CortxWizard
   }
 })
-export default class EosOnboarding extends Vue {
+export default class CortxOnboarding extends Vue {
   private async mounted() {
     await this.$store.dispatch("systemConfig/getSystemConfigAction");
   }

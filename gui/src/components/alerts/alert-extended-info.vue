@@ -19,22 +19,22 @@
     <li v-for="(value, name) in alertExtendedInfo" :key="name">
       <div v-if="typeof value === 'object'">
         <div v-if="Array.isArray(value)">
-          <label class="eos-key-label eos-text-md eos-text-bold">{{ name }}</label>
+          <label class="cortx-key-label cortx-text-md cortx-text-bold">{{ name }}</label>
           <ul>
             <li v-for="(childItem, childIndex) in value" :key="childIndex">
-              <label class="eos-text-md eos-text-bold">[{{ childIndex + 1 }}]</label>
-              <eos-alert-extended-info :alertExtendedInfo="childItem" />
+              <label class="cortx-text-md cortx-text-bold">[{{ childIndex + 1 }}]</label>
+              <cortx-alert-extended-info :alertExtendedInfo="childItem" />
             </li>
           </ul>
         </div>
         <div v-else>
-            <label class="eos-text-md eos-text-bold">{{ name }}</label>
-            <eos-alert-extended-info :alertExtendedInfo="value" />
+            <label class="cortx-text-md cortx-text-bold">{{ name }}</label>
+            <cortx-alert-extended-info :alertExtendedInfo="value" />
         </div>
       </div>
       <div v-else>
-        <label class="eos-key-label eos-text-md eos-text-bold">{{ name }}</label>
-        <label class="eos-text-md">&nbsp;- {{ value }}</label>
+        <label class="cortx-key-label cortx-text-md cortx-text-bold">{{ name }}</label>
+        <label class="cortx-text-md">&nbsp;- {{ value }}</label>
       </div>
     </li>
   </ul>
@@ -44,9 +44,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-alert-extended-info"
+  name: "cortx-alert-extended-info"
 })
-export default class EosAlertExtendedInfo extends Vue {
+export default class CortxAlertExtendedInfo extends Vue {
   @Prop({ required: true })
   public alertExtendedInfo: any;
 }
@@ -58,10 +58,10 @@ ul {
   line-height: 1.5em;
   list-style-type: dot;
 }
-.eos-key-label {
+.cortx-key-label {
     display: inline-block;
 }
-.eos-key-label::first-letter{
+.cortx-key-label::first-letter{
     text-transform: uppercase;
 }
 </style>

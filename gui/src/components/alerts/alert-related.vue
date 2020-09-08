@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <h1>EosAlertRelated</h1>
+  <h1>CortxAlertRelated</h1>
 </template>
 
 <script lang="ts">
@@ -23,10 +23,10 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
 
 @Component({
-  name: "eos-alert-related",
+  name: "cortx-alert-related",
   components: {}
 })
-export default class EosAlerRelated extends Vue {}
+export default class CortxAlerRelated extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

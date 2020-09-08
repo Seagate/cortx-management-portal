@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2">
+  <div class="cortx-p-2">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblDns">
         Health:
@@ -28,47 +28,47 @@
     <div
       v-for="menuItem in healthData"
       :key="Object.keys(menuItem)[0]"
-      class="eos-menu-card-layout"
+      class="cortx-menu-card-layout"
     >
       <div>
         <label
-          class="eos-text-lg eos-text-bold eos-float-l eos-menu-card-title"
+          class="cortx-text-lg cortx-text-bold cortx-float-l cortx-menu-card-title"
         >{{Object.keys(menuItem)[0]}}</label>
         
         <div
-          class="eos-summary-chip eos-chip-ok eos-float-l ml-2"
+          class="cortx-summary-chip cortx-chip-ok cortx-float-l ml-2"
           v-if="menuItem[Object.keys(menuItem)[0]].health_summary.good && menuItem[Object.keys(menuItem)[0]].health_summary.good > 0"
         >
           <div class="summary-count">
             <label
-              class="eos-text-sm"
+              class="cortx-text-sm"
             >{{ menuItem[Object.keys(menuItem)[0]].health_summary.good?menuItem[Object.keys(menuItem)[0]].health_summary.good:0 }}</label>
           </div>
         </div>
         <div
-          class="eos-summary-chip eos-chip-warning eos-float-l ml-2"
+          class="cortx-summary-chip cortx-chip-warning cortx-float-l ml-2"
           v-if="menuItem[Object.keys(menuItem)[0]].health_summary.warning && menuItem[Object.keys(menuItem)[0]].health_summary.warning > 0"
         >
           <div class="summary-count">
             <label
-              class="eos-text-sm"
+              class="cortx-text-sm"
             >{{menuItem[Object.keys(menuItem)[0]].health_summary.warning? menuItem[Object.keys(menuItem)[0]].health_summary.warning : 0 }}</label>
           </div>
         </div>
         <div
-          class="eos-summary-chip eos-chip-alert eos-float-l ml-2"
+          class="cortx-summary-chip cortx-chip-alert cortx-float-l ml-2"
           v-if="menuItem[Object.keys(menuItem)[0]].health_summary.critical && menuItem[Object.keys(menuItem)[0]].health_summary.critical > 0"
         >
           <div class="summary-count">
             <label
-              class="eos-text-sm"
+              class="cortx-text-sm"
             >{{menuItem[Object.keys(menuItem)[0]].health_summary.critical? menuItem[Object.keys(menuItem)[0]].health_summary.critical : 0 }}</label>
           </div>
         </div>
         <button
           id="view-healthbtn"
           type="button"
-          class="eos-btn-tertiary eos-float-r"
+          class="cortx-btn-tertiary cortx-float-r"
           @click="$router.push({ name: 'healthview', query: { name: Object.keys(menuItem)[0] }})"
         >View</button>
       </div>
@@ -82,9 +82,9 @@ import apiRegister from "./../../services/api-register";
 import { AlertObject } from "../../models/alert";
 import { HealthSummary } from "../../models/system";
 @Component({
-  name: "eos-health-submenu"
+  name: "cortx-health-submenu"
 })
-export default class EosHealthSubmenu extends Vue {
+export default class CortxHealthSubmenu extends Vue {
   public alertObject: AlertObject = {} as AlertObject;
   public menuList: string[] = [];
   public healthData: any = {};
@@ -119,17 +119,17 @@ export default class EosHealthSubmenu extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.eos-menu-card-layout {
+.cortx-menu-card-layout {
   height: 4em;
   width: 56.25em;
   padding-left: 1em;
   padding-top: 0.5em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
-.eos-menu-card-title {
+.cortx-menu-card-title {
   margin-top: 0.313em;
 }
-.eos-summary-chip {
+.cortx-summary-chip {
   display: flex;
   min-height: 16px;
   margin-top: 6px;

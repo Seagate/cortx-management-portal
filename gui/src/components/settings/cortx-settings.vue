@@ -15,15 +15,15 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <router-view></router-view>
+  <router-view class="cortx-p-2"></router-view>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-preboarding"
+  name: "cortx-settings"
 })
-export default class EosPreboarding extends Vue {}
+export default class CortxSettings extends Vue {}
 </script>
 <style lang="scss" scoped>
 </style>

@@ -31,8 +31,8 @@
     <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 col-xs-6 col-sm-7">
-        <eos-has-access
-          :to="$eosUserPermissions.users + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.users + $cortxUserPermissions.list"
         >
           <v-data-table
             id="localuser-tabledata"
@@ -40,7 +40,7 @@
             :single-expand="singleExpand"
             :expanded.sync="expanded"
             item-key="id"
-            class="eos-table"
+            class="cortx-table"
             hide-default-header
           >
             <template v-slot:header="{}">
@@ -138,15 +138,15 @@
                             loggedInUserName
                           )
                       "
-                      class="ml-2 eos-cursor-pointer"
-                      id="localuser-editicon"
+                      class="ml-2 cortx-cursor-pointer"
+                       id="localuser-editicon"
                       @click="onEditBtnClick(props)"
                       title="Edit"
                       src="./../../../../assets/actions/edit-green.svg"
                     />
-                    <eos-has-access
+                    <cortx-has-access
                       :to="
-                        $eosUserPermissions.users + $eosUserPermissions.delete
+                        $cortxUserPermissions.users + $cortxUserPermissions.delete
                       "
                     >
                       <img
@@ -157,7 +157,7 @@
                               loggedInUserName
                             )
                         "
-                        class="ml-2 eos-cursor-pointer"
+                        class="ml-2 cortx-cursor-pointer"
                         id="localuser-deleteicon"
                         @click="onDeleteConfirmation(props.item.id)"
                         title="Delete"
@@ -171,61 +171,61 @@
                             loggedInUserName
                           ) && !isAdminUser(props.item)
                         "
-                        class="mx-2 eos-cursor-pointer"
+                        class="mx-2 cortx-cursor-pointer"
                         @click="onDeleteConfirmation(props.item.id)"
                         title="Delete"
                         src="./../../../../assets/actions/delete-green.svg"
                       />
-                    </eos-has-access>
+                    </cortx-has-access>
                   </span>
                 </td>
               </tr>
             </template>
           </v-data-table>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-xs-6 pr-0 col-sm-5">
-        <eos-has-access
-          :to="$eosUserPermissions.users + $eosUserPermissions.create"
+        <cortx-has-access
+          :to="$cortxUserPermissions.users + $cortxUserPermissions.create"
         >
           <button
             v-if="!isUserCreate && !isUserEdit"
             type="button"
-            class="mt-4 eos-btn-primary"
+            class="mt-4 cortx-btn-primary"
             @click="onAddNewUser()"
             id="btnLocalAddNewUser"
           >
             {{ $t("csmuser.add-user-button") }}
           </button>
-        </eos-has-access>
+        </cortx-has-access>
         <div v-if="isUserCreate">
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.createAccount.username.$error
+                  'cortx-form-group--error': $v.createAccount.username.$error
                 }"
               >
                 <label
-                  class="eos-form-group-label"
+                  class="cortx-form-group-label"
                   for="Username"
                   id="lblusername"
                 >
-                  <eos-info-tooltip
+                  <cortx-info-tooltip
                     label="Username*"
                     :message="usernameTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   name="txtCreateUsername"
                   v-model.trim="createAccount.username"
                   id="txtLocalHostname"
                   @input="$v.createAccount.username.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     id="localusername-required"
                     v-if="
@@ -247,19 +247,19 @@
             </v-col>
             <v-col class="pl-5 pb-0 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.createAccount.email.$error
+                  'cortx-form-group--error': $v.createAccount.email.$error
                 }"
               >
                 <label
-                  class="eos-form-group-label"
+                  class="cortx-form-group-label"
                   for="Email"
                   id="localuseremaillbl"
                   >{{ $t("csmuser.email") }}</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="email"
                   name="email"
                   v-model.trim="createAccount.email"
@@ -267,7 +267,7 @@
                   @input="$v.createAccount.email.$touch"
                   placeholder="example@email.com"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     id="localuser-email-required"
                     v-if="
@@ -291,30 +291,30 @@
           <v-row>
             <v-col class="pl-5 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.createAccount.password.$error
+                  'cortx-form-group--error': $v.createAccount.password.$error
                 }"
               >
                 <label
-                  class="eos-form-group-label"
+                  class="cortx-form-group-label"
                   for="password"
                   id="localuser-passwordlbl"
                 >
-                  <eos-info-tooltip
+                  <cortx-info-tooltip
                     :label="$t('csmuser.password')"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   name="txtCreatePassword"
                   v-model.trim="createAccount.password"
                   @input="$v.createAccount.password.$touch"
                   id="txtLocalPass"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     id="localuser-password-required"
                     v-if="
@@ -336,27 +336,27 @@
             </v-col>
             <v-col class="pl-5 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccount.confirmPassword.$error
                 }"
               >
                 <label
-                  class="eos-form-group-label"
+                  class="cortx-form-group-label"
                   for="password"
                   id="localuser-confirmpasslbl"
                   >{{ $t("csmuser.confirm-password") }}*</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   name="txtCreateConfirmPassword"
                   v-model="createAccount.confirmPassword"
                   id="txtLocalConfirmPass"
                   @input="$v.createAccount.confirmPassword.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     id="localuser-confirmpassword-notmatch"
                     v-if="
@@ -372,7 +372,7 @@
           <v-row class="ml-3">
             <div>{{ $t("csmuser.roles") }}</div>
             <v-col class="pt-0 col-2">
-              <label class="eos-rdb-container" id="localuser-managelbl">
+              <label class="cortx-rdb-container" id="localuser-managelbl">
                 {{ $t("csmuser.manage") }}
                 <input
                   type="radio"
@@ -381,11 +381,11 @@
                   value="manage"
                   id="chkLocalManage"
                 />
-                <span class="eos-rdb-tick" id="lblLocalManage"></span>
+                <span class="cortx-rdb-tick" id="lblLocalManage"></span>
               </label>
             </v-col>
             <v-col class="pt-0 ml-3 col-3">
-              <label class="eos-rdb-container" id="localuser-monitorlbl">
+              <label class="cortx-rdb-container" id="localuser-monitorlbl">
                 {{ $t("csmuser.monitor") }}
                 <input
                   type="radio"
@@ -394,13 +394,13 @@
                   value="monitor"
                   id="chkLocalMonitor"
                 />
-                <span class="eos-rdb-tick" id="lblLocalMonitor"></span>
+                <span class="cortx-rdb-tick" id="lblLocalMonitor"></span>
               </label>
             </v-col>
           </v-row>
           <v-row class="ml-0">
             <v-col>
-              <label class="eos-ckb-container" for="emailCheckID">
+              <label class="cortx-ckb-container" for="emailCheckID">
                 {{ $t("csmuser.email-notification") }}
                 <input
                   type="checkbox"
@@ -408,7 +408,7 @@
                   v-model="createAccount.alert_notification"
                   id="emailCheckID"
                 />
-                <span class="eos-ckb-tick"></span>
+                <span class="cortx-ckb-tick"></span>
               </label>
             </v-col>
           </v-row>
@@ -417,7 +417,7 @@
               <button
                 v-if="isUserCreate"
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="createUser()"
                 id="btnLocalCreateUser"
                 :disabled="$v.createAccount.$invalid || !checkedRoles"
@@ -427,7 +427,7 @@
               <button
                 v-if="isUserCreate"
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="onAddNewUser()"
                 id="lblLocalCancel"
               >
@@ -441,14 +441,14 @@
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
               <label
-                class="eos-form-group-label"
+                class="cortx-form-group-label"
                 for="Email"
                 id="localuser-editusernamelbl"
               >
                 {{ $t("csmuser.username") }}</label
               >
               <input
-                class="eos-form__input_text"
+                class="cortx-form__input_text"
                 type="text"
                 name="text"
                 v-model.trim="selectedItem.username"
@@ -458,19 +458,19 @@
             </v-col>
             <v-col class="pl-5 pb-0 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.selectedItem.email.$error
+                  'cortx-form-group--error': $v.selectedItem.email.$error
                 }"
               >
                 <label
-                  class="eos-form-group-label"
+                  class="cortx-form-group-label"
                   for="Email"
                   id="localuser-editemaillbl"
                   >{{ $t("csmuser.email") }}</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="email"
                   name="email"
                   v-model.trim="selectedItem.email"
@@ -478,7 +478,7 @@
                   @input="$v.selectedItem.email.$touch"
                   placeholder="example@email.com"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     id="localuser-editmail-required"
                     v-if="
@@ -509,24 +509,24 @@
                   <v-row>
                     <v-col class="pb-0 col-6">
                       <div
-                        class="eos-form-group-custom"
+                        class="cortx-form-group-custom"
                         :class="{
-                          'eos-form-group--error':
+                          'cortx-form-group--error':
                             $v.selectedItem.password.$error
                         }"
                       >
                         <label
-                          class="eos-form-group-label"
+                          class="cortx-form-group-label"
                           for="password"
                           id="localuser-editpasslbl"
                         >
-                          <eos-info-tooltip
+                          <cortx-info-tooltip
                             label="New password"
                             :message="passwordTooltipMessage"
                           />
                         </label>
                         <input
-                          class="eos-form__input_text"
+                          class="cortx-form__input_text"
                           type="password"
                           name="txtEditNewPassword"
                           v-model.trim="selectedItem.password"
@@ -534,7 +534,7 @@
                           id="txtLocalPass"
                         />
                         <div
-                          class="eos-form-group-label eos-form-group-error-msg"
+                          class="cortx-form-group-label cortx-form-group-error-msg"
                         >
                           <label
                             id="localuser-editpass-required"
@@ -549,20 +549,20 @@
                     </v-col>
                     <v-col class="pb-0 col-6">
                       <div
-                        class="eos-form-group-custom"
+                        class="cortx-form-group-custom"
                         :class="{
-                          'eos-form-group--error':
+                          'cortx-form-group--error':
                             $v.selectedItem.confirmPassword.$error
                         }"
                       >
                         <label
-                          class="eos-form-group-label"
+                          class="cortx-form-group-label"
                           for="password"
                           id="localuser-editconfirmpasslbl"
                           >{{ $t("csmuser.confirm-password") }}</label
                         >
                         <input
-                          class="eos-form__input_text"
+                          class="cortx-form__input_text"
                           type="password"
                           name="txtEditConfirmPassword"
                           v-model="selectedItem.confirmPassword"
@@ -570,7 +570,7 @@
                           @input="$v.selectedItem.confirmPassword.$touch"
                         />
                         <div
-                          class="eos-form-group-label eos-form-group-error-msg"
+                          class="cortx-form-group-label cortx-form-group-error-msg"
                         >
                           <label
                             id="localuser-editconfirmpass-notmatch"
@@ -591,7 +591,7 @@
           <v-row>
             <v-col class="pl-5 pb-0 col-6 mt-2">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 v-if="
                   isAdminUser(selectedItem) ||
                     strEqualityCaseInsensitive(
@@ -600,29 +600,29 @@
                     )
                 "
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.selectedItem.current_password.$error
                 }"
               >
                 <label
-                  class="eos-form-group-label"
+                  class="cortx-form-group-label"
                   for="password"
                   id="localuser-oldpasswordlbl"
                 >
-                  <eos-info-tooltip
+                  <cortx-info-tooltip
                     label="Current password*"
                     :message="currentPasswordTooltip"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   name="txtEditOldPassword"
                   v-model.trim="selectedItem.current_password"
                   @input="$v.selectedItem.current_password.$touch"
                   id="txtLocalOldPass"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     id="localuser-oldpass-required"
                     v-if="
@@ -655,7 +655,7 @@
           >
             <div>{{ $t("csmuser.roles") }}</div>
             <v-col class="pt-0 col-2">
-              <label class="eos-rdb-container">
+              <label class="cortx-rdb-container">
                 {{ $t("csmuser.manage") }}
                 <input
                   type="radio"
@@ -671,11 +671,11 @@
                       )
                   "
                 />
-                <span class="eos-rdb-tick" id="lblLocalManageInterface"></span>
+                <span class="cortx-rdb-tick" id="lblLocalManageInterface"></span>
               </label>
             </v-col>
             <v-col class="pt-0 ml-3 col-3">
-              <label class="eos-rdb-container">
+              <label class="cortx-rdb-container">
                 {{ $t("csmuser.monitor") }}
                 <input
                   type="radio"
@@ -691,13 +691,13 @@
                       )
                   "
                 />
-                <span class="eos-rdb-tick" id="lblLocalMonitorInterface"></span>
+                <span class="cortx-rdb-tick" id="lblLocalMonitorInterface"></span>
               </label>
             </v-col>
           </v-row>
           <v-row class="ml-0">
             <v-col>
-              <label class="eos-ckb-container" for="emailCheckID">
+              <label class="cortx-ckb-container" for="emailCheckID">
                 {{ $t("csmuser.email-notification") }}
                 <input
                   type="checkbox"
@@ -705,7 +705,7 @@
                   v-model="selectedItem.alert_notification"
                   id="emailCheckID"
                 />
-                <span class="eos-ckb-tick"></span>
+                <span class="cortx-ckb-tick"></span>
               </label>
             </v-col>
           </v-row>
@@ -713,7 +713,7 @@
             <v-col class="ml-3">
               <button
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="editUser(selectedItem)"
                 id="lblLocalApplyInterface"
                 :disabled="!isEditFormValid"
@@ -722,7 +722,7 @@
               </button>
               <button
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeEditUserForm()"
                 id="lblLocalCanacelInterface"
               >
@@ -733,7 +733,7 @@
         </div>
       </v-col>
     </v-row>
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       id="localuser-dialog"
       :show="showConfirmationDialog"
       title="Confirmation"
@@ -741,19 +741,19 @@
       severity="warning"
       @closeDialog="closeConfirmationDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
-    <div class="eos-modal-container" v-if="showUserSuccessDialog">
-      <div class="eos-modal eos-modal-onboarding">
-        <div class="eos-modal-header">
+    ></cortx-confirmation-dialog>
+    <div class="cortx-modal-container" v-if="showUserSuccessDialog">
+      <div class="cortx-modal cortx-modal-onboarding">
+        <div class="cortx-modal-header">
           <label>{{ $t("csmuser.user-success-label") }}</label>
           <img
-            class="eos-modal-close"
+            class="cortx-modal-close"
             :src="require('@/assets/close-green.svg')"
             id="user-closedialog-icon"
             @click="showUserSuccessDialog = false"
           />
         </div>
-        <div class="eos-modal-body">
+        <div class="cortx-modal-body">
           <div class="title title-container">
             <img
               class="mr-2 success-img"
@@ -762,10 +762,10 @@
             <span>{{ successDialogText }}</span>
           </div>
         </div>
-        <div class="eos-modal-footer">
+        <div class="cortx-modal-footer">
           <button
             type="button"
-            class="eos-btn-primary eos-float-r mr-4"
+            class="cortx-btn-primary cortx-float-r mr-4"
             id="user-dialog-close-btn"
             @click="showUserSuccessDialog = false"
           >
@@ -797,9 +797,9 @@ import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
 
 @Component({
-  name: "eos-user-setting-local"
+  name: "cortx-user-setting-local"
 })
-export default class EosUserSettingLocal extends Vue {
+export default class CortxUserSettingLocal extends Vue {
   @Validations()
   public validations = {
     createAccount: {

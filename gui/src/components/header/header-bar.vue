@@ -15,15 +15,15 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-header-container">
+  <div class="cortx-header-container">
     <div class="cortx-header py-3">
       <div class="cortx-brand-logo"></div>
-      <div class="eos-header-right-aligned-items">
-        <eos-has-access
-          :to="$eosUserPermissions.alerts + $eosUserPermissions.list"
+      <div class="cortx-header-right-aligned-items">
+        <cortx-has-access
+          :to="$cortxUserPermissions.alerts + $cortxUserPermissions.list"
         >
           <div
-            class="eos-logout-icon-container"
+            class="cortx-logout-icon-container"
             @click="
               $router.push({
                 name: 'alerts-large',
@@ -39,13 +39,13 @@
               <img :src="require('@/assets/navigation/alerts-white.svg')"  id="alert-whiteicon"/>
             </div>
           </div>
-        </eos-has-access>
+        </cortx-has-access>
         <div class="pr-2">
-          <label class="eos-username-label" id="header-username">{{ username }}</label>
+          <label class="cortx-username-label" id="header-username">{{ username }}</label>
         </div>
         <div
           id="logouticon"
-          class="eos-logout-icon-container"
+          class="cortx-logout-icon-container"
           @click="logout()"
           v-if="!isRouterPathOnboarding"
         >
@@ -111,18 +111,18 @@ export default class HeaderBar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.eos-header-container {
+.cortx-header-container {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 5;
 }
-.eos-logo-separator {
+.cortx-logo-separator {
   margin: 1em 1.206em 1em 1.206em;
   border: 1px solid #454545;
 }
-.eos-username-label {
+.cortx-username-label {
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -130,12 +130,12 @@ export default class HeaderBar extends Vue {
   text-align: center;
   color: #ffffff;
 }
-.eos-header-right-aligned-items {
+.cortx-header-right-aligned-items {
   margin-left: auto;
   display: flex;
   flex-wrap: nowrap;
 }
-.eos-logout-icon-container {
+.cortx-logout-icon-container {
   padding: 0 1.5em 1.125em 1.5em;
   cursor: pointer;
 }
