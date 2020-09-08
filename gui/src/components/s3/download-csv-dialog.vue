@@ -43,7 +43,10 @@
         >
       </div>
 
-      <table class="mt-2 ml-7 cortx-text-md">
+      <table
+        id="download-csv-dialog-datatable"
+        class="mt-2 ml-7 cortx-text-md"
+      >
         <template v-for="[item, value] in Object.entries(tableContent)">
           <tr :key="item">
             <td class="py-2 cortx-text-bold credentials-item-label">
