@@ -17,9 +17,7 @@
 <template>
   <div class="cortx-p-2">
     <div class="cortx-text-lg cortx-text-bold" id="lblAbout">About us</div>
-    <div style="display: inline-block;">
-      <img :src="require(`@/assets/${brandType}.svg/`)" class="ml-2 mb-2 cortx-lyve-drive" />
-    </div>
+    <div class="cortx-brand-logo"></div>
     <v-divider class="mt-2 mb-5" />
     <v-container>
       <div class="body-2"></div>
@@ -73,14 +71,8 @@ import apiRegister from "../../services/api-register";
 })
 export default class Cortxaboutpage extends Vue {
   public versionDetails: any = null;
-  public brandType: string = "";
 
   public async mounted() {
-    if (process.env.VUE_APP_BRANDNAME === "cortx") {
-      this.brandType = "Cortx-logo-GRN";
-    } else {
-      this.brandType = "lyve-drive-green";
-    }
     await this.getVersion();
   }
 

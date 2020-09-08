@@ -24,6 +24,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Loader from "./components/widgets/loader.vue";
+import i18n from "vue-i18n";
 
 @Component({
   name: "App",
@@ -37,6 +38,9 @@ export default class App extends Vue {
   }
   get loaderMessage() {
     return this.$store.getters["systemConfig/loaderMessageText"];
+  }
+  public mounted() {
+    document.title = this.$t("common.title") as string;
   }
 }
 </script>

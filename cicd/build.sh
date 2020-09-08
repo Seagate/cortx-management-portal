@@ -30,6 +30,8 @@ usage() {
 usage: $PROG_NAME [-v <csm version>]
                             [-b <build no>] [-k <key>]
                             [-p <product_name>]
+                            [-n <brand_name>]
+                            [-l <brand_path>]
                             [-c <all|backend|frontend>] [-t]
                             [-d][-i]
                             [-q <true|false>]
@@ -39,6 +41,8 @@ Options:
     -b : Build rpm with build number
     -k : Provide key for encryption of code
     -p : Provide product name default cortx
+    -n : Provide Brand name default cortx
+    -l : Provide path to copy resources (e.g /root/) default path is null 
     -c : Build rpm for [all|backend|frontend]
     -t : Build rpm with test plan
     -d : Build dev env
@@ -48,7 +52,7 @@ Options:
     exit 1;
 }
 
-while getopts ":g:v:b:p:k:c:tdiq" o; do
+while getopts ":g:v:b:p:n:l:k:c:tdiq" o; do
     case "${o}" in
         v)
             VER=${OPTARG}
@@ -58,6 +62,12 @@ while getopts ":g:v:b:p:k:c:tdiq" o; do
             ;;
         p)
             PRODUCT=${OPTARG}
+            ;;
+        l)
+            BRAND=${OPTARG}
+            ;;
+        l)
+            BRANDPATH=${OPTARG}
             ;;
         k)
             KEY=${OPTARG}
@@ -88,6 +98,8 @@ cd $BASE_DIR
         || BUILD="${BUILD}_$(git rev-parse --short HEAD)"
 [ -z "$VER" ] && VER=$(cat $BASE_DIR/VERSION)
 [ -z "$PRODUCT" ] && PRODUCT="cortx"
+[ -z "$BRAND" ] && BRAND="CORTX"
+[ -z "$BRANDPATH" ] && BRANDPATH=""
 [ -z "$KEY" ] && KEY="cortx@ees@csm@pr0duct"
 [ -z "$COMPONENT" ] && COMPONENT="all"
 [ -z "$TEST" ] && TEST=false
@@ -137,10 +149,21 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
 
     UI_BUILD_START_TIME=$(date +%s)
     echo "Running UI Build"
+    # update .env file
+    sed -i '/#/!s/\(VUE_APP_BRANDNAME[[:space:]]*=[[:space:]]*\)\(.*\)/\1"'$BRAND'"/' $BASE_DIR/gui/.env
+    cp -R $BASE_DIR/gui/.env $GUI_DIR/gui/ui-dist
     cd $BASE_DIR/gui
+    # if branadh path is valid, copy branding all files
+    if [[ $BRANDPATH ]]; then
+        if [ -d "$BRANDPATH" ]; then
+            cp -r $BRANDPATH/*.* $BASE_DIR/gui/public/
+            echo "All files copied to ./xyz folder";
+        else
+            echo "Invalid path: $BRANDPATH";
+        fi
+    fi
     npm install
     npm run build
-    cp -R  $GUI_DIR/gui/.env $GUI_DIR/gui/ui-dist
 
     UI_BUILD_END_TIME=$(date +%s)
 fi
@@ -165,6 +188,7 @@ cd ${DIST}
 # Create tar for csm
 echo "Creating tar for csm build"
 tar -czf ${DIST}/rpmbuild/SOURCES/${PRODUCT}-csm_web-${VER}.tar.gz csm_gui
+git reset --hard
 TAR_END_TIME=$(date +%s)
 
 # Generate RPMs
