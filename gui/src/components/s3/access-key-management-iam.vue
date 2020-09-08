@@ -21,9 +21,7 @@
         id="iam-accesskey-datatable-title"
         class="cortx-text-lg font-weight-bold ml-2"
         ><span v-if="userNameIAM">
-          {{
-            $t("s3.access-key.iam-table-title", { userNameIAM })
-          }}
+          {{ $t("s3.access-key.iam-table-title", { userNameIAM }) }}
         </span></label
       >
       <button
@@ -67,13 +65,14 @@
               {{ item.access_key_id }}
             </td>
             <td>
-              XXXX
+              {{ SECRET_KEY_PLACEHOLDER }}
             </td>
             <td>
               <cortx-has-access
                 class="mx-2"
                 :to="
-                  $cortxUserPermissions.s3iamusers + $cortxUserPermissions.delete
+                  $cortxUserPermissions.s3iamusers +
+                    $cortxUserPermissions.delete
                 "
               >
                 <img
@@ -127,6 +126,7 @@ export default class CortxAccessKeyManagementIAM extends Vue {
   private accessKeyDetails: any = {};
   private accountToDelete: string = "";
   private MAX_ACCESS_KEYS: number = 2;
+  private SECRET_KEY_PLACEHOLDER: string = "XXXX";
 
   @Prop({ required: true, default: "" })
   private userNameIAM!: string;

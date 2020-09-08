@@ -14,7 +14,7 @@
  * For any questions about this software or licensing,
  * please email opensource@seagate.com or cortx-questions@seagate.com.
  */
-<template>
+ <template>
   <div class="mt-7">
     <div class="d-flex justify-end">
       <button
@@ -58,7 +58,7 @@
               {{ item.access_key_id }}
             </td>
             <td>
-              XXXX
+              {{ SECRET_KEY_PLACEHOLDER }}
             </td>
             <td>
               <cortx-has-access
@@ -119,6 +119,7 @@ export default class CortxAccessKeyManagement extends Vue {
   private accessKeyDetails: any = {};
   private accountToDelete: string = "";
   private MAX_ACCESS_KEYS: number = 2;
+  private SECRET_KEY_PLACEHOLDER: string = "XXXX";
 
   constructor() {
     super();

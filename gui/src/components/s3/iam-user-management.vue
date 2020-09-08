@@ -388,7 +388,6 @@ export default class CortxIAMUserManagement extends Vue {
     createUserForm: {
       iamUser: {
         user_name: { required, accountNameRegex },
-        // path: { required, iamPathRegex },
         password: { required, passwordRegex }
       },
       confirmPassword: {
