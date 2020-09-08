@@ -17,17 +17,13 @@
 <template>
   <div>
     <div class="udx-page-title">
-      <label class="eos-text-lg eos-text-bold" id="udx-registaion-title">{{
-        $t("udx-registration.udx-registration")
-      }}</label>
+      <label class="cortx-text-lg cortx-text-bold" id="udx-title">UDX Registration</label>
     </div>
     <div id="udx-reg-token-container" class="mt-4" v-if="registrationToken">
       <div class="udx-reg-token-lbl">
-        <label class="eos-text-lg eos-float-l" id="udx-registraion-token">
-          {{ $t("udx-registration.registration-token") }}
-        </label>
-        <label class="eos-float-l mt-1 ml-1">
-          <eos-info-tooltip
+        <label class="cortx-text-lg cortx-float-l" id="udx-tocken-title">Your registration token</label>
+        <label class="cortx-float-l mt-1 ml-1">
+          <cortx-info-tooltip
             message="On your UDX web portal choose 'Add Device' and then enter the identification token below."
           />
         </label>
@@ -48,26 +44,24 @@
       <v-row>
         <v-col class="py-0 pr-0">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.registrationForm.url.$error
+              'cortx-form-group--error':
+                $v.registrationForm.url.$error
             }"
           >
-            <label class="eos-form-group-label" for="url" id="udx-urllbl">
-              <eos-info-tooltip
-                label="URL*"
-                message="Enter the URL provided by your UDX portal."
-              />
+            <label class="cortx-form-group-label" for="url">
+              <cortx-info-tooltip label="URL*" message="Enter the URL provided by your UDX portal." />
             </label>
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="text"
               id="url"
               name="url"
               v-model.trim="registrationForm.url"
               @input="$v.registrationForm.url.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 id="udx-url-required"
                 v-if="
@@ -91,38 +85,30 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="eos-text-md eos-text-bold" id="udx-s3-detailslbl">
-            {{ $t("udx-registration.s3-details") }}
-          </label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-account-detailslbl">S3 Account details</label>
         </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0 pr-0">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.registrationForm.accountName.$error
+              'cortx-form-group--error':
+                $v.registrationForm.accountName.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="accountName"
-              id="udx-s3-accountname"
-            >
-              <eos-info-tooltip
-                label="Account name*"
-                :message="accountNameTooltipMessage"
-              />
+            <label class="cortx-form-group-label" for="accountName" udx-account-namelbl>
+              <cortx-info-tooltip label="Account name*" :message="accountNameTooltipMessage" />
             </label>
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="text"
               id="accountName"
               name="accountName"
               v-model.trim="registrationForm.accountName"
               @input="$v.registrationForm.accountName.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 id="udx-s3-accountname-required"
                 v-if="
@@ -144,27 +130,22 @@
         </v-col>
         <v-col class="py-0 pl-0">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.registrationForm.accountEmail.$error
+              'cortx-form-group--error':
+                $v.registrationForm.accountEmail.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="accountEmail"
-              id="udx-accountemail"
-            >
-              {{ $t("udx-registration.email") }}
-            </label>
+            <label class="cortx-form-group-label" for="accountEmail">Email id*</label>
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="text"
               id="accountEmail"
               name="accountEmail"
               v-model.trim="registrationForm.accountEmail"
               @input="$v.registrationForm.accountEmail.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 id="udx-email-required"
                 v-if="
@@ -188,31 +169,24 @@
       <v-row>
         <v-col class="py-0 pr-0">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error':
+              'cortx-form-group--error':
                 $v.registrationForm.accountPassword.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="accountPassword"
-              id="udx-accountpasslbl"
-            >
-              <eos-info-tooltip
-                label="Password*"
-                :message="passwordTooltipMessage"
-              />
+            <label class="cortx-form-group-label" for="accountPassword" id="udx-accounpasswordlbl">
+              <cortx-info-tooltip label="Password*" :message="passwordTooltipMessage" />
             </label>
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="password"
               id="accountPassword"
               name="accountPassword"
               v-model.trim="registrationForm.accountPassword"
               @input="$v.registrationForm.accountPassword.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 id="udx-accountpass-required"
                 v-if="
@@ -234,21 +208,15 @@
         </v-col>
         <v-col class="py-0 pl-0">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error':
+              'cortx-form-group--error':
                 $v.registrationForm.accountConfirmPassword.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="accountConfirmPassword"
-              id="udx-confirmaccountpasswordlbl"
-            >
-              {{ $t("udx-registration.confirm-pass") }}
-            </label>
+            <label class="cortx-form-group-label" for="accountConfirmPassword">Confirm password*</label>
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="password"
               id="accountConfirmPassword"
               name="accountConfirmPassword"
@@ -256,8 +224,7 @@
               @input="$v.registrationForm.accountConfirmPassword.$touch"
             />
             <span
-              id="udx-confirmpassword-notmatch"
-              class="eos-form-group-label eos-form-group-error-msg"
+              class="cortx-form-group-label cortx-form-group-error-msg"
               v-if="
                 $v.registrationForm.accountConfirmPassword.$dirty &&
                   !$v.registrationForm.accountConfirmPassword
@@ -271,38 +238,30 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="eos-text-md eos-text-bold" id="udx-iamdetails">
-            {{ $t("registration.iam-details") }}
-          </label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-iam-detailslbl">IAM User details</label>
         </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0 pr-0">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.registrationForm.iamUsername.$error
+              'cortx-form-group--error':
+                $v.registrationForm.iamUsername.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="iamUsername"
-              id="udx-iamuserlbl"
-            >
-              <eos-info-tooltip
-                label="Username*"
-                :message="accountNameTooltipMessage"
-              />
+            <label class="cortx-form-group-label" for="iamUsername" id="udx-iamuserlbl">
+              <cortx-info-tooltip label="Username*" :message="accountNameTooltipMessage" />
             </label>
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="text"
               id="iamUsername"
               name="iamUsername"
               v-model.trim="registrationForm.iamUsername"
               @input="$v.registrationForm.iamUsername.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 id="udx-iamusername-required"
                 v-if="
@@ -326,31 +285,24 @@
       <v-row>
         <v-col class="py-0 pr-0">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error':
+              'cortx-form-group--error':
                 $v.registrationForm.iamUserPassword.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="iamUserPassword"
-              id="udx-iam-passwordlbl"
-            >
-              <eos-info-tooltip
-                label="Password*"
-                :message="passwordTooltipMessage"
-              />
+            <label class="cortx-form-group-label" for="iamUserPassword" id="udx-iamuserpasswordlbl">
+              <cortx-info-tooltip label="Password*" :message="passwordTooltipMessage" />
             </label>
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="password"
               id="iamUserPassword"
               name="iamUserPassword"
               v-model.trim="registrationForm.iamUserPassword"
               @input="$v.registrationForm.iamUserPassword.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 id="udx-iampassword-required"
                 v-if="
@@ -372,21 +324,15 @@
         </v-col>
         <v-col class="py-0 pl-0">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error':
+              'cortx-form-group--error':
                 $v.registrationForm.iamUserConfirmPassword.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="iamUserConfirmPassword"
-              id="udx-iamuser-coinfirmpassword"
-            >
-              {{ $t("udx-registration.confirm-pass") }}
-            </label>
+            <label class="cortx-form-group-label" for="iamUserConfirmPassword" id="udx-confirm-passwordlbl">Confirm password*</label>
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="password"
               id="iamUserConfirmPassword"
               name="iamUserConfirmPassword"
@@ -394,8 +340,7 @@
               @input="$v.registrationForm.iamUserConfirmPassword.$touch"
             />
             <span
-              id="udx-iamconfirmpass-notmatch"
-              class="eos-form-group-label eos-form-group-error-msg"
+              class="cortx-form-group-label cortx-form-group-error-msg"
               v-if="
                 $v.registrationForm.iamUserConfirmPassword.$dirty &&
                   !$v.registrationForm.iamUserConfirmPassword
@@ -409,41 +354,33 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="eos-text-md eos-text-bold" id="udx-s3-bucketdetailslbl"
-            >S3 Bucket details</label
-          >
+          <label class="cortx-text-md cortx-text-bold" id="udx-s3-detailslbl">S3 Bucket details</label>
         </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0 pr-0">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.registrationForm.bucketName.$error
+              'cortx-form-group--error':
+                $v.registrationForm.bucketName.$error
             }"
           >
-            <label
-              class="eos-form-group-label"
-              for="bucketName"
-              id="udx-bucketname"
-            >
-              <eos-info-tooltip
-                label="Bucket name*"
-                :message="bucketNameTooltipMessage"
-              />
+            <label class="cortx-form-group-label" for="bucketName" id="udx-bucket-namelbl">
+              <cortx-info-tooltip label="Bucket name*" :message="bucketNameTooltipMessage" />
             </label>
-            <div class="eos-bucket-input-prefix">
-              <label id="udxlbl">udx-</label>
+            <div class="cortx-bucket-input-prefix">
+              <label>udx-</label>
             </div>
             <input
-              class="eos-form__input_text eos-bucket-input"
+              class="cortx-form__input_text cortx-bucket-input"
               type="text"
               id="bucketName"
               name="bucketName"
               v-model.trim="registrationForm.bucketName"
               @input="$v.registrationForm.bucketName.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 id="udx-bucketname-required"
                 v-if="
@@ -467,36 +404,28 @@
       <v-divider class="mb-5" />
       <v-row>
         <v-col class="py-0">
-          <label class="eos-text-md">{{ $t("registration.iagreetext") }}</label>
+          <label class="cortx-text-md" id="udx-agreelbl">I agree to the following:</label>
           <br />
-          <label
-            class="eos-ckb-container"
-            for="consentOne"
-            id="udx-consentone-checkbox"
-          >
-            {{ $t("udx-registration.firstcheck-text") }}
+          <label class="cortx-ckb-container" for="consentOne" id="udx-firstcheck">
+           A dedicated UDX Bucket will be created in my account.
             <input
               type="checkbox"
               name="consentOne"
               v-model="registrationForm.consentOne"
               id="consentOne"
             />
-            <span class="eos-ckb-tick"></span>
+            <span class="cortx-ckb-tick"></span>
           </label>
           <br />
-          <label
-            class="eos-ckb-container"
-            for="consentTwo"
-            id="udx-consentone-checkbox"
-          >
-            {{ $t("udx-registration.secondcheck-text") }}
+          <label class="cortx-ckb-container" for="consentTwo" id="udx-secondcheck">
+            An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.
             <input
               type="checkbox"
               name="consentTwo"
               v-model="registrationForm.consentTwo"
               id="consentTwo"
             />
-            <span class="eos-ckb-tick"></span>
+            <span class="cortx-ckb-tick"></span>
           </label>
         </v-col>
       </v-row>
@@ -505,7 +434,7 @@
           <button
             id="udx-registrationbtn"
             type="button"
-            class="eos-btn-primary"
+            class="cortx-btn-primary"
             @click="registerUDX()"
             :disabled="
               $v.registrationForm.$invalid ||
@@ -518,7 +447,7 @@
           <button
             id="udx-clearbtn"
             type="button"
-            class="ml-8 eos-btn-secondary"
+            class="ml-8 cortx-btn-secondary"
             @click="clearRegistrationForm()"
           >
             {{ $t("udx-registration.clear") }}
@@ -526,13 +455,46 @@
         </v-col>
       </v-row>
     </div>
-    <cortx-download-csv-dialog
-      id="udx-registration-dialogbox"
-      :show="showAccessKeyDetailsDialog"
-      :title="$t('s3.download-csv-dialog.created')"
-      :tableContent="accessKeyDetails"
-      @closeDialog="closeDialogbox()"
-    ></cortx-download-csv-dialog>
+    <div class="cortx-modal-container" v-if="registrationResponse">
+      <div class="cortx-modal" style="width: 600px;">
+        <div class="cortx-modal-header">
+          <label>Details</label>
+          <img id="udx-close-dialogbox"
+            class="cortx-modal-close"
+            :src="require('@/assets/close-green.svg')"
+            @click="closeRegResponseDetailsDialog()"
+          />
+        </div>
+        <div class="cortx-reg-response-container">
+          <table class="cortx-text-md">
+            <tr>
+              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">S3 Account Access Key</td>
+              <td class="py-1" id="udx-s3accesskey">{{ registrationResponse.s3_account.access_key }}</td>
+            </tr>
+            <tr>
+              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">S3 Account Secret Key</td>
+              <td class="py-1" id="udx-s3secretekey">{{ registrationResponse.s3_account.secret_key }}</td>
+            </tr>
+            <tr>
+              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">IAM User Access Key</td>
+              <td class="py-1" id="udx-iamaccesskey">{{ registrationResponse.iam_user.access_key }}</td>
+            </tr>
+            <tr>
+              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">IAM User Secret Key</td>
+              <td class="py-1" id="udx-iamsecretkey">{{ registrationResponse.iam_user.secret_key }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cortx-modal-footer">
+          <button
+          id="udx-close-details-dialog"
+            type="button"
+            class="cortx-btn-primary cortx-float-r"
+            @click="closeRegResponseDetailsDialog()"
+          >Ok</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -554,10 +516,9 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-udx-registration",
-  components: { CortxDownloadCsvDialog }
+  name: "cortx-udx-registration"
 })
-export default class EosUDXRegistration extends Vue {
+export default class CortxUDXRegistration extends Vue {
   public registrationToken: string = "";
   public registrationResponse: any = null;
   public passwordTooltipMessage: string = passwordTooltipMessage;
@@ -710,7 +671,7 @@ export default class EosUDXRegistration extends Vue {
   font-size: 1.5rem;
   font-weight: bold;
 }
-.eos-reg-response-container {
+.cortx-reg-response-container {
   height: 12.5em;
   border-bottom: 1px solid #b7b7b7;
   overflow: auto;
@@ -719,16 +680,16 @@ export default class EosUDXRegistration extends Vue {
 .udx-reg-resp-table-label {
   width: 13rem;
 }
-.eos-modal-footer {
+.cortx-modal-footer {
   height: 3.5em;
   padding: 0.5em;
 }
-.eos-bucket-input-prefix {
+.cortx-bucket-input-prefix {
   height: 40px;
   padding-top: 8px;
   float: left;
 }
-.eos-bucket-input {
+.cortx-bucket-input {
   width: 290px;
   float: left;
 }

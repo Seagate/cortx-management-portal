@@ -15,8 +15,8 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2 body-2">
-    <div class="eos-text-lg mt-2 font-weight-bold" id="lblNetworkIP4">
+  <div class="cortx-p-2 body-2">
+    <div class="cortx-text-lg mt-2 font-weight-bold" id="lblNetworkIP4">
       Management network settings: IPv4
     </div>
     <div class="mt-3" id="lblNetworkMsg">
@@ -26,8 +26,8 @@
       Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
-    <eosNetworkSettingsIpv4 @apply-settings="applySettingsConfirmation" />
-    <eos-confirmation-dialog
+    <cortxNetworkSettingsIpv4 @apply-settings="applySettingsConfirmation" />
+    <cortx-confirmation-dialog
       :show="showConfirmDialog"
       :message="
         `<span>You are moving on new IP address <a href='${newUrl}' target='_blank'>${newUrl}</a></span>`
@@ -37,23 +37,23 @@
       @closeDialog="applySettings"
       confirmButtonText="Apply"
       isMessageInHTML="true"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosNetworkSettingsIpv4Config from "../onboarding/system-config/mgmt-network/network-settings-ipv4-config.vue";
+import CortxNetworkSettingsIpv4Config from "../onboarding/system-config/mgmt-network/network-settings-ipv4-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-mgmt-settings",
+  name: "cortx-mgmt-settings",
   components: {
-    eosNetworkSettingsIpv4: EosNetworkSettingsIpv4Config
+    cortxNetworkSettingsIpv4: CortxNetworkSettingsIpv4Config
   }
 })
-export default class EosMangementSetting extends Vue {
+export default class CortxMangementSetting extends Vue {
   private data() {
     return {
       sysconfigData: {},

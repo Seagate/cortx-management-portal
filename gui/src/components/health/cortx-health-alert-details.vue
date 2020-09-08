@@ -14,9 +14,21 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-import EosDropdown from "./eos-dropdown-view.vue";
-import { EosDropdownOption } from "./eos-dropdown-model";
+<template>
+  <cortx-alert-details />
+</template>
+ <script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { Api } from "./../../services/api";
+import apiRegister from "./../../services/api-register";
+import { AlertObject } from "../../models/alert";
+import CortxAlertDetails from "./../alerts/alert-details.vue";
 
-export {
-    EosDropdown, EosDropdownOption
-};
+@Component({
+  name: "cortx-health-alert-details",
+  components: { CortxAlertDetails }
+})
+export default class CortxHealthAlertDetails extends Vue {}
+</script>
+<style lang="scss" scoped>
+</style>

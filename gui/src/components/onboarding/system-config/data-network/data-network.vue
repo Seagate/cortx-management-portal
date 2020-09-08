@@ -25,7 +25,7 @@
       </div>
       <v-divider class="mt-2" />
       <div class="mt-6">
-        <label class="eos-ckb-container">
+        <label class="cortx-ckb-container">
           IPv4
           <input
             type="checkbox"
@@ -34,14 +34,14 @@
             name="ipv4"
             id="chkDNSisipV4Status"
           />
-          <span class="eos-ckb-tick" id="lblDNsIpv4"></span>
+          <span class="cortx-ckb-tick" id="lblDNsIpv4"></span>
         </label>
       </div>
       <div class="mt-2" id="lblDNSSetting">
         Configure the IPv4 settings.
       </div>
       <div class="mt-6">
-        <label class="eos-ckb-container">
+        <label class="cortx-ckb-container">
           Skip data network settings
           <input
             type="checkbox"
@@ -51,7 +51,7 @@
             name="skip"
             id="chkDNSSkip"
           />
-          <span class="eos-ckb-tick" id="lblSkipManagmentSetting"></span>
+          <span class="cortx-ckb-tick" id="lblSkipManagmentSetting"></span>
         </label>
       </div>
       <div class="mt-2" id="lblMsgSkipStep">
@@ -68,9 +68,9 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({
-  name: "eos-data-network"
+  name: "cortx-data-network"
 })
-export default class EosDataNetwork extends Vue {
+export default class CortxDataNetwork extends Vue {
   public data() {
     return {
       loadbalancer: "internal",

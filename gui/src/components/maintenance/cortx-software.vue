@@ -16,7 +16,7 @@
 */
 <template>
   <div>
-    <div class="eos-text-lg eos-text-bold" id="lblUpdateHotfix">
+    <div class="cortx-text-lg cortx-text-bold" id="lblUpdateHotfix">
       Update software
     </div>
     <div class="mt-3" id="lblSoftwareUploadmsg">
@@ -27,13 +27,13 @@
       the software update, you must login again.
     </div>
     <div
-      class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md"
+      class="mt-3 pa-3 cortx-last-upgrade-info-container cortx-text-md"
       v-if="lastUpgradeStatus"
     >
       <table>
         <tr>
           <td style="width: 180px;">
-            <label class="eos-text-bold">Last update status:</label>
+            <label class="cortx-text-bold">Last update status:</label>
           </td>
           <td style="padding-top: 2px;">
             <label>{{
@@ -45,13 +45,13 @@
         </tr>
         <tr v-if="lastUpgradeStatus.version">
           <td>
-            <label class="eos-text-bold">Last update version:</label>
+            <label class="cortx-text-bold">Last update version:</label>
           </td>
           <td style="padding-top: 2px;">{{ lastUpgradeStatus.version }}</td>
         </tr>
         <tr v-if="lastUpgradeStatus.description">
           <td>
-            <label class="eos-text-bold">Last update description:</label>
+            <label class="cortx-text-bold">Last update description:</label>
           </td>
           <td style="padding-top: 2px;">
             <label>{{ lastUpgradeStatus.description }}</label>
@@ -59,13 +59,13 @@
         </tr>
       </table>
     </div>
-    <div class="mt-6 eos-text-md" id="lblUpdateHotfixMsg"></div>
+    <div class="mt-6 cortx-text-md" id="lblUpdateHotfixMsg"></div>
     <v-divider class="mt-2 mb-5" />
     <div v-if="!showUploadForm">
       <button
         id="btnInstallHotfix"
         type="button"
-        class="eos-btn-primary"
+        class="cortx-btn-primary"
         @click="showUploadForm = true"
         :disabled="!canInstallHotfix"
       >
@@ -74,7 +74,7 @@
       <button
         id="btnStartUpgrade"
         type="button"
-        class="ml-5 eos-btn-primary"
+        class="ml-5 cortx-btn-primary"
         @click="startUpgrade()"
         :disabled="!isPackageAvailable"
       >
@@ -90,7 +90,7 @@
         @change="handleFileUpload($event.target.files)"
       />
       <div
-        class="eos-form-group-label eos-form-group-error-msg mt-3"
+        class="cortx-form-group-label cortx-form-group-error-msg mt-3"
         v-if="
           hotfixPackageFormValidation.isDirty &&
             !hotfixPackageFormValidation.isValid
@@ -102,7 +102,7 @@
       <button
         id="btnInstallHotfix"
         type="button"
-        class="mt-3 eos-btn-primary"
+        class="mt-3 cortx-btn-primary"
         @click="uploadHotfixPackage()"
         :disabled="!hotfixPackage"
       >
@@ -111,7 +111,7 @@
       <button
         id="btnCancelInstallHotfix"
         type="button"
-        class="mt-3 ml-5 eos-btn-secondary"
+        class="mt-3 ml-5 cortx-btn-secondary"
         @click="closeUploadForm()"
       >
         Cancel
@@ -125,9 +125,9 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-hotfix",
+  name: "cortx-hotfix",
 })
-export default class EosHotfix extends Vue {
+export default class CortxHotfix extends Vue {
   public lastUpgradeStatus: any = null;
   public showUploadForm: boolean = false;
   public isPackageAvailable: boolean = false;
@@ -228,7 +228,7 @@ export default class EosHotfix extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.eos-last-upgrade-info-container {
+.cortx-last-upgrade-info-container {
   border: 1px solid #e3e3e3;
   border-radius: 5px;
 }

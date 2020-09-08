@@ -35,6 +35,7 @@
     <v-row>
       <v-col cols="2">
         <v-select
+          id="matrixone"
           class="ml-3"
           v-model="metric1"
           v-on:change="metric1Change"
@@ -44,6 +45,7 @@
       </v-col>
       <v-col cols="2">
         <v-select
+          id="matrixtwo"
           :items="getMetric2"
           v-on:change="metric2Change"
           v-model="metric2"
@@ -56,30 +58,30 @@
           class="mb-4"
           style="border-bottom: 1px solid lightgrey;"
         >
-          <v-tab @click="tabChange(1800)">
-            <label class="tab-label">1/2 Hrs</label>
+          <v-tab @click="tabChange(1800)" id="1/2hrstab">
+            <label class="tab-label" id="1/2hrstablbl">1/2 Hrs</label>
           </v-tab>
-          <v-tab @click="tabChange(3600)">
-            <label class="tab-label">1 Hrs</label>
+          <v-tab @click="tabChange(3600)" id="onehrstab">
+            <label class="tab-label" id="onehrstablbl">1 Hrs</label>
           </v-tab>
-          <v-tab @click="tabChange(7200)">
-            <label class="tab-label">2 Hrs</label>
+          <v-tab @click="tabChange(7200)" id="twohrstab">
+            <label class="tab-label" id="twohrstablbl">2 Hrs</label>
           </v-tab>
-          <v-tab @click="tabChange(21600)">
-            <label class="tab-label">6 Hrs</label>
+          <v-tab @click="tabChange(21600)" id="sixhrstab">
+            <label class="tab-label" id="sixhrstablbl">6 Hrs</label>
           </v-tab>
-          <v-tab @click="tabChange(43200)">
-            <label class="tab-label">12 Hrs</label>
+          <v-tab @click="tabChange(43200)" id="twelvehrstab">
+            <label class="tab-label" id="twelvehrstablbl" >12 Hrs</label>
           </v-tab>
-          <v-tab @click="tabChange(86400)">
-            <label class="tab-label">1 Day</label>
+          <v-tab @click="tabChange(86400)" id="onedaytab">
+            <label class="tab-label" id="onedaytablbl">1 Day</label>
           </v-tab>
         </v-tabs>
       </v-col>
     </v-row>
-    <div class="eos-chart-container" :id="chartId">
+    <div class="cortx-chart-container" :id="chartId">
       <div v-if="isError" class="no-stats-data">
-        <div>Unable To Fetch Performance Data</div>
+        <div id="permancedatalbl">Unable To Fetch Performance Data</div>
       </div>
     </div>
   </v-card>
@@ -100,9 +102,9 @@ export interface StatsQueryParams {
 }
 
 @Component({
-  name: "eos-line-chart"
+  name: "cortx-line-chart"
 })
-export default class EosLineChart extends Vue {
+export default class CortxLineChart extends Vue {
   @Prop({ required: true })
   public chartId: string;
   private chart: any;
@@ -423,7 +425,7 @@ export default class EosLineChart extends Vue {
   margin-top: 1rem;
 }
 @media screen and (min-height: 600px) {
-  .eos-chart-container {
+  .cortx-chart-container {
     height: 190px;
   }
   .loader-container {
@@ -432,7 +434,7 @@ export default class EosLineChart extends Vue {
   }
 }
 @media screen and (min-height: 900px) {
-  .eos-chart-container {
+  .cortx-chart-container {
     height: 320px;
   }
   .loader-container {

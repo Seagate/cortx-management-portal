@@ -123,9 +123,9 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { Ldap } from "./../../../../models/system-configuration";
 
 @Component({
-  name: "eos-user-setting-ldap"
+  name: "cortx-user-setting-ldap"
 })
-export default class EosUserSettingLdap extends Vue {
+export default class CortxUserSettingLdap extends Vue {
   private data() {
     return {
       usersearchbase: "",

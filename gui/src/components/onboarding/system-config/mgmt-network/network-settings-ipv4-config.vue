@@ -19,7 +19,7 @@
     <div class="pl-4 body-2">
       <div class="font-weight-bold mt-5" id="lblIp4Source">
         Source:
-        <label class="eos-rdb-container ml-9">
+        <label class="cortx-rdb-container ml-9">
           DHCP
           <input
             type="radio"
@@ -28,7 +28,7 @@
             value="DHCP"
             id="txtIP4DHCP"
           />
-          <span class="eos-rdb-tick" id="lblIp4DHCP"></span>
+          <span class="cortx-rdb-tick" id="lblIp4DHCP"></span>
         </label>
       </div>
       <div class="row ma-0">
@@ -47,13 +47,13 @@
           >
             <div class="mt-5">
               <div
-                class="eos-form-group eos-form-group-custom"
+                class="cortx-form-group cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': node.ip_address.$error
+                  'cortx-form-group--error': node.ip_address.$error
                 }"
               >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   :id="node.$model.id + 'txtMngmtNetworkIpv4Ipaddress'"
                   :name="node.$model.id + 'ipaddress'"
@@ -61,7 +61,7 @@
                   v-model.trim="node.ip_address.$model"
                   @input="node.ip_address.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="node.ip_address.$dirty && !node.ip_address.required"
                     >IP address is required.</label
@@ -85,7 +85,7 @@
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"
       @click="applySettings()"
-      class="eos-btn-primary eos-float-l my-10"
+      class="cortx-btn-primary cortx-float-l my-10"
     >
       Apply
     </button>
@@ -109,9 +109,9 @@ import {
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({
-  name: "eos-network-settings-ipv4-config"
+  name: "cortx-network-settings-ipv4-config"
 })
-export default class EosNetworkSettingsIpv4Config extends Vue {
+export default class CortxNetworkSettingsIpv4Config extends Vue {
   @Validations()
   private validations = {
     ipv4Nodes: {

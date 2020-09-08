@@ -15,9 +15,9 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2">
-    <EosUDXDetails v-if="udx" :udx="udx" />
-    <EosUDXRegistration v-if="showUDXRegistrationForm" @complete="registrationComplete()" />
+  <div class="cortx-p-2">
+    <CortxUDXDetails v-if="udx" :udx="udx" />
+    <CortxUDXRegistration v-if="showUDXRegistrationForm" @complete="registrationComplete()" />
   </div>
 </template>
 
@@ -26,14 +26,14 @@ import { Component, Vue } from "vue-property-decorator";
 import { UDX } from "../../models/udx";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import EosUDXDetails from "./eos-udx-details.vue";
-import EosUDXRegistration from "./eos-udx-registration.vue";
+import CortxUDXDetails from "./cortx-udx-details.vue";
+import CortxUDXRegistration from "./cortx-udx-registration.vue";
 
 @Component({
-  name: "eos-udx",
-  components: { EosUDXDetails, EosUDXRegistration }
+  name: "cortx-udx",
+  components: { CortxUDXDetails, CortxUDXRegistration }
 })
-export default class EosUDX extends Vue {
+export default class CortxUDX extends Vue {
   public udx: UDX | null = null;
   public isUDXRegistered: boolean = false;
   public showUDXRegistrationForm: boolean = false;

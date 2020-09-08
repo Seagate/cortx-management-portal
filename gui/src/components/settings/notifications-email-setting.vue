@@ -15,8 +15,8 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2 body-2">
-    <div class="eos-text-lg mt-2 font-weight-bold" id="lblEmail">
+  <div class="cortx-p-2 body-2">
+    <div class="cortx-text-lg mt-2 font-weight-bold" id="lblEmail">
       Notification settings: Email
     </div>
     <div class="mt-3" id="lblEmailMsg">
@@ -26,30 +26,30 @@
       Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
-    <eosNotifications @apply-settings="applySettingsConfirmation" />
-    <eos-confirmation-dialog
+    <cortxNotifications @apply-settings="applySettingsConfirmation" />
+    <cortx-confirmation-dialog
       :show="showConfirmDialog"
       message="Are you sure you want to apply the settings?"
       severity="warning"
       @closeDialog="applySettings"
       confirmButtonText="Apply"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosNotifications from "../onboarding/system-config/notifications/notifications-email-config.vue";
+import CortxNotifications from "../onboarding/system-config/notifications/notifications-email-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-notification-email-settings",
+  name: "cortx-notification-email-settings",
   components: {
-    eosNotifications: EosNotifications
+    cortxNotifications: CortxNotifications
   }
 })
-export default class EosNotificationEmailSettings extends Vue {
+export default class CortxNotificationEmailSettings extends Vue {
   private data() {
     return {
       sysconfigData: {},

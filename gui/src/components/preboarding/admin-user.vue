@@ -20,13 +20,13 @@
       <div class="cortx-brand-logo"></div>
     </div>
     <div class="body-2 ma-5">
-      <div
+      <div id="admin-configuration-title"
         class="ml-4 mb-1 black--text font-weight-bold"
         style="font-size: 18px"
       >
         Admin user configuration
       </div>
-      <div class="ml-4 my-2">
+      <div class="ml-4 my-2" id="admin-configuarion-text">
         Configure the username and password for the user with administrative
         rights. You must remember the admin user login credentials because the
         admin user can be created only once.
@@ -38,39 +38,39 @@
             <v-col class="py-0 col-xs-6 col-sm-3">
               <div>
                 <div
-                  class="eos-form-group"
+                  class="cortx-form-group"
                   :class="{
-                    'eos-form-group--error': $v.createAccount.username.$error
+                    'cortx-form-group--error': $v.createAccount.username.$error
                   }"
                 >
                   <label
-                    class="eos-form-group-label"
+                    class="cortx-form-group-label"
                     for="Username"
                     id="lblAdminUsername"
                   >
-                    <eos-info-tooltip
+                    <cortx-info-tooltip
                       label="Username*"
                       :message="usernameTooltipMessage"
                     />
                   </label>
                   <div></div>
                   <input
-                    class="eos-form__input_text"
+                    class="cortx-form__input_text"
                     type="text"
                     name="username"
                     id="adminUsername"
                     v-model.trim="createAccount.username"
                     @input="$v.createAccount.username.$touch"
                   />
-                  <div class="eos-form-group-label eos-form-group-error-msg">
-                    <label
+                  <div class="cortx-form-group-label cortx-form-group-error-msg">
+                    <label id="admin-username-required"
                       v-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.required
                       "
                       >Username is required.</label
                     >
-                    <label
+                    <label id="admin-username-invalid"
                       v-else-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.accountNameRegex
@@ -84,35 +84,35 @@
             <v-col class="py-0 col-xs-6 col-sm-3">
               <div>
                 <div
-                  class="eos-form-group"
+                  class="cortx-form-group"
                   :class="{
-                    'eos-form-group--error': $v.createAccount.email.$error
+                    'cortx-form-group--error': $v.createAccount.email.$error
                   }"
                 >
                   <label
-                    class="eos-form-group-label"
+                    class="cortx-form-group-label"
                     for="Email"
                     id="lblAdminEmail"
                     >Email*</label
                   >
                   <div></div>
                   <input
-                    class="eos-form__input_text"
+                    class="cortx-form__input_text"
                     type="email"
                     name="email"
                     id="adminEmail"
                     v-model.trim="createAccount.email"
                     @input="$v.createAccount.email.$touch"
                   />
-                  <div class="eos-form-group-label eos-form-group-error-msg">
-                    <label
+                  <div class="cortx-form-group-label cortx-form-group-error-msg">
+                    <label id="admin-email-required"
                       v-if="
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.required
                       "
                       >Email is required.</label
                     >
-                    <label
+                    <label id="admin-email-invalid"
                       v-else-if="
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.email
@@ -128,39 +128,39 @@
             <v-col class="py-0 col-xs-6 col-sm-3">
               <div>
                 <div
-                  class="eos-form-group"
+                  class="cortx-form-group"
                   :class="{
-                    'eos-form-group--error': $v.createAccount.password.$error
+                    'cortx-form-group--error': $v.createAccount.password.$error
                   }"
                 >
                   <label
-                    class="eos-form-group-label"
+                    class="cortx-form-group-label"
                     for="password"
                     id="lblAdminPassword"
                   >
-                    <eos-info-tooltip
+                    <cortx-info-tooltip
                       label="Password*"
                       :message="passwordTooltipMessage"
                     />
                   </label>
                   <div></div>
                   <input
-                    class="eos-form__input_text"
+                    class="cortx-form__input_text"
                     type="password"
                     name="password"
                     id="adminPassword"
                     v-model.trim="createAccount.password"
                     @input="$v.createAccount.password.$touch"
                   />
-                  <div class="eos-form-group-label eos-form-group-error-msg">
-                    <label
+                  <div class="cortx-form-group-label cortx-form-group-error-msg">
+                    <label id="admin-password-required"
                       v-if="
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.required
                       "
                       >Password is required.</label
                     >
-                    <label
+                    <label id="admin-password-invalid"
                       v-else-if="
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.passwordRegex
@@ -174,21 +174,21 @@
             <v-col class="py-0 col-xs-6 col-sm-3">
               <div>
                 <div
-                  class="eos-form-group"
+                  class="cortx-form-group"
                   :class="{
-                    'eos-form-group--error':
+                    'cortx-form-group--error':
                       $v.createAccount.confirmPassword.$error
                   }"
                 >
                   <label
-                    class="eos-form-group-label"
+                    class="cortx-form-group-label"
                     for="confirmPassword"
                     id="lblConfirmAdminPassword"
                     >Confirm password*</label
                   >
                   <div></div>
                   <input
-                    class="eos-form__input_text"
+                    class="cortx-form__input_text"
                     type="password"
                     name="confirmPassword"
                     id="confirmAdminPassword"
@@ -196,8 +196,8 @@
                     @input="$v.createAccount.confirmPassword.$touch"
                     v-on:keyup.enter="handleEnterEvent()"
                   />
-                  <div class="eos-form-group-label eos-form-group-error-msg">
-                    <label
+                  <div class="cortx-form-group-label cortx-form-group-error-msg">
+                    <label id="admin-confirmpass-notmatch"
                       v-if="
                         $v.createAccount.confirmPassword.$dirty &&
                           !$v.createAccount.confirmPassword.sameAsPassword
@@ -211,7 +211,7 @@
           </v-row>
           <v-row>
             <v-col class="pt-0">
-              <label class="eos-ckb-container" for="emailCheckID">
+              <label class="cortx-ckb-container" for="emailCheckID" id="admin-emailnotificationlbl">
                 Subscribe to email notifications
                 <input
                   type="checkbox"
@@ -219,20 +219,21 @@
                   v-model="createAccount.alert_notification"
                   id="emailCheckID"
                 />
-                <span class="eos-ckb-tick"></span>
+                <span class="cortx-ckb-tick"></span>
               </label>
             </v-col>
           </v-row>
           <button
+            id="admin-createadminuser"
             type="button"
-            class="eos-btn-primary"
+            class="cortx-btn-primary"
             @click="gotToNextPage()"
             :disabled="$v.createAccount.$invalid || createUserInProgress"
           >
             Apply and continue
           </button>
         </form>
-        <div v-if="!isValidResponse" class="red--text mt-2">
+        <div v-if="!isValidResponse" class="red--text mt-2" id="admin-invalidmsg">
           {{ invalidMessage }}
         </div>
       </div>
@@ -255,9 +256,9 @@ import {
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
 @Component({
-  name: "eos-admin-user"
+  name: "cortx-admin-user"
 })
-export default class EosAdminUser extends Vue {
+export default class CortxAdminUser extends Vue {
   @Validations()
   private validations = {
     createAccount: {
@@ -327,7 +328,7 @@ export default class EosAdminUser extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.eos-form__input_text {
+.cortx-form__input_text {
   border-style: solid;
   border-width: 1px;
   border-color: #e3e3e3;

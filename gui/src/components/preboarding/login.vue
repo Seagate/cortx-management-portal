@@ -24,15 +24,15 @@
     </div>
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
-      <div class="ml-4 white--text headline my-10">RACK Login</div>
+      <div class="ml-4 white--text headline my-10" id="login-racklogin-title">RACK Login</div>
       <div class="ma-4">
         <form autocomplete="off">
           <div
-            class="eos-form-group"
-            :class="{ 'eos-form-group--error': $v.loginForm.username.$error }"
+            class="cortx-form-group"
+            :class="{ 'cortx-form-group--error': $v.loginForm.username.$error }"
           >
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="text"
               id="username"
               name="username"
@@ -42,7 +42,8 @@
               v-on:keyup.enter="handleEnterEvent()"
             />
             <span
-              class="eos-form-group-label eos-form-group-error-msg"
+             id="login-username-required"
+              class="cortx-form-group-label cortx-form-group-error-msg"
               v-if="
                 $v.loginForm.username.$dirty && !$v.loginForm.username.required
               "
@@ -50,11 +51,11 @@
             >
           </div>
           <div
-            class="eos-form-group"
-            :class="{ 'eos-form-group--error': $v.loginForm.password.$error }"
+            class="cortx-form-group"
+            :class="{ 'cortx-form-group--error': $v.loginForm.password.$error }"
           >
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="password"
               id="password"
               name="password"
@@ -63,8 +64,8 @@
               @input="$v.loginForm.password.$touch"
               v-on:keyup.enter="handleEnterEvent()"
             />
-            <span
-              class="eos-form-group-label eos-form-group-error-msg"
+            <span id="login-password-required"
+              class="cortx-form-group-label cortx-form-group-error-msg"
               v-if="
                 $v.loginForm.password.$dirty && !$v.loginForm.password.required
               "
@@ -72,15 +73,16 @@
             >
           </div>
           <button
+            id="login-userbtn"
             type="button"
-            class="eos-btn-primary-dark"
+            class="cortx-btn-primary-dark"
             @click="gotToNextPage()"
             :disabled="$v.loginForm.$invalid || loginInProgress"
           >
           {{ $t("login.login-btn") }}
           </button>
           <!--TODO: This is temporary error handling for Demo-->
-          <div v-if="!isValidLogin" class="red--text mt-1">{{ $t("login.login-failed") }}</div>
+          <div v-if="!isValidLogin" class="red--text mt-1" id="login-failsmsg">{{ $t("login.login-failed") }}</div>
         </form>
       </div>
     </v-container>
@@ -94,9 +96,9 @@ import { UserLoginQueryParam } from "./../../models/user-login";
 import i18n from "./../../i18n";
 
 @Component({
-  name: "eos-login"
+  name: "cortx-login"
 })
-export default class EosLogin extends Vue {
+export default class CortxLogin extends Vue {
   public loginForm: UserLoginQueryParam = {
     username: "",
     password: ""
@@ -189,8 +191,8 @@ export default class EosLogin extends Vue {
       const vueInstance: any = this;
       if (
         vueInstance.$hasAccessToCsm(
-          vueInstance.$eosUserPermissions.s3accounts +
-            vueInstance.$eosUserPermissions.update
+          vueInstance.$cortxUserPermissions.s3accounts +
+            vueInstance.$cortxUserPermissions.update
         )
       ) {
         this.$router.push("/provisioning/s3");
