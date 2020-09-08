@@ -194,7 +194,7 @@ export abstract class Api {
       apiResponse.status = error.response.status;
       apiResponse.statusText = error.response.statusText;
     } else {
-      apiResponse.status = 400;
+      apiResponse.status = 499;
       apiResponse.statusText = error.message ? error.message : "Request cancelled";
     }
     return apiResponse;
