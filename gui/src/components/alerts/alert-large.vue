@@ -43,7 +43,7 @@
     <v-data-table
       calculate-widths
       :items="alertObject.alerts"
-      item-key="created_time"
+      item-key="updated_time"
       class="cortx-table"
       :items-per-page.sync="itemsPerPage"
       :footer-props="{
@@ -95,14 +95,13 @@
       <template v-slot:item="props">
         <tr style="color: #000000;">
           <td style="white-space: nowrap;">
-            {{ new Date(props.item.created_time * 1000) | timeago }}
+            {{ new Date(props.item.updated_time * 1000) | timeago }}
           </td>
-          <td>
+          <td style="white-space: nowrap;">
             <div>
-              <span
-                >Resource type: {{ props.item.module_name }} | State:
-                {{ props.item.state }}</span
-              >
+              <span>Resource type: {{ props.item.module_name }}</span><br />
+              <span>Resource id: {{ props.item.resource_id }} | State: {{ props.item.state }}</span><br />
+              <span>Node id: {{ props.item.node_id }}</span>
             </div>
             <div>
               <span v-if="props.item.module_type === 'logical_volume'"
@@ -179,31 +178,45 @@
             ></div>
           </td>
           <td v-cortx-alert-tbl-description="props.item"></td>
-          <td>
-            <img
-              :src="require('@/assets/zoom-in.svg')"
-              class="cortx-cursor-pointer"
-              @click="$router.push('/alerts/' + props.item.alert_uuid)"
-            />
-            <cortx-has-access
-              :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update"
-            >
-              <img
-               id="alertlarge-show-commnetdialogbox"
-                v-if="!(props.item.acknowledged && props.item.resolved)"
-                :src="require('@/assets/comment-filled-default.svg')"
-                class="cortx-cursor-pointer"
-                @click="showAlertCommentsDialog(props.item.alert_uuid)"
-              />
-            </cortx-has-access>
-            <img
-              v-if="props.item.acknowledged"
-              :src="require('@/assets/acknowledge-default.svg')"
-            />
-            <img
-              v-if="props.item.resolved"
-              :src="require('@/assets/resolved-filled-default.svg')"
-            />
+          <td style="min-width: 8.4em;">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <img
+                  :src="require('@/assets/zoom-in.svg')"
+                  class="cortx-float-l cortx-cursor-pointer"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="$router.push('/alerts/' + props.item.alert_uuid)"
+                />
+              </template>
+              <span>Go to alert details page</span>
+            </v-tooltip>
+            <div v-if="!(props.item.acknowledged && props.item.resolved)" class="cortx-float-l">
+              <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update">
+                <v-tooltip left>
+                  <template v-slot:activator="{ on, attrs }">
+                    <div
+                      class="cortx-icon-btn cortx-comment-icon"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="showAlertCommentsDialog(props.item.alert_uuid)">
+                    </div>
+                  </template>
+                  <span>Add comments</span>
+                </v-tooltip>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on, attrs }">
+                    <div
+                      class="cortx-icon-btn cortx-acknowledge-icon"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="acknowledgeAlert(props.item)">
+                    </div>
+                  </template>
+                  <span>{{ props.item.acknowledged ? "Unacknowledge alert" : "Acknowledge alert" }}</span>
+                </v-tooltip>
+              </cortx-has-access>
+            </div>
           </td>
         </tr>
       </template>
@@ -281,8 +294,8 @@ export default class CortxAlertLarge extends Mixins(AlertsMixin) {
     // Set Alert table default header options
     this.alertTableHeaders = [
       {
-        text: "Time",
-        value: "created_time",
+        text: "Updated time",
+        value: "updated_time",
         sortable: true,
         sortDir: "desc"
       },
