@@ -12,14 +12,19 @@
     "access-key": {
       "add-btn": "Add/Generate",
       "table-headers": {
+        "user_name": "Username",
         "access_key": "Access key",
         "secret_key": "Secret key",
+        "iam_access_key": "IAM Access key",
+        "iam_secret_key": "IAM Secret key",
         "last_used": "Last updated"
       },
       "get-message": "Fetching all S3 access keys...",
+      "get-message-iam": "Fetching all IAM access keys...",
       "create-message": "Creating access key...",
-      "delete-confirmation": "Are you sure you want to delete $$$ access key?",
-      "delete-message": "Deleting access key "
+      "delete-confirmation": "Are you sure you want to delete {key} access key?",
+      "delete-message": "Deleting access key ",
+      "iam-table-title": "Access keys for user {userNameIAM}"
     },
     "download-csv-dialog": {
       "created": "Access key created",
@@ -28,6 +33,7 @@
     }
   },
   "common": {
+    "title": "Cortx",
     "confirm-dialog": {
       "title": "Confirmation"
     }
@@ -90,7 +96,38 @@
     "shutdown-action-method": "shutdown",
     "confirm-message-node-start": "Are you sure, you want to start the node?",
     "confirm-message-node-shutdown": "Are you sure, you want to shutdown the node?",
-    "confirm-message-shutdown-sub":"Please note that if you shutdown the node then the entire application will stop",
+    "confirm-message-shutdown-sub": "Please note that if you shutdown the node then the entire application will stop",
     "shutdown-note": "Note: {node} is in shutdown state. You need to start it manually."
+  },
+  "udx-registration":{
+    "udx-registration": "UDX Registration",
+    "registration-token":"Your registration token",
+    "udx-url-required":"URL is required",
+    "invalid-url":"Invalid URL",
+    "s3-details":"S3 Account details",
+    "accountname-required":"Account name is required",
+    "invalid-name":"Invalid account name",
+    "email":"Email id*",
+    "email-reqiured":"Email id is required",
+    "invalid-email":"Invalid email id",
+    "password-required":"Password is required",
+    "invalid-password":"Invalid password",
+    "confirm-pass":"Confirm password*",
+    "password-match":"Passwords do not match",
+    "iam-details":"IAM User details",
+    "username-required":"Username is required",
+    "invalid-user":"Invalid username",
+    "bucket-required":"Bucket name is required",
+    "invalid-bucketname":"Invalid bucket name",
+    "iagreetext":"I agree to the following:",
+    "firstcheck-text":"A dedicated UDX Bucket will be created in my account.",
+    "secondcheck-text":"An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.",
+    "register-btn":"Register",
+    "clear":"Clear"
+
+
+
+
+
   }
 }

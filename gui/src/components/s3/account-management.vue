@@ -16,35 +16,24 @@
 */
 <template>
   <div class="body-2">
-    <div
-      id="s3-configuration-title-container"
-      class="mt-2 s3-configuration-page-title"
+    <cortx-has-access
+      :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
     >
-      <label id="s3-account-form-title" class="headline font-weight-bold"
-        >S3 configuration</label
+      <div
+        id="s3-configuration-title-container"
+        class="mt-2 s3-configuration-page-title"
       >
-      <cortx-has-access
-        :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
-      >
+        <label id="s3-account-form-title" class="headline font-weight-bold"
+          >S3 configuration</label
+        >
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label id="s3-account-form-text">
             Create an S3 account. You must log in to the system using S3 account
             credentials to manage S3 account, IAM users, and buckets.
           </label>
         </div>
-      </cortx-has-access>
-
-      <cortx-has-access
-        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label id="s3-account-manage-lbl">
-            Manage IAM users and buckets.
-          </label>
-        </div>
-      </cortx-has-access>
-    </div>
-    <v-divider class="mt-2" />
+      </div>
+    </cortx-has-access>
     <v-row>
       <v-col class="py-0 col-7">
         <cortx-has-access
@@ -60,6 +49,16 @@
             id="s3-datatable"
             show-expand
             :hide-default-header="true"
+            :hide-default-footer="
+              $hasAccessToCsm(
+                `${$cortxUserPermissions.s3iamusers}${$cortxUserPermissions.list}`
+              )
+            "
+            :disable-pagination="
+              $hasAccessToCsm(
+                `${$cortxUserPermissions.s3iamusers}${$cortxUserPermissions.list}`
+              )
+            "
           >
             <template v-slot:header="{}">
               <tr>
@@ -77,7 +76,8 @@
                 <cortx-has-access
                   class="mx-2"
                   :to="
-                    $cortxUserPermissions.s3accounts + $cortxUserPermissions.update
+                    $cortxUserPermissions.s3accounts +
+                      $cortxUserPermissions.update
                   "
                 >
                   <img
@@ -90,7 +90,8 @@
                 <cortx-has-access
                   class="mx-2"
                   :to="
-                    $cortxUserPermissions.s3accounts + $cortxUserPermissions.delete
+                    $cortxUserPermissions.s3accounts +
+                      $cortxUserPermissions.delete
                   "
                 >
                   <img

@@ -38,7 +38,7 @@
         </router-link>
       </cortx-has-access>
     </div>
-    <div class="cortx-nav-bottom">
+    <div class="cortx-nav-bottom" v-if="brandName">
       <div class="cortx-brand-text">Powered by</div>
       <img class="cortx-nav-item-icon-default cortx-img-responsive"
         :src="require('@/assets/Cortx-logo-GRN.svg/')" />
@@ -52,6 +52,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "cortx-nav-bar"
 })
 export default class CortxNavBar extends Vue {
+  public brandName: boolean = false;
   public navItems = [
     {
       title: "Dashboard",
@@ -96,6 +97,10 @@ export default class CortxNavBar extends Vue {
       requiredAccess: "sysconfig"
     }
   ];
+
+  public mounted() {
+    this.brandName = process.env.VUE_APP_BRANDNAME !== "CORTX";
+  }
 
   get alertNotifications() {
     return this.$store.state.alertNotification.socket;
