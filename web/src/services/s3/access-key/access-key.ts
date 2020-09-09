@@ -34,7 +34,7 @@ export const getAccessKeys = async (req: Request, res: Response) => {
  * @param res
  */
 export const createAccessKey = async (req: Request, res: Response) => {
-  let accessKeyData = Api.post(apiRegister.s3_access_keys, req, res);
+  let accessKeyData = Api.post(req.url, req, res);
   let result = await accessKeyData;
   return result;
 };
@@ -46,10 +46,9 @@ export const createAccessKey = async (req: Request, res: Response) => {
  */
 export const deleteAccessKey = async (req: Request, res: Response) => {
   let accessKey = Api.delete(
-    apiRegister.s3_access_keys,
+    req.url,
     req,
     res,
-    req.params.access_key_name
   );
   return accessKey;
 };

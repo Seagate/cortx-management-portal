@@ -30,7 +30,7 @@
       <v-data-table
         calculate-widths
         :items="alertObject.alerts"
-        item-key="created_time"
+        item-key="updated_time"
         height="250"
         :items-per-page.sync="itemsPerPage"
         :footer-props="{
@@ -83,7 +83,7 @@
         <template v-slot:item="props">
           <tr style="color: #000000;">
             <td style="white-space: nowrap;">
-              {{ new Date(props.item.created_time * 1000) | timeago }}
+              {{ new Date(props.item.updated_time * 1000) | timeago }}
             </td>
             <td style="white-space: nowrap;">
               <span>{{
@@ -153,8 +153,8 @@ export default class CortxAlertMedium extends Mixins(AlertsMixin) {
     // Set Alert table default header options
     this.alertTableHeaders = [
       {
-        text: "Time",
-        value: "created_time",
+        text: "Updated time",
+        value: "updated_time",
         sortable: true,
         sortDir: "desc"
       },

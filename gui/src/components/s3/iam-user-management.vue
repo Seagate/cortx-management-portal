@@ -16,35 +16,6 @@
 */
 <template>
   <div class="body-2">
-    <div
-      id="s3-configuration-title-container"
-      class="mt-2 s3-configuration-page-title"
-    >
-      <label id="s3-account-form-title" class="headline font-weight-bold"
-        >S3 configuration</label
-      >
-      <cortx-has-access
-        :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label id="iam-heading-text">
-            Create an S3 account. You must log in to the system using S3 account
-            credentials to manage S3 account, IAM users, and buckets.
-          </label>
-        </div>
-      </cortx-has-access>
-
-      <cortx-has-access
-        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label id="iam-managelbl">
-            Manage IAM users and buckets.
-          </label>
-        </div>
-      </cortx-has-access>
-    </div>
-    <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 pr-0 col-9">
         <cortx-has-access
@@ -57,8 +28,7 @@
             item-key="user_name"
             class="cortx-table"
             :hide-default-header="true"
-            :hide-default-footer="true"
-            :disable-pagination="true"
+            :items-per-page.sync="itemsPerPage"
           >
             <template v-slot:header="{}">
               <tr id="iam-tableheader">
@@ -74,10 +44,22 @@
             </template>
 
             <template v-slot:item="props">
-              <tr id="iam-tabledata">
-                <td>{{ props.item.user_name }}</td>
-                <td>{{ props.item.user_id }}</td>
-                <td>{{ props.item.arn }}</td>
+              <tr
+                id="iam-tabledata"
+                :class="{
+                  'grey lighten-3': props.item.user_name === selectedIAMUser
+                }"
+                  class="cortx-cursor-pointer"
+                >
+                <td @click.stop="handleRowClick(props.item)">
+                  {{ props.item.user_name }}
+                </td>
+                <td @click.stop="handleRowClick(props.item)">
+                  {{ props.item.user_id }}
+                </td>
+                <td @click.stop="handleRowClick(props.item)">
+                  {{ props.item.arn }}
+                </td>
                 <td>
                   <cortx-has-access
                     :to="
@@ -96,6 +78,13 @@
               </tr>
             </template>
           </v-data-table>
+          <cortx-has-access
+            :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
+          >
+            <cortx-access-key-management
+              :userNameIAM="selectedIAMUser"
+            ></cortx-access-key-management>
+          </cortx-has-access>
         </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-3">
@@ -259,7 +248,7 @@
           <button
             id="iam-user-create-formbtn"
             type="button"
-            class="mt-5 cortx-btn-primary"
+            class="mt-4 cortx-btn-primary"
             v-if="!showCreateUserForm"
             @click="openCreateUserForm()"
           >
@@ -306,7 +295,9 @@
         </div>
         <table class="mt-2 ml-7 cortx-text-md" id="iam-user-data">
           <tr id="iam-username">
-            <td class="py-2 cortx-text-bold credentials-item-label">Username</td>
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              Username
+            </td>
             <td class="py-2">{{ user.user_name }}</td>
           </tr>
           <tr id="iam-userid">
@@ -371,6 +362,7 @@ import { required, helpers, sameAs } from "vuelidate/lib/validators";
 import { IAMUser } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import CortxAccessKeyManagement from "./access-key-management-iam.vue";
 import {
   accountNameRegex,
   iamPathRegex,
@@ -380,7 +372,8 @@ import {
 } from "./../../common/regex-helpers";
 
 @Component({
-  name: "cortx-iam-user-management"
+  name: "cortx-iam-user-management",
+  components: { CortxAccessKeyManagement }
 })
 export default class CortxIAMUserManagement extends Vue {
   public createUserForm = {
@@ -395,7 +388,6 @@ export default class CortxIAMUserManagement extends Vue {
     createUserForm: {
       iamUser: {
         user_name: { required, accountNameRegex },
-        // path: { required, iamPathRegex },
         password: { required, passwordRegex }
       },
       confirmPassword: {
@@ -418,6 +410,8 @@ export default class CortxIAMUserManagement extends Vue {
   private usernameTooltipMessage: string = usernameTooltipMessage;
   private credentialsFileContent: string = "";
   private isCredentialsFileDownloaded: boolean = false;
+  private selectedIAMUser: string = "";
+  private itemsPerPage: number = 5;
 
   constructor() {
     super();
@@ -456,6 +450,9 @@ export default class CortxIAMUserManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_iam_user);
     this.usersList = res && res.data ? res.data.iam_users : [];
+    this.selectedIAMUser = this.usersList.length
+      ? this.usersList[0].user_name
+      : "";
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
@@ -528,7 +525,7 @@ export default class CortxIAMUserManagement extends Vue {
     this.userToDelete = "";
   }
 
-  private async deleteUser() {
+  public async deleteUser() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Deleting user " + this.userToDelete
@@ -537,6 +534,10 @@ export default class CortxIAMUserManagement extends Vue {
     await Api.delete(apiRegister.s3_iam_user, this.userToDelete);
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getAllUsers();
+  }
+
+  public handleRowClick(item: any) {
+    this.selectedIAMUser = item.user_name;
   }
 }
 </script>
