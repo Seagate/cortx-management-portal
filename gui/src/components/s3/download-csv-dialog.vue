@@ -19,7 +19,10 @@
     <v-card>
       <v-system-bar color="greay lighten-3">
         <v-spacer></v-spacer>
-        <v-icon @click="closeAccountDetailsDialog()" class="cortx-cursor-pointer"
+        <v-icon
+          id="download-csv-dialog-cancel-btn"
+          @click="closeAccountDetailsDialog()"
+          class="cortx-cursor-pointer"
           >mdi-close</v-icon
         >
       </v-system-bar>
@@ -40,7 +43,10 @@
         >
       </div>
 
-      <table class="mt-2 ml-7 cortx-text-md">
+      <table
+        id="download-csv-dialog-datatable"
+        class="mt-2 ml-7 cortx-text-md"
+      >
         <template v-for="[item, value] in Object.entries(tableContent)">
           <tr :key="item">
             <td class="py-2 cortx-text-bold credentials-item-label">
@@ -53,6 +59,7 @@
 
       <v-card-actions>
         <a
+          id="download-csv-dialog-btn"
           class="ma-5 cortx-btn-primary cortx-download-csv-link"
           :href="credentialsFileContent"
           download="credentials.csv"
@@ -60,6 +67,7 @@
           >{{ $t("s3.download-csv-dialog.btn") }}</a
         >
         <button
+          id="download-csv-dialog-ok-btn"
           :disabled="!isCredentialsFileDownloaded"
           type="button"
           class="ma-5 cortx-btn-primary"

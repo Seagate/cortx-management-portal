@@ -16,35 +16,6 @@
 */
 <template>
   <div class="body-2">
-    <div
-      id="s3-configuration-title-container"
-      class="mt-2 s3-configuration-page-title"
-    >
-      <label id="s3-account-form-title" class="headline font-weight-bold"
-        >S3 configuration</label
-      >
-      <cortx-has-access
-        :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label id="bucket-textlbl">
-            Create an S3 account. You must log in to the system using S3 account
-            credentials to manage S3 account, IAM users, and buckets.
-          </label>
-        </div>
-      </cortx-has-access>
-
-      <cortx-has-access
-        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label id="bucket-manangelbl">
-            Manage IAM users and buckets.
-          </label>
-        </div>
-      </cortx-has-access>
-    </div>
-    <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 pr-0 col-9">
         <cortx-has-access
@@ -96,10 +67,10 @@
           </v-data-table>
         </cortx-has-access>
       </v-col>
-      <v-col class="pb-0 col-3">
+      <v-col class="py-0 col-3">
         <div v-if="showCreateBucketForm" class="pa-2">
           <v-row>
-            <v-col class="py-0 pr-0">
+            <v-col class="pr-0 pb-0">
               <div
                 class="cortx-form-group-custom"
                 :class="{
@@ -174,7 +145,7 @@
           <button
             id="bucket-addbucket-formbtn"
             type="button"
-            class="cortx-btn-primary"
+            class="mt-4 cortx-btn-primary"
             v-if="!showCreateBucketForm"
             @click="openCreateBucketForm()"
           >

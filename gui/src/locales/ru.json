@@ -17,6 +17,7 @@
         "last_used": "Last updated"
       },
       "get-message": "Fetching all S3 access keys...",
+      "get-message-iam": "Fetching all IAM access keys...",
       "create-message": "Creating access key...",
       "delete-confirmation": "Are you sure you want to delete $$$ access key?",
       "delete-message": "Deleting access key "
@@ -76,8 +77,7 @@
     "shutdown-action-method": "shutdown",
     "confirm-message-node-start": "Are you sure, you want to start the node?",
     "confirm-message-node-shutdown": "Are you sure, you want to shutdown the node?",
-    "confirm-message-shutdown-sub":"Please note that if you shutdown the node then the entire application will stop",
+    "confirm-message-shutdown-sub": "Please note that if you shutdown the node then the entire application will stop",
     "shutdown-note": "Note: {node} is in shutdown state. You need to start it manually."
-
   }
 }
