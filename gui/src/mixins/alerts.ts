@@ -98,6 +98,27 @@ export default class AlertsMixin extends Vue {
     });
   }
 
+  public async acknowledgeAlert(alert: any) {
+    const loaderMessage: string = alert.acknowledged ? "Unacknowledging alert..." : "Acknowledging alert...";
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: true,
+      message: loaderMessage
+    });
+    await Api.patch(
+      apiRegister.all_alerts,
+      { acknowledged: !alert.acknowledged },
+      alert.alert_uuid
+    );
+    if (this.alertObject.alerts.length === 1) {
+      this.currentPage = this.currentPage > 1 ? this.currentPage-- : 1;
+    }
+    await this.onSortPaginate();
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: false,
+      message: ""
+    });
+  }
+
   get currentPage() {
     return this.$store.getters["alerts/getCurrentPage"];
   }
