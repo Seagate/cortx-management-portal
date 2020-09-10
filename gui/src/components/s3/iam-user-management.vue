@@ -16,6 +16,17 @@
 */
 <template>
   <div class="body-2">
+    <cortx-has-access
+        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
+      >
+        <div class="mt-2 pl-2">
+          <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
+            S3 url:
+          </label>
+          <span v-if="usersList[0].s3_url">{{ usersList[0].s3_url }}</span>
+          <span v-else>NA</span>
+        </div>
+    </cortx-has-access>
     <v-row>
       <v-col class="py-0 pr-0 col-9">
         <cortx-has-access
@@ -304,6 +315,12 @@
             <td class="py-2 cortx-text-bold credentials-item-label">User id</td>
             <td class="py-2">{{ user.user_id }}</td>
           </tr>
+          <tr>
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              S3 url
+            </td>
+            <td class="py-2">10.23.234.123</td>
+          </tr>
           <tr id="iamARN">
             <td class="py-2 cortx-text-bold credentials-item-label">ARN</td>
             <td class="py-2">{{ user.arn }}</td>
@@ -473,7 +490,9 @@ export default class CortxIAMUserManagement extends Vue {
   }
   public getCredentialsFileContent(): string {
     return (
-      "User name,Access key,Secret key\n" +
+      "User name,Account url,Access key,Secret key\n" +
+      this.user.user_name +
+      "," +
       this.user.user_name +
       "," +
       this.user.access_key_id +

@@ -21,6 +21,7 @@ export interface Account {
   password: string;
   access_key: string;
   secret_key: string;
+  s3_url: string;
 }
 export interface AccessKey {
   user_name: string;
@@ -42,4 +43,5 @@ export interface IAMUser {
 
 export interface Bucket {
   bucket_name: string;
+  bucket_url: string;
 }

@@ -48,6 +48,7 @@
             <template v-slot:item="props">
               <tr id="bucket-data">
                 <td id="bucket-name">{{ props.item.name }}</td>
+                <td id="bucket-url">{{ props.item.bucket_url }}</td>
                 <td>
                   <img
                     id="bucket-edit-icon"
@@ -176,6 +177,14 @@
           <span id="bucket-created-success-mgs"
             >Bucket created successfully.</span
           >
+          <table class="mt-2 ml-8 cortx-text-md">
+          <tr>
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              Bucket url
+            </td>
+            <td class="py-2">10.23.234.123</td>
+          </tr>
+          </table>
         </v-card-title>
         <v-card-actions>
           <button
@@ -338,6 +347,7 @@ export default class CortxBucketCreation extends Vue {
   private policyJSON: any = "";
   private bucketName: any = "";
   private bucketNameTooltipMessage: string = bucketNameTooltipMessage;
+  private bucketUrl = "";
 
   constructor() {
     super();
@@ -352,7 +362,12 @@ export default class CortxBucketCreation extends Vue {
         text: "Name",
         value: "name",
         sortable: false
-      }
+      },
+      {
+        text: "Bucket url",
+        value: "url",
+        sortable: false
+        }
     ];
   }
 
@@ -381,6 +396,7 @@ export default class CortxBucketCreation extends Vue {
     );
     if (!res.error) {
       this.showBucketCreateSuccessDialog = true;
+      this.bucketUrl = res.data.bucket_url ? res.data.bucket_url : "NA";
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
