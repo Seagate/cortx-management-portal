@@ -88,11 +88,7 @@
         </div>
       </div>
       <div class="mt-3">
-        <label v-if="alert">
-          {{
-          new Date(alert.created_time * 1000) | timeago
-          }}
-        </label>
+        <label v-if="alert">Created time: {{ new Date(alert.created_time * 1000) | timeago }} | Updated time: {{ new Date(alert.updated_time * 1000) | timeago }}</label>
       </div>
       <div style="height: 30px;" class="mt-2">
         <div class="cortx-float-l">

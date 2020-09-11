@@ -34,6 +34,12 @@ axios.interceptors.request.use(
     } else if (config.timeout === 0) {
       config.timeout = 20000;
     }
+    if (document.hidden) {
+      config = {
+        ...config,
+        cancelToken: new axios.CancelToken((cancel) => cancel("Request cancelled as page is idle"))
+      };
+    }
     return config;
   },
   error => {
@@ -172,21 +178,25 @@ export abstract class Api {
     if (error.code && error.code === "ECONNABORTED") {
       apiResponse = this.buildReqCancelledWarnResp(error);
     } else {
-      apiResponse = this.buildErrorResponse(error.response);
+      apiResponse = this.buildErrorResponse(error);
     }
     return apiResponse;
   }
 
-  private static buildErrorResponse(response: any): ApiResponse {
-    const apiResponse: ApiResponse = {
-      data: response.data ? response.data : {},
-      status: response.status,
-      statusText: response.statusText,
-      error: {
-        name: "Error: " + response.status,
-        message: response.statusText
-      }
-    };
+  private static buildErrorResponse(error: any): ApiResponse {
+    const apiResponse: ApiResponse = {} as ApiResponse;
+    if (error.response) {
+      apiResponse.data = error.response.data ? error.response.data : {};
+      apiResponse.error = {
+        name: "Error: " + error.response.status,
+        message: error.response.statusText
+      };
+      apiResponse.status = error.response.status;
+      apiResponse.statusText = error.response.statusText;
+    } else {
+      apiResponse.status = 499;
+      apiResponse.statusText = error.message ? error.message : "Request cancelled";
+    }
     return apiResponse;
   }
 
