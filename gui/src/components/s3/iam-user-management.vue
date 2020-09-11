@@ -492,7 +492,7 @@ export default class CortxIAMUserManagement extends Vue {
   }
   public getCredentialsFileContent(): string {
     return (
-      "User name,Account url,Access key,Secret key\n" +
+      "User name,S3 url,Access key,Secret key\n" +
       this.user.user_name +
       "," +
       this.s3Url +

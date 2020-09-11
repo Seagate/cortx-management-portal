@@ -485,7 +485,7 @@
           </tr>
           <tr>
             <td class="py-2 cortx-text-bold credentials-item-label">
-              {{ $t("s3.account.s3-url") }}
+              {{ $t("s3.account.url-label") }}
             </td>
             <td class="py-2">{{ s3Url }}</td>
           </tr>
@@ -661,7 +661,7 @@ export default class CortxAccountManagement extends Vue {
 
   public getCredentialsFileContent(): string {
     return (
-      "Account name,Account Url,Access key,Secret key\n" +
+      "Account name,S3 Url,Access key,Secret key\n" +
       this.account.account_name +
       "," +
       this.s3Url +
