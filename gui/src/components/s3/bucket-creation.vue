@@ -1,19 +1,15 @@
-/*
-* CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-* You should have received a copy of the GNU Affero General Public License
-* along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing,
-* please email opensource@seagate.com or cortx-questions@seagate.com.
-*/
+/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
+Seagate Technology LLC and/or its Affiliates * This program is free software:
+you can redistribute it and/or modify * it under the terms of the GNU Affero
+General Public License as published * by the Free Software Foundation, either
+version 3 of the License, or * (at your option) any later version. * This
+program is distributed in the hope that it will be useful, * but WITHOUT ANY
+WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
+details. * You should have received a copy of the GNU Affero General Public
+License * along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing, * please email
+opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="body-2">
     <v-row>
@@ -135,7 +131,7 @@
                 class="cortx-btn-tertiary"
                 @click="closeCreateBucketForm()"
               >
-               {{ $t("common.cancel-btn") }}
+                {{ $t("common.cancel-btn") }}
               </button>
             </v-col>
           </v-row>
@@ -160,7 +156,7 @@
       id="bucket-create-succeaadialogbox"
       v-model="showBucketCreateSuccessDialog"
       persistent
-      max-width="400"
+      max-width="500"
     >
       <v-card>
         <v-system-bar color="grey lighten-3">
@@ -172,18 +168,18 @@
             >mdi-close</v-icon
           >
         </v-system-bar>
-        <v-card-title class="title mt-6 ml-3">
+        <v-card-title class="title mt-5"  >
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span id="bucket-created-success-mgs"
-            >{{ $t("s3.bucket.created-successfully") }}</span
-          >
-          <table class="mt-2 ml-8 cortx-text-md">
-          <tr>
-            <td class="py-2 cortx-text-bold credentials-item-label">
-              {{ $t("s3.bucket.url-label") }}
-            </td>
-            <td class="py-2">10.23.234.123</td>
-          </tr>
+          <span id="bucket-created-success-mgs">{{
+            $t("s3.bucket.created-successfully")
+          }}</span>
+          <table class="mt-2 ml-9 cortx-text-md">
+            <tr>
+              <td class="py-2 cortx-text-bold bucket-url-label">
+                {{ $t("s3.bucket.url-label") }}
+              </td>
+              <td class="py-2 bucket-url-text">{{ bucketUrl }}</td>
+            </tr>
           </table>
         </v-card-title>
         <v-card-actions>
@@ -206,7 +202,9 @@
     >
       <div class="cortx-modal bucket-policy-editor">
         <div class="cortx-modal-header">
-          <label id="bucket-json-policy-lbl">{{ $t("s3.bucket.json-policy") }}</label>
+          <label id="bucket-json-policy-lbl">{{
+            $t("s3.bucket.json-policy")
+          }}</label>
           <img
             id="close-bucket-policydialog"
             class="cortx-modal-close"
@@ -274,7 +272,7 @@
               class="cortx-btn-tertiary"
               @click="closeBucketPolicyDialog()"
             >
-               {{ $t("common.cancel-btn") }}
+              {{ $t("common.cancel-btn") }}
             </button>
           </div>
         </div>
@@ -367,7 +365,7 @@ export default class CortxBucketCreation extends Vue {
         text: "Bucket url",
         value: "url",
         sortable: false
-        }
+      }
     ];
   }
 
@@ -382,21 +380,28 @@ export default class CortxBucketCreation extends Vue {
   }
 
   public async getAllBuckets() {
-    this.$store.dispatch("systemConfig/showLoader",  i18n.t("s3.bucket.fetching-bucket"));
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.fetching-bucket")
+    );
     const res: any = await Api.getAll(apiRegister.s3_bucket);
     this.bucketsList = res && res.data ? res.data.buckets : [];
+
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
   public async createBucket() {
-    this.$store.dispatch("systemConfig/showLoader",i18n.t("s3.bucket.creating-bucket"));
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.creating-bucket")
+    );
     const res = await Api.post(
       apiRegister.s3_bucket,
       this.createBucketForm.bucket
     );
+    this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
     if (!res.error) {
       this.showBucketCreateSuccessDialog = true;
-      this.bucketUrl = res.data.bucket_url ? res.data.bucket_url : "NA";
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
@@ -479,7 +484,10 @@ export default class CortxBucketCreation extends Vue {
   }
   public async deleteBucketPolicy() {
     this.showBucketPolicyDialog = false;
-    this.$store.dispatch("systemConfig/showLoader", i18n.t("s3.bucket.delete-policy"));
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.delete-policy")
+    );
     await Api.delete(apiRegister.bucket_policy, this.bucketName);
     this.$store.dispatch("systemConfig/hideLoader");
   }
@@ -509,5 +517,11 @@ export default class CortxBucketCreation extends Vue {
 }
 .bucket-policy-editor {
   width: 600px;
+}
+.bucket-url-label {
+  width: 6rem;
+}
+.bucket-url-text {
+  word-break: break-all;
 }
 </style>

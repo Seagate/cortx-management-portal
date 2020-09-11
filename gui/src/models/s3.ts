@@ -21,7 +21,6 @@ export interface Account {
   password: string;
   access_key: string;
   secret_key: string;
-  s3_url: string;
 }
 export interface AccessKey {
   user_name: string;

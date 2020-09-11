@@ -40,7 +40,7 @@
           <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
             {{ $t("s3.account.url-label") }}
           </label>
-          <span v-if="accountsList[0].s3_url">{{ accountsList[0].s3_url }}</span>
+          <span v-if="s3Url">{{ s3Url }}</span>
           <span v-else>NA</span>
         </div>
     </cortx-has-access>
@@ -487,7 +487,7 @@
             <td class="py-2 cortx-text-bold credentials-item-label">
               {{ $t("s3.account.s3-url") }}
             </td>
-            <td class="py-2">{{ account.s3_url }}</td>
+            <td class="py-2">{{ s3Url }}</td>
           </tr>
           <tr>
             <td class="py-2 cortx-text-bold credentials-item-label">
@@ -603,6 +603,7 @@ export default class CortxAccountManagement extends Vue {
   private credentialsFileContent: string = "";
   private showEditAccountForm: boolean;
   private editAccoutName: string;
+  private s3Url: string ="";
 
   constructor() {
     super();
@@ -637,6 +638,7 @@ export default class CortxAccountManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
+    this.s3Url = res && res.data ? res.data.s3_url : "";
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
@@ -662,7 +664,7 @@ export default class CortxAccountManagement extends Vue {
       "Account name,Account Url,Access key,Secret key\n" +
       this.account.account_name +
       "," +
-      this.account.s3_url +
+      this.s3Url +
       "," +
       this.account.access_key +
       "," +

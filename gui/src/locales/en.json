@@ -62,7 +62,7 @@
       "invalid-name": "Invalid bucket name.",
       "create-bucket": "Create bucket",
       "created-successfully": "Bucket created successfully.",
-      "url-label:": "Bucket url:",
+      "url-label": "Bucket url:",
       "json-policy": "JSON policy",
       "policy-info": "Type to add new bucket policy or edit an existing policy in the text area below.",
       "policy-json-require": "Policy JSON is required.",

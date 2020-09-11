@@ -23,7 +23,7 @@
           <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
             S3 url:
           </label>
-          <span v-if="usersList[0].s3_url">{{ usersList[0].s3_url }}</span>
+          <span v-if="s3Url">{{ s3Url }}</span>
           <span v-else>NA</span>
         </div>
     </cortx-has-access>
@@ -319,7 +319,7 @@
             <td class="py-2 cortx-text-bold credentials-item-label">
               S3 url
             </td>
-            <td class="py-2">10.23.234.123</td>
+            <td class="py-2">{{ s3Url }}</td>
           </tr>
           <tr id="iamARN">
             <td class="py-2 cortx-text-bold credentials-item-label">ARN</td>
@@ -429,6 +429,7 @@ export default class CortxIAMUserManagement extends Vue {
   private isCredentialsFileDownloaded: boolean = false;
   private selectedIAMUser: string = "";
   private itemsPerPage: number = 5;
+  private s3Url: string = "";
 
   constructor() {
     super();
@@ -467,6 +468,7 @@ export default class CortxIAMUserManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_iam_user);
     this.usersList = res && res.data ? res.data.iam_users : [];
+    this.s3Url = res.data.s3_url;
     this.selectedIAMUser = this.usersList.length
       ? this.usersList[0].user_name
       : "";
@@ -493,7 +495,7 @@ export default class CortxIAMUserManagement extends Vue {
       "User name,Account url,Access key,Secret key\n" +
       this.user.user_name +
       "," +
-      this.user.user_name +
+      this.s3Url +
       "," +
       this.user.access_key_id +
       "," +
