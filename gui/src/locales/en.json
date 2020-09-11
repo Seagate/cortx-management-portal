@@ -50,21 +50,37 @@
       "s3-url": "S3 url",
       "access-key": "Access key",
       "secret-key": "Secret key",
-      "download-as-csv":"Download as CSV",
+      "download-as-csv": "Download as CSV",
       "ok": "Ok",
       "loading-list": "Fetching all S3 accounts...",
       "loading-create": "Creating account...",
       "loading-update": "Updating account...",
       "account-table": "Account name,Account Url,Access key,Secret key\n"
-
-
-
-
-    
+    },
+    "bucket": {
+      "name-require": "Bucket name is required.",
+      "invalid-name": "Invalid bucket name.",
+      "create-bucket": "Create bucket",
+      "created-successfully": "Bucket created successfully.",
+      "url-label:": "Bucket url:",
+      "json-policy": "JSON policy",
+      "policy-info": "Type to add new bucket policy or edit an existing policy in the text area below.",
+      "policy-json-require": "Policy JSON is required.",
+      "fetching-policy": "Fetching bucket policy...",
+      "fetching-bucket": "Fetching bucket...",
+      "creating-bucket":"Creating bucket...",
+      "updating-policy": "Updating bucket policy...",
+      "delete-policy...": "Delete bucket policy...",
+      "delete-bucket": "Deleting bucket "
     }
   },
   "common": {
     "title": "Cortx",
+    "create-btn": "Create",
+    "update-btn": "Update",
+    "cancel-btn": "Cancel",
+    "delete-btn": "Delete",
+    "ok-text": "Ok",
     "confirm-dialog": {
       "title": "Confirmation"
     }
@@ -122,35 +138,30 @@
     "confirm-message-shutdown-sub": "Please note that if you shutdown the node then the entire application will stop",
     "shutdown-note": "Note: {node} is in shutdown state. You need to start it manually."
   },
-  "udx-registration":{
+  "udx-registration": {
     "udx-registration": "UDX Registration",
-    "registration-token":"Your registration token",
-    "udx-url-required":"URL is required",
-    "invalid-url":"Invalid URL",
-    "s3-details":"S3 Account details",
-    "accountname-required":"Account name is required",
-    "invalid-name":"Invalid account name",
-    "email":"Email id*",
-    "email-reqiured":"Email id is required",
-    "invalid-email":"Invalid email id",
-    "password-required":"Password is required",
-    "invalid-password":"Invalid password",
-    "confirm-pass":"Confirm password*",
-    "password-match":"Passwords do not match",
-    "iam-details":"IAM User details",
-    "username-required":"Username is required",
-    "invalid-user":"Invalid username",
-    "bucket-required":"Bucket name is required",
-    "invalid-bucketname":"Invalid bucket name",
-    "iagreetext":"I agree to the following:",
-    "firstcheck-text":"A dedicated UDX Bucket will be created in my account.",
-    "secondcheck-text":"An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.",
-    "register-btn":"Register",
-    "clear":"Clear"
-
-
-
-
-
+    "registration-token": "Your registration token",
+    "udx-url-required": "URL is required",
+    "invalid-url": "Invalid URL",
+    "s3-details": "S3 Account details",
+    "accountname-required": "Account name is required",
+    "invalid-name": "Invalid account name",
+    "email": "Email id*",
+    "email-reqiured": "Email id is required",
+    "invalid-email": "Invalid email id",
+    "password-required": "Password is required",
+    "invalid-password": "Invalid password",
+    "confirm-pass": "Confirm password*",
+    "password-match": "Passwords do not match",
+    "iam-details": "IAM User details",
+    "username-required": "Username is required",
+    "invalid-user": "Invalid username",
+    "bucket-required": "Bucket name is required",
+    "invalid-bucketname": "Invalid bucket name",
+    "iagreetext": "I agree to the following:",
+    "firstcheck-text": "A dedicated UDX Bucket will be created in my account.",
+    "secondcheck-text": "An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.",
+    "register-btn": "Register",
+    "clear": "Clear"
   }
 }
