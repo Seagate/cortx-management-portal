@@ -25,7 +25,7 @@
         <table>
           <tr>
             <td style="width: 100px;">
-              <label class="cortx-text-bold">Name:</label>
+              <label class="cortx-text-bold">{{$t("aboutUs.name")}}</label>
             </td>
             <td style="padding-top: 2px;">
               <label>{{ versionDetails.NAME }}</label>
@@ -33,7 +33,7 @@
           </tr>
           <tr>
             <td>
-              <label class="cortx-text-bold">Version:</label>
+              <label class="cortx-text-bold">{{$t("aboutUs.version")}}</label>
             </td>
             <td style="padding-top: 2px;">
               <label>{{ versionDetails.VERSION }}</label>
@@ -41,7 +41,7 @@
           </tr>
           <tr>
             <td>
-              <label class="cortx-text-bold">Build:</label>
+              <label class="cortx-text-bold">{{$t("aboutUs.build")}}</label>
             </td>
             <td style="padding-top: 2px;">
               <label>{{ versionDetails.BUILD }}</label>
@@ -49,7 +49,7 @@
           </tr>
           <tr v-if="versionDetails.RELEASE">
             <td>
-              <label class="cortx-text-bold">Release:</label>
+              <label class="cortx-text-bold">{{$t("aboutUs.release")}}</label>
             </td>
             <td style="padding-top: 2px;">
               <label>{{ versionDetails.RELEASE }}</label>
@@ -61,7 +61,9 @@
         <div class="col-6">
           <v-expansion-panels>
             <v-expansion-panel>
-              <v-expansion-panel-header class="cortx-text-lg font-weight-bold">COMPONENTS</v-expansion-panel-header>
+              <v-expansion-panel-header class="cortx-text-lg font-weight-bold">
+                {{$t("aboutUs.COMPONENTS")}}
+              </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <ul>
                   <li
@@ -82,6 +84,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import i18n from "./../../i18n";
 
 @Component({
   name: "cortx-about"

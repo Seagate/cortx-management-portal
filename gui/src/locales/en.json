@@ -129,5 +129,12 @@
 
 
 
+  },
+  "aboutUs": {
+    "name": "Name:",
+    "version": "Version:",
+    "build": "Build:",
+    "release": "Release:",
+    "COMPONENTS": "COMPONENTS"
   }
 }
