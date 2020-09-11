@@ -609,7 +609,11 @@ export default class CortxAccountManagement extends Vue {
       { text: "", value: "data-table-expand" }
     ];
   }
-
+  public data() {
+    return {
+      constStr: require("./../../common/const-string.json")
+    };
+  }
   public async mounted() {
     await this.getAllAccounts();
   }
@@ -730,6 +734,7 @@ export default class CortxAccountManagement extends Vue {
     );
     await Api.delete(apiRegister.s3_account, this.accountToDelete);
     this.$store.dispatch("systemConfig/hideLoader");
+    localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
 }
