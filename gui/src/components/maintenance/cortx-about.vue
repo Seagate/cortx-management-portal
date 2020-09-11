@@ -16,8 +16,8 @@
 */
 <template>
   <div class="cortx-p-2">
-    <div class="cortx-text-lg cortx-text-bold" id="lblAbout">About us</div>
     <div class="cortx-brand-logo"></div>
+    <div class="cortx-text-lg cortx-text-bold" id="lblAbout">About us</div>
     <v-divider class="mt-2 mb-5" />
     <v-container>
       <div class="body-2"></div>
@@ -47,7 +47,7 @@
               <label>{{ versionDetails.BUILD }}</label>
             </td>
           </tr>
-          <tr>
+          <tr v-if="versionDetails.RELEASE">
             <td>
               <label class="cortx-text-bold">Release:</label>
             </td>
@@ -56,6 +56,23 @@
             </td>
           </tr>
         </table>
+      </div>
+      <div class="row" v-if="versionDetails.COMPONENTS">
+        <div class="col-6">
+          <v-expansion-panels>
+            <v-expansion-panel>
+              <v-expansion-panel-header class="cortx-text-lg font-weight-bold">COMPONENTS</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <ul>
+                  <li
+                    v-for="component in versionDetails.COMPONENTS"
+                    :key="component"
+                  >{{ component }}</li>
+                </ul>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </div>
       </div>
     </v-container>
   </div>
@@ -67,10 +84,15 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "cortx-about",
+  name: "cortx-about"
 })
 export default class Cortxaboutpage extends Vue {
   public versionDetails: any = null;
+  public data() {
+    return {
+      component: "CSM"
+    };
+  }
 
   public async mounted() {
     await this.getVersion();
@@ -83,10 +105,11 @@ export default class Cortxaboutpage extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-img.cortx-lyve-drive {
-  height: 30px; 
-  width: 340px;
-  margin-top: 20px;
-  margin-left: 20px;
+.cortx-brand-logo {
+  padding-top: 20px;
+  margin-bottom: 20px;
+  &:before {
+    left: 0;
+  }
 }
 </style>
