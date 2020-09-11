@@ -15,37 +15,37 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2 body-2">
-    <div class="eos-text-lg mt-2 font-weight-bold" id="lblDns">
+  <div class="cortx-p-2 body-2">
+    <div class="cortx-text-lg mt-2 font-weight-bold" id="lblDns">
       DNS resolver settings
     </div>
     <div class="mt-3" id="lblDnsMsg">
       Fields marked with * are mandatory.
     </div>
     <v-divider class="mt-2" />
-    <eosDnsSettingConfig @apply-settings="applySettingsConfirmation" />
-    <eos-confirmation-dialog
+    <cortxDnsSettingConfig @apply-settings="applySettingsConfirmation" />
+    <cortx-confirmation-dialog
       :show="showConfirmDialog"
       message="Are you sure you want to apply the settings?"
       severity="warning"
       @closeDialog="applySettings"
       confirmButtonText="Apply"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosDnsSettingConfig from "../onboarding/system-config/dns/dns-setting-config.vue";
+import CortxDnsSettingConfig from "../onboarding/system-config/dns/dns-setting-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "eos-dns-data-setting",
+  name: "cortx-dns-data-setting",
   components: {
-    eosDnsSettingConfig: EosDnsSettingConfig
+    cortxDnsSettingConfig: CortxDnsSettingConfig
   }
 })
-export default class EosDnsDataSetting extends Vue {
+export default class CortxDnsDataSetting extends Vue {
   private data() {
     return {
       sysconfigData: {},

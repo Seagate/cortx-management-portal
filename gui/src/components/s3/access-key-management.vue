@@ -14,14 +14,13 @@
  * For any questions about this software or licensing,
  * please email opensource@seagate.com or cortx-questions@seagate.com.
  */
-<template>
-  <div class="mt-5">
-    <v-divider class="mt-2 mb-5" />
+ <template>
+  <div class="mt-7">
     <div class="d-flex justify-end">
       <button
         type="button"
-        id="btnAddAccessKey"
-        class="eos-btn-primary "
+        id="s3-accesskey-add-btn"
+        class="cortx-btn-primary "
         @click="createAccessKey()"
         :disabled="accessKeyList.length >= MAX_ACCESS_KEYS"
       >
@@ -29,14 +28,15 @@
       </button>
     </div>
 
-    <eos-has-access
-      :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+    <cortx-has-access
+      :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list"
     >
       <v-data-table
+        id="s3-accesskey-datatable"
         :headers="accessKeyTableHeaderList"
         :items="accessKeyList"
         item-key="access_key_id"
-        class="eos-table"
+        class="cortx-table"
         :hide-default-header="true"
         :hide-default-footer="true"
         :disable-pagination="true"
@@ -53,45 +53,41 @@
           </tr>
         </template>
         <template v-slot:item="{ item }">
-          <tr style="color: #000000;">
-            <td style="white-space: nowrap;">
+          <tr>
+            <td :id="'s3-accesskey-datatable-' + item.access_key_id">
               {{ item.access_key_id }}
             </td>
-            <td style="white-space: nowrap;">
-              XXXX
+            <td>
+              {{ SECRET_KEY_PLACEHOLDER }}
             </td>
-            <td style="white-space: nowrap;">
-              <span v-if="item.last_used">{{
-                new Date(item.last_used * 1000) | timeago
-              }}</span>
-              <span v-else>--</span>
-            </td>
-            <td style="white-space: nowrap;">
-              <eos-has-access
+            <td>
+              <cortx-has-access
                 class="mx-2"
                 :to="
-                  $eosUserPermissions.s3accounts + $eosUserPermissions.delete
+                  $cortxUserPermissions.s3accounts +
+                    $cortxUserPermissions.delete
                 "
               >
                 <img
+                  :id="'s3-accesskey-datatable-delete-' + item.access_key_id"
                   @click="openConfirmDeleteDialog(item.access_key_id)"
-                  class="eos-cursor-pointer"
+                  class="cortx-cursor-pointer"
                   src="@/assets/actions/delete-green.svg"
                 />
-              </eos-has-access>
+              </cortx-has-access>
             </td></tr
         ></template>
       </v-data-table>
-    </eos-has-access>
+    </cortx-has-access>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmDeleteDialog"
       :title="$t('common.confirm-dialog.title')"
       :message="confirmDeleteDialogMessage"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
     <cortx-download-csv-dialog
       :show="showAccessKeyDetailsDialog"
       :title="$t('s3.download-csv-dialog.created')"
@@ -123,6 +119,7 @@ export default class CortxAccessKeyManagement extends Vue {
   private accessKeyDetails: any = {};
   private accountToDelete: string = "";
   private MAX_ACCESS_KEYS: number = 2;
+  private SECRET_KEY_PLACEHOLDER: string = "XXXX";
 
   constructor() {
     super();
@@ -139,11 +136,6 @@ export default class CortxAccessKeyManagement extends Vue {
       {
         text: i18n.t("s3.access-key.table-headers.secret_key"),
         value: "secret_key",
-        sortable: false
-      },
-      {
-        text: i18n.t("s3.access-key.table-headers.last_used"),
-        value: "last_used",
         sortable: false
       },
       { text: "", value: "data-table-expand" }
@@ -187,8 +179,9 @@ export default class CortxAccessKeyManagement extends Vue {
 
   public openConfirmDeleteDialog(accountName: string) {
     this.confirmDeleteDialogMessage = `${i18n.t(
-      "s3.access-key.delete-confirmation"
-    )}`.replace("$$$", accountName);
+      "s3.access-key.delete-confirmation",
+      { key: accountName }
+    )}`;
     this.accountToDelete = accountName;
     this.showConfirmDeleteDialog = true;
   }

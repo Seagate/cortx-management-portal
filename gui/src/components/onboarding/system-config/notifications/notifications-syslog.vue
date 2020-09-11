@@ -52,7 +52,7 @@
       </div>
       <v-divider class="pt-5" />
     </div>
-    <span class="d-none">{{ isValidForm }}</span>
+    <span class="d-none" id="notification-syslogbtn">{{ isValidForm }}</span>
   </v-container>
 </template>
 <script lang="ts">
@@ -61,9 +61,9 @@ import { Syslog } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({
-  name: "eos-data-network-ipv4"
+  name: "cortx-data-network-ipv4"
 })
-export default class EosDataNetworkIpv4 extends Vue {
+export default class CortxDataNetworkIpv4 extends Vue {
   private data() {
     return {
       syslogipaddr: "",

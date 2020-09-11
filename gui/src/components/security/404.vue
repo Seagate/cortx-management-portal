@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2">
+  <div class="cortx-p-2">
     <h1>(404) Page Not Found</h1>
     <p>
       The page you are looking for does not exist.
@@ -26,7 +26,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
-  name: "eos-not-found"
+  name: "cortx-not-found"
 })
-export default class EosNotFound extends Vue {}
+export default class CortxNotFound extends Vue {}
 </script>

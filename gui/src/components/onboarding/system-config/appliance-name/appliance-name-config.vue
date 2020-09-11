@@ -4,20 +4,20 @@
       <div class="row ma-0">
         <div class="col-2 body-2 column">
           <div class="mt-2 font-weight-bold">
-            <div class="eos-form-group">
+            <div class="cortx-form-group">
               <label id="lblDAddAppliance">Appliance name*:</label>
             </div>
           </div>
         </div>
         <div class="col-4 body-2 column mr-5">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.appliance.$error
+              'cortx-form-group--error': $v.appliance.$error
             }"
           >
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="text"
               name="appliancename"
               v-model.trim="appliance"
@@ -25,7 +25,7 @@
               @input="$v.appliance.$touch"
               placeholder="Appliance name"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.appliance.$dirty && !$v.appliance.required"
                 >Appliance name is required.</label
               >
@@ -48,11 +48,12 @@
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
     <button
+     id="appliance-appybtn"
       type="button"
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"
       @click="applySettings()"
-      class="eos-btn-primary eos-float-l my-10"
+      class="cortx-btn-primary cortx-float-l my-10"
     >
       Apply
     </button>
@@ -72,9 +73,9 @@ import {
 import { applianceNameRegex } from "./../../../../common/regex-helpers";
 
 @Component({
-  name: "eos-appliance-name-config"
+  name: "cortx-appliance-name-config"
 })
-export default class EosApplianceNameConfig extends Vue {
+export default class CortxApplianceNameConfig extends Vue {
   @Validations()
   private validations = {
     appliance: {
