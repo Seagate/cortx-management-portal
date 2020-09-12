@@ -5,7 +5,7 @@
         <div class="col-2 body-2 column">
           <div class="mt-2 font-weight-bold">
             <div class="cortx-form-group">
-              <label id="lblDAddAppliance">Appliance name*:</label>
+              <label id="lblDAddAppliance">{{ $t("onBoarding.systemName") }}*:</label>
             </div>
           </div>
         </div>
@@ -23,24 +23,23 @@
               v-model.trim="appliance"
               id="txtappliancename"
               @input="$v.appliance.$touch"
-              placeholder="Appliance name"
+              :placeholder="$t('onBoarding.systemName')"
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.appliance.$dirty && !$v.appliance.required"
-                >Appliance name is required.</label
+                >{{ $t("onBoarding.systemNameIsReq") }}</label
               >
               <label
                 v-else-if="
                   $v.appliance.$dirty && !$v.appliance.applianceNameRegex
                 "
-                >Enter valid appliance name.</label
+                >{{ $t("onBoarding.enterValidSystemName") }}</label
               >
               <label v-else-if="$v.appliance.$dirty && !$v.appliance.minLength"
-                >Minimum 4 characters are required.</label
+                >{{ $t("onBoarding.minimumFourChartSystemName") }}</label
               >
               <label v-else-if="$v.appliance.$dirty && !$v.appliance.maxLength"
-                >max 255 characters allow.</label
-              >
+              >{{ $t("onBoarding.maxChartSystemName") }}</label>
             </div>
           </div>
         </div>
@@ -71,6 +70,7 @@ import {
   maxLength
 } from "vuelidate/lib/validators";
 import { applianceNameRegex } from "./../../../../common/regex-helpers";
+import i18n from "./../../../../i18n";
 
 @Component({
   name: "cortx-appliance-name-config"
