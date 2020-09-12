@@ -69,16 +69,16 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="cortx-text-lg font-weight-bold"
-            >Appliance Name</v-expansion-panel-header
-          >
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold">
+            {{$t("onBoarding.systemName")}}
+          </v-expansion-panel-header>
           <v-expansion-panel-content v-if="applianceName">
             <div class="row ma-0">
               <template>
                 <div class="col-8 body-2 column mr-5 pt-0">
                   <table class="cortx-text-lg">
                     <tr>
-                      <td class="large-table-data-label">Appliance name:</td>
+                      <td class="large-table-data-label">{{$t("onBoarding.systemName")}}:</td>
                       <td>{{ applianceName }}</td>
                     </tr>
                   </table>
@@ -197,6 +197,7 @@ import {
 
 import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
+import i18n from "./../../../../i18n";
 
 @Component({
   name: "cortx-onboarding-summary"

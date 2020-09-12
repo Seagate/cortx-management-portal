@@ -124,17 +124,21 @@
     "secondcheck-text":"An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.",
     "register-btn":"Register",
     "clear":"Clear"
-
-
-
-
-
   },
   "aboutUs": {
+    "title": "About",
     "name": "Name:",
     "version": "Version:",
     "build": "Build:",
     "release": "Release:",
     "COMPONENTS": "COMPONENTS"
+  },
+  "onBoarding": {
+    "systemName": "System name",
+    "addSystemName": "Add System name",
+    "systemNameIsReq": "System name is required.",
+    "enterValidSystemName": "Enter valid System name.",
+    "minimumFourChartSystemName": "Minimum 4 characters are required.",
+    "maxChartSystemName": "max 255 characters allow."
   }
 }
