@@ -744,3 +744,12 @@ tbody tr:hover {
   left: 20px;
   background-repeat: no-repeat;
 }
+
+/* Update the line-chart x and y axis label colors */
+.c3 .c3-axis-y text.c3-axis-y-label {
+  fill: rgb(31, 119, 180);
+}
+
+.c3 .c3-axis-y2 text.c3-axis-y2-label {
+  fill: rgb(255, 0, 0);
+}
