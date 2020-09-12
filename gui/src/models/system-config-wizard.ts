@@ -25,7 +25,7 @@ export const wizardConfig = {
       isByPassed: false,
       header: {
         state: "completed",
-        name: "ApplianceName"
+        name: "System Name"
       },
       footer: {
         nextComponent: "CortxUploadSSL",

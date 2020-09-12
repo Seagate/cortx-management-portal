@@ -20,11 +20,6 @@
       :menuItems="subMenuItems"
       @clickFunctionHandler="clickFunctionHandler"
     ></cortx-menu-list>
-    <div class="cortx-wrap-height-menu-card-layout">
-      <button type="button" class="cortx-btn-tertiary" @click="goToAbout()" id="aboutmenu">
-        About
-      </button>
-    </div>
   </div>
 </template>
 <script lang="ts">
@@ -72,6 +67,13 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToNodeReplacement",
       disabled: false,
       requiredAccess: "replace_node"
+    },
+    {
+      title: "About",
+      actionName: "View",
+      actionClickFunction: "goToAbout",
+      disabled: false,
+      requiredAccess: ""
     }
   ];
   private goToSystemMaintenance() {
