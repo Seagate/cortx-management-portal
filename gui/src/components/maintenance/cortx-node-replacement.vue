@@ -56,9 +56,14 @@
       id="lblIpv4DataNetwork"
       v-if="!canReplaceNode"
     >
+      <p>
       Note: Node replacement is only available when any one of the nodes is in
       shutdown state. In order to complete node replacement please shutdown the
       node from system maintenance page.
+      </p>
+      <p class="cortx-text-lg cortx-text-primary mt-2 font-weight-bold">
+        All the nodes are online.
+      </p>
     </div>
     <v-container class="mt-0 ml-0" v-else>
       <div class="pl-4 body-2">
