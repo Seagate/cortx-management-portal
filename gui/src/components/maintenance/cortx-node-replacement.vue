@@ -62,7 +62,7 @@
       node from system maintenance page.
       </p>
       <p class="cortx-text-lg cortx-text-primary mt-2 font-weight-bold">
-        All the nodes are online.
+        All nodes are online.
       </p>
     </div>
     <v-container class="mt-0 ml-0" v-else>
