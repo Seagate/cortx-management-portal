@@ -195,7 +195,7 @@ export default class CortxLogin extends Vue {
             vueInstance.$cortxUserPermissions.update
         )
       ) {
-        this.$router.push("/provisioning/s3");
+        this.$router.push("/manage/s3");
       } else {
         this.$router.push("/");
       }

@@ -494,19 +494,10 @@
             class="ma-5 cortx-btn-primary cortx-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
-            @click="isCredentialsFileDownloaded = true"
-            >Download as CSV</a
+            @click="downloadAndClose()"
+            >Download and close</a
           >
-          <button
-            id="s3-closedialogboxbtn"
-            :disabled="!isCredentialsFileDownloaded"
-            type="button"
-            class="ma-5 cortx-btn-primary"
-            @click="closeAccountDetailsDialog()"
-          >
-            Ok
-          </button>
-        </v-card-actions>
+          </v-card-actions>
       </v-card>
     </v-dialog>
 
@@ -737,6 +728,14 @@ export default class CortxAccountManagement extends Vue {
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
+  private async downloadAndClose() {
+    this.isCredentialsFileDownloaded = true;
+    this.showAccountDetailsDialog = false;
+    this.showCreateAccountForm = false;
+    this.clearCreateAccountForm();
+    await this.getAllAccounts();
+  }
+
 }
 </script>
 <style lang="scss" scoped>
