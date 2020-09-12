@@ -71,8 +71,8 @@ export default class CortxNavBar extends Vue {
     {
       title: "Manage",
       path: "/manage",
-      iconDefault: require("@/assets/navigation/provisioning-grey.svg"),
-      iconActive: require("@/assets/navigation/provisioning-white.svg"),
+      iconDefault: require("@/assets/navigation/manage-grey.svg"),
+      iconActive: require("@/assets/navigation/manage-white.svg"),
       requiredAccess: "s3accounts"
     },
     {
