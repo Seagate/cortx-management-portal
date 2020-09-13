@@ -702,25 +702,13 @@
 								"type": "string",
 								"example": "password"
 							},
-							"interfaces": {
-								"type": "array",
-								"example": []
+							"email": {
+								"type": "string",
+								"example": "admin@test.com"
 							},
 							"roles": {
 								"type": "array",
 								"example": ["manage"]
-							},
-							"temperature": {
-								"type": "string",
-								"example": ""
-							},
-							"language": {
-								"type": "string",
-								"example": ""
-							},
-							"timeout": {
-								"type": "string",
-								"example": "1"
 							}
 						}
 					}
