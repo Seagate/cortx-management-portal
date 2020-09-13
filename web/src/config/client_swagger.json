@@ -240,26 +240,14 @@
 								"type": "string",
 								"example": "password"
 							},
-							"interfaces": {
-								"type": "array",
-								"example": []
+							"email": {
+								"type": "string",
+								"example": "admin@test.com" 
 							},
 							"roles": {
 								"type": "array",
 								"example": ["manage"]
 							},
-							"temperature": {
-								"type": "string",
-								"example": ""
-							},
-							"language": {
-								"type": "string",
-								"example": ""
-							},
-							"timeout": {
-								"type": "string",
-								"example": "1"
-							}
 						}
 					}
 				},{
@@ -359,34 +347,26 @@
 					{
 					"name": "edit csm user",
 					"in": "body",
-					"description": "Edit CSM user credentials. The 'old_password' property is required for users who change their own password. The superuser can skip this field for all other users.",
+					"description": "Edit CSM user credentials. The 'current_password' property is required for users who change their own password. The superuser can skip this field for all other users.",
 					"schema": {
 						"type": "object",
 						"required": false,
 						"properties": {
-							"id": {
-								"type": "string",
-								"example": "nkpcsm4"
-							},
-							"username": {
-								"type": "string",
-								"example": "nkpcsm4"
-							},
-							"user_type": {
-								"type": "string",
-								"example": "csm"
-							},
 							"roles": {
 								"type": "array",
-								"example": []
+								"example": [manage]
+							},
+							"email": {
+								"type": "string",
+								"example": "newemail@test.com"
 							},
 							"password": {
 								"type": "string",
-								"example": "password"
+								"example": "new_password"
 							},
-							"old_password": {
+							"current_password": {
 								"type": "string",
-								"example": "old_password"
+								"example": "password"
 							}
 						}
 					}
