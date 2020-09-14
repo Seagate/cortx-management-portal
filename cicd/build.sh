@@ -63,7 +63,7 @@ while getopts ":g:v:b:p:n:l:k:c:tdiq" o; do
         p)
             PRODUCT=${OPTARG}
             ;;
-        l)
+        n)
             BRAND=${OPTARG}
             ;;
         l)
