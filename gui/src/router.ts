@@ -153,7 +153,7 @@ const router = new Router({
           }
         },
         {
-          path: "provisioning",
+          path: "manage",
           component: CortxProvisioning,
           meta: { requiresAuth: true },
           children: [
@@ -424,7 +424,7 @@ router.beforeEach(async (to, from, next) => {
           }
           if (!routerApp.$hasAccessToCsm(userPermissions.stats + userPermissions.list) &&
             routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
-            next({ path: "/provisioning/s3" });
+            next({ path: "/manage/s3" });
           }
         }
 
