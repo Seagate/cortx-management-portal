@@ -15,17 +15,17 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <eosUserSetting :buttonsShow="false" />
+  <cortxUserSetting :buttonsShow="false" />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import EosUserSetting from "./../components/onboarding/system-config/user-settings/user-setting-local.vue";
+import CortxUserSetting from "./../components/onboarding/system-config/user-settings/user-setting-local.vue";
 
 @Component({
-  name: "eos-setting",
+  name: "cortx-setting",
   components: {
-    eosUserSetting: EosUserSetting
+    cortxUserSetting: CortxUserSetting
   }
 })
 export default class Setting extends Vue {}

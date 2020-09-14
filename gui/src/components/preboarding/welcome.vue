@@ -24,12 +24,13 @@
       <div class="ml-4 white--text my-10" style="font-size: 26px;">
         Welcome to LyveDrive Rack.
       </div>
-      <div class="ml-4 mt-1 mb-8 white--text">
+      <div class="ml-4 mt-1 mb-8 white--text" id="welcome-pagetext">
         Click on Start to proceed with on onboarding steps.
       </div>
       <button
+        id="welcome-startbtn"
         type="button"
-        class="eos-btn-primary-dark ml-4"
+        class="cortx-btn-primary-dark ml-4"
         @click="$router.push('gdpr')"
       >
         <span>Start</span>
@@ -41,9 +42,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-get-started"
+  name: "cortx-get-started"
 })
-export default class EosWelcome extends Vue {}
+export default class CortxWelcome extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

@@ -103,9 +103,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-interface-select"
+  name: "cortx-interface-select"
 })
-export default class EosInterfaceSelect extends Vue {
+export default class CortxInterfaceSelect extends Vue {
   private data() {
     return {
       s3: false,

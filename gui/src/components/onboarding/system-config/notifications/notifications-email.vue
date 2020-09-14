@@ -27,22 +27,22 @@
         Fields marked with * are mandatory.
       </div>
       <v-divider class="mt-2" />
-      <eosNotifications />
+      <cortxNotifications />
     </div>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosNotifications from "./notifications-email-config.vue";
+import CortxNotifications from "./notifications-email-config.vue";
 
 @Component({
-  name: "eos-notification-email",
+  name: "cortx-notification-email",
   components: {
-    eosNotifications: EosNotifications
+    cortxNotifications: CortxNotifications
   }
 })
-export default class EosNotificationEmail extends Vue {}
+export default class CortxNotificationEmail extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

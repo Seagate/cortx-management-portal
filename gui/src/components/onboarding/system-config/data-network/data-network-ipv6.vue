@@ -156,9 +156,9 @@ import {
 } from "./../../../../models/system-configuration";
 
 @Component({
-  name: "eos-data-network-ipv6"
+  name: "cortx-data-network-ipv6"
 })
-export default class EosDataNetworkIpv6 extends Vue {
+export default class CortxDataNetworkIpv6 extends Vue {
   private data() {
     return {
       source: "manual",

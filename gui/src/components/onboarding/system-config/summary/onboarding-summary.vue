@@ -26,13 +26,13 @@
       <v-divider class="mt-2" />
       <v-expansion-panels class="mt-5">
         <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold"
             >SSL certificate upload</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="lastSSLStatus.status">
             <div class="row ma-0">
               <div class="col-8 body-2 column mr-5 pt-0">
-                <table class="eos-text-lg">
+                <table class="cortx-text-lg">
                   <tr>
                     <td style="width: 240px;">
                       <label>Last installation status:</label>
@@ -69,16 +69,16 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
-            >Appliance Name</v-expansion-panel-header
-          >
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold">
+            {{$t("onBoarding.systemName")}}
+          </v-expansion-panel-header>
           <v-expansion-panel-content v-if="applianceName">
             <div class="row ma-0">
               <template>
                 <div class="col-8 body-2 column mr-5 pt-0">
-                  <table class="eos-text-lg">
+                  <table class="cortx-text-lg">
                     <tr>
-                      <td class="large-table-data-label">Appliance name:</td>
+                      <td class="large-table-data-label">{{$t("onBoarding.systemName")}}:</td>
                       <td>{{ applianceName }}</td>
                     </tr>
                   </table>
@@ -89,14 +89,14 @@
         </v-expansion-panel>
 
         <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold"
             >DNS settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
             <div class="row ma-0">
               <template v-for="(node, index) in dnsData">
                 <div class="col-8 body-2 column mr-5 pt-0" :key="index">
-                  <table class="eos-text-lg">
+                  <table class="cortx-text-lg">
                     <tr>
                       <td class="large-table-data-label">DNS servers:</td>
                       <td>{{ node.dns_servers }}</td>
@@ -112,14 +112,14 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold"
             >NTP settings</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="ntpData.ntp_server_address">
             <div class="row ma-0">
               <template>
                 <div class="col-8 body-2 column mr-5 pt-0">
-                  <table class="eos-text-lg">
+                  <table class="cortx-text-lg">
                     <tr>
                       <td class="large-table-data-label">Server address:</td>
                       <td>{{ ntpData.ntp_server_address }}</td>
@@ -135,14 +135,14 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="eos-text-lg font-weight-bold"
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold"
             >Notifications</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="notificationData.smtp_server">
             <div class="row ma-0">
               <template>
                 <div class="col-8 body-2 column mr-5 pt-0">
-                  <table class="eos-text-lg">
+                  <table class="cortx-text-lg">
                     <tr>
                       <td class="table-data-label">SMTP server:</td>
                       <td>{{ notificationData.smtp_server }}</td>
@@ -170,7 +170,8 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <eos-confirmation-dialog
+      <cortx-confirmation-dialog
+        id="apply-onboarding-setting"
         :show="showConfirmDialog"
         title="Confirmation"
         :message="
@@ -181,7 +182,7 @@
         @closeDialog="closeConfirmDialog"
         confirmButtonText="Apply"
         isMessageInHTML="true"
-      ></eos-confirmation-dialog>
+      ></cortx-confirmation-dialog>
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
   </v-container>
@@ -196,11 +197,12 @@ import {
 
 import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
+import i18n from "./../../../../i18n";
 
 @Component({
-  name: "eos-onboarding-summary"
+  name: "cortx-onboarding-summary"
 })
-export default class EosOnboardingSummary extends Vue {
+export default class CortxOnboardingSummary extends Vue {
   private data() {
     return {
       ntpData: {},

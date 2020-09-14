@@ -4,43 +4,42 @@
       <div class="row ma-0">
         <div class="col-2 body-2 column">
           <div class="mt-2 font-weight-bold">
-            <div class="eos-form-group">
-              <label id="lblDAddAppliance">Appliance name*:</label>
+            <div class="cortx-form-group">
+              <label id="lblDAddAppliance">{{ $t("onBoarding.systemName") }}*:</label>
             </div>
           </div>
         </div>
         <div class="col-4 body-2 column mr-5">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.appliance.$error
+              'cortx-form-group--error': $v.appliance.$error
             }"
           >
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="text"
               name="appliancename"
               v-model.trim="appliance"
               id="txtappliancename"
               @input="$v.appliance.$touch"
-              placeholder="Appliance name"
+              :placeholder="$t('onBoarding.systemName')"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.appliance.$dirty && !$v.appliance.required"
-                >Appliance name is required.</label
+                >{{ $t("onBoarding.systemNameIsReq") }}</label
               >
               <label
                 v-else-if="
                   $v.appliance.$dirty && !$v.appliance.applianceNameRegex
                 "
-                >Enter valid appliance name.</label
+                >{{ $t("onBoarding.enterValidSystemName") }}</label
               >
               <label v-else-if="$v.appliance.$dirty && !$v.appliance.minLength"
-                >Minimum 4 characters are required.</label
+                >{{ $t("onBoarding.minimumFourChartSystemName") }}</label
               >
               <label v-else-if="$v.appliance.$dirty && !$v.appliance.maxLength"
-                >max 255 characters allow.</label
-              >
+              >{{ $t("onBoarding.maxChartSystemName") }}</label>
             </div>
           </div>
         </div>
@@ -48,11 +47,12 @@
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
     <button
+     id="appliance-appybtn"
       type="button"
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"
       @click="applySettings()"
-      class="eos-btn-primary eos-float-l my-10"
+      class="cortx-btn-primary cortx-float-l my-10"
     >
       Apply
     </button>
@@ -70,11 +70,12 @@ import {
   maxLength
 } from "vuelidate/lib/validators";
 import { applianceNameRegex } from "./../../../../common/regex-helpers";
+import i18n from "./../../../../i18n";
 
 @Component({
-  name: "eos-appliance-name-config"
+  name: "cortx-appliance-name-config"
 })
-export default class EosApplianceNameConfig extends Vue {
+export default class CortxApplianceNameConfig extends Vue {
   @Validations()
   private validations = {
     appliance: {

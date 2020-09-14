@@ -15,18 +15,18 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2">
+  <div class="cortx-p-2">
     <v-row style="border-bottom: 2px solid rgba(0, 0, 0, 0.12);">
       <v-col class="pt-0" cols="12">
-        <eos-stats-medium />
+        <cortx-stats-medium />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="4" style="border-right: 2px solid rgba(0, 0, 0, 0.12);">
-        <eos-capacity-guage />
+        <cortx-capacity-guage />
       </v-col>
       <v-col cols="8">
-        <eos-alert-medium />
+        <cortx-alert-medium />
       </v-col>
     </v-row>
   </div>
@@ -34,17 +34,17 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import EosAlertMedium from "./../alerts/alert-medium.vue";
-import EosStatsMedium from "./stats/stats-medium.vue";
-import EosCapacityGuage from "./capacity-gauge.vue";
+import CortxAlertMedium from "./../alerts/alert-medium.vue";
+import CortxStatsMedium from "./stats/stats-medium.vue";
+import CortxCapacityGuage from "./capacity-gauge.vue";
 import * as c3 from "c3";
 
 @Component({
-  name: "eos-dashboard",
+  name: "cortx-dashboard",
   components: {
-    eosAlertMedium: EosAlertMedium,
-    eosStatsMedium: EosStatsMedium,
-    eosCapacityGuage: EosCapacityGuage
+    cortxAlertMedium: CortxAlertMedium,
+    cortxStatsMedium: CortxStatsMedium,
+    cortxCapacityGuage: CortxCapacityGuage
   }
 })
 export default class Dashboard extends Vue {}
@@ -54,4 +54,3 @@ export default class Dashboard extends Vue {}
   position: relative;
 }
 </style>
-

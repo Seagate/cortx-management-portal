@@ -15,10 +15,10 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-p-2">
-    <eos-tabs :tabsInfo="tabsInfo" />
-    <eos-has-access
-      :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
+  <div class="cortx-p-2">
+    <cortx-tabs :tabsInfo="tabsInfo" />
+    <cortx-has-access
+      :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update"
     >
     <div class="mt-3" id="lblDnsMsg" v-if="tabsInfo.selectedTab === 1">
      All the alerts which are generated, by default are displayed under New Alerts.
@@ -30,21 +30,21 @@
        Displays alerts which are both, acknowledged and resolved.
     </div> 
 
-      <button
+      <button id="alert-acknowlegeall"
         type="button"
-        class="mt-3 mb-2 eos-btn-primary"
+        class="mt-3 mb-2 cortx-btn-primary"
         v-if="tabsInfo.selectedTab === 1"
         @click="showConfirmationDialog = true"
         :disabled="alertObject.alerts.length === 0"
       >
         Acknowledge all
       </button>
-    </eos-has-access>
+    </cortx-has-access>
     <v-data-table
       calculate-widths
       :items="alertObject.alerts"
-      item-key="created_time"
-      class="eos-table"
+      item-key="updated_time"
+      class="cortx-table"
       :items-per-page.sync="itemsPerPage"
       :footer-props="{
         'items-per-page-options': [50, 100, 150, 200]
@@ -65,7 +65,7 @@
             :key="header.text"
             :class="[
               'tableheader',
-              header.sortable ? 'eos-cursor-pointer' : ''
+              header.sortable ? 'cortx-cursor-pointer' : ''
             ]"
             @click="onSort(header)"
           >
@@ -95,14 +95,13 @@
       <template v-slot:item="props">
         <tr style="color: #000000;">
           <td style="white-space: nowrap;">
-            {{ new Date(props.item.created_time * 1000) | timeago }}
+            {{ new Date(props.item.updated_time * 1000) | timeago }}
           </td>
-          <td>
+          <td style="white-space: nowrap;">
             <div>
-              <span
-                >Resource type: {{ props.item.module_name }} | State:
-                {{ props.item.state }}</span
-              >
+              <span>Resource type: {{ props.item.module_name }}</span><br />
+              <span>Resource id: {{ props.item.resource_id }} | State: {{ props.item.state }}</span><br />
+              <span>Node id: {{ props.item.node_id }}</span>
             </div>
             <div>
               <span v-if="props.item.module_type === 'logical_volume'"
@@ -153,19 +152,19 @@
                   props.item.severity === alertStatus.alert
               "
               v-bind:title="props.item.severity"
-              class="eos-status-chip eos-chip-alert"
+              class="cortx-status-chip cortx-chip-alert"
             ></div>
             <div
               style="margin: auto;"
               title="warning"
               v-else-if="props.item.severity === alertStatus.warning"
-              class="eos-status-chip eos-chip-warning"
+              class="cortx-status-chip cortx-chip-warning"
             ></div>
             <div
               style="margin: auto;"
               v-if="props.item.severity === alertStatus.informational"
               title="info"
-              class="eos-status-chip eos-chip-information"
+              class="cortx-status-chip cortx-chip-information"
             ></div>
              <div
               style="margin: auto;"
@@ -175,66 +174,82 @@
               props.item.severity !== alertStatus.error 
               && props.item.severity !== alertStatus.alert)"
               :title="props.item.severity"
-              class="eos-status-chip eos-chip-others"
+              class="cortx-status-chip cortx-chip-others"
             ></div>
           </td>
-          <td v-eos-alert-tbl-description="props.item"></td>
-          <td>
-            <img
-              :src="require('@/assets/zoom-in.svg')"
-              class="eos-cursor-pointer"
-              @click="$router.push('/alerts/' + props.item.alert_uuid)"
-            />
-            <eos-has-access
-              :to="$eosUserPermissions.alerts + $eosUserPermissions.update"
-            >
-              <img
-                v-if="!(props.item.acknowledged && props.item.resolved)"
-                :src="require('@/assets/comment-filled-default.svg')"
-                class="eos-cursor-pointer"
-                @click="showAlertCommentsDialog(props.item.alert_uuid)"
-              />
-            </eos-has-access>
-            <img
-              v-if="props.item.acknowledged"
-              :src="require('@/assets/acknowledge-default.svg')"
-            />
-            <img
-              v-if="props.item.resolved"
-              :src="require('@/assets/resolved-filled-default.svg')"
-            />
+          <td v-cortx-alert-tbl-description="props.item"></td>
+          <td style="min-width: 8.4em;">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <img
+                  :src="require('@/assets/zoom-in.svg')"
+                  class="cortx-float-l cortx-cursor-pointer"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="$router.push('/alerts/' + props.item.alert_uuid)"
+                />
+              </template>
+              <span>Go to alert details page</span>
+            </v-tooltip>
+            <div v-if="!(props.item.acknowledged && props.item.resolved)" class="cortx-float-l">
+              <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update">
+                <v-tooltip left>
+                  <template v-slot:activator="{ on, attrs }">
+                    <div
+                      class="cortx-icon-btn cortx-comment-icon"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="showAlertCommentsDialog(props.item.alert_uuid)">
+                    </div>
+                  </template>
+                  <span>Add comments</span>
+                </v-tooltip>
+                <v-tooltip left>
+                  <template v-slot:activator="{ on, attrs }">
+                    <div
+                      class="cortx-icon-btn cortx-acknowledge-icon"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="acknowledgeAlert(props.item)">
+                    </div>
+                  </template>
+                  <span>{{ props.item.acknowledged ? "Unacknowledge alert" : "Acknowledge alert" }}</span>
+                </v-tooltip>
+              </cortx-has-access>
+            </div>
           </td>
         </tr>
       </template>
     </v-data-table>
-    <eos-alert-comments
+    <cortx-alert-comments
       v-model="isShowCommentsDialog"
       :alertId="alertIdForComments"
     />
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
       :show="showConfirmationDialog"
       title="Confirmation"
       message="Are you sure you want to acknowledge all alerts?"
       severity="warning"
       @closeDialog="closeConfirmationDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+      id="alrtlarge-conirmationbox"
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
-import EosTabs, { TabsInfo } from "./../widgets/eos-tabs.vue";
-import EosAlertComments from "./alert-comments.vue";
+import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
+import CortxAlertComments from "./alert-comments.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
 
 @Component({
-  name: "eos-alert-large",
-  components: { EosTabs, EosAlertComments },
-  directives: { "eos-alert-tbl-description": alertTblDescriptionDirective }
+  name: "cortx-alert-large",
+  components: { CortxTabs, CortxAlertComments },
+  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
 })
-export default class EosAlertLarge extends Mixins(AlertsMixin) {
+export default class CortxAlertLarge extends Mixins(AlertsMixin) {
   public isShowCommentsDialog: boolean = false;
   public alertIdForComments: string = "";
   public showConfirmationDialog: boolean = false;
@@ -279,8 +294,8 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
     // Set Alert table default header options
     this.alertTableHeaders = [
       {
-        text: "Time",
-        value: "created_time",
+        text: "Updated time",
+        value: "updated_time",
         sortable: true,
         sortDir: "desc"
       },
@@ -336,10 +351,10 @@ export default class EosAlertLarge extends Mixins(AlertsMixin) {
 </script>
 
 <style lang="scss" scoped>
-.eos-audit-log-switch-container {
+.cortx-audit-log-switch-container {
   height: 34px;
 }
-.eos-audit-log-switch {
+.cortx-audit-log-switch {
   margin: 2px 5px 0px 0px;
 }
 </style>

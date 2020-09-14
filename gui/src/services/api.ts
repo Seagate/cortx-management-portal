@@ -1,19 +1,19 @@
 /*
-* CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-* You should have received a copy of the GNU Affero General Public License
-* along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing,
-* please email opensource@seagate.com or cortx-questions@seagate.com.
-*/
+ * CORTX-CSM: CORTX Management web and CLI interface.
+ * Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * For any questions about this software or licensing,
+ * please email opensource@seagate.com or cortx-questions@seagate.com.
+ */
 import axios from "axios";
 import router from "../router"; // Get router object from our router.ts
 import { ApiResponse } from "./api-model";
@@ -33,6 +33,12 @@ axios.interceptors.request.use(
       config.timeout = 0;
     } else if (config.timeout === 0) {
       config.timeout = 20000;
+    }
+    if (document.hidden) {
+      config = {
+        ...config,
+        cancelToken: new axios.CancelToken((cancel) => cancel("Request cancelled as page is idle"))
+      };
     }
     return config;
   },
@@ -126,10 +132,10 @@ export abstract class Api {
       });
   }
   // Wrapper method for post api
-  public static async delete(url: string, id: string) {
+  public static async delete(url: string, id: string, payload?: object) {
     const tempURL = id ? url + "/" + id : url;
     return await axios
-      .delete(tempURL)
+      .delete(tempURL, payload)
       .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));
       })
@@ -172,21 +178,25 @@ export abstract class Api {
     if (error.code && error.code === "ECONNABORTED") {
       apiResponse = this.buildReqCancelledWarnResp(error);
     } else {
-      apiResponse = this.buildErrorResponse(error.response);
+      apiResponse = this.buildErrorResponse(error);
     }
     return apiResponse;
   }
 
-  private static buildErrorResponse(response: any): ApiResponse {
-    const apiResponse: ApiResponse = {
-      data: response.data ? response.data : {},
-      status: response.status,
-      statusText: response.statusText,
-      error: {
-        name: "Error: " + response.status,
-        message: response.statusText
-      }
-    };
+  private static buildErrorResponse(error: any): ApiResponse {
+    const apiResponse: ApiResponse = {} as ApiResponse;
+    if (error.response) {
+      apiResponse.data = error.response.data ? error.response.data : {};
+      apiResponse.error = {
+        name: "Error: " + error.response.status,
+        message: error.response.statusText
+      };
+      apiResponse.status = error.response.status;
+      apiResponse.statusText = error.response.statusText;
+    } else {
+      apiResponse.status = 499;
+      apiResponse.statusText = error.message ? error.message : "Request cancelled";
+    }
     return apiResponse;
   }
 

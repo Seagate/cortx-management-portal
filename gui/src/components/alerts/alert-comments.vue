@@ -15,50 +15,51 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="eos-modal-container" v-if="value">
-    <div class="eos-modal">
-      <div class="eos-modal-header">
+  <div class="cortx-modal-container" v-if="value">
+    <div class="cortx-modal">
+      <div class="cortx-modal-header">
         <label>Comments</label>
-        <img
-          class="eos-modal-close"
+        <img id="alert-closeadd-comment-dialog"
+          class="cortx-modal-close"
           :src="require('@/assets/close-green.svg')"
           @click="closeAddCommentsDialog()"
         />
       </div>
       <div>
-        <div class="eos-comments-container-overlay" v-if="showLoader"></div>
-        <div class="eos-comments-container">
-          <label v-if="alertComments.length === 0" class="eos-text-md ml-4">No comments</label>
+        <div class="cortx-comments-container-overlay" v-if="showLoader"></div>
+        <div class="cortx-comments-container">
+          <label v-if="alertComments.length === 0" class="cortx-text-md ml-4">No comments</label>
           <div
             v-else
-            class="eos-comment"
+            class="cortx-comment"
             v-for="alertComment in alertComments"
             :key="alertComment.comment_id"
           >
             <div>
-              <span class="eos-text-md">{{ alertComment.comment_text }}</span>
+              <span class="cortx-text-md">{{ alertComment.comment_text }}</span>
             </div>
             <div class="mt-2" style="height: 20px;">
-              <span class="eos-text-sm">{{ new Date(alertComment.created_time * 1000) | timeago }}</span>
-              <span class="eos-text-sm mx-3">|</span>
-              <span class="eos-text-sm">{{ alertComment.created_by }}</span>
+              <span class="cortx-text-sm">{{ new Date(alertComment.created_time * 1000) | timeago }}</span>
+              <span class="cortx-text-sm mx-3">|</span>
+              <span class="cortx-text-sm">{{ alertComment.created_by }}</span>
             </div>
           </div>
         </div>
-        <div class="eos-modal-footer">
+        <div class="cortx-modal-footer">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-            'eos-form-group--error': $v.addCommentForm.comment_text.$error
+            'cortx-form-group--error': $v.addCommentForm.comment_text.$error
             }"
             style="width: 100%;"
           >
             <textarea
-              class="eos-form__input_textarea"
+             id="alert-comment-textarea"
+              class="cortx-form__input_textarea"
               v-model.trim="addCommentForm.comment_text"
               @input="$v.addCommentForm.comment_text.$touch"
             ></textarea>
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 v-if="$v.addCommentForm.comment_text.$dirty && !$v.addCommentForm.comment_text.required"
               >Comment is required.</label>
@@ -69,13 +70,15 @@
           </div>
           <div style="height: 40px;margin-top:10px;">
             <button
+             id="alert-close-comment-dialogbtn"
               type="button"
-              class="eos-btn-secondary eos-float-r ml-3"
+              class="cortx-btn-secondary cortx-float-r ml-3"
               @click="closeAddCommentsDialog()"
             >Cancel</button>
             <button
+              id="alert-save-commnetbtn"
               type="button"
-              class="eos-btn-primary eos-float-r"
+              class="cortx-btn-primary cortx-float-r"
               @click="saveComment()"
               :disabled="$v.addCommentForm.$invalid"
             >Save</button>
@@ -94,9 +97,9 @@ import apiRegister from "./../../services/api-register";
 import { AlertComment } from "../../models/alert";
 
 @Component({
-  name: "eos-alert-comments"
+  name: "cortx-alert-comments"
 })
-export default class EosAlertComments extends Vue {
+export default class CortxAlertComments extends Vue {
   @Prop({ required: true })
   public value: boolean;
   @Prop({ required: true })
@@ -158,26 +161,26 @@ export default class EosAlertComments extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.eos-comments-container-overlay {
+.cortx-comments-container-overlay {
   height: 24em;
   width: 424px;
   position: absolute;
   background-color: #ffffff;
   opacity: 70%;
 }
-.eos-comments-container {
+.cortx-comments-container {
   height: 12.5em;
   border-bottom: 1px solid #b7b7b7;
   overflow: auto;
   padding: 2px;
 }
-.eos-comment {
+.cortx-comment {
   padding: 0.5em;
   border: 1px solid #b7b7b7;
   margin-bottom: 2px;
   border-radius: 4px;
 }
-.eos-modal-footer {
+.cortx-modal-footer {
   height: 12em;
   padding: 0.5em;
 }
