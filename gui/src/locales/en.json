@@ -55,7 +55,8 @@
       "loading-list": "Fetching all S3 accounts...",
       "loading-create": "Creating account...",
       "loading-update": "Updating account...",
-      "account-table": "Account name,Account Url,Access key,Secret key\n"
+      "account-table": "Account name,Account Url,Access key,Secret key\n",
+      "copy-tooltip": "Copy url to clipboard"
     },
     "bucket": {
       "name-require": "Bucket name is required.",

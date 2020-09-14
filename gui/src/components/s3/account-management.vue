@@ -1,19 +1,15 @@
-/*
-* CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-* You should have received a copy of the GNU Affero General Public License
-* along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing,
-* please email opensource@seagate.com or cortx-questions@seagate.com.
-*/
+/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
+Seagate Technology LLC and/or its Affiliates * This program is free software:
+you can redistribute it and/or modify * it under the terms of the GNU Affero
+General Public License as published * by the Free Software Foundation, either
+version 3 of the License, or * (at your option) any later version. * This
+program is distributed in the hope that it will be useful, * but WITHOUT ANY
+WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
+details. * You should have received a copy of the GNU Affero General Public
+License * along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing, * please email
+opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="body-2">
     <cortx-has-access
@@ -23,9 +19,9 @@
         id="s3-configuration-title-container"
         class="mt-2 s3-configuration-page-title"
       >
-        <label id="s3-account-form-title" class="headline font-weight-bold"
-          >{{ $t("s3.account.configuration") }}</label
-        >
+        <label id="s3-account-form-title" class="headline font-weight-bold">{{
+          $t("s3.account.configuration")
+        }}</label>
         <div class="mt-1" style="color: #454545;font-size: 14px;">
           <label id="s3-account-form-text">
             {{ $t("s3.account.header-text") }}
@@ -34,15 +30,29 @@
       </div>
     </cortx-has-access>
     <cortx-has-access
-        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
-      >
-        <div class="mt-2 pl-2">
-          <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
-            {{ $t("s3.account.url-label") }}
-          </label>
-          <span v-if="s3Url">{{ s3Url }}</span>
-          <span v-else>NA</span>
-        </div>
+      :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
+    >
+      <div class="mt-2 pl-2">
+        <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
+          {{ $t("s3.account.url-label") }}
+        </label>
+        <span id="s3-url-id" v-if="s3Url">{{ s3Url }}</span>
+        <span v-else>NA</span>
+        <span class="pl-1">
+          <v-tooltip right max-width="300">
+            <template v-slot:activator="{ on }">
+              <img
+                id="s3-edit-account"
+                v-on:click="copyS3Url()"
+                v-on="on"
+                class="cortx-cursor-pointer copy-url"
+                src="@/assets/actions/copy-text.svg"
+              />
+            </template>
+            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+          </v-tooltip>
+        </span>
+      </div>
     </cortx-has-access>
     <v-row>
       <v-col class="py-0 col-7">
@@ -61,12 +71,16 @@
             :hide-default-header="true"
             :hide-default-footer="
               $hasAccessToCsm(
-                `${$cortxUserPermissions.s3iamusers}${$cortxUserPermissions.list}`
+                `${$cortxUserPermissions.s3iamusers}${
+                  $cortxUserPermissions.list
+                }`
               )
             "
             :disable-pagination="
               $hasAccessToCsm(
-                `${$cortxUserPermissions.s3iamusers}${$cortxUserPermissions.list}`
+                `${$cortxUserPermissions.s3iamusers}${
+                  $cortxUserPermissions.list
+                }`
               )
             "
           >
@@ -162,7 +176,8 @@
                       $v.createAccountForm.account.account_name.$dirty &&
                         !$v.createAccountForm.account.account_name.required
                     "
-                    > {{ $t("s3.account.name-required") }}</label
+                  >
+                    {{ $t("s3.account.name-required") }}</label
                   >
                   <label
                     id="s3account-invalid"
@@ -413,7 +428,7 @@
                 @click="editAccount()"
                 :disabled="$v.editAccountForm.$invalid"
               >
-               {{ $t("s3.account.update-btn") }}
+                {{ $t("s3.account.update-btn") }}
               </button>
               <button
                 type="button"
@@ -551,6 +566,7 @@ import {
   accountNameTooltipMessage
 } from "./../../common/regex-helpers";
 import i18n from "../../i18n";
+import CommonUtils from "../../common/common-utils";
 
 @Component({
   name: "cortx-account-management",
@@ -603,7 +619,7 @@ export default class CortxAccountManagement extends Vue {
   private credentialsFileContent: string = "";
   private showEditAccountForm: boolean;
   private editAccoutName: string;
-  private s3Url: string ="";
+  private s3Url: string = "";
 
   constructor() {
     super();
@@ -638,7 +654,7 @@ export default class CortxAccountManagement extends Vue {
   public async getAllAccounts() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-       i18n.t("s3.account.loading-list")
+      i18n.t("s3.account.loading-list")
     );
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
@@ -647,7 +663,10 @@ export default class CortxAccountManagement extends Vue {
   }
 
   public async createAccount() {
-    this.$store.dispatch("systemConfig/showLoader",i18n.t("s3.account.loading-create"));
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.account.loading-create")
+    );
     const res = await Api.post(
       apiRegister.s3_account,
       this.createAccountForm.account
@@ -685,7 +704,10 @@ export default class CortxAccountManagement extends Vue {
     const updateDetails = {
       password: this.editAccountForm.password
     };
-    this.$store.dispatch("systemConfig/showLoader", i18n.t("s3.account.loading-update"));
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.account.loading-update")
+    );
     const res = await Api.patch(
       apiRegister.s3_account,
       updateDetails,
@@ -756,6 +778,9 @@ export default class CortxAccountManagement extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
+  }
+  private async copyS3Url() {
+   CommonUtils.copyUrlToClipboard(this.s3Url);
   }
 }
 </script>

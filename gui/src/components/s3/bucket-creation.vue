@@ -43,8 +43,25 @@ opensource@seagate.com or cortx-questions@seagate.com. */
 
             <template v-slot:item="props">
               <tr id="bucket-data">
-                <td id="bucket-name">{{ props.item.name }}</td>
-                <td id="bucket-url">{{ props.item.bucket_url }}</td>
+                <td id="bucket-name">
+                  {{ props.item.name }}
+                  <v-tooltip right max-width="300">
+                    <template v-slot:activator="{ on }">
+                      <img
+                        id="s3-edit-account"
+                        v-on:click="copyBucketUrl(props.item.bucket_url)"
+                        v-on="on"
+                        class="cortx-cursor-pointer copy-url"
+                        src="@/assets/actions/copy-text.svg"
+                      />
+                    </template>
+                    <span id="copy-tooltip"
+                      >{{ props.item.bucket_url }}<br />{{
+                        $t("s3.account.copy-tooltip")
+                      }}</span
+                    >
+                  </v-tooltip>
+                </td>
                 <td>
                   <img
                     id="bucket-edit-icon"
@@ -168,7 +185,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
             >mdi-close</v-icon
           >
         </v-system-bar>
-        <v-card-title class="title mt-5"  >
+        <v-card-title class="title mt-5">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
           <span id="bucket-created-success-mgs">{{
             $t("s3.bucket.created-successfully")
@@ -303,6 +320,7 @@ import {
   bucketNameRegex,
   bucketNameTooltipMessage
 } from "./../../common/regex-helpers";
+import CommonUtils from "../../common/common-utils";
 
 @Component({
   name: "cortx-bucket-creation"
@@ -359,11 +377,6 @@ export default class CortxBucketCreation extends Vue {
       {
         text: "Name",
         value: "name",
-        sortable: false
-      },
-      {
-        text: "Bucket url",
-        value: "url",
         sortable: false
       }
     ];
@@ -499,6 +512,9 @@ export default class CortxBucketCreation extends Vue {
     await Api.delete(apiRegister.s3_bucket, this.bucketToDelete);
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getAllBuckets();
+  }
+  private async copyBucketUrl(url: string) {
+    CommonUtils.copyUrlToClipboard(url);
   }
 }
 </script>

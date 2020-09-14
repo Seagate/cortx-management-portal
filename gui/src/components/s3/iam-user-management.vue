@@ -17,15 +17,29 @@
 <template>
   <div class="body-2">
     <cortx-has-access
-        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
-      >
-        <div class="mt-2 pl-2">
-          <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
-            S3 url:
-          </label>
-          <span v-if="s3Url">{{ s3Url }}</span>
-          <span v-else>NA</span>
-        </div>
+      :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
+    >
+      <div class="mt-2 pl-2">
+        <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
+          S3 url:
+        </label>
+        <span v-if="s3Url">{{ s3Url }}</span>
+        <span v-else>NA</span>
+        <span class="pl-1">
+          <v-tooltip right max-width="300">
+            <template v-slot:activator="{ on }">
+              <img
+                id="s3-edit-account"
+                v-on:click="copyS3Url()"
+                v-on="on"
+                class="cortx-cursor-pointer copy-url"
+                src="@/assets/actions/copy-text.svg"
+              />
+            </template>
+            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+          </v-tooltip>
+        </span>
+      </div>
     </cortx-has-access>
     <v-row>
       <v-col class="py-0 pr-0 col-9">
@@ -60,8 +74,8 @@
                 :class="{
                   'grey lighten-3': props.item.user_name === selectedIAMUser
                 }"
-                  class="cortx-cursor-pointer"
-                >
+                class="cortx-cursor-pointer"
+              >
                 <td @click.stop="handleRowClick(props.item)">
                   {{ props.item.user_name }}
                 </td>
@@ -380,6 +394,7 @@ import { IAMUser } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import CortxAccessKeyManagement from "./access-key-management-iam.vue";
+import CommonUtils from "../../common/common-utils";
 import {
   accountNameRegex,
   iamPathRegex,
@@ -559,6 +574,9 @@ export default class CortxIAMUserManagement extends Vue {
 
   public handleRowClick(item: any) {
     this.selectedIAMUser = item.user_name;
+  }
+  private async copyS3Url() {
+    CommonUtils.copyUrlToClipboard(this.s3Url);
   }
 }
 </script>
