@@ -19,23 +19,14 @@
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblIpv4DataNetwork">
       Node replacement
     </div>
-    <div v-if="canReplaceNode">
-      <div class="mt-3" id="lblNodeReplaceMsg">
-        IP/Hotstname and SSH port configurations are optional.
-      </div>
-      <div class="mt-3" id="lblMandatoryMsg">
-        Fields marked with * are mandatory.
-      </div>
-    </div>
     <v-divider class="mt-2 mb-4" />
-
     <div
-      class="mt-4 pa-3 cortx-last-upgrade-info-container cortx-text-md"
+      class="mt-4 mb-6 pa-3 cortx-last-upgrade-info-container cortx-text-md"
       v-if="lastNodeReplacementStatus.status"
     >
       <label class="cortx-text-bold">Last node replacement status</label>
       <button
-        id="btnStartUpgrade"
+        id="btnRefresh"
         type="button"
         class="ml-3 cortx-btn-secondary"
         @click="getLastNodeReplacementStatus()"
@@ -51,95 +42,85 @@
         " " + lastNodeReplacementStatus.status
       }}</label>
     </div>
-    <div
-      class="cortx-text-md mt-2 font-weight-bold"
-      id="lblIpv4DataNetwork"
-      v-if="!canReplaceNode"
-    >
-      Note: Node replacement is only available when any one of the nodes is in
-      shutdown state. In order to complete node replacement please shutdown the
-      node from system maintenance page.
-    </div>
-    <v-container class="mt-0 ml-0" v-else>
-      <div class="pl-4 body-2">
-        <div class="row mt-5">
-          <div class="col-1 body-2 column mr-3">
-            <div class="mt-2 font-weight-bold">
-              <div class="cortx-form-group">
-                <label id="lblReplcNode">Node*: </label>
-              </div>
-              <div class="cortx-form-group">
-                <label id="lblReplcipHostname">IP/Hostname:</label>
-              </div>
-              <div class="cortx-form-group">
-                <label id="lblReplcProtocol">Port:</label>
-              </div>
-            </div>
-          </div>
-          <div class="col-4 body-2 column mr-5">
-            <div class="cortx-form-group">
-              <cortx-dropdown
-                :selectedOption.sync="selectedNode"
-                :options="nodes"
-                class="cortx-float-l"
-              ></cortx-dropdown>
-            </div>
-            <div
-              class="cortx-form-group"
-              :class="{
-                'cortx-form-group--error': $v.ipHostname.$error
-              }"
-            >
-              <input
-                class="cortx-form__input_text"
-                type="text"
-                id="txtReplcipHostname"
-                name="ipHostname"
-                v-model.trim="ipHostname"
-                @input="$v.ipHostname.$touch"
-              />
+    <v-row>
+      <v-col md="4" class="py-0 pr-0">
+        <div class="cortx-form-group">
+          <label class="cortx-form-group-label">
+            <cortx-info-tooltip label="Node*" message="List of offline nodes" />
+          </label>
+          <cortx-dropdown
+            :selectedOption.sync="selectedNode"
+            :options="nodes"
+          ></cortx-dropdown>
+        </div>
+        <div
+          class="cortx-form-group"
+          :class="{
+            'cortx-form-group--error': $v.ipHostname.$error
+          }"
+        >
+          <label class="cortx-form-group-label">IP/Hostname (optional)</label>
+          <input
+            class="cortx-form__input_text"
+            type="text"
+            id="txtReplcipHostname"
+            name="ipHostname"
+            v-model.trim="ipHostname"
+            @input="$v.ipHostname.$touch"
+          />
 
-              <div class="cortx-form-group-label cortx-form-group-error-msg">
-                <label
-                  v-if="$v.ipHostname.$dirty && !$v.ipHostname.ipOrDomainRegex"
-                  >Invalid IP/Hostname.</label
-                >
-            </div>
-            </div>
-            <div
-              class="cortx-form-group"
-              :class="{
-                'cortx-form-group--error': $v.sshPort.$error
-              }"
+          <div class="cortx-form-group-label cortx-form-group-error-msg">
+            <label
+              v-if="$v.ipHostname.$dirty && !$v.ipHostname.ipOrDomainRegex"
+              >Invalid IP/Hostname.</label
             >
-              <input
-                class="cortx-form__input_text"
-                type="number"
-                id="txtReplcsshPort"
-                name="sshPort"
-                v-model.trim="sshPort"
-                @input="$v.sshPort.$touch"
-              />
-              <div class="cortx-form-group-label cortx-form-group-error-msg">
-                <label v-if="$v.sshPort.$dirty && !$v.sshPort.maxValue"
-                  >SSH port is not valid.</label
-                >
-              </div>
-            </div>
           </div>
         </div>
-      </div>
-      <button
-        id="btnStartUpgrade"
-        type="button"
-        class="mb-10 cortx-btn-primary cortx-float-l"
-        @click="replaceSelectedResource"
-        style="margin-top: 2px;"
-        :disabled="!selectedNode.value"
-      >
-        Replace node
-      </button>
-    </v-container>
+        <div
+          class="cortx-form-group"
+          :class="{
+            'cortx-form-group--error': $v.sshPort.$error
+          }"
+        >
+          <label class="cortx-form-group-label">Port (optional)</label>
+          <input
+            class="cortx-form__input_text"
+            type="number"
+            id="txtReplcsshPort"
+            name="sshPort"
+            v-model.trim="sshPort"
+            @input="$v.sshPort.$touch"
+          />
+          <div class="cortx-form-group-label cortx-form-group-error-msg">
+            <label v-if="$v.sshPort.$dirty && !$v.sshPort.maxValue"
+              >SSH port is not valid.</label
+            >
+          </div>
+        </div>
+        <button
+          id="btnStartUpgrade"
+          type="button"
+          class="mb-10 cortx-btn-primary cortx-float-l"
+          @click="replaceSelectedResource"
+          style="margin-top: 2px;"
+          :disabled="!selectedNode.value"
+        >
+          Replace node
+        </button>
+      </v-col>
+      <v-col md="8" class="py-0 pr-0">
+        <div v-if="!canReplaceNode">
+          <p class="cortx-text-lg cortx-text-primary font-weight-bold">
+            All nodes are online.
+          </p>
+          <p class="cortx-text-md font-weight-bold">
+          Note: Node replacement is only available when any one of the nodes is in
+          shutdown state. In order to complete node replacement please shutdown the
+          node from system maintenance page.
+          </p>
+        </div>
+      </v-col>
+    </v-row>
     <cortx-confirmation-dialog
       :show="showConfirmationDialog"
       title="Confirmation"
