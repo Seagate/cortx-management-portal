@@ -157,7 +157,9 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     if [[ $BRANDPATH ]]; then
         if [ -d "$BRANDPATH" ]; then
             cp -r $BRANDPATH/*.* $BASE_DIR/gui/public/
-            echo "All files copied to ./xyz folder";
+            echo "All files copied to $BASE_DIR/gui/public/ folder";
+            PAGE_TITLE=($(jq -r '.common.pageTitle' $BASE_DIR/gui/public/en-ldr.json))
+            sed -i '/pageTitle/c\  \"pageTitle\": \"'$PAGE_TITLE'\",' $BASE_DIR/gui/src/locales/en.json
         else
             echo "Invalid path: $BRANDPATH";
         fi

@@ -33,7 +33,7 @@
     }
   },
   "common": {
-    "title": "Cortx",
+    "pageTitle": "CORTX",
     "confirm-dialog": {
       "title": "Confirmation"
     }
