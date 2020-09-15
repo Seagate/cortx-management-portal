@@ -17,7 +17,7 @@
 <template>
   <div id="capacityContainer">
     <div>
-      <div class="cortx-text-lg cortx-text-bold">Capacity</div>
+      <div class="cortx-text-lg cortx-text-bold" id="capacity-title">Capacity</div>
     </div>
     <div class="cortx-capacity-container" id="gauge_capacity"></div>
     <table class="mt-3" id="capacity-table">
