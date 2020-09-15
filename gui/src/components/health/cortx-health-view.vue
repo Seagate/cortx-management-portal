@@ -119,7 +119,7 @@
              id="healthview-zoomicon"
               :src="require('@/assets/zoom-in.svg')"
               class="cortx-cursor-pointer"
-              @click="$router.push({ path: `healthview/${props.item.alert_uuid}`, query: { nodeId: componentName, source: 'healthView'}})"
+              @click="$router.push(`/alerts/${props.item.alert_uuid}`)"
             />
            </td>
            <td v-else>NA</td>

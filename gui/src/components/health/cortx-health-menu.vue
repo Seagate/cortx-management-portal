@@ -36,33 +36,36 @@
         >{{Object.keys(menuItem)[0]}}</label>
         
         <div
-          class="cortx-summary-chip cortx-chip-ok cortx-float-l ml-2"
+          class="cortx-summary-chip cortx-chip-ok cortx-float-l cortx-cursor-pointer ml-2"
           v-if="menuItem[Object.keys(menuItem)[0]].health_summary.good && menuItem[Object.keys(menuItem)[0]].health_summary.good > 0"
+          @click="$router.push(healthBySeverityRoute + 'ok?component_id=' + Object.keys(menuItem)[0])"
         >
           <div class="summary-count">
-            <label
+            <span
               class="cortx-text-sm"
-            >{{ menuItem[Object.keys(menuItem)[0]].health_summary.good?menuItem[Object.keys(menuItem)[0]].health_summary.good:0 }}</label>
+            >{{ menuItem[Object.keys(menuItem)[0]].health_summary.good?menuItem[Object.keys(menuItem)[0]].health_summary.good:0 }}</span>
           </div>
         </div>
         <div
-          class="cortx-summary-chip cortx-chip-warning cortx-float-l ml-2"
+          class="cortx-summary-chip cortx-chip-warning cortx-float-l cortx-cursor-pointer ml-2"
           v-if="menuItem[Object.keys(menuItem)[0]].health_summary.warning && menuItem[Object.keys(menuItem)[0]].health_summary.warning > 0"
+          @click="$router.push(healthBySeverityRoute + 'warning?component_id=' + Object.keys(menuItem)[0])"
         >
           <div class="summary-count">
-            <label
+            <span
               class="cortx-text-sm"
-            >{{menuItem[Object.keys(menuItem)[0]].health_summary.warning? menuItem[Object.keys(menuItem)[0]].health_summary.warning : 0 }}</label>
+            >{{menuItem[Object.keys(menuItem)[0]].health_summary.warning? menuItem[Object.keys(menuItem)[0]].health_summary.warning : 0 }}</span>
           </div>
         </div>
         <div
-          class="cortx-summary-chip cortx-chip-alert cortx-float-l ml-2"
+          class="cortx-summary-chip cortx-chip-alert cortx-float-l cortx-cursor-pointer ml-2"
           v-if="menuItem[Object.keys(menuItem)[0]].health_summary.critical && menuItem[Object.keys(menuItem)[0]].health_summary.critical > 0"
+          @click="$router.push(healthBySeverityRoute + 'critical?component_id=' + Object.keys(menuItem)[0])"
         >
           <div class="summary-count">
-            <label
+            <span
               class="cortx-text-sm"
-            >{{menuItem[Object.keys(menuItem)[0]].health_summary.critical? menuItem[Object.keys(menuItem)[0]].health_summary.critical : 0 }}</label>
+            >{{menuItem[Object.keys(menuItem)[0]].health_summary.critical? menuItem[Object.keys(menuItem)[0]].health_summary.critical : 0 }}</span>
           </div>
         </div>
         <button
@@ -79,13 +82,11 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
-import { AlertObject } from "../../models/alert";
 import { HealthSummary } from "../../models/system";
 @Component({
   name: "cortx-health-submenu"
 })
 export default class CortxHealthSubmenu extends Vue {
-  public alertObject: AlertObject = {} as AlertObject;
   public menuList: string[] = [];
   public healthData: any = {};
   public healthSummary: HealthSummary = {
@@ -96,6 +97,7 @@ export default class CortxHealthSubmenu extends Vue {
     unrecoverable: 0,
     critical: 0
   };
+  public healthBySeverityRoute: string = "/health/healthview/severity/";
 
   public async mounted() {
     try {

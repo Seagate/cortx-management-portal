@@ -55,7 +55,7 @@ import CortxNtpSetting from "./components/settings/ntp-setting.vue";
 import CortxAbout from "./components/maintenance/cortx-about.vue";
 import CortxHealthSubmenu from "./components/health/cortx-health-menu.vue";
 import CortxHealthView from "./components/health/cortx-health-view.vue";
-import CortxHealthAlertDetails from "./components/health/cortx-health-alert-details.vue";
+import CortxSeverityBasedHealthView from "./components/health/cortx-severity-based-health-view.vue";
 import CortxHealth from "./components/health/cortx-health.vue";
 import store from "./store/store";
 
@@ -202,9 +202,9 @@ const router = new Router({
               meta: { requiresAuth: true }
             },
             {
-              path: "healthview/:alert_id",
-              name: "health-alerts-details",
-              component: CortxHealthAlertDetails,
+              path: "healthview/severity/:severity",
+              name: "health-view-severity-based",
+              component: CortxSeverityBasedHealthView,
               meta: { requiresAuth: true }
             }
           ]
