@@ -45,7 +45,7 @@
 
             <template v-slot:item="props">
               <tr
-                id="iam-tabledata"
+                :id="props.item.user_name"
                 :class="{
                   'grey lighten-3': props.item.user_name === selectedIAMUser
                 }"
@@ -328,18 +328,9 @@
             class="ma-5 cortx-btn-primary cortx-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
-            @click="isCredentialsFileDownloaded = true"
-            >Download as CSV</a
+            @click="downloadAndClose()"
+            >Download and close</a
           >
-          <button
-            id="iam-closedialogbox-okbtn"
-            :disabled="!isCredentialsFileDownloaded"
-            type="button"
-            class="ma-5 cortx-btn-primary"
-            @click="closeUserDetailsDialog()"
-          >
-            Ok
-          </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -538,6 +529,14 @@ export default class CortxIAMUserManagement extends Vue {
 
   public handleRowClick(item: any) {
     this.selectedIAMUser = item.user_name;
+  }
+
+  public async downloadAndClose() {
+    this.isCredentialsFileDownloaded = true;
+    this.clearCreateUserForm();
+    this.showUserDetailsDialog = false;
+    this.showCreateUserForm = false;
+    await this.getAllUsers();
   }
 }
 </script>

@@ -133,6 +133,7 @@
                   id="s3-lblaccountname"
                 >
                   <cortx-info-tooltip
+                    id="account-name-label"
                     label="Account name*"
                     :message="accountNameTooltipMessage"
                   />
@@ -225,6 +226,7 @@
                   id="s3-lblpassword"
                 >
                   <cortx-info-tooltip
+                    id="aacount-password"
                     label="Password*"
                     :message="passwordTooltipMessage"
                   />
@@ -313,7 +315,7 @@
             </v-col>
           </v-row>
         </div>
-        <div v-if="showEditAccountForm" class="pa-2">
+        <div v-if="showEditAccountForm" class="pa-2" id="s3-editaccount-form">
           <v-row>
             <v-col class="pb-0">
               <div
@@ -449,8 +451,8 @@
           >
         </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
-          <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span>Account created: access key and secret key</span>
+          <img class="mr-2" :src="require('@/assets/resolved-default.svg')"  id="s3-account-resolve-icon"/>
+          <span id="s3-account-create-heading">Account created: access key and secret key</span>
         </v-card-title>
         <v-divider />
 
@@ -469,22 +471,22 @@
 
         <table class="mt-2 ml-7 cortx-text-md" id="s3-secretekey-data">
           <tr>
-            <td class="py-2 cortx-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-account-name-popup-label">
               Account name
             </td>
-            <td class="py-2">{{ account.account_name }}</td>
+            <td class="py-2" id="s3-account-name-popup-value">{{ account.account_name }}</td>
           </tr>
           <tr>
-            <td class="py-2 cortx-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-access-key-popup-label">
               Access key
             </td>
-            <td class="py-2">{{ account.access_key }}</td>
+            <td class="py-2" id="s3-access-key-popup-value">{{ account.access_key }}</td>
           </tr>
           <tr>
-            <td class="py-2 cortx-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-secret-key-popup-label">
               Secret key
             </td>
-            <td class="py-2">{{ account.secret_key }}</td>
+            <td class="py-2" id="s3-secret-key-popup-value">{{ account.secret_key }}</td>
           </tr>
         </table>
 
@@ -494,19 +496,10 @@
             class="ma-5 cortx-btn-primary cortx-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
-            @click="isCredentialsFileDownloaded = true"
-            >Download as CSV</a
+            @click="downloadAndClose()"
+            >Download and close</a
           >
-          <button
-            id="s3-closedialogboxbtn"
-            :disabled="!isCredentialsFileDownloaded"
-            type="button"
-            class="ma-5 cortx-btn-primary"
-            @click="closeAccountDetailsDialog()"
-          >
-            Ok
-          </button>
-        </v-card-actions>
+          </v-card-actions>
       </v-card>
     </v-dialog>
 
@@ -737,6 +730,14 @@ export default class CortxAccountManagement extends Vue {
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
+  private async downloadAndClose() {
+    this.isCredentialsFileDownloaded = true;
+    this.showAccountDetailsDialog = false;
+    this.showCreateAccountForm = false;
+    this.clearCreateAccountForm();
+    await this.getAllAccounts();
+  }
+
 }
 </script>
 <style lang="scss" scoped>

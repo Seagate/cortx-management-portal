@@ -46,7 +46,7 @@
             </template>
 
             <template v-slot:item="props">
-              <tr id="bucket-data">
+              <tr :id="props.item.name">
                 <td id="bucket-name">{{ props.item.name }}</td>
                 <td>
                   <img

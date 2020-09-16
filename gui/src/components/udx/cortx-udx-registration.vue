@@ -50,7 +50,7 @@
                 $v.registrationForm.url.$error
             }"
           >
-            <label class="cortx-form-group-label" for="url">
+            <label class="cortx-form-group-label" for="url" id="udx-url-label">
               <cortx-info-tooltip label="URL*" message="Enter the URL provided by your UDX portal." />
             </label>
             <input

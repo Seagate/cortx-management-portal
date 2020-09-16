@@ -102,21 +102,7 @@
                 @click="toggleSelection(props.item.id)"
               >
                 <td id="localuser-name">
-                  <span>{{ props.item.username }}</span>
-                  <v-tooltip right max-width="300">
-                    <template v-slot:activator="{ on }">
-                      <img
-                        v-if="props.item.alert_notification"
-                        v-on="on"
-                        height="16"
-                        width="16"
-                        :src="require('@/assets/actions/email.svg/')"
-                      />
-                    </template>
-                    <span id="localuser-emailnotification">{{
-                      $t("csmuser.email-notification-tooltip")
-                    }}</span>
-                  </v-tooltip>
+                  {{ props.item.username }}
                 </td>
                 <td id="localuser-email">
                   {{ props.item.email }}
@@ -396,20 +382,6 @@
               </label>
             </v-col>
           </v-row>
-          <v-row class="ml-0">
-            <v-col>
-              <label class="cortx-ckb-container" for="emailCheckID">
-                {{ $t("csmuser.email-notification") }}
-                <input
-                  type="checkbox"
-                  name="emailCheckID"
-                  v-model="createAccount.alert_notification"
-                  id="emailCheckID"
-                />
-                <span class="cortx-ckb-tick"></span>
-              </label>
-            </v-col>
-          </v-row>
           <v-row>
             <v-col class="ml-3">
               <button
@@ -498,9 +470,9 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-expansion-panels class="ml-5 mr-4 mt-3">
-              <v-expansion-panel>
-                <v-expansion-panel-header class="pl-3"
+            <v-expansion-panels class="ml-5 mr-4 mt-3" id="open-expansionbox">
+              <v-expansion-panel >
+                <v-expansion-panel-header class="pl-3" id="change-password-text"
                   >Change password</v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
@@ -693,20 +665,6 @@
               </label>
             </v-col>
           </v-row>
-          <v-row class="ml-0">
-            <v-col>
-              <label class="cortx-ckb-container" for="emailCheckID">
-                {{ $t("csmuser.email-notification") }}
-                <input
-                  type="checkbox"
-                  name="emailCheckID"
-                  v-model="selectedItem.alert_notification"
-                  id="emailCheckID"
-                />
-                <span class="cortx-ckb-tick"></span>
-              </label>
-            </v-col>
-          </v-row>
           <v-row>
             <v-col class="ml-3">
               <button
@@ -840,8 +798,7 @@ export default class CortxUserSettingLocal extends Vue {
         username: "",
         password: "",
         confirmPassword: "",
-        email: "",
-        alert_notification: false
+        email: ""
       },
       web: "",
       cli: "",
@@ -883,8 +840,7 @@ export default class CortxUserSettingLocal extends Vue {
         password: "",
         current_password: "",
         confirmPassword: "",
-        email: "",
-        alert_notification: ""
+        email: ""
       },
       showUserSuccessDialog: false,
       successDialogText: ""
@@ -926,8 +882,7 @@ export default class CortxUserSettingLocal extends Vue {
       temperature: this.$data.temperature,
       language: this.$data.language,
       timeout: 1,
-      email: this.$data.createAccount.email,
-      alert_notification: this.$data.createAccount.alert_notification
+      email: this.$data.createAccount.email
     };
 
     this.$store.dispatch("systemConfig/showLoader", "Creating user...");
