@@ -63,18 +63,9 @@
           class="ma-5 cortx-btn-primary cortx-download-csv-link"
           :href="credentialsFileContent"
           download="credentials.csv"
-          @click="isCredentialsFileDownloaded = true"
+          @click="closeAccountDetailsDialog()"
           >{{ $t("s3.download-csv-dialog.btn") }}</a
         >
-        <button
-          id="download-csv-dialog-ok-btn"
-          :disabled="!isCredentialsFileDownloaded"
-          type="button"
-          class="ma-5 cortx-btn-primary"
-          @click="closeAccountDetailsDialog()"
-        >
-          Ok
-        </button>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -120,7 +111,7 @@ export default class CortxDownloadCsvDialog extends Vue {
 
   public async closeAccountDetailsDialog() {
     this.$emit("closeDialog", true);
-    this.isCredentialsFileDownloaded = false;
+    this.isCredentialsFileDownloaded = true;
     this.credentialsFileContent = "";
   }
 }

@@ -17,20 +17,19 @@
 <template>
   <div class="body-2">
     <cortx-has-access
-      :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
+        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
     >
-      <div class="mt-2 pl-2">
+    <div class="mt-2 pl-2">
         <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
-          S3 url:
+          {{ $t("s3.account.url-label") }}
         </label>
-        <span v-if="s3Url">{{ s3Url }}</span>
-        <span v-else>NA</span>
-        <span class="pl-1">
+        <span id="s3-url-id">{{ s3Url[0] }}</span>
+        <span class="pl-1 pr-3">
           <v-tooltip right max-width="300">
             <template v-slot:activator="{ on }">
               <img
                 id="s3-edit-account"
-                v-on:click="copyS3Url()"
+                v-on:click="copyS3Url(s3Url[0])"
                 v-on="on"
                 class="cortx-cursor-pointer copy-url"
                 src="@/assets/actions/copy-text.svg"
@@ -39,7 +38,22 @@
             <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
           </v-tooltip>
         </span>
-      </div>
+        <span class="ml-5" id="s3-url-id">{{ s3Url[1] }}</span>
+        <span class="pl-1">
+          <v-tooltip right max-width="300">
+            <template v-slot:activator="{ on }">
+              <img
+                id="s3-edit-account"
+                v-on:click="copyS3Url(s3Url[1])"
+                v-on="on"
+                class="cortx-cursor-pointer copy-url"
+                src="@/assets/actions/copy-text.svg"
+              />
+            </template>
+            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+          </v-tooltip>
+        </span>
+      </div>    
     </cortx-has-access>
     <v-row>
       <v-col class="py-0 pr-0 col-9">
@@ -74,8 +88,8 @@
                 :class="{
                   'grey lighten-3': props.item.user_name === selectedIAMUser
                 }"
-                class="cortx-cursor-pointer"
-              >
+                  class="cortx-cursor-pointer"
+                >
                 <td @click.stop="handleRowClick(props.item)">
                   {{ props.item.user_name }}
                 </td>
@@ -108,6 +122,7 @@
           >
             <cortx-access-key-management
               :userNameIAM="selectedIAMUser"
+              :s3Url="s3Url.toString()"
             ></cortx-access-key-management>
           </cortx-has-access>
         </cortx-has-access>
@@ -148,7 +163,7 @@
                       $v.createUserForm.iamUser.user_name.$dirty &&
                         !$v.createUserForm.iamUser.user_name.required
                     "
-                    >Username is required.</label
+                    >{{ $t("s3.iam.user-name-required") }}</label
                   >
                   <label
                     id="iam-username-invalid"
@@ -156,7 +171,7 @@
                       $v.createUserForm.iamUser.user_name.$dirty &&
                         !$v.createUserForm.iamUser.user_name.accountNameRegex
                     "
-                    >Invalid username.</label
+                    >{{ $t("s3.iam.invalid-user") }}</label
                   >
                 </div>
               </div>
@@ -196,7 +211,7 @@
                       $v.createUserForm.iamUser.password.$dirty &&
                         !$v.createUserForm.iamUser.password.required
                     "
-                    >Password is required.</label
+                    >{{ $t("common.password-required") }}</label
                   >
                   <label
                     id="iam-password-invalid"
@@ -204,7 +219,7 @@
                       $v.createUserForm.iamUser.password.$dirty &&
                         !$v.createUserForm.iamUser.password.passwordRegex
                     "
-                    >Invalid password.</label
+                    >{{ $t("common.invalid-pass") }}</label
                   >
                 </div>
               </div>
@@ -223,7 +238,7 @@
                   class="cortx-form-group-label"
                   for="confirmPassword"
                   id="iam-confirmpasslbl"
-                  >Confirm password*</label
+                  >{{ $t("common.confirm-pass-label") }}</label
                 >
                 <input
                   class="cortx-form__input_text"
@@ -240,7 +255,7 @@
                     $v.createUserForm.confirmPassword.$dirty &&
                       !$v.createUserForm.confirmPassword.sameAsPassword
                   "
-                  >Passwords do not match</span
+                  >{{ $t("common.pass-not-match") }}</span
                 >
               </div>
             </v-col>
@@ -254,7 +269,7 @@
                 @click="createUser()"
                 :disabled="$v.createUserForm.$invalid"
               >
-                Create user
+                {{ $t("s3.iam.create-user-btn") }}
               </button>
               <button
                 id="iam-usercancelbtn"
@@ -262,7 +277,7 @@
                 class="cortx-btn-tertiary"
                 @click="closeCreateUserForm()"
               >
-                Cancel
+                {{ $t("common.cancel-btn") }}
               </button>
             </v-col>
           </v-row>
@@ -277,7 +292,7 @@
             v-if="!showCreateUserForm"
             @click="openCreateUserForm()"
           >
-            Create
+            {{ $t("common.create-btn") }}
           </button>
         </cortx-has-access>
       </v-col>
@@ -290,19 +305,10 @@
       id="iam-opendialogbox"
     >
       <v-card>
-        <v-system-bar color="greay lighten-3">
-          <v-spacer></v-spacer>
-          <v-icon
-            @click="closeUserDetailsDialog()"
-            style="cursor: pointer;"
-            id="iam-closedialogbox"
-            >mdi-close</v-icon
-          >
-        </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
           <span id="iam-acceskeytext"
-            >User created:access key and secret key</span
+            >{{ $t("s3.iam.user-key-access") }}</span
           >
         </v-card-title>
         <v-divider />
@@ -314,40 +320,39 @@
           <span
             id="iam-csvfileinfo"
             class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
-            >Save this information, you will not see it again. Download as CSV
-            and close.</span
+            >{{ $t("s3.download-csv-dialog.message") }}</span
           >
         </div>
         <table class="mt-2 ml-7 cortx-text-md" id="iam-user-data">
           <tr id="iam-username">
             <td class="py-2 cortx-text-bold credentials-item-label">
-              Username
+              {{ $t("s3.access-key.table-headers.user_name") }}
             </td>
             <td class="py-2">{{ user.user_name }}</td>
           </tr>
           <tr id="iam-userid">
-            <td class="py-2 cortx-text-bold credentials-item-label">User id</td>
+            <td class="py-2 cortx-text-bold credentials-item-label">{{ $t("s3.access-key.table-headers.user_id") }}</td>
             <td class="py-2">{{ user.user_id }}</td>
           </tr>
           <tr>
             <td class="py-2 cortx-text-bold credentials-item-label">
-              S3 url
+              {{ $t("s3.account.s3-url") }}
             </td>
-            <td class="py-2">{{ s3Url }}</td>
+            <td class="py-2">{{ s3Url[0] }} , {{ s3Url[1] }}</td>
           </tr>
           <tr id="iamARN">
-            <td class="py-2 cortx-text-bold credentials-item-label">ARN</td>
+            <td class="py-2 cortx-text-bold credentials-item-label">{{ $t("s3.access-key.table-headers.arn") }}</td>
             <td class="py-2">{{ user.arn }}</td>
           </tr>
           <tr id="iam-accesskeyid">
             <td class="py-2 cortx-text-bold credentials-item-label">
-              Access key
+              {{ $t("s3.access-key.table-headers.access_key") }}
             </td>
             <td class="py-2">{{ user.access_key_id }}</td>
           </tr>
           <tr id="iam-secretkey">
             <td class="py-2 cortx-text-bold credentials-item-label">
-              Secret key
+             {{ $t("s3.access-key.table-headers.secret_key") }}
             </td>
             <td class="py-2">{{ user.secret_key }}</td>
           </tr>
@@ -359,7 +364,7 @@
             class="ma-5 cortx-btn-primary cortx-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
-            @click="downloadAndClose()"
+             @click="downloadAndClose()"
             >Download and close</a
           >
         </v-card-actions>
@@ -474,7 +479,7 @@ export default class CortxIAMUserManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_iam_user);
     this.usersList = res && res.data ? res.data.iam_users : [];
-    this.s3Url = res.data.s3_url;
+    this.s3Url = res.data.s3_urls;
     this.selectedIAMUser = this.usersList.length
       ? this.usersList[0].user_name
       : "";
@@ -498,10 +503,14 @@ export default class CortxIAMUserManagement extends Vue {
   }
   public getCredentialsFileContent(): string {
     return (
-      "User name,S3 url,Access key,Secret key\n" +
+      "User name,User id,S3 URL,ARN,Access key,Secret key\n" +
       this.user.user_name +
       "," +
-      this.s3Url +
+      this.user.user_id +
+      "," +
+      `${this.s3Url[0]} ${this.s3Url[1]}` +
+      "," +
+      this.user.arn +
       "," +
       this.user.access_key_id +
       "," +
@@ -566,9 +575,8 @@ export default class CortxIAMUserManagement extends Vue {
   public handleRowClick(item: any) {
     this.selectedIAMUser = item.user_name;
   }
-
-  public async copyS3Url() {
-    CommonUtils.copyUrlToClipboard(this.s3Url);
+  public async copyS3Url(url: string) {
+    CommonUtils.copyUrlToClipboard(url);
   }
 
   public async downloadAndClose() {

@@ -130,6 +130,9 @@ export default class CortxAccessKeyManagementIAM extends Vue {
 
   @Prop({ required: true, default: "" })
   private userNameIAM!: string;
+  
+  @Prop({ required: true, default: "" })
+  public s3Url: string;
 
   constructor() {
     super();
@@ -168,11 +171,13 @@ export default class CortxAccessKeyManagementIAM extends Vue {
       }
     );
     const createAccessKeyDetails = res && res.data ? res.data : {};
-
     this.accessKeyDetails = {
       [`${i18n.t(
         "s3.access-key.table-headers.user_name"
       )}`]: createAccessKeyDetails.user_name,
+      [`${i18n.t(
+        "s3.account.url-label-no-colon"
+      )}`]: this.s3Url,
       [`${i18n.t(
         "s3.access-key.table-headers.access_key"
       )}`]: createAccessKeyDetails.access_key_id,

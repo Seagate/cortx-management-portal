@@ -40,14 +40,28 @@
         <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
           {{ $t("s3.account.url-label") }}
         </label>
-        <span id="s3-url-id" v-if="s3Url">{{ s3Url }}</span>
-        <span v-else>NA</span>
+        <span id="s3-url-id">{{ s3Url[0] }}</span>
+        <span class="pl-1 pr-3">
+          <v-tooltip right max-width="300">
+            <template v-slot:activator="{ on }">
+              <img
+                id="s3-edit-account"
+                v-on:click="copyS3Url(s3Url[0])"
+                v-on="on"
+                class="cortx-cursor-pointer copy-url"
+                src="@/assets/actions/copy-text.svg"
+              />
+            </template>
+            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+          </v-tooltip>
+        </span>
+        <span class="ml-5" id="s3-url-id">{{ s3Url[1] }}</span>
         <span class="pl-1">
           <v-tooltip right max-width="300">
             <template v-slot:activator="{ on }">
               <img
                 id="s3-edit-account"
-                v-on:click="copyS3Url()"
+                v-on:click="copyS3Url(s3Url[1])"
                 v-on="on"
                 class="cortx-cursor-pointer copy-url"
                 src="@/assets/actions/copy-text.svg"
@@ -137,7 +151,7 @@
         <cortx-has-access
           :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
         >
-          <cortx-access-key-management></cortx-access-key-management>
+          <cortx-access-key-management :s3Url="s3Url.toString()"></cortx-access-key-management>
         </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-5">
@@ -468,15 +482,6 @@
       id="s3-accesskey-dialog"
     >
       <v-card>
-        <v-system-bar color="greay lighten-3">
-          <v-spacer></v-spacer>
-          <v-icon
-            id="s3-closedialogbox"
-            @click="closeAccountDetailsDialog()"
-            style="cursor: pointer;"
-            >mdi-close</v-icon
-          >
-        </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
           <span>{{ $t("s3.account.account-created") }}</span>
@@ -506,7 +511,7 @@
             <td class="py-2 cortx-text-bold credentials-item-label">
               {{ $t("s3.account.url-label") }}
             </td>
-            <td class="py-2">{{ s3Url }}</td>
+            <td class="py-2">{{ s3Url[0] }} , {{s3Url[0]}}</td>
           </tr>
           <tr>
             <td class="py-2 cortx-text-bold credentials-item-label">
@@ -653,7 +658,7 @@ export default class CortxAccountManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
-    this.s3Url = res && res.data ? res.data.s3_url : "";
+    this.s3Url = res && res.data ? res.data.s3_urls : "";
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
@@ -679,10 +684,10 @@ export default class CortxAccountManagement extends Vue {
 
   public getCredentialsFileContent(): string {
     return (
-      "Account name,S3 Url,Access key,Secret key\n" +
+      "Account name,S3 URL,Access key,Secret key\n" +
       this.account.account_name +
       "," +
-      this.s3Url +
+      `${this.s3Url[0]} ${this.s3Url[1]}` +
       "," +
       this.account.access_key +
       "," +
@@ -774,8 +779,8 @@ export default class CortxAccountManagement extends Vue {
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
-  private async copyS3Url() {
-   CommonUtils.copyUrlToClipboard(this.s3Url);
+  private async copyS3Url(url: string) {
+   CommonUtils.copyUrlToClipboard(url);
   }
   private async downloadAndClose() {
     this.isCredentialsFileDownloaded = true;
