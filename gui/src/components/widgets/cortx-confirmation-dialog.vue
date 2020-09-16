@@ -18,7 +18,7 @@
   <div v-if="show" class="cortx-modal-container">
     <div class="cortx-modal cortx-modal-confirmation">
       <div class="cortx-modal-header">
-        <label>{{ title }}</label>
+        <label :id="title">{{ title }}</label>
         <img
           id="confirmation-dialogclose"
           class="cortx-modal-close"
@@ -30,7 +30,7 @@
         <div class="title title-container">
           <img class="severity-img mr-2" :src="severityIcons[severity]" />
           <span v-if="isMessageInHTML" class="finish-text" v-html="message"></span>
-          <span v-else class="finish-text">{{ message }}</span>
+          <span v-else class="finish-text" :id="cofirmation-msg">{{ message }}</span>
         </div>
         <br />
         <div>
