@@ -130,12 +130,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
-import AlertsMixin from "./../../mixins/alerts";
+import { Component, Vue } from "vue-property-decorator";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
-import { AlertQueryParam, AlertObject } from "./../../models/alert";
 import { HealthSummary } from "../../models/system";
+import i18n from "../../i18n";
+
 @Component({
   name: "cortx-health-view"
 })
@@ -152,7 +152,6 @@ export default class CortxHealthView extends Vue {
       sortable: true
     }
   ];
-  public alertObject: AlertObject = {} as AlertObject;
   public healthComponentData = [];
   public itemsPerPage: number = 100;
   public currentPage: number = 1;
@@ -171,44 +170,45 @@ export default class CortxHealthView extends Vue {
     };
   }
   public async mounted() {
-    try {
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: true,
-        message: "Getting health info..."
-      });
-      const enclosureName = this.$route.query.name
-        ? this.$route.query.name
-        : "";
-      const res = await Api.getAll(apiRegister.health_components, {
-        node_id: enclosureName
-      });
-      this.$store.dispatch("systemConfig/hideLoader");
-      if (res && res.data) {
-        this.healthComponentData = res.data[0][Object.keys(res.data[0])[0]].components;
-        this.healthSummary =
-          res.data[0][Object.keys(res.data[0])[0]].health_summary;
-        this.healthComponentData.sort((a: any, b: any) => {
-          let result = 0;
-          const fa = a.health.toLowerCase();
-          const fb = b.health.toLowerCase();
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: true,
+      message: "Getting health info..."
+    });
+    const enclosureName = this.$route.query.name
+      ? this.$route.query.name
+      : "";
+    const res = await Api.getAll(apiRegister.health_components, {
+      node_id: enclosureName
+    });
+    if (res && res.data) {
+      this.healthComponentData = res.data[0][Object.keys(res.data[0])[0]].components;
+      this.healthSummary =
+        res.data[0][Object.keys(res.data[0])[0]].health_summary;
+      this.healthComponentData.sort((a: any, b: any) => {
+        let result = 0;
+        const fa = a.health.toLowerCase();
+        const fb = b.health.toLowerCase();
 
-          if (fa < fb) {
-            result = -1;
-          }
-          if (fa > fb) {
-            result = 1;
-          }
-          return result;
-        });
-      }
-
-    } catch {
-      this.$store.dispatch("systemConfig/hideLoader");
+        if (fa < fb) {
+          result = -1;
+        }
+        if (fa > fb) {
+          result = 1;
+        }
+        return result;
+      });
     }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 
   get componentName() {
-    return this.$route.query.name ? this.$route.query.name : "";
+    let compName: any = "";
+    if (this.$route.query.name) {
+      compName = this.$route.query.name === "storage_encl"
+                  ? i18n.t("health.storage_encl")
+                  : this.$route.query.name;
+    }
+    return compName;
   }
 }
 </script>

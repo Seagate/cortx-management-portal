@@ -24,7 +24,7 @@
       <span class="mt-1">Back</span>
     </div>
     <div class="cortx-text-lg cortx-text-bold">Health View (Severity: {{ severity }})</div>
-    <div class="cortx-text-md cortx-text-bold" v-if="componentId">{{ componentId }}</div>
+    <div class="cortx-text-md cortx-text-bold" v-if="componentLabel">{{ componentLabel }}</div>
 
     <v-data-table
       calculate-widths
@@ -107,13 +107,14 @@
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-severity-based-health-view"
 })
 export default class CortxSeverityBasedHealthView extends Vue {
   public severity: string = "";
-  public componentId: string | (string | null)[] = "";
+  public componentLabel: any = "";
   public healthTableHeaders: any = [
     {
       text: "Component Id",
@@ -137,17 +138,19 @@ export default class CortxSeverityBasedHealthView extends Vue {
 
   public async mounted() {
     this.severity = this.$route.params.severity;
-    this.componentId = this.$route.query.component_id;
+    const query_params: any = {
+      severity: this.severity
+    };
+    if (this.$route.query.component_id) {
+      query_params.component_id = this.$route.query.component_id;
+      this.componentLabel = this.$route.query.component_id === "storage_encl"
+                            ? i18n.t("health.storage_encl")
+                            : this.$route.query.component_id;
+    }
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
       message: "Getting health info..."
     });
-    const query_params: any = {
-      severity: this.severity
-    };
-    if (this.componentId) {
-      query_params.component_id = this.componentId;
-    }
     const res = await Api.getAll(apiRegister.health_resources, query_params);
     if (res && res.data) {
       this.healthComponentData = res.data.resources;

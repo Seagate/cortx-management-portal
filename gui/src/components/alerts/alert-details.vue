@@ -298,18 +298,13 @@ export default class CortxAlertDetails extends Vue {
       show: true,
       message: loaderMessage
     });
-    try {
-      await Api.patch(
-        apiRegister.all_alerts,
-        { acknowledged: tempAlertAcknowledged },
-        this.alertId
-      );
-      this.alert.acknowledged = tempAlertAcknowledged;
-      this.$store.dispatch("alertDataAction");
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
-    }
+    await Api.patch(
+      apiRegister.all_alerts,
+      { acknowledged: tempAlertAcknowledged },
+      this.alertId
+    );
+    this.alert.acknowledged = tempAlertAcknowledged;
+    this.$store.dispatch("alertDataAction");
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: false,
       message: ""
