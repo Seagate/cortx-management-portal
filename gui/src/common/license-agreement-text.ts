@@ -15,12 +15,12 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 export const agreementText = {
-  title: `LyveDrive Agreement`,
+  title: `CORTX Agreement`,
   description: `<div
   class="font-weight-bold text-center"
   style="margin: 0 100px;"
 >
-  LYVE CORTX AND LYVE DRIVE RACK EDGE BETA CYCLE PROGRAM
+  CORTX EDGE BETA CYCLE PROGRAM
   PARTICIPATION AUTHORIZATION AND WAIVER
 </div>
 <table class="mt-5">
