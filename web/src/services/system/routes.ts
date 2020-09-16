@@ -24,6 +24,7 @@ import {
   getHealthView,
   getNodeHealth,
   getHealthComponents,
+  getHealthResources,
   getNodeReplacementStatus,
   replaceNode
 } from "./system-controller";
@@ -73,6 +74,21 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getHealthComponents(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      },
+    ],
+  },
+  {
+    path: "/api/v1/system/health/resources",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getHealthResources(req, res);
           res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;

@@ -26,50 +26,53 @@
     </div>
 
     <div
-      v-for="menuItem in healthData"
-      :key="Object.keys(menuItem)[0]"
+      v-for="menuItem in menu"
+      :key="menuItem.label"
       class="cortx-menu-card-layout"
     >
       <div>
         <label
           class="cortx-text-lg cortx-text-bold cortx-float-l cortx-menu-card-title"
-        >{{Object.keys(menuItem)[0]}}</label>
+        >{{ menuItem.label }}</label>
         
         <div
-          class="cortx-summary-chip cortx-chip-ok cortx-float-l ml-2"
-          v-if="menuItem[Object.keys(menuItem)[0]].health_summary.good && menuItem[Object.keys(menuItem)[0]].health_summary.good > 0"
+          class="cortx-summary-chip cortx-chip-ok cortx-float-l cortx-cursor-pointer ml-2"
+          v-if="menuItem.good_health.count > 0"
+          @click="$router.push(menuItem.good_health.link)"
         >
           <div class="summary-count">
-            <label
+            <span
               class="cortx-text-sm"
-            >{{ menuItem[Object.keys(menuItem)[0]].health_summary.good?menuItem[Object.keys(menuItem)[0]].health_summary.good:0 }}</label>
+            >{{ menuItem.good_health.count }}</span>
           </div>
         </div>
         <div
-          class="cortx-summary-chip cortx-chip-warning cortx-float-l ml-2"
-          v-if="menuItem[Object.keys(menuItem)[0]].health_summary.warning && menuItem[Object.keys(menuItem)[0]].health_summary.warning > 0"
+          class="cortx-summary-chip cortx-chip-warning cortx-float-l cortx-cursor-pointer ml-2"
+          v-if="menuItem.warning_health.count > 0"
+          @click="$router.push(menuItem.warning_health.link)"
         >
           <div class="summary-count">
-            <label
+            <span
               class="cortx-text-sm"
-            >{{menuItem[Object.keys(menuItem)[0]].health_summary.warning? menuItem[Object.keys(menuItem)[0]].health_summary.warning : 0 }}</label>
+            >{{ menuItem.warning_health.count }}</span>
           </div>
         </div>
         <div
-          class="cortx-summary-chip cortx-chip-alert cortx-float-l ml-2"
-          v-if="menuItem[Object.keys(menuItem)[0]].health_summary.critical && menuItem[Object.keys(menuItem)[0]].health_summary.critical > 0"
+          class="cortx-summary-chip cortx-chip-alert cortx-float-l cortx-cursor-pointer ml-2"
+          v-if="menuItem.critical_health.count > 0"
+          @click="$router.push(menuItem.critical_health.link)"
         >
           <div class="summary-count">
-            <label
+            <span
               class="cortx-text-sm"
-            >{{menuItem[Object.keys(menuItem)[0]].health_summary.critical? menuItem[Object.keys(menuItem)[0]].health_summary.critical : 0 }}</label>
+            >{{ menuItem.critical_health.count }}</span>
           </div>
         </div>
         <button
           id="view-healthbtn"
           type="button"
           class="cortx-btn-tertiary cortx-float-r"
-          @click="$router.push({ name: 'healthview', query: { name: Object.keys(menuItem)[0] }})"
+          @click="$router.push({ name: 'healthview', query: { name: menuItem.value }})"
         >View</button>
       </div>
     </div>
@@ -79,42 +82,43 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
-import { AlertObject } from "../../models/alert";
-import { HealthSummary } from "../../models/system";
+import i18n from "../../i18n";
+
 @Component({
   name: "cortx-health-submenu"
 })
 export default class CortxHealthSubmenu extends Vue {
-  public alertObject: AlertObject = {} as AlertObject;
-  public menuList: string[] = [];
-  public healthData: any = {};
-  public healthSummary: HealthSummary = {
-    good: 0,
-    fault: 0,
-    degraded: 0,
-    total: 0,
-    unrecoverable: 0,
-    critical: 0
-  };
+  public menu: any[] = [];
+  public healthBySeverityRoute: string = "/health/healthview/severity/";
 
   public async mounted() {
-    try {
-      this.$store.dispatch("systemConfig/showLoaderMessage", {
-        show: true,
-        message: "Getting health info..."
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: true,
+      message: "Getting health info..."
+    });
+    const res = await Api.getAll(apiRegister.node_health);
+    if (res && res.data) {
+      res.data.forEach((item: any) => {
+        const key = Object.keys(item)[0];
+        this.menu.push({
+          label: key === "storage_encl" ? i18n.t("health.storage_encl") : key,
+          value: key,
+          good_health: {
+            count: item[key].health_summary.good ? item[key].health_summary.good : 0,
+            link: `${this.healthBySeverityRoute}ok?component_id=${key}`
+          },
+          warning_health: {
+            count: item[key].health_summary.warning ? item[key].health_summary.warning : 0,
+            link: `${this.healthBySeverityRoute}warning?component_id=${key}`
+          },
+          critical_health: {
+            count: item[key].health_summary.critical ? item[key].health_summary.critical : 0,
+            link: `${this.healthBySeverityRoute}critical?component_id=${key}`
+          }
+        });
       });
-      const res = await Api.getAll(apiRegister.node_health);
-      this.$store.dispatch("systemConfig/hideLoader");
-      if (res && res.data) {
-        this.healthData = res.data;
-        for (let count = 0; count <= res.data.length - 1; count++) {
-          const menu = Object.keys(res.data[count]);
-          this.menuList.push(menu[0]);
-        }
-      }
-    } catch {
-      this.$store.dispatch("systemConfig/hideLoader");
     }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>
