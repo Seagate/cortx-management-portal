@@ -1,6 +1,6 @@
 {
   "login": {
-    "login-label": "RACK Login",
+    "login-label": "Login",
     "login-btn": "Login",
     "user-name-placeholder": "Username",
     "password-placeholder": "Password",
@@ -138,7 +138,7 @@
     "addSystemName": "Add System name",
     "systemNameIsReq": "System name is required.",
     "enterValidSystemName": "Enter valid System name.",
-    "minimumFourChartSystemName": "Minimum 4 characters are required.",
+    "minimumTwoChartSystemName": "Minimum 2 characters are required.",
     "maxChartSystemName": "max 255 characters allow."
   }
 }

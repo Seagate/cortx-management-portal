@@ -36,7 +36,7 @@
                 >{{ $t("onBoarding.enterValidSystemName") }}</label
               >
               <label v-else-if="$v.appliance.$dirty && !$v.appliance.minLength"
-                >{{ $t("onBoarding.minimumFourChartSystemName") }}</label
+                >{{ $t("onBoarding.minimumTwoChartSystemName") }}</label
               >
               <label v-else-if="$v.appliance.$dirty && !$v.appliance.maxLength"
               >{{ $t("onBoarding.maxChartSystemName") }}</label>
