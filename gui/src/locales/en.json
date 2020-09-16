@@ -1,6 +1,6 @@
 {
   "login": {
-    "login-label": "RACK Login",
+    "login-label": "Login",
     "login-btn": "Login",
     "user-name-placeholder": "Username",
     "password-placeholder": "Password",
