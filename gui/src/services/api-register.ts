@@ -64,5 +64,6 @@ export default {
   health_view: `/api/${version}/system/health/view`,
   node_health: `/api/${version}/system/health/node`,
   version: `/api/${version}/product_version`,
-  health_components: `api/${version}/system/health/components`
+  health_components: `api/${version}/system/health/components`,
+  health_resources: `api/${version}/system/health/resources`
 };
