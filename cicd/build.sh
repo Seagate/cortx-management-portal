@@ -157,9 +157,11 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     if [[ $BRANDPATH ]]; then
         if [ -d "$BRANDPATH" ]; then
             cp -r $BRANDPATH/*.* $BASE_DIR/gui/public/
-            echo "All files copied to '$BASE_DIR'/gui/public/ folder";
+            echo "All files copied to gui/public/ folder";
             cp -r $BRANDPATH/public/*.* $BASE_DIR/gui/src/locales/
-            echo "All files copied to '$BASE_DIR'/gui/src/locales/ folder";
+            echo "All files copied to gui/src/locales/ folder";
+            cp -r $BRANDPATH/src/license-agreement-text.ts $BASE_DIR/gui/src/common/license-agreement-text.ts
+            echo "Replace gui/src/common/license-agreement-text.ts file";
         else
             echo "Invalid path: $BRANDPATH";
         fi
