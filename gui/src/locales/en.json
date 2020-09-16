@@ -140,5 +140,8 @@
     "enterValidSystemName": "Enter valid System name.",
     "minimumTwoChartSystemName": "Minimum 2 characters are required.",
     "maxChartSystemName": "max 255 characters allow."
+  },
+  "health": {
+    "storage_encl": "Storage enclosure"
   }
 }

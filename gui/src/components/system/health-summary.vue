@@ -17,24 +17,24 @@
 <template>
   <div class="cortx-health-summary-container">
     <label class="cortx-text-lg cortx-text-bold cortx-float-l">HW Health</label>
-    <div class="cortx-float-l" v-if="healthSummary.good && healthSummary.good > 0">
+    <div class="cortx-float-l cortx-cursor-pointer" v-if="healthSummary.good && healthSummary.good > 0" @click="$router.push(healthBySeverityRoute + 'ok')">
       <div class="cortx-summary-chip cortx-chip-ok cortx-float-l ml-2">
         <div class="summary-count">
-          <label class="cortx-text-sm">{{ healthSummary.good?healthSummary.good:0 }}</label>
+          <span class="cortx-text-sm">{{ healthSummary.good?healthSummary.good:0 }}</span>
         </div>
       </div>
     </div>
-    <div class="cortx-float-l" v-if="healthSummary.warning && healthSummary.warning > 0">
+    <div class="cortx-float-l cortx-cursor-pointer" v-if="healthSummary.warning && healthSummary.warning > 0" @click="$router.push(healthBySeverityRoute + 'warning')">
       <div class="cortx-summary-chip cortx-chip-warning cortx-float-l ml-2">
         <div class="summary-count">
-          <label class="cortx-text-sm">{{ healthSummary.warning? healthSummary.warning : 0 }}</label>
+          <span class="cortx-text-sm">{{ healthSummary.warning? healthSummary.warning : 0 }}</span>
         </div>
       </div>
     </div>
-    <div class="cortx-float-l" v-if="healthSummary.critical && healthSummary.critical > 0">
+    <div class="cortx-float-l cortx-cursor-pointer" v-if="healthSummary.critical && healthSummary.critical > 0" @click="$router.push(healthBySeverityRoute + 'critical')">
       <div class="cortx-summary-chip cortx-chip-alert cortx-float-l ml-2">
         <div class="summary-count">
-          <label class="cortx-text-sm">{{ healthSummary.critical? healthSummary.critical : 0 }}</label>
+          <span class="cortx-text-sm">{{ healthSummary.critical? healthSummary.critical : 0 }}</span>
         </div>
       </div>
     </div>
@@ -59,6 +59,8 @@ export default class CortxHealthSummary extends Vue {
     critical: 0,
     warning: 0,
   };
+
+  public healthBySeverityRoute: string = "/health/healthview/severity/";
 
   public async mounted() {
     await this.getHealthSummary();
