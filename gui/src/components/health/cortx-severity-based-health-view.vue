@@ -16,41 +16,15 @@
 */
 <template>
   <div class="pa-5">
-    <div class="cortx-text-lg cortx-text-bold pr-2">Health View</div>
-    <div>
-      <div class="cortx-health-summary-container">
-        <div class="cortx-text-lg cortx-float-l cortx-text-bold">{{componentName}}</div>
-        <div
-          class="cortx-summary-chip cortx-float-l cortx-chip-ok ml-2"
-          v-if="healthSummary.good && healthSummary.good > 0"
-        >
-          <div class="summary-count">
-            <label
-              class="cortx-text-sm"
-            >{{ healthSummary.good?healthSummary.good:0 }}</label>
-          </div>
-        </div>
-        <div
-          class="cortx-summary-chip cortx-float-l cortx-chip-warning ml-2"
-          v-if="healthSummary.warning && healthSummary.warning > 0">
-          <div class="summary-count">
-            <label
-              class="cortx-text-sm"
-            >{{ healthSummary.warning?healthSummary.warning:0 }}</label>
-          </div>
-        </div>
-        <div
-          class="cortx-summary-chip cortx-float-l cortx-chip-alert ml-2"
-          v-if="healthSummary.critical && healthSummary.critical > 0"
-        >
-          <div class="summary-count">
-            <label
-              class="cortx-text-sm"
-            >{{ healthSummary.critical?healthSummary.critical:0 }}</label>
-          </div>
-        </div>
-      </div>
+    <div
+      class="cortx-back-btn"
+      @click="$router.go(-1)"
+    >
+      <img :src="require('@/assets/arrow-left.svg')" />
+      <span class="mt-1">Back</span>
     </div>
+    <div class="cortx-text-lg cortx-text-bold">Health View (Severity: {{ severity }})</div>
+    <div class="cortx-text-md cortx-text-bold" v-if="componentLabel">{{ componentLabel }}</div>
 
     <v-data-table
       calculate-widths
@@ -68,7 +42,7 @@
       <template v-slot:header="{}">
         <tr>
           <th
-            v-for="header in alertTableHeaders"
+            v-for="header in healthTableHeaders"
             :key="header.text"
             :class="[
               'tableheader',
@@ -130,17 +104,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
-import { HealthSummary } from "../../models/system";
 import i18n from "../../i18n";
 
 @Component({
-  name: "cortx-health-view"
+  name: "cortx-severity-based-health-view"
 })
-export default class CortxHealthView extends Vue {
-  public alertTableHeaders: any = [
+export default class CortxSeverityBasedHealthView extends Vue {
+  public severity: string = "";
+  public componentLabel: any = "";
+  public healthTableHeaders: any = [
     {
       text: "Component Id",
       value: "component_id",
@@ -154,91 +129,45 @@ export default class CortxHealthView extends Vue {
   ];
   public healthComponentData = [];
   public itemsPerPage: number = 100;
-  public currentPage: number = 1;
-  public healthSummary: HealthSummary = {
-    good: 0,
-    fault: 0,
-    degraded: 0,
-    total: 0,
-    unrecoverable: 0,
-    critical: 0
-  };
+
   public data() {
     return {
-      alertStatus: require("./../../common/const-string.json"),
-      name: this.$route.query.name
+      alertStatus: require("./../../common/const-string.json")
     };
   }
+
   public async mounted() {
+    this.severity = this.$route.params.severity;
+    const query_params: any = {
+      severity: this.severity
+    };
+    if (this.$route.query.component_id) {
+      query_params.component_id = this.$route.query.component_id;
+      this.componentLabel = this.$route.query.component_id === "storage_encl"
+                            ? i18n.t("health.storage_encl")
+                            : this.$route.query.component_id;
+    }
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
       message: "Getting health info..."
     });
-    const enclosureName = this.$route.query.name
-      ? this.$route.query.name
-      : "";
-    const res = await Api.getAll(apiRegister.health_components, {
-      node_id: enclosureName
-    });
+    const res = await Api.getAll(apiRegister.health_resources, query_params);
     if (res && res.data) {
-      this.healthComponentData = res.data[0][Object.keys(res.data[0])[0]].components;
-      this.healthSummary =
-        res.data[0][Object.keys(res.data[0])[0]].health_summary;
-      this.healthComponentData.sort((a: any, b: any) => {
-        let result = 0;
-        const fa = a.health.toLowerCase();
-        const fb = b.health.toLowerCase();
-
-        if (fa < fb) {
-          result = -1;
-        }
-        if (fa > fb) {
-          result = 1;
-        }
-        return result;
-      });
+      this.healthComponentData = res.data.resources;
     }
     this.$store.dispatch("systemConfig/hideLoader");
-  }
-
-  get componentName() {
-    let compName: any = "";
-    if (this.$route.query.name) {
-      compName = this.$route.query.name === "storage_encl"
-                  ? i18n.t("health.storage_encl")
-                  : this.$route.query.name;
-    }
-    return compName;
   }
 }
 </script>
 <style lang="scss" scoped>
-.cortx-health-summary-container {
-  height: 1.875em;
-}
-.cortx-health-summary-container {
-  height: 1.875em;
-}
-.cortx-summary-chip {
+.cortx-back-btn {
   display: flex;
-  min-height: 16px;
-  min-width: 16px;
-  border-radius: 2px;
-  line-height: 1;
-  text-align: center;
-  color: #ffffff;
-  padding: 3px;
-  border-radius: 34px;
-  .summary-label {
-    padding: 2px 3px 3px 5px;
-  }
-  .summary-count {
-    border: 2px solid #ffffff;
-    border-radius: 34px;
-    line-height: 1;
-    padding: 0 3px 3px 3px;
-    //margin-left: 8px;
-    min-width: 33px;
-  }
+  cursor: pointer;
+  width: 80px;
+  color: #6ebe49;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 22px;
 }
 </style>
