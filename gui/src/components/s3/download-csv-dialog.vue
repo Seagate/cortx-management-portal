@@ -90,9 +90,9 @@ export default class CortxDownloadCsvDialog extends Vue {
   }
 
   public getCredentialsFileContent(): string {
-    const csvData = {};
-    Object.assign(csvData, this.tableContent)
-    let s3Val = csvData["S3 URL"];
+    const csvData: any = {};
+    Object.assign(csvData, this.tableContent);
+    const s3Val = csvData["S3 URL"];
     csvData["S3 URL"] = s3Val.replace(",", " ");
     const headerNames = Object.keys(csvData).join(",") + "\n";
     const values = Object.entries(csvData)

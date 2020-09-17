@@ -127,12 +127,11 @@ export default class CortxAccessKeyManagementIAM extends Vue {
   private accountToDelete: string = "";
   private MAX_ACCESS_KEYS: number = 2;
   private SECRET_KEY_PLACEHOLDER: string = "XXXX";
-
   @Prop({ required: true, default: "" })
   private userNameIAM!: string;
-  
+
   @Prop({ required: true, default: "" })
-  public s3Url: string;
+  private s3Url: string;
 
   constructor() {
     super();

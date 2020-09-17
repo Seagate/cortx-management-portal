@@ -110,10 +110,10 @@ import i18n from "./../../i18n";
   name: "cortx-access-key-management",
   components: { CortxDownloadCsvDialog }
 })
-export default class CortxAccessKeyManagement extends Vue {  
+export default class CortxAccessKeyManagement extends Vue {
   @Prop({ required: true, default: "" })
   public s3Url: string;
-  
+
   private showConfirmDeleteDialog: boolean;
   private confirmDeleteDialogMessage: string = "";
   private showAccessKeyDetailsDialog: boolean;
