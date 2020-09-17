@@ -290,8 +290,8 @@ const router = new Router({
           ]
         },
         {
-          path: "udx",
-          name: "udx",
+          path: "ldp",
+          name: "ldp",
           component: CortxUDX,
           meta: {
             requiresAuth: true,
