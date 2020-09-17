@@ -304,7 +304,7 @@
       id="bucket-confirmation-dialog"
       :show="showConfirmDeleteDialog"
       title="Confirmation"
-      message="Are you sure you want to delete the bucket?"
+      :message="confirmMsg"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
@@ -333,6 +333,7 @@ export default class CortxBucketCreation extends Vue {
   public createBucketForm = {
     bucket: {} as Bucket
   };
+  public confirmMsg: string = "";
   @Validations()
   public validations = {
     createBucketForm: {
@@ -449,6 +450,7 @@ export default class CortxBucketCreation extends Vue {
   }
 
   public openConfirmDeleteDialog(bucketName: string) {
+    this.confirmMsg = `${i18n.t("s3.bucket.delete-confirm-msg")} ${bucketName}?`;
     this.bucketToDelete = bucketName;
     this.showConfirmDeleteDialog = true;
   }

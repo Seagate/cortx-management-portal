@@ -14,7 +14,7 @@
  * For any questions about this software or licensing,
  * please email opensource@seagate.com or cortx-questions@seagate.com.
  */
- <template>
+<template>
   <v-dialog v-model="show" persistent max-width="790">
     <v-card>
       <v-card-title class="title mt-6 ml-3">
@@ -90,13 +90,11 @@ export default class CortxDownloadCsvDialog extends Vue {
   }
 
   public getCredentialsFileContent(): string {
-    const csvData: any = {};
-    Object.assign(csvData, this.tableContent);
-    const s3Val = csvData["S3 URL"];
-    csvData["S3 URL"] = s3Val.replace(",", " ");
-    const headerNames = Object.keys(csvData).join(",") + "\n";
-    const values = Object.entries(csvData)
-      .map(([k, v]) => v)
+    const headerNames = Object.keys(this.tableContent).join(",") + "\n";
+    const values = Object.entries(this.tableContent)
+      .map(([k, v]) => {
+        return v.replaceAll(/,/g, " ");
+      })
       .join(",");
     return headerNames + values;
   }

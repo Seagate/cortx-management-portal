@@ -375,7 +375,7 @@
       id="iam-confirmation-dialogbox"
       :show="showConfirmDeleteDialog"
       title="Confirmation"
-      message="Are you sure you want to delete the user?"
+      :message="iamConfirmMsg"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
@@ -398,6 +398,7 @@ import {
   passwordTooltipMessage,
   usernameTooltipMessage
 } from "./../../common/regex-helpers";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-iam-user-management",
@@ -410,6 +411,7 @@ export default class CortxIAMUserManagement extends Vue {
     } as IAMUser,
     confirmPassword: ""
   };
+  public iamConfirmMsg: string = "";
 
   @Validations()
   public validations = {
@@ -549,6 +551,7 @@ export default class CortxIAMUserManagement extends Vue {
   }
 
   public openConfirmDeleteDialog(username: string) {
+    this.iamConfirmMsg = `${i18n.t("s3.bucket.delete-confirm-msg")} ${username}?`;
     this.userToDelete = username;
     this.showConfirmDeleteDialog = true;
   }
