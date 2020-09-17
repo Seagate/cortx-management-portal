@@ -14,18 +14,9 @@
  * For any questions about this software or licensing,
  * please email opensource@seagate.com or cortx-questions@seagate.com.
  */
-<template>
+ <template>
   <v-dialog v-model="show" persistent max-width="790">
     <v-card>
-      <v-system-bar color="greay lighten-3">
-        <v-spacer></v-spacer>
-        <v-icon
-          id="download-csv-dialog-cancel-btn"
-          @click="closeAccountDetailsDialog()"
-          class="cortx-cursor-pointer"
-          >mdi-close</v-icon
-        >
-      </v-system-bar>
       <v-card-title class="title mt-6 ml-3">
         <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
         <span>{{ title }}</span>
@@ -43,10 +34,7 @@
         >
       </div>
 
-      <table
-        id="download-csv-dialog-datatable"
-        class="mt-2 ml-7 cortx-text-md"
-      >
+      <table id="download-csv-dialog-datatable" class="mt-2 ml-7 cortx-text-md">
         <template v-for="[item, value] in Object.entries(tableContent)">
           <tr :key="item">
             <td class="py-2 cortx-text-bold credentials-item-label">
@@ -102,8 +90,12 @@ export default class CortxDownloadCsvDialog extends Vue {
   }
 
   public getCredentialsFileContent(): string {
-    const headerNames = Object.keys(this.tableContent).join(",") + "\n";
-    const values = Object.entries(this.tableContent)
+    const csvData = {};
+    Object.assign(csvData, this.tableContent)
+    let s3Val = csvData["S3 URL"];
+    csvData["S3 URL"] = s3Val.replace(",", " ");
+    const headerNames = Object.keys(csvData).join(",") + "\n";
+    const values = Object.entries(csvData)
       .map(([k, v]) => v)
       .join(",");
     return headerNames + values;
@@ -112,7 +104,6 @@ export default class CortxDownloadCsvDialog extends Vue {
   public async closeAccountDetailsDialog() {
     this.$emit("closeDialog", true);
     this.isCredentialsFileDownloaded = true;
-    this.credentialsFileContent = "";
   }
 }
 </script>
