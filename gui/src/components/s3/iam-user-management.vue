@@ -551,7 +551,7 @@ export default class CortxIAMUserManagement extends Vue {
   }
 
   public openConfirmDeleteDialog(username: string) {
-    this.iamConfirmMsg = `${i18n.t("s3.bucket.delete-confirm-msg")} ${username}?`;
+    this.iamConfirmMsg = `${i18n.t("s3.iam.confirm-msg")} ${username}?`;
     this.userToDelete = username;
     this.showConfirmDeleteDialog = true;
   }
