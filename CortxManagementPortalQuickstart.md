@@ -14,7 +14,7 @@ This guide provides a step-by-step walkthrough for getting you CORTX-Management-
 <summary>Before you begin</summary>
 <p>
    
-1. You'll need to install [CORTX-Manager](https://github.com/Seagate/blob/cortx-manager)  
+1. You'll need to install [CORTX-Manager](https://github.com/Seagate/blob/cortx-manager) or OVA.
 
 2. Login with super user:
    
@@ -43,9 +43,7 @@ This guide provides a step-by-step walkthrough for getting you CORTX-Management-
 </p>
 </details>
 
-## 1.2 Setup the Development Environment locally
-
-**Before you begin:** Ensure that you've installed Vue.js on the local system.
+## 1.2 Setup the Development Environment locally - make seperate steps for Web and Gui
 
 <details>
 <summary>Click to expand!</summary>
@@ -64,23 +62,26 @@ This guide provides a step-by-step walkthrough for getting you CORTX-Management-
 
    ` \cortx-management-portal\web` to install dependent packages
 
-4. Run `$ npm install` or `npm i`.
+4. Run `$ npm install` or `$ npm i` in both:
 
-5. Change the proxy in the `vue.config.js` file from the GUI folder to point or access the backend REST API
- proxy:
+   `\cortx-management-portal\gui` and,
+
+   ` \cortx-management-portal\web`
+
+5. Change the proxy in the `vue.config.js` file from the GUI folder to point or access the backend REST API proxy: **Web**
  
    `http://localhost:28100` to the required server proxy: 
   
    `http://10.230.244.254:28101`
 
-6. To connect middleware nodejs API, update the `.env` file with a few entries:
+6. To connect middleware nodejs API, update the `.env` file with a few entries: **web**
 
    ```shell
      SERVER_PROTOCOL="https" change to SERVER_PROTOCOL="http" CORTX_MANAGER_HOST="localhost"
    ```
    1. Change the above to: `CORTX_MANAGEMENT_PORTAL_HOST="10.230.244.254"`
   
-   2. Change the `LOG_FILE_PATH` to local directory path:
+   2. Change the `LOG_FILE_PATH` to local directory path: **web**
   
       `LOG_FILE_PATH="H:\\744541\\Documents\\log\\CORTX_MANAGER_middleware.log"`
 
@@ -96,13 +97,9 @@ This guide provides a step-by-step walkthrough for getting you CORTX-Management-
 </p>
 </details>
 
-## 1.3 Run Unit Test
+## 1.3 Run Unit Test - new process
 
-You can perform unit tests in two ways:
-
-1. Manual Unit Testing
-
-2. Test using build RPMs
+You can run a Unit Test using build RPMs: 
 
    - RPMs are generated for each pull request, please find RPMS's on below location for the cortx-management-portal.
 
@@ -119,11 +116,11 @@ Ensure you install all dependencies and meet prerequisites.
 1. Login to your VM using SSH your GitHub ID and Password.
 2. Remove previously installed cortx-management-portal RPMs (if any):
 
-   for pkg in `$ rpm -qa | grep -E "eos|salt"`; 
+   for pkg in `$ rpm -qa | grep -E "cortx|salt"`; 
    
    Run `$ yum remove -y $pkg` 
 
-3. Install cortx-management-portal RPM:
+3. Install cortx-management-portal RPM: - **dest path for rpm**
 
     `$ yum install -i <cortx-management-portal-rpm-link>`
 
@@ -160,7 +157,7 @@ To run the cortx-management-portal node application, open a duplicate tab and fo
  
 5. Once the cortx-management-portal starts successfully, it will return the URL to point to with the port. 
 
-   ### Run CORTX-Management-Portal UI: 
+### Run CORTX-Management-Portal UI: 
    
    1. To run cortx-management-portal UI, open a duplicate tab.
    2. Login as a super user.
