@@ -338,7 +338,6 @@ export default class CortxBucketCreation extends Vue {
   private policyJSON: any = "";
   private bucketName: any = "";
   private bucketNameTooltipMessage: string = bucketNameTooltipMessage;
-  private bucketUrl = "";
   private noBucketPolicy: boolean;
 
   constructor() {
