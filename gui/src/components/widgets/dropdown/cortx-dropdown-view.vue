@@ -18,8 +18,8 @@
   <div class="cortx-dropdown-container" tabindex="1" @blur="isMenuOpen = false" :style="{ width: width }">
     <div :class="['cortx-dropdown-title', isMenuOpen ? 'cortx-dropdown-title-active' : '']" @click="isMenuOpen = !isMenuOpen">
       <span class="cortx-text-md cortx-float-l cortx-dropdown-title-text">{{ selectedOption && selectedOption.label ? selectedOption.label : title }}</span>
-      <img v-if="isMenuOpen" class="cortx-float-r ml-2" :src="require('@/assets/caret-up.svg')" />
-      <img v-else class="cortx-float-r ml-2" :src="require('@/assets/caret-down.svg')" />
+      <img v-if="isMenuOpen" class="cortx-float-r ml-2" :src="require('@/assets/caret-up.svg')" id="opendropdown" />
+      <img v-else class="cortx-float-r ml-2" :src="require('@/assets/caret-down.svg')"  id="closedropdown"/>
     </div>
     <div class="cortx-dropdown-menu" v-show="isMenuOpen">
       <div
@@ -27,6 +27,7 @@
         v-for="option in options"
         :key="option.value"
         @click="onMenuItemSelect(option)"
+        :id="option.label"
       >
         <span class="cortx-text-md cortx-dropdown-menu-item-text">{{
           option.label

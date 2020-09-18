@@ -26,40 +26,40 @@
       <v-divider class="mt-2" />
       <v-expansion-panels class="mt-5">
         <v-expansion-panel>
-          <v-expansion-panel-header class="cortx-text-lg font-weight-bold"
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="ssl-certificate-title"
             >SSL certificate upload</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="lastSSLStatus.status">
             <div class="row ma-0">
               <div class="col-8 body-2 column mr-5 pt-0">
                 <table class="cortx-text-lg">
-                  <tr>
-                    <td style="width: 240px;">
+                  <tr id="ssl-status">
+                    <td style="width: 240px;" id="last-installtion-label">
                       <label>Last installation status:</label>
                     </td>
-                    <td>
+                    <td id="last-installation-value">
                       <label>{{ lastSSLStatus.status }}</label>
                     </td>
                   </tr>
                   <tr>
-                    <td>
+                    <td id="last-installation-filename-label">
                       <label>Last certificate filename:</label>
                     </td>
-                    <td>
+                    <td id="last-installation-filename-value">
                       <label>{{ lastSSLStatus.filename }}</label>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
+                  <tr id="last-installation">
+                    <td id="last-installation-upload-date-label">
                       <label>Last certificate upload date:</label>
                     </td>
-                    <td>{{ lastSSLStatus.date }}</td>
+                    <td id="last-installation-date-value">{{ lastSSLStatus.date }}</td>
                   </tr>
-                  <tr>
-                    <td>
+                  <tr id="serialnumber">
+                    <td id="serialnumber-label">
                       <label>Serial number:</label>
                     </td>
-                    <td>
+                    <td id="serialnumber-value">
                       <label>{{ lastSSLStatus.serial_number }}</label>
                     </td>
                   </tr>
@@ -77,9 +77,9 @@
               <template>
                 <div class="col-8 body-2 column mr-5 pt-0">
                   <table class="cortx-text-lg">
-                    <tr>
-                      <td class="large-table-data-label">{{$t("onBoarding.systemName")}}:</td>
-                      <td>{{ applianceName }}</td>
+                    <tr id="onboarding-system-name">
+                      <td class="large-table-data-label" id="appliancename-label" >{{$t("onBoarding.systemName")}}:</td>
+                      <td id="appliancename-value">{{ applianceName }}</td>
                     </tr>
                   </table>
                 </div>
@@ -89,21 +89,21 @@
         </v-expansion-panel>
 
         <v-expansion-panel>
-          <v-expansion-panel-header class="cortx-text-lg font-weight-bold"
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="dns-setting"
             >DNS settings</v-expansion-panel-header
           >
           <v-expansion-panel-content>
             <div class="row ma-0">
               <template v-for="(node, index) in dnsData">
                 <div class="col-8 body-2 column mr-5 pt-0" :key="index">
-                  <table class="cortx-text-lg">
+                  <table class="cortx-text-lg" id="dns-setting-table">
                     <tr>
-                      <td class="large-table-data-label">DNS servers:</td>
-                      <td>{{ node.dns_servers }}</td>
+                      <td class="large-table-data-label" id="dns-setting-label">DNS servers:</td>
+                      <td id="dns-setting-servername">{{ node.dns_servers }}</td>
                     </tr>
-                    <tr>
-                      <td>Search domains:</td>
-                      <td>{{ node.search_domain }}</td>
+                    <tr id="search-domain">
+                      <td id="serach-domain-label">Search domains:</td>
+                      <td id="serach-domaib-value">{{ node.search_domain }}</td>
                     </tr>
                   </table>
                 </div>
@@ -112,21 +112,21 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="cortx-text-lg font-weight-bold"
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="ntp-setting"
             >NTP settings</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="ntpData.ntp_server_address">
             <div class="row ma-0">
               <template>
                 <div class="col-8 body-2 column mr-5 pt-0">
-                  <table class="cortx-text-lg">
-                    <tr>
-                      <td class="large-table-data-label">Server address:</td>
-                      <td>{{ ntpData.ntp_server_address }}</td>
+                  <table class="cortx-text-lg" id="ntp-setting-table">
+                    <tr id="server-address">
+                      <td class="large-table-data-label" id="server-address=label">Server address:</td>
+                      <td id="server-address-value">{{ ntpData.ntp_server_address }}</td>
                     </tr>
-                    <tr>
-                      <td>Time zone offset:</td>
-                      <td>{{ ntpData.ntp_timezone_offset }}</td>
+                    <tr id="timezone">
+                      <td id="time-zone-label">Time zone offset:</td>
+                      <td id="time-zone-value">{{ ntpData.ntp_timezone_offset }}</td>
                     </tr>
                   </table>
                 </div>
@@ -135,33 +135,33 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel>
-          <v-expansion-panel-header class="cortx-text-lg font-weight-bold"
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="notification"
             >Notifications</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="notificationData.smtp_server">
             <div class="row ma-0">
               <template>
                 <div class="col-8 body-2 column mr-5 pt-0">
-                  <table class="cortx-text-lg">
-                    <tr>
-                      <td class="table-data-label">SMTP server:</td>
-                      <td>{{ notificationData.smtp_server }}</td>
+                  <table class="cortx-text-lg" id="notification-table">
+                    <tr id="smtp-server">
+                      <td class="table-data-label" id="smtp-server-label">SMTP server:</td>
+                      <td id="smtp-server-value">{{ notificationData.smtp_server }}</td>
                     </tr>
-                    <tr>
-                      <td>Sender email:</td>
-                      <td>{{ notificationData.smtp_sender_email }}</td>
+                    <tr id="sender-email">
+                      <td id="sender-email-label">Sender email:</td>
+                      <td id="sender-email-value">{{ notificationData.smtp_sender_email }}</td>
                     </tr>
-                    <tr>
-                      <td>Receiver email:</td>
-                      <td>{{ notificationData.email }}</td>
+                    <tr id="receiver-email">
+                      <td id="receiver-email-label">Receiver email:</td>
+                      <td id="receiver-email-value">{{ notificationData.email }}</td>
                     </tr>
-                    <tr>
-                      <td>Protocol:</td>
-                      <td>{{ notificationData.smtp_protocol }}</td>
+                    <tr id="protocol">
+                      <td id="protocol-label">Protocol:</td>
+                      <td id="protocol-value">{{ notificationData.smtp_protocol }}</td>
                     </tr>
-                    <tr>
-                      <td>SMTP port:</td>
-                      <td>{{ notificationData.smtp_port }}</td>
+                    <tr id="smtp-port">
+                      <td id="smtp-port-label">SMTP port:</td>
+                      <td id="smtp-port-value">{{ notificationData.smtp_port }}</td>
                     </tr>
                   </table>
                 </div>

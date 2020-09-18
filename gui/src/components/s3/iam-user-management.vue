@@ -45,7 +45,7 @@
 
             <template v-slot:item="props">
               <tr
-                id="iam-tabledata"
+                :id="props.item.user_name"
                 :class="{
                   'grey lighten-3': props.item.user_name === selectedIAMUser
                 }"

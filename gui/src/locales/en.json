@@ -1,6 +1,6 @@
 {
   "login": {
-    "login-label": "RACK Login",
+    "login-label": "Login",
     "login-btn": "Login",
     "user-name-placeholder": "Username",
     "password-placeholder": "Password",
@@ -100,7 +100,7 @@
     "shutdown-note": "Note: {node} is in shutdown state. You need to start it manually."
   },
   "udx-registration":{
-    "udx-registration": "UDX Registration",
+    "udx-registration": "Lyve Pilot Registration",
     "registration-token":"Your registration token",
     "udx-url-required":"URL is required",
     "invalid-url":"Invalid URL",
@@ -120,8 +120,8 @@
     "bucket-required":"Bucket name is required",
     "invalid-bucketname":"Invalid bucket name",
     "iagreetext":"I agree to the following:",
-    "firstcheck-text":"A dedicated UDX Bucket will be created in my account.",
-    "secondcheck-text":"An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.",
+    "firstcheck-text":"A dedicated Lyve Pilot Bucket will be created in my account.",
+    "secondcheck-text":"A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot bucket, and not to other data.",
     "register-btn":"Register",
     "clear":"Clear"
   },
@@ -138,7 +138,10 @@
     "addSystemName": "Add System name",
     "systemNameIsReq": "System name is required.",
     "enterValidSystemName": "Enter valid System name.",
-    "minimumFourChartSystemName": "Minimum 4 characters are required.",
+    "minimumTwoChartSystemName": "Minimum 2 characters are required.",
     "maxChartSystemName": "max 255 characters allow."
+  },
+  "health": {
+    "storage_encl": "Storage enclosure"
   }
 }
