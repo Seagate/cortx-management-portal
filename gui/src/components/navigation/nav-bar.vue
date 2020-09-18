@@ -115,7 +115,6 @@ export default class CortxNavBar extends Vue {
   bottom: 0;
   z-index: 5;
   width: 8.75em;
-  // padding-top: 0.75em;
   background: #000000;
 }
 .cortx-nav-item {
