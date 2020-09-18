@@ -744,6 +744,9 @@ tbody tr:hover {
   left: 20px;
   background-repeat: no-repeat;
 }
+.copy-url {
+  position: absolute;
+}
 
 /* Update the line-chart x and y axis label colors */
 .c3 .c3-axis-y text.c3-axis-y-label {

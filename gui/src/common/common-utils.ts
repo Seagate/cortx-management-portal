@@ -27,4 +27,14 @@ export default abstract class CommonUtils {
     }
     return -1;
   }
+  public static copyUrlToClipboard(url: string) {
+    const input = document.body.appendChild(document.createElement("input"));
+    input.value = url;
+    input.focus();
+    input.select();
+    document.execCommand("copy");
+    if (input.parentNode) {
+      input.parentNode.removeChild(input);
+    }
+  }
 }
