@@ -13,6 +13,8 @@
       "add-btn": "Add/Generate",
       "table-headers": {
         "user_name": "Username",
+        "user_id": "User id",
+        "arn": "ARN",
         "access_key": "Access key",
         "secret_key": "Secret key",
         "iam_access_key": "IAM Access key",
@@ -29,11 +31,73 @@
     "download-csv-dialog": {
       "created": "Access key created",
       "message": "Save this information, you will not see it again. Download as CSV and close.",
-      "btn": "Download as CSV"
+      "btn": "Download and close"
+    },
+    "account": {
+      "configuration": "S3 configuration",
+      "header-text": "Create an S3 account. You must log in to the system using S3 account credentials to manage S3 account, IAM users, and buckets.",
+      "url-label": "S3 URL:",
+      "url-label-no-colon": "S3 URL",
+      "name-required": "Account name is required.",
+      "invalid-account": "Invalid account name.",
+      "email-label": "Email*",
+      "email-required": "Email id is required.",
+      "invalid-email": "Invalid email id.",
+      "create-account-btn": "Create account",
+      "cancel-btn": "Cancel",
+      "update-btn": "Update",
+      "add-new-account": "Add new account",
+      "account-created": "Account created: access key and secret key",
+      "save-info": "Save this information, you will not see it again. Download as CSV and close.",
+      "account-name": "Account name",
+      "s3-url": "S3 URL",
+      "access-key": "Access key",
+      "secret-key": "Secret key",
+      "download-as-csv": "Download and close",
+      "ok": "Ok",
+      "loading-list": "Fetching all S3 accounts...",
+      "loading-create": "Creating account...",
+      "loading-update": "Updating account...",
+      "account-table": "Account name,Account Url,Access key,Secret key\n",
+      "copy-tooltip": "Copy url to clipboard"
+    },
+    "bucket": {
+      "name-require": "Bucket name is required.",
+      "invalid-name": "Invalid bucket name.",
+      "create-bucket": "Create bucket",
+      "created-successfully": "Bucket created successfully.",
+      "url-label": "Bucket url:",
+      "json-policy": "JSON policy",
+      "policy-info": "Type to add new bucket policy or edit an existing policy in the text area below.",
+      "policy-json-require": "Policy JSON is required.",
+      "fetching-policy": "Fetching bucket policy...",
+      "fetching-bucket": "Fetching bucket...",
+      "creating-bucket":"Creating bucket...",
+      "updating-policy": "Updating bucket policy...",
+      "delete-policy...": "Delete bucket policy...",
+      "delete-bucket": "Deleting bucket ",
+      "delete-confirm-msg": "Are you sure you want to delete s3bucket"
+    },
+    "iam": {
+      "user-name-required": "Username is required.",
+      "invalid-user": "Invalid username.",
+      "create-user-btn": "Create user",
+      "user-key-access": "User created:access key and secret key",
+      "confirm-msg": "Are you sure you want to delete IAM user"
+
     }
   },
   "common": {
     "title": "Cortx",
+    "create-btn": "Create",
+    "update-btn": "Update",
+    "cancel-btn": "Cancel",
+    "delete-btn": "Delete",
+    "ok-text": "Ok",
+    "password-required": "Password is required.",
+    "invalid-pass":"Invalid password.",
+    "confirm-pass-label": "Confirm password*",
+    "pass-not-match": "Passwords do not match",
     "confirm-dialog": {
       "title": "Confirmation"
     }
