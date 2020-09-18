@@ -193,7 +193,10 @@ const router = new Router({
               path: "",
               name: "health",
               component: CortxHealthSubmenu,
-              meta: { requiresAuth: true }
+              meta: {
+                requiresAuth: true,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
             },
             {
               path: "healthview",
@@ -310,7 +313,10 @@ const router = new Router({
               path: "",
               name: "maintenance-menu",
               component: CortxMaintenanceMenu,
-              meta: { requiresAuth: true }
+              meta: {
+                requiresAuth: true,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
             },
             {
               path: "auditlog",
