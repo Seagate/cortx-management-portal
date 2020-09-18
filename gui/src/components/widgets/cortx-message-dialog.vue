@@ -15,18 +15,18 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-overlay color="rgba(0, 0, 0, 0.75)" :value="$store.state.messageDialog.showDialog">
+  <v-overlay color="rgba(0, 0, 0, 0.75)" :value="$store.state.messageDialog.showDialog" id="show-msg-diagogbox">
     <div class="cortx-msg-dialog-container">
-      <div
+      <div id="msg-dialog-header"
         class="cortx-msg-dialog-header"
         :class="{ 'cortx-chip-warning': $store.state.messageDialog.type === 'warning', 'cortx-chip-alert': $store.state.messageDialog.type === 'error' }"
       >
-        <label class="cortx-msg-dialog-header-title">{{ $store.state.messageDialog.title }}</label>
-        <div class="cortx-msg-dialog-close" @click="closeDialog()"></div>
+        <label class="cortx-msg-dialog-header-title" id="msg-dialog-title">{{ $store.state.messageDialog.title }}</label>
+        <div class="cortx-msg-dialog-close" @click="closeDialog()" id="close-msg-dialogbox"></div>
       </div>
       <div class="cortx-msg-dialog-body">
-        <div class="cortx-msg-dialog-message">
-          <label>{{ $store.state.messageDialog.message }}</label>
+        <div class="cortx-msg-dialog-message" id="dialog-message">
+          <label id="dialog-message-label">{{ $store.state.messageDialog.message }}</label>
         </div>
       </div>
     </div>

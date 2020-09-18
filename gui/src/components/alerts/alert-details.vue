@@ -18,19 +18,10 @@
   <div class="cortx-p-2" v-if="alert">
     <div
       class="cortx-back-to-alerts-btn"
-      v-if="source===''&&nodeId===''"
-      @click="$router.push('/alerts')"
+      @click="$router.go(-1)"
     >
       <img :src="require('@/assets/arrow-left.svg')" />
-      <span class="mt-1">Alerts</span>
-    </div>
-    <div
-      class="cortx-back-to-alerts-btn"
-      v-if="source!==''&&nodeId!==''"
-      @click="$router.push({ path: '/health/healthview', query: { name: nodeId }})"
-    >
-      <img :src="require('@/assets/arrow-left.svg')" />
-      <span class="mt-1">Health</span>
+      <span class="mt-1">Back</span>
     </div>
     <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);" class="mt-4 mb-3">
       <div style="height: 30px;">
@@ -215,8 +206,6 @@ export default class CortxAlertDetails extends Vue {
   };
   public showOccurrenceTab: boolean = true;
   public showRelatedTab: boolean = false;
-  public nodeId: string | (string | null)[] = "";
-  public source: string | (string | null)[] = "";
   public tabsInfo: TabsInfo = {
     tabs: [{ id: 1, label: "Occurrences", show: true }],
     selectedTab: 1
@@ -229,8 +218,6 @@ export default class CortxAlertDetails extends Vue {
   };
   public async mounted() {
     this.alertId = this.$route.params.alert_id;
-    this.source = this.$route.query.source ? this.$route.query.source : "";
-    this.nodeId = this.$route.query.nodeId ? this.$route.query.nodeId : "";
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
       message: "Fetching alert details..."
@@ -311,18 +298,13 @@ export default class CortxAlertDetails extends Vue {
       show: true,
       message: loaderMessage
     });
-    try {
-      await Api.patch(
-        apiRegister.all_alerts,
-        { acknowledged: tempAlertAcknowledged },
-        this.alertId
-      );
-      this.alert.acknowledged = tempAlertAcknowledged;
-      this.$store.dispatch("alertDataAction");
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
-    }
+    await Api.patch(
+      apiRegister.all_alerts,
+      { acknowledged: tempAlertAcknowledged },
+      this.alertId
+    );
+    this.alert.acknowledged = tempAlertAcknowledged;
+    this.$store.dispatch("alertDataAction");
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: false,
       message: ""

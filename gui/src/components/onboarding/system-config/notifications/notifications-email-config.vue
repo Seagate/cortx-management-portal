@@ -97,6 +97,7 @@
             }"
           >
             <cortx-dropdown
+              id="notification-protocol-dropdownbox"
               @update:selectedOption="handleDropdownSelect"
               :options="protocolList"
               :title="protocol ? protocol : undefined"

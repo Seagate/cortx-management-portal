@@ -97,7 +97,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import { AccessKey } from "../../models/s3";
@@ -111,6 +111,9 @@ import i18n from "./../../i18n";
   components: { CortxDownloadCsvDialog }
 })
 export default class CortxAccessKeyManagement extends Vue {
+  @Prop({ required: true, default: "" })
+  public s3Url: string;
+
   private showConfirmDeleteDialog: boolean;
   private confirmDeleteDialogMessage: string = "";
   private showAccessKeyDetailsDialog: boolean;
@@ -157,6 +160,9 @@ export default class CortxAccessKeyManagement extends Vue {
       [`${i18n.t(
         "s3.access-key.table-headers.access_key"
       )}`]: createAccessKeyDetails.access_key_id,
+      [`${i18n.t(
+        "s3.account.url-label-no-colon"
+      )}`]: this.s3Url,
       [`${i18n.t(
         "s3.access-key.table-headers.secret_key"
       )}`]: createAccessKeyDetails.secret_key
