@@ -118,8 +118,8 @@
           class="pa-2"
           id="s3-create-account-form"
         >
-          <v-row>
-            <v-col class="pl-4 col-6 pb-0">
+          <v-row class="mt-2">
+            <v-col class="pl-4 col-6 pb-0 pt-0">
               <div
                 class="cortx-form-group-custom"
                 :class="{
@@ -167,7 +167,7 @@
                 </div>
               </div>
             </v-col>
-            <v-col class="pl-4 col-6 pb-0">
+            <v-col class="pl-4 col-6 pb-0 pt-0">
               <div
                 class="cortx-form-group-custom"
                 :class="{

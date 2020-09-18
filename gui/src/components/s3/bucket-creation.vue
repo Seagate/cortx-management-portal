@@ -255,7 +255,7 @@
               id="delete-bucket-policy"
               type="button"
               class="cortx-btn-primary ml-2"
-              :disabled="!$v.policyJSON.JSONValidator"
+              :disabled="!$v.policyJSON.JSONValidator || noBucketPolicy"
               @click="deleteBucketPolicy()"
             >
               Delete
@@ -338,6 +338,8 @@ export default class CortxBucketCreation extends Vue {
   private policyJSON: any = "";
   private bucketName: any = "";
   private bucketNameTooltipMessage: string = bucketNameTooltipMessage;
+  private bucketUrl = "";
+  private noBucketPolicy: boolean;
 
   constructor() {
     super();
@@ -431,6 +433,7 @@ export default class CortxBucketCreation extends Vue {
       this.policyJSON = JSON.stringify(res.data, null, 4);
     } catch (error) {
       this.policyJSON = "";
+      this.noBucketPolicy = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showBucketPolicyDialog = true;
