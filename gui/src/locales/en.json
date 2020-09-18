@@ -75,13 +75,15 @@
       "creating-bucket":"Creating bucket...",
       "updating-policy": "Updating bucket policy...",
       "delete-policy...": "Delete bucket policy...",
-      "delete-bucket": "Deleting bucket "
+      "delete-bucket": "Deleting bucket ",
+      "delete-confirm-msg": "Are you sure you want to delete s3bucket"
     },
     "iam": {
       "user-name-required": "Username is required.",
       "invalid-user": "Invalid username.",
       "create-user-btn": "Create user",
-      "user-key-access": "User created:access key and secret key"
+      "user-key-access": "User created:access key and secret key",
+      "confirm-msg": "Are you sure you want to delete IAM user"
 
     }
   },
@@ -161,8 +163,8 @@
     "confirm-message-shutdown-sub": "Please note that if you shutdown the node then the entire application will stop",
     "shutdown-note": "Note: {node} is in shutdown state. You need to start it manually."
   },
-  "udx-registration": {
-    "udx-registration": "UDX Registration",
+  "udx-registration":{
+    "udx-registration": "Lyve Pilot Registration",
     "registration-token":"Your registration token",
     "udx-url-required":"URL is required",
     "invalid-url":"Invalid URL",
@@ -182,8 +184,8 @@
     "bucket-required":"Bucket name is required",
     "invalid-bucketname":"Invalid bucket name",
     "iagreetext":"I agree to the following:",
-    "firstcheck-text":"A dedicated UDX Bucket will be created in my account.",
-    "secondcheck-text":"An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.",
+    "firstcheck-text":"A dedicated Lyve Pilot Bucket will be created in my account.",
+    "secondcheck-text":"A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot bucket, and not to other data.",
     "register-btn":"Register",
     "clear":"Clear"
   },
