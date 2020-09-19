@@ -91,6 +91,7 @@ export default class AlertsMixin extends Vue {
       show: false,
       message: ""
     });
+    this.$store.dispatch("alertDataAction");
   }
 
   public async acknowledgeAlert(alert: any) {
@@ -112,6 +113,7 @@ export default class AlertsMixin extends Vue {
       show: false,
       message: ""
     });
+    this.$store.dispatch("alertDataAction");
   }
 
   get currentPage() {
