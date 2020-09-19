@@ -15,17 +15,18 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <span class="d-flex">
+  <span class="d-flex" id="tooltip-label">
     {{ label }}
     <v-tooltip right max-width="305">
       <template v-slot:activator="{ on }">
-        <img
+        <img 
+          :id="label"
           class="cortx-info-icon"
           v-on="on"
           :src="require('@/assets/actions/info-green.svg')"
         />
       </template>
-      <span>{{ message }}</span>
+      <span id="tooltip-msg">{{ message }}</span>
     </v-tooltip>
   </span>
 </template>

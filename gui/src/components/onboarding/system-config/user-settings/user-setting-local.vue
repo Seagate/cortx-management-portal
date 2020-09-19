@@ -470,9 +470,9 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-expansion-panels class="ml-5 mr-4 mt-3">
-              <v-expansion-panel>
-                <v-expansion-panel-header class="pl-3"
+            <v-expansion-panels class="ml-5 mr-4 mt-3" id="open-expansionbox">
+              <v-expansion-panel >
+                <v-expansion-panel-header class="pl-3" id="change-password-text"
                   >Change password</v-expansion-panel-header
                 >
                 <v-expansion-panel-content>

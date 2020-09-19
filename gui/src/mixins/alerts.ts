@@ -84,18 +84,14 @@ export default class AlertsMixin extends Vue {
     this.alertObject.alerts.forEach((alert: any) => {
       currentPageAlertIds.push(alert.alert_uuid);
     });
-    try {
-      await Api.patch(apiRegister.all_alerts, currentPageAlertIds);
-      this.currentPage = this.currentPage > 1 ? this.currentPage-- : 1;
-      await this.onSortPaginate();
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
-    }
+    await Api.patch(apiRegister.all_alerts, currentPageAlertIds);
+    this.currentPage = this.currentPage > 1 ? this.currentPage-- : 1;
+    await this.onSortPaginate();
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: false,
       message: ""
     });
+    this.$store.dispatch("alertDataAction");
   }
 
   public async acknowledgeAlert(alert: any) {
@@ -117,6 +113,7 @@ export default class AlertsMixin extends Vue {
       show: false,
       message: ""
     });
+    this.$store.dispatch("alertDataAction");
   }
 
   get currentPage() {
