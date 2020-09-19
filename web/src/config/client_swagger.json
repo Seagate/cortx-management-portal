@@ -352,6 +352,18 @@
 						"type": "object",
 						"required": false,
 						"properties": {
+							"id": {	
+								"type": "string",	
+								"example": "nkpcsm4"	
+							},	
+							"username": {	
+								"type": "string",	
+								"example": "nkpcsm4"	
+							},	
+							"user_type": {	
+								"type": "string",	
+								"example": "csm"	
+							},
 							"roles": {
 								"type": "array",
 								"example": [manage]
