@@ -17,14 +17,14 @@
 <template>
   <div>
     <div class="udx-page-title">
-      <label class="cortx-text-lg cortx-text-bold" id="udx-title">UDX Registration</label>
+      <label class="cortx-text-lg cortx-text-bold" id="udx-title">{{ $t("udx-registration.udx-registration") }}</label>
     </div>
     <div id="udx-reg-token-container" class="mt-4" v-if="registrationToken">
       <div class="udx-reg-token-lbl">
         <label class="cortx-text-lg cortx-float-l" id="udx-tocken-title">Your registration token</label>
         <label class="cortx-float-l mt-1 ml-1">
           <cortx-info-tooltip
-            message="On your UDX web portal choose 'Add Device' and then enter the identification token below."
+            message="On your Lyve Pilot web portal choose 'Add Device' and then enter the identification token below."
           />
         </label>
       </div>
@@ -370,7 +370,7 @@
               <cortx-info-tooltip label="Bucket name*" :message="bucketNameTooltipMessage" />
             </label>
             <div class="cortx-bucket-input-prefix">
-              <label>udx-</label>
+              <label>ldp-</label>
             </div>
             <input
               class="cortx-form__input_text cortx-bucket-input"
@@ -407,7 +407,7 @@
           <label class="cortx-text-md" id="udx-agreelbl">I agree to the following:</label>
           <br />
           <label class="cortx-ckb-container" for="consentOne" id="udx-firstcheck">
-           A dedicated UDX Bucket will be created in my account.
+           A dedicated Lyve Pilot Bucket will be created in my account.
             <input
               type="checkbox"
               name="consentOne"
@@ -418,7 +418,7 @@
           </label>
           <br />
           <label class="cortx-ckb-container" for="consentTwo" id="udx-secondcheck">
-            An UDX IAM User will be created having complete access only to the UDX bucket, and not to other data.
+            An Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot bucket, and not to other data.
             <input
               type="checkbox"
               name="consentTwo"
@@ -604,7 +604,7 @@ export default class CortxUDXRegistration extends Vue {
         s3_account_password: this.registrationForm.accountPassword,
         iam_user_name: this.registrationForm.iamUsername,
         iam_user_password: this.registrationForm.iamUserPassword,
-        bucket_name: "udx-" + this.registrationForm.bucketName
+        bucket_name: "ldp-" + this.registrationForm.bucketName
       },
       { timeout: 120000 }
     );

@@ -26,14 +26,14 @@
           <div v-bind:class="usedLegendClass"></div>
         </td>
         <td class="width-110" id="capacity-used-text">Used</td>
-        <td>{{ capacityDetails.used }}</td>
+        <td>{{ capacityChartVal(capacityDetails.used) }}</td>
       </tr>
       <tr id="capacity-available">
         <td>
           <div class="capacity-available-badge"></div>
         </td>
         <td id="capacity-available-text">Available</td>
-        <td>{{ capacityDetails.avail }}</td>
+        <td>{{ capacityChartVal(capacityDetails.avail) }}</td>
       </tr>
     </table>
 
@@ -44,7 +44,7 @@
           <div></div>
         </td>
         <td class="width-110" id="capacity-total-text">Total</td>
-        <td>{{ capacityDetails.size }}</td>
+        <td>{{ capacityChartVal(capacityDetails.size) }}</td>
       </tr>
     </table>
   </div>
@@ -104,6 +104,19 @@ export default class CortxCapacityGauge extends Vue {
 
   get capacityDetails() {
     return this.$store.getters["performanceStats/getCapacity"];
+  }
+
+  public capacityChartVal(chartVal: number ) {
+     let chartValWithUnit = "";
+     const unitList  = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+     for (const unit of unitList) {
+       chartVal = chartVal / 1024;
+       if (chartVal / 100 < 10) {
+         chartValWithUnit = `${chartVal.toFixed(2)} ${unit}`;
+         break;
+       }
+     }
+     return chartValWithUnit;
   }
 }
 </script>
