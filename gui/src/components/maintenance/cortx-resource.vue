@@ -56,7 +56,7 @@
               </button>
             </v-col>
           </v-row>
-          <v-row class="mt-5 row-container" align="center" no-gutters>
+          <v-row class="mt-5 row-container" align="center" no-gutters v-if="stopService"> 
             <v-col col="3" lg="3">
               <label id="maintenance-stoplbl"
                 class="cortx-form-group-label font-weight-bold"
@@ -184,6 +184,7 @@ export default class CortxMaintenance extends Vue {
       dropdownWidth: "200px",
       actionMessage: "",
       showInfoDialog: false,
+      stopService: false,
       infoDialogMessage: i18n.t("systemMaintenance.system-info-dialog-message")
     };
   }

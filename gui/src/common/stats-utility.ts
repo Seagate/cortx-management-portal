@@ -169,8 +169,7 @@ export default abstract class StatsUtility {
   ): [string, ...any[]][] {
     const outputFormat: [string, ...any[]][] = [["data"]];
     if (payload !== null && payload !== undefined) {
-      const percentUsage = payload.usage_percentage.split(" ");
-      outputFormat[0].push(percentUsage[0]);
+      outputFormat[0].push(payload.usage_percentage);
     }
     return outputFormat;
   }
