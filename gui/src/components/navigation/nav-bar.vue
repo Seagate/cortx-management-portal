@@ -76,8 +76,8 @@ export default class CortxNavBar extends Vue {
       requiredAccess: "s3accounts"
     },
     {
-      title: "UDX",
-      path: "/udx",
+      title: "Lyve Pilot",
+      path: "/ldp",
       iconDefault: require("@/assets/navigation/udx-grey.svg"),
       iconActive: require("@/assets/navigation/udx-white.svg"),
       requiredAccess: "maintenance"
@@ -115,7 +115,6 @@ export default class CortxNavBar extends Vue {
   bottom: 0;
   z-index: 5;
   width: 8.75em;
-  padding-top: 0.75em;
   background: #000000;
 }
 .cortx-nav-item {
