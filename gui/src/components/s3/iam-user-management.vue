@@ -24,7 +24,7 @@
           {{ $t("s3.account.url-label") }}
         </label>
         <span id="s3-url-id">{{ s3Url[0] }}</span>
-        <span class="pl-1 pr-3">
+        <span class="pl-1 pr-3" v-if="s3Url[0]">
           <v-tooltip right max-width="300">
             <template v-slot:activator="{ on }">
               <img
@@ -39,7 +39,7 @@
           </v-tooltip>
         </span>
         <span class="ml-5" id="s3-url-id">{{ s3Url[1] }}</span>
-        <span class="pl-1">
+        <span class="pl-1" v-if="s3Url[1]">
           <v-tooltip right max-width="300">
             <template v-slot:activator="{ on }">
               <img
@@ -481,7 +481,7 @@ export default class CortxIAMUserManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_iam_user);
     this.usersList = res && res.data ? res.data.iam_users : [];
-    this.s3Url = res.data.s3_urls;
+    this.s3Url = res.data.s3_urls ? res.data.s3_urls : "";
     this.selectedIAMUser = this.usersList.length
       ? this.usersList[0].user_name
       : "";
