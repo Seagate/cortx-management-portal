@@ -77,6 +77,13 @@
                       "
                       >Invalid username.</label
                     >
+                    <label id="admin-username-invalid"
+                     v-else-if="
+                        $v.createAccount.username.$dirty &&
+                          !$v.createAccount.username.userNameRegex
+                      "
+                      >The username must not be 'root' or 'Root'.</label
+                    >
                   </div>
                 </div>
               </div>
@@ -209,20 +216,6 @@
               </div>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col class="pt-0">
-              <label class="cortx-ckb-container" for="emailCheckID" id="admin-emailnotificationlbl">
-                Subscribe to email notifications
-                <input
-                  type="checkbox"
-                  name="emailCheckID"
-                  v-model="createAccount.alert_notification"
-                  id="emailCheckID"
-                />
-                <span class="cortx-ckb-tick"></span>
-              </label>
-            </v-col>
-          </v-row>
           <button
             id="admin-createadminuser"
             type="button"
@@ -252,7 +245,8 @@ import {
   passwordRegex,
   passwordTooltipMessage,
   usernameTooltipMessage,
-  commaSeparatedEmailsRegex
+  commaSeparatedEmailsRegex,
+  userNameRegex
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
 @Component({
@@ -262,7 +256,7 @@ export default class CortxAdminUser extends Vue {
   @Validations()
   private validations = {
     createAccount: {
-      username: { required, accountNameRegex },
+      username: { required, accountNameRegex, userNameRegex},
       password: { required, passwordRegex },
       confirmPassword: {
         sameAsPassword: sameAs("password")
@@ -277,7 +271,7 @@ export default class CortxAdminUser extends Vue {
         password: "",
         confirmPassword: "",
         email: "",
-        alert_notification: true
+        alert_notification: true,
       },
       isValidResponse: true,
       invalidMessage: "",
