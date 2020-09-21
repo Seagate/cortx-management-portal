@@ -298,7 +298,7 @@ const router = new Router({
           component: CortxUDX,
           meta: {
             requiresAuth: true,
-            requiredAccess: userPermissions.maintenance + userPermissions.list
+            requiredAccess: userPermissions.lyve_pilot + userPermissions.list
           }
         },
         {
