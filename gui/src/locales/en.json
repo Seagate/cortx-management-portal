@@ -207,5 +207,14 @@
   },
   "health": {
     "storage_encl": "Storage enclosure"
+  },
+  "admin": {
+    "headerText": "Admin user configuration",
+    "adminUsernameReq":"Username is required.",
+    "usernameInvalid":"Invalid username.",
+    "invalidRootUsername":"The username must not be 'root' or 'Root'.",
+    "applyContinue":"Apply and continue"
+
+
   }
 }
