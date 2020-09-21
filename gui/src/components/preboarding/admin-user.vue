@@ -24,7 +24,7 @@
         class="ml-4 mb-1 black--text font-weight-bold"
         style="font-size: 18px"
       >
-        Admin user configuration
+        {{ $t("admin.headerText") }}
       </div>
       <div class="ml-4 my-2" id="admin-configuarion-text">
         Configure the username and password for the user with administrative
@@ -68,21 +68,21 @@
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.required
                       "
-                      >Username is required.</label
+                      > {{ $t("admin.adminUsernameReq") }}</label
                     >
                     <label id="admin-username-invalid"
                       v-else-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.accountNameRegex
                       "
-                      >Invalid username.</label
+                      >{{ $t("admin.usernameInvalid") }}</label
                     >
                     <label id="admin-username-invalid"
                      v-else-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.userNameRegex
                       "
-                      >The username must not be 'root' or 'Root'.</label
+                      >{{ $t("admin.invalidRootUsername") }}</label
                     >
                   </div>
                 </div>
@@ -100,7 +100,7 @@
                     class="cortx-form-group-label"
                     for="Email"
                     id="lblAdminEmail"
-                    >Email*</label
+                    >{{ $t("csmuser.email") }}</label
                   >
                   <div></div>
                   <input
@@ -117,14 +117,14 @@
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.required
                       "
-                      >Email is required.</label
+                      > {{ $t("csmuser.email-required") }}</label
                     >
                     <label id="admin-email-invalid"
                       v-else-if="
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.email
                       "
-                      >Invalid email.</label
+                      >{{ $t("csmuser.email-invalid") }}</label
                     >
                   </div>
                 </div>
@@ -165,14 +165,14 @@
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.required
                       "
-                      >Password is required.</label
+                      >{{ $t("csmuser.password-required") }}</label
                     >
                     <label id="admin-password-invalid"
                       v-else-if="
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.passwordRegex
                       "
-                      >Invalid password.</label
+                      >{{ $t("csmuser.password-invalid") }}</label
                     >
                   </div>
                 </div>
@@ -191,7 +191,7 @@
                     class="cortx-form-group-label"
                     for="confirmPassword"
                     id="lblConfirmAdminPassword"
-                    >Confirm password*</label
+                    >{{ $t("csmuser.confirm-password") }}*</label
                   >
                   <div></div>
                   <input
@@ -209,7 +209,7 @@
                         $v.createAccount.confirmPassword.$dirty &&
                           !$v.createAccount.confirmPassword.sameAsPassword
                       "
-                      >Passwords do not match.</label
+                      >{{ $t("csmuser.confirm-password-invalid") }}</label
                     >
                   </div>
                 </div>
@@ -223,7 +223,7 @@
             @click="gotToNextPage()"
             :disabled="$v.createAccount.$invalid || createUserInProgress"
           >
-            Apply and continue
+            {{ $t("admin.applyContinue") }}
           </button>
         </form>
         <div v-if="!isValidResponse" class="red--text mt-2" id="admin-invalidmsg">
@@ -249,6 +249,7 @@ import {
   userNameRegex
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
+import i18n from "./../../i18n";
 @Component({
   name: "cortx-admin-user"
 })
