@@ -88,7 +88,7 @@
     }
   },
   "common": {
-    "title": "Cortx",
+    "pageTitle": "CORTX",
     "create-btn": "Create",
     "update-btn": "Update",
     "cancel-btn": "Cancel",
