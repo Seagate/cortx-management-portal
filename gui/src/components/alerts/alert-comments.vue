@@ -45,6 +45,7 @@
             </div>
           </div>
         </div>
+         <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update">
         <div class="cortx-modal-footer">
           <div
             class="cortx-form-group"
@@ -53,12 +54,14 @@
             }"
             style="width: 100%;"
           >
+         
             <textarea
              id="alert-comment-textarea"
               class="cortx-form__input_textarea"
               v-model.trim="addCommentForm.comment_text"
               @input="$v.addCommentForm.comment_text.$touch"
             ></textarea>
+           
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 v-if="$v.addCommentForm.comment_text.$dirty && !$v.addCommentForm.comment_text.required"
@@ -84,6 +87,7 @@
             >Save</button>
           </div>
         </div>
+          </cortx-has-access>
       </div>
     </div>
   </div>
