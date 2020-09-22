@@ -22,7 +22,7 @@
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
       <div class="ml-4 white--text my-10" style="font-size: 26px;">
-        Welcome to LyveDrive Rack.
+        Welcome!!!
       </div>
       <div class="ml-4 mt-1 mb-8 white--text" id="welcome-pagetext">
         Click on Start to proceed with on onboarding steps.
