@@ -41,7 +41,7 @@
           {{ $t("s3.account.url-label") }}
         </label>
         <span id="s3-url-id">{{ s3Url[0] }}</span>
-        <span class="pl-1 pr-3">
+        <span v-if="s3Url[0]" class="pl-1 pr-3">
           <v-tooltip right max-width="300">
             <template v-slot:activator="{ on }">
               <img
@@ -56,7 +56,7 @@
           </v-tooltip>
         </span>
         <span class="ml-5" id="s3-url-id">{{ s3Url[1] }}</span>
-        <span class="pl-1">
+        <span v-if="s3Url[1]" class="pl-1">
           <v-tooltip right max-width="300">
             <template v-slot:activator="{ on }">
               <img
@@ -660,7 +660,7 @@ export default class CortxAccountManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
-    this.s3Url = res && res.data ? res.data.s3_urls : "";
+    this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : "";
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
