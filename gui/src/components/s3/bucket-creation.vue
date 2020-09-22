@@ -49,7 +49,7 @@
               <tr :id="props.item.name">
                 <td id="bucket-name">
                   {{ props.item.name }}
-                  <v-tooltip right max-width="300">
+                  <v-tooltip right max-width="300" v-if="props.item.bucket_url">
                     <template v-slot:activator="{ on }">
                       <img
                         id="s3-edit-account"
@@ -282,7 +282,7 @@
               id="delete-bucket-policy"
               type="button"
               class="cortx-btn-primary ml-2"
-              :disabled="!$v.policyJSON.JSONValidator"
+              :disabled="!$v.policyJSON.JSONValidator || noBucketPolicy"
               @click="deleteBucketPolicy()"
             >
               {{ $t("common.delete-btn") }}
@@ -369,6 +369,8 @@ export default class CortxBucketCreation extends Vue {
   private bucketName: any = "";
   private bucketNameTooltipMessage: string = bucketNameTooltipMessage;
   private bucketUrl = "";
+  private noBucketPolicy: boolean;
+
 
   constructor() {
     super();
@@ -471,6 +473,7 @@ export default class CortxBucketCreation extends Vue {
       this.policyJSON = JSON.stringify(res.data, null, 4);
     } catch (error) {
       this.policyJSON = "";
+      this.noBucketPolicy = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showBucketPolicyDialog = true;
