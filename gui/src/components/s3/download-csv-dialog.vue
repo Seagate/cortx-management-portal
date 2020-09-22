@@ -44,6 +44,7 @@
           </tr>
         </template>
       </table>
+      <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note")}}</div>
 
       <v-card-actions>
         <a
@@ -76,6 +77,9 @@ export default class CortxDownloadCsvDialog extends Vue {
 
   @Prop({ required: false })
   private title!: string;
+
+  @Prop({ required: true})
+  private s3UrlNone!: boolean;
 
   constructor() {
     super();
