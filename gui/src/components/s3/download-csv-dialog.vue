@@ -79,7 +79,7 @@ export default class CortxDownloadCsvDialog extends Vue {
   private title!: string;
 
   @Prop({ required: true})
-  private s3UrlNone!: boolean; 
+  private s3UrlNone!: boolean;
 
   constructor() {
     super();
