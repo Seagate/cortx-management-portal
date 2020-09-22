@@ -17,15 +17,6 @@
 <template>
   <v-dialog v-model="show" persistent max-width="790">
     <v-card>
-      <v-system-bar color="greay lighten-3">
-        <v-spacer></v-spacer>
-        <v-icon
-          id="download-csv-dialog-cancel-btn"
-          @click="closeAccountDetailsDialog()"
-          class="cortx-cursor-pointer"
-          >mdi-close</v-icon
-        >
-      </v-system-bar>
       <v-card-title class="title mt-6 ml-3">
         <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
         <span>{{ title }}</span>
@@ -43,10 +34,7 @@
         >
       </div>
 
-      <table
-        id="download-csv-dialog-datatable"
-        class="mt-2 ml-7 cortx-text-md"
-      >
+      <table id="download-csv-dialog-datatable" class="mt-2 ml-7 cortx-text-md">
         <template v-for="[item, value] in Object.entries(tableContent)">
           <tr :key="item">
             <td class="py-2 cortx-text-bold credentials-item-label">
@@ -63,18 +51,9 @@
           class="ma-5 cortx-btn-primary cortx-download-csv-link"
           :href="credentialsFileContent"
           download="credentials.csv"
-          @click="isCredentialsFileDownloaded = true"
+          @click="closeAccountDetailsDialog()"
           >{{ $t("s3.download-csv-dialog.btn") }}</a
         >
-        <button
-          id="download-csv-dialog-ok-btn"
-          :disabled="!isCredentialsFileDownloaded"
-          type="button"
-          class="ma-5 cortx-btn-primary"
-          @click="closeAccountDetailsDialog()"
-        >
-          Ok
-        </button>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -113,15 +92,16 @@ export default class CortxDownloadCsvDialog extends Vue {
   public getCredentialsFileContent(): string {
     const headerNames = Object.keys(this.tableContent).join(",") + "\n";
     const values = Object.entries(this.tableContent)
-      .map(([k, v]) => v)
+      .map(([k, v]) => {
+        return v.replaceAll(/,/g, " ");
+      })
       .join(",");
     return headerNames + values;
   }
 
   public async closeAccountDetailsDialog() {
     this.$emit("closeDialog", true);
-    this.isCredentialsFileDownloaded = false;
-    this.credentialsFileContent = "";
+    this.isCredentialsFileDownloaded = true;
   }
 }
 </script>

@@ -46,8 +46,26 @@
             </template>
 
             <template v-slot:item="props">
-              <tr id="bucket-data">
-                <td id="bucket-name">{{ props.item.name }}</td>
+              <tr :id="props.item.name">
+                <td id="bucket-name">
+                  {{ props.item.name }}
+                  <v-tooltip right max-width="300" v-if="props.item.bucket_url">
+                    <template v-slot:activator="{ on }">
+                      <img
+                        id="s3-edit-account"
+                        v-on:click="copyBucketUrl(props.item.bucket_url)"
+                        v-on="on"
+                        class="cortx-cursor-pointer copy-url"
+                        src="@/assets/actions/copy-text.svg"
+                      />
+                    </template>
+                    <span id="copy-tooltip"
+                      >{{ props.item.bucket_url }}<br />{{
+                        $t("s3.account.copy-tooltip")
+                      }}</span
+                    >
+                  </v-tooltip>
+                </td>
                 <td>
                   <img
                     id="bucket-edit-icon"
@@ -103,7 +121,7 @@
                       $v.createBucketForm.bucket.bucket_name.$dirty &&
                         !$v.createBucketForm.bucket.bucket_name.required
                     "
-                    >Bucket name is required.</label
+                    >{{ $t("s3.bucket.name-require") }}</label
                   >
                   <label
                     id="bucket-name-invalid"
@@ -111,7 +129,7 @@
                       $v.createBucketForm.bucket.bucket_name.$dirty &&
                         !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
                     "
-                    >Invalid bucket name.</label
+                    >{{ $t("s3.bucket.invalid-name") }}</label
                   >
                 </div>
               </div>
@@ -126,7 +144,7 @@
                 @click="createBucket()"
                 :disabled="$v.createBucketForm.$invalid"
               >
-                Create bucket
+                {{ $t("s3.bucket.create-bucket") }}
               </button>
               <button
                 id="bucket-cancel-btn"
@@ -134,7 +152,7 @@
                 class="cortx-btn-tertiary"
                 @click="closeCreateBucketForm()"
               >
-                Cancel
+                {{ $t("common.cancel-btn") }}
               </button>
             </v-col>
           </v-row>
@@ -149,7 +167,7 @@
             v-if="!showCreateBucketForm"
             @click="openCreateBucketForm()"
           >
-            Create
+            {{ $t("common.create-btn") }}
           </button>
         </cortx-has-access>
       </v-col>
@@ -159,7 +177,7 @@
       id="bucket-create-succeaadialogbox"
       v-model="showBucketCreateSuccessDialog"
       persistent
-      max-width="400"
+      max-width="500"
     >
       <v-card>
         <v-system-bar color="grey lighten-3">
@@ -171,11 +189,19 @@
             >mdi-close</v-icon
           >
         </v-system-bar>
-        <v-card-title class="title mt-6 ml-3">
+        <v-card-title class="title mt-5">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span id="bucket-created-success-mgs"
-            >Bucket created successfully.</span
-          >
+          <span id="bucket-created-success-mgs">{{
+            $t("s3.bucket.created-successfully")
+          }}</span>
+          <table class="mt-2 ml-9 cortx-text-md">
+            <tr>
+              <td class="py-2 cortx-text-bold bucket-url-label">
+                {{ $t("s3.bucket.url-label") }}
+              </td>
+              <td class="py-2 bucket-url-text">{{ bucketUrl }}</td>
+            </tr>
+          </table>
         </v-card-title>
         <v-card-actions>
           <button
@@ -184,7 +210,7 @@
             class="ma-5 cortx-btn-primary"
             @click="closeBucketCreateSuccessDialog()"
           >
-            Ok
+            {{ $t("common.ok-text") }}
           </button>
         </v-card-actions>
       </v-card>
@@ -197,7 +223,9 @@
     >
       <div class="cortx-modal bucket-policy-editor">
         <div class="cortx-modal-header">
-          <label id="bucket-json-policy-lbl">JSON policy</label>
+          <label id="bucket-json-policy-lbl">{{
+            $t("s3.bucket.json-policy")
+          }}</label>
           <img
             id="close-bucket-policydialog"
             class="cortx-modal-close"
@@ -217,8 +245,7 @@
               for="policyJSONTextarea"
               id="bucket-policy-text"
             >
-              Type to add new bucket policy or edit an existing policy in the
-              text area below.
+              {{ $t("s3.bucket.policy-info") }}
             </label>
             <textarea
               class="cortx-form__input_textarea cortx-form__input_textarea-custom"
@@ -232,7 +259,7 @@
               <label
                 id="policy-required-msg"
                 v-if="$v.policyJSON.$dirty && !$v.policyJSON.required"
-                >Policy JSON is required.</label
+                >{{ $t("s3.bucket.json-policy") }}</label
               >
               <label
                 id="policy-jsonerror"
@@ -249,16 +276,16 @@
               :disabled="!$v.policyJSON.JSONValidator"
               @click="updateBucketPolicy()"
             >
-              Update
+              {{ $t("common.update-btn") }}
             </button>
             <button
               id="delete-bucket-policy"
               type="button"
               class="cortx-btn-primary ml-2"
-              :disabled="!$v.policyJSON.JSONValidator"
+              :disabled="!$v.policyJSON.JSONValidator || noBucketPolicy"
               @click="deleteBucketPolicy()"
             >
-              Delete
+              {{ $t("common.delete-btn") }}
             </button>
             <button
               id="cancel-bucket-policy"
@@ -266,7 +293,7 @@
               class="cortx-btn-tertiary"
               @click="closeBucketPolicyDialog()"
             >
-              Cancel
+              {{ $t("common.cancel-btn") }}
             </button>
           </div>
         </div>
@@ -277,7 +304,7 @@
       id="bucket-confirmation-dialog"
       :show="showConfirmDeleteDialog"
       title="Confirmation"
-      message="Are you sure you want to delete the bucket?"
+      :message="confirmMsg"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
@@ -291,11 +318,13 @@ import { required, helpers, minLength } from "vuelidate/lib/validators";
 import { Bucket } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import i18n from "../../i18n";
 
 import {
   bucketNameRegex,
   bucketNameTooltipMessage
 } from "./../../common/regex-helpers";
+import CommonUtils from "../../common/common-utils";
 
 @Component({
   name: "cortx-bucket-creation"
@@ -304,6 +333,7 @@ export default class CortxBucketCreation extends Vue {
   public createBucketForm = {
     bucket: {} as Bucket
   };
+  public confirmMsg: string = "";
   @Validations()
   public validations = {
     createBucketForm: {
@@ -338,6 +368,8 @@ export default class CortxBucketCreation extends Vue {
   private policyJSON: any = "";
   private bucketName: any = "";
   private bucketNameTooltipMessage: string = bucketNameTooltipMessage;
+  private bucketUrl = "";
+  private noBucketPolicy: boolean;
 
   constructor() {
     super();
@@ -367,18 +399,26 @@ export default class CortxBucketCreation extends Vue {
   }
 
   public async getAllBuckets() {
-    this.$store.dispatch("systemConfig/showLoader", "Fetching all buckets...");
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.fetching-bucket")
+    );
     const res: any = await Api.getAll(apiRegister.s3_bucket);
     this.bucketsList = res && res.data ? res.data.buckets : [];
+
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
   public async createBucket() {
-    this.$store.dispatch("systemConfig/showLoader", "Creating bucket...");
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.creating-bucket")
+    );
     const res = await Api.post(
       apiRegister.s3_bucket,
       this.createBucketForm.bucket
     );
+    this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
     if (!res.error) {
       this.showBucketCreateSuccessDialog = true;
     }
@@ -411,6 +451,7 @@ export default class CortxBucketCreation extends Vue {
   }
 
   public openConfirmDeleteDialog(bucketName: string) {
+    this.confirmMsg = `${i18n.t("s3.bucket.delete-confirm-msg")} ${bucketName}?`;
     this.bucketToDelete = bucketName;
     this.showConfirmDeleteDialog = true;
   }
@@ -422,7 +463,7 @@ export default class CortxBucketCreation extends Vue {
     this.bucketName = bucketname;
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Fetching bucket policy..."
+      i18n.t("s3.bucket.fetching-policy")
     );
     try {
       const res: any = await Api.getAll(
@@ -431,6 +472,7 @@ export default class CortxBucketCreation extends Vue {
       this.policyJSON = JSON.stringify(res.data, null, 4);
     } catch (error) {
       this.policyJSON = "";
+      this.noBucketPolicy = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showBucketPolicyDialog = true;
@@ -455,7 +497,7 @@ export default class CortxBucketCreation extends Vue {
     this.showBucketPolicyDialog = false;
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Updating bucket policy..."
+      i18n.t("s3.bucket.updating-policy")
     );
     await Api.put(apiRegister.bucket_policy, policy, this.bucketName);
     this.policyJSON = "";
@@ -463,18 +505,24 @@ export default class CortxBucketCreation extends Vue {
   }
   public async deleteBucketPolicy() {
     this.showBucketPolicyDialog = false;
-    this.$store.dispatch("systemConfig/showLoader", "Delete bucket policy...");
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.delete-policy")
+    );
     await Api.delete(apiRegister.bucket_policy, this.bucketName);
     this.$store.dispatch("systemConfig/hideLoader");
   }
   private async deleteBucket() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Deleting bucket " + this.bucketToDelete
+      i18n.t("s3.bucket.delete-bucket") + this.bucketToDelete
     );
     await Api.delete(apiRegister.s3_bucket, this.bucketToDelete);
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getAllBuckets();
+  }
+  private async copyBucketUrl(url: string) {
+    CommonUtils.copyUrlToClipboard(url);
   }
 }
 </script>
@@ -493,5 +541,11 @@ export default class CortxBucketCreation extends Vue {
 }
 .bucket-policy-editor {
   width: 600px;
+}
+.bucket-url-label {
+  width: 6rem;
+}
+.bucket-url-text {
+  word-break: break-all;
 }
 </style>

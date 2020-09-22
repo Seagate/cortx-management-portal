@@ -20,7 +20,7 @@
       <div class="cortx-modal-container">
         <div class="cortx-modal cortx-modal-onboarding">
           <div class="cortx-modal-header">
-            <label> {{ agreementText.title }}</label>
+            <label id="agreement-title"> {{ agreementText.title }}</label>
             <img
               id="license-cancelagreementicon"
               class="cortx-modal-close"
@@ -29,8 +29,8 @@
             />
           </div>
           <div class="cortx-modal-body ">
-            <div class="title-container pr-3">
-              <div v-html="agreementText.description"></div>
+            <div class="title-container pr-3" id="agreement-data">
+              <div v-html="agreementText.description" id="agreement-discription"></div>
             </div>
             <div class="mt-5 nav-btn">
               <button

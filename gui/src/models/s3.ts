@@ -42,4 +42,5 @@ export interface IAMUser {
 
 export interface Bucket {
   bucket_name: string;
+  bucket_url: string;
 }
