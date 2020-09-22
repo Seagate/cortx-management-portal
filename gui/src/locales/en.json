@@ -59,7 +59,8 @@
       "loading-create": "Creating account...",
       "loading-update": "Updating account...",
       "account-table": "Account name,Account Url,Access key,Secret key\n",
-      "copy-tooltip": "Copy url to clipboard"
+      "copy-tooltip": "Copy url to clipboard",
+      "url-note": "Note: This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface."
     },
     "bucket": {
       "name-require": "Bucket name is required.",
@@ -207,5 +208,14 @@
   },
   "health": {
     "storage_encl": "Storage enclosure"
+  },
+  "admin": {
+    "headerText": "Admin user configuration",
+    "adminUsernameReq":"Username is required.",
+    "usernameInvalid":"Invalid username.",
+    "invalidRootUsername":"The username must not be 'root' or 'Root'.",
+    "applyContinue":"Apply and continue"
+
+
   }
 }
