@@ -151,7 +151,7 @@
         <cortx-has-access
           :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
         >
-          <cortx-access-key-management :s3Url="s3Url.toString()"></cortx-access-key-management>
+          <cortx-access-key-management :s3Url="s3Url.toString()" :s3UrlNone= "s3UrlNone"></cortx-access-key-management>
         </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-5">
@@ -509,7 +509,7 @@
             </td>
             <td class="py-2" id="s3-account-name-popup-value">{{ account.account_name }}</td>
           </tr>
-          <tr>
+          <tr v-if="!s3UrlNone">
             <td class="py-2 cortx-text-bold credentials-item-label" id="s3-access-key-popup-label">
               {{ $t("s3.account.url-label") }}
             </td>
@@ -528,6 +528,7 @@
             <td class="py-2" id="s3-secret-key-popup-value">{{ account.secret_key }}</td>
           </tr>
         </table>
+        <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note")}}</div>
 
         <v-card-actions>
           <a
@@ -621,7 +622,8 @@ export default class CortxAccountManagement extends Vue {
   private credentialsFileContent: string = "";
   private showEditAccountForm: boolean;
   private editAccoutName: string;
-  private s3Url: string = "";
+  private s3Url = [];
+  private s3UrlNone: boolean = false;
 
   constructor() {
     super();
@@ -660,7 +662,10 @@ export default class CortxAccountManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
-    this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : "";
+    this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
+    if (this.s3Url[0] === "http://None") {
+      this.s3UrlNone = true;
+    }
     this.$store.dispatch("systemConfig/hideLoader");
   }
 

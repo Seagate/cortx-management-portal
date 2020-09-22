@@ -334,7 +334,7 @@
             <td class="py-2 cortx-text-bold credentials-item-label">{{ $t("s3.access-key.table-headers.user_id") }}</td>
             <td class="py-2">{{ user.user_id }}</td>
           </tr>
-          <tr>
+          <tr v-if="!s3UrlNone">
             <td class="py-2 cortx-text-bold credentials-item-label">
               {{ $t("s3.account.s3-url") }}
             </td>
@@ -357,6 +357,7 @@
             <td class="py-2">{{ user.secret_key }}</td>
           </tr>
         </table>
+        <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note")}}</div>
 
         <v-card-actions>
           <a
@@ -442,7 +443,8 @@ export default class CortxIAMUserManagement extends Vue {
   private isCredentialsFileDownloaded: boolean = false;
   private selectedIAMUser: string = "";
   private itemsPerPage: number = 5;
-  private s3Url: string = "";
+  private s3Url = [];
+  private s3UrlNone: boolean = false;
 
   constructor() {
     super();
@@ -481,7 +483,10 @@ export default class CortxIAMUserManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_iam_user);
     this.usersList = res && res.data ? res.data.iam_users : [];
-    this.s3Url = res.data.s3_urls ? res.data.s3_urls : "";
+    this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
+    if (this.s3Url[0] === "http://None") {
+      this.s3UrlNone = true;
+    }
     this.selectedIAMUser = this.usersList.length
       ? this.usersList[0].user_name
       : "";
