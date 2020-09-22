@@ -92,6 +92,7 @@
       :show="showAccessKeyDetailsDialog"
       :title="$t('s3.download-csv-dialog.created')"
       :tableContent="accessKeyDetails"
+      :s3UrlNone = "s3UrlNone"
       @closeDialog="showAccessKeyDetailsDialog = false"
     ></cortx-download-csv-dialog>
   </div>
@@ -113,6 +114,9 @@ import i18n from "./../../i18n";
 export default class CortxAccessKeyManagement extends Vue {
   @Prop({ required: true, default: "" })
   public s3Url: string;
+
+  @Prop({ required: true, default: false})
+  public s3UrlNone: boolean
 
   private showConfirmDeleteDialog: boolean;
   private confirmDeleteDialogMessage: string = "";
@@ -167,7 +171,10 @@ export default class CortxAccessKeyManagement extends Vue {
         "s3.access-key.table-headers.secret_key"
       )}`]: createAccessKeyDetails.secret_key
     };
-
+    
+    if (this.s3UrlNone) {
+      this.accessKeyDetails["S3 URL"];
+    }
     this.showAccessKeyDetailsDialog = true;
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getAllAccessKeys();
