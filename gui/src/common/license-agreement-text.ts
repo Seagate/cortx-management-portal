@@ -15,17 +15,10 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 export const agreementText = {
-  title: `CORTX Agreement`,
-  description: `<div
-  class="font-weight-bold text-center"
->
-  CORTX PROGRAM PARTICIPATION AUTHORIZATION AND WAIVER
-</div>
-<p class="mt-5">
-CORTX community is happy to provide this virtual machine image for the convenience of the community to test the CORTX software.
-This image is provided merely for testing purposes and is not a supported Seagate product.
-Users should use this image only for testing purposes and should not store any critical data on it.
-This image comes with no support implicit or otherwise; use and enjoy but do so at your own risk.
-For questions about this image or about the CORTX software, please use the appropriate community channels at github.com/Seagate/cortx.
+  title: `CORTX Terms and Conditions`,
+  description: `
+<p>
+CORTX community is happy to provide this for the convenience of the community to test CORTX. This is provided merely for testing purposes and is supported through CORTX community. Users should use this only for testing purposes and should not store any critical data on it. Use and enjoy but do so at your own risk. For questions about CORTX, please use the appropriate community channels at
+<a target="_blank" href="https://github.com/Seagate/">https://github.com/Seagate/</a>.
 </p>`
 };
