@@ -39,7 +39,7 @@
                 class="cortx-btn-primary mr-2"
                 @click="acceptAgreement"
               >
-                Accept
+                {{ $t("common.accept") }}
               </button>
 
               <button
@@ -48,7 +48,7 @@
                 class="cortx-btn-tertiary"
                 @click="cancelAgreement"
               >
-                Cancel
+                {{ $t("common.cancel") }}
               </button>
             </div>
           </div>
@@ -60,6 +60,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { agreementText } from "./../../common/license-agreement-text";
+import i18n from "./../../i18n";
+
 @Component({
   name: "cortx-onboarding-finish"
 })

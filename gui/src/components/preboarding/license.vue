@@ -22,7 +22,7 @@
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
       <div class="ml-4 mt-4 white--text mb-5">
-        To set up your system, you must accept the Terms and Conditions.
+        {{ $t("license.header") }}
       </div>
       <button
         id="show-license-agreement-dialogbtn"
@@ -30,7 +30,7 @@
         class="cortx-btn-primary-dark ml-4"
         @click="showLicenseAgreement = true"
       >
-        <span>Get started</span>
+        <span>{{ $t("license.getStarted") }}</span>
       </button>
       <LicenseAgreement
        id="license-agreement-close"
@@ -43,6 +43,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import LicenseAgreement from "./license-agreement.vue";
+import i18n from "./../../i18n";
 
 @Component({
   name: "cortx-welcome",
