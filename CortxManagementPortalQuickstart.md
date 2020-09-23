@@ -3,7 +3,7 @@
 This guide provides a step-by-step walkthrough for getting you CORTX-Management-Portal ready.
 
 - [1.0 Prerequisites](##10-Prerequisites)
-- [1.2 1.2 Setup the Development Environment locally](#12-Setup-the-Development-Environment-locally)
+- [1.2 1.2 Setup the Development Environment Locally](#12-Setup-the-Development-Environment-Locally)
 - [1.3 Run Unit Test](#13-Run-Unit-Test)
 - [1.4 Deploy the CORTX-Management-Portal on your VM](#14-Deploy-the-CORTX-Management-Portal-on-your-VM)
 - [1.5 Run Cortx-Management-Portal UI](#15-Run-Cortx-Management-Portal)
@@ -14,9 +14,9 @@ This guide provides a step-by-step walkthrough for getting you CORTX-Management-
 <summary>Before you begin</summary>
 <p>
    
-1. You'll need to install [CORTX-Manager](https://github.com/Seagate/blob/cortx-manager) or OVA.
+1. You'll need to install [CORTX-Manager](https://github.com/Seagate/blob/cortx-manager) or [Import OVA](https://github.com/Seagate/cortx/blob/main/doc/Importing_OVA_File.rst).
 
-2. Login with super user:
+2. Login as a super user:
    
    `$ sudo su`
 
@@ -37,16 +37,38 @@ This guide provides a step-by-step walkthrough for getting you CORTX-Management-
    npm
    ``` 
 4. Install GitHub
-     
-     Refer to the [Contributing to CORTX Management Portal](Contribution.md) document to install GitHub and clone cortx-manager and its dependent repos.
+   
+   Refer to the [Contributing to CORTX Management Portal](CONTRIBUTING.md) document to install GitHub and clone cortx-manager & dependent repositories.
  
 </p>
 </details>
 
-## 1.2 Setup the Development Environment locally - make seperate steps for Web and Gui
+## 1.2 Setup the Development Environment Locally
 
 <details>
-<summary>Click to expand!</summary>
+   <summary>Setup the GUI Development Environment Locally</summary>
+   <p>
+ 
+ 1. Click open the UI repository link [here](https://github.com/Seagate/cortx-management-portal).
+2. Clone the UI repository using this [URL](https://github.com/Seagate/cortx-management-portal.git) in new folder and run:
+
+  ```shell
+
+  $ git clone  https://github.com/Seagate/cortx-cortx-management-portal.git
+  ```
+3. Run the following command to install dependent packages:
+
+   `\cortx-management-portal\gui` 
+   
+4. Run `$ npm install` or `$ npm i`:
+
+   `\cortx-management-portal\gui` 
+
+</p>
+</details>
+
+<details>
+<summary>Setup the Web Development Environment Locally</summary>
 <p>
 
 1. Click open the UI repository link [here](https://github.com/Seagate/cortx-management-portal).
@@ -56,32 +78,28 @@ This guide provides a step-by-step walkthrough for getting you CORTX-Management-
 
   $ git clone  https://github.com/Seagate/cortx-cortx-management-portal.git
   ```
-3. Run the following command in both:
-
-   `\cortx-management-portal\gui` and,
-
-   ` \cortx-management-portal\web` to install dependent packages
-
-4. Run `$ npm install` or `$ npm i` in both:
-
-   `\cortx-management-portal\gui` and,
+3. Run the following command to install dependent packages:
 
    ` \cortx-management-portal\web`
 
-5. Change the proxy in the `vue.config.js` file from the GUI folder to point or access the backend REST API proxy: **Web**
+4. Run `$ npm install` or `$ npm i`:
+
+   ` \cortx-management-portal\web`
+
+5. Change the proxy in the `vue.config.js` file from the GUI folder to point or access the backend REST API proxy:
  
    `http://localhost:28100` to the required server proxy: 
   
    `http://10.230.244.254:28101`
 
-6. To connect middleware nodejs API, update the `.env` file with a few entries: **web**
+6. To connect middleware nodejs API, update the `.env` file with a few entries: 
 
    ```shell
      SERVER_PROTOCOL="https" change to SERVER_PROTOCOL="http" CORTX_MANAGER_HOST="localhost"
    ```
    1. Change the above to: `CORTX_MANAGEMENT_PORTAL_HOST="10.230.244.254"`
   
-   2. Change the `LOG_FILE_PATH` to local directory path: **web**
+   2. Change the `LOG_FILE_PATH` to local directory path:
   
       `LOG_FILE_PATH="H:\\744541\\Documents\\log\\CORTX_MANAGER_middleware.log"`
 
@@ -101,17 +119,26 @@ This guide provides a step-by-step walkthrough for getting you CORTX-Management-
 
 You can run a Unit Test using build RPMs: 
 
-   - RPMs are generated for each pull request, please find RPMS's on below location for the cortx-management-portal.
-
-     [http://cortx-storage.colo.seagate.com/releases/cortx/components/dev/multibranch/cortx-management-portal/]
+  <details>
+   <summary>Click to expand!</summary>
+   <p>
+      
+- RPMs are generated for each pull request, please find RPMS's on below location for the cortx-management-portal:
    
-   - You'll need to install the RPM on your VM.
+   [http://cortx-storage.colo.seagate.com/releases/cortx/components/dev/multibranch/cortx-management-portal/](http://cortx-storage.colo.seagate.com/releases/cortx/components/dev/multibranch/cortx-management-portal/)
+   
+- You'll need to install the RPM on your VM.
+
+</p>
+</details>
 
 ## 1.4 Deploy the CORTX-Management-Portal on your VM
 
-**Before you begin:** 
+**Before you begin:** Ensure you install all dependencies and meet prerequisites.
 
-Ensure you install all dependencies and meet prerequisites.
+<details>
+   <summary>Deploy CORTX-Management-Portal on VM</summary>
+   <p>
 
 1. Login to your VM using SSH your GitHub ID and Password.
 2. Remove previously installed cortx-management-portal RPMs (if any):
@@ -120,9 +147,11 @@ Ensure you install all dependencies and meet prerequisites.
    
    Run `$ yum remove -y $pkg` 
 
-3. Install cortx-management-portal RPM: - **dest path for rpm**
+3. Install cortx-management-portal RPM: 
 
-    `$ yum install -i <cortx-management-portal-rpm-link>`
+    `$ yum install -i ./dist/rpmbuild/RPMS/x86_64/cortx-csm_agent-web.rpm`
+    
+    `$ yum install -i ./dist/rpmbuild/RPMS/x86_64/cortx-csm_agent-gui.rpm`
 
 4. Executing cortx-management-portal-setup commands should pass: 
 
@@ -137,9 +166,16 @@ Ensure you install all dependencies and meet prerequisites.
    `$ systemctl restart cortx_management_portal`
    `$ systemctl enable cortx_management_portal`
    
+   </p>
+   </details>
+   
 ## 1.5 Run CORTX-Management-Portal 
 
-To run the cortx-management-portal node application, open a duplicate tab and follow these steps:
+To run the cortx-management-portal node application:
+
+<details>
+   <summary>Open a duplicate tab and follow these steps:</summary>
+   <p>
 
 1. Login as super user.
 2. Change the `.env` file in web for server_protocol from `https` to `http` 
@@ -157,7 +193,14 @@ To run the cortx-management-portal node application, open a duplicate tab and fo
  
 5. Once the cortx-management-portal starts successfully, it will return the URL to point to with the port. 
 
+</p>
+</details>
+
 ### Run CORTX-Management-Portal UI: 
+
+<details>
+   <sumamry>Run CORTX-Management-Portal UI</summary>
+   <p>
    
    1. To run cortx-management-portal UI, open a duplicate tab.
    2. Login as a super user.
@@ -177,22 +220,36 @@ To run the cortx-management-portal node application, open a duplicate tab and fo
    7. Copy this link and open the UI in the browser. 
    8. You'll be redirected to the login page. 
    
+   </p>
+   </details>
+   
+   You'll need to complete the [Preboarding](#Preboarding) and [Onboarding](#Onboarding) steps to start using the CORTX-Management-Portal UI.
+   
    ### Preboarding
    
    **Before you begin:** To proceed with login and create your administrator account, navigate to http://<hostname>:<port>/#/preboarding/welcome.
    
    :page_with_curl: **Note:** You can create the admin user only once during setting up the system. The admin user has all the permissions in the system. 
    
-   You must log in with the admin user and password to continue onboarding configuration.
+   <details>
+   <summary>You must log in with the admin user and password to continue onboarding configuration.</summary>
+   <p>
    
    1. Click *start* and select *Next*.
-   2. Click *Get started* and accept the EULA.
+   2. Click *Get started* and accept the Terms & Conditions.
    3. Create your admininistrator account. 
    4. Return to the cortx-management-portal login page using the link http://<hostname>:<port>/.
    
+   </p>
+   </details>
+   
    ### Onboarding
    
-   To start using the CORTX-Management-Portal, you'll need to complete the onboarding process. The onboarding process lets you set up the system and configure the following:
+   To start using the CORTX-Management-Portal, you'll need to complete the onboarding process. 
+   
+   <details>
+   <summary>The onboarding process lets you set up the system and configure the following.</summary>
+   <p>
    
    [1	Upload SSL certificate](#1-Upload-SSL-certificate)
    [2	Configure DNS resolver settings](#2-Configure-DNS-resolver-settings)
@@ -261,6 +318,9 @@ To run the cortx-management-portal node application, open a duplicate tab and fo
    - Review the configurations, and then click Continue.
    
    The Confirmation pop-up displays the new IP address of the system. You must use the new IP address to access the system.
+   
+   </p>
+   </details>
 
 ## You're All Set & You're Awesome!
 
@@ -274,7 +334,4 @@ Refer to our [CORTX Contribution Guide](https://github.com/Seagate/cortx/blob/ma
 
 ### Reach Out to Us
 
-You can reach out to us with your questions, feedback, and comments through our CORTX Communication Channels:
-
-- Join our CORTX-Open Source Slack Channel to interact with your fellow community members and gets your questions answered. [![Slack Channel](https://img.shields.io/badge/chat-on%20Slack-blue)](https://join.slack.com/t/cortxcommunity/shared_invite/zt-femhm3zm-yiCs5V9NBxh89a_709FFXQ?)
-- If you'd like to contact us directly, drop us a mail at cortx-questions@seagate.com.
+You can reach out to us with your questions, feedback, and comments through our [CORTX Communication Channels](SUPPORT.md)
