@@ -26,12 +26,12 @@
         @click="$router.push('/alerts')"
       />
     </div>
-    <div class="mt-3">
+    <div>
       <v-data-table
         calculate-widths
         :items="alertObject.alerts"
         item-key="updated_time"
-        height="250"
+        height="280"
         :items-per-page.sync="itemsPerPage"
         :footer-props="{
           'items-per-page-options': [50, 100, 150, 200]
@@ -117,11 +117,13 @@
               ></div>
                <div
               style="margin: auto;"
-              v-if="(props.item.severity !== alertStatus.informational) 
-              && (props.item.severity !== alertStatus.warning)
-              && (props.item.severity !== alertStatus.critical 
-              && props.item.severity !== alertStatus.error 
-              && props.item.severity !== alertStatus.alert)"
+                v-if="
+                  props.item.severity !== alertStatus.informational &&
+                    props.item.severity !== alertStatus.warning &&
+                    (props.item.severity !== alertStatus.critical &&
+                      props.item.severity !== alertStatus.error &&
+                      props.item.severity !== alertStatus.alert)
+                "
               :title="props.item.severity"
               class="cortx-status-chip cortx-chip-others"
             ></div>
@@ -200,15 +202,5 @@ export default class CortxAlertMedium extends Mixins(AlertsMixin) {
 .cortx-alert-navigate {
   float: right;
   cursor: pointer;
-}
-@media screen and (min-height: 600px) {
-  #alertMediumContainer {
-    padding-left: 20px;
-  }
-}
-@media screen and (min-height: 900px) {
-  #alertMediumContainer {
-    padding: 20px;
-  }
 }
 </style>
