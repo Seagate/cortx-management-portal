@@ -473,7 +473,7 @@
             <v-expansion-panels class="ml-5 mr-4 mt-3" id="open-expansionbox">
               <v-expansion-panel >
                 <v-expansion-panel-header class="pl-3" id="change-password-text"
-                  >Change password</v-expansion-panel-header
+                  >{{ $t("onBoarding.changePassword") }}</v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
                   <v-row>
