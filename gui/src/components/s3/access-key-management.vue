@@ -115,7 +115,7 @@ export default class CortxAccessKeyManagement extends Vue {
   @Prop({ required: true, default: "" })
   public s3Url: string;
 
-  @Prop({ required: true, default: false})
+  @Prop({ required: false, default: false})
   public s3UrlNone: boolean;
 
   private showConfirmDeleteDialog: boolean;
@@ -175,7 +175,7 @@ export default class CortxAccessKeyManagement extends Vue {
     if (this.s3UrlNone) {
       delete this.accessKeyDetails["S3 URL"];
     }
-    
+
     this.showAccessKeyDetailsDialog = true;
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getAllAccessKeys();
