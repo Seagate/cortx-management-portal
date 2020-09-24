@@ -17,7 +17,7 @@
 <template>
   <div id="statsContainer">
     <div style="height: 30px;">
-      <div class="cortx-text-lg cortx-text-bold cortx-float-l" id="stats-performance">Performance</div>
+      <div class="cortx-text-lg cortx-text-bold cortx-float-l" id="stats-performance">{{ $t("dashboard.performance") }}</div>
       <img
         id="stats-medium-zoomicon"
         :src="require('@/assets/zoom-in.svg')"
@@ -33,6 +33,8 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import * as c3 from "c3";
 import { PerformanceStatsQueryParams } from "./../../../models/performance-stats";
 import CortxLineChart from "./../../widgets/line-chart.vue";
+import i18n from "../../../i18n";
+
 @Component({
   name: "cortx-stats-medium",
   components: {
