@@ -16,7 +16,7 @@
 */
 <template>
   <v-container class="mt-0 ml-0">
-    <div class="pl-4 body-2">
+    <div>
       <div
         class="mt-3 pa-3 pb-0 cortx-last-ssl-info-container cortx-text-md"
         v-if="lastSSLStatus.status"

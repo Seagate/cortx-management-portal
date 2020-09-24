@@ -16,7 +16,7 @@
 */
 <template>
   <v-container class="mt-0 ml-0">
-    <div class="pl-4 body-2">
+    <div>
       <div class="row ma-0">
         <div class="col-2 body-2 column node-container">
           <div class="mt-5 font-weight-bold">

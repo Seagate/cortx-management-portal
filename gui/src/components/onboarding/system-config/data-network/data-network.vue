@@ -16,7 +16,7 @@
 */
 <template>
   <v-container class="mt-0 ml-0">
-    <div class="pl-4 body-2">
+    <div>
       <div class="title mt-0 font-weight-bold" id="lblDataNetwork">
         Data network settings
       </div>

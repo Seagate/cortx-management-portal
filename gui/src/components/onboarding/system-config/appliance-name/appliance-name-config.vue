@@ -1,6 +1,6 @@
 <template>
   <v-container class="mt-0 ml-0">
-    <div class="pl-4 body-2">
+    <div>
       <div class="row ma-0">
         <div class="col-2 body-2 column">
           <div class="mt-2 font-weight-bold">

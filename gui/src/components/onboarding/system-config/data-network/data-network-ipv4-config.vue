@@ -16,7 +16,7 @@
 */
 <template>
   <v-container class="mt-0 ml-0">
-    <div class="pl-4 body-2">
+    <div>
       <div class="font-weight-bold mt-5">
         Source:
         <label class="cortx-rdb-container ml-9">
