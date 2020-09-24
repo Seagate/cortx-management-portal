@@ -38,9 +38,17 @@
               <template v-for="(section, index) in agreementText.sections">
                 <div v-bind:key="index">
                   <div v-if="section.paragraph_text">
+                    <label class="title-text" v-if="section.paragraph_text.title">
+                      {{ section.paragraph_text.title }}
+                    </label>
                     <p v-cortx-build-link>{{ section.paragraph_text.text }}</p>
                   </div>
                   <div v-if="section.bulleted_text">
+                    <div class="mb-2" v-if="section.bulleted_text.title">
+                      <label class="title-text">
+                        {{ section.bulleted_text.title }}
+                      </label>
+                    </div>
                     <ol class="ordered-list">
                       <template v-for="(text_item, index) in section.bulleted_text.texts">
                         <li v-bind:key="index" :class="{'font-weight-bold': text_item.title}">
@@ -126,5 +134,9 @@ export default class CortxOnboardingFinish extends Vue {
 }
 .cortx-font-weight-normal {
   font-weight: normal;
+}
+.title-text {
+  font-weight: bold;
+  text-decoration: underline;
 }
 </style>
