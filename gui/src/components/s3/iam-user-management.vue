@@ -23,20 +23,20 @@
         <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
           {{ $t("s3.account.url-label") }}
         </label>
-        <span v-for="(url) in s3Url" v-bind:key="url">
-          <span id="s3-url-id" class="pl-2">{{ url }}</span>
+        <span v-for="(url, i) in s3Url" v-bind:key="url">
+          <span :id="'s3-url-id-'+i" class="pl-2">{{ url }}</span>
           <span v-if="url" class="pr-5">
             <v-tooltip right max-width="300">
               <template v-slot:activator="{ on }">
                 <img
-                  id="s3-edit-account"
+                  :id="'copy-url-btn-'+i"
                   v-on:click="copyS3Url(s3Url[0])"
                   v-on="on"
                   class="cortx-cursor-pointer copy-url"
                   src="@/assets/actions/copy-text.svg"
                 />
               </template>
-              <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+              <span :id="'copy-tooltip-'+i">{{ $t("s3.account.copy-tooltip") }}</span>
             </v-tooltip>
           </span>
         </span>

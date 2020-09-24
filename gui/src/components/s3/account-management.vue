@@ -41,7 +41,7 @@
           {{ $t("s3.account.url-label") }}
         </label>
         <span v-for="(url, i) in s3Url" v-bind:key="url">
-          <span id="s3-url-id" class="pl-2">{{ url }}</span>
+          <span :id="'s3-url-id-'+i" class="pl-2">{{ url }}</span>
           <span v-if="url" class="pr-5">
             <v-tooltip right max-width="300">
               <template v-slot:activator="{ on }">
@@ -53,7 +53,7 @@
                   src="@/assets/actions/copy-text.svg"
                 />
               </template>
-              <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+              <span :id="'copy-tooltip-'+i">{{ $t("s3.account.copy-tooltip") }}</span>
             </v-tooltip>
           </span>
         </span>
