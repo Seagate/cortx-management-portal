@@ -71,7 +71,7 @@
             <label class="tab-label" id="sixhrstablbl">6 Hrs</label>
           </v-tab>
           <v-tab @click="tabChange(43200)" id="twelvehrstab">
-            <label class="tab-label" id="twelvehrstablbl" >12 Hrs</label>
+            <label class="tab-label" id="twelvehrstablbl">12 Hrs</label>
           </v-tab>
           <v-tab @click="tabChange(86400)" id="onedaytab">
             <label class="tab-label" id="onedaytablbl">1 Day</label>
