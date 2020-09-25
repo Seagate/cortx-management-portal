@@ -156,10 +156,14 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     # if branadh path is valid, copy branding all files
     if [[ $BRANDPATH ]]; then
         if [ -d "$BRANDPATH" ]; then
-            cp -r $BRANDPATH/*.* $BASE_DIR/gui/public/
-            echo "All files copied to ./xyz folder";
+            cp -R "$BRANDPATH/"*.* "$BASE_DIR/gui/public/"
+            echo "All files copied to gui/public/ folder"
+            cp -R "$BRANDPATH/public/"*.* "$BASE_DIR/gui/src/locales/"
+            echo "All files copied to gui/src/locales/ folder"
+            cp -R "$BRANDPATH/src/license-agreement-text.ts" "$BASE_DIR/gui/src/common/license-agreement-text.ts"
+            echo "Replace gui/src/common/license-agreement-text.ts file"
         else
-            echo "Invalid path: $BRANDPATH";
+            echo "Invalid path: $BRANDPATH"
         fi
     fi
     npm install
