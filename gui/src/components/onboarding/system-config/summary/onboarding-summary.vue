@@ -25,6 +25,25 @@
       </div>
       <v-divider class="mt-2" />
       <v-expansion-panels class="mt-5">
+          <v-expansion-panel>
+          <v-expansion-panel-header class="cortx-text-lg font-weight-bold">
+            {{$t("onBoarding.systemName")}}
+          </v-expansion-panel-header>
+          <v-expansion-panel-content v-if="applianceName">
+            <div class="row ma-0">
+              <template>
+                <div class="col-8 body-2 column mr-5 pt-0">
+                  <table class="cortx-text-lg">
+                    <tr id="onboarding-system-name">
+                      <td class="large-table-data-label" id="appliancename-label" >{{$t("onBoarding.systemName")}}:</td>
+                      <td id="appliancename-value">{{ applianceName }}</td>
+                    </tr>
+                  </table>
+                </div>
+              </template>
+            </div>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="ssl-certificate-title"
             >SSL certificate upload</v-expansion-panel-header
@@ -65,25 +84,6 @@
                   </tr>
                 </table>
               </div>
-            </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-        <v-expansion-panel>
-          <v-expansion-panel-header class="cortx-text-lg font-weight-bold">
-            {{$t("onBoarding.systemName")}}
-          </v-expansion-panel-header>
-          <v-expansion-panel-content v-if="applianceName">
-            <div class="row ma-0">
-              <template>
-                <div class="col-8 body-2 column mr-5 pt-0">
-                  <table class="cortx-text-lg">
-                    <tr id="onboarding-system-name">
-                      <td class="large-table-data-label" id="appliancename-label" >{{$t("onBoarding.systemName")}}:</td>
-                      <td id="appliancename-value">{{ applianceName }}</td>
-                    </tr>
-                  </table>
-                </div>
-              </template>
             </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
