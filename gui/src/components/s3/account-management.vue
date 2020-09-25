@@ -40,37 +40,24 @@
         <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
           {{ $t("s3.account.url-label") }}
         </label>
-        <span id="s3-url-id">{{ s3Url[0] }}</span>
-        <span v-if="s3Url[0]" class="pl-1 pr-3">
-          <v-tooltip right max-width="300">
-            <template v-slot:activator="{ on }">
-              <img
-                id="s3-edit-account"
-                v-on:click="copyS3Url(s3Url[0])"
-                v-on="on"
-                class="cortx-cursor-pointer copy-url"
-                src="@/assets/actions/copy-text.svg"
-              />
-            </template>
-            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
-          </v-tooltip>
-        </span>
-        <span class="ml-5" id="s3-url-id">{{ s3Url[1] }}</span>
-        <span v-if="s3Url[1]" class="pl-1">
-          <v-tooltip right max-width="300">
-            <template v-slot:activator="{ on }">
-              <img
-                id="s3-edit-account"
-                v-on:click="copyS3Url(s3Url[1])"
-                v-on="on"
-                class="cortx-cursor-pointer copy-url"
-                src="@/assets/actions/copy-text.svg"
-              />
-            </template>
-            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
-          </v-tooltip>
-        </span>
-      </div>
+        <span v-for="(url, i) in s3Url" v-bind:key="url">
+          <span :id="'s3-url-id-'+i" class="pl-2">{{ url }}</span>
+          <span v-if="url" class="pr-5">
+            <v-tooltip right max-width="300">
+              <template v-slot:activator="{ on }">
+                <img
+                  :id="'copy-url-btn-'+i"
+                  v-on:click="copyS3Url(url)"
+                  v-on="on"
+                  class="cortx-cursor-pointer copy-url"
+                  src="@/assets/actions/copy-text.svg"
+                />
+              </template>
+              <span :id="'copy-tooltip-'+i">{{ $t("s3.account.copy-tooltip") }}</span>
+            </v-tooltip>
+          </span>
+        </span>  
+      </div>    
     </cortx-has-access>
     <v-row>
       <v-col class="py-0 col-7">

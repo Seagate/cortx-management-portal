@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2">
+  <div class="cortx-p-1">
     <v-row style="border-bottom: 2px solid rgba(0, 0, 0, 0.12);">
       <v-col class="pt-0" cols="12">
         <cortx-stats-medium />
