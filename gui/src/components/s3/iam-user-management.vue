@@ -30,7 +30,7 @@
               <template v-slot:activator="{ on }">
                 <img
                   :id="'copy-url-btn-'+i"
-                  v-on:click="copyS3Url(s3Url[0])"
+                  v-on:click="copyS3Url(url)"
                   v-on="on"
                   class="cortx-cursor-pointer copy-url"
                   src="@/assets/actions/copy-text.svg"
@@ -39,6 +39,7 @@
               <span :id="'copy-tooltip-'+i">{{ $t("s3.account.copy-tooltip") }}</span>
             </v-tooltip>
           </span>
+        </span> 
       </div>    
     </cortx-has-access>
     <v-row>
@@ -469,7 +470,7 @@ export default class CortxIAMUserManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_iam_user);
     this.usersList = res && res.data ? res.data.iam_users : [];
-    this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
+    this.s3Url = res && res.data.s3_urls ? res.data.s3_urls : [];
     if (this.s3Url[0] === "http://None") {
       this.s3UrlNone = true;
     }

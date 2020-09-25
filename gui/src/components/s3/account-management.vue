@@ -47,7 +47,7 @@
               <template v-slot:activator="{ on }">
                 <img
                   :id="'copy-url-btn-'+i"
-                  v-on:click="copyS3Url(s3Url[0])"
+                  v-on:click="copyS3Url(url)"
                   v-on="on"
                   class="cortx-cursor-pointer copy-url"
                   src="@/assets/actions/copy-text.svg"
