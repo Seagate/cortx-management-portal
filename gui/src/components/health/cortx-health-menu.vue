@@ -18,10 +18,10 @@
   <div class="cortx-p-2">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblDns">
-        Health:
+        {{ $t("dashboard.health") }}:
       </div>
       <div class="mt-3" id="lblMandatoryMsg">
-        Displays the health of the storage enclosure and the servers (nodes) connected to it.
+        {{ $t("dashboard.healthMsg") }}
       </div>
     </div>
 
@@ -73,7 +73,7 @@
           type="button"
           class="cortx-btn-tertiary cortx-float-r"
           @click="$router.push({ name: 'healthview', query: { name: menuItem.value }})"
-        >View</button>
+        >{{ $t("dashboard.view") }}</button>
       </div>
     </div>
   </div>

@@ -17,10 +17,10 @@
 <template>
   <div class="cortx-p-2 body-2">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblDTSetDateTime">
-      Network time protocol (NTP) settings
+      {{ $t("settings.NTPSettings") }}
     </div>
     <div class="mt-3" id="lblMandatoryMsg">
-      Fields marked with * are mandatory.
+      {{ $t("settings.mandatoryField") }}
     </div>
     <v-divider class="mt-2" />
     <cortxDateTimeConfig @apply-settings="applySettingsConfirmation" />
@@ -39,6 +39,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDateTimeConfig from "../onboarding/system-config/date-time/date-time-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-date-time",

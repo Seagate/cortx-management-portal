@@ -16,7 +16,7 @@
 */
 <template>
   <div class="pa-5">
-    <div class="cortx-text-lg cortx-text-bold pr-2">Health View</div>
+    <div class="cortx-text-lg cortx-text-bold pr-2">{{ $t("dashboard.healthView") }}</div>
     <div>
       <div class="cortx-health-summary-container">
         <div class="cortx-text-lg cortx-float-l cortx-text-bold">{{componentName}}</div>
@@ -77,7 +77,7 @@
           >
             <span>{{ header.text }}</span>
           </th>
-          <th class="tableheader">Action</th>
+          <th class="tableheader">{{ $t("dashboard.action") }}</th>
         </tr>
       </template>
       <template v-slot:item="props">
@@ -122,7 +122,7 @@
               @click="$router.push(`/alerts/${props.item.alert_uuid}`)"
             />
            </td>
-           <td v-else>NA</td>
+           <td v-else>{{ $t("dashboard.NA") }}</td>
         </tr>
       </template>
     </v-data-table>
