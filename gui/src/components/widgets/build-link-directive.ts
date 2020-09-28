@@ -14,22 +14,21 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export const agreementText = {
-  heading: "CORTX Agreement",
-  sub_heading: "CORTX Terms and Conditions",
-  sections: [
-    {
-      paragraph_text: {
-        title: "",
-        text: `
-                CORTX community is happy to provide this for the convenience of the community to test CORTX.
-                This is provided merely for testing purposes and is supported through CORTX community.
-                Users should use this only for testing purposes and should not store any critical data on it.
-                Use and enjoy but do so at your own risk.
-                For questions about CORTX, please use the appropriate community channels at
-                https://github.com/Seagate/ .
-              `
-      }
+import { DirectiveOptions } from "vue";
+
+const createURL = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, (url: string) => {
+        return "<a href=" + url + " target='_blank'>" + url + "</a>";
+    });
+};
+
+const buildLinkDirective: DirectiveOptions = {
+    bind: (el, binding, vnode) => {
+        el.innerHTML = createURL(el.innerText);
     }
-  ]
+};
+
+export {
+    buildLinkDirective
 };
