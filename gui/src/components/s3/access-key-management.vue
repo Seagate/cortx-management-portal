@@ -115,7 +115,7 @@ export default class CortxAccessKeyManagement extends Vue {
   @Prop({ required: true, default: "" })
   public s3Url: string;
 
-  @Prop({ required: true, default: false})
+  @Prop({ required: false, default: false})
   public s3UrlNone: boolean;
 
   private showConfirmDeleteDialog: boolean;
