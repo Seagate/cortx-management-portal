@@ -59,29 +59,29 @@
           style="border-bottom: 1px solid lightgrey;"
         >
           <v-tab @click="tabChange(1800)" id="1/2hrstab">
-            <label class="tab-label" id="1/2hrstablbl">1/2 Hrs</label>
+            <label class="tab-label" id="1/2hrstablbl">{{ $t("widget.1By2Hrs") }}</label>
           </v-tab>
           <v-tab @click="tabChange(3600)" id="onehrstab">
-            <label class="tab-label" id="onehrstablbl">1 Hrs</label>
+            <label class="tab-label" id="onehrstablbl">{{ $t("widget.1Hrs") }}</label>
           </v-tab>
           <v-tab @click="tabChange(7200)" id="twohrstab">
-            <label class="tab-label" id="twohrstablbl">2 Hrs</label>
+            <label class="tab-label" id="twohrstablbl">{{ $t("widget.2Hrs") }}</label>
           </v-tab>
           <v-tab @click="tabChange(21600)" id="sixhrstab">
-            <label class="tab-label" id="sixhrstablbl">6 Hrs</label>
+            <label class="tab-label" id="sixhrstablbl">{{ $t("widget.6Hrs") }}</label>
           </v-tab>
           <v-tab @click="tabChange(43200)" id="twelvehrstab">
-            <label class="tab-label" id="twelvehrstablbl" >12 Hrs</label>
+            <label class="tab-label" id="twelvehrstablbl">{{ $t("widget.12Hrs") }}</label>
           </v-tab>
           <v-tab @click="tabChange(86400)" id="onedaytab">
-            <label class="tab-label" id="onedaytablbl">1 Day</label>
+            <label class="tab-label" id="onedaytablbl">{{ $t("widget.1Day") }}</label>
           </v-tab>
         </v-tabs>
       </v-col>
     </v-row>
     <div class="cortx-chart-container" :id="chartId">
       <div v-if="isError" class="no-stats-data">
-        <div id="permancedatalbl">Unable To Fetch Performance Data</div>
+        <div id="permancedatalbl">{{ $t("widget.unableToFetch") }}</div>
       </div>
     </div>
   </div>
@@ -92,6 +92,8 @@ import * as c3 from "c3";
 import { PerformanceStatsQueryParams } from "./../../models/performance-stats";
 import StatsUtility from "../../common/stats-utility";
 import * as d3 from "d3";
+import i18n from "./../../i18n";
+
 export interface StatsQueryParams {
   from: number;
   to: number;

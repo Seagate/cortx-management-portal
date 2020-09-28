@@ -53,7 +53,7 @@
             <template v-slot:activator="{ on }">
               <img :src="require('@/assets/logout.svg/')" v-on="on"  id="logout-icon"/>
             </template>
-            <span id="logoutlbl">Logout</span>
+            <span id="logoutlbl">{{ $t("dashboard.logout") }}</span>
           </v-tooltip>
         </div>
       </div>
@@ -64,6 +64,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import store from "../../store/store";
 import VueNativeSock from "vue-native-websocket";
+import i18n from "../../i18n";
 
 @Component({
   name: "HeaderBar"

@@ -17,13 +17,13 @@
 <template>
   <div class="cortx-p-1 body-2">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblEmail">
-      Notification settings: Email
+      {{ $t("settings.notificationSettingsEmail") }}
     </div>
     <div class="mt-3" id="lblEmailMsg">
-      Allows you to configure email servers for notifications.
+      {{ $t("settings.notificationSettingsEmailMsg") }}
     </div>
     <div class="mt-3" id="lblMandatoryMsg">
-      Fields marked with * are mandatory.
+      {{ $t("settings.mandatoryField") }}
     </div>
     <v-divider class="mt-2" />
     <cortxNotifications @apply-settings="applySettingsConfirmation" />
@@ -42,6 +42,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxNotifications from "../onboarding/system-config/notifications/notifications-email-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-notification-email-settings",
