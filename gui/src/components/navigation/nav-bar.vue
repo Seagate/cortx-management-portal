@@ -75,13 +75,13 @@ export default class CortxNavBar extends Vue {
       iconActive: require("@/assets/navigation/manage-white.svg"),
       requiredAccess: "s3accounts"
     },
-    // {
-    //   title: "Lyve Pilot",
-    //   path: "/ldp",
-    //   iconDefault: require("@/assets/navigation/udx-grey.svg"),
-    //   iconActive: require("@/assets/navigation/udx-white.svg"),
-    //   requiredAccess: "lyve_pilot
-    // },
+    {
+      title: "Lyve Pilot",
+      path: "/ldp",
+      iconDefault: require("@/assets/navigation/udx-grey.svg"),
+      iconActive: require("@/assets/navigation/udx-white.svg"),
+      requiredAccess: "lyve_pilot"
+    },
     {
       title: "Settings",
       path: "/settings",
