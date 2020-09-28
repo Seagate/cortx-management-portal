@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2">
+  <div class="cortx-p-1">
     <CortxUDXDetails v-if="udx" :udx="udx" />
     <CortxUDXRegistration v-if="showUDXRegistrationForm" @complete="registrationComplete()" />
   </div>
