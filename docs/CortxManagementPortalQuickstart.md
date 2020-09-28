@@ -208,13 +208,13 @@ To run the cortx-management-portal node application:
    4. Install node modules.
    5. Run gui application:
    
-   ```shell
+      ```shell
    
-   $ sudo su 
-   $ cd /opt/seagate/cortx/cortx-management-portal/cortx/gui/ 
-   $ npm install 
-   $ npm run serve 
-   ```
+      $ sudo su 
+      $ cd /opt/seagate/cortx/cortx-management-portal/cortx/gui/ 
+      $ npm install 
+      $ npm run serve 
+      ```
    
    6. Once the cortx-management-portal UI, runs successfully, it retuns the URL to the UI. 
    7. Copy this link and open the UI in the browser. 
@@ -227,7 +227,9 @@ To run the cortx-management-portal node application:
    
    ### Preboarding
    
-   **Before you begin:** To proceed with login and create your administrator account, navigate to http://<hostname>:<port>/#/preboarding/welcome. 
+   **Before you begin:** 
+   
+   To proceed with login and create your administrator account, navigate to http://<hostname>:<port>/#/preboarding/welcome. 
   
    ![](/images/WelcomeScreen.png)
    
@@ -239,10 +241,13 @@ To run the cortx-management-portal node application:
    
    1. Click *start* and select *Next*.
    2. Click *Get started* and accept the Terms & Conditions.
+      
       ![](/images/Terms&Conditions.png)
    3. Create your admininistrator account. 
+      
       ![](/images/UsernamePwd.png)
    4. Return to the cortx-management-portal login page using the link http://<hostname>:<port>/.
+      
       ![](/images/Login.png)
    
    </p>
@@ -262,17 +267,21 @@ To run the cortx-management-portal node application:
       
    The onboarding process lets you set up the system and configure the following.
    
-   [1	Upload SSL certificate](#1-Upload-SSL-certificate)
-   [2	Configure DNS resolver settings](#2-Configure-DNS-resolver-settings)
-   [3	Configure network time protocol settings](#3-Configure-network-time-protocol-settings)
-   [4	Configure notifications](#4-Configure-notifications)
-   [5	Verify  onboarding  configurations](#5-Verify- onboarding-configurations)
+   1. [Upload SSL certificate](#1-Upload-SSL-certificate)
+   
+   2. [Configure DNS resolver settings](#2-Configure-DNS-resolver-settings)
+   
+   3. [Configure network time protocol settings](#3-Configure-network-time-protocol-settings)
+   
+   4. [Configure notifications](#4-Configure-notifications)
+   
+   5. [Verify onboarding configurations](#5-Verify-onboarding-configurations)
    
    #### 1. Upload SSL certificate
    
    A SSL certificate is used on a https connection to encrypt the communication from a S3 Client or your web browser to CORTX Manager. By default, the CORTX Manager uses a CORTX    Manager provided self-signed certificate. Alternatively, you can upload a user-provided self-signed certificate or a user provided certificate authority (CA) signed  certificate. This step can be done during onboarding or afterwards.
    
-   ![](/images/SSL Upload.png)
+   ![](/images/SSL%20Upload.png)
   
    To upload SSL certificate:
    
@@ -304,7 +313,7 @@ To run the cortx-management-portal node application:
    
    The system offers you to configure notifications. You can configure the system to receive notification via email using the Simple Network Management Protocol (SNMP). Once configured, you can receive notifications about any system updates or alerts. You have an option to skip configuring the notifications but it is not recommended. It is recommended to configure at least one email to receive system notification. 
    
-   Table 4: Supported and unsupported email configurations lists the supported and unsupported email configurations.
+   **Table 4:** Supported and unsupported email configurations lists the supported and unsupported email configurations.
    
    | **Type** | **Supported/Unsupported** |
    |-	|-	|
@@ -320,12 +329,11 @@ To run the cortx-management-portal node application:
    
    To configure notifications:
    
-   From the Notifications page, select the Email check box, and then click Continue.
-   
-      1. Enter values for SMTP server, Sender email, Protocol, SMTP port, Sender password, and Confirm password.
-      2. In the Receiver email addresses, you can enter multiple email addresses separated by comma (,).
-      3. Click Send test email to verify the email configuration. If you do not receive test email on the configured email addresses then check the email configuration.
-      4. Click Apply and Continue to open the Summary page.
+   1. From the Notifications page, select the Email check box, and then click Continue.
+   2. Enter values for SMTP server, Sender email, Protocol, SMTP port, Sender password, and Confirm password.
+   3. In the Receiver email addresses, you can enter multiple email addresses separated by comma (,).
+   4. Click Send test email to verify the email configuration. If you do not receive test email on the configured email addresses then check the email configuration.
+   5. Click Apply and Continue to open the Summary page.
 
    #### Verify onboarding configuration
    
