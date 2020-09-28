@@ -23,7 +23,7 @@ CORTX Management Portal provides user interface (UI) to facilitate the easy util
 
 ## Get CORTX-Management Portal Ready! 
 
-Jump to the [CORTX-Management Portal Quickstart Guide](CortxManagementPortalQuickstart.md) to set up CORTX-Manager. 
+Jump to the [CORTX-Management Portal Quickstart Guide](docs/CortxManagementPortalQuickstart.md) to set up CORTX-Manager. 
 
 ## Contribute to CORTX-Management Portal
 
