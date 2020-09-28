@@ -14,16 +14,21 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-<template>
-  <router-view class="cortx-p-1"></router-view>
-</template>
- <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { DirectiveOptions } from "vue";
 
-@Component({
-  name: "cortx-settings"
-})
-export default class CortxSettings extends Vue {}
-</script>
-<style lang="scss" scoped>
-</style>
+const createURL = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, (url: string) => {
+        return "<a href=" + url + " target='_blank'>" + url + "</a>";
+    });
+};
+
+const buildLinkDirective: DirectiveOptions = {
+    bind: (el, binding, vnode) => {
+        el.innerHTML = createURL(el.innerText);
+    }
+};
+
+export {
+    buildLinkDirective
+};

@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2">
+  <div class="cortx-p-1">
     <h1>Access Denied</h1>
     <p>
       This is a secure area. You are not authorized to see this page.

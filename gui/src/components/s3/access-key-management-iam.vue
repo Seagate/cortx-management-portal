@@ -134,7 +134,7 @@ export default class CortxAccessKeyManagementIAM extends Vue {
   @Prop({ required: true, default: "" })
   private s3Url: string;
 
-  @Prop({ required: true, default: false })
+  @Prop({ required: false, default: false })
   private s3UrlNone: boolean;
 
   constructor() {
