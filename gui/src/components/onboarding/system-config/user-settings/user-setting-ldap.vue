@@ -24,16 +24,16 @@
     ></v-img>
     <v-divider />
     <div>
-      <div class="title mt-6" id="lblLDAPSetting">User Settings: LDAP</div>
+      <div class="title mt-6" id="lblLDAPSetting">{{ $t("onBoarding.userSettingsLDAP") }}</div>
     </div>
     <v-card class="col-10 pb-5 mt-10 elevation-0 pa-0" outlined tile>
-      <div class="title ma-3" id="lblLDAPConfig">LDAP Configuration</div>
+      <div class="title ma-3" id="lblLDAPConfig">{{ $t("onBoarding.LDAPConfiguration") }}</div>
       <v-divider class="pa-0" />
       <div class="mt-3">
         <v-row class="col-12 py-0">
           <v-col class="py-0">
             <div class="font-weight-medium" id="lblLDAPUserSearch">
-              User Search Base
+              {{ $t("onBoarding.userSearchBase") }}
             </div>
             <input
               class="input-text"
@@ -46,7 +46,7 @@
         </v-row>
         <v-row class="col-7 pb-0">
           <v-col class="py-0">
-            <div class="font-weight-medium">Server</div>
+            <div class="font-weight-medium">{{ $t("onBoarding.server") }}</div>
             <input
               class="input-text"
               type="text"
@@ -56,7 +56,7 @@
             />
           </v-col>
           <v-col class="pa-0">
-            <div class="font-weight-medium">Port</div>
+            <div class="font-weight-medium">{{ $t("onBoarding.port") }}</div>
             <input
               class="input-text"
               type="number"
@@ -71,7 +71,7 @@
         </v-row>
         <v-row class="col-7 pb-0">
           <v-col class="py-0">
-            <div class="font-weight-medium">Alt Server</div>
+            <div class="font-weight-medium">{{ $t("onBoarding.SMTPPort") }}</div>
             <input
               class="input-text"
               type="text"
@@ -81,7 +81,7 @@
             />
           </v-col>
           <v-col class="pa-0">
-            <div class="font-weight-medium">Alt Port</div>
+            <div class="font-weight-medium">{{ $t("onBoarding.altPort") }}</div>
             <input
               class="input-text"
               type="number"
@@ -99,7 +99,7 @@
 
     <div class="mt-8">
       <p v-if="!isValid" class="red--text error-message">
-        Please enter valid values.
+        {{ $t("onBoarding.enterValidValues") }}
       </p>
       <v-btn
         elevation="0"
@@ -107,13 +107,13 @@
         @click="gotToNextPage()"
         id="btnLDAPApplyContinueInterface"
       >
-        <span class="white--text">Apply and Continue</span>
+        <span class="white--text">{{ $t("onBoarding.applyAndContinue") }}</span>
       </v-btn>
       <span
         class="csmprimary--text ml-8 pointer"
         @click="gotToPrevPage()"
         id="lblLDAPBackInerface"
-        >Back to previous step</span
+        >{{ $t("onBoarding.backToPreviousStep") }}</span
       >
     </div>
   </v-container>
@@ -121,6 +121,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Ldap } from "./../../../../models/system-configuration";
+import i18n from "./../../../../i18n";
 
 @Component({
   name: "cortx-user-setting-ldap"
