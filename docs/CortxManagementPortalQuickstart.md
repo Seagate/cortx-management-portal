@@ -227,9 +227,9 @@ To run the cortx-management-portal node application:
    
    ### Preboarding
    
-   **Before you begin:** To proceed with login and create your administrator account, navigate to http://<hostname>:<port>/#/preboarding/welcome.
-   
-   ![](images/WelcomeScreen.png)
+   **Before you begin:** To proceed with login and create your administrator account, navigate to http://<hostname>:<port>/#/preboarding/welcome. 
+  
+   ![](/images/WelcomeScreen.png)
    
    :page_with_curl: **Note:** You can create the admin user only once during setting up the system. The admin user has all the permissions in the system. 
    
@@ -239,11 +239,11 @@ To run the cortx-management-portal node application:
    
    1. Click *start* and select *Next*.
    2. Click *Get started* and accept the Terms & Conditions.
-      ![](images/Terms&Conditions.png)
+      ![](/images/Terms&Conditions.png)
    3. Create your admininistrator account. 
-      ![](images/UsernamePwd.png)
+      ![](/images/UsernamePwd.png)
    4. Return to the cortx-management-portal login page using the link http://<hostname>:<port>/.
-      ![](images/Login.png)
+      ![](/images/Login.png)
    
    </p>
    </details>
@@ -254,7 +254,7 @@ To run the cortx-management-portal node application:
    
    Enter the system name and follow the steps below. 
    
-   ![](images/SystemName.png)
+   ![](/images/SystemName.png)
    
    <details>
    <summary>Click to expand!</summary>
@@ -272,7 +272,7 @@ To run the cortx-management-portal node application:
    
    A SSL certificate is used on a https connection to encrypt the communication from a S3 Client or your web browser to CORTX Manager. By default, the CORTX Manager uses a CORTX    Manager provided self-signed certificate. Alternatively, you can upload a user-provided self-signed certificate or a user provided certificate authority (CA) signed  certificate. This step can be done during onboarding or afterwards.
    
-   ![](images/SSL Upload.png)
+   ![](/images/SSL Upload.png)
   
    To upload SSL certificate:
    
@@ -281,7 +281,7 @@ To run the cortx-management-portal node application:
 
    #### 2. Configure DNS resolver settings
    
-   ![](images/DNS.png)
+   ![](/images/DNS.png)
    
    To configure DNS resolver settings:
    
@@ -292,7 +292,7 @@ To run the cortx-management-portal node application:
    
    CORTX and any S3 Clients must be time synchronized via a NTP server. CORTX Manager allows the setting of the NTP server address and a time zone. The time zone on CORTX Manager does not have to match the S3 Client(s). Once the CORTX Manager setting is applied, the setting is then configured on both servers in CORTX. 
    
-   ![](images/NTP.png)
+   ![](/images/NTP.png)
    
    To configure network time protocol:
    
@@ -316,7 +316,7 @@ To run the cortx-management-portal node application:
    | SMTP servers which support/require authentication | Supported |
    | SMTP servers which do not support authentication | Not supported |
    
-   ![](images/Notification.png)
+   ![](/images/Notification.png)
    
    To configure notifications:
    
@@ -332,7 +332,7 @@ To run the cortx-management-portal node application:
    The Summary page displays all the onboarding configurations. You can verify the configurations and if required, go back to a page to change the configurations. After
    verifying the configurations, the system moves to the new IP address added during the configuration. You must use the new IP address to access the system.
    
-   ![](images/Summary.png)
+   ![](/images/Summary.png)
    
    To verify the configurations:
    
@@ -340,7 +340,7 @@ To run the cortx-management-portal node application:
    
    The Confirmation pop-up displays the new IP address of the system. You must use the new IP address to access the system.
    
-   ![](images/Dashboard.png)
+   ![](/images/Dashboard.png)
    
    </p>
    </details>
