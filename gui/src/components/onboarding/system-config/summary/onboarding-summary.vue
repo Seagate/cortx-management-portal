@@ -18,10 +18,10 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblOnboardingSummary">
-        Onboarding summary
+        {{ $t("onBoarding.onboardingSummary") }}
       </div>
       <div class="mt-3" id="lblOnboardingSummaryMsg">
-        Verify the configurations below.
+        {{ $t("onBoarding.verifyConfigBelow") }}
       </div>
       <v-divider class="mt-2" />
       <v-expansion-panels class="mt-5">
@@ -46,7 +46,7 @@
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="ssl-certificate-title"
-            >SSL certificate upload</v-expansion-panel-header
+            >{{ $t("onBoarding.SSLCertificateUpload") }}</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="lastSSLStatus.status">
             <div class="row ma-0">
@@ -54,7 +54,7 @@
                 <table class="cortx-text-lg">
                   <tr id="ssl-status">
                     <td style="width: 240px;" id="last-installtion-label">
-                      <label>Last installation status:</label>
+                      <label>{{ $t("onBoarding.lastInstallationStatus") }}:</label>
                     </td>
                     <td id="last-installation-value">
                       <label>{{ lastSSLStatus.status }}</label>
@@ -62,7 +62,7 @@
                   </tr>
                   <tr>
                     <td id="last-installation-filename-label">
-                      <label>Last certificate filename:</label>
+                      <label>{{ $t("onBoarding.lastCertificateFilename") }}:</label>
                     </td>
                     <td id="last-installation-filename-value">
                       <label>{{ lastSSLStatus.filename }}</label>
@@ -70,13 +70,13 @@
                   </tr>
                   <tr id="last-installation">
                     <td id="last-installation-upload-date-label">
-                      <label>Last certificate upload date:</label>
+                      <label>{{ $t("onBoarding.lastCertificateUploadDate") }}:</label>
                     </td>
                     <td id="last-installation-date-value">{{ lastSSLStatus.date }}</td>
                   </tr>
                   <tr id="serialnumber">
                     <td id="serialnumber-label">
-                      <label>Serial number:</label>
+                      <label>{{ $t("onBoarding.serialNumber") }}:</label>
                     </td>
                     <td id="serialnumber-value">
                       <label>{{ lastSSLStatus.serial_number }}</label>
@@ -90,7 +90,7 @@
 
         <v-expansion-panel>
           <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="dns-setting"
-            >DNS settings</v-expansion-panel-header
+            >{{ $t("onBoarding.DNSSettings") }}</v-expansion-panel-header
           >
           <v-expansion-panel-content>
             <div class="row ma-0">
@@ -98,11 +98,11 @@
                 <div class="col-8 body-2 column mr-5 pt-0" :key="index">
                   <table class="cortx-text-lg" id="dns-setting-table">
                     <tr>
-                      <td class="large-table-data-label" id="dns-setting-label">DNS servers:</td>
+                      <td class="large-table-data-label" id="dns-setting-label">{{ $t("onBoarding.DNSServers") }}:</td>
                       <td id="dns-setting-servername">{{ node.dns_servers }}</td>
                     </tr>
                     <tr id="search-domain">
-                      <td id="serach-domain-label">Search domains:</td>
+                      <td id="serach-domain-label">{{ $t("onBoarding.searchDomains") }}:</td>
                       <td id="serach-domaib-value">{{ node.search_domain }}</td>
                     </tr>
                   </table>
@@ -113,7 +113,7 @@
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="ntp-setting"
-            >NTP settings</v-expansion-panel-header
+            >{{ $t("onBoarding.NTPSettings") }}</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="ntpData.ntp_server_address">
             <div class="row ma-0">
@@ -121,11 +121,11 @@
                 <div class="col-8 body-2 column mr-5 pt-0">
                   <table class="cortx-text-lg" id="ntp-setting-table">
                     <tr id="server-address">
-                      <td class="large-table-data-label" id="server-address=label">Server address:</td>
+                      <td class="large-table-data-label" id="server-address=label">{{ $t("onBoarding.serverAddress") }}:</td>
                       <td id="server-address-value">{{ ntpData.ntp_server_address }}</td>
                     </tr>
                     <tr id="timezone">
-                      <td id="time-zone-label">Time zone offset:</td>
+                      <td id="time-zone-label">{{ $t("onBoarding.timeZoneOffset") }}:</td>
                       <td id="time-zone-value">{{ ntpData.ntp_timezone_offset }}</td>
                     </tr>
                   </table>
@@ -136,7 +136,7 @@
         </v-expansion-panel>
         <v-expansion-panel>
           <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="notification"
-            >Notifications</v-expansion-panel-header
+            >{{ $t("onBoarding.notifications") }}</v-expansion-panel-header
           >
           <v-expansion-panel-content v-if="notificationData.smtp_server">
             <div class="row ma-0">
@@ -144,23 +144,23 @@
                 <div class="col-8 body-2 column mr-5 pt-0">
                   <table class="cortx-text-lg" id="notification-table">
                     <tr id="smtp-server">
-                      <td class="table-data-label" id="smtp-server-label">SMTP server:</td>
+                      <td class="table-data-label" id="smtp-server-label">{{ $t("onBoarding.SMTPServer") }}:</td>
                       <td id="smtp-server-value">{{ notificationData.smtp_server }}</td>
                     </tr>
                     <tr id="sender-email">
-                      <td id="sender-email-label">Sender email:</td>
+                      <td id="sender-email-label">{{ $t("onBoarding.senderEmail") }}:</td>
                       <td id="sender-email-value">{{ notificationData.smtp_sender_email }}</td>
                     </tr>
                     <tr id="receiver-email">
-                      <td id="receiver-email-label">Receiver email:</td>
+                      <td id="receiver-email-label">{{ $t("onBoarding.receiverEmails") }}:</td>
                       <td id="receiver-email-value">{{ notificationData.email }}</td>
                     </tr>
                     <tr id="protocol">
-                      <td id="protocol-label">Protocol:</td>
+                      <td id="protocol-label">{{ $t("onBoarding.protocol") }}:</td>
                       <td id="protocol-value">{{ notificationData.smtp_protocol }}</td>
                     </tr>
                     <tr id="smtp-port">
-                      <td id="smtp-port-label">SMTP port:</td>
+                      <td id="smtp-port-label">{{ $t("onBoarding.SMTPPort") }}:</td>
                       <td id="smtp-port-value">{{ notificationData.smtp_port }}</td>
                     </tr>
                   </table>

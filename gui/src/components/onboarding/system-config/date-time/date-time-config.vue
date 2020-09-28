@@ -22,10 +22,10 @@
           <div class="col-2 body-2 column">
             <div class="mt-2 font-weight-bold">
               <div class="cortx-form-group">
-                <label id="lblDTNetworkServerAdd">NTP server address*: </label>
+                <label id="lblDTNetworkServerAdd">{{ $t("onBoarding.NTPAddress") }}*: </label>
               </div>
               <div class="cortx-form-group">
-                <label id="lblNTPTimeZoneAdd">NTP time zone offset*:</label>
+                <label id="lblNTPTimeZoneAdd">{{ $t("onBoarding.NTPOffset") }}*:</label>
               </div>
             </div>
           </div>
@@ -51,7 +51,7 @@
                     $v.setDateTime.NtpServerAddress.$dirty &&
                       !$v.setDateTime.NtpServerAddress.required
                   "
-                  >NTP server is required.</label
+                  >{{ $t("onBoarding.NTPRequired") }}</label
                 >
               </div>
             </div>
@@ -77,7 +77,7 @@
       @click="applySettings()"
       class="cortx-btn-primary cortx-float-l my-10"
     >
-      Apply
+      {{ $t("common.apply") }}
     </button>
   </v-container>
 </template>
@@ -92,6 +92,7 @@ import { EVENT_BUS } from "./../../../../main";
 import * as moment from "moment-timezone";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers } from "vuelidate/lib/validators";
+import i18n from "../.././../../i18n";
 
 @Component({
   name: "cortx-date-time-config"
