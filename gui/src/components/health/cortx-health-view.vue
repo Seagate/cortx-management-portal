@@ -59,7 +59,6 @@
       class="cortx-table"
       hide-default-header
       id="tblHealthLarge"
-      height="400"
       :items-per-page.sync="itemsPerPage"
       :footer-props="{
         'items-per-page-options': [50, 100, 150, 200]
