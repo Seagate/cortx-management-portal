@@ -100,7 +100,7 @@ export default class CortxNavBar extends Vue {
   ];
 
   public mounted() {
-    this.brandName = process.env.VUE_APP_BRANDNAME !== "CORTX";
+    this.brandName = process.env.VUE_APP_BRANDNAME !== "cortx";
   }
 
   get alertNotifications() {
