@@ -17,74 +17,25 @@ please email opensource@seagate.com or cortx-questions@seagate.com.
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/425586a14b004e9d8a9a3f3f48f7b65e)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Seagate/cortx-csm&amp;utm_campaign=Badge_Grade)
 
-# CORTX Management Stack
+# CORTX-Management Portal
 
-### Directory Structure
+CORTX Management Portal provides user interface (UI) to facilitate the easy utility of different CORTX components and features. It communicates with CORTX manager through middleware application. The CORTX Manager communicates with different CORTX components and features and gives proper response to CORTX Management Portal.
 
-cli     - Command Line Implementation  
-ras     - RAS Functionality  
-rest    - REST API Impementation  
-gui     - Graphical User Interface  
-auth    - Authentication platform  
+## Get CORTX-Management Portal Ready! 
 
-### Required Environment
-Nodejs 10.x or greater.
+Jump to the [CORTX-Management Portal Quickstart Guide](CortxManagementPortalQuickstart.md) to set up CORTX-Manager. 
 
-Installation steps  
-Install NVM
--------------------
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+## Contribute to CORTX-Management Portal
 
-Install nodejs
-----------------------------
-nvm install node  
-node --version  
-Python 3.6   
+We are excited about your interest in CORTX and hope you will join us. Refer to the [CORTX Contribution Guide](CONTRIBUTING.md) that hosts all information about community values, code of conduct, how to contribute code and documentation, community and code style guide, and how to reach out to us. 
 
-### Supported Package
+We take community very seriously and we are committed to creating a community built on respectful interactions and inclusivity as documented in our [Code of Conduct](CODE_OF_CONDUCT.md).
 
-pip3.6 install paramiko  
-pip3.6 install toml  
-pip3.6 install PyYAML  
-pip3.6 install configparser  
-pip3.6 install argparse  
-pip3.6 install paramiko  
-pip3.6 install aiohttp  
+## Reach Out To Us
 
-### Build
+- Join our CORTX-Open Source Slack Channel to interact with your fellow community members and gets your questions answered. [![Slack Channel](https://img.shields.io/badge/chat-on%20Slack-blue)](https://join.slack.com/t/cortxcommunity/shared_invite/zt-femhm3zm-yiCs5V9NBxh89a_709FFXQ?)
+- If you'd like to contact us directly, drop us a mail at cortx-questions@seagate.com.
 
-Run the command below to generate the rpm.  
-$ ./jenkins/build.sh -b \<build-no\>
+## Thank You!
 
-RPM would be created in dist/rpmbuild/RPMS folder.  
-
-#### Install csm RPMs
-yum localinstall -y csm-<version>.rpm  
-yum localinstall -y csm-test-<version>.rpm  
-yum localinstall -y cortx-csm-<version>.rpm  
-yum localinstall -y cortx-csm-test-<version>.rpm  
-
-### Setup CSM
-csmcli setup init
-
-### Unit Testing
-Follow the commands given below to run unit tests for CLI.  
-$ cd csm  
-$ python -m unittest discover cli/test/  
-
-#### Sanity Testing  
-1. copy samples/csm/config to /etc/csm/config. Review/Edit/Update the same.
-
-2. copy samples/cluster.yaml to /etc/csm/cluster.yaml  
-   Edit /etc/csm/cluster.yaml and modify entries as per your test environment.
-
-3. cp samples/components.yaml to /etc/csm/components.yaml
-
-4. Make sure current user has read permission to /var/log folder.  
-    If not, then run the following command:  
-   $ chmod -R 755 /var/log
-
-5. Edit test/args.yaml in case there are any specific test parameters to be added.
-
-6. Run the test using the following command:  
-   $ test/run_test.py -t /test/plans/<test-file>.pln
+We thank you for stopping by to check out the CORTX Community. We are fully dedicated to our mission to build open source technologies that help the world save unlimited data and solve challenging data problems. Join our mission to help reinvent a data-driven world.
