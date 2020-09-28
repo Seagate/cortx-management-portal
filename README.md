@@ -15,8 +15,6 @@ For any questions about this software or licensing,
 please email opensource@seagate.com or cortx-questions@seagate.com.
 -->
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/425586a14b004e9d8a9a3f3f48f7b65e)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Seagate/cortx-csm&amp;utm_campaign=Badge_Grade)
-
 # CORTX Management Stack
 
 ### Directory Structure
