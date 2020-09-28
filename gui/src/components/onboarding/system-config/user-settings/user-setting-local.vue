@@ -923,11 +923,11 @@ export default class CortxUserSettingLocal extends Vue {
       delete selectedItem.roles;
       delete selectedItem.confirmPassword;
     }
-    delete selectedItem.username;
+    const { username, ...editData } = selectedItem;
     this.$store.dispatch("systemConfig/showLoader", "Updating user details...");
     const res = await Api.patch(
       apiRegister.csm_user,
-      selectedItem,
+      editData,
       selectedItem.id
     );
     this.closeEditUserForm();
