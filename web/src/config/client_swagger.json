@@ -1996,13 +1996,6 @@
 						"type": "string"
 					},
 					{
-						"name": "component",
-						"in": "path",
-						"description": "Specifies the component",
-						"required": true,
-						"type": "string"
-					},
-					{
 						"name": "start_date",
 						"in": "query",
 						"description": "epoch time",
@@ -2070,13 +2063,6 @@
 						"name": "component",
 						"in": "path",
 						"description": "Specifies the component (csm or s3)",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "component",
-						"in": "path",
-						"description": "Specifies the component",
 						"required": true,
 						"type": "string"
 					},
