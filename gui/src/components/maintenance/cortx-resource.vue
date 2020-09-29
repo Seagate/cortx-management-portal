@@ -210,11 +210,11 @@ export default class CortxMaintenance extends Vue {
       nodeDetails.node_status.forEach((e: any) => {
         if (e.online) {
             if (e.standby) {
-              this.$data.resourceState.standby.push(e.name);
+              this.$data.resourceState.standby.push(e.hostname);
             } else {
-          this.$data.resourceState.online.push(e.name);
+          this.$data.resourceState.online.push(e.hostname);
         }
-            this.$data.resourceState.offline.push(e.name);
+            this.$data.resourceState.offline.push(e.hostname);
           } else {
             this.$data.shutdownNode = e.name;
         }
