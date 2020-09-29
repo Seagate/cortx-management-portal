@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/0d5a80a03e08449482ab4da5185b7000)](https://www.codacy.com/gh/Seagate/cortx-management-portal/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Seagate/cortx-management-portal&amp;utm_campaign=Badge_Grade)
+
 <!--
 CORTX-CSM: CORTX Management web and CLI interface.
 Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
