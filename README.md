@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/0d5a80a03e08449482ab4da5185b7000)](https://www.codacy.com/gh/Seagate/cortx-management-portal/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Seagate/cortx-management-portal&amp;utm_campaign=Badge_Grade)
+
 <!--
 CORTX-CSM: CORTX Management web and CLI interface.
 Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
@@ -14,6 +16,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For any questions about this software or licensing,
 please email opensource@seagate.com or cortx-questions@seagate.com.
 -->
+
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/425586a14b004e9d8a9a3f3f48f7b65e)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Seagate/cortx-csm&amp;utm_campaign=Badge_Grade)
 
