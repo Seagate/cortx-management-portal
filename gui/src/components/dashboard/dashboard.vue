@@ -16,17 +16,17 @@
 */
 <template>
   <div class="cortx-p-1">
-    <v-row style="border-bottom: 2px solid rgba(0, 0, 0, 0.12);">
-      <v-col class="pt-0" cols="12">
+    <v-row :style="{'height':chartRowHeightPx, 'border-bottom': '2px solid rgba(0, 0, 0, 0.12)'}">
+      <v-col class="pt-0 pb-0" md="12" style="height: 100%;">
         <cortx-stats-medium />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="4" style="border-right: 2px solid rgba(0, 0, 0, 0.12);">
+    <v-row :style="{'height':alertTblRowHeightPx}">
+      <v-col class="pt-2 pb-0 pr-0" md="4" style="height: 100%;border-right: 2px solid rgba(0, 0, 0, 0.12);">
         <cortx-capacity-guage />
       </v-col>
-      <v-col cols="8">
-        <cortx-alert-medium />
+      <v-col class="pt-2 pb-0" md="8" style="height: 100%;">
+        <cortx-alert-medium :parentHeight="alertTblRowHeight" />
       </v-col>
     </v-row>
   </div>
@@ -47,10 +47,31 @@ import * as c3 from "c3";
     cortxCapacityGuage: CortxCapacityGuage
   }
 })
-export default class Dashboard extends Vue {}
+export default class Dashboard extends Vue {
+
+  public alertTblRowHeight: number = 0;
+  public alertTblRowHeightPx: string = "";
+  public chartRowHeightPx: string = "";
+
+  public beforeMount() {
+    /**
+     * Need to subtract header height(50px) and container padding(30px)
+     * i.e. 80px and divide it by 2 for both halves.
+     */
+    const calcHeight: number = Math.floor((window.innerHeight - 80)/2);
+    /**
+     * Check if the calculated height is less than minimum 290px
+     * the assign 290px height to chartRowHeightPx
+     */
+    if (calcHeight < 290) {
+      this.chartRowHeightPx = 290 + "px";
+    } else {
+      this.chartRowHeightPx = calcHeight + "px";
+    }
+    this.alertTblRowHeight = calcHeight;
+    this.alertTblRowHeightPx = this.alertTblRowHeight + "px";
+  }
+}
 </script>
 <style lang="scss" scoped>
-.page {
-  position: relative;
-}
 </style>

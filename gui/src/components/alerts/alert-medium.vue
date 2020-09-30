@@ -26,12 +26,12 @@
         @click="$router.push('/alerts')"
       />
     </div>
-    <div class="mt-3">
+    <div class="mt-1">
       <v-data-table
         calculate-widths
         :items="alertObject.alerts"
         item-key="updated_time"
-        height="250"
+        :height="tableHeight"
         :items-per-page.sync="itemsPerPage"
         :footer-props="{
           'items-per-page-options': [50, 100, 150, 200]
@@ -145,7 +145,15 @@ import { alertTblDescriptionDirective } from "./alert-description-directive";
   directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
 })
 export default class CortxAlertMedium extends Mixins(AlertsMixin) {
+
+  @Prop({ required: false })
+  public parentHeight: number;
+
+  public tableHeight: string = "250";
+
   public async mounted() {
+    this.calculateTableHeight();
+
     if (this.alertPageFilter !== "new") {
       this.alertPageFilter = "new";
       this.$store.commit("alerts/resetAlertQueryParams");
@@ -178,6 +186,18 @@ export default class CortxAlertMedium extends Mixins(AlertsMixin) {
     await this.onSortPaginate();
   }
 
+  public calculateTableHeight() {
+    if (this.parentHeight) {
+      /**
+       * Need to subtract health summary component height
+       * and title container height from parent height i.e 74px
+       * to get exact height of the alert table.
+       */
+      const calcHeight: number = this.parentHeight - 74;
+      this.tableHeight = calcHeight.toString();
+    }
+  }
+
   get sortInfo() {
     return this.$store.getters["alerts/getSortInfo"];
   }
@@ -200,15 +220,5 @@ export default class CortxAlertMedium extends Mixins(AlertsMixin) {
 .cortx-alert-navigate {
   float: right;
   cursor: pointer;
-}
-@media screen and (min-height: 600px) {
-  #alertMediumContainer {
-    padding-left: 20px;
-  }
-}
-@media screen and (min-height: 900px) {
-  #alertMediumContainer {
-    padding: 20px;
-  }
 }
 </style>
