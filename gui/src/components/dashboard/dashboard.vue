@@ -16,13 +16,13 @@
 */
 <template>
   <div class="cortx-p-1">
-    <v-row :style="{'height':chartRowHeightPx, 'border-bottom': '2px solid rgba(0, 0, 0, 0.12)'}">
+    <v-row :style="{'min-height':chartRowHeightPx, 'border-bottom': '2px solid rgba(0, 0, 0, 0.12)'}">
       <v-col class="pt-0 pb-0" md="12" style="height: 100%;">
         <cortx-stats-medium />
       </v-col>
     </v-row>
-    <v-row :style="{'height':alertTblRowHeightPx}">
-      <v-col class="pt-2 pb-0 pr-0" md="4" style="height: 100%;border-right: 2px solid rgba(0, 0, 0, 0.12);">
+    <v-row :style="{'min-height':alertTblRowHeightPx}">
+      <v-col class="pt-2 pb-0 pr-0" md="4" :style="{'min-height':alertTblRowHeightPx, 'border-right': '2px solid rgba(0, 0, 0, 0.12)'}">
         <cortx-capacity-guage />
       </v-col>
       <v-col class="pt-2 pb-0" md="8" style="height: 100%;">
@@ -37,7 +37,7 @@ import { Component, Vue } from "vue-property-decorator";
 import CortxAlertMedium from "./../alerts/alert-medium.vue";
 import CortxStatsMedium from "./stats/stats-medium.vue";
 import CortxCapacityGuage from "./capacity-gauge.vue";
-import * as c3 from "c3";
+import { EVENT_BUS } from "../../main";
 
 @Component({
   name: "cortx-dashboard",
@@ -53,7 +53,24 @@ export default class Dashboard extends Vue {
   public alertTblRowHeightPx: string = "";
   public chartRowHeightPx: string = "";
 
+  public created() {
+    window.addEventListener("resize", this.resizeComponents);
+  }
+
   public beforeMount() {
+    this.calculateComponentsHeight();
+  }
+
+  public destroyed() {
+    window.removeEventListener("resize", this.resizeComponents);
+  }
+
+  public resizeComponents() {
+    this.calculateComponentsHeight();
+    EVENT_BUS.$emit("windowResized", this.alertTblRowHeight);
+  }
+
+  public calculateComponentsHeight() {
     /**
      * Need to subtract header height(50px) and container padding(30px)
      * i.e. 80px and divide it by 2 for both halves.
