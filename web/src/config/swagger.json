@@ -1645,42 +1645,100 @@
 				"content": {
 					"application/json": {}
 				},
-				"parameters": [{
-					"name": "sortby",
-					"in": "query",
-					"description": "Specifies sort by option",
-					"required": true,
-					"type": "string",
-					"enum": ["created_time"],
-					"default": "created_time"
-				}, {
-					"name": "dir",
-					"in": "query",
-					"description": "Specifies sort direction option",
-					"required": true,
-					"type": "string",
-					"enum": ["asc", "desc"],
-					"default": "desc"
-				}, {
-					"name": "offset",
-					"in": "query",
-					"description": "Specifies offset of the result",
-					"required": true,
-					"type": "integer",
-					"default": 1
-				}, {
-					"name": "limit",
-					"in": "query",
-					"description": "Specifies limit for results per page",
-					"required": true,
-					"type": "integer",
-					"default": 10
-				}, {
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "sortby",
+						"in": "query",
+						"description": "Specifies sort by option",
+						"required": true,
+						"type": "string",
+						"enum": [
+							"created_time"
+						],
+						"default": "created_time"
+					},
+					{
+						"name": "dir",
+						"in": "query",
+						"description": "Specifies sort direction option",
+						"required": true,
+						"type": "string",
+						"enum": [
+							"asc",
+							"desc"
+						],
+						"default": "desc"
+					},
+					{
+						"name": "offset",
+						"in": "query",
+						"description": "Specifies offset of the result",
+						"required": true,
+						"type": "integer",
+						"default": 1
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "Specifies limit for results per page",
+						"required": true,
+						"type": "integer",
+						"default": 10
+					},
+					{
+						"name": "duration",
+						"in": "query",
+						"description": "Specifies alert history duration 60s, 5m, 2h or 1d ",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "show_all",
+						"in": "query",
+						"description": "Specifies show all alerts",
+						"required": false,
+						"type": "Boolean",
+						"default": false
+					},
+					{
+						"name": "severity",
+						"in": "query",
+						"description": "Specifies serverity of alerts",
+						"required": false,
+						"type": "String"
+					},
+					{
+						"name": "resolved",
+						"in": "query",
+						"description": "Show resolved alerts",
+						"required": false,
+						"type": "Boolean",
+						"default": false
+					},
+					{
+						"name": "acknowledged",
+						"in": "query",
+						"description": "Show acknowledged alerts",
+						"required": false,
+						"type": "Boolean",
+						"default": false
+					},
+					{
+						"name": "show_active",
+						"in": "query",
+						"description": "Show active alerts",
+						"required": false,
+						"type": "Boolean",
+						"default": false
+					}
+
+				]
 			},
 			"patch": {
 				"tags": ["Alerts"],
@@ -1906,12 +1964,81 @@
 				"content": {
 					"application/json": {}
 				},
-				"parameters": [{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "sortby",
+						"in": "query",
+						"description": "Specifies sort by option",
+						"required": false,
+						"type": "string",
+						"enum": [
+							"created_time"
+						],
+						"default": "created_time"
+					},
+					{
+						"name": "dir",
+						"in": "query",
+						"description": "Specifies sort direction option",
+						"required": false,
+						"type": "string",
+						"enum": [
+							"asc",
+							"desc"
+						],
+						"default": "desc"
+					},
+					{
+						"name": "offset",
+						"in": "query",
+						"description": "Specifies offset of the result",
+						"required": false,
+						"type": "integer",
+						"default": 1
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "Specifies limit for results per page",
+						"required": false,
+						"type": "integer",
+						"default": 1000
+					},
+					{
+						"name": "sensor_info",
+						"in": "query",
+						"description": "Filter by sensor info",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "start_date",
+						"in": "query",
+						"description": "Specifies start date",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "end_date",
+						"in": "query",
+						"description": "Specifies end date",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "duration",
+						"in": "query",
+						"description": "Specifies alert history duration 60s, 5m, 2h or 1d ",
+						"required": false,
+						"type": "string"
+					}
+				]
 			}
 		},		
 		"/alerts_history/{alert_id}" : {
@@ -2260,6 +2387,79 @@
 					"required": true,
 					"type": "string"
 				}]
+			}
+		},
+		"/system/health/resources": {
+			"get": {
+				"tags": [
+					"Health"
+				],
+				"summary": "Get Health of resources with severity: Accessible to CSM users having monitor and manage permissions",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "component_id",
+						"in": "query",
+						"description": "Specifies the node id",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "severity",
+						"in": "query",
+						"description": "Specifies the node id",
+						"required": false,
+						"enum": [
+							"ok",
+							"critical",
+							"warning"
+						],
+						"type": "string"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/stats": {
