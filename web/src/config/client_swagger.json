@@ -362,13 +362,11 @@
 							},
 							"password": {
 								"type": "string",
-								"example": "new_password",
-								"required": false
+								"example": "new_password"
 							},
 							"current_password": {
 								"type": "string",
-								"example": "password",
-								"required": false
+								"example": "password"
 							}
 						}
 					}
