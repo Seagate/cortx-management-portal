@@ -822,9 +822,9 @@
 								"type": "string",
 								"example": "nkpcsm4"
 							},
-							"user_type": {
+							"email": {
 								"type": "string",
-								"example": "csm"
+								"example": "nkpcsm4@seagate.com"
 							},
 							"roles": {
 								"type": "array",
