@@ -24,8 +24,7 @@ import {
   getHealthView,
   getNodeHealth,
   getHealthComponents,
-  getHealthResources,
-  replaceNode
+  getHealthResources
 } from "./system-controller";
 import { checkRequiredParams } from "./../../middleware/validator";
 import HttpStatus from "http-status-codes";
@@ -186,19 +185,19 @@ export default [
   //     }
   //   ]
   // },
-  {
-    path: "/api/v1/maintenance/cluster/replace_node",
-    method: "post",
-    handler: [
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await replaceNode(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      }
-    ]
-  }
+  // {
+  //   path: "/api/v1/maintenance/cluster/replace_node",
+  //   method: "post",
+  //   handler: [
+  //     checkRequiredParams,
+  //     async (req: Request, res: Response) => {
+  //       try {
+  //         const result = await replaceNode(req, res);
+  //         res.status(res.statusCode).send(result);
+  //       } catch (err) {
+  //         throw err;
+  //       }
+  //     }
+  //   ]
+  // }
 ];
