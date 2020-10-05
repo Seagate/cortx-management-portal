@@ -205,29 +205,8 @@ export default class CortxMaintenance extends Vue {
     };
     this.$data.shutdownNode = "";
     try {
-      // const res: any = await Api.getAll(apiRegister.node_status);
-      // const nodeDetails = res && res.data ? res.data : null;
-      const nodeDetails = {
-        node_status: [
-          {
-            name: "srvnode-1",
-            hostname: null,
-            online: true,
-            standby: false,
-            unclean: false,
-            resources_running: 39
-          },
-          {
-            name: "srvnode-2",
-            hostname: "sm20-r18.pun.seagate.com",
-            online: true,
-            standby: false,
-            unclean: false,
-            resources_running: 34
-          }
-        ]
-      };
-
+      const res: any = await Api.getAll(apiRegister.node_status);
+      const nodeDetails = res && res.data ? res.data : null;
       if (nodeDetails && nodeDetails.node_status) {
         nodeDetails.node_status.forEach((e: any) => {
           if (e.online) {
