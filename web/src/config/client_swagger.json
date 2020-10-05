@@ -240,25 +240,13 @@
 								"type": "string",
 								"example": "password"
 							},
-							"interfaces": {
-								"type": "array",
-								"example": []
+							"email": {
+								"type": "string",
+								"example": "user@test.com"
 							},
 							"roles": {
 								"type": "array",
 								"example": ["manage"]
-							},
-							"temperature": {
-								"type": "string",
-								"example": ""
-							},
-							"language": {
-								"type": "string",
-								"example": ""
-							},
-							"timeout": {
-								"type": "string",
-								"example": "1"
 							}
 						}
 					}
@@ -359,34 +347,26 @@
 					{
 					"name": "edit csm user",
 					"in": "body",
-					"description": "Edit CSM user credentials. The 'old_password' property is required for users who change their own password. The superuser can skip this field for all other users.",
+					"description": "Edit CSM user credentials. The 'current_password' property is required for users who change their own password. The superuser can skip this field for all other users.",
 					"schema": {
 						"type": "object",
 						"required": false,
 						"properties": {
-							"id": {
-								"type": "string",
-								"example": "nkpcsm4"
-							},
-							"username": {
-								"type": "string",
-								"example": "nkpcsm4"
-							},
-							"user_type": {
-								"type": "string",
-								"example": "csm"
-							},
 							"roles": {
 								"type": "array",
 								"example": []
 							},
+							"email": {
+								"type": "string",
+								"example": "new@email.com"
+							},
 							"password": {
 								"type": "string",
-								"example": "password"
+								"example": "new_password"
 							},
-							"old_password": {
+							"current_password": {
 								"type": "string",
-								"example": "old_password"
+								"example": "password"
 							}
 						}
 					}
@@ -1348,7 +1328,7 @@
 			},
 			"patch": {
 				"tags": ["Alerts"],
-				"summary": "Edit Alert: Accessible to CSM users having manage permission",
+				"summary": "Edit Alert: Accessible to CSM users having manage permission and it will update the acknowledge flag",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -1403,10 +1383,6 @@
 						"properties": {
 							"acknowledged": {
 								"type": "boolean"
-							},
-							"comments": {
-								"type": "string",
-								"example": ""
 							}
 						}
 					}
@@ -2016,13 +1992,6 @@
 						"type": "string"
 					},
 					{
-						"name": "component",
-						"in": "path",
-						"description": "Specifies the component",
-						"required": true,
-						"type": "string"
-					},
-					{
 						"name": "start_date",
 						"in": "query",
 						"description": "epoch time",
@@ -2090,13 +2059,6 @@
 						"name": "component",
 						"in": "path",
 						"description": "Specifies the component (csm or s3)",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "component",
-						"in": "path",
-						"description": "Specifies the component",
 						"required": true,
 						"type": "string"
 					},

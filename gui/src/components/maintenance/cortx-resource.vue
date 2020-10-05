@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2 body-2">
+  <div class="cortx-p-1 body-2">
     <div id="system-maintenance-title-container">
       <label
         id="system-maintenance-title"
@@ -209,11 +209,11 @@ export default class CortxMaintenance extends Vue {
       nodeDetails.node_status.forEach((e: any) => {
         if (e.online) {
             if (e.standby) {
-              this.$data.resourceState.standby.push(e.name);
+              this.$data.resourceState.standby.push(e.hostname);
             } else {
-          this.$data.resourceState.online.push(e.name);
+          this.$data.resourceState.online.push(e.hostname);
         }
-            this.$data.resourceState.offline.push(e.name);
+            this.$data.resourceState.offline.push(e.hostname);
           } else {
             this.$data.shutdownNode = e.name;
         }

@@ -14,21 +14,21 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-<template>
-  <div class="cortx-p-1">
-    <h1>{{ $t("security.pageNotFoundMsg") }}</h1>
-    <p>
-      {{ $t("security.pageNotFoundMsg") }}
-    </p>
-  </div>
-</template>
+import { DirectiveOptions } from "vue";
 
-<script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import i18n from "../../i18n";
+const createURL = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, (url: string) => {
+        return "<a href=" + url + " target='_blank'>" + url + "</a>";
+    });
+};
 
-@Component({
-  name: "cortx-not-found"
-})
-export default class CortxNotFound extends Vue {}
-</script>
+const buildLinkDirective: DirectiveOptions = {
+    bind: (el, binding, vnode) => {
+        el.innerHTML = createURL(el.innerText);
+    }
+};
+
+export {
+    buildLinkDirective
+};

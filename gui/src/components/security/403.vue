@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2">
+  <div class="cortx-p-1">
     <h1>{{ $t("security.accessDenied") }}</h1>
     <p>
       {{ $t("security.accessDeniedMsg") }}

@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2" v-if="alert">
+  <div class="cortx-p-1" v-if="alert">
     <div
       class="cortx-back-to-alerts-btn"
       @click="$router.go(-1)"
