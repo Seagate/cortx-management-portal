@@ -243,7 +243,6 @@ export default class CortxMaintenance extends Vue {
       );
       const apiRegisterInstance: any = apiRegister;
       const nodeAction = `node_${this.$data.actionMethod}`;
-      // console.log(this.$data.resource[this.$data.actionMethod],'nodeAction');
       try {
         const res: any = await Api.post(apiRegisterInstance[nodeAction], {
           resource_name: this.$data.resource[this.$data.actionMethod]
