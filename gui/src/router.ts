@@ -357,7 +357,7 @@ const router = new Router({
                   userPermissions.maintenance + userPermissions.list
               }
             }
-            //Commented code for EOS-13781
+            // Commented code for EOS-13871
             // {
             //   path: "node_replacement",
             //   name: "node_replacement",
