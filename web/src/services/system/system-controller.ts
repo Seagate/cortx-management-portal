@@ -97,6 +97,6 @@ export const shutdownNode = async (req: Request, res: Response) => {
  * @param req
  * @param res
  */
-export const replaceNode = async (req: Request, res: Response) => {
-  return await Api.post(apiRegister.node_replace, req, res);
-};
+// export const replaceNode = async (req: Request, res: Response) => {
+//   return await Api.post(apiRegister.node_replace, req, res);
+// };
