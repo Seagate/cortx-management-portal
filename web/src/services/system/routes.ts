@@ -25,7 +25,6 @@ import {
   getNodeHealth,
   getHealthComponents,
   getHealthResources,
-  getNodeReplacementStatus,
   replaceNode
 } from "./system-controller";
 import { checkRequiredParams } from "./../../middleware/validator";
@@ -171,21 +170,22 @@ export default [
       }
     ]
   },
-  {
-    path: "/api/v1/maintenance/cluster/replace_node_status",
-    method: "get",
-    handler: [
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await getNodeReplacementStatus(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      }
-    ]
-  },
+  // commented as per bug EOS-13871
+  // {
+  //   path: "/api/v1/maintenance/cluster/replace_node_status",
+  //   method: "get",
+  //   handler: [
+  //     checkRequiredParams,
+  //     async (req: Request, res: Response) => {
+  //       try {
+  //         const result = await getNodeReplacementStatus(req, res);
+  //         res.status(res.statusCode).send(result);
+  //       } catch (err) {
+  //         throw err;
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: "/api/v1/maintenance/cluster/replace_node",
     method: "post",
