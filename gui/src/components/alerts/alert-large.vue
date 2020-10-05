@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2">
+  <div class="cortx-p-1">
     <cortx-tabs :tabsInfo="tabsInfo" />
     <cortx-has-access
       :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update"
@@ -192,7 +192,6 @@
               <span>Go to alert details page</span>
             </v-tooltip>
             <div v-if="!(props.item.acknowledged && props.item.resolved)" class="cortx-float-l">
-              <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update">
                 <v-tooltip left>
                   <template v-slot:activator="{ on, attrs }">
                     <div
@@ -204,6 +203,7 @@
                   </template>
                   <span>Add comments</span>
                 </v-tooltip>
+                <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update">
                 <v-tooltip left>
                   <template v-slot:activator="{ on, attrs }">
                     <div
@@ -215,7 +215,7 @@
                   </template>
                   <span>{{ props.item.acknowledged ? "Unacknowledge alert" : "Acknowledge alert" }}</span>
                 </v-tooltip>
-              </cortx-has-access>
+                </cortx-has-access>
             </div>
           </td>
         </tr>
