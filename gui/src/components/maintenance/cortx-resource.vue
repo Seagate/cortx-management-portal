@@ -20,7 +20,7 @@
       <label
         id="system-maintenance-title"
         class="cortx-text-lg mt-2 font-weight-bold"
-        >{{ $t("systemMaintenance.page-title") }}</label
+        >{{$t("systemMaintenance.page-title")}}</label
       >
     </div>
     <v-container>
@@ -28,12 +28,11 @@
         <v-card class="col-8 pa-5 elevation-0" outlined tile>
           <v-row class="row-container" align="center" no-gutters>
             <v-col col="3" lg="3">
-              <label
-                id="maintenance-startlbl"
+              <label id="maintenance-startlbl"
                 class="cortx-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
-                >{{ $t("systemMaintenance.start-service") }}</label
+                >{{$t("systemMaintenance.start-service")}}</label
               >
             </v-col>
             <v-col col="3" md="auto" class="mx-3">
@@ -59,8 +58,7 @@
           </v-row>
           <v-row class="mt-5 row-container" align="center" no-gutters>
             <v-col col="3" lg="3">
-              <label
-                id="maintenance-stoplbl"
+              <label id="maintenance-stoplbl"
                 class="cortx-form-group-label font-weight-bold"
                 for="Resource"
                 style=" font-size: 1em;"
@@ -125,13 +123,12 @@
             class="cortx-text-md mt-5 font-weight-bold"
             id="lblShutdownNode"
             v-if="shutdownNode"
-          >
-            {{ $t("systemMaintenance.shutdown-note", { node: shutdownNode }) }}
+          >{{ $t('systemMaintenance.shutdown-note', { node: shutdownNode }) }}
           </div>
         </v-card>
       </div>
       <cortx-confirmation-dialog
-        id="resource-confirmation-dialog"
+      id="resource-confirmation-dialog"
         :show="showConfirmationDialog"
         title="Confirmation"
         :message="confirmationDialogMessage"
@@ -141,7 +138,7 @@
         cancelButtonText="No"
       ></cortx-confirmation-dialog>
       <cortx-confirmation-dialog
-        id="resource-success-dialogbox"
+       id="resource-success-dialogbox"
         :show="showInfoDialog"
         title="Success"
         :message="infoDialogMessage"
@@ -205,11 +202,11 @@ export default class CortxMaintenance extends Vue {
     };
     this.$data.shutdownNode = "";
     try {
-      const res: any = await Api.getAll(apiRegister.node_status);
-      const nodeDetails = res && res.data ? res.data : null;
-      if (nodeDetails && nodeDetails.node_status) {
-        nodeDetails.node_status.forEach((e: any) => {
-          if (e.online) {
+    const res: any = await Api.getAll(apiRegister.node_status);
+    const nodeDetails = res && res.data ? res.data : null;
+    if (nodeDetails && nodeDetails.node_status) {
+      nodeDetails.node_status.forEach((e: any) => {
+        if (e.online) {
             if (e.standby) {
               e.hostname !== null
                 ? this.$data.resourceState.standby.push(e.hostname)
@@ -224,16 +221,15 @@ export default class CortxMaintenance extends Vue {
               : this.$data.resourceState.offline.push(e.name);
           } else {
             this.$data.shutdownNode = e.name;
-          }
-        });
-      }
+        }
+      });
+    }
     } catch (error) {
       this.handleClientCloseRequest(error);
     } finally {
-      this.$store.dispatch("systemConfig/hideLoader");
-    }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
-
+  }
   private async closeConfirmationDialog(confirmation: boolean) {
     this.$data.showConfirmationDialog = false;
     if (confirmation) {
@@ -248,7 +244,6 @@ export default class CortxMaintenance extends Vue {
           resource_name: this.$data.resource[this.$data.actionMethod]
         });
         const nodeActionDetails = res && res.data ? res.data : null;
-
         if (nodeActionDetails && nodeActionDetails.message) {
           this.$data.actionMessage = res.message;
         }
@@ -265,61 +260,45 @@ export default class CortxMaintenance extends Vue {
           shutdown: ""
         };
       }
-
       await this.getNodeStatus();
     }
   }
-
   private handleClientCloseRequest(error: any) {
-    if (error && error.status === 499) {
-      this.$data.showInfoDialog = true;
-    } else {
-      let errorMessage = i18n.t("systemMaintenance.error-message-onclose");
-      if (error && error.error && error.data.message) {
-        errorMessage = error.data.message;
-      }
-      throw {
-        error: {
-          message: errorMessage
+        if (error && error.status === 499) {
+          this.$data.showInfoDialog = true;
+        } else {
+          let errorMessage = i18n.t("systemMaintenance.error-message-onclose");
+          if (error && error.error && error.data.message) {
+            errorMessage = error.data.message;
+          }
+          throw {
+            error: {
+              message: errorMessage
+            }
+          };
         }
-      };
-    }
   }
   private stopSelectedResource(action: boolean) {
-    this.$data.confirmationDialogMessage = i18n.t(
-      "systemMaintenance.confirm-message-node-stop"
-    );
-
+    this.$data.confirmationDialogMessage =
+      i18n.t("systemMaintenance.confirm-message-node-stop");
     this.$data.actionMethod = i18n.t("systemMaintenance.stop-action-method");
-    this.$data.confirmationDialogSeverity = i18n.t(
-      "systemMaintenance.danger-severity"
-    );
+    this.$data.confirmationDialogSeverity = i18n.t("systemMaintenance.danger-severity");
     this.$data.showConfirmationDialog = true;
   }
   private startSelectedResource(action: boolean) {
     this.$data.actionMethod = i18n.t("systemMaintenance.start-action-method");
-    this.$data.confirmationDialogMessage = i18n.t(
-      "systemMaintenance.confirm-message-node-start"
-    );
-    this.$data.confirmationDialogSeverity = i18n.t(
-      "systemMaintenance.info-severity"
-    );
+    this.$data.confirmationDialogMessage =
+      i18n.t("systemMaintenance.confirm-message-node-start");
+    this.$data.confirmationDialogSeverity = i18n.t("systemMaintenance.info-severity");
     this.$data.showConfirmationDialog = true;
   }
   private shutdownSelectedResource(action: boolean) {
-    this.$data.confirmationDialogMessage = i18n.t(
-      "systemMaintenance.confirm-message-node-shutdown"
-    );
-    this.$data.confirmationDialogSubMessage = i18n.t(
-      "systemMaintenance.confirm-message-shutdown-sub"
-    );
-
-    this.$data.actionMethod = i18n.t(
-      "systemMaintenance.shutdown-action-method"
-    );
-    this.$data.confirmationDialogSeverity = i18n.t(
-      "systemMaintenance.danger-severity"
-    );
+    this.$data.confirmationDialogMessage =
+      i18n.t("systemMaintenance.confirm-message-node-shutdown");
+    this.$data.confirmationDialogSubMessage =
+      i18n.t("systemMaintenance.confirm-message-shutdown-sub");
+    this.$data.actionMethod = i18n.t("systemMaintenance.shutdown-action-method");
+    this.$data.confirmationDialogSeverity = i18n.t("systemMaintenance.danger-severity");
     this.$data.showConfirmationDialog = true;
   }
   private createOptionsForDropdown(list: string[]) {
