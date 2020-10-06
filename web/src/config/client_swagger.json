@@ -667,6 +667,115 @@
 				}]
 			}
 		},
+		"/s3/access_keys": {
+			"get": {
+				"tags": ["S3 Access Key"],
+				"summary": "Get S3 account access keys:  Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["S3 Access Key"],
+				"summary": "Create new S3 account access key:  Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "Access key has been created"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/s3/access_keys/{access_key}": {
+			"delete": {
+				"tags": ["S3 Access Key"],
+				"summary": "Delete S3 account access key: Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "Ok"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"404": {
+						"description": "Users Not Found"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "access_key",
+						"in": "path",
+						"description": "Specifies the S3 account access key",
+						"required": true,
+						"type": "string"
+					},
+				    {
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
 		"/s3/bucket": {
 			"get": {
 			  "tags": [
@@ -1077,7 +1186,7 @@
 				}]
 			}
 		},
-		"/iam_users/{user_id}": {
+		"/iam_users/{user_name}": {
 			"delete": {
 				"tags": ["S3"],
 				"summary": "Delete IAM user: Accessible to S3 account only",
@@ -1120,9 +1229,9 @@
 					"application/json": {}
 				},
 				"parameters": [{
-					"name": "user_id",
+					"name": "user_name",
 					"in": "path",
-					"description": "Specifies the IAM user id",
+					"description": "Specifies the IAM user name",
 					"required": true,
 					"type": "string"
 				}, {
@@ -1133,6 +1242,134 @@
 				}]
 			}
 		},	
+		"/s3/access_keys?user_name={user_name}": {
+			"get": {
+				"tags": ["Iam User Access Key"],
+				"summary": "Get iam user access keys:  Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"201": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"409": {
+						"description": "Conflict"
+					},
+					"422": {
+						"description": "Unprocessable Entity"
+					},
+					"499": {
+						"description": "Call Cancelled"
+					},
+					"500": {
+						"description": "Internal Server Error"
+					},
+					"501": {
+						"description": "Not Implemented"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "user_name",
+					"in": "path",
+					"description": "Specifies the IAM user name",
+					"required": true,
+					"type": "string"
+				},
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			},
+			"post": {
+				"tags": ["Iam User Access Key"],
+				"summary": "Create new iam user access key:  Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "Access key has been created"
+					},
+					"404": {
+						"description": "No Data Found"
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [{
+					"name": "user_name",
+					"in": "path",
+					"description": "Specifies the IAM user name",
+					"required": true,
+					"type": "string"
+				},{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
+		"/s3/access_keys/{access_key}?user_name={user_name}": {		
+			"delete": {
+				"tags": ["Iam User Access Key"],
+				"summary": "Delete S3 account access key: Accessible to S3 account only",
+				"responses": {
+					"200": {
+						"description": "Ok"
+					},
+					"400": {
+						"description": "Bad Request"
+					},
+					"404": {
+						"description": "Users Not Found"
+					}
+				},
+				"content": {
+					"application/json": {}
+				},
+				"parameters": [
+					{
+						"name": "access_key",
+						"in": "path",
+						"description": "Specifies the S3 account access key",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "user_name",
+						"in": "path",
+						"description": "Specifies the IAM user name",
+						"required": true,
+						"type": "string"
+					},
+				    {
+						"name": "authorization",
+						"in": "header",
+						"required": true,
+						"type": "string"
+				}]
+			}
+		},
 		"/alerts": {
 			"get": {
 				"tags": ["Alerts"],
