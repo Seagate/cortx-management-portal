@@ -43,7 +43,7 @@
                 v-model.trim="setDateTime.NtpServerAddress"
                 id="txtDTHostname"
                 @input="$v.setDateTime.NtpServerAddress.$touch"
-                placeholder="time.seagate.com"
+                placeholder="ntp-b.nist.gov"
               />
               <div class="cortx-form-group-label cortx-form-group-error-msg">
                 <label id="ntp-server-required"
