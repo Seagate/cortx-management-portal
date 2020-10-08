@@ -60,7 +60,7 @@
         </tr>
       </table>
     </div>
-    <v-expansion-panels v-if="versionDetails.COMPONENTS" class="mt-2">
+    <v-expansion-panels v-if="versionDetails.COMPONENTS.length" class="mt-2">
       <v-expansion-panel>
         <v-expansion-panel-header
           class="cortx-text-lg font-weight-bold">
@@ -86,10 +86,15 @@ import i18n from "./../../i18n";
   name: "cortx-about"
 })
 export default class Cortxaboutpage extends Vue {
-  public versionDetails: any = null;
   public data() {
     return {
-      component: "CSM"
+      versionDetails: {
+        NAME: '-' as string,
+        VERSION: '-' as string,
+        BUILD: '-' as string,
+        RELEASE: null,
+        COMPONENTS: []
+      }
     };
   }
 
@@ -99,7 +104,7 @@ export default class Cortxaboutpage extends Vue {
 
   public async getVersion() {
     const res = await Api.getAll(apiRegister.version);
-    this.versionDetails = res.data;
+    this.$data.versionDetails = res.data;
   }
 }
 </script>
