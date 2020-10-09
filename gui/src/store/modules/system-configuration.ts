@@ -214,7 +214,7 @@ export default class SystemConfiguration extends VuexModule {
   @Action
   public async sendTestEmailNotification(payload: any) {
     try {
-      const res = await Api.post(apiRegister.send_test_email, payload);
+      const res = await Api.post(apiRegister.send_test_email, payload, { timeout: 120000 });
       if (res && res.data) {
         const data = res.data;
         return data;
