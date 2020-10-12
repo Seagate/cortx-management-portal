@@ -39,7 +39,7 @@
       </cortx-has-access>
     </div>
     <div class="cortx-nav-bottom" v-if="brandName">
-      <div class="cortx-brand-text">Powered by</div>
+      <div class="cortx-brand-text">{{ $t("common.poweredBy") }}</div>
       <img class="cortx-nav-item-icon-default cortx-img-responsive"
         :src="require('@/assets/Cortx-logo-GRN.svg/')" />
     </div>
@@ -47,6 +47,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-nav-bar"
@@ -99,7 +100,7 @@ export default class CortxNavBar extends Vue {
   ];
 
   public mounted() {
-    this.brandName = process.env.VUE_APP_BRANDNAME !== "CORTX";
+    this.brandName = process.env.VUE_APP_BRANDNAME !== "cortx";
   }
 
   get alertNotifications() {

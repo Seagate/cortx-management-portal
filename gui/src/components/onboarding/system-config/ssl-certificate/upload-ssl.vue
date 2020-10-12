@@ -18,13 +18,10 @@
   <v-container>
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblSSLUpload">
-        SSL certificate upload
+        {{ $t("onBoarding.sslCertificateUpload") }}
       </div>
       <div class="mt-3" id="lblSSLUploadMsg">
-        By default, the system uses the SSL certificate provided by Seagate. To
-        use a different SSL certificate, click Choose File to browse and select
-        the appropriate SSL Certificate file. Click Upload certificate to upload
-        the selected SSL certificate.
+        {{ $t("onBoarding.sslCertificateUploadMsg") }}
       </div>
       <v-divider class="mt-2" />
       <cortxUploadSSLConfig />
@@ -47,6 +44,7 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 import CortxUploadSSLConfig from "./upload-ssl-config.vue";
+import i18n from "../.././../../i18n";
 
 @Component({
   name: "uploade-ssl",

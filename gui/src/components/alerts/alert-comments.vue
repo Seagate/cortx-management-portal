@@ -18,7 +18,7 @@
   <div class="cortx-modal-container" v-if="value">
     <div class="cortx-modal">
       <div class="cortx-modal-header">
-        <label>Comments</label>
+        <label>{{ $t("alerts.comments") }}</label>
         <img id="alert-closeadd-comment-dialog"
           class="cortx-modal-close"
           :src="require('@/assets/close-green.svg')"
@@ -28,7 +28,7 @@
       <div>
         <div class="cortx-comments-container-overlay" v-if="showLoader"></div>
         <div class="cortx-comments-container">
-          <label v-if="alertComments.length === 0" class="cortx-text-md ml-4">No comments</label>
+          <label v-if="alertComments.length === 0" class="cortx-text-md ml-4">{{ $t("alerts.noComments") }}</label>
           <div
             v-else
             class="cortx-comment"
@@ -65,10 +65,10 @@
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 v-if="$v.addCommentForm.comment_text.$dirty && !$v.addCommentForm.comment_text.required"
-              >Comment is required.</label>
+              >{{ $t("alerts.commentRequired") }}</label>
               <label
                 v-else-if="$v.addCommentForm.comment_text.$dirty && !$v.addCommentForm.comment_text.maxLength"
-              >Comment cannot be more than 250 characters.</label>
+              >{{ $t("alerts.commentCannotBeMoreThan250Char") }}</label>
             </div>
           </div>
           <div style="height: 40px;margin-top:10px;">
@@ -99,6 +99,7 @@ import { required, maxLength } from "vuelidate/lib/validators";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { AlertComment } from "../../models/alert";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-alert-comments"
