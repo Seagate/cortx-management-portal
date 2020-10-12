@@ -31,10 +31,27 @@ function loadLocaleMessages(): LocaleMessages {
     if (matched && matched.length > 1) {
       const locale = matched[1];
       messages[locale] = locales(key);
+
+      // Read user json file and update *.json
+      const brandName = `-${process.env.VUE_APP_BRANDNAME}`;
+      if (messages[`${locale}${brandName}`]) {
+        updateMessage(messages, locale, brandName);
+      }
     }
   });
   return messages;
 }
+
+const updateMessage = (messages: any, locale: string, brandName: string) => {
+  console.log('brandName', brandName)
+  for (const key of Object.keys(messages[locale])) {
+    const custom_local = messages[`${locale}${brandName}`];
+    if (custom_local) {
+      console.log(custom_local);
+      messages[locale][key] = Object.assign(messages[locale][key], custom_local[key]);
+    }
+  }
+};
 
 export default new VueI18n({
   locale:

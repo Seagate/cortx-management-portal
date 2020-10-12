@@ -17,12 +17,11 @@
 <template>
   <div>
     <div class="cortx-text-lg cortx-text-bold" id="lblUpdateFirmware">
-      Update firmware
+      {{ $t("onBoarding.updateFirmware") }}
     </div>
     <div class="mt-3" id="lblFirmwareUploadmsg">
-Update the storage enclosure firmware. Upload the firmware bundle file (.bin) received from Seagate. <br>
-Click Start update once the bundle file is uploaded successfully.
-      </div>  
+      {{ $t("onBoarding.updateStorageEnclosure") }}
+    </div>
     <div
       class="mt-3 pa-3 cortx-last-upgrade-info-container cortx-text-md"
       v-if="lastUpgradeStatus"
@@ -49,7 +48,7 @@ Click Start update once the bundle file is uploaded successfully.
         class="cortx-btn-primary"
         @click="showUploadForm = true"
       >
-        Upload new firmware file
+        {{ $t("onBoarding.uploadNewFirmware") }}
       </button>
       <button
         id="btnStartUpgrade"
@@ -61,7 +60,7 @@ Click Start update once the bundle file is uploaded successfully.
             (lastUpgradeStatus && lastUpgradeStatus.status === 'in_progress')
         "
       >
-        Start update
+        {{ $t("onBoarding.startUpdate") }}
       </button>
     </div>
     <div v-if="showUploadForm">
@@ -79,7 +78,7 @@ Click Start update once the bundle file is uploaded successfully.
             !firmwarePackageFormValidation.isValid
         "
       >
-        <label>Invalid file.</label>
+        <label>{{ $t("onBoarding.invalidFile") }}</label>
       </div>
       <v-divider class="mt-5 mb-2" />
       <button
@@ -89,7 +88,7 @@ Click Start update once the bundle file is uploaded successfully.
         @click="uploadFirmwarePackage()"
         :disabled="!firmwarePackage"
       >
-        Upload
+        {{ $t("common.upload") }}
       </button>
       <button
         id="btnCancelInstallFirmware"
@@ -97,7 +96,7 @@ Click Start update once the bundle file is uploaded successfully.
         class="mt-3 ml-5 cortx-btn-secondary"
         @click="closeUploadForm()"
       >
-        Cancel
+        {{ $t("common.cancel") }}
       </button>
     </div>
   </div>
@@ -107,6 +106,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../../../services/api";
 import apiRegister from "../../../../services/api-register";
 import { LastUpgradeStatus } from "../../../../models/firmware";
+import i18n from "../.././../../i18n";
 
 @Component({
   name: "cortx-firmware"
