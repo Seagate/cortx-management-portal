@@ -225,9 +225,9 @@ export default class CortxAlertDetails extends Vue {
     });
 
     const res = await Api.getAll(apiRegister.all_alerts + "/" + this.alertId);
-    this.sensor_info = res.data.sensor_info;
     if (res.data) {
       this.alert = res.data;
+      this.sensor_info = res.data.sensor_info;
       try {
         if (this.alert.extended_info) {
           this.alertDetails = JSON.parse(this.alert.extended_info);
