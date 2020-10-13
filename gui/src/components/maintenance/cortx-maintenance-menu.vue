@@ -61,13 +61,14 @@ export default class CortxMaintenanceMenu extends Vue {
       disabled: false,
       requiredAccess: "auditlog"
     },
-    {
-      title: "Node replacement",
-      actionName: "Manage",
-      actionClickFunction: "goToNodeReplacement",
-      disabled: false,
-      requiredAccess: "replace_node"
-    },
+    // commented as per bug EOS-13871
+    // {
+    //   title: "Node replacement",
+    //   actionName: "Manage",
+    //   actionClickFunction: "goToNodeReplacement",
+    //   disabled: false,
+    //   requiredAccess: "replace_node"
+    // },
     {
       title: "About",
       actionName: "View",
