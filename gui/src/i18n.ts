@@ -46,7 +46,6 @@ const updateMessage = (messages: any, locale: string, brandName: string) => {
   for (const key of Object.keys(messages[locale])) {
     const custom_local = messages[`${locale}${brandName}`];
     if (custom_local) {
-      console.log(custom_local);
       messages[locale][key] = Object.assign(messages[locale][key], custom_local[key]);
     }
   }

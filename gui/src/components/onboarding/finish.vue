@@ -29,7 +29,7 @@
                 :src="require('@/assets/resolved-default.svg')"
               />
               <span class="finish-text"
-                >{{ $t("onboarding.completed") }}</span
+                >{{ $t("onBoarding.completed") }}</span
               >
             </div>
             <div class="mt-8 nav-btn">
@@ -39,7 +39,7 @@
                 class="cortx-btn-primary"
                 @click="$router.push('/dashboard')"
               >
-                {{ $t("onboarding.goToDashboard") }}
+                {{ $t("onBoarding.goToDashboard") }}
               </button>
             </div>
           </div>
