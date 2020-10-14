@@ -19,7 +19,8 @@
         "secret_key": "Secret key",
         "iam_access_key": "IAM Access key",
         "iam_secret_key": "IAM Secret key",
-        "last_used": "Last updated"
+        "last_used": "Last updated",
+        "bucket_name":"Bucket Name"
       },
       "get-message": "Fetching all S3 access keys...",
       "get-message-iam": "Fetching all IAM access keys...",
