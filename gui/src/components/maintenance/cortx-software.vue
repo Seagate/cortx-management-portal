@@ -76,7 +76,7 @@
         @click="startUpgrade()"
         :disabled="!isPackageAvailable"
       >
-        {{ $t("maintenance.invalidSSH") }}
+        {{ $t("maintenance.startUpdate") }}
       </button>
     </div>
     <div v-else>
