@@ -41,8 +41,8 @@
         ></cortx-dropdown>
       </div>
       <div class="mt-8 nav-btn">
-        <button type="button" class="cortx-btn-primary mr-2" @click="downloadAuditLogs()" id="auditlog-downlodbtn">Download</button>
-        <button type="button" class="cortx-btn-primary" @click="showAuditLogs()" id="auditlog-viewbtn">View</button>
+        <button type="button" class="cortx-btn-primary mr-2" @click="downloadAuditLogs()" id="auditlog-downlodbtn" :disabled="!component||!timerangeLabel">Download</button>
+        <button type="button" class="cortx-btn-primary" @click="showAuditLogs()" id="auditlog-viewbtn" :disabled="!component||!timerangeLabel">View</button>
       </div>
     </div>
     <div class="ma-3 mt-5" v-if="showLog">
@@ -62,7 +62,7 @@ import moment from "moment";
 export default class CortxAuditLog extends Vue {
   private data() {
     return {
-      component: "CSM",
+      component: "",
       componentList: [
         {
           label: "CSM",
@@ -74,7 +74,7 @@ export default class CortxAuditLog extends Vue {
         }
       ],
       timerange: "1",
-      timerangeLabel: "One day",
+      timerangeLabel: "",
       timerangeList: [
         {
           label: "One day",
@@ -125,12 +125,14 @@ export default class CortxAuditLog extends Vue {
       })
       .then(response => {
         this.$data.showLog = response.data;
+        this.$store.dispatch("systemConfig/hideLoader");
       })
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("Show audit log failed");
+        this.$store.dispatch("systemConfig/hideLoader");
       });
-    this.$store.dispatch("systemConfig/hideLoader");
+    
   }
   private downloadAuditLogs() {
     this.$store.dispatch(
@@ -161,12 +163,13 @@ export default class CortxAuditLog extends Vue {
         );
         document.body.appendChild(link);
         link.click();
+      this.$store.dispatch("systemConfig/hideLoader");
       })
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("download failed");
+        this.$store.dispatch("systemConfig/hideLoader");
       });
-    this.$store.dispatch("systemConfig/hideLoader");
   }
   private handleTimerangeDropdownSelect(selected: any) {
     this.$data.timerange = selected.value;
