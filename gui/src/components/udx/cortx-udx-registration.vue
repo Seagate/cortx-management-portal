@@ -455,46 +455,12 @@
         </v-col>
       </v-row>
     </div>
-    <div class="cortx-modal-container" v-if="registrationResponse">
-      <div class="cortx-modal" style="width: 600px;">
-        <div class="cortx-modal-header">
-          <label>Details</label>
-          <img id="udx-close-dialogbox"
-            class="cortx-modal-close"
-            :src="require('@/assets/close-green.svg')"
-            @click="closeRegResponseDetailsDialog()"
-          />
-        </div>
-        <div class="cortx-reg-response-container">
-          <table class="cortx-text-md">
-            <tr>
-              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">{{ $t("udx-registration.s3AccountKey") }}</td>
-              <td class="py-1" id="udx-s3accesskey">{{ registrationResponse.s3_account.access_key }}</td>
-            </tr>
-            <tr>
-              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">{{ $t("udx-registration.s3AccountSecretKey") }}</td>
-              <td class="py-1" id="udx-s3secretekey">{{ registrationResponse.s3_account.secret_key }}</td>
-            </tr>
-            <tr>
-              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">{{ $t("udx-registration.userAccessKey") }}</td>
-              <td class="py-1" id="udx-iamaccesskey">{{ registrationResponse.iam_user.access_key }}</td>
-            </tr>
-            <tr>
-              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">{{ $t("udx-registration.userAccessSecretKey") }}</td>
-              <td class="py-1" id="udx-iamsecretkey">{{ registrationResponse.iam_user.secret_key }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="cortx-modal-footer">
-          <button
-          id="udx-close-details-dialog"
-            type="button"
-            class="cortx-btn-primary cortx-float-r"
-            @click="closeRegResponseDetailsDialog()"
-          >{{ $t("common.ok") }}</button>
-        </div>
-      </div>
-    </div>
+    <cortx-download-csv-dialog
+      :show="showAccessKeyDetailsDialog"
+      :title="$t('s3.download-csv-dialog.created')"
+      :tableContent="accessKeyDetails"
+       @closeDialog="closeDialogbox()"
+    ></cortx-download-csv-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -514,9 +480,9 @@ import {
 } from "../../common/regex-helpers";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-
 @Component({
-  name: "cortx-udx-registration"
+  name: "cortx-udx-registration",
+  components: { CortxDownloadCsvDialog }
 })
 export default class CortxUDXRegistration extends Vue {
   public registrationToken: string = "";
@@ -568,7 +534,6 @@ export default class CortxUDXRegistration extends Vue {
     consentOne: false,
     consentTwo: false
   };
-
   @Validations()
   public validations = {
     registrationForm: {
@@ -587,11 +552,9 @@ export default class CortxUDXRegistration extends Vue {
       bucketName: { required, udxBucketNameRegex }
     }
   };
-
   public async mounted() {
     await this.getRegistrationToken();
   }
-
   public async registerUDX() {
     this.$store.dispatch("systemConfig/showLoader", "Registering UDX...");
     const res = await Api.post(
@@ -618,13 +581,13 @@ export default class CortxUDXRegistration extends Vue {
         [`${i18n.t("s3.access-key.table-headers.iam_access_key")}`]: this
           .registrationResponse.iam_user.access_key,
         [`${i18n.t("s3.access-key.table-headers.iam_secret_key")}`]: this
-          .registrationResponse.iam_user.secret_key
+          .registrationResponse.iam_user.secret_key,
+        [`${i18n.t("s3.access-key.table-headers.bucket_name")}`]: this.registrationForm.bucketName
       };
       this.showAccessKeyDetailsDialog = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
-
   public clearRegistrationForm() {
     this.registrationForm.url = "";
     this.registrationForm.accountName = "";
@@ -653,12 +616,47 @@ export default class CortxUDXRegistration extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
   public async closeDialogbox() {
-    this.$emit("complete");
     this.showAccessKeyDetailsDialog = false;
+    this.$emit("complete");
   }
 }
 </script>
 <style lang="scss" scoped>
+.udx-page-title {
+  height: 46px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.udx-reg-token-lbl {
+  height: 30px;
+}
+#udx-reg-token {
+  height: 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.cortx-reg-response-container {
+  height: 12.5em;
+  border-bottom: 1px solid #b7b7b7;
+  overflow: auto;
+  padding: 16px;
+}
+.udx-reg-resp-table-label {
+  width: 13rem;
+}
+.cortx-modal-footer {
+  height: 3.5em;
+  padding: 0.5em;
+}
+.cortx-bucket-input-prefix {
+  height: 40px;
+  padding-top: 8px;
+  float: left;
+}
+.cortx-bucket-input {
+  width: 290px;
+  float: left;
+}
+</style>
 .udx-page-title {
   height: 46px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
