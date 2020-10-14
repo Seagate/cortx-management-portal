@@ -455,7 +455,7 @@
         </v-col>
       </v-row>
     </div>
-    <div class="cortx-modal-container" v-if="registrationResponse">
+    <!-- <div class="cortx-modal-container" v-if="registrationResponse">
       <div class="cortx-modal" style="width: 600px;">
         <div class="cortx-modal-header">
           <label>Details</label>
@@ -494,7 +494,13 @@
           >{{ $t("common.ok") }}</button>
         </div>
       </div>
-    </div>
+    </div> -->
+    <cortx-download-csv-dialog
+      :show="showAccessKeyDetailsDialog"
+      :title="$t('s3.download-csv-dialog.created')"
+      :tableContent="accessKeyDetails"
+       @closeDialog="closeDialogbox()"
+    ></cortx-download-csv-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -516,7 +522,8 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "cortx-udx-registration"
+  name: "cortx-udx-registration",
+  components: { CortxDownloadCsvDialog }
 })
 export default class CortxUDXRegistration extends Vue {
   public registrationToken: string = "";
@@ -618,7 +625,8 @@ export default class CortxUDXRegistration extends Vue {
         [`${i18n.t("s3.access-key.table-headers.iam_access_key")}`]: this
           .registrationResponse.iam_user.access_key,
         [`${i18n.t("s3.access-key.table-headers.iam_secret_key")}`]: this
-          .registrationResponse.iam_user.secret_key
+          .registrationResponse.iam_user.secret_key,
+        [`${i18n.t("s3.access-key.table-headers.bucket_name")}`]: this.registrationForm.bucketName
       };
       this.showAccessKeyDetailsDialog = true;
     }
