@@ -36,7 +36,7 @@
           >
             <div class="mt-0 ml-0">
               <div
-                class="cortx-form-group cortx-form-group-custom mt-3"
+                class="cortx-form-group cortx-form-group-custom mt-3 mb-4"
                 :class="{
                   'cortx-form-group--error': node.dns_servers.$error
                 }"
