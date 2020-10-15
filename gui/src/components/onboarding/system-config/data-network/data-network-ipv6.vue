@@ -24,7 +24,7 @@
     ></v-img>
     <v-divider />
     <div class="body-2">
-      <div class="title mt-6" id="lblIpv6DNS">{{ $t("onBoarding.mandatoryField") }}</div>
+      <div class="title mt-6" id="lblIpv6DNS">{{ $t("onBoarding.dataNetworkSettingIpv6") }}</div>
       <div class="mt-2" id="lblIpv6Msg">
         {{ $t("onBoarding.youNeedToConfig") }}
       </div>
