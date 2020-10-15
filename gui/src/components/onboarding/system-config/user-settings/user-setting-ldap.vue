@@ -71,7 +71,7 @@
         </v-row>
         <v-row class="col-7 pb-0">
           <v-col class="py-0">
-            <div class="font-weight-medium">{{ $t("onBoarding.SMTPPort") }}</div>
+            <div class="font-weight-medium">{{ $t("onBoarding.altServer") }}</div>
             <input
               class="input-text"
               type="text"
