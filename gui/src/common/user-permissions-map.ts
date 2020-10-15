@@ -28,5 +28,6 @@ export const userPermissions = {
   stats: "stats",
   auditlog: "auditlog",
   maintenance: "maintenance",
-  replace_node: "replace_node"
+  replace_node: "replace_node",
+  lyve_pilot: "lyve_pilot"
 };

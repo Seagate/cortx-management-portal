@@ -40,7 +40,7 @@ export default class App extends Vue {
     return this.$store.getters["systemConfig/loaderMessageText"];
   }
   public mounted() {
-    document.title = this.$t("common.title") as string;
+    document.title = this.$t("common.pageTitle") as string;
   }
 }
 </script>
