@@ -102,7 +102,7 @@
           <label
             :class="alert.acknowledged ? '' : 'cortx-alert-status-chip-disabled'"
             style="float: left;"
-          >{{ $t("alerts.Acknowledged") }}</label>
+          >{{ $t("alerts.acknowledged") }}</label>
         </div>
         <div class="cortx-float-r">
           <label
