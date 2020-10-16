@@ -65,7 +65,6 @@
                 >
                   <span id="iam-header-data">{{ header.text }}</span>
                 </th>
-                <th class="tableheader" />
               </tr>
             </template>
 
@@ -453,6 +452,10 @@ export default class CortxIAMUserManagement extends Vue {
         text: "ARN",
         value: "arn",
         sortable: false
+      },
+      { 
+        text: "Action", 
+        value: "data-table-expand" 
       }
     ];
 
