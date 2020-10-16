@@ -15,8 +15,8 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2">
-    <div class="pl-4 body-2">
+  <div class="cortx-p-1">
+    <div>
       <div class="title mt-0 font-weight-bold" id="lblDns">
         Health:
       </div>
@@ -126,7 +126,6 @@ export default class CortxHealthSubmenu extends Vue {
 .cortx-menu-card-layout {
   height: 4em;
   width: 56.25em;
-  padding-left: 1em;
   padding-top: 0.5em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }

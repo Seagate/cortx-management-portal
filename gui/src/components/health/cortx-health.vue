@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <router-view class="cortx-p-2"></router-view>
+  <router-view class="cortx-p-1"></router-view>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";

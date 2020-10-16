@@ -298,7 +298,7 @@ const router = new Router({
           component: CortxUDX,
           meta: {
             requiresAuth: true,
-            requiredAccess: userPermissions.maintenance + userPermissions.list
+            requiredAccess: userPermissions.lyve_pilot + userPermissions.list
           }
         },
         {
@@ -356,17 +356,18 @@ const router = new Router({
                 requiredAccess:
                   userPermissions.maintenance + userPermissions.list
               }
-            },
-            {
-              path: "node_replacement",
-              name: "node_replacement",
-              component: CortxNodeReplacement,
-              meta: {
-                requiresAuth: true,
-                requiredAccess:
-                  userPermissions.replace_node + userPermissions.create
-              }
             }
+            // Commented code for EOS-13871
+            // {
+            //   path: "node_replacement",
+            //   name: "node_replacement",
+            //   component: CortxNodeReplacement,
+            //   meta: {
+            //     requiresAuth: true,
+            //     requiredAccess:
+            //       userPermissions.replace_node + userPermissions.create
+            //   }
+            // }
           ]
         },
         {
