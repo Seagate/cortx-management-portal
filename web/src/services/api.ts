@@ -236,6 +236,18 @@ export abstract class Api {
     }
     public static async uploadFiles(url: string, req: Request, resp: Response, id?: string | number) {
         return new Promise((resolve, reject) => {
+            const dir = file_upload_dir?file_upload_dir:"";
+            try {
+                if (!fs.existsSync(dir)) {
+                    fs.mkdirSync(dir, { recursive: true });
+                    logger.info(dir + " is created.");
+                } else {
+                    logger.info(dir + " is present");
+                }            
+            }catch(e){
+                logger.error("Error during creating " + dir + " error:" + e);
+            }
+            
             const requestData = JSON.stringify(req.body);
             let posturl = base_url + url + ((id) ? "/" + id : "");
             // Remove following code onde all the Python APIs are ready
@@ -243,9 +255,10 @@ export abstract class Api {
             if (url.startsWith("/mock")) {
                 posturl = mock_base_url + url + ((id) ? "/" + id : "");
             }
-            console.log("POST: " + posturl);
+            logger.info("POST: " + posturl);
             // -- end --
             // -- Multiparty
+            
             let form = new multiparty.Form({ uploadDir: file_upload_dir });
             form.parse(req, (err, fields, files) => {});
             form.on('file', function (name, file) {
