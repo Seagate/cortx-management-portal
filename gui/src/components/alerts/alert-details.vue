@@ -225,34 +225,18 @@ export default class CortxAlertDetails extends Vue {
     });
 
     const res = await Api.getAll(apiRegister.all_alerts + "/" + this.alertId);
-    this.sensor_info = res.data.sensor_info;
     if (res.data) {
       this.alert = res.data;
+      this.sensor_info = res.data.sensor_info;
       try {
         if (this.alert.extended_info) {
-          /**
-           * The string in alert.extended_info is not a valid JSON string (as designed by backend).
-           * To make it a valid JSON string and convert to JSON object, we need to replace single quote
-           * with double quote. The below statement does that.
-           */
-          const tempAlertExtendedInfoJSONString = this.alert.extended_info
-            .split("'")
-            .join("\"");  // Do not change this to "'"
-          this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
+          this.alertDetails = JSON.parse(this.alert.extended_info);
           this.alertExtendedInfo = this.alertDetails.info;
         }
 
         let tempAlertEventDetails = [];
         if (this.alert.event_details) {
-          /**
-           * The string in alert.event_details is not a valid JSON string (as designed by backend).
-           * To make it a valid JSON string and convert to JSON object, we need to replace single quote
-           * with double quote. The below statement does that.
-           */
-          const tempAlertEventDetailsJSONString = this.alert.event_details
-            .split("'")
-            .join("\"");  // Do not change this to "'"
-          tempAlertEventDetails = JSON.parse(tempAlertEventDetailsJSONString);
+          tempAlertEventDetails = JSON.parse(this.alert.event_details);
         }
         if (tempAlertEventDetails.length > 0) {
           tempAlertEventDetails.forEach((event_detail: any) => {

@@ -18,15 +18,15 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblNSManagement">
-        Management network settings
+        {{ $t("onBoarding.managementNetworkSetting") }}
       </div>
       <div class="mt-3" id="lblNSMsg">
-        Use the management network settings to setup your system.
+        {{ $t("onBoarding.useManagementNetwork") }}
       </div>
       <v-divider class="mt-2" />
       <div class="mt-6">
         <label class="cortx-ckb-container" for="chkNsisipV4Status">
-          IPv4
+          {{ $t("onBoarding.IPv4") }}
           <input
             type="checkbox"
             name="ipv4"
@@ -38,12 +38,12 @@
         </label>
       </div>
       <div class="mt-2">
-        Configure the IPv4 settings.
+        {{ $t("onBoarding.configIPv4") }}
       </div>
 
       <div class="mt-6">
         <label class="cortx-ckb-container" for="chkNSStatus">
-          Skip management network settings
+          {{ $t("onBoarding.skipManagementSetting") }}
           <input
             type="checkbox"
             name="skip"
@@ -56,8 +56,7 @@
         </label>
       </div>
       <div class="mt-2" id="lblNSMsgSkipSetting">
-        You can skip this step if your management network settings are already
-        complete.
+        {{ $t("onBoarding.skipManagementSettingAlreadyComplete") }}
       </div>
     </div>
     <span class="d-none">{{ isValidForm }}</span>
@@ -67,6 +66,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { SystemConfigObject } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
+import i18n from "../.././../../i18n";
 
 @Component({
   name: "cortx-network-settings"

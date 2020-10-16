@@ -29,7 +29,7 @@
                 :src="require('@/assets/resolved-default.svg')"
               />
               <span class="finish-text"
-                >Onboarding has been successfully completed.</span
+                >{{ $t("onBoarding.completed") }}</span
               >
             </div>
             <div class="mt-8 nav-btn">
@@ -39,7 +39,7 @@
                 class="cortx-btn-primary"
                 @click="$router.push('/dashboard')"
               >
-                Go to dashboard
+                {{ $t("onBoarding.goToDashboard") }}
               </button>
             </div>
           </div>
@@ -50,6 +50,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import i18n from "./../../i18n";
 
 @Component({
   name: "cortx-onboarding-finish"
