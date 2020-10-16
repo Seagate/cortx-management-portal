@@ -38,7 +38,7 @@
         </label>
       </div>
       <div class="mt-2" id="lblDNSSetting">
-        {{ $t("onBoarding.ConfigIPv4") }}
+        {{ $t("onBoarding.configIPv4") }}
       </div>
       <div class="mt-6">
         <label class="cortx-ckb-container">
