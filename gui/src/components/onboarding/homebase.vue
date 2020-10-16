@@ -20,7 +20,7 @@
       <div class="wrapper pt-3">
         <div class="arrow-steps clearfix">
           <div class="step first complete">
-            <router-link :to="'onboarding'">Start</router-link>
+            <router-link :to="'onboarding'">{{ $t("common.start") }}</router-link>
           </div>
         </div>
       </div>
@@ -29,6 +29,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import i18n from "./../../i18n";
 
 @Component({
   name: "cortx-homebase"
