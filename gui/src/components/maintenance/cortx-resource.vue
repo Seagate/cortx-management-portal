@@ -56,7 +56,7 @@
               </button>
             </v-col>
           </v-row>
-          <v-row class="mt-5 row-container" align="center" no-gutters v-if="stopService"> 
+          <v-row class="mt-5 row-container" align="center" no-gutters  v-if="stopService"> 
             <v-col col="3" lg="3">
               <label id="maintenance-stoplbl"
                 class="cortx-form-group-label font-weight-bold"
@@ -208,13 +208,19 @@ export default class CortxMaintenance extends Vue {
 
     if (nodeDetails && nodeDetails.node_status) {
       nodeDetails.node_status.forEach((e: any) => {
-        if (e.online) {
+       if (e.online) {
             if (e.standby) {
-              this.$data.resourceState.standby.push(e.name);
+              e.hostname 
+                ? this.$data.resourceState.standby.push(e.hostname)
+                : this.$data.resourceState.standby.push(e.name);
             } else {
-          this.$data.resourceState.online.push(e.name);
-        }
-            this.$data.resourceState.offline.push(e.name);
+              e.hostname 
+                ? this.$data.resourceState.online.push(e.hostname)
+                : this.$data.resourceState.online.push(e.name);
+            }
+            e.hostname 
+              ? this.$data.resourceState.offline.push(e.hostname)
+              : this.$data.resourceState.offline.push(e.name);
           } else {
             this.$data.shutdownNode = e.name;
         }

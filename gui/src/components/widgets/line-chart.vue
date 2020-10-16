@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-card id="lineChartContainer" class="ma-0 elevation-0" width="100%" tile>
+  <div>
     <div
       class="loader-container"
       v-if="showComponentLoader && $route.name !== 'dashboard'"
@@ -33,7 +33,7 @@
     </div>
 
     <v-row>
-      <v-col cols="2">
+      <v-col class="pt-0 pb-0" cols="2">
         <v-select
           id="matrixone"
           class="ml-3"
@@ -43,7 +43,7 @@
           label="Metric 1"
         ></v-select>
       </v-col>
-      <v-col cols="2">
+      <v-col class="pt-0 pb-0" cols="2">
         <v-select
           id="matrixtwo"
           :items="getMetric2"
@@ -52,7 +52,7 @@
           label="Metric 2"
         ></v-select>
       </v-col>
-      <v-col cols="8">
+      <v-col class="pt-0 pb-0" cols="8">
         <v-tabs
           color="csmprimary"
           class="mb-4"
@@ -84,7 +84,7 @@
         <div id="permancedatalbl">Unable To Fetch Performance Data</div>
       </div>
     </div>
-  </v-card>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
