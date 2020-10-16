@@ -52,7 +52,7 @@
                   <v-tooltip right max-width="300" v-if="props.item.bucket_url">
                     <template v-slot:activator="{ on }">
                       <img
-                        :id="'copy-bucket-url-${props.item.name}'"
+                        :id="`copy-bucket-url-${props.item.name}`"
                         v-on:click="copyBucketUrl(props.item.bucket_url)"
                         v-on="on"
                         class="cortx-cursor-pointer copy-url"
