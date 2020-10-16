@@ -18,15 +18,15 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblDataNetwork">
-        Data network settings
+        {{ $t("onBoarding.dataNetworkSetting") }}
       </div>
       <div class="mt-3" id="lblMsg">
-        Use the data network settings to setup your system.
+        {{ $t("onBoarding.useDataSetting") }}
       </div>
       <v-divider class="mt-2" />
       <div class="mt-6">
         <label class="cortx-ckb-container">
-          IPv4
+          {{ $t("onBoarding.IPv4") }}
           <input
             type="checkbox"
             :disabled="isSkip"
@@ -38,11 +38,11 @@
         </label>
       </div>
       <div class="mt-2" id="lblDNSSetting">
-        Configure the IPv4 settings.
+        {{ $t("onBoarding.configIPv4") }}
       </div>
       <div class="mt-6">
         <label class="cortx-ckb-container">
-          Skip data network settings
+          {{ $t("onBoarding.skipDataSetting") }}
           <input
             type="checkbox"
             @change="isSkipNetworkSettings()"
@@ -55,8 +55,7 @@
         </label>
       </div>
       <div class="mt-2" id="lblMsgSkipStep">
-        You can skip this step if your data network settings are already
-        complete.
+        {{ $t("onBoarding.youCanSkip") }}
       </div>
       <v-divider class="mt-8" />
     </div>
@@ -66,6 +65,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { EVENT_BUS } from "./../../../../main";
+import i18n from "../.././../../i18n";
 
 @Component({
   name: "cortx-data-network"
