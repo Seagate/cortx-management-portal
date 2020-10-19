@@ -27,9 +27,7 @@
         {{ $t("admin.headerText") }}
       </div>
       <div class="ml-4 my-2" id="admin-configuarion-text">
-        Configure the username and password for the user with administrative
-        rights. You must remember the admin user login credentials because the
-        admin user can be created only once.
+        {{ $t("admin.adminConfigurationText") }}
       </div>
       <v-divider class="mt-2" />
       <div class="ma-4">
@@ -250,6 +248,7 @@ import {
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
 import i18n from "./../../i18n";
+
 @Component({
   name: "cortx-admin-user"
 })

@@ -2035,7 +2035,7 @@
 			},
 			"patch": {
 				"tags": ["Alerts"],
-				"summary": "Edit Alert: Accessible to CSM users having manage permission",
+				"summary": "Edit Alert: Accessible to CSM users having manage permission and it will update the acknowledge flag",
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -2090,10 +2090,6 @@
 						"properties": {
 							"acknowledged": {
 								"type": "boolean"
-							},
-							"comments": {
-								"type": "string",
-								"example": ""
 							}
 						}
 					}

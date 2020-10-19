@@ -1,5 +1,8 @@
 {
   "login": {
+    "welcome": "Welcome!!!",
+    "start": "Start",
+    "getStated": "Click on Start to proceed with on onboarding steps.",
     "login-label": "Login",
     "login-btn": "Login",
     "user-name-placeholder": "Username",
@@ -102,10 +105,12 @@
     "confirm-dialog": {
       "title": "Confirmation"
     },
+    "accept": "Accept",
+    "cancel": "Cancel",
+    "login": "Login",
     "start": "Start",
     "apply": "Apply",
     "upload": "Upload",
-    "cancel": "Cancel",
     "email": "Email"
   },
   "csmuser": {
@@ -337,11 +342,14 @@
   },
   "admin": {
     "headerText": "Admin user configuration",
+    "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
     "adminUsernameReq":"Username is required.",
     "usernameInvalid":"Invalid username.",
     "invalidRootUsername":"The username must not be 'root' or 'Root'.",
     "applyContinue":"Apply and continue"
-
-
+  },
+  "license": {
+    "header": "To set up your system, you must accept the Terms and Conditions.",
+    "getStarted": "Get started"
   }
 }
