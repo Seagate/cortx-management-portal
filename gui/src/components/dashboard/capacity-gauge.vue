@@ -17,7 +17,7 @@
 <template>
   <div id="capacityContainer">
     <div>
-      <div class="cortx-text-lg cortx-text-bold" id="capacity-title">Capacity</div>
+      <div class="cortx-text-lg cortx-text-bold" id="capacity-title">{{ $t("dashboard.capacity") }}</div>
     </div>
     <div class="cortx-capacity-container" id="gauge_capacity"></div>
     <table class="mt-3" id="capacity-table">
@@ -25,14 +25,14 @@
         <td class="width-25">
           <div v-bind:class="usedLegendClass"></div>
         </td>
-        <td class="width-110" id="capacity-used-text">Used</td>
+        <td class="width-110" id="capacity-used-text">{{ $t("dashboard.used") }}</td>
         <td>{{ capacityChartVal(capacityDetails.used) }}</td>
       </tr>
       <tr id="capacity-available">
         <td>
           <div class="capacity-available-badge"></div>
         </td>
-        <td id="capacity-available-text">Available</td>
+        <td id="capacity-available-text">{{ $t("dashboard.available") }}</td>
         <td>{{ capacityChartVal(capacityDetails.avail) }}</td>
       </tr>
     </table>
@@ -43,7 +43,7 @@
         <td class="width-25">
           <div></div>
         </td>
-        <td class="width-110" id="capacity-total-text">Total</td>
+        <td class="width-110" id="capacity-total-text">{{ $t("dashboard.total") }}</td>
         <td>{{ capacityChartVal(capacityDetails.size) }}</td>
       </tr>
     </table>
@@ -52,7 +52,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
+import i18n from "../../i18n";
 import * as c3 from "c3";
+
 @Component({
   name: "cortx-capacity-gauge"
 })

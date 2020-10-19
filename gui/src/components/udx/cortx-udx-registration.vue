@@ -21,7 +21,7 @@
     </div>
     <div id="udx-reg-token-container" class="mt-4" v-if="registrationToken">
       <div class="udx-reg-token-lbl">
-        <label class="cortx-text-lg cortx-float-l" id="udx-tocken-title">Your registration token</label>
+        <label class="cortx-text-lg cortx-float-l" id="udx-tocken-title">{{ $t("udx-registration.registration-token") }}</label>
         <label class="cortx-float-l mt-1 ml-1">
           <cortx-info-tooltip
             message="On your Lyve Pilot web portal choose 'Add Device' and then enter the identification token below."
@@ -85,7 +85,7 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="cortx-text-md cortx-text-bold" id="udx-account-detailslbl">S3 Account details</label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-account-detailslbl">{{ $t("udx-registration.s3-details") }}</label>
         </v-col>
       </v-row>
       <v-row>
@@ -214,7 +214,7 @@
                 $v.registrationForm.accountConfirmPassword.$error
             }"
           >
-            <label class="cortx-form-group-label" for="accountConfirmPassword">Confirm password*</label>
+            <label class="cortx-form-group-label" for="accountConfirmPassword">{{ $t("udx-registration.confirm-pass") }}*</label>
             <input
               class="cortx-form__input_text"
               type="password"
@@ -238,7 +238,7 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="cortx-text-md cortx-text-bold" id="udx-iam-detailslbl">IAM User details</label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-iam-detailslbl">{{ $t("udx-registration.iam-details") }}</label>
         </v-col>
       </v-row>
       <v-row>
@@ -330,7 +330,7 @@
                 $v.registrationForm.iamUserConfirmPassword.$error
             }"
           >
-            <label class="cortx-form-group-label" for="iamUserConfirmPassword" id="udx-confirm-passwordlbl">Confirm password*</label>
+            <label class="cortx-form-group-label" for="iamUserConfirmPassword" id="udx-confirm-passwordlbl">{{ $t("udx-registration.confirm-pass") }}*</label>
             <input
               class="cortx-form__input_text"
               type="password"
@@ -354,7 +354,7 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="cortx-text-md cortx-text-bold" id="udx-s3-detailslbl">S3 Bucket details</label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-s3-detailslbl">{{ $t("udx-registration.S3BucketDetails") }}</label>
         </v-col>
       </v-row>
       <v-row>
@@ -404,10 +404,10 @@
       <v-divider class="mb-5" />
       <v-row>
         <v-col class="py-0">
-          <label class="cortx-text-md" id="udx-agreelbl">I agree to the following:</label>
+          <label class="cortx-text-md" id="udx-agreelbl">{{ $t("udx-registration.iagreetext") }}:</label>
           <br />
           <label class="cortx-ckb-container" for="consentOne" id="udx-firstcheck">
-           A dedicated Lyve Pilot Bucket will be created in my account.
+           {{ $t("udx-registration.firstcheck-text") }}
             <input
               type="checkbox"
               name="consentOne"
@@ -418,7 +418,7 @@
           </label>
           <br />
           <label class="cortx-ckb-container" for="consentTwo" id="udx-secondcheck">
-            An Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot bucket, and not to other data.
+            {{ $t("udx-registration.secondcheck-text") }}
             <input
               type="checkbox"
               name="consentTwo"

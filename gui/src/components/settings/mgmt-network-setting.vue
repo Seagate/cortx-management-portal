@@ -17,13 +17,13 @@
 <template>
   <div class="cortx-p-1 body-2">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblNetworkIP4">
-      Management network settings: IPv4
+      {{ $t("settings.managementSettingIPv4") }}
     </div>
     <div class="mt-3" id="lblNetworkMsg">
-      Configure the Virtual IP address for managing this system.
+      {{ $t("settings.managementSettingIPv4Msg") }}
     </div>
     <div class="mt-3" id="lblMandatoryMsg">
-      Fields marked with * are mandatory.
+      {{ $t("settings.mandatoryField") }}
     </div>
     <v-divider class="mt-2" />
     <cortxNetworkSettingsIpv4 @apply-settings="applySettingsConfirmation" />
@@ -46,6 +46,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxNetworkSettingsIpv4Config from "../onboarding/system-config/mgmt-network/network-settings-ipv4-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-mgmt-settings",
