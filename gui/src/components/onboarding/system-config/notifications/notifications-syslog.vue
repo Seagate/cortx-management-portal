@@ -18,12 +18,10 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblSysNotification">
-        Notifications: Syslog
+        {{ $t("onBoarding.notificationSysLog") }}
       </div>
       <div class="mt-5">
-        <span class="font-weight-bold" id="iblSysIpAddress"
-          >Syslog server IP address</span
-        >
+        <span class="font-weight-bold" id="iblSysIpAddress">{{ $t("onBoarding.sysLogServerIp") }}</span>
         <div>
           <input
             class="input-text"
@@ -36,7 +34,7 @@
       </div>
       <div class="mt-5">
         <span class="font-weight-bold" id="lblSyPortNo"
-          >Syslog server port number</span
+          >{{ $t("onBoarding.sysLogServerPortNum") }}</span
         >
         <div>
           <input
@@ -59,6 +57,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Syslog } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
+import i18n from "../.././../../i18n";
 
 @Component({
   name: "cortx-data-network-ipv4"
