@@ -41,7 +41,6 @@
                 >
                   <span>{{ header.text }}</span>
                 </th>
-                <th class="tableheader" />
               </tr>
             </template>
 
@@ -384,6 +383,10 @@ export default class CortxBucketCreation extends Vue {
         text: "Name",
         value: "name",
         sortable: false
+      },
+      { 
+        text: "Action", 
+        value: "data-table-expand" 
       }
     ];
   }
