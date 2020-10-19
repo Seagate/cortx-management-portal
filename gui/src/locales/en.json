@@ -273,7 +273,7 @@
     "DNSResolverSettings": "DNS resolver settings",
     "updateFirmware": "Update firmware",
     "updateStorageEnclosure": "Update the storage enclosure firmware. Upload the firmware bundle file (.bin) received from Seagate.",
-    "updateStorageEnclosureClick": " Click Start update once the bundle file is uploaded successfully.",
+    "updateStorageEnclosureClick": "Click Start update once the bundle file is uploaded successfully.",
     "uploadNewFirmware": "Upload new firmware file",
     "invalidFile": "Invalid file.",
     "interfaceSelection": "Interface Selection",

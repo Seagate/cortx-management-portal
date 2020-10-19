@@ -25,7 +25,7 @@ export const accountNameTooltipMessage =
 
 export const usernameTooltipMessage =
   // tslint:disable-next-line
-  "The username must be of minimum 4 characters and maximum 56 characters.  The username must be alphanumeric and can contain underscore (_) and dash (-).The username must not be 'root' or 'Root'.";
+  "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-). The username must not be 'root' or 'Root'.";
 
 export const bucketNameRegex = helpers.regex(
   "bucketNameRegex",
