@@ -33,7 +33,7 @@
         </div>
         <v-divider class="mt-5" />
         <div class="mt-5">
-          <label class="eos-ckb-container" for="chkUsrSettingLocal">
+          <label class="cortx-ckb-container" for="chkUsrSettingLocal">
             Local
             <input
               type="checkbox"
@@ -42,7 +42,7 @@
               name="local"
               id="chkUsrSettingLocal"
             />
-            <span class="eos-ckb-tick"></span>
+            <span class="cortx-ckb-tick"></span>
           </label>
           <div class="mt-2 font-weight-regular black--text">
             Selecting Local Users will allow you to create and manage any users
@@ -53,7 +53,7 @@
           </div>
         </div>
         <div class="mt-5">
-          <label class="eos-ckb-container" for="chkUsrSettingSkip">
+          <label class="cortx-ckb-container" for="chkUsrSettingSkip">
             Skip this step
             <input
               type="checkbox"
@@ -62,7 +62,7 @@
               name="skip"
               id="chkUsrSettingSkip"
             />
-            <span class="eos-ckb-tick"></span>
+            <span class="cortx-ckb-tick"></span>
           </label>
           <div
             class="mt-2 font-weight-regular black--text"
@@ -81,9 +81,9 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { EVENT_BUS } from "./../../../../main";
 
 @Component({
-  name: "eos-user-setting"
+  name: "cortx-user-setting"
 })
-export default class EosUserSetting extends Vue {
+export default class CortxUserSetting extends Vue {
   private data() {
     return {
       isSkip: false
@@ -115,7 +115,7 @@ export default class EosUserSetting extends Vue {
       .dispatch("systemConfig/createUserConfig", queryParams)
       .then((res: any) => {
         // tslint:disable-next-line: no-console
-        console.log("TCL: EosUserSetting -> setUserSettings -> res", res);
+        console.log("TCL: CortxUserSetting -> setUserSettings -> res", res);
       })
       .catch(() => {
         // tslint:disable-next-line: no-console

@@ -27,14 +27,14 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-wizard-step",
+  name: "cortx-wizard-step",
   props: {
     stepName: String,
     stepClass: String,
     stepId: String
   }
 })
-export default class EosWizardStep extends Vue {}
+export default class CortxWizardStep extends Vue {}
 </script>
 
 <style lang="scss" scoped>

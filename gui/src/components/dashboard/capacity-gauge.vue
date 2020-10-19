@@ -17,34 +17,34 @@
 <template>
   <div id="capacityContainer">
     <div>
-      <div class="eos-text-lg eos-text-bold">Capacity</div>
+      <div class="cortx-text-lg cortx-text-bold" id="capacity-title">Capacity</div>
     </div>
-    <div class="eos-capacity-container" id="gauge_capacity"></div>
-    <table class="mt-3">
-      <tr>
+    <div class="cortx-capacity-container" id="gauge_capacity"></div>
+    <table class="mt-3" id="capacity-table">
+      <tr id="capacity-used">
         <td class="width-25">
           <div v-bind:class="usedLegendClass"></div>
         </td>
-        <td class="width-110">Used</td>
-        <td>{{ capacityDetails.used }}</td>
+        <td class="width-110" id="capacity-used-text">Used</td>
+        <td>{{ capacityChartVal(capacityDetails.used) }}</td>
       </tr>
-      <tr>
+      <tr id="capacity-available">
         <td>
           <div class="capacity-available-badge"></div>
         </td>
-        <td>Available</td>
-        <td>{{ capacityDetails.avail }}</td>
+        <td id="capacity-available-text">Available</td>
+        <td>{{ capacityChartVal(capacityDetails.avail) }}</td>
       </tr>
     </table>
 
-    <div class="mt-2 mb-2 eos-capacity-separator"></div>
-    <table class="mt-3">
-      <tr>
+    <div class="mt-2 mb-2 cortx-capacity-separator"></div>
+    <table class="mt-3" id="capacity-total-table">
+      <tr id="capacity-total">
         <td class="width-25">
           <div></div>
         </td>
-        <td class="width-110">Total</td>
-        <td>{{ capacityDetails.size }}</td>
+        <td class="width-110" id="capacity-total-text">Total</td>
+        <td>{{ capacityChartVal(capacityDetails.size) }}</td>
       </tr>
     </table>
   </div>
@@ -54,9 +54,9 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
 import * as c3 from "c3";
 @Component({
-  name: "eos-capacity-gauge"
+  name: "cortx-capacity-gauge"
 })
-export default class EosCapacityGauge extends Vue {
+export default class CortxCapacityGauge extends Vue {
 
   public usedLegendClass = "capacity-used-green";
   public chartDataVal: number;
@@ -105,6 +105,19 @@ export default class EosCapacityGauge extends Vue {
   get capacityDetails() {
     return this.$store.getters["performanceStats/getCapacity"];
   }
+
+  public capacityChartVal(chartVal: number ) {
+     let chartValWithUnit = "";
+     const unitList  = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+     for (const unit of unitList) {
+       chartVal = chartVal / 1024;
+       if (chartVal / 100 < 10) {
+         chartValWithUnit = `${chartVal.toFixed(2)} ${unit}`;
+         break;
+       }
+     }
+     return chartValWithUnit;
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -130,7 +143,7 @@ export default class EosCapacityGauge extends Vue {
   width: 13px;
   background: rgb(158, 158, 158);
 }
-.eos-capacity-separator {
+.cortx-capacity-separator {
   width: 100%;
   border-top: 1px solid #e3e3e3;
 }
@@ -141,12 +154,12 @@ export default class EosCapacityGauge extends Vue {
   width: 110px;
 }
 @media screen and (min-height: 600px) {
-  .eos-capacity-container {
+  .cortx-capacity-container {
     height: 110px;
   }
 }
 @media screen and (min-height: 900px) {
-  .eos-capacity-container {
+  .cortx-capacity-container {
     height: 180px;
   }
 }

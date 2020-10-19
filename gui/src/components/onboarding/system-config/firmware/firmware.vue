@@ -16,7 +16,7 @@
 */
 <template>
   <div>
-    <div class="eos-text-lg eos-text-bold" id="lblUpdateFirmware">
+    <div class="cortx-text-lg cortx-text-bold" id="lblUpdateFirmware">
       Update firmware
     </div>
     <div class="mt-3" id="lblFirmwareUploadmsg">
@@ -24,13 +24,13 @@ Update the storage enclosure firmware. Upload the firmware bundle file (.bin) re
 Click Start update once the bundle file is uploaded successfully.
       </div>  
     <div
-      class="mt-3 pa-3 eos-last-upgrade-info-container eos-text-md"
+      class="mt-3 pa-3 cortx-last-upgrade-info-container cortx-text-md"
       v-if="lastUpgradeStatus"
     >
       <table>
         <tr>
           <td style="width: 180px;">
-            <label class="eos-text-bold">Last update status:</label>
+            <label class="cortx-text-bold">Last update status:</label>
           </td>
           <td style="padding-top: 3px;">
             <label>{{ lastUpgradeStatus.status? lastUpgradeStatus.status.toUpperCase(): "Not available" }}</label>
@@ -40,13 +40,13 @@ Click Start update once the bundle file is uploaded successfully.
         </tr>
       </table>
     </div>
-    <div class="mt-6 eos-text-md" id="lblUpdateFirmwareMsg"></div>
+    <div class="mt-6 cortx-text-md" id="lblUpdateFirmwareMsg"></div>
     <v-divider class="mt-2 mb-5" />
     <div v-if="!showUploadForm">
       <button
         id="btnInstallFirmware"
         type="button"
-        class="eos-btn-primary"
+        class="cortx-btn-primary"
         @click="showUploadForm = true"
       >
         Upload new firmware file
@@ -54,7 +54,7 @@ Click Start update once the bundle file is uploaded successfully.
       <button
         id="btnStartUpgrade"
         type="button"
-        class="ml-5 eos-btn-primary"
+        class="ml-5 cortx-btn-primary"
         @click="startUpgrade()"
         :disabled="
           !isPackageAvailable ||
@@ -73,7 +73,7 @@ Click Start update once the bundle file is uploaded successfully.
         accept=".bin"
       />
       <div
-        class="eos-form-group-label eos-form-group-error-msg mt-3"
+        class="cortx-form-group-label cortx-form-group-error-msg mt-3"
         v-if="
           firmwarePackageFormValidation.isDirty &&
             !firmwarePackageFormValidation.isValid
@@ -85,7 +85,7 @@ Click Start update once the bundle file is uploaded successfully.
       <button
         id="btnInstallFirmware"
         type="button"
-        class="mt-3 eos-btn-primary"
+        class="mt-3 cortx-btn-primary"
         @click="uploadFirmwarePackage()"
         :disabled="!firmwarePackage"
       >
@@ -94,7 +94,7 @@ Click Start update once the bundle file is uploaded successfully.
       <button
         id="btnCancelInstallFirmware"
         type="button"
-        class="mt-3 ml-5 eos-btn-secondary"
+        class="mt-3 ml-5 cortx-btn-secondary"
         @click="closeUploadForm()"
       >
         Cancel
@@ -109,9 +109,9 @@ import apiRegister from "../../../../services/api-register";
 import { LastUpgradeStatus } from "../../../../models/firmware";
 
 @Component({
-  name: "eos-firmware"
+  name: "cortx-firmware"
 })
-export default class EosFirmware extends Vue {
+export default class CortxFirmware extends Vue {
   public lastUpgradeStatus: LastUpgradeStatus | null = null;
   public showUploadForm: boolean = false;
   public isPackageAvailable: boolean = false;
@@ -216,7 +216,7 @@ export default class EosFirmware extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.eos-last-upgrade-info-container {
+.cortx-last-upgrade-info-container {
   border: 1px solid #e3e3e3;
   border-radius: 5px;
 }

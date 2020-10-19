@@ -20,38 +20,38 @@
       <div class="row mt-5">
         <div class="col-2 body-2 column">
           <div class="mt-2 font-weight-bold">
-            <div class="eos-form-group">
+            <div class="cortx-form-group">
               <label id="lblEmailSMTP">SMTP server*: </label>
             </div>
-            <div class="eos-form-group">
+            <div class="cortx-form-group">
               <label id="lblEmailSenderEmail">Sender email*:</label>
             </div>
-            <div class="eos-form-group">
+            <div class="cortx-form-group">
               <label id="lblEmailProtocol">Protocol*:</label>
             </div>
-            <div class="eos-form-group">
+            <div class="cortx-form-group">
               <label id="lblEmailSMTPPort">SMTP port*:</label>
             </div>
-            <div class="eos-form-group">
+            <div class="cortx-form-group">
               <label id="lblEmailSenderPass">Sender password*:</label>
             </div>
-            <div class="eos-form-group">
+            <div class="cortx-form-group">
               <label id="lblEmailSenderConfirmPass">Confirm password*:</label>
             </div>
-            <div class="eos-form-group">
+            <div class="cortx-form-group">
               <label id="lblEmailReceiverEmail">Receiver emails*:</label>
             </div>
           </div>
         </div>
         <div class="col-4 body-2 column mr-5">
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.smtpserver.$error
+              'cortx-form-group--error': $v.smtpserver.$error
             }"
           >
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="text"
               id="txtEmailSmtpServer"
               name="smtpserver"
@@ -59,7 +59,7 @@
               @input="$v.smtpserver.$touch"
               placeholder="smtp.email.com"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.smtpserver.$dirty && !$v.smtpserver.required"
                 >SMTP server is required.</label
               >
@@ -67,13 +67,13 @@
           </div>
 
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.senderemail.$error
+              'cortx-form-group--error': $v.senderemail.$error
             }"
           >
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="text"
               id="txtEmailsenderemail"
               name="senderEmail"
@@ -81,96 +81,98 @@
               @input="$v.senderemail.$touch"
               placeholder="example@email.com"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.senderemail.$dirty && !$v.senderemail.required"
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label v-if="$v.senderemail.$dirty && !$v.senderemail.required" id="notification-email-required"
                 >Sender email is required.</label
               >
-              <label v-if="$v.senderemail.$dirty && !$v.senderemail.email"
+              <label v-if="$v.senderemail.$dirty && !$v.senderemail.email" id="notification-email-invalid"
                 >Invalid email.</label
               >
             </div>
           </div>
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.protocol.$error
+              'cortx-form-group--error': $v.protocol.$error
             }"
           >
-            <eos-dropdown
+            <cortx-dropdown
+              id="notification-protocol-dropdownbox"
               @update:selectedOption="handleDropdownSelect"
               :options="protocolList"
               :title="protocol ? protocol : undefined"
-            ></eos-dropdown>
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.protocol.$dirty && !$v.protocol.required"
+            ></cortx-dropdown>
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label v-if="$v.protocol.$dirty && !$v.protocol.required" id="notification-protocol-required"
                 >Protocol is required.</label
               >
             </div>
           </div>
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.smtpport.$error
+              'cortx-form-group--error': $v.smtpport.$error
             }"
           >
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="number"
               id="txtEmailSmtpPort"
               name="smtpPort"
               v-model.trim="smtpport"
               @input="$v.smtpport.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.smtpport.$dirty && !$v.smtpport.required"
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label v-if="$v.smtpport.$dirty && !$v.smtpport.required" id="notification-smtpport-required"
                 >SMTP port is required.</label
               >
-              <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxValue"
+              <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxValue" id="notification-smtpport-invalid"
                 >SMTP port is not valid.</label
               >
             </div>
           </div>
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.senderpassword.$error
+              'cortx-form-group--error': $v.senderpassword.$error
             }"
           >
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="password"
               id="txtEmailSenderPass"
               name="senderPassword"
               v-model.trim="senderpassword"
               @input="$v.senderpassword.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
-                v-if="$v.senderpassword.$dirty && !$v.senderpassword.required"
+                v-if="$v.senderpassword.$dirty && !$v.senderpassword.required" id="notification-senderpassword-required"
                 >Sender password is required.</label
               >
               <label
+               id="notification-senderpassword"
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.minLength"
                 >Minimum 4 characters are required.</label
               >
             </div>
           </div>
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.confirmpassword.$error
+              'cortx-form-group--error': $v.confirmpassword.$error
             }"
           >
             <input
-              class="eos-form__input_text"
+              class="cortx-form__input_text"
               type="password"
               id="txtEmailConfirmPass"
               name="ConfirmPassword"
               v-model.trim="confirmpassword"
               @input="$v.confirmpassword.$touch"
             />
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label id="notification-confirmpassword-required"
                 v-if="
                   $v.confirmpassword.$dirty &&
                     !$v.confirmpassword.sameAsPassword
@@ -180,20 +182,20 @@
             </div>
           </div>
           <div
-            class="eos-form-group"
+            class="cortx-form-group"
             :class="{
-              'eos-form-group--error': $v.emailaddress.$error
+              'cortx-form-group--error': $v.emailaddress.$error
             }"
           >
             <textarea
-              class="eos-form__input_textarea"
+              class="cortx-form__input_textarea"
               id="txtEmailReceiverEmail"
               name="receiverEmail"
               v-model.trim="emailaddress"
               @input="$v.emailaddress.$touch"
               placeholder="Use a comma (,) to separate multiple Receiver email values. Example, example@email.com, example2@email.com"
             ></textarea>
-            <div class="eos-form-group-label eos-form-group-error-msg">
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required"
                 >Email is required.</label
               >
@@ -209,14 +211,16 @@
         </div>
       </div>
       <button
+        id="notification-sendtestemailbtn"
         type="button"
-        class="eos-btn-primary mt-5"
+        class="cortx-btn-primary mt-5"
         @click="sendTestEmail()"
         :disabled="$v.$invalid || testEmailInProgress"
       >
         Send test email
       </button>
       <span
+        id="notification-emailmsg"
         v-if="testEmailMessage"
         class="ml-2"
         :class="[
@@ -227,13 +231,14 @@
       </span>
     </div>
 
-    <span class="d-none">{{ isValidForm }}{{ notificationGetter }}</span>
+    <span class="d-none" id="notification-notificationdata">{{ isValidForm }}{{ notificationGetter }}</span>
     <button
+      id="notification-applybtn"
       type="button"
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"
       @click="applySettings()"
-      class="eos-btn-primary eos-float-l my-10"
+      class="cortx-btn-primary cortx-float-l my-10"
     >
       Apply
     </button>
@@ -259,9 +264,9 @@ import {
 import { commaSeparatedEmailsRegex } from "./../../../../common/regex-helpers";
 
 @Component({
-  name: "eos-notification"
+  name: "cortx-notification"
 })
-export default class EosNotifications extends Vue {
+export default class CortxNotifications extends Vue {
   @Validations()
   private validations = {
     smtpserver: {

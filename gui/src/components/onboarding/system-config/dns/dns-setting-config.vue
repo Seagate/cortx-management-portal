@@ -21,10 +21,10 @@
         <div class="col-2 body-2 column node-container">
           <div class="mt-5 font-weight-bold">
             <div class="mt-6 dns-label">
-              <label>DNS servers*:</label>
+              <label id="dns-serverlbl">DNS servers*:</label>
             </div>
             <div class>
-              <label>Search domains*:</label>
+              <label id="dns-domainslbl">Search domains*:</label>
             </div>
           </div>
         </div>
@@ -36,14 +36,14 @@
           >
             <div class="mt-0 ml-0">
               <div
-                class="eos-form-group eos-form-group-custom mt-3"
+                class="cortx-form-group cortx-form-group-custom mt-3"
                 :class="{
-                  'eos-form-group--error': node.dns_servers.$error
+                  'cortx-form-group--error': node.dns_servers.$error
                 }"
               >
                 <textarea
                   v-on:change="setDNSServers(node.$model.id)"
-                  class="eos-form__input_textarea eos-form__input_textarea-custom"
+                  class="cortx-form__input_textarea cortx-form__input_textarea-custom"
                   rows="3"
                   placeholder="Use a comma (,) to separate multiple DNS server values. Example, 1.1.1.1, example.com."
                   v-model.trim="node.dns_servers.$model"
@@ -51,22 +51,22 @@
                   :id="node.$model.id + 'txtDnsServer'"
                   :name="node.$model.id + 'dnsname'"
                 ></textarea>
-                <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                  <label id="dns-addess-reuired"
                     v-if="node.dns_servers.$dirty && !node.dns_servers.required"
                     >DNS address is required.</label
                   >
                 </div>
               </div>
               <div
-                class="eos-form-group eos-form-group-custom mt-3"
+                class="cortx-form-group cortx-form-group-custom mt-3"
                 :class="{
-                  'eos-form-group--error': node.search_domain.$error
+                  'cortx-form-group--error': node.search_domain.$error
                 }"
               >
                 <textarea
                   v-on:change="setSearchDomain(node.$model.id)"
-                  class="eos-form__input_textarea eos-form__input_textarea-custom"
+                  class="cortx-form__input_textarea cortx-form__input_textarea-custom"
                   :id="node.$model.id + 'txtSearchDomain'"
                   :name="node.$model.id + 'search-domain'"
                   v-model.trim="node.search_domain.$model"
@@ -74,8 +74,8 @@
                   placeholder="Use a comma (,) to separate multiple Search domain values. Example, 1.1.1.1, example.com."
                   @input="node.search_domain.$touch"
                 ></textarea>
-                <div class="eos-form-group-label eos-form-group-error-msg">
-                  <label
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                  <label id="dns-searchdomain-reuired"
                     v-if="
                       node.search_domain.$dirty && !node.search_domain.required
                     "
@@ -90,11 +90,12 @@
     </div>
     <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     <button
+      id="dns-applybtn"
       type="button"
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"
       @click="applySettings()"
-      class="eos-btn-primary eos-float-l my-10"
+      class="cortx-btn-primary cortx-float-l my-10"
     >
       Apply
     </button>
@@ -116,9 +117,9 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 @Component({
-  name: "eos-dns-setting-config"
+  name: "cortx-dns-setting-config"
 })
-export default class EosDnsSettingConfig extends Vue {
+export default class CortxDnsSettingConfig extends Vue {
   @Validations()
   private validations = {
     dnsNodes: {

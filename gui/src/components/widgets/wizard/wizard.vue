@@ -19,7 +19,7 @@
     <div class="mt-3" v-if="!selectedComponent.hideHeader">
     <span v-for="step in steps" v-bind:key="step.id">
       <span v-if="step.header">
-        <eosWizardStep
+        <cortxWizardStep
           v-if="!step.isByPassed"
           :stepName="step.header.name"
           :stepClass="step.header.state"
@@ -32,7 +32,7 @@
       <component v-if="loadComponent" :is="loadComponent"></component>
     </div>
 
-    <eosWizardFooter
+    <cortxWizardFooter
       :footerObj="footerObj"
       @messageFromFooter="messageReceivedFromFooter"
     />
@@ -40,21 +40,21 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import EosWizardStep from "./wizard-step.vue";
-import EosWizardFooter from "./wizard-footer.vue";
+import CortxWizardStep from "./wizard-step.vue";
+import CortxWizardFooter from "./wizard-footer.vue";
 
 @Component({
-  name: "eos-wizard",
+  name: "cortx-wizard",
   components: {
-    eosWizardStep: EosWizardStep,
-    eosWizardFooter: EosWizardFooter
+    cortxWizardStep: CortxWizardStep,
+    cortxWizardFooter: CortxWizardFooter
   },
   props: {
     configData: Object,
     sortBy: String
   }
 })
-export default class EosWizard extends Vue {
+export default class CortxWizard extends Vue {
   private messageReceivedFromFooter(
     nextConfiguredComponent: string,
     goWhere: string

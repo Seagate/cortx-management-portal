@@ -17,12 +17,6 @@
 <template>
   <v-dialog v-model="show" persistent max-width="790">
     <v-card>
-      <v-system-bar color="greay lighten-3">
-        <v-spacer></v-spacer>
-        <v-icon @click="closeAccountDetailsDialog()" class="eos-cursor-pointer"
-          >mdi-close</v-icon
-        >
-      </v-system-bar>
       <v-card-title class="title mt-6 ml-3">
         <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
         <span>{{ title }}</span>
@@ -31,42 +25,36 @@
 
       <div class="mt-2 pl-7 dialog-message-container">
         <img
-          class="eos-float-l mr-1"
+          class="cortx-float-l mr-1"
           :src="require('@/assets/actions/warning-orange.svg')"
         />
         <span
-          class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
+          class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
           >{{ $t("s3.download-csv-dialog.message") }}</span
         >
       </div>
 
-      <table class="mt-2 ml-7 eos-text-md">
+      <table id="download-csv-dialog-datatable" class="mt-2 ml-7 cortx-text-md">
         <template v-for="[item, value] in Object.entries(tableContent)">
           <tr :key="item">
-            <td class="py-2 eos-text-bold credentials-item-label">
+            <td class="py-2 cortx-text-bold credentials-item-label">
               {{ item }}
             </td>
             <td class="py-2">{{ value }}</td>
           </tr>
         </template>
       </table>
+      <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note")}}</div>
 
       <v-card-actions>
         <a
-          class="ma-5 eos-btn-primary eos-download-csv-link"
+          id="download-csv-dialog-btn"
+          class="ma-5 cortx-btn-primary cortx-download-csv-link"
           :href="credentialsFileContent"
           download="credentials.csv"
-          @click="isCredentialsFileDownloaded = true"
+          @click="closeAccountDetailsDialog()"
           >{{ $t("s3.download-csv-dialog.btn") }}</a
         >
-        <button
-          :disabled="!isCredentialsFileDownloaded"
-          type="button"
-          class="ma-5 eos-btn-primary"
-          @click="closeAccountDetailsDialog()"
-        >
-          Ok
-        </button>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -90,6 +78,9 @@ export default class CortxDownloadCsvDialog extends Vue {
   @Prop({ required: false })
   private title!: string;
 
+  @Prop({ required: true})
+  private s3UrlNone!: boolean;
+
   constructor() {
     super();
   }
@@ -105,15 +96,16 @@ export default class CortxDownloadCsvDialog extends Vue {
   public getCredentialsFileContent(): string {
     const headerNames = Object.keys(this.tableContent).join(",") + "\n";
     const values = Object.entries(this.tableContent)
-      .map(([k, v]) => v)
+      .map(([k, v]) => {
+        return v.replaceAll(/,/g, " ");
+      })
       .join(",");
     return headerNames + values;
   }
 
   public async closeAccountDetailsDialog() {
     this.$emit("closeDialog", true);
-    this.isCredentialsFileDownloaded = false;
-    this.credentialsFileContent = "";
+    this.isCredentialsFileDownloaded = true;
   }
 }
 </script>
@@ -158,7 +150,7 @@ tbody tr:active {
   color: #000;
   font-size: 16px;
 }
-.eos-download-csv-link {
+.cortx-download-csv-link {
   text-decoration: none;
   display: inline-block;
   padding-top: 10px;

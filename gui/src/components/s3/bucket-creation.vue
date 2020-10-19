@@ -16,55 +16,28 @@
 */
 <template>
   <div class="body-2">
-    <div
-      id="s3-configuration-title-container"
-      class="mt-2 s3-configuration-page-title"
-    >
-      <label id="s3-account-form-title" class="headline font-weight-bold"
-        >S3 configuration</label
-      >
-      <eos-has-access
-        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
-            Create an S3 account. You must log in to the system using S3 account
-            credentials to manage S3 account, IAM users, and buckets.
-          </label>
-        </div>
-      </eos-has-access>
-
-      <eos-has-access
-        :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
-            Manage IAM users and buckets.
-          </label>
-        </div>
-      </eos-has-access>
-    </div>
-    <v-divider class="mt-2" />
     <v-row>
       <v-col class="py-0 pr-0 col-9">
-        <eos-has-access
-          :to="$eosUserPermissions.s3buckets + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3buckets + $cortxUserPermissions.list"
         >
           <v-data-table
             calculate-widths
             :items="bucketsList"
             item-key="name"
-            class="eos-table"
+            class="cortx-table"
+            id="bucket-datatable"
             :hide-default-header="true"
             :hide-default-footer="true"
             :disable-pagination="true"
           >
             <template v-slot:header="{}">
-              <tr>
+              <tr id="bucket-tableheading">
                 <th
                   v-for="header in bucketsTableHeaderList"
                   :key="header.text"
                   class="tableheader"
+                  id="table-name"
                 >
                   <span>{{ header.text }}</span>
                 </th>
@@ -73,64 +46,90 @@
             </template>
 
             <template v-slot:item="props">
-              <tr>
-                <td>{{ props.item.name }}</td>
+              <tr :id="props.item.name">
+                <td id="bucket-name">
+                  {{ props.item.name }}
+                  <v-tooltip right max-width="300" v-if="props.item.bucket_url">
+                    <template v-slot:activator="{ on }">
+                      <img
+                        id="s3-edit-account"
+                        v-on:click="copyBucketUrl(props.item.bucket_url)"
+                        v-on="on"
+                        class="cortx-cursor-pointer copy-url"
+                        src="@/assets/actions/copy-text.svg"
+                      />
+                    </template>
+                    <span id="copy-tooltip"
+                      >{{ props.item.bucket_url }}<br />{{
+                        $t("s3.account.copy-tooltip")
+                      }}</span
+                    >
+                  </v-tooltip>
+                </td>
                 <td>
                   <img
+                    id="bucket-edit-icon"
                     @click="openBucketPolicyDialog(props.item.name)"
-                    class="eos-cursor-pointer"
+                    class="cortx-cursor-pointer"
                     src="@/assets/actions/edit-green.svg"
                   />
                   <img
+                    id="bucket-delete-icon"
                     @click="openConfirmDeleteDialog(props.item.name)"
-                    class="eos-cursor-pointer ml-5"
+                    class="cortx-cursor-pointer ml-5"
                     src="@/assets/actions/delete-green.svg"
                   />
                 </td>
               </tr>
             </template>
           </v-data-table>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
-      <v-col class="pb-0 col-3">
+      <v-col class="py-0 col-3">
         <div v-if="showCreateBucketForm" class="pa-2">
           <v-row>
-            <v-col class="py-0 pr-0">
+            <v-col class="pr-0 pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createBucketForm.bucket.bucket_name.$error
                 }"
               >
-                <label class="eos-form-group-label" for="bucketName">
-                  <eos-info-tooltip
+                <label
+                  class="cortx-form-group-label"
+                  for="bucketName"
+                  id="bucket-namelbl"
+                >
+                  <cortx-info-tooltip
                     label="Bucket name*"
                     :message="bucketNameTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   id="bucketName"
                   name="bucketName"
                   v-model.trim="createBucketForm.bucket.bucket_name"
                   @input="$v.createBucketForm.bucket.bucket_name.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
+                    id="bucket-name-required"
                     v-if="
                       $v.createBucketForm.bucket.bucket_name.$dirty &&
                         !$v.createBucketForm.bucket.bucket_name.required
                     "
-                    >Bucket name is required.</label
+                    >{{ $t("s3.bucket.name-require") }}</label
                   >
                   <label
+                    id="bucket-name-invalid"
                     v-else-if="
                       $v.createBucketForm.bucket.bucket_name.$dirty &&
                         !$v.createBucketForm.bucket.bucket_name.bucketNameRegex
                     "
-                    >Invalid bucket name.</label
+                    >{{ $t("s3.bucket.invalid-name") }}</label
                   >
                 </div>
               </div>
@@ -139,102 +138,131 @@
           <v-row>
             <v-col>
               <button
+                id="bucket-create-btn"
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="createBucket()"
                 :disabled="$v.createBucketForm.$invalid"
               >
-                Create bucket
+                {{ $t("s3.bucket.create-bucket") }}
               </button>
               <button
+                id="bucket-cancel-btn"
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeCreateBucketForm()"
               >
-                Cancel
+                {{ $t("common.cancel-btn") }}
               </button>
             </v-col>
           </v-row>
         </div>
-        <eos-has-access
-          :to="$eosUserPermissions.s3buckets + $eosUserPermissions.create"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3buckets + $cortxUserPermissions.create"
         >
           <button
+            id="bucket-addbucket-formbtn"
             type="button"
-            class="eos-btn-primary"
+            class="mt-4 cortx-btn-primary"
             v-if="!showCreateBucketForm"
             @click="openCreateBucketForm()"
           >
-            Create
+            {{ $t("common.create-btn") }}
           </button>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
     </v-row>
 
     <v-dialog
+      id="bucket-create-succeaadialogbox"
       v-model="showBucketCreateSuccessDialog"
       persistent
-      max-width="400"
+      max-width="500"
     >
       <v-card>
         <v-system-bar color="grey lighten-3">
           <v-spacer></v-spacer>
           <v-icon
+            id="bucket-closedialogbox"
             @click="closeBucketCreateSuccessDialog()"
             style="cursor: pointer;"
             >mdi-close</v-icon
           >
         </v-system-bar>
-        <v-card-title class="title mt-6 ml-3">
+        <v-card-title class="title mt-5">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span>Bucket created successfully.</span>
+          <span id="bucket-created-success-mgs">{{
+            $t("s3.bucket.created-successfully")
+          }}</span>
+          <table class="mt-2 ml-9 cortx-text-md">
+            <tr>
+              <td class="py-2 cortx-text-bold bucket-url-label">
+                {{ $t("s3.bucket.url-label") }}
+              </td>
+              <td class="py-2 bucket-url-text">{{ bucketUrl }}</td>
+            </tr>
+          </table>
         </v-card-title>
         <v-card-actions>
           <button
+            id="bucket-closedialodbox"
             type="button"
-            class="ma-5 eos-btn-primary"
+            class="ma-5 cortx-btn-primary"
             @click="closeBucketCreateSuccessDialog()"
           >
-            Ok
+            {{ $t("common.ok-text") }}
           </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <div class="eos-modal-container" v-if="showBucketPolicyDialog">
-      <div class="eos-modal bucket-policy-editor">
-        <div class="eos-modal-header">
-          <label>JSON policy</label>
+    <div
+      class="cortx-modal-container"
+      v-if="showBucketPolicyDialog"
+      id="bucket-policy"
+    >
+      <div class="cortx-modal bucket-policy-editor">
+        <div class="cortx-modal-header">
+          <label id="bucket-json-policy-lbl">{{
+            $t("s3.bucket.json-policy")
+          }}</label>
           <img
-            class="eos-modal-close"
+            id="close-bucket-policydialog"
+            class="cortx-modal-close"
             :src="require('@/assets/close-green.svg')"
             @click="closeBucketPolicyDialog()"
           />
         </div>
-        <div class="eos-modal-body">
+        <div class="cortx-modal-body">
           <div
-            class="eos-form-group eos-form-group-custom"
+            class="cortx-form-group cortx-form-group-custom"
             :class="{
-              'eos-form-group--error': $v.policyJSON.$error
+              'cortx-form-group--error': $v.policyJSON.$error
             }"
           >
-            <label class="eos-form-group-label" for="policyJSONTextarea">
-              Type to add new bucket policy or edit an existing policy in the
-              text area below.
+            <label
+              class="cortx-form-group-label"
+              for="policyJSONTextarea"
+              id="bucket-policy-text"
+            >
+              {{ $t("s3.bucket.policy-info") }}
             </label>
             <textarea
-              class="eos-form__input_textarea eos-form__input_textarea-custom"
+              class="cortx-form__input_textarea cortx-form__input_textarea-custom"
               name="policyJSONTextarea"
               id="policyJSONTextarea"
               rows="10"
               v-model="policyJSON"
               @input="$v.policyJSON.$touch"
             ></textarea>
-            <div class="eos-form-group-label eos-form-group-error-msg">
-              <label v-if="$v.policyJSON.$dirty && !$v.policyJSON.required"
-                >Policy JSON is required.</label
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label
+                id="policy-required-msg"
+                v-if="$v.policyJSON.$dirty && !$v.policyJSON.required"
+                >{{ $t("s3.bucket.json-policy") }}</label
               >
               <label
+                id="policy-jsonerror"
                 v-else-if="$v.policyJSON.$dirty && !$v.policyJSON.JSONValidator"
                 >{{ JSONError }}</label
               >
@@ -242,41 +270,45 @@
           </div>
           <div class="mt-3 policy-container">
             <button
+              id="update-bucketpolicy"
               type="button"
-              class="eos-btn-primary"
+              class="cortx-btn-primary"
               :disabled="!$v.policyJSON.JSONValidator"
               @click="updateBucketPolicy()"
             >
-              Update
+              {{ $t("common.update-btn") }}
             </button>
             <button
+              id="delete-bucket-policy"
               type="button"
-              class="eos-btn-primary ml-2"
-              :disabled="!$v.policyJSON.JSONValidator"
+              class="cortx-btn-primary ml-2"
+              :disabled="!$v.policyJSON.JSONValidator || noBucketPolicy"
               @click="deleteBucketPolicy()"
             >
-              Delete
+              {{ $t("common.delete-btn") }}
             </button>
             <button
+              id="cancel-bucket-policy"
               type="button"
-              class="eos-btn-tertiary"
+              class="cortx-btn-tertiary"
               @click="closeBucketPolicyDialog()"
             >
-              Cancel
+              {{ $t("common.cancel-btn") }}
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
+      id="bucket-confirmation-dialog"
       :show="showConfirmDeleteDialog"
       title="Confirmation"
-      message="Are you sure you want to delete the bucket?"
+      :message="confirmMsg"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -286,19 +318,22 @@ import { required, helpers, minLength } from "vuelidate/lib/validators";
 import { Bucket } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import i18n from "../../i18n";
 
 import {
   bucketNameRegex,
   bucketNameTooltipMessage
 } from "./../../common/regex-helpers";
+import CommonUtils from "../../common/common-utils";
 
 @Component({
-  name: "eos-bucket-creation"
+  name: "cortx-bucket-creation"
 })
-export default class EosBucketCreation extends Vue {
+export default class CortxBucketCreation extends Vue {
   public createBucketForm = {
     bucket: {} as Bucket
   };
+  public confirmMsg: string = "";
   @Validations()
   public validations = {
     createBucketForm: {
@@ -333,6 +368,8 @@ export default class EosBucketCreation extends Vue {
   private policyJSON: any = "";
   private bucketName: any = "";
   private bucketNameTooltipMessage: string = bucketNameTooltipMessage;
+  private bucketUrl = "";
+  private noBucketPolicy: boolean;
 
   constructor() {
     super();
@@ -362,18 +399,26 @@ export default class EosBucketCreation extends Vue {
   }
 
   public async getAllBuckets() {
-    this.$store.dispatch("systemConfig/showLoader", "Fetching all buckets...");
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.fetching-bucket")
+    );
     const res: any = await Api.getAll(apiRegister.s3_bucket);
     this.bucketsList = res && res.data ? res.data.buckets : [];
+
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
   public async createBucket() {
-    this.$store.dispatch("systemConfig/showLoader", "Creating bucket...");
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.creating-bucket")
+    );
     const res = await Api.post(
       apiRegister.s3_bucket,
       this.createBucketForm.bucket
     );
+    this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
     if (!res.error) {
       this.showBucketCreateSuccessDialog = true;
     }
@@ -406,6 +451,7 @@ export default class EosBucketCreation extends Vue {
   }
 
   public openConfirmDeleteDialog(bucketName: string) {
+    this.confirmMsg = `${i18n.t("s3.bucket.delete-confirm-msg")} ${bucketName}?`;
     this.bucketToDelete = bucketName;
     this.showConfirmDeleteDialog = true;
   }
@@ -417,7 +463,7 @@ export default class EosBucketCreation extends Vue {
     this.bucketName = bucketname;
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Fetching bucket policy..."
+      i18n.t("s3.bucket.fetching-policy")
     );
     try {
       const res: any = await Api.getAll(
@@ -426,6 +472,7 @@ export default class EosBucketCreation extends Vue {
       this.policyJSON = JSON.stringify(res.data, null, 4);
     } catch (error) {
       this.policyJSON = "";
+      this.noBucketPolicy = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showBucketPolicyDialog = true;
@@ -450,7 +497,7 @@ export default class EosBucketCreation extends Vue {
     this.showBucketPolicyDialog = false;
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Updating bucket policy..."
+      i18n.t("s3.bucket.updating-policy")
     );
     await Api.put(apiRegister.bucket_policy, policy, this.bucketName);
     this.policyJSON = "";
@@ -458,18 +505,24 @@ export default class EosBucketCreation extends Vue {
   }
   public async deleteBucketPolicy() {
     this.showBucketPolicyDialog = false;
-    this.$store.dispatch("systemConfig/showLoader", "Delete bucket policy...");
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.delete-policy")
+    );
     await Api.delete(apiRegister.bucket_policy, this.bucketName);
     this.$store.dispatch("systemConfig/hideLoader");
   }
   private async deleteBucket() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Deleting bucket " + this.bucketToDelete
+      i18n.t("s3.bucket.delete-bucket") + this.bucketToDelete
     );
     await Api.delete(apiRegister.s3_bucket, this.bucketToDelete);
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getAllBuckets();
+  }
+  private async copyBucketUrl(url: string) {
+    CommonUtils.copyUrlToClipboard(url);
   }
 }
 </script>
@@ -488,5 +541,11 @@ export default class EosBucketCreation extends Vue {
 }
 .bucket-policy-editor {
   width: 600px;
+}
+.bucket-url-label {
+  width: 6rem;
+}
+.bucket-url-text {
+  word-break: break-all;
 }
 </style>

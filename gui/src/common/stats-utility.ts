@@ -26,7 +26,7 @@ export default abstract class StatsUtility {
       throughput_read: { throughput_read: "y2" },
       throughput_write: { throughput_write: "y2" },
       throughput_total: { throughput_total: "y2" },
-      latency_avarage_latency: { latency_avarage_latency: "y2" },
+      latency_average: { latency_average: "y2" },
       latency_create_object: { latency_create_object: "y2" },
       latency_delete_object: { latency_delete_object: "y2" },
       latency_write_object: { latency_write_object: "y2" },
@@ -90,7 +90,7 @@ export default abstract class StatsUtility {
     }
   }
 
-  // This static method converts api responce into 2D array format of c3.js
+  // This static method converts api response into 2D array format of c3.js
   // parameters: payload: api response data
   //             chartType: Throughput|| Latency || IOPS
   //             paramList: List of 2 metrics to show on the graph
@@ -163,19 +163,18 @@ export default abstract class StatsUtility {
     return outputFormat;
   }
 
-  // This static function is used to convert capacity api data into c3 fromat
+  // This static function is used to convert capacity api data into c3 format
   public static formatCapacityData(
     payload: DiskCapacityDetails | null
   ): [string, ...any[]][] {
     const outputFormat: [string, ...any[]][] = [["data"]];
     if (payload !== null && payload !== undefined) {
-      const percentUsage = payload.usage_percentage.split(" ");
-      outputFormat[0].push(percentUsage[0]);
+      outputFormat[0].push(payload.usage_percentage);
     }
     return outputFormat;
   }
 
-  // This static method converts api responce into 2D array format of c3.js
+  // This static method converts api response into 2D array format of c3.js
   // c3.js: format [ ["x", new Date().getTime()], ["total", 0], ["read", 0], ["write", 0] ]
   // api response format : { "id": "1", "metrics": [ { "data": [ [ 1580732207000 ], [ 0 ] ],
   // "name": "throughput.read", "unit": "bytes" } ] }
@@ -208,10 +207,10 @@ export default abstract class StatsUtility {
     return outputFormat;
   }
 
-  // getUnitStatMatric function returns unit for each
-  // param metric : selected stats matric
-  public static getUnitStatMatric(matric: string) {
-    switch (matric.split("_")[0]) {
+  // getUnitStatMetric function returns unit for each
+  // param metric : selected stats metric
+  public static getUnitStatMatric(metric: string) {
+    switch (metric.split("_")[0]) {
       case "throughput":
         return "mb";
       case "latency":

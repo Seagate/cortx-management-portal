@@ -17,46 +17,46 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Dashboard from "./components/dashboard/dashboard.vue";
-import EosAlertLarge from "./components/alerts/alert-large.vue";
-import EosAlertHistory from "./components/alerts/alert-history-details.vue";
-import EosAlertDetails from "./components/alerts/alert-details.vue";
-import EosUserSettingLocal from "./components/onboarding/system-config/user-settings/user-setting-local.vue";
-import EosS3Management from "./components/s3/s3.vue";
-import EosAdminUser from "./components/preboarding/admin-user.vue";
-import EosWelcome from "./components/preboarding/welcome.vue";
-import EosLicense from "./components/preboarding/license.vue";
-import EosLogin from "./components/preboarding/login.vue";
-import EosUDX from "./components/udx/eos-udx.vue";
-import EosHomebase from "./components/onboarding/homebase.vue";
-import EosOnboarding from "./components/onboarding/system-config/onboarding.vue";
-import EosDefault from "./components/eos-default.vue";
-import EosPreboarding from "./components/preboarding/eos-preboarding.vue";
-import EosProvisioning from "./components/provisioning/eos-provisioning.vue";
-import EosProvisioningMenu from "./components/provisioning/eos-provisioning-menu.vue";
-import EosSettings from "./components/settings/eos-settings.vue";
-import EosSettingsMenu from "./components/settings/eos-settings-menu.vue";
-import EosAuditLog from "./components/maintenance/auditlog.vue";
-import EosUnauthorizedAccess from "./components/security/403.vue";
-import EosNotFound from "./components/security/404.vue";
-import EosPerformanceLarge from "./components/performance/performance-large.vue";
+import CortxAlertLarge from "./components/alerts/alert-large.vue";
+import CortxAlertHistory from "./components/alerts/alert-history-details.vue";
+import CortxAlertDetails from "./components/alerts/alert-details.vue";
+import CortxUserSettingLocal from "./components/onboarding/system-config/user-settings/user-setting-local.vue";
+import CortxS3Management from "./components/s3/s3.vue";
+import CortxAdminUser from "./components/preboarding/admin-user.vue";
+import CortxWelcome from "./components/preboarding/welcome.vue";
+import CortxLicense from "./components/preboarding/license.vue";
+import CortxLogin from "./components/preboarding/login.vue";
+import CortxUDX from "./components/udx/cortx-udx.vue";
+import CortxHomebase from "./components/onboarding/homebase.vue";
+import CortxOnboarding from "./components/onboarding/system-config/onboarding.vue";
+import CortxDefault from "./components/cortx-default.vue";
+import CortxPreboarding from "./components/preboarding/cortx-preboarding.vue";
+import CortxProvisioning from "./components/provisioning/cortx-provisioning.vue";
+import CortxProvisioningMenu from "./components/provisioning/cortx-provisioning-menu.vue";
+import CortxSettings from "./components/settings/cortx-settings.vue";
+import CortxSettingsMenu from "./components/settings/cortx-settings-menu.vue";
+import CortxAuditLog from "./components/maintenance/auditlog.vue";
+import CortxUnauthorizedAccess from "./components/security/403.vue";
+import CortxNotFound from "./components/security/404.vue";
+import CortxPerformanceLarge from "./components/performance/performance-large.vue";
 import { userPermissions } from "./common/user-permissions-map";
-import EosMaintenance from "./components/maintenance/eos-maintenance.vue";
-import EosMaintenanceMenu from "./components/maintenance/eos-maintenance-menu.vue";
-import EosResource from "./components/maintenance/eos-resource.vue";
-import EosNodeReplacement from "./components/maintenance/eos-node-replacement.vue";
-import EosFirmware from "./components/onboarding/system-config/firmware/firmware.vue";
-import EosNotifications from "./components/settings/notifications-email-setting.vue";
-import EosSoftware from "./components/maintenance/eos-software.vue";
-import EosMangementSetting from "./components/settings/mgmt-network-setting.vue";
-import EosDataNetworkSetting from "./components/settings/data-network-setting.vue";
-import EosDnsDataSetting from "./components/settings/dns-data-setting.vue";
-import EOSUploadSSLSetting from "./components/settings/ssl-certificate-setting.vue";
-import EosNtpSetting from "./components/settings/ntp-setting.vue";
-import EosAbout from "./components/maintenance/eos-about.vue";
-import EosHealthSubmenu from "./components/health/eos-health-menu.vue";
-import EosHealthView from "./components/health/eos-health-view.vue";
-import EosHealthAlertDetails from "./components/health/eos-health-alert-details.vue";
-import EosHealth from "./components/health/eos-health.vue";
+import CortxMaintenance from "./components/maintenance/cortx-maintenance.vue";
+import CortxMaintenanceMenu from "./components/maintenance/cortx-maintenance-menu.vue";
+import CortxResource from "./components/maintenance/cortx-resource.vue";
+import CortxNodeReplacement from "./components/maintenance/cortx-node-replacement.vue";
+import CortxFirmware from "./components/onboarding/system-config/firmware/firmware.vue";
+import CortxNotifications from "./components/settings/notifications-email-setting.vue";
+import CortxSoftware from "./components/maintenance/cortx-software.vue";
+import CortxMangementSetting from "./components/settings/mgmt-network-setting.vue";
+import CortxDataNetworkSetting from "./components/settings/data-network-setting.vue";
+import CortxDnsDataSetting from "./components/settings/dns-data-setting.vue";
+import CortxUploadSSLSetting from "./components/settings/ssl-certificate-setting.vue";
+import CortxNtpSetting from "./components/settings/ntp-setting.vue";
+import CortxAbout from "./components/maintenance/cortx-about.vue";
+import CortxHealthSubmenu from "./components/health/cortx-health-menu.vue";
+import CortxHealthView from "./components/health/cortx-health-view.vue";
+import CortxSeverityBasedHealthView from "./components/health/cortx-severity-based-health-view.vue";
+import CortxHealth from "./components/health/cortx-health.vue";
 import store from "./store/store";
 
 Vue.use(Router);
@@ -67,31 +67,31 @@ const router = new Router({
     {
       path: "/preboarding",
       name: "preboarding",
-      component: EosPreboarding,
+      component: CortxPreboarding,
       meta: { requiresAuth: false },
       children: [
         {
           path: "welcome",
           name: "welcome",
-          component: EosWelcome,
+          component: CortxWelcome,
           meta: { requiresAuth: false }
         },
         {
           path: "gdpr",
           name: "gdpr",
-          component: EosLicense,
+          component: CortxLicense,
           meta: { requiresAuth: false }
         },
         {
           path: "adminuser",
           name: "adminuser",
-          component: EosAdminUser,
+          component: CortxAdminUser,
           meta: { requiresAuth: false }
         },
         {
           path: "login",
           name: "preboarding-login",
-          component: EosLogin,
+          component: CortxLogin,
           meta: { requiresAuth: false }
         }
       ]
@@ -99,12 +99,12 @@ const router = new Router({
     {
       path: "/login",
       name: "normal-login",
-      component: EosLogin,
+      component: CortxLogin,
       meta: { requiresAuth: false }
     },
     {
       path: "/",
-      component: EosDefault,
+      component: CortxDefault,
       meta: { requiresAuth: true },
       children: [
         {
@@ -119,7 +119,7 @@ const router = new Router({
         {
           path: "alerts",
           name: "alerts-large",
-          component: EosAlertLarge,
+          component: CortxAlertLarge,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.alerts + userPermissions.list
@@ -128,7 +128,7 @@ const router = new Router({
         {
           path: "performance",
           name: "performance-large",
-          component: EosPerformanceLarge,
+          component: CortxPerformanceLarge,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.alerts + userPermissions.list
@@ -137,7 +137,7 @@ const router = new Router({
         {
           path: "alerts/:alert_id",
           name: "alert-detail",
-          component: EosAlertDetails,
+          component: CortxAlertDetails,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.alerts + userPermissions.list
@@ -146,27 +146,27 @@ const router = new Router({
         {
           path: "alerts_history/:alert_id",
           name: "alert-history",
-          component: EosAlertHistory,
+          component: CortxAlertHistory,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.alerts + userPermissions.list
           }
         },
         {
-          path: "provisioning",
-          component: EosProvisioning,
+          path: "manage",
+          component: CortxProvisioning,
           meta: { requiresAuth: true },
           children: [
             {
               path: "",
               name: "provisioning-menu",
-              component: EosProvisioningMenu,
+              component: CortxProvisioningMenu,
               meta: { requiresAuth: true }
             },
             {
               path: "s3",
               name: "s3",
-              component: EosS3Management,
+              component: CortxS3Management,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -176,7 +176,7 @@ const router = new Router({
             {
               path: "usersettinglocal",
               name: "usersettinglocal",
-              component: EosUserSettingLocal,
+              component: CortxUserSettingLocal,
               meta: {
                 requiresAuth: true,
                 requiredAccess: userPermissions.users + userPermissions.list
@@ -186,32 +186,35 @@ const router = new Router({
         },
         {
           path: "health",
-          component: EosHealth,
+          component: CortxHealth,
           meta: { requiresAuth: true },
           children: [
             {
               path: "",
               name: "health",
-              component: EosHealthSubmenu,
-              meta: { requiresAuth: true }
+              component: CortxHealthSubmenu,
+              meta: {
+                requiresAuth: true,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
             },
             {
               path: "healthview",
               name: "healthview",
-              component: EosHealthView,
+              component: CortxHealthView,
               meta: { requiresAuth: true }
             },
             {
-              path: "healthview/:alert_id",
-              name: "health-alerts-details",
-              component: EosHealthAlertDetails,
+              path: "healthview/severity/:severity",
+              name: "health-view-severity-based",
+              component: CortxSeverityBasedHealthView,
               meta: { requiresAuth: true }
             }
           ]
         },
         {
           path: "settings",
-          component: EosSettings,
+          component: CortxSettings,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.maintenance + userPermissions.list
@@ -220,7 +223,7 @@ const router = new Router({
             {
               path: "",
               name: "settings-menu",
-              component: EosSettingsMenu,
+              component: CortxSettingsMenu,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -230,7 +233,7 @@ const router = new Router({
             {
               path: "notifications",
               name: "notifications",
-              component: EosNotifications,
+              component: CortxNotifications,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -240,7 +243,7 @@ const router = new Router({
             {
               path: "management-network",
               name: "management-network",
-              component: EosMangementSetting,
+              component: CortxMangementSetting,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -250,7 +253,7 @@ const router = new Router({
             {
               path: "data-network",
               name: "data-network",
-              component: EosDataNetworkSetting,
+              component: CortxDataNetworkSetting,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -260,7 +263,7 @@ const router = new Router({
             {
               path: "dns",
               name: "dns",
-              component: EosDnsDataSetting,
+              component: CortxDnsDataSetting,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -270,7 +273,7 @@ const router = new Router({
             {
               path: "ntp",
               name: "ntp",
-              component: EosNtpSetting,
+              component: CortxNtpSetting,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -280,7 +283,7 @@ const router = new Router({
             {
               path: "ssl-upload",
               name: "ssl-upload",
-              component: EOSUploadSSLSetting,
+              component: CortxUploadSSLSetting,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -290,9 +293,9 @@ const router = new Router({
           ]
         },
         {
-          path: "udx",
-          name: "udx",
-          component: EosUDX,
+          path: "ldp",
+          name: "ldp",
+          component: CortxUDX,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.maintenance + userPermissions.list
@@ -300,7 +303,7 @@ const router = new Router({
         },
         {
           path: "maintenance",
-          component: EosMaintenance,
+          component: CortxMaintenance,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.sysconfig + userPermissions.list
@@ -309,13 +312,16 @@ const router = new Router({
             {
               path: "",
               name: "maintenance-menu",
-              component: EosMaintenanceMenu,
-              meta: { requiresAuth: true }
+              component: CortxMaintenanceMenu,
+              meta: {
+                requiresAuth: true,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
             },
             {
               path: "auditlog",
               name: "auditlog",
-              component: EosAuditLog,
+              component: CortxAuditLog,
               meta: {
                 requiresAuth: true,
                 requiredAccess: userPermissions.auditlog + userPermissions.list
@@ -324,7 +330,7 @@ const router = new Router({
             {
               path: "resource",
               name: "resource",
-              component: EosResource,
+              component: CortxResource,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -334,7 +340,7 @@ const router = new Router({
             {
               path: "firmware",
               name: "firmware",
-              component: EosFirmware,
+              component: CortxFirmware,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -344,7 +350,7 @@ const router = new Router({
             {
               path: "software",
               name: "software",
-              component: EosSoftware,
+              component: CortxSoftware,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -354,7 +360,7 @@ const router = new Router({
             {
               path: "node_replacement",
               name: "node_replacement",
-              component: EosNodeReplacement,
+              component: CortxNodeReplacement,
               meta: {
                 requiresAuth: true,
                 requiredAccess:
@@ -366,7 +372,7 @@ const router = new Router({
         {
           path: "/homebase",
           name: "homebase",
-          component: EosHomebase,
+          component: CortxHomebase,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.sysconfig + userPermissions.list
@@ -375,7 +381,7 @@ const router = new Router({
         {
           path: "/onboarding",
           name: "onboarding",
-          component: EosOnboarding,
+          component: CortxOnboarding,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.maintenance + userPermissions.list
@@ -384,13 +390,13 @@ const router = new Router({
         {
           path: "403",
           name: "403",
-          component: EosUnauthorizedAccess,
+          component: CortxUnauthorizedAccess,
           meta: { requiresAuth: true }
         },
         {
           path: "about",
           name: "about",
-          component: EosAbout,
+          component: CortxAbout,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.sysconfig + userPermissions.list
@@ -398,7 +404,7 @@ const router = new Router({
         }
       ]
     },
-    { path: "*", component: EosNotFound }
+    { path: "*", component: CortxNotFound }
   ]
 });
 
@@ -424,7 +430,7 @@ router.beforeEach(async (to, from, next) => {
           }
           if (!routerApp.$hasAccessToCsm(userPermissions.stats + userPermissions.list) &&
             routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
-            next({ path: "/provisioning/s3" });
+            next({ path: "/manage/s3" });
           }
         }
 

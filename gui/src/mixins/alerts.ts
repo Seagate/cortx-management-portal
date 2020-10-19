@@ -84,18 +84,36 @@ export default class AlertsMixin extends Vue {
     this.alertObject.alerts.forEach((alert: any) => {
       currentPageAlertIds.push(alert.alert_uuid);
     });
-    try {
-      await Api.patch(apiRegister.all_alerts, currentPageAlertIds);
-      this.currentPage = this.currentPage > 1 ? this.currentPage-- : 1;
-      await this.onSortPaginate();
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
-    }
+    await Api.patch(apiRegister.all_alerts, currentPageAlertIds);
+    this.currentPage = this.currentPage > 1 ? this.currentPage-- : 1;
+    await this.onSortPaginate();
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: false,
       message: ""
     });
+    this.$store.dispatch("alertDataAction");
+  }
+
+  public async acknowledgeAlert(alert: any) {
+    const loaderMessage: string = alert.acknowledged ? "Unacknowledging alert..." : "Acknowledging alert...";
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: true,
+      message: loaderMessage
+    });
+    await Api.patch(
+      apiRegister.all_alerts,
+      { acknowledged: !alert.acknowledged },
+      alert.alert_uuid
+    );
+    if (this.alertObject.alerts.length === 1) {
+      this.currentPage = this.currentPage > 1 ? this.currentPage-- : 1;
+    }
+    await this.onSortPaginate();
+    this.$store.dispatch("systemConfig/showLoaderMessage", {
+      show: false,
+      message: ""
+    });
+    this.$store.dispatch("alertDataAction");
   }
 
   get currentPage() {

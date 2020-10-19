@@ -21,21 +21,19 @@
     </div>
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
-      <div class="ml-4 mt-4 white--text">
-        To set up your system, you must accept the EULA.
+      <div class="ml-4 mt-4 white--text mb-5">
+        To set up your system, you must accept the Terms and Conditions.
       </div>
-      <div class="ml-4 mt-1 mb-8 white--text">
-        Click Get started to agree
-        <span class="csmprimary--text">EULA.</span>
-      </div>
-        <button
+      <button
+        id="show-license-agreement-dialogbtn"
         type="button"
-        class="eos-btn-primary-dark ml-4"
+        class="cortx-btn-primary-dark ml-4"
         @click="showLicenseAgreement = true"
       >
         <span>Get started</span>
       </button>
       <LicenseAgreement
+       id="license-agreement-close"
         @accepted="licenseAcceptedOrClosed"
         v-if="showLicenseAgreement"
       ></LicenseAgreement>
@@ -47,10 +45,10 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import LicenseAgreement from "./license-agreement.vue";
 
 @Component({
-  name: "eos-welcome",
+  name: "cortx-welcome",
   components: { LicenseAgreement }
 })
-export default class EosLicense extends Vue {
+export default class CortxLicense extends Vue {
   private data() {
     return {
       showLicenseAgreement: false,
@@ -72,7 +70,7 @@ export default class EosLicense extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.eos-form-group {
+.cortx-form-group {
   width: 500px;
   min-height: 88px;
 }

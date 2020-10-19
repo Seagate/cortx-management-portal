@@ -21,23 +21,23 @@
         <div class="row ma-0">
           <div class="col-2 body-2 column">
             <div class="mt-2 font-weight-bold">
-              <div class="eos-form-group">
+              <div class="cortx-form-group">
                 <label id="lblDTNetworkServerAdd">NTP server address*: </label>
               </div>
-              <div class="eos-form-group">
+              <div class="cortx-form-group">
                 <label id="lblNTPTimeZoneAdd">NTP time zone offset*:</label>
               </div>
             </div>
           </div>
           <div class="col-4 body-2 column mr-5">
             <div
-              class="eos-form-group"
+              class="cortx-form-group"
               :class="{
-                'eos-form-group--error': $v.setDateTime.NtpServerAddress.$error
+                'cortx-form-group--error': $v.setDateTime.NtpServerAddress.$error
               }"
             >
               <input
-                class="eos-form__input_text"
+                class="cortx-form__input_text"
                 type="text"
                 name="hostname"
                 v-model.trim="setDateTime.NtpServerAddress"
@@ -45,8 +45,8 @@
                 @input="$v.setDateTime.NtpServerAddress.$touch"
                 placeholder="time.seagate.com"
               />
-              <div class="eos-form-group-label eos-form-group-error-msg">
-                <label
+              <div class="cortx-form-group-label cortx-form-group-error-msg">
+                <label id="ntp-server-required"
                   v-if="
                     $v.setDateTime.NtpServerAddress.$dirty &&
                       !$v.setDateTime.NtpServerAddress.required
@@ -56,12 +56,13 @@
               </div>
             </div>
             <!---->
-            <div class="eos-form-group">
-              <eos-dropdown
+            <div class="cortx-form-group">
+              <cortx-dropdown
+                id="ntp-dropdown"
                 @update:selectedOption="handleDropdownSelect"
                 :options="createOptionsForDropdown(timezoneList)"
                 :title="NtpTimezone ? NtpTimezone : undefined"
-              ></eos-dropdown>
+              ></cortx-dropdown>
             </div>
           </div>
         </div>
@@ -69,11 +70,12 @@
       <span class="d-none">{{ isValidForm }}{{ managementNetworkGetter }}</span>
     </div>
     <button
+     id="ntp-applybtn"
       type="button"
       v-if="$route.path !== '/onboarding'"
       :disabled="$v.$invalid"
       @click="applySettings()"
-      class="eos-btn-primary eos-float-l my-10"
+      class="cortx-btn-primary cortx-float-l my-10"
     >
       Apply
     </button>
@@ -92,9 +94,9 @@ import { Validations } from "vuelidate-property-decorators";
 import { required, helpers } from "vuelidate/lib/validators";
 
 @Component({
-  name: "eos-date-time-config"
+  name: "cortx-date-time-config"
 })
-export default class EosDateTimeConfig extends Vue {
+export default class CortxDateTimeConfig extends Vue {
   @Validations()
   private validations = {
     setDateTime: {

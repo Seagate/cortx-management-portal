@@ -391,6 +391,8 @@ export abstract class Api {
             return new HTTPError.HTTP404Error(response);
         } else if (statusCode == 499) {
             return new HTTPError.HTTP499Error(response);
+        } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
+            return new HTTPError.HTTP500Error(response);
         } else if (statusCode == HttpStatus.NOT_IMPLEMENTED) {
             return new HTTPError.HTTP501Error(response);
         } else if (statusCode == HttpStatus.CONFLICT) {

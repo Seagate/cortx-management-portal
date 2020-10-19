@@ -15,20 +15,20 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 export const wizardConfig = {
-  currentComponent: "EosApplianceName",
+  currentComponent: "CortxApplianceName",
   steps: [
     {
       sequence: 1,
       isSubstep: false,
-      component: "EosApplianceName",
+      component: "CortxApplianceName",
       path: "onboarding/system-config/appliance-name/appliance-name.vue",
       isByPassed: false,
       header: {
         state: "completed",
-        name: "ApplianceName"
+        name: "System Name"
       },
       footer: {
-        nextComponent: "EOSUploadSSL",
+        nextComponent: "CortxUploadSSL",
         prevComponent: "homebase",
         nextBtnText: "Continue",
         prevBtnText: "",
@@ -38,7 +38,7 @@ export const wizardConfig = {
     {
       sequence: 2,
       isSubstep: false,
-      component: "EOSUploadSSL",
+      component: "CortxUploadSSL",
       path: "onboarding/system-config/ssl-certificate/upload-ssl.vue",
       isByPassed: false,
       header: {
@@ -46,8 +46,8 @@ export const wizardConfig = {
         name: "SSL upload"
       },
       footer: {
-        nextComponent: "EosDnsSettings",
-        prevComponent: "EosApplianceName",
+        nextComponent: "CortxDnsSettings",
+        prevComponent: "CortxApplianceName",
         nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
@@ -56,7 +56,7 @@ export const wizardConfig = {
     {
       sequence: 3,
       isSubstep: false,
-      component: "EosDnsSettings",
+      component: "CortxDnsSettings",
       path: "onboarding/system-config/dns/dns-setting.vue",
       isByPassed: false,
       header: {
@@ -64,8 +64,8 @@ export const wizardConfig = {
         name: "DNS"
       },
       footer: {
-        nextComponent: "EosDateTime",
-        prevComponent: "EOSUploadSSL",
+        nextComponent: "CortxDateTime",
+        prevComponent: "CortxUploadSSL",
         nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
@@ -74,7 +74,7 @@ export const wizardConfig = {
     {
       sequence: 4,
       isSubstep: false,
-      component: "EosDateTime",
+      component: "CortxDateTime",
       path: "onboarding/system-config/date-time/date-time.vue",
       isByPassed: false,
       header: {
@@ -82,8 +82,8 @@ export const wizardConfig = {
         name: "NTP"
       },
       footer: {
-        nextComponent: "EosNotifications",
-        prevComponent: "EosDnsSettings",
+        nextComponent: "CortxNotifications",
+        prevComponent: "CortxDnsSettings",
         nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
@@ -92,7 +92,7 @@ export const wizardConfig = {
     {
       sequence: 5,
       isSubstep: false,
-      component: "EosNotifications",
+      component: "CortxNotifications",
       path: "onboarding/system-config/notifications/notifications.vue",
       isByPassed: false,
       header: {
@@ -100,8 +100,8 @@ export const wizardConfig = {
         name: "Notifications"
       },
       footer: {
-        nextComponent: "EosNotificationsEmail",
-        prevComponent: "EosDateTime",
+        nextComponent: "CortxNotificationsEmail",
+        prevComponent: "CortxDateTime",
         nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
@@ -110,13 +110,13 @@ export const wizardConfig = {
     {
       sequence: 6,
       isSubstep: true,
-      component: "EosNotificationsEmail",
+      component: "CortxNotificationsEmail",
       path: "onboarding/system-config/notifications/notifications-email.vue",
       name: "Notifications email",
       isByPassed: true,
       footer: {
-        nextComponent: "EosNotificationsSyslog",
-        prevComponent: "EosNotifications",
+        nextComponent: "CortxNotificationsSyslog",
+        prevComponent: "CortxNotifications",
         nextBtnText: "Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
@@ -125,13 +125,13 @@ export const wizardConfig = {
     {
       sequence: 7,
       isSubstep: true,
-      component: "EosNotificationsSyslog",
+      component: "CortxNotificationsSyslog",
       path: "onboarding/system-config/notifications/notifications-syslog.vue",
       name: "Notifications syslog",
       isByPassed: true,
       footer: {
-        nextComponent: "EosOnboardingSummary",
-        prevComponent: "EosNotificationsEmail",
+        nextComponent: "CortxOnboardingSummary",
+        prevComponent: "CortxNotificationsEmail",
         nextBtnText: "Apply and continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
@@ -140,7 +140,7 @@ export const wizardConfig = {
     {
       sequence: 8,
       isSubstep: false,
-      component: "EosOnboardingSummary",
+      component: "CortxOnboardingSummary",
       path: "onboarding/system-config/summary/onboarding-summary.vue",
       isByPassed: false,
       header: {
@@ -148,8 +148,8 @@ export const wizardConfig = {
         name: "Summary"
       },
       footer: {
-        nextComponent: "EosOnboardingFinish",
-        prevComponent: "EosNotificationsSyslog",
+        nextComponent: "CortxOnboardingFinish",
+        prevComponent: "CortxNotificationsSyslog",
         nextBtnText: " Continue",
         prevBtnText: "Back to previous step",
         api: "/systemconfig"
@@ -158,7 +158,7 @@ export const wizardConfig = {
     {
       sequence: 9,
       isSubstep: false,
-      component: "EosOnboardingFinish",
+      component: "CortxOnboardingFinish",
       path: "onboarding/finish.vue",
       name: "Onboarding Finish",
       isByPassed: false,

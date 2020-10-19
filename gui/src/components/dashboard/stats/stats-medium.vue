@@ -17,27 +17,28 @@
 <template>
   <div id="statsContainer">
     <div style="height: 30px;">
-      <div class="eos-text-lg eos-text-bold eos-float-l">Performance</div>
+      <div class="cortx-text-lg cortx-text-bold cortx-float-l" id="stats-performance">Performance</div>
       <img
+        id="stats-medium-zoomicon"
         :src="require('@/assets/zoom-in.svg')"
         @click="$router.push('/performance')"
-        class="eos-float-r eos-cursor-pointer"
+        class="cortx-float-r cortx-cursor-pointer"
       />
     </div>
-    <eos-line-chart chartId="line_chart" />
+    <cortx-line-chart chartId="line_chart" />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import * as c3 from "c3";
 import { PerformanceStatsQueryParams } from "./../../../models/performance-stats";
-import EosLineChart from "./../../widgets/line-chart.vue";
+import CortxLineChart from "./../../widgets/line-chart.vue";
 @Component({
-  name: "eos-stats-medium",
+  name: "cortx-stats-medium",
   components: {
-    eosLineChart: EosLineChart
+    cortxLineChart: CortxLineChart
   }
 })
-export default class EosStatsMedium extends Vue {}
+export default class CortxStatsMedium extends Vue {}
 </script>
 <style lang="scss" scoped></style>

@@ -16,39 +16,66 @@
 */
 <template>
   <div class="body-2">
-    <div
-      id="s3-configuration-title-container"
-      class="mt-2 s3-configuration-page-title"
+    <cortx-has-access
+      :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
     >
-      <label id="s3-account-form-title" class="headline font-weight-bold"
-        >S3 configuration</label
+      <div
+        id="s3-configuration-title-container"
+        class="mt-2 s3-configuration-page-title"
       >
-      <eos-has-access
-        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
-      >
+        <label id="s3-account-form-title" class="headline font-weight-bold">{{
+          $t("s3.account.configuration")
+        }}</label>
         <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
-            Create an S3 account. You must log in to the system using S3 account
-            credentials to manage S3 account, IAM users, and buckets.
+          <label id="s3-account-form-text">
+            {{ $t("s3.account.header-text") }}
           </label>
         </div>
-      </eos-has-access>
-
-      <eos-has-access
-        :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
-            Manage IAM users and buckets.
-          </label>
-        </div>
-      </eos-has-access>
-    </div>
-    <v-divider class="mt-2" />
+      </div>
+    </cortx-has-access>
+    <cortx-has-access
+      :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
+    >
+      <div class="mt-2 pl-2">
+        <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
+          {{ $t("s3.account.url-label") }}
+        </label>
+        <span id="s3-url-id">{{ s3Url[0] }}</span>
+        <span class="pl-1 pr-3" v-if="s3Url[0]">
+          <v-tooltip right max-width="300">
+            <template v-slot:activator="{ on }">
+              <img
+                id="s3-edit-account"
+                v-on:click="copyS3Url(s3Url[0])"
+                v-on="on"
+                class="cortx-cursor-pointer copy-url"
+                src="@/assets/actions/copy-text.svg"
+              />
+            </template>
+            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+          </v-tooltip>
+        </span>
+        <span class="ml-5" id="s3-url-id">{{ s3Url[1] }}</span>
+        <span class="pl-1" v-if="s3Url[1]">
+          <v-tooltip right max-width="300">
+            <template v-slot:activator="{ on }">
+              <img
+                id="s3-edit-account"
+                v-on:click="copyS3Url(s3Url[1])"
+                v-on="on"
+                class="cortx-cursor-pointer copy-url"
+                src="@/assets/actions/copy-text.svg"
+              />
+            </template>
+            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+          </v-tooltip>
+        </span>
+      </div>
+    </cortx-has-access>
     <v-row>
       <v-col class="py-0 col-7">
-        <eos-has-access
-          :to="$eosUserPermissions.s3accounts + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list"
         >
           <v-data-table
             :headers="accountsTableHeaderList"
@@ -56,9 +83,24 @@
             :expanded.sync="expanded"
             v-bind:single-expand="true"
             item-key="account_name"
-            class="eos-table"
+            class="cortx-table"
+            id="s3-datatable"
             show-expand
             :hide-default-header="true"
+            :hide-default-footer="
+              $hasAccessToCsm(
+                `${$cortxUserPermissions.s3iamusers}${
+                  $cortxUserPermissions.list
+                }`
+              )
+            "
+            :disable-pagination="
+              $hasAccessToCsm(
+                `${$cortxUserPermissions.s3iamusers}${
+                  $cortxUserPermissions.list
+                }`
+              )
+            "
           >
             <template v-slot:header="{}">
               <tr>
@@ -73,98 +115,117 @@
             </template>
             <template v-slot:item.data-table-expand="{ item }">
               <div style="width: 90px;">
-                <eos-has-access
+                <cortx-has-access
                   class="mx-2"
                   :to="
-                    $eosUserPermissions.s3accounts + $eosUserPermissions.update
+                    $cortxUserPermissions.s3accounts +
+                      $cortxUserPermissions.update
                   "
                 >
                   <img
+                    id="s3-edit-account"
                     v-on:click="onEditBtnClick(item)"
-                    class="eos-cursor-pointer"
+                    class="cortx-cursor-pointer"
                     src="@/assets/actions/edit-green.svg"
                   />
-                </eos-has-access>
-                <eos-has-access
+                </cortx-has-access>
+                <cortx-has-access
                   class="mx-2"
                   :to="
-                    $eosUserPermissions.s3accounts + $eosUserPermissions.delete
+                    $cortxUserPermissions.s3accounts +
+                      $cortxUserPermissions.delete
                   "
                 >
                   <img
+                    id="s3-delete-account"
                     @click="openConfirmDeleteDialog(item.account_name)"
-                    class="eos-cursor-pointer"
+                    class="cortx-cursor-pointer"
                     src="@/assets/actions/delete-green.svg"
                   />
-                </eos-has-access>
+                </cortx-has-access>
               </div>
             </template>
           </v-data-table>
-        </eos-has-access>
+        </cortx-has-access>
 
-        <eos-has-access
-          :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
         >
-          <cortx-access-key-management></cortx-access-key-management>
-        </eos-has-access>
+          <cortx-access-key-management :s3Url="s3Url.toString()" :s3UrlNone= "s3UrlNone" ></cortx-access-key-management>
+        </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-5">
-        <div v-if="showCreateAccountForm" class="pa-2">
+        <div
+          v-if="showCreateAccountForm"
+          class="pa-2"
+          id="s3-create-account-form"
+        >
           <v-row>
             <v-col class="pl-4 col-6 pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccountForm.account.account_name.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountName">
-                  <eos-info-tooltip
+                <label
+                  class="cortx-form-group-label"
+                  for="accountName"
+                  id="s3-lblaccountname"
+                >
+                  <cortx-info-tooltip
+                    id="account-name-label"
                     label="Account name*"
                     :message="accountNameTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   id="accountName"
                   name="accountName"
                   v-model.trim="createAccountForm.account.account_name"
                   @input="$v.createAccountForm.account.account_name.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
+                    id="s3-accountname-reuired"
                     v-if="
                       $v.createAccountForm.account.account_name.$dirty &&
                         !$v.createAccountForm.account.account_name.required
                     "
-                    >Account name is required.</label
+                  >
+                    {{ $t("s3.account.name-required") }}</label
                   >
                   <label
+                    id="s3account-invalid"
                     v-else-if="
                       $v.createAccountForm.account.account_name.$dirty &&
                         !$v.createAccountForm.account.account_name
                           .accountNameRegex
                     "
-                    >Invalid account name.</label
+                    >{{ $t("s3.account.invalid-account") }}</label
                   >
                 </div>
               </div>
             </v-col>
             <v-col class="pl-4 col-6 pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccountForm.account.account_email.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountEmail"
-                  >Email*</label
+                <label
+                  class="cortx-form-group-label"
+                  for="accountEmail"
+                  id="s3-lblemail"
+                  >{{ $t("s3.account.email-label") }}</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   id="accountEmail"
                   name="accountEmail"
@@ -172,20 +233,22 @@
                   @input="$v.createAccountForm.account.account_email.$touch"
                   placeholder="example@email.com"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
+                    id="s3-email-required"
                     v-if="
                       $v.createAccountForm.account.account_email.$dirty &&
                         !$v.createAccountForm.account.account_email.required
                     "
-                    >Email id is required.</label
+                    >{{ $t("s3.account.email-required") }}</label
                   >
                   <label
+                    id="s3-email-invalid"
                     v-else-if="
                       $v.createAccountForm.account.account_email.$dirty &&
                         !$v.createAccountForm.account.account_email.email
                     "
-                    >Invalid email id.</label
+                    >{{ $t("s3.account.invalid-email") }}</label
                   >
                 </div>
               </div>
@@ -194,28 +257,34 @@
           <v-row>
             <v-col class="pl-4 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccountForm.account.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountPassword">
-                  <eos-info-tooltip
+                <label
+                  class="cortx-form-group-label"
+                  for="accountPassword"
+                  id="s3-lblpassword"
+                >
+                  <cortx-info-tooltip
+                    id="aacount-password"
                     label="Password*"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="accountPassword"
                   name="accountPassword"
                   v-model.trim="createAccountForm.account.password"
                   @input="$v.createAccountForm.account.password.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
+                    id="s3-password-required"
                     v-if="
                       $v.createAccountForm.account.password.$dirty &&
                         !$v.createAccountForm.account.password.required
@@ -223,6 +292,7 @@
                     >Password is required.</label
                   >
                   <label
+                    id="s3-password-invalid"
                     v-else-if="
                       $v.createAccountForm.account.password.$dirty &&
                         !$v.createAccountForm.account.password.passwordRegex
@@ -234,17 +304,20 @@
             </v-col>
             <v-col class="pl-4 col-6">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createAccountForm.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="confirmPassword"
+                <label
+                  class="cortx-form-group-label"
+                  for="confirmPassword"
+                  id="s3-lblconfirmpassword"
                   >Confirm password*</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
@@ -252,7 +325,8 @@
                   @input="$v.createAccountForm.confirmPassword.$touch"
                 />
                 <span
-                  class="eos-form-group-label eos-form-group-error-msg"
+                  id="s3-password-notmatch"
+                  class="cortx-form-group-label cortx-form-group-error-msg"
                   v-if="
                     $v.createAccountForm.confirmPassword.$dirty &&
                       !$v.createAccountForm.confirmPassword.sameAsPassword
@@ -265,48 +339,55 @@
           <v-row>
             <v-col class="pt-0">
               <button
+                id="s3-crete-accountbtn"
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="createAccount()"
                 :disabled="$v.createAccountForm.$invalid"
               >
-                Create account
+                {{ $t("s3.account.create-account-btn") }}
               </button>
               <button
+                id="s3-account-cancelbtn"
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeCreateAccountForm()"
               >
-                Cancel
+                {{ $t("s3.account.cancel-btn") }}
               </button>
             </v-col>
           </v-row>
         </div>
-        <div v-if="showEditAccountForm" class="pa-2">
+        <div v-if="showEditAccountForm" class="pa-2" id="s3-editaccount-form">
           <v-row>
             <v-col class="pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error': $v.editAccountForm.password.$error
+                  'cortx-form-group--error': $v.editAccountForm.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="accountPasswordEdit">
-                  <eos-info-tooltip
+                <label
+                  class="cortx-form-group-label"
+                  for="accountPasswordEdit"
+                  id="s3-editpasswordlbl"
+                >
+                  <cortx-info-tooltip
                     label="Password*"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="accountPasswordEdit"
                   name="accountPasswordEdit"
                   v-model.trim="editAccountForm.password"
                   @input="$v.editAccountForm.password.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
+                    id="s3-editpassword-required"
                     v-if="
                       $v.editAccountForm.password.$dirty &&
                         !$v.editAccountForm.password.required
@@ -314,6 +395,7 @@
                     >Password is required.</label
                   >
                   <label
+                    id="s3-editpassword-invalid"
                     v-else-if="
                       $v.editAccountForm.password.$dirty &&
                         !$v.editAccountForm.password.passwordRegex
@@ -325,17 +407,20 @@
             </v-col>
             <v-col class="pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.editAccountForm.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="confirmPasswordEdit"
+                <label
+                  class="cortx-form-group-label"
+                  for="confirmPasswordEdit"
+                  id="s3-editconfrimpassword"
                   >Confirm password*</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="confirmPasswordEdit"
                   name="confirmPasswordEdit"
@@ -343,7 +428,8 @@
                   @input="$v.editAccountForm.confirmPassword.$touch"
                 />
                 <span
-                  class="eos-form-group-label eos-form-group-error-msg"
+                  id="s3-editpassword-notmatch"
+                  class="cortx-form-group-label cortx-form-group-error-msg"
                   v-if="
                     $v.editAccountForm.confirmPassword.$dirty &&
                       !$v.editAccountForm.confirmPassword.sameAsPassword
@@ -358,113 +444,114 @@
               <button
                 type="button"
                 id="btnEditPassword"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="editAccount()"
                 :disabled="$v.editAccountForm.$invalid"
               >
-                Update
+                {{ $t("s3.account.update-btn") }}
               </button>
               <button
                 type="button"
                 id="btncancelEditpass"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeEditAccountForm()"
               >
-                Cancel
+                {{ $t("s3.account.cancel-btn") }}
               </button>
             </v-col>
           </v-row>
         </div>
-        <eos-has-access
-          :to="$eosUserPermissions.s3accounts + $eosUserPermissions.create"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.create"
         >
           <button
+            id="s3-addnewuserbtn"
             type="button"
-            class="mt-4 mb-2 eos-btn-primary"
+            class="mt-4 mb-2 cortx-btn-primary"
             v-if="!showCreateAccountForm"
             @click="openCreateAccountForm()"
           >
-            Add new account
+            {{ $t("s3.account.add-new-account") }}
           </button>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
     </v-row>
 
-    <v-dialog v-model="showAccountDetailsDialog" persistent max-width="790">
+    <v-dialog
+      v-model="showAccountDetailsDialog"
+      persistent
+      max-width="790"
+      id="s3-accesskey-dialog"
+    >
       <v-card>
-        <v-system-bar color="greay lighten-3">
-          <v-spacer></v-spacer>
-          <v-icon @click="closeAccountDetailsDialog()" style="cursor: pointer;"
-            >mdi-close</v-icon
-          >
-        </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
-          <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span>Account created: access key and secret key</span>
+          <img class="mr-2" :src="require('@/assets/resolved-default.svg')" id="s3-account-resolve-icon"/>
+          <span>{{ $t("s3.account.account-created") }}</span>
         </v-card-title>
         <v-divider />
 
         <div class="mt-2 pl-7" style="height: 30px;">
           <img
-            class="eos-float-l mr-1"
+            class="cortx-float-l mr-1"
             :src="require('@/assets/actions/warning-orange.svg')"
           />
           <span
-            class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
-            >Save this information, you will not see it again. Download as CSV
-            and close.</span
+            id="s3-warning-text"
+            class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
+            ><span>{{ $t("s3.account.save-info") }}</span></span
           >
         </div>
 
-        <table class="mt-2 ml-7 eos-text-md">
+        <table class="mt-2 ml-7 cortx-text-md" id="s3-secretekey-data">
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
-              Account name
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-account-name-popup-label">
+              {{ $t("s3.account.account-name") }}
             </td>
-            <td class="py-2">{{ account.account_name }}</td>
+            <td class="py-2" id="s3-account-name-popup-value">{{ account.account_name }}</td>
+          </tr>
+          <tr v-if="!s3UrlNone">
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-access-key-popup-label">
+              {{ $t("s3.account.url-label") }}
+            </td>
+            <td class="py-2">{{ s3Url.toString() }}</td>
           </tr>
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
-              Access key
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.account.access-key") }}
             </td>
-            <td class="py-2">{{ account.access_key }}</td>
+            <td class="py-2" id="s3-access-key-popup-value">{{ account.access_key }}</td>
           </tr>
           <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
-              Secret key
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-secret-key-popup-label">
+              {{ $t("s3.account.secret-key") }}
             </td>
-            <td class="py-2">{{ account.secret_key }}</td>
+            <td class="py-2" id="s3-secret-key-popup-value">{{ account.secret_key }}</td>
           </tr>
         </table>
+        <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note")}}</div>
 
         <v-card-actions>
           <a
-            class="ma-5 eos-btn-primary eos-download-csv-link"
+            id="s3-download-csv"
+            class="ma-5 cortx-btn-primary cortx-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
-            @click="isCredentialsFileDownloaded = true"
-            >Download as CSV</a
+            @click="downloadAndClose()"
+            >{{ $t("s3.account.download-as-csv") }}</a
           >
-          <button
-            :disabled="!isCredentialsFileDownloaded"
-            type="button"
-            class="ma-5 eos-btn-primary"
-            @click="closeAccountDetailsDialog()"
-          >
-            Ok
-          </button>
-        </v-card-actions>
+          </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
+      id="s3-confirmation-dialog"
       :show="showConfirmDeleteDialog"
       title="Confirmation"
       message="Are you sure you want to delete the account?"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -481,12 +568,14 @@ import {
   passwordTooltipMessage,
   accountNameTooltipMessage
 } from "./../../common/regex-helpers";
+import i18n from "../../i18n";
+import CommonUtils from "../../common/common-utils";
 
 @Component({
-  name: "eos-account-management",
+  name: "cortx-account-management",
   components: { CortxAccessKeyManagement }
 })
-export default class EosAccountManagement extends Vue {
+export default class CortxAccountManagement extends Vue {
   public createAccountForm = {
     account: {} as Account,
     confirmPassword: ""
@@ -533,6 +622,8 @@ export default class EosAccountManagement extends Vue {
   private credentialsFileContent: string = "";
   private showEditAccountForm: boolean;
   private editAccoutName: string;
+  private s3Url = [];
+  private s3UrlNone: boolean = false;
 
   constructor() {
     super();
@@ -555,7 +646,11 @@ export default class EosAccountManagement extends Vue {
       { text: "", value: "data-table-expand" }
     ];
   }
-
+  public data() {
+    return {
+      constStr: require("./../../common/const-string.json")
+    };
+  }
   public async mounted() {
     await this.getAllAccounts();
   }
@@ -563,15 +658,23 @@ export default class EosAccountManagement extends Vue {
   public async getAllAccounts() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "Fetching all S3 accounts..."
+      i18n.t("s3.account.loading-list")
     );
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
+    this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
+    if (this.s3Url[0] === "http://None") {
+      this.s3UrlNone = true;
+    }
+
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
   public async createAccount() {
-    this.$store.dispatch("systemConfig/showLoader", "Creating account...");
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.account.loading-create")
+    );
     const res = await Api.post(
       apiRegister.s3_account,
       this.createAccountForm.account
@@ -589,8 +692,10 @@ export default class EosAccountManagement extends Vue {
 
   public getCredentialsFileContent(): string {
     return (
-      "Account name,Access key,Secret key\n" +
+      "Account name,S3 URL,Access key,Secret key\n" +
       this.account.account_name +
+      "," +
+      `${this.s3Url[0]} ${this.s3Url[1]}` +
       "," +
       this.account.access_key +
       "," +
@@ -607,7 +712,10 @@ export default class EosAccountManagement extends Vue {
     const updateDetails = {
       password: this.editAccountForm.password
     };
-    this.$store.dispatch("systemConfig/showLoader", "Updating account...");
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.account.loading-update")
+    );
     const res = await Api.patch(
       apiRegister.s3_account,
       updateDetails,
@@ -676,8 +784,20 @@ export default class EosAccountManagement extends Vue {
     );
     await Api.delete(apiRegister.s3_account, this.accountToDelete);
     this.$store.dispatch("systemConfig/hideLoader");
+    localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
+  private async copyS3Url(url: string) {
+   CommonUtils.copyUrlToClipboard(url);
+  }
+  private async downloadAndClose() {
+    this.isCredentialsFileDownloaded = true;
+    this.showAccountDetailsDialog = false;
+    this.showCreateAccountForm = false;
+    this.clearCreateAccountForm();
+    await this.getAllAccounts();
+  }
+
 }
 </script>
 <style lang="scss" scoped>
@@ -721,7 +841,7 @@ tbody tr:active {
   color: #000;
   font-size: 16px;
 }
-.eos-download-csv-link {
+.cortx-download-csv-link {
   text-decoration: none;
   display: inline-block;
   padding-top: 10px;

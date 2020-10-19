@@ -16,125 +16,163 @@
 */
 <template>
   <div class="body-2">
-    <div
-      id="s3-configuration-title-container"
-      class="mt-2 s3-configuration-page-title"
+    <cortx-has-access
+        :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
     >
-      <label id="s3-account-form-title" class="headline font-weight-bold"
-        >S3 configuration</label
-      >
-      <eos-has-access
-        :to="$eosUserPermissions.sysconfig + $eosUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
-            Create an S3 account. You must log in to the system using S3 account
-            credentials to manage S3 account, IAM users, and buckets.
-          </label>
-        </div>
-      </eos-has-access>
-
-      <eos-has-access
-        :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
-      >
-        <div class="mt-1" style="color: #454545;font-size: 14px;">
-          <label>
-            Manage IAM users and buckets.
-          </label>
-        </div>
-      </eos-has-access>
-    </div>
-    <v-divider class="mt-2" />
+    <div class="mt-2 pl-2">
+        <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
+          {{ $t("s3.account.url-label") }}
+        </label>
+        <span id="s3-url-id">{{ s3Url[0] }}</span>
+        <span class="pl-1 pr-3" v-if="s3Url[0]">
+          <v-tooltip right max-width="300">
+            <template v-slot:activator="{ on }">
+              <img
+                id="s3-edit-account"
+                v-on:click="copyS3Url(s3Url[0])"
+                v-on="on"
+                class="cortx-cursor-pointer copy-url"
+                src="@/assets/actions/copy-text.svg"
+              />
+            </template>
+            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+          </v-tooltip>
+        </span>
+        <span class="ml-5" id="s3-url-id">{{ s3Url[1] }}</span>
+        <span class="pl-1" v-if="s3Url[1]">
+          <v-tooltip right max-width="300">
+            <template v-slot:activator="{ on }">
+              <img
+                id="s3-edit-account"
+                v-on:click="copyS3Url(s3Url[1])"
+                v-on="on"
+                class="cortx-cursor-pointer copy-url"
+                src="@/assets/actions/copy-text.svg"
+              />
+            </template>
+            <span id="copy-tooltip">{{ $t("s3.account.copy-tooltip") }}</span>
+          </v-tooltip>
+        </span>
+      </div>    
+    </cortx-has-access>
     <v-row>
       <v-col class="py-0 pr-0 col-9">
-        <eos-has-access
-          :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.list"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
         >
           <v-data-table
+            id="iam-datatable"
             calculate-widths
             :items="usersList"
             item-key="user_name"
-            class="eos-table"
+            class="cortx-table"
             :hide-default-header="true"
-            :hide-default-footer="true"
-            :disable-pagination="true"
+            :items-per-page.sync="itemsPerPage"
           >
             <template v-slot:header="{}">
-              <tr>
+              <tr id="iam-tableheader">
                 <th
                   v-for="header in usersTableHeaderList"
                   :key="header.text"
                   class="tableheader"
                 >
-                  <span>{{ header.text }}</span>
+                  <span id="iam-header-data">{{ header.text }}</span>
                 </th>
                 <th class="tableheader" />
               </tr>
             </template>
 
             <template v-slot:item="props">
-              <tr>
-                <td>{{ props.item.user_name }}</td>
-                <td>{{ props.item.user_id }}</td>
-                <td>{{ props.item.arn }}</td>
+              <tr
+                :id="props.item.user_name"
+                :class="{
+                  'grey lighten-3': props.item.user_name === selectedIAMUser
+                }"
+                  class="cortx-cursor-pointer"
+                >
+                <td @click.stop="handleRowClick(props.item)">
+                  {{ props.item.user_name }}
+                </td>
+                <td @click.stop="handleRowClick(props.item)">
+                  {{ props.item.user_id }}
+                </td>
+                <td @click.stop="handleRowClick(props.item)">
+                  {{ props.item.arn }}
+                </td>
                 <td>
-                  <eos-has-access
+                  <cortx-has-access
                     :to="
-                      $eosUserPermissions.s3iamusers +
-                        $eosUserPermissions.delete
+                      $cortxUserPermissions.s3iamusers +
+                        $cortxUserPermissions.delete
                     "
                   >
                     <img
+                      id="iam-delete-user"
                       @click="openConfirmDeleteDialog(props.item.user_name)"
-                      class="eos-cursor-pointer"
+                      class="cortx-cursor-pointer"
                       src="./../../assets/actions/delete-green.svg"
                     />
-                  </eos-has-access>
+                  </cortx-has-access>
                 </td>
               </tr>
             </template>
           </v-data-table>
-        </eos-has-access>
+          <cortx-has-access
+            :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
+          >
+            <cortx-access-key-management
+              :userNameIAM="selectedIAMUser"
+              :s3Url="s3Url.toString()"
+              :s3UrlNone= "s3UrlNone"
+            ></cortx-access-key-management>
+          </cortx-has-access>
+        </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-3">
         <div v-if="showCreateUserForm" class="pa-2">
           <v-row>
             <v-col class="pr-0 pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createUserForm.iamUser.user_name.$error
                 }"
               >
-                <label class="eos-form-group-label" for="userName">
-                  <eos-info-tooltip
+                <label
+                  class="cortx-form-group-label"
+                  for="userName"
+                  id="iam-userlbl"
+                >
+                  <cortx-info-tooltip
                     label="Username*"
                     :message="usernameTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="text"
                   id="userName"
                   name="userName"
                   v-model.trim="createUserForm.iamUser.user_name"
                   @input="$v.createUserForm.iamUser.user_name.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
+                    id="iam-usernamename-required"
                     v-if="
                       $v.createUserForm.iamUser.user_name.$dirty &&
                         !$v.createUserForm.iamUser.user_name.required
                     "
-                    >Username is required.</label
+                    >{{ $t("s3.iam.user-name-required") }}</label
                   >
                   <label
+                    id="iam-username-invalid"
                     v-else-if="
                       $v.createUserForm.iamUser.user_name.$dirty &&
                         !$v.createUserForm.iamUser.user_name.accountNameRegex
                     "
-                    >Invalid username.</label
+                    >{{ $t("s3.iam.invalid-user") }}</label
                   >
                 </div>
               </div>
@@ -143,40 +181,46 @@
           <v-row>
             <v-col class="pr-0 pb-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createUserForm.iamUser.password.$error
                 }"
               >
-                <label class="eos-form-group-label" for="userPassword">
-                  <eos-info-tooltip
+                <label
+                  class="cortx-form-group-label"
+                  for="userPassword"
+                  id="iam-passwordlbl"
+                >
+                  <cortx-info-tooltip
                     label="Password*"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="userPassword"
                   name="userPassword"
                   v-model.trim="createUserForm.iamUser.password"
                   @input="$v.createUserForm.iamUser.password.$touch"
                 />
-                <div class="eos-form-group-label eos-form-group-error-msg">
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
+                    id="iam-password-required"
                     v-if="
                       $v.createUserForm.iamUser.password.$dirty &&
                         !$v.createUserForm.iamUser.password.required
                     "
-                    >Password is required.</label
+                    >{{ $t("common.password-required") }}</label
                   >
                   <label
+                    id="iam-password-invalid"
                     v-else-if="
                       $v.createUserForm.iamUser.password.$dirty &&
                         !$v.createUserForm.iamUser.password.passwordRegex
                     "
-                    >Invalid password.</label
+                    >{{ $t("common.invalid-pass") }}</label
                   >
                 </div>
               </div>
@@ -185,17 +229,20 @@
           <v-row>
             <v-col class="pr-0">
               <div
-                class="eos-form-group-custom"
+                class="cortx-form-group-custom"
                 :class="{
-                  'eos-form-group--error':
+                  'cortx-form-group--error':
                     $v.createUserForm.confirmPassword.$error
                 }"
               >
-                <label class="eos-form-group-label" for="confirmPassword"
-                  >Confirm password*</label
+                <label
+                  class="cortx-form-group-label"
+                  for="confirmPassword"
+                  id="iam-confirmpasslbl"
+                  >{{ $t("common.confirm-pass-label") }}</label
                 >
                 <input
-                  class="eos-form__input_text"
+                  class="cortx-form__input_text"
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
@@ -203,12 +250,13 @@
                   @input="$v.createUserForm.confirmPassword.$touch"
                 />
                 <span
-                  class="eos-form-group-label eos-form-group-error-msg"
+                  id="iam-confirmpass-notmatch"
+                  class="cortx-form-group-label cortx-form-group-error-msg"
                   v-if="
                     $v.createUserForm.confirmPassword.$dirty &&
                       !$v.createUserForm.confirmPassword.sameAsPassword
                   "
-                  >Passwords do not match</span
+                  >{{ $t("common.pass-not-match") }}</span
                 >
               </div>
             </v-col>
@@ -216,117 +264,123 @@
           <v-row>
             <v-col>
               <button
+                id="iam-create-userbtn"
                 type="button"
-                class="eos-btn-primary"
+                class="cortx-btn-primary"
                 @click="createUser()"
                 :disabled="$v.createUserForm.$invalid"
               >
-                Create user
+                {{ $t("s3.iam.create-user-btn") }}
               </button>
               <button
+                id="iam-usercancelbtn"
                 type="button"
-                class="eos-btn-tertiary"
+                class="cortx-btn-tertiary"
                 @click="closeCreateUserForm()"
               >
-                Cancel
+                {{ $t("common.cancel-btn") }}
               </button>
             </v-col>
           </v-row>
         </div>
-        <eos-has-access
-          :to="$eosUserPermissions.s3iamusers + $eosUserPermissions.create"
+        <cortx-has-access
+          :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.create"
         >
           <button
+            id="iam-user-create-formbtn"
             type="button"
-            class="mt-5 eos-btn-primary"
+            class="mt-4 cortx-btn-primary"
             v-if="!showCreateUserForm"
             @click="openCreateUserForm()"
           >
-            Create
+            {{ $t("common.create-btn") }}
           </button>
-        </eos-has-access>
+        </cortx-has-access>
       </v-col>
     </v-row>
 
-    <v-dialog v-model="showUserDetailsDialog" persistent max-width="790">
+    <v-dialog
+      v-model="showUserDetailsDialog"
+      persistent
+      max-width="790"
+      id="iam-opendialogbox"
+    >
       <v-card>
-        <v-system-bar color="greay lighten-3">
-          <v-spacer></v-spacer>
-          <v-icon @click="closeUserDetailsDialog()" style="cursor: pointer;"
-            >mdi-close</v-icon
-          >
-        </v-system-bar>
         <v-card-title class="title mt-6 ml-3">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span>User created:access key and secret key</span>
+          <span id="iam-acceskeytext"
+            >{{ $t("s3.iam.user-key-access") }}</span
+          >
         </v-card-title>
         <v-divider />
         <div class="mt-2 pl-7" style="height: 30px;">
           <img
-            class="eos-float-l mr-1"
+            class="cortx-float-l mr-1"
             :src="require('@/assets/actions/warning-orange.svg')"
           />
           <span
-            class="eos-float-l eos-text-md eos-text-bold eos-text-warning mt-1"
-            >Save this information, you will not see it again. Download as CSV
-            and close.</span
+            id="iam-csvfileinfo"
+            class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
+            >{{ $t("s3.download-csv-dialog.message") }}</span
           >
         </div>
-        <table class="mt-2 ml-7 eos-text-md">
-          <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">Username</td>
+        <table class="mt-2 ml-7 cortx-text-md" id="iam-user-data">
+          <tr id="iam-username">
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.access-key.table-headers.user_name") }}
+            </td>
             <td class="py-2">{{ user.user_name }}</td>
           </tr>
-          <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">User id</td>
+          <tr id="iam-userid">
+            <td class="py-2 cortx-text-bold credentials-item-label">{{ $t("s3.access-key.table-headers.user_id") }}</td>
             <td class="py-2">{{ user.user_id }}</td>
           </tr>
-          <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">ARN</td>
+         <tr v-if="!s3UrlNone">
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.account.s3-url") }}
+            </td>
+            <td class="py-2">{{ s3Url.toString() }}</td>
+          </tr>
+          <tr id="iamARN">
+            <td class="py-2 cortx-text-bold credentials-item-label">{{ $t("s3.access-key.table-headers.arn") }}</td>
             <td class="py-2">{{ user.arn }}</td>
           </tr>
-          <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
-              Access key
+          <tr id="iam-accesskeyid">
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.access-key.table-headers.access_key") }}
             </td>
             <td class="py-2">{{ user.access_key_id }}</td>
           </tr>
-          <tr>
-            <td class="py-2 eos-text-bold credentials-item-label">
-              Secret key
+          <tr id="iam-secretkey">
+            <td class="py-2 cortx-text-bold credentials-item-label">
+             {{ $t("s3.access-key.table-headers.secret_key") }}
             </td>
             <td class="py-2">{{ user.secret_key }}</td>
           </tr>
         </table>
-
+        <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note")}}</div>
         <v-card-actions>
           <a
-            class="ma-5 eos-btn-primary eos-download-csv-link"
+            id="iam-downloadcsvfile"
+            class="ma-5 cortx-btn-primary cortx-download-csv-link"
             :href="credentialsFileContent"
             download="credentials.csv"
-            @click="isCredentialsFileDownloaded = true"
-            >Download as CSV</a
+             @click="downloadAndClose()"
+            >Download and close</a
           >
-          <button
-            :disabled="!isCredentialsFileDownloaded"
-            type="button"
-            class="ma-5 eos-btn-primary"
-            @click="closeUserDetailsDialog()"
-          >
-            Ok
-          </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <eos-confirmation-dialog
+    <cortx-confirmation-dialog
+      id="iam-confirmation-dialogbox"
       :show="showConfirmDeleteDialog"
       title="Confirmation"
-      message="Are you sure you want to delete the user?"
+      :message="iamConfirmMsg"
       severity="warning"
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
-    ></eos-confirmation-dialog>
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -336,6 +390,8 @@ import { required, helpers, sameAs } from "vuelidate/lib/validators";
 import { IAMUser } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import CortxAccessKeyManagement from "./access-key-management-iam.vue";
+import CommonUtils from "../../common/common-utils";
 import {
   accountNameRegex,
   iamPathRegex,
@@ -343,24 +399,26 @@ import {
   passwordTooltipMessage,
   usernameTooltipMessage
 } from "./../../common/regex-helpers";
+import i18n from "../../i18n";
 
 @Component({
-  name: "eos-iam-user-management"
+  name: "cortx-iam-user-management",
+  components: { CortxAccessKeyManagement }
 })
-export default class EosIAMUserManagement extends Vue {
+export default class CortxIAMUserManagement extends Vue {
   public createUserForm = {
     iamUser: {
       path: "/"
     } as IAMUser,
     confirmPassword: ""
   };
+  public iamConfirmMsg: string = "";
 
   @Validations()
   public validations = {
     createUserForm: {
       iamUser: {
         user_name: { required, accountNameRegex },
-        // path: { required, iamPathRegex },
         password: { required, passwordRegex }
       },
       confirmPassword: {
@@ -383,6 +441,10 @@ export default class EosIAMUserManagement extends Vue {
   private usernameTooltipMessage: string = usernameTooltipMessage;
   private credentialsFileContent: string = "";
   private isCredentialsFileDownloaded: boolean = false;
+  private selectedIAMUser: string = "";
+  private itemsPerPage: number = 5;
+  private s3Url = [];
+  private s3UrlNone: boolean = false;
 
   constructor() {
     super();
@@ -421,6 +483,13 @@ export default class EosIAMUserManagement extends Vue {
     );
     const res: any = await Api.getAll(apiRegister.s3_iam_user);
     this.usersList = res && res.data ? res.data.iam_users : [];
+    this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
+    if (this.s3Url[0] === "http://None") {
+      this.s3UrlNone = true;
+    }
+    this.selectedIAMUser = this.usersList.length
+      ? this.usersList[0].user_name
+      : "";
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
@@ -441,8 +510,14 @@ export default class EosIAMUserManagement extends Vue {
   }
   public getCredentialsFileContent(): string {
     return (
-      "User name,Access key,Secret key\n" +
+      "User name,User id,S3 URL,ARN,Access key,Secret key\n" +
       this.user.user_name +
+      "," +
+      this.user.user_id +
+      "," +
+      `${this.s3Url[0]} ${this.s3Url[1]}` +
+      "," +
+      this.user.arn +
       "," +
       this.user.access_key_id +
       "," +
@@ -481,6 +556,7 @@ export default class EosIAMUserManagement extends Vue {
   }
 
   public openConfirmDeleteDialog(username: string) {
+    this.iamConfirmMsg = `${i18n.t("s3.iam.confirm-msg")} ${username}?`;
     this.userToDelete = username;
     this.showConfirmDeleteDialog = true;
   }
@@ -493,7 +569,7 @@ export default class EosIAMUserManagement extends Vue {
     this.userToDelete = "";
   }
 
-  private async deleteUser() {
+  public async deleteUser() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Deleting user " + this.userToDelete
@@ -501,6 +577,21 @@ export default class EosIAMUserManagement extends Vue {
     this.userToDelete = encodeURI(this.userToDelete);
     await Api.delete(apiRegister.s3_iam_user, this.userToDelete);
     this.$store.dispatch("systemConfig/hideLoader");
+    await this.getAllUsers();
+  }
+
+  public handleRowClick(item: any) {
+    this.selectedIAMUser = item.user_name;
+  }
+  public async copyS3Url(url: string) {
+    CommonUtils.copyUrlToClipboard(url);
+  }
+
+  public async downloadAndClose() {
+    this.isCredentialsFileDownloaded = true;
+    this.clearCreateUserForm();
+    this.showUserDetailsDialog = false;
+    this.showCreateUserForm = false;
     await this.getAllUsers();
   }
 }
@@ -513,7 +604,7 @@ export default class EosIAMUserManagement extends Vue {
 .credentials-item-label {
   width: 10rem;
 }
-.eos-download-csv-link {
+.cortx-download-csv-link {
   text-decoration: none;
   display: inline-block;
   padding-top: 10px;

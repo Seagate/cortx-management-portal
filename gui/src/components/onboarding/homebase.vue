@@ -31,9 +31,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "eos-homebase"
+  name: "cortx-homebase"
 })
-export default class EosHomebase extends Vue {}
+export default class CortxHomebase extends Vue {}
 </script>
 
 <style lang="scss" scoped>
