@@ -52,7 +52,7 @@
                   <v-tooltip right max-width="300" v-if="props.item.bucket_url">
                     <template v-slot:activator="{ on }">
                       <img
-                        id="s3-edit-account"
+                        :id="`copy-bucket-url-${props.item.name}`"
                         v-on:click="copyBucketUrl(props.item.bucket_url)"
                         v-on="on"
                         class="cortx-cursor-pointer copy-url"
@@ -177,7 +177,7 @@
       id="bucket-create-succeaadialogbox"
       v-model="showBucketCreateSuccessDialog"
       persistent
-      max-width="500"
+      max-width="700"
     >
       <v-card>
         <v-system-bar color="grey lighten-3">
@@ -195,11 +195,11 @@
             $t("s3.bucket.created-successfully")
           }}</span>
           <table class="mt-2 ml-9 cortx-text-md">
-            <tr>
-              <td class="py-2 cortx-text-bold bucket-url-label">
+            <tr id="bucket-url-tr">
+              <td id="bucket-url-td-label" class="py-2 cortx-text-bold bucket-url-label">
                 {{ $t("s3.bucket.url-label") }}
               </td>
-              <td class="py-2 bucket-url-text">{{ bucketUrl }}</td>
+              <td id="bucket-url-td-value" class="py-2 bucket-url-text">{{ bucketUrl }}</td>
             </tr>
           </table>
         </v-card-title>
