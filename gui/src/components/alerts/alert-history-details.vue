@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2" v-if="alert">
+  <div class="cortx-p-1" v-if="alert">
     <div class="cortx-back-to-alerts-btn" @click="$router.push('/alerts')">
       <img :src="require('@/assets/arrow-left.svg')" />
       <span class="mt-1">Alerts</span>
@@ -206,29 +206,13 @@ export default class CortxAlertHistory extends Vue {
       this.alert = res.data;
       try {
         if (this.alert.extended_info) {
-          /**
-           * The string in alert.extended_info is not a valid JSON string (as designed by backend).
-           * To make it a valid JSON string and convert to JSON object, we need to replace single quote
-           * with double quote. The below statement does that.
-           */
-          const tempAlertExtendedInfoJSONString = this.alert.extended_info
-            .split("'")
-            .join("\"");  // Do not change this to "'"
-          this.alertDetails = JSON.parse(tempAlertExtendedInfoJSONString);
+          this.alertDetails = JSON.parse(this.alert.extended_info);
           this.alertExtendedInfo = this.alertDetails.info;
         }
 
         let tempAlertEventDetails = [];
         if (this.alert.event_details) {
-          /**
-           * The string in alert.event_details is not a valid JSON string (as designed by backend).
-           * To make it a valid JSON string and convert to JSON object, we need to replace single quote
-           * with double quote. The below statement does that.
-           */
-          const tempAlertEventDetailsJSONString = this.alert.event_details
-            .split("'")
-            .join("\"");  // Do not change this to "'"
-          tempAlertEventDetails = JSON.parse(tempAlertEventDetailsJSONString);
+          tempAlertEventDetails = JSON.parse(this.alert.event_details);
         }
         if (tempAlertEventDetails.length > 0) {
           tempAlertEventDetails.forEach((event_detail: any) => {
