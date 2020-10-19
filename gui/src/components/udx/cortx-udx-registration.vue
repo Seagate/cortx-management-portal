@@ -455,46 +455,12 @@
         </v-col>
       </v-row>
     </div>
-    <div class="cortx-modal-container" v-if="registrationResponse">
-      <div class="cortx-modal" style="width: 600px;">
-        <div class="cortx-modal-header">
-          <label>Details</label>
-          <img id="udx-close-dialogbox"
-            class="cortx-modal-close"
-            :src="require('@/assets/close-green.svg')"
-            @click="closeRegResponseDetailsDialog()"
-          />
-        </div>
-        <div class="cortx-reg-response-container">
-          <table class="cortx-text-md">
-            <tr>
-              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">S3 Account Access Key</td>
-              <td class="py-1" id="udx-s3accesskey">{{ registrationResponse.s3_account.access_key }}</td>
-            </tr>
-            <tr>
-              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">S3 Account Secret Key</td>
-              <td class="py-1" id="udx-s3secretekey">{{ registrationResponse.s3_account.secret_key }}</td>
-            </tr>
-            <tr>
-              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">IAM User Access Key</td>
-              <td class="py-1" id="udx-iamaccesskey">{{ registrationResponse.iam_user.access_key }}</td>
-            </tr>
-            <tr>
-              <td class="py-1 cortx-text-bold udx-reg-resp-table-label">IAM User Secret Key</td>
-              <td class="py-1" id="udx-iamsecretkey">{{ registrationResponse.iam_user.secret_key }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="cortx-modal-footer">
-          <button
-          id="udx-close-details-dialog"
-            type="button"
-            class="cortx-btn-primary cortx-float-r"
-            @click="closeRegResponseDetailsDialog()"
-          >Ok</button>
-        </div>
-      </div>
-    </div>
+     <cortx-download-csv-dialog
+      :show="showAccessKeyDetailsDialog"
+      :title="$t('s3.download-csv-dialog.created')"
+      :tableContent="accessKeyDetails"
+       @closeDialog="closeDialogbox()"
+    ></cortx-download-csv-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -516,7 +482,8 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 
 @Component({
-  name: "cortx-udx-registration"
+  name: "cortx-udx-registration",
+  components: { CortxDownloadCsvDialog }
 })
 export default class CortxUDXRegistration extends Vue {
   public registrationToken: string = "";
@@ -618,7 +585,9 @@ export default class CortxUDXRegistration extends Vue {
         [`${i18n.t("s3.access-key.table-headers.iam_access_key")}`]: this
           .registrationResponse.iam_user.access_key,
         [`${i18n.t("s3.access-key.table-headers.iam_secret_key")}`]: this
-          .registrationResponse.iam_user.secret_key
+          .registrationResponse.iam_user.secret_key,
+        [`${i18n.t("s3.access-key.table-headers.bucket_name")}`]: this.registrationForm.bucketName
+
       };
       this.showAccessKeyDetailsDialog = true;
     }
@@ -653,8 +622,8 @@ export default class CortxUDXRegistration extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
   public async closeDialogbox() {
-    this.$emit("complete");
     this.showAccessKeyDetailsDialog = false;
+    this.$emit("complete");
   }
 }
 </script>
