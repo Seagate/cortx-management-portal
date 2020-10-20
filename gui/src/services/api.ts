@@ -115,13 +115,14 @@ export abstract class Api {
       });
   }
   // Wrapper method for post api to upload file
-  public static async uploadFile(url: string, payload: FormData) {
+  public static async uploadFile(url: string, payload: FormData,onUploadProgress?:any) {
     return await axios
       .post(url, payload, {
         headers: {
           "Content-Type": "multipart/form-data"
         },
-        timeout: -1
+        timeout: -1,
+        onUploadProgress
       })
       .then(response => {
         return Promise.resolve(this.buildSuccessResponse(response));

@@ -24,7 +24,18 @@
         <div class="loader-message" v-if="message">
           <label id="lblLoaderMessage">{{ message }}</label>
         </div>
-        <v-progress-linear id="commonLoaderProgress" indeterminate color="csmprimary" background-color="csmdisabled"></v-progress-linear>
+        <!-- <v-progress-linear id="commonLoaderProgress" indeterminate color="red" background-color="csmdisabled" v-model="percentage"> -->
+        <v-progress-linear
+        v-model="percentage"
+        color="amber"
+        height="10"
+        class="mt-7"
+        id="commonLoaderProgress"
+      >
+           <template v-slot="{ value }">
+          <strong>{{ Math.ceil(value) }}%</strong>
+        </template>
+        </v-progress-linear>
       </div>
     </div>
   </v-overlay>
@@ -45,6 +56,9 @@ export default class CortxLoader extends Vue {
 
   @Prop({ required: false })
   public message!: string;
+
+  //  @Prop({ required: false })
+  // public percentage!: number;
 }
 </script>
 <style lang="scss" scoped>

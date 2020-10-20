@@ -271,14 +271,14 @@ export abstract class Api {
                     method: 'POST',
                     headers: headers,
                 };
-                const httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
-                    let error = new HTTPError.HTTP500Error(err.message);
-                    reject(error);
-                });
-                httpRequest.on("close", ()=> {
-                    fs.unlink(file.path, (err) => {});
-                });
-                form.pipe(httpRequest);
+                // const httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
+                //     let error = new HTTPError.HTTP500Error(err.message);
+                //     reject(error);
+                // });
+                // httpRequest.on("close", ()=> {
+                //     fs.unlink(file.path, (err) => {});
+                // });
+                // form.pipe(httpRequest);
             });
         });
     }

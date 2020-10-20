@@ -87,6 +87,18 @@
         accept=".iso"
         @change="handleFileUpload($event.target.files)"
       />
+      <!-- <div style="width:50% " v-if="percentComplete">
+      <v-progress-linear
+        v-model="percentComplete"
+        color="amber"
+        height="10"
+        class="mt-7"
+      >
+       <template v-slot="{ value }">
+          <strong>{{ Math.ceil(value) }}%</strong>
+        </template></v-progress-linear>
+      </div> -->
+  
       <div
         class="cortx-form-group-label cortx-form-group-error-msg mt-3"
         v-if="
@@ -136,7 +148,7 @@ export default class CortxHotfix extends Vue {
     isDirty: false,
     isValid: false,
   };
-
+  public percentComplete:any = null;
   public async mounted() {
     await this.getLastUpgradeStatus();
   }
@@ -167,17 +179,21 @@ export default class CortxHotfix extends Vue {
       this.hotfixPackageFormValidation.isValid = true;
     }
   }
-
+ public onUploadProgress(progressEvent:any){
+      this.percentComplete = Math.round((progressEvent.loaded*100)/progressEvent.total);
+      }
   public async uploadHotfixPackage() {
     if (this.hotfixPackage !== null) {
       this.$store.dispatch(
         "systemConfig/showLoader",
-        "Uploading the package..."
+        "Uploading the package...",
+         this.percentComplete
       );
       const formData = new FormData();
       formData.append("package", this.hotfixPackage);
       try {
-        const res = await Api.uploadFile(apiRegister.hotfix_upload, formData);
+        const res = await Api.uploadFile(apiRegister.hotfix_upload, formData, this.onUploadProgress);
+      
       } catch (error) {
         let errorMessage = "No response, please check the upload status";
         if (error && error.error && error.data.message) {
