@@ -181,7 +181,8 @@
     "registration-token":"Your registration token",
     "udx-url-required":"URL is required",
     "invalid-url":"Invalid URL",
-    "s3-details":"S3 Account details",
+    "s3-details":"Account details",
+    "S3BucketDetails": "Bucket details",
     "accountname-required":"Account name is required",
     "invalid-name":"Invalid account name",
     "email":"Email id*",
@@ -198,7 +199,7 @@
     "invalid-bucketname":"Invalid bucket name",
     "iagreetext":"I agree to the following",
     "firstcheck-text":"A dedicated Lyve Pilot Bucket will be created in my account.",
-    "secondcheck-text":"A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot bucket, and not to other data.",
+    "secondcheck-text":"A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot Bucket, and not to other data.",
     "register-btn":"Register",
     "clear":"Clear"
   },

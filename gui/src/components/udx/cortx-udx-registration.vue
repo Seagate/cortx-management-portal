@@ -85,7 +85,7 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="cortx-text-md cortx-text-bold" id="udx-account-detailslbl">S3 Account details</label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-account-detailslbl">{{ $t("udx-registration.s3-details") }}</label>
         </v-col>
       </v-row>
       <v-row>
@@ -354,7 +354,7 @@
       <v-divider class="mb-2" />
       <v-row class="mb-2">
         <v-col class="py-0">
-          <label class="cortx-text-md cortx-text-bold" id="udx-s3-detailslbl">S3 Bucket details</label>
+          <label class="cortx-text-md cortx-text-bold" id="udx-s3-detailslbl">{{ $t("udx-registration.S3BucketDetails") }}</label>
         </v-col>
       </v-row>
       <v-row>
@@ -407,7 +407,7 @@
           <label class="cortx-text-md" id="udx-agreelbl">I agree to the following:</label>
           <br />
           <label class="cortx-ckb-container" for="consentOne" id="udx-firstcheck">
-           A dedicated Lyve Pilot Bucket will be created in my account.
+           {{ $t("udx-registration.firstcheck-text") }}
             <input
               type="checkbox"
               name="consentOne"
@@ -418,7 +418,7 @@
           </label>
           <br />
           <label class="cortx-ckb-container" for="consentTwo" id="udx-secondcheck">
-            An Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot bucket, and not to other data.
+            {{ $t("udx-registration.secondcheck-text") }}
             <input
               type="checkbox"
               name="consentTwo"
