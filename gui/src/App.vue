@@ -17,19 +17,21 @@
 <template>
   <v-app style="background-color: #FFF;">
     <router-view></router-view>
-    <loader :show="showLoader" :message="loaderMessage" />
+    <loader :show="showLoader" :message="loaderMessage" :percentage="loaderPercentage" />
   </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Loader from "./components/widgets/loader.vue";
+import PercentageLoader from "./components/widgets/percentage-loader.vue";
 import i18n from "vue-i18n";
 
 @Component({
   name: "App",
   components: {
-    Loader
+    Loader,
+    PercentageLoader
   }
 })
 export default class App extends Vue {
@@ -38,6 +40,9 @@ export default class App extends Vue {
   }
   get loaderMessage() {
     return this.$store.getters["systemConfig/loaderMessageText"];
+  }
+  get loaderPercentage() {
+    return this.$store.getters["systemConfig/loaderPercentageNumber"];
   }
   public mounted() {
     document.title = this.$t("common.pageTitle") as string;

@@ -52,6 +52,7 @@ export default class SystemConfiguration extends VuexModule {
   public isDataNetworkSettingsSkip: boolean = false;
   public loaderShow: boolean = false;
   public loaderMessage: string = "";
+  public loaderPercentage: number = 0;
   public notifications: Notifications = {} as Notifications;
   public isLocalUser: boolean = false;
   public isLdapUser: boolean = false;
@@ -554,16 +555,23 @@ export default class SystemConfiguration extends VuexModule {
   public loaderConfigMutation(loaderData: any) {
     this.loaderShow = loaderData.show;
     this.loaderMessage = loaderData.message;
+    this.loaderPercentage=loaderData.percentage;
   }
   @Action
   public async showLoaderMessage(loaderData: any) {
     this.context.commit("loaderConfigMutation", loaderData);
   }
   @Action
-  public async showLoader(message: string) {
+  public async showLoaderPercentage(loaderData: any) {
+    this.context.commit("loaderConfigMutation", loaderData);
+  }
+  @Action
+  public async showLoader(payload:any) {
+    console.log('percentage---',payload.percentage);
     this.context.commit("loaderConfigMutation", {
       show: true,
-      message
+      message:payload.message,
+      percentage:payload.percentage
     });
   }
 
@@ -571,7 +579,8 @@ export default class SystemConfiguration extends VuexModule {
   public async hideLoader() {
     this.context.commit("loaderConfigMutation", {
       show: false,
-      message: ""
+      message: "",
+      percentage:null
     });
   }
   get showLoaderStatus() {
@@ -580,4 +589,8 @@ export default class SystemConfiguration extends VuexModule {
   get loaderMessageText() {
     return this.loaderMessage;
   }
+  get loaderPercentageNumber(){
+   return this.loaderPercentage;
+  }
+  
 }

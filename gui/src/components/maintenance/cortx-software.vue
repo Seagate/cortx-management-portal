@@ -31,7 +31,9 @@
       <table>
         <tr>
           <td style="width: 180px;">
-            <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateStatus") }}:</label>
+            <label class="cortx-text-bold"
+              >{{ $t("maintenance.lastUpdateStatus") }}:</label
+            >
           </td>
           <td style="padding-top: 2px;">
             <label>{{
@@ -43,13 +45,17 @@
         </tr>
         <tr v-if="lastUpgradeStatus.version">
           <td>
-            <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateVersion") }}:</label>
+            <label class="cortx-text-bold"
+              >{{ $t("maintenance.lastUpdateVersion") }}:</label
+            >
           </td>
           <td style="padding-top: 2px;">{{ lastUpgradeStatus.version }}</td>
         </tr>
         <tr v-if="lastUpgradeStatus.description">
           <td>
-            <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateDescription") }}:</label>
+            <label class="cortx-text-bold"
+              >{{ $t("maintenance.lastUpdateDescription") }}:</label
+            >
           </td>
           <td style="padding-top: 2px;">
             <label>{{ lastUpgradeStatus.description }}</label>
@@ -98,7 +104,7 @@
           <strong>{{ Math.ceil(value) }}%</strong>
         </template></v-progress-linear>
       </div> -->
-  
+
       <div
         class="cortx-form-group-label cortx-form-group-error-msg mt-3"
         v-if="
@@ -136,7 +142,7 @@ import apiRegister from "../../services/api-register";
 import i18n from "../../i18n";
 
 @Component({
-  name: "cortx-hotfix",
+  name: "cortx-hotfix"
 })
 export default class CortxHotfix extends Vue {
   public lastUpgradeStatus: any = null;
@@ -144,11 +150,11 @@ export default class CortxHotfix extends Vue {
   public isPackageAvailable: boolean = false;
   public canInstallHotfix: boolean = true;
   public hotfixPackage: File | null = null;
+  public percentComplete: number = null;
   public hotfixPackageFormValidation: any = {
     isDirty: false,
-    isValid: false,
+    isValid: false
   };
-  public percentComplete:any = null;
   public async mounted() {
     await this.getLastUpgradeStatus();
   }
@@ -179,21 +185,30 @@ export default class CortxHotfix extends Vue {
       this.hotfixPackageFormValidation.isValid = true;
     }
   }
- public onUploadProgress(progressEvent:any){
-      this.percentComplete = Math.round((progressEvent.loaded*100)/progressEvent.total);
-      }
+  public onUploadProgress(progressEvent: any) {
+    this.percentComplete = Math.round(
+      (progressEvent.loaded * 100) / progressEvent.total
+    );
+    this.$store.dispatch(
+        "systemConfig/showLoader",
+        {message:
+        "Uploading the package...",
+        percentage:this.percentComplete
+        }
+      );
+  }
+
   public async uploadHotfixPackage() {
     if (this.hotfixPackage !== null) {
-      this.$store.dispatch(
-        "systemConfig/showLoader",
-        "Uploading the package...",
-         this.percentComplete
-      );
       const formData = new FormData();
       formData.append("package", this.hotfixPackage);
       try {
-        const res = await Api.uploadFile(apiRegister.hotfix_upload, formData, this.onUploadProgress);
-      
+        const res = await Api.uploadFile(
+          apiRegister.hotfix_upload,
+          formData,
+          this.onUploadProgress
+        );
+
       } catch (error) {
         let errorMessage = "No response, please check the upload status";
         if (error && error.error && error.data.message) {
@@ -201,8 +216,8 @@ export default class CortxHotfix extends Vue {
         }
         throw {
           error: {
-            message: errorMessage,
-          },
+            message: errorMessage
+          }
         };
       } finally {
         this.closeUploadForm();

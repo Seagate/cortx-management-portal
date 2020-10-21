@@ -23,6 +23,7 @@
       <div class="loader-body">
         <div class="loader-message" v-if="message">
           <label id="lblLoaderMessage">{{ message }}</label>
+          <label>{{percentage}}</label>
         </div>
         <!-- <v-progress-linear id="commonLoaderProgress" indeterminate color="red" background-color="csmdisabled" v-model="percentage"> -->
         <v-progress-linear
@@ -48,6 +49,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "cortx-loader"
 })
 export default class CortxLoader extends Vue {
+  // public percentComplete:any = 100;
   @Prop({ required: true })
   public show!: boolean;
 
@@ -57,8 +59,8 @@ export default class CortxLoader extends Vue {
   @Prop({ required: false })
   public message!: string;
 
-  //  @Prop({ required: false })
-  // public percentage!: number;
+  @Prop({ required: false })
+  public percentage!: number;
 }
 </script>
 <style lang="scss" scoped>
