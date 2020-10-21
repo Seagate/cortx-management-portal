@@ -52,6 +52,8 @@ export default class SystemConfiguration extends VuexModule {
   public isDataNetworkSettingsSkip: boolean = false;
   public loaderShow: boolean = false;
   public loaderMessage: string = "";
+  public loaderShowPercentage: boolean = false;
+  public loaderMessagePercentage: string = "";
   public loaderPercentage: number = 0;
   public notifications: Notifications = {} as Notifications;
   public isLocalUser: boolean = false;
@@ -215,7 +217,9 @@ export default class SystemConfiguration extends VuexModule {
   @Action
   public async sendTestEmailNotification(payload: any) {
     try {
-      const res = await Api.post(apiRegister.send_test_email, payload, { timeout: 120000 });
+      const res = await Api.post(apiRegister.send_test_email, payload, {
+        timeout: 120000
+      });
       if (res && res.data) {
         const data = res.data;
         return data;
@@ -555,23 +559,17 @@ export default class SystemConfiguration extends VuexModule {
   public loaderConfigMutation(loaderData: any) {
     this.loaderShow = loaderData.show;
     this.loaderMessage = loaderData.message;
-    this.loaderPercentage=loaderData.percentage;
   }
+
   @Action
   public async showLoaderMessage(loaderData: any) {
     this.context.commit("loaderConfigMutation", loaderData);
   }
   @Action
-  public async showLoaderPercentage(loaderData: any) {
-    this.context.commit("loaderConfigMutation", loaderData);
-  }
-  @Action
-  public async showLoader(payload:any) {
-    console.log('percentage---',payload.percentage);
+  public async showLoader(message: string) {
     this.context.commit("loaderConfigMutation", {
       show: true,
-      message:payload.message,
-      percentage:payload.percentage
+      message
     });
   }
 
@@ -579,8 +577,7 @@ export default class SystemConfiguration extends VuexModule {
   public async hideLoader() {
     this.context.commit("loaderConfigMutation", {
       show: false,
-      message: "",
-      percentage:null
+      message: ""
     });
   }
   get showLoaderStatus() {
@@ -589,8 +586,47 @@ export default class SystemConfiguration extends VuexModule {
   get loaderMessageText() {
     return this.loaderMessage;
   }
-  get loaderPercentageNumber(){
-   return this.loaderPercentage;
+  //percentage loader
+  @Mutation
+  public PercentageloaderConfigMutation(loaderData: any) {
+    this.loaderShowPercentage = loaderData.show;
+    this.loaderMessagePercentage = loaderData.message;
+    this.loaderPercentage = loaderData.percentage;
   }
-  
+
+  @Action
+  public async showpercentageLoaderMessage(loaderData: any) {
+    this.context.commit("PercentageloaderConfigMutation", loaderData);
+  }
+  @Action
+  public async showLoaderPercentage(loaderData: any) {
+    this.context.commit("PercentageloaderConfigMutation", loaderData);
+  }
+  @Action
+  public async showPercentageLoader(payload: any) {
+    console.log("percentage---", payload.percentage);
+    this.context.commit("PercentageloaderConfigMutation", {
+      show: true,
+      message: payload.message,
+      percentage: payload.percentage
+    });
+  }
+
+  @Action
+  public async hidePercenategLoader() {
+    this.context.commit("PercentageloaderConfigMutation", {
+      show: false,
+      message: "",
+      percentage: null
+    });
+  }
+  get showpercentageLoaderStatus() {
+    return this.loaderShowPercentage;
+  }
+  get loaderpercentageMessageText() {
+    return this.loaderMessagePercentage;
+  }
+  get loaderPercentageNumber() {
+    return this.loaderPercentage;
+  }
 }

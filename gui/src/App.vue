@@ -17,7 +17,12 @@
 <template>
   <v-app style="background-color: #FFF;">
     <router-view></router-view>
-    <loader :show="showLoader" :message="loaderMessage" :percentage="loaderPercentage" />
+    <loader :show="showLoader" :message="loaderMessage" />
+    <PercentageLoader
+      :show="showPercentageLoader"
+      :message="loaderPercentageMessage"
+      :percentage="loaderPercentage"
+    />
   </v-app>
 </template>
 
@@ -40,6 +45,12 @@ export default class App extends Vue {
   }
   get loaderMessage() {
     return this.$store.getters["systemConfig/loaderMessageText"];
+  }
+  get showPercentageLoader() {
+    return this.$store.getters["systemConfig/showpercentageLoaderStatus"];
+  }
+  get loaderPercentageMessage() {
+    return this.$store.getters["systemConfig/loaderpercentageMessageText"];
   }
   get loaderPercentage() {
     return this.$store.getters["systemConfig/loaderPercentageNumber"];

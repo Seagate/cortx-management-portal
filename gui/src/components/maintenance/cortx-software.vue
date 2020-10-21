@@ -190,8 +190,9 @@ export default class CortxHotfix extends Vue {
       (progressEvent.loaded * 100) / progressEvent.total
     );
     this.$store.dispatch(
-        "systemConfig/showLoader",
-        {message:
+        "systemConfig/showPercentageLoader",
+        {
+         message:
         "Uploading the package...",
         percentage:this.percentComplete
         }
