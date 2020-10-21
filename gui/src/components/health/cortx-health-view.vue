@@ -16,7 +16,9 @@
 */
 <template>
   <div class="pa-5">
-    <div class="cortx-text-lg cortx-text-bold pr-2">Health View</div>
+    <div class="cortx-text-lg cortx-text-bold pr-2">Health View Test
+      <button style="{ float: right; border: 1px solid blue; font-size: 12px; background-color: #eee; padding: 5px 15px; color: #6ebe49; }" onclick="isHidden = false">Show Tree</button>
+    </div>
     <div>
       <div class="cortx-health-summary-container">
         <div class="cortx-text-lg cortx-float-l cortx-text-bold">{{componentName}}</div>
@@ -51,7 +53,7 @@
         </div>
       </div>
     </div>
-
+    <div id="treeContainer"></div>
     <v-data-table
       calculate-widths
       :items="healthComponentData"
@@ -134,6 +136,7 @@ import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { HealthSummary } from "../../models/system";
 import i18n from "../../i18n";
+import * as d3 from "d3";
 
 @Component({
   name: "cortx-health-view"
@@ -162,13 +165,280 @@ export default class CortxHealthView extends Vue {
     unrecoverable: 0,
     critical: 0
   };
+  
+  // public treeIcon = require("./../../assets/nodes.PNG");
   public data() {
     return {
       alertStatus: require("./../../common/const-string.json"),
-      name: this.$route.query.name
+      name: this.$route.query.name,
+      isHidden: true,
     };
   }
+
+  
   public async mounted() {
+    
+  // var treeIcon = require("./../../assets/nodes.PNG");
+    //  Tree Code
+var treeData =
+  {
+    "name": "cluster",
+    // "icon": require("./../../../assets/nodes.PNG"),
+    "children": [
+      {
+        "name": "sites",
+       // "icon": require("./../../../assets/nodes.PNG"),
+        "children": [
+          {
+            "name": "rack",
+            // "icon": require("./../../../assets/nodes.PNG"),
+            "children": [
+                {
+                    "name": "nodes",
+                    // "icon": require("./../../../assets/nodes.PNG"),
+                    "children": [
+                        {
+                            "name": "storage_encl",
+                            // "icon": require("./../../../assets/nodes.PNG"),
+                            "children": [
+                                {
+                                    "name": "hw",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "fru",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                            "children": [
+                                                {
+                                                    "name": "disks",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "psus",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "controllers",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "fans",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "sideplane_expander",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "sw",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "logical_volume",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "interfaces",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "sas_port",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "platform_sensors",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "current",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        },
+                                        {
+                                            "name": "temperature",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        },
+                                        {
+                                            "name": "voltage",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "node:smc21-m10.colo.seagate.com",
+                            // "icon": require("./../../../assets/nodes.PNG"),
+                            "children": [
+                                {
+                                    "name": "hw",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "fru",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                            "children": [
+                                                {
+                                                    "name": "fans",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "psus",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "os",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "cortx_sw",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        },
+                                        {
+                                            "name": "operating_system",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "interfaces",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "sas_port",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "platform_sensors",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "temperature",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                            "children": [
+                                                {
+                                                    "name": "node:sensor:temperature-CPU1 Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-CPU2 Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-PCH Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-System Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-Peripheral Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-MB_NIC Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+
+                        }
+                    ]
+                }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
+
+// set the dimensions and margins of the diagram
+var margin = {top: 120, right: 100, bottom: 50, left: 150},
+    width = 1000 - margin.left - margin.right,
+    height = 800 - margin.top - margin.bottom;
+
+// declares a tree layout and assigns the size
+var treemap = d3.tree()
+    .size([height, width]);
+
+//  assigns the data to a hierarchy using parent-child relationships
+var nodes = d3.hierarchy(treeData, function(d) {
+    return d.children;
+  });
+
+// maps the node data to the tree layout
+nodes = treemap(nodes);
+
+// append the svg object to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("#treeContainer").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom),
+    g = svg.append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+// adds the links between the nodes
+var link = g.selectAll(".link")
+    .data( nodes.descendants().slice(1))
+  .enter().append("path")
+    .attr("class", "link")
+    .style("fill", "none")
+    .style("stroke", "black")
+    .attr("d", function(d) {
+       return "M" + d.y + "," + d.x
+         + "C" + (d.y + d.parent.y) / 2 + "," + d.x
+         + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
+         + " " + d.parent.y + "," + d.parent.x;
+       });
+
+// adds each node as a group
+var node = g.selectAll(".node")
+    .data(nodes.descendants())
+  .enter().append("g")
+    .attr("class", function(d) { 
+      return "node" + 
+        (d.children ? " node--internal" : " node--leaf"); })
+    .attr("transform", function(d) { 
+      return "translate(" + d.y + "," + d.x + ")"; });
+
+// adds images as nodes
+node.append("image")
+  .attr("xlink:href", "")
+  .attr("x", "-12px")
+  .attr("y", "-12px")
+  .attr("width", "24px")
+  .attr("height", "24px");
+
+// adds the text to the node
+node.append("text")
+  .attr("dy", ".35em")
+  .attr("x", function(d) { return d.children ? -13 : 13; })
+  .style("text-anchor", function(d) { 
+    return d.children ? "end" : "start"; })
+  .text(function(d) { return d.data.name; });
+
+    // tree Code
+
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
       message: "Getting health info..."
@@ -211,7 +481,7 @@ export default class CortxHealthView extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .cortx-health-summary-container {
   height: 1.875em;
 }
