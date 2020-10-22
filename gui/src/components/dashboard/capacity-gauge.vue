@@ -68,10 +68,10 @@ export default class CortxCapacityGauge extends Vue {
       .dispatch("performanceStats/getCapacityStats")
       .then(capacityC3Data => {
         this.chartDataVal = capacityC3Data[0][1] ? capacityC3Data[0][1] : 0.00;
-        if (this.chartDataVal <= 50.00) {
+        if (this.chartDataVal < 50.00) {
           this.usedLegendClass = "capacity-used-green";
         }
-        if (this.chartDataVal > 50.00) {
+        if (this.chartDataVal >= 50.00) {
           this.usedLegendClass = "capacity-used-orange";
         }
         if (this.chartDataVal >= 90.00) {
