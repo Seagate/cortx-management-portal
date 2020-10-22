@@ -65,7 +65,6 @@
                 >
                   <span id="iam-header-data">{{ header.text }}</span>
                 </th>
-                <th class="tableheader" />
               </tr>
             </template>
 
@@ -325,7 +324,7 @@
             <td class="py-2 cortx-text-bold credentials-item-label">
               {{ $t("s3.account.s3-url") }}
             </td>
-            <td class="py-2">{{ s3Url.toString() }}</td>
+            <td class="py-2">{{ s3Url[0] }}, {{s3Url[1]}}</td>
           </tr>
           <tr id="iamARN">
             <td class="py-2 cortx-text-bold credentials-item-label">{{ $t("s3.access-key.table-headers.arn") }}</td>
@@ -453,6 +452,10 @@ export default class CortxIAMUserManagement extends Vue {
         text: "ARN",
         value: "arn",
         sortable: false
+      },
+      { 
+        text: "Action", 
+        value: "data-table-expand" 
       }
     ];
 

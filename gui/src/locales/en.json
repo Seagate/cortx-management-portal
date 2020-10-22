@@ -39,7 +39,7 @@
     },
     "download-csv-dialog": {
       "created": "Access key created",
-      "message": "Save this information, you will not see it again. Download as CSV and close.",
+      "message": "Click Download and close to save this information in CSV format.",
       "btn": "Download and close"
     },
     "account": {
@@ -120,7 +120,8 @@
     "cancel": "Cancel",
     "accept": "Accept",
     "email": "Email",
-    "login": "Login"
+    "login": "Login",
+    "action": "Action"
   },
   "csmuser": {
     "user-setting-label": "User settings: Local",
@@ -197,16 +198,16 @@
     "password-required": "Password is required",
     "invalid-password": "Invalid password",
     "confirm-pass": "Confirm password",
-    "S3BucketDetails": "S3 Bucket details",
+    "S3BucketDetails": "Bucket details",
     "password-match": "Passwords do not match",
     "iam-details": "IAM User details",
     "username-required": "Username is required",
     "invalid-user": "Invalid username",
     "bucket-required": "Bucket name is required",
     "invalid-bucketname": "Invalid bucket name",
-    "iagreetext": "I agree to the following:",
+    "iagreetext": "I agree to the following",
     "firstcheck-text": "A dedicated Lyve Pilot Bucket will be created in my account.",
-    "secondcheck-text": "A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot bucket, and not to other data.",
+    "secondcheck-text": "A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot Bucket, and not to other data.",
     "register-btn": "Register",
     "clear": "Clear",
     "s3AccountKey": "S3 Account Access Key",
@@ -271,7 +272,8 @@
     "searchDomainRequired": "Search domain is required.",
     "DNSResolverSettings": "DNS resolver settings",
     "updateFirmware": "Update firmware",
-    "updateStorageEnclosure": "Update the storage enclosure firmware. Upload the firmware bundle file (.bin) received from Seagate. <br> Click Start update once the bundle file is uploaded successfully.",
+    "updateStorageEnclosure": "Update the storage enclosure firmware. Upload the firmware bundle file (.bin) received from Seagate.",
+    "updateStorageEnclosureClick": "Click Start update once the bundle file is uploaded successfully.",
     "uploadNewFirmware": "Upload new firmware file",
     "invalidFile": "Invalid file.",
     "interfaceSelection": "Interface Selection",
@@ -489,6 +491,6 @@
   },
   "license": {
     "header": "To set up your system, you must accept the Terms and Conditions.",
-    "getStarted": "Accept Terms & Condition"
+    "getStarted": "Accept Terms & Conditions"
   }
 }
