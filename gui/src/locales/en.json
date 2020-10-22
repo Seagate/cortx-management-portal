@@ -2,7 +2,7 @@
   "login": {
     "welcome": "Welcome!!!",
     "start": "Start",
-    "getStated": "Click on Start to proceed with on onboarding steps.",
+    "getStated": "Click on Start to proceed with the onboarding steps.",
     "login-label": "Login",
     "login-btn": "Login",
     "user-name-placeholder": "Username",
