@@ -18,7 +18,7 @@
   <div id="alertMediumContainer">
     <cortx-health-summary />
     <div style="height: 30px;">
-      <div class="cortx-alert-title" id="alert-new-alerts">New alerts</div>
+      <div class="cortx-alert-title" id="alert-new-alerts">{{ $t("alerts.newAlerts") }}</div>
       <img
         id="alert-zoom"
         :src="require('@/assets/zoom-in.svg')"
@@ -138,6 +138,7 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
 import CortxHealthSummary from "../system/health-summary.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
+import i18n from "../../i18n";
 import { EVENT_BUS } from "../../main";
 
 @Component({
