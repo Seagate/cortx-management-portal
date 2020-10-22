@@ -21,14 +21,14 @@
       @click="$router.go(-1)"
     >
       <img :src="require('@/assets/arrow-left.svg')" />
-      <span class="mt-1">Back</span>
+      <span class="mt-1">{{ $t("common.back") }}</span>
     </div>
     <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);" class="mt-4 mb-3">
       <div style="height: 30px;">
         <div class="cortx-float-l" v-if="alert && alertExtendedInfo">
-          <label class="cortx-text-lg cortx-text-bold">Id:&nbsp;</label>
+          <label class="cortx-text-lg cortx-text-bold">{{ $t("common.Id") }}:&nbsp;</label>
           <label>{{ alertExtendedInfo.resource_id }}</label>
-          <label class="cortx-text-lg cortx-text-bold">&nbsp;| Name:&nbsp;</label>
+          <label class="cortx-text-lg cortx-text-bold">&nbsp;| {{ $t("common.name") }}:&nbsp;</label>
           <label>{{ alert.module_type }}</label>
         </div>
         <div class="cortx-float-r" v-if="!(alert.acknowledged && alert.resolved)">
@@ -40,46 +40,46 @@
       </div>
       <div class="cortx-text-md cortx-text-bold">
         <div>
-          <label>Cluster {{ alertExtendedInfo.cluster_id }}</label>
-          <label>&nbsp;| Site {{ alertExtendedInfo.site_id }}</label>
-          <label>&nbsp;| Rack {{ alertExtendedInfo.rack_id }}</label>
-          <label>&nbsp;| Node {{ alertExtendedInfo.node_id }}</label>
+          <label>{{ $t("alerts.cluster") }} {{ alertExtendedInfo.cluster_id }}</label>
+          <label>&nbsp;| {{ $t("alerts.site") }} {{ alertExtendedInfo.site_id }}</label>
+          <label>&nbsp;| {{ $t("alerts.rack") }} {{ alertExtendedInfo.rack_id }}</label>
+          <label>&nbsp;| {{ $t("alerts.node") }} {{ alertExtendedInfo.node_id }}</label>
         </div>
         <div>
-          <label>Resource type: {{ alertExtendedInfo.resource_type }}</label>
-          <label>&nbsp;| State: {{ alert.state }}</label>
+          <label>{{ $t("alerts.resourceType") }}: {{ alertExtendedInfo.resource_type }}</label>
+          <label>&nbsp;| {{ $t("alerts.state") }}: {{ alert.state }}</label>
         </div>
         <div>
           <span v-if="alert.module_type === 'logical_volume'">
-            Volume group: {{ alert.volume_group }} | Volume name:
+            {{ $t("alerts.volumeGroup") }}: {{ alert.volume_group }} | {{ $t("alerts.volumeName") }}:
             {{ alert.name }}
           </span>
           <span
             v-else-if="alert.module_type === 'system'"
-          >Version: {{ alert.version }} | Nodename: {{ alert.name }}</span>
+          >{{ $t("alerts.version") }}: {{ alert.version }} | {{ $t("alerts.nodeName") }}: {{ alert.name }}</span>
           <span v-else-if="alert.module_type === 'volume'">
-            Size: {{ alert.volume_size }} | Total size:
+            {{ $t("alerts.size") }}: {{ alert.volume_size }} | {{ $t("alerts.totalSize") }}:
             {{ alert.volume_total_size }}
           </span>
-          <span v-else-if="alert.module_type === 'current'">Sensor name: {{ alert.name }}</span>
-          <span v-else-if="alert.module_name === 'enclosure:fru:psu'">Location: {{ alert.location }}</span>
+          <span v-else-if="alert.module_type === 'current'">{{ $t("alerts.sensorName") }}: {{ alert.name }}</span>
+          <span v-else-if="alert.module_name === 'enclosure:fru:psu'">{{ $t("alerts.location") }}: {{ alert.location }}</span>
           <span
             v-else-if="
               alert.module_name === 'enclosure:fru:fan' ||
                 alert.module_name === 'enclosure:fru:sideplane'
             "
-          >Name: {{ alert.name }} | Location: {{ alert.location }}</span>
+          >{{ $t("common.name") }}: {{ alert.name }} | {{ $t("alerts.location") }}: {{ alert.location }}</span>
           <span v-else-if="alert.module_name === 'enclosure:fru:disk'">
-            Serial number: {{ alert.serial_number }} | Size:
+            {{ $t("alerts.serialNumber") }}: {{ alert.serial_number }} | {{ $t("alerts.size") }}:
             {{ alert.volume_size }}
           </span>
           <span
             v-else-if="alert.module_type === 'controller'"
-          >Serial number: {{ alert.serial_number }}</span>
+          >{{ $t("alerts.serialNumber") }}: {{ alert.serial_number }}</span>
         </div>
       </div>
       <div class="mt-3">
-        <label v-if="alert">Created time: {{ new Date(alert.created_time * 1000) | timeago }} | Updated time: {{ new Date(alert.updated_time * 1000) | timeago }}</label>
+        <label v-if="alert">{{ $t("alerts.createdTime") }}: {{ new Date(alert.created_time * 1000) | timeago }} | {{ $t("alerts.updatedTime") }}: {{ new Date(alert.updated_time * 1000) | timeago }}</label>
       </div>
       <div style="height: 30px;" class="mt-2">
         <div class="cortx-float-l">
@@ -92,7 +92,7 @@
           <label
             :class="alert.resolved ? '' : 'cortx-alert-status-chip-disabled'"
             style="float: left;"
-          >Resolved |</label>
+          >{{ $t("alerts.Resolved") }} |</label>
           <img
             v-if="alert.acknowledged"
             class="cortx-float-l"
@@ -102,7 +102,7 @@
           <label
             :class="alert.acknowledged ? '' : 'cortx-alert-status-chip-disabled'"
             style="float: left;"
-          >Acknowledged</label>
+          >{{ $t("alerts.acknowledged") }}</label>
         </div>
         <div class="cortx-float-r">
           <label
@@ -117,21 +117,21 @@
       <div v-for="(event_detail, i) in alertEventDetails" v-bind:key="'event_detail_' + i">
         <div class="mb-2" style="border: 1px solid #E8E8E8;" v-if="event_detail.event_reason">
           <div class="pa-2" style="background: #E8E8E8;">
-            <label>Name:&nbsp;</label>
+            <label>{{ $t("common.name") }}:&nbsp;</label>
             <label>{{ event_detail.name }}</label>
           </div>
           <div class="pa-2">
-            <label>Reason: {{ event_detail.event_reason }}</label>
+            <label>{{ $t("alerts.reason") }}: {{ event_detail.event_reason }}</label>
             <span
               v-if="event_detail.event_recommendation.length > 0"
               @click="
                 event_detail.showRecommendation = !event_detail.showRecommendation
               "
               style="color: #6EBE49;cursor: pointer;font-size: 12px;"
-            >Recommendations</span>
+            >{{ $t("alerts.recommendations") }}</span>
           </div>
           <div class="pa-2" v-if="event_detail.showRecommendation">
-            <label>Recommendations:</label>
+            <label>{{ $t("alerts.recommendations") }}:</label>
             <div>
               <ul
                 v-for="(recommendation,
@@ -149,7 +149,7 @@
       <div class="cortx-modal-container">
         <div class="cortx-modal" style="width: 56.250em;">
           <div class="cortx-modal-header">
-            <label>Alert Details</label>
+            <label>{{ $t("alerts.alertDetails") }}</label>
             <img
               class="cortx-modal-close"
               :src="require('@/assets/close-green.svg')"
@@ -165,7 +165,7 @@
     <cortx-alert-comments v-model="isShowCommentsDialog" :alertId="alertId" />
     <cortx-tabs :tabsInfo="tabsInfo" />
      <div class="mt-3" id="lblDnsMsg">
-      Displays all the alerts which are generated.
+      {{ $t("alerts.displayAllAlerts") }}
     </div>
     <cortx-alert-occurrences :sensor_info="sensor_info" />
   </div>
@@ -182,6 +182,7 @@ import AlertExtendedInfoComp from "./alert-extended-info.vue";
 import CortxAlertComments from "./alert-comments.vue";
 import CortxAlertOccurrences from "./alert-occurrences.vue";
 import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-alert-details",

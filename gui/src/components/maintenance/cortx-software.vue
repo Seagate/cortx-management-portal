@@ -17,14 +17,12 @@
 <template>
   <div>
     <div class="cortx-text-lg cortx-text-bold" id="lblUpdateHotfix">
-      Update software
+      {{ $t("maintenance.updateSoftware") }}
     </div>
     <div class="mt-3" id="lblSoftwareUploadmsg">
-      Update the software. Upload the software bundle file (.iso) received from
-      Seagate.
+      {{ $t("maintenance.updateSoftwareFile") }}
       <br />
-      Click Start update once the bundle file is uploaded successfully. After
-      the software update, you must login again.
+      {{ $t("maintenance.updateSoftwareClick") }}
     </div>
     <div
       class="mt-3 pa-3 cortx-last-upgrade-info-container cortx-text-md"
@@ -33,7 +31,7 @@
       <table>
         <tr>
           <td style="width: 180px;">
-            <label class="cortx-text-bold">Last update status:</label>
+            <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateStatus") }}:</label>
           </td>
           <td style="padding-top: 2px;">
             <label>{{
@@ -45,13 +43,13 @@
         </tr>
         <tr v-if="lastUpgradeStatus.version">
           <td>
-            <label class="cortx-text-bold">Last update version:</label>
+            <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateVersion") }}:</label>
           </td>
           <td style="padding-top: 2px;">{{ lastUpgradeStatus.version }}</td>
         </tr>
         <tr v-if="lastUpgradeStatus.description">
           <td>
-            <label class="cortx-text-bold">Last update description:</label>
+            <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateDescription") }}:</label>
           </td>
           <td style="padding-top: 2px;">
             <label>{{ lastUpgradeStatus.description }}</label>
@@ -69,7 +67,7 @@
         @click="showUploadForm = true"
         :disabled="!canInstallHotfix"
       >
-        Upload new software file
+        {{ $t("maintenance.uploadNewSoftwareFile") }}
       </button>
       <button
         id="btnStartUpgrade"
@@ -78,7 +76,7 @@
         @click="startUpgrade()"
         :disabled="!isPackageAvailable"
       >
-        Start update
+        {{ $t("maintenance.startUpdate") }}
       </button>
     </div>
     <div v-else>
@@ -96,7 +94,7 @@
             !hotfixPackageFormValidation.isValid
         "
       >
-        <label>Invalid file.</label>
+        <label>{{ $t("maintenance.invalidFile") }}</label>
       </div>
       <v-divider class="mt-5 mb-2" />
       <button
@@ -106,7 +104,7 @@
         @click="uploadHotfixPackage()"
         :disabled="!hotfixPackage"
       >
-        Upload
+        {{ $t("maintenance.upload") }}
       </button>
       <button
         id="btnCancelInstallHotfix"
@@ -114,7 +112,7 @@
         class="mt-3 ml-5 cortx-btn-secondary"
         @click="closeUploadForm()"
       >
-        Cancel
+        {{ $t("maintenance.cancel") }}
       </button>
     </div>
   </div>
@@ -123,6 +121,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-hotfix",
