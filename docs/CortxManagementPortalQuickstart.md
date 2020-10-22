@@ -363,4 +363,4 @@ Please contribute to the [CORTX Open Source project](CONTRIBUTING.md) and join o
 
 ### Reach Out to Us
 
-You can reach out to us with your questions, feedback, and comments through our [CORTX Communication Channels](SUPPORT.md)
+Converse with us in our CORTX-Open Source Slack channel [![Slack](https://img.shields.io/badge/chat-on%20Slack-blue")](https://bit.ly/3609FAb) to interact with community members and gets your questions answered.
