@@ -582,7 +582,7 @@ export default class CortxUDXRegistration extends Vue {
           .registrationResponse.iam_user.access_key,
         [`${i18n.t("s3.access-key.table-headers.iam_secret_key")}`]: this
           .registrationResponse.iam_user.secret_key,
-        [`${i18n.t("s3.access-key.table-headers.bucket_name")}`]: this.registrationForm.bucketName
+        [`${i18n.t("s3.access-key.table-headers.bucket_name")}`]: "ldp-" + this.registrationForm.bucketName
       };
       this.showAccessKeyDetailsDialog = true;
     }
