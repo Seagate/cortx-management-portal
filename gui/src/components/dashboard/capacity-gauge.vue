@@ -59,9 +59,8 @@ import * as c3 from "c3";
   name: "cortx-capacity-gauge"
 })
 export default class CortxCapacityGauge extends Vue {
-
   public usedLegendClass = "capacity-used-green";
-  public chartDataVal;
+  public chartDataVal: any;
   public created() {
     const demoData = [["x", 0]];
     const capacityRes = this.$store
@@ -111,17 +110,17 @@ export default class CortxCapacityGauge extends Vue {
     return this.$store.getters["performanceStats/getCapacity"];
   }
 
-  public capacityChartVal(chartVal: number ) {
-     let chartValWithUnit = "";
-     const unitList  = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-     for (const unit of unitList) {
-       chartVal = chartVal / 1024;
-       if (chartVal / 100 < 10) {
-         chartValWithUnit = `${chartVal.toFixed(2)} ${unit}`;
-         break;
-       }
-     }
-     return chartValWithUnit;
+  public capacityChartVal(chartVal: number) {
+    let chartValWithUnit = "";
+    const unitList = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    for (const unit of unitList) {
+      chartVal = chartVal / 1024;
+      if (chartVal / 100 < 10) {
+        chartValWithUnit = `${chartVal.toFixed(2)} ${unit}`;
+        break;
+      }
+    }
+    return chartValWithUnit;
   }
 }
 </script>
@@ -136,12 +135,12 @@ export default class CortxCapacityGauge extends Vue {
 .capacity-used-orange {
   height: 13px;
   width: 13px;
-  background-color:#F7A528 ;
+  background-color: #f7a528;
 }
 .capacity-used-red {
   height: 13px;
   width: 13px;
-  background-color: #DC1F2E;
+  background-color: #dc1f2e;
 }
 .capacity-available-badge {
   height: 13px;

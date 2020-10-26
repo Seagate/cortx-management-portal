@@ -138,13 +138,16 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
 import CortxHealthSummary from "../system/health-summary.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
-import i18n from "../../i18n";
+import i18n from "./alert.json";
 import { EVENT_BUS } from "../../main";
 
 @Component({
   name: "cortx-alert-medium",
   components: { CortxHealthSummary },
-  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
+  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAlertMedium extends Mixins(AlertsMixin) {
 
