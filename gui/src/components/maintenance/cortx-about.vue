@@ -89,9 +89,9 @@ export default class Cortxaboutpage extends Vue {
   public data() {
     return {
       versionDetails: {
-        NAME: '-' as string,
-        VERSION: '-' as string,
-        BUILD: '-' as string,
+        NAME: "-" as string,
+        VERSION: "-" as string,
+        BUILD: "-" as string,
         RELEASE: null,
         COMPONENTS: []
       }
