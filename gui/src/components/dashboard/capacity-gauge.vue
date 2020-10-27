@@ -60,7 +60,7 @@ import * as c3 from "c3";
 })
 export default class CortxCapacityGauge extends Vue {
   public usedLegendClass = "capacity-used-green";
-  public chartDataVal: any;
+  public chartDataVal: number;
   public created() {
     const demoData = [["x", 0]];
     const capacityRes = this.$store
@@ -68,7 +68,6 @@ export default class CortxCapacityGauge extends Vue {
       .then(capacityC3Data => {
         if (capacityC3Data) {
           this.chartDataVal = capacityC3Data[0][1] ? capacityC3Data[0][1] : 0;
-          this.chartDataVal = parseFloat(this.chartDataVal).toFixed(2);
           if (this.chartDataVal < 50) {
             this.usedLegendClass = "capacity-used-green";
           }
