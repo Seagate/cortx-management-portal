@@ -33,12 +33,15 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import * as c3 from "c3";
 import { PerformanceStatsQueryParams } from "./../../../models/performance-stats";
 import CortxLineChart from "./../../widgets/line-chart.vue";
-import i18n from "../../../i18n";
+import i18n from "../dashboard.json";
 
 @Component({
   name: "cortx-stats-medium",
   components: {
     cortxLineChart: CortxLineChart
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxStatsMedium extends Vue {}
