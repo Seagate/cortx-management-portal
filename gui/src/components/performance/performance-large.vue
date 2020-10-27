@@ -17,7 +17,7 @@
  <template>
   <div class="pa-5">
     <div class="cortx-text-lg cortx-text-bold" id="performance-text">
-      {{ $t("dashboard.performance") }}
+      {{ $t("performance.performance") }}
     </div>
     <button
       id="peformance-addgraphbtn"
@@ -26,7 +26,7 @@
       @click="addChart()"
       class="mt-3 mb-2 cortx-btn-primary"
     >
-      {{ $t("dashboard.addGraph") }}
+      {{ $t("performance.addGraph") }}
     </button>
 
     <div :key="chartId" v-for="chartId in chartList">
