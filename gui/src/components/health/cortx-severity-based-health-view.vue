@@ -23,7 +23,7 @@
       <img :src="require('@/assets/arrow-left.svg')" />
       <span class="mt-1">{{ $t("common.back") }}</span>
     </div>
-    <div class="cortx-text-lg cortx-text-bold">{{ $t("dashboard.healthViewSeverity") }}: {{ severity }})</div>
+    <div class="cortx-text-lg cortx-text-bold">{{ $t("health.healthViewSeverity") }}: {{ severity }})</div>
     <div class="cortx-text-md cortx-text-bold" v-if="componentLabel">{{ componentLabel }}</div>
 
     <v-data-table
@@ -51,7 +51,7 @@
           >
             <span>{{ header.text }}</span>
           </th>
-          <th class="tableheader">{{ $t("dashboard.action") }}</th>
+          <th class="tableheader">{{ $t("health.action") }}</th>
         </tr>
       </template>
       <template v-slot:item="props">
@@ -96,7 +96,7 @@
               @click="$router.push(`/alerts/${props.item.alert_uuid}`)"
             />
            </td>
-           <td v-else>{{ $t("dashboard.NA") }}</td>
+           <td v-else>{{ $t("health.NA") }}</td>
         </tr>
       </template>
     </v-data-table>

@@ -1,0 +1,20 @@
+{
+    "en": {
+        "dashboard": {
+            "capacity": "Capacity",
+            "available": "Available",
+            "used": "Used",
+            "total": "Total",
+            "performance": "Performance"
+        }
+    },
+    "ru": {
+        "dashboard": {
+            "capacity": "Capacity",
+            "available": "Available",
+            "used": "Used",
+            "total": "Total",
+            "performance": "Performance"
+        }
+    }
+}

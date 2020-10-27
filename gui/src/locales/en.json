@@ -117,6 +117,7 @@
     "accept": "Accept",
     "cancel": "Cancel",
     "login": "Login",
+    "logout": "Logout",
     "start": "Start",
     "apply": "Apply",
     "upload": "Upload",
@@ -352,7 +353,18 @@
     "local": "Local"
   },
   "health": {
-    "storage_encl": "Storage enclosure"
+    "storage_encl": "Storage enclosure",
+    "health": "Health",
+    "healthMsg": "Displays the health of the storage enclosure and the servers (nodes) connected to it.",
+    "view": "View",
+    "NA": "NA",
+    "action": "Action",
+    "healthView": "Health View",
+    "healthViewSeverity": "Health View (Severity"
+  },
+  "performance": {
+    "performance": "Performance",
+    "addGraph": "Add Graph"
   },
   "admin": {
     "headerText": "Admin user configuration",
@@ -403,22 +415,6 @@
     "addComments": "Add comments",
     "goToDetailsPage": "Go to alert details page",
     "newAlerts": "New Alerts"
-  },
-  "dashboard": {
-    "capacity": "Capacity",
-    "available": "Available",
-    "used": "Used",
-    "total": "Total",
-    "performance": "Performance",
-    "logout": "Logout",
-    "health": "Health",
-    "healthMsg": "Displays the health of the storage enclosure and the servers (nodes) connected to it.",
-    "view": "View",
-    "NA": "NA",
-    "action": "Action",
-    "healthView": "Health View",
-    "healthViewSeverity": "Health View (Severity",
-    "addGraph": "Add Graph"
   },
   "maintenance": {
     "auditLog": "Audit log",
