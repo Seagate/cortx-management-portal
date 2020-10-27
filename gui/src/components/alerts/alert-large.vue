@@ -243,12 +243,15 @@ import AlertsMixin from "./../../mixins/alerts";
 import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
 import CortxAlertComments from "./alert-comments.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
-import i18n from "../../i18n";
+import i18n from "./alert.json";
 
 @Component({
   name: "cortx-alert-large",
   components: { CortxTabs, CortxAlertComments },
-  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
+  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAlertLarge extends Mixins(AlertsMixin) {
   public isShowCommentsDialog: boolean = false;

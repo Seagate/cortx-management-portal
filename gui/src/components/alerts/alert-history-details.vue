@@ -162,7 +162,7 @@ import CortxAlertComments from "./alert-comments.vue";
 import CortxAlertOccurrences from "./alert-occurrences.vue";
 import CortxAlertRelated from "./alert-related.vue";
 import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
-import i18n from "../../i18n";
+import i18n from "./alert.json";
 
 @Component({
   name: "alert-history",
@@ -172,6 +172,9 @@ import i18n from "../../i18n";
     CortxAlertOccurrences,
     CortxAlertRelated,
     CortxTabs
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxAlertHistory extends Vue {
