@@ -58,6 +58,14 @@
             <label>{{ versionDetails.RELEASE }}</label>
           </td>
         </tr>
+        <tr>
+          <td>
+            <label class="cortx-text-bold">{{$t("aboutUs.SerialNumber")}}</label>
+          </td>
+          <td style="padding-top: 2px;">
+            <label>- {{ serialNumber }}</label>
+          </td>
+        </tr>
       </table>
     </div>
     <v-expansion-panels v-if="versionDetails.COMPONENTS.length" class="mt-2">
@@ -94,17 +102,29 @@ export default class Cortxaboutpage extends Vue {
         BUILD: "-" as string,
         RELEASE: null,
         COMPONENTS: []
-      }
+      },
+      serialNumber: "-" as string
     };
   }
 
   public async mounted() {
+    await this.getApplianceDetails();
     await this.getVersion();
+    
   }
 
   public async getVersion() {
+     this.$store.dispatch(
+        "systemConfig/showLoader",
+        "fetching details..."
+      );
     const res = await Api.getAll(apiRegister.version);
     this.$data.versionDetails = res.data;
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
+   public async getApplianceDetails() {
+    const res = await Api.getAll(apiRegister.appliance_info);
+    this.$data.serialNumber = res.data[0].serial_number;
   }
 }
 </script>

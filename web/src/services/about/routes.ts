@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 import { Request, Response, request, response } from "express";
-import { getVersion } from "./about-controller";
+import { getVersion, getApplianceInfo } from "./about-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 
 
@@ -32,6 +32,25 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getVersion(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  
+/**
+ * It has all the REST APIs to get about appliance  details. 
+ */
+  {
+    path: "/api/v1/appliance_info",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getApplianceInfo(req, res);
           res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
