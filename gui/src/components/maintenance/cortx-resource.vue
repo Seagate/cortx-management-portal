@@ -148,10 +148,14 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import CortxDropdown from "../widgets/dropdown/cortx-dropdown-view.vue";
 import { CortxDropdownOption } from "../widgets/dropdown/cortx-dropdown-model";
-import i18n from "./../../i18n";
+import i18n from "./maintenance.json";
+
 @Component({
   name: "cortx-resource",
-  components: { CortxDropdown }
+  components: { CortxDropdown },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxMaintenance extends Vue {
   private data() {
@@ -176,7 +180,7 @@ export default class CortxMaintenance extends Vue {
       actionMessage: "",
       showInfoDialog: false,
       stopService: false,
-      infoDialogMessage: i18n.t("systemMaintenance.system-info-dialog-message")
+      infoDialogMessage: this.$t("systemMaintenance.system-info-dialog-message")
     };
   }
   private async mounted() {
@@ -185,7 +189,7 @@ export default class CortxMaintenance extends Vue {
   private async getNodeStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("systemMaintenance.fetching-system-message")
+      this.$t("systemMaintenance.fetching-system-message")
     );
     this.$data.resourceState = {
       online: [],
@@ -264,7 +268,7 @@ export default class CortxMaintenance extends Vue {
     if (error && error.status === 499) {
       this.$data.showInfoDialog = true;
     } else {
-      let errorMessage = i18n.t("systemMaintenance.error-message-onclose");
+      let errorMessage = this.$t("systemMaintenance.error-message-onclose");
       if (error && error.error && error.data.message) {
         errorMessage = error.data.message;
       }
@@ -276,38 +280,38 @@ export default class CortxMaintenance extends Vue {
     }
   }
   private stopSelectedResource(action: boolean) {
-    this.$data.confirmationDialogMessage = i18n.t(
+    this.$data.confirmationDialogMessage = this.$t(
       "systemMaintenance.confirm-message-node-stop"
     );
 
-    this.$data.actionMethod = i18n.t("systemMaintenance.stop-action-method");
-    this.$data.confirmationDialogSeverity = i18n.t(
+    this.$data.actionMethod = this.$t("systemMaintenance.stop-action-method");
+    this.$data.confirmationDialogSeverity = this.$t(
       "systemMaintenance.danger-severity"
     );
     this.$data.showConfirmationDialog = true;
   }
   private startSelectedResource(action: boolean) {
-    this.$data.actionMethod = i18n.t("systemMaintenance.start-action-method");
-    this.$data.confirmationDialogMessage = i18n.t(
+    this.$data.actionMethod = this.$t("systemMaintenance.start-action-method");
+    this.$data.confirmationDialogMessage = this.$t(
       "systemMaintenance.confirm-message-node-start"
     );
-    this.$data.confirmationDialogSeverity = i18n.t(
+    this.$data.confirmationDialogSeverity = this.$t(
       "systemMaintenance.info-severity"
     );
     this.$data.showConfirmationDialog = true;
   }
   private shutdownSelectedResource(action: boolean) {
-    this.$data.confirmationDialogMessage = i18n.t(
+    this.$data.confirmationDialogMessage = this.$t(
       "systemMaintenance.confirm-message-node-shutdown"
     );
-    this.$data.confirmationDialogSubMessage = i18n.t(
+    this.$data.confirmationDialogSubMessage = this.$t(
       "systemMaintenance.confirm-message-shutdown-sub"
     );
 
-    this.$data.actionMethod = i18n.t(
+    this.$data.actionMethod = this.$t(
       "systemMaintenance.shutdown-action-method"
     );
-    this.$data.confirmationDialogSeverity = i18n.t(
+    this.$data.confirmationDialogSeverity = this.$t(
       "systemMaintenance.danger-severity"
     );
     this.$data.showConfirmationDialog = true;
