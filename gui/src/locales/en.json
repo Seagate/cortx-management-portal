@@ -342,10 +342,6 @@
     "healthView": "Health View",
     "healthViewSeverity": "Health View (Severity"
   },
-  "performance": {
-    "performance": "Performance",
-    "addGraph": "Add Graph"
-  },
   "admin": {
     "headerText": "Admin user configuration",
     "adminUsernameReq": "Username is required.",

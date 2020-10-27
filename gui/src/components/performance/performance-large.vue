@@ -51,7 +51,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxLineChart from "../widgets/line-chart.vue";
-import i18n from "../maintenance/maintenance.json";
+import i18n from "./performance.json";
 
 @Component({
   name: "cortx-performance-large",
