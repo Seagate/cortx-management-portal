@@ -491,37 +491,6 @@ export default class CortxUDXRegistration extends Vue {
   public passwordTooltipMessage: string = passwordTooltipMessage;
   public accountNameTooltipMessage: string = accountNameTooltipMessage;
   public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
-  private showAccessKeyDetailsDialog: boolean;
-  private accessKeyDetails: any = {};
-  private accessKeyTableHeaderList: any[];
-  constructor() {
-    super();
-    this.showAccessKeyDetailsDialog = false;
-    this.accessKeyDetails = {};
-    this.accessKeyTableHeaderList = [
-      {
-        text: i18n.t("s3.access-key.table-headers.access_key"),
-        value: "access_key",
-        sortable: false
-      },
-      {
-        text: i18n.t("s3.access-key.table-headers.secret_key"),
-        value: "secret_key",
-        sortable: false
-      },
-      {
-        text: i18n.t("s3.access-key.table-headers.iam_access_key"),
-        value: "IAM access_key",
-        sortable: false
-      },
-      {
-        text: i18n.t("s3.access-key.table-headers.iam_secret_key"),
-        value: "IAM secret_key",
-        sortable: false
-      },
-      { text: "", value: "data-table-expand" }
-    ];
-  }
   public registrationForm = {
     url: "",
     accountName: "",
@@ -554,6 +523,38 @@ export default class CortxUDXRegistration extends Vue {
       bucketName: { required, udxBucketNameRegex }
     }
   };
+  private showAccessKeyDetailsDialog: boolean;
+  private accessKeyDetails: any = {};
+  private accessKeyTableHeaderList: any[];
+
+  constructor() {
+    super();
+    this.showAccessKeyDetailsDialog = false;
+    this.accessKeyDetails = {};
+    this.accessKeyTableHeaderList = [
+      {
+        text: i18n.t("s3.access-key.table-headers.access_key"),
+        value: "access_key",
+        sortable: false
+      },
+      {
+        text: i18n.t("s3.access-key.table-headers.secret_key"),
+        value: "secret_key",
+        sortable: false
+      },
+      {
+        text: i18n.t("s3.access-key.table-headers.iam_access_key"),
+        value: "IAM access_key",
+        sortable: false
+      },
+      {
+        text: i18n.t("s3.access-key.table-headers.iam_secret_key"),
+        value: "IAM secret_key",
+        sortable: false
+      },
+      { text: "", value: "data-table-expand" }
+    ];
+  }
 
   public async mounted() {
     await this.getRegistrationToken();

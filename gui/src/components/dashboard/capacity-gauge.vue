@@ -52,14 +52,16 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
-import i18n from "../../i18n";
+import i18n from "./dashboard.json";
 import * as c3 from "c3";
 
 @Component({
-  name: "cortx-capacity-gauge"
+  name: "cortx-capacity-gauge",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxCapacityGauge extends Vue {
-
   public usedLegendClass = "capacity-used-green";
   public chartDataVal: number;
   public created() {
@@ -67,15 +69,17 @@ export default class CortxCapacityGauge extends Vue {
     const capacityRes = this.$store
       .dispatch("performanceStats/getCapacityStats")
       .then(capacityC3Data => {
-        this.chartDataVal = capacityC3Data[0][1] ? capacityC3Data[0][1] : 0.00;
-        if (this.chartDataVal <= 50.00) {
-          this.usedLegendClass = "capacity-used-green";
-        }
-        if (this.chartDataVal > 50.00) {
-          this.usedLegendClass = "capacity-used-orange";
-        }
-        if (this.chartDataVal >= 90.00) {
-          this.usedLegendClass = "capacity-used-red";
+        if (capacityC3Data) {
+          this.chartDataVal = capacityC3Data[0][1] ? capacityC3Data[0][1] : 0;
+          if (this.chartDataVal < 50) {
+            this.usedLegendClass = "capacity-used-green";
+          }
+          if (this.chartDataVal >= 50) {
+            this.usedLegendClass = "capacity-used-orange";
+          }
+          if (this.chartDataVal >= 90) {
+            this.usedLegendClass = "capacity-used-red";
+          }
         }
         const chart = c3.generate({
           bindto: "#gauge_capacity",
@@ -108,17 +112,17 @@ export default class CortxCapacityGauge extends Vue {
     return this.$store.getters["performanceStats/getCapacity"];
   }
 
-  public capacityChartVal(chartVal: number ) {
-     let chartValWithUnit = "";
-     const unitList  = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-     for (const unit of unitList) {
-       chartVal = chartVal / 1024;
-       if (chartVal / 100 < 10) {
-         chartValWithUnit = `${chartVal.toFixed(2)} ${unit}`;
-         break;
-       }
-     }
-     return chartValWithUnit;
+  public capacityChartVal(chartVal: number) {
+    let chartValWithUnit = "";
+    const unitList = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    for (const unit of unitList) {
+      chartVal = chartVal / 1024;
+      if (chartVal / 100 < 10) {
+        chartValWithUnit = `${chartVal.toFixed(2)} ${unit}`;
+        break;
+      }
+    }
+    return chartValWithUnit;
   }
 }
 </script>
@@ -133,12 +137,12 @@ export default class CortxCapacityGauge extends Vue {
 .capacity-used-orange {
   height: 13px;
   width: 13px;
-  background-color:#F7A528 ;
+  background-color: #f7a528;
 }
 .capacity-used-red {
   height: 13px;
   width: 13px;
-  background-color: #DC1F2E;
+  background-color: #dc1f2e;
 }
 .capacity-available-badge {
   height: 13px;
