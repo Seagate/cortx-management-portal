@@ -736,7 +736,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { UserDetails } from "./../../../../models/user-Details";
 import { Validations } from "vuelidate-property-decorators";
-import i18n from "../../../../i18n";
+import i18n from "../../onboarding.json";
 import {
   required,
   helpers,
@@ -753,7 +753,10 @@ import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
 
 @Component({
-  name: "cortx-user-setting-local"
+  name: "cortx-user-setting-local",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxUserSettingLocal extends Vue {
   @Validations()
@@ -810,9 +813,9 @@ export default class CortxUserSettingLocal extends Vue {
       timeout: "",
       checkedRoles: "manage",
       checkedInterfaces: [],
-      usernameTooltipMessage: i18n.t("csmuser.usernameTooltipMessage"),
-      passwordTooltipMessage: i18n.t("csmuser.passwordTooltipMessage"),
-      currentPasswordTooltip: i18n.t("csmuser.currentPasswordTooltipMsg"),
+      usernameTooltipMessage: this.$t("csmuser.usernameTooltipMessage"),
+      passwordTooltipMessage: this.$t("csmuser.passwordTooltipMessage"),
+      currentPasswordTooltip: this.$t("csmuser.currentPasswordTooltipMsg"),
       selectedRows: [],
       userHeader: [
         {
@@ -834,7 +837,7 @@ export default class CortxUserSettingLocal extends Vue {
       userData: [],
       selectedItemToDelete: "",
       showConfirmationDialog: false,
-      confirmationDialogMessage: i18n.t("csmuser.user-delete-confirm-msg"),
+      confirmationDialogMessage: this.$t("csmuser.user-delete-confirm-msg"),
       loggedInUserName: localStorage.getItem("username"),
       selectedItem: {
         password: "",
@@ -891,7 +894,7 @@ export default class CortxUserSettingLocal extends Vue {
     this.clearCreateAccountForm();
     this.$data.showUserSuccessDialog = true;
     this.$data.successDialogText = `${queryParams.username}
-    ${i18n.t("csmuser.user-success-message")}`;
+    ${this.$t("csmuser.user-success-message")}`;
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getUserData();
   }
@@ -932,7 +935,7 @@ export default class CortxUserSettingLocal extends Vue {
     );
     this.closeEditUserForm();
     this.$data.showUserSuccessDialog = true;
-    this.$data.successDialogText = `${selectedItem.id}${i18n.t(
+    this.$data.successDialogText = `${selectedItem.id}${this.$t(
       "csmuser.user-update-success-message"
     )}`;
     this.$store.dispatch("systemConfig/hideLoader");
@@ -970,7 +973,7 @@ export default class CortxUserSettingLocal extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Deleting user...");
     await Api.delete(apiRegister.csm_user, id);
     this.$data.showUserSuccessDialog = true;
-    this.$data.successDialogText = `${id}${i18n.t(
+    this.$data.successDialogText = `${id}${this.$t(
       "csmuser.user-delete-success-message"
     )}`;
     this.$data.isUserEdit = false;

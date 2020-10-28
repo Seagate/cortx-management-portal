@@ -154,10 +154,13 @@ import {
   SystemConfigObject,
   DataNetworkIpv6
 } from "./../../../../models/system-configuration";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-data-network-ipv6"
+  name: "cortx-data-network-ipv6",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxDataNetworkIpv6 extends Vue {
   private data() {

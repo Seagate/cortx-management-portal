@@ -99,9 +99,13 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-interface-select"
+  name: "cortx-interface-select",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxInterfaceSelect extends Vue {
   private data() {
