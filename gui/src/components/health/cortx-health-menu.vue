@@ -18,10 +18,10 @@
   <div class="cortx-p-1">
     <div>
       <div class="title mt-0 font-weight-bold" id="lblDns">
-        {{ $t("dashboard.health") }}:
+        {{ $t("health.health") }}:
       </div>
       <div class="mt-3" id="lblMandatoryMsg">
-        {{ $t("dashboard.healthMsg") }}
+        {{ $t("health.healthMsg") }}
       </div>
     </div>
 
@@ -73,7 +73,7 @@
           type="button"
           class="cortx-btn-tertiary cortx-float-r"
           @click="$router.push({ name: 'healthview', query: { name: menuItem.value }})"
-        >{{ $t("dashboard.view") }}</button>
+        >{{ $t("health.view") }}</button>
       </div>
     </div>
   </div>
