@@ -105,11 +105,14 @@ import { AccessKey } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import CortxDownloadCsvDialog from "./download-csv-dialog.vue";
-import i18n from "./../../i18n";
+import i18n from "./s3.json";
 
 @Component({
   name: "cortx-access-key-management",
-  components: { CortxDownloadCsvDialog }
+  components: { CortxDownloadCsvDialog },
+  i18n: {
+    messages: i18n
+  },
 })
 export default class CortxAccessKeyManagement extends Vue {
   @Prop({ required: true, default: "" })

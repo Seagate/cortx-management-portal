@@ -386,11 +386,14 @@ import {
   passwordTooltipMessage,
   usernameTooltipMessage
 } from "./../../common/regex-helpers";
-import i18n from "../../i18n";
+import i18n from "./s3.json";
 
 @Component({
   name: "cortx-iam-user-management",
-  components: { CortxAccessKeyManagement }
+  components: { CortxAccessKeyManagement },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxIAMUserManagement extends Vue {
   public createUserForm = {
@@ -543,7 +546,7 @@ export default class CortxIAMUserManagement extends Vue {
   }
 
   public openConfirmDeleteDialog(username: string) {
-    this.iamConfirmMsg = `${i18n.t("s3.iam.confirm-msg")} ${username}?`;
+    this.iamConfirmMsg = `${this.$t("s3.iam.confirm-msg")} ${username}?`;
     this.userToDelete = username;
     this.showConfirmDeleteDialog = true;
   }
