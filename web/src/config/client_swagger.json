@@ -10,40 +10,28 @@
 		"/product_version": {
 			"get": {
 				"tags": ["About"],
-				"summary": "Gets version",
+				"summary": "Gets product version and its components",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Product version and components fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
+						"description": "Bad Request: Invalid request message received."
+					},	
 					"404": {
-						"description": "No Data Found"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"409": {
-						"description": "Conflict"
+						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				}, 
 				"content": {
@@ -54,34 +42,22 @@
 		"/login": {
 			"post": {
 				"tags": ["User"],
-				"summary": "Admin User, CSM user and S3 User login",
+				"summary":"This API allow login to Admin user, CSM user and S3 User",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: User logged in successfully."
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Bad Request: Request body is missing or Username or password is missing"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -111,40 +87,25 @@
 		"/logout": {
 			"post": {
 				"tags": ["User"],
-				"summary": "User Logout",
+				"summary": "This API is allow to logout the user",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: User logout successfully."
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
+						"description": "Bad Request: This error is raised for all cases when an entity was not found"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."	
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -161,40 +122,25 @@
 		"/csm/users": {
 			"get": {
 				"tags": ["CSM User"],
-				"summary": "Get CSM user list: CSM user having permission manage and monitor can get CSM users list",
+				"summary": "Fetch CSM user list: CSM user having permission manage and monitor can fetch CSM users list",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: List of CSM users"
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
+						"description": "Bad Request : Request body missing or S3 account with same name as passed CSM username already exists"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."	
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -214,11 +160,20 @@
 					"201": {
 						"description": "User has been created"
 					},
-					"404": {
-						"description": "No Data Found"
-					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Request body is missing or Invalid arguments"
+					},
+					"409": {
+						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
+					},
+					"422": {
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+					},
+					"499": {
+						"description": "Call Cancelled: Call cancelled by client."
+					},
+					"500": {
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -261,40 +216,25 @@
 		"/csm/users/{user_id}": {
 			"get": {
 				"tags": ["CSM User"],
-				"summary": "Get CSM user: CSM user having permission manage and monitor can get CSM user",
+				"summary": "CSM user having permission manage and monitor can fetch csm user info by ID",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: List of CSM users"
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
+						"description": "Bad Request : Request body missing or S3 account with same name as passed CSM username already exists"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."	
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -320,10 +260,16 @@
 				"summary": "Update CSM user credentials: CSM user having permission manage can update CSM user",
 				"responses": {
 					"200": {
-						"description": "OK"
+						"description": "OK: User updated successfully"
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Request body missing or Invalid request body"
+					},
+					"403": {
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+					},
+					"404": {
+						"description": "No Data Found: A specified resource could not be found."
 					}
 				},
 				"content": {
@@ -382,7 +328,7 @@
 						"description": "Ok"
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Request body missing or Invalid request body"
 					},
 					"404": {
 						"description": "Users Not Found"
@@ -420,35 +366,20 @@
 					"200": {
 						"description": "OK"
 					},
-					"201": {
-						"description": "No Content"
-					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
+						"description": "Could not get permissions from server,check session"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"parameters": [
@@ -464,40 +395,25 @@
 		"/s3_accounts": {
 			"get": {
 				"tags": ["S3"],
-				"summary": "Get S3 Accounts: Accessible to CSM users with manage and monitor permissions and S3 account",
+				"summary": "Get list of S3 Accounts: Accessible to CSM users with manage and monitor permissions and S3 account",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: List of s3 accounts."
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
+						"description": "Bad Request: An argument is missing or not valid"
+					},	
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -517,11 +433,23 @@
 					"200": {
 						"description": "S3 Account has been created"
 					},
-					"404": {
-						"description": "No Data Found"
+					"403": {
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
-					"400": {
-						"description": "Bad Request"
+					"404": {
+						"description": "No Data Found: A specified resource could not be found."
+					},
+					"409": {
+						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
+					},
+					"422": {
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+					},
+					"499": {
+						"description": "Call Cancelled: Call cancelled by client."
+					},
+					"500": {
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -563,37 +491,31 @@
 				"summary": "Update S3 account password: Accessible to S3 account only",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: S3 Account updated successfully"
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Request body is missing"
 					},
 					"401": {
 						"description": "Unauthorized"
 					},
 					"403": {
-						"description": "Forbidden"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"404": {
-						"description": "No Data Found"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"409": {
-						"description": "Conflict"
+						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -670,40 +592,28 @@
 		"/s3/access_keys": {
 			"get": {
 				"tags": ["S3 Access Key"],
-				"summary": "Get S3 account access keys:  Accessible to S3 account only",
+				"summary": "Get S3 account access keys: Accessible to S3 account only",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: S3 Account keys fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
+						"description": "Bad Request: Invalid request URL"
 					},
 					"403": {
-						"description": "Forbidden"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -718,16 +628,16 @@
 			},
 			"post": {
 				"tags": ["S3 Access Key"],
-				"summary": "Create new S3 account access key:  Accessible to S3 account only",
+				"summary": "Create new S3 account access key: Accessible to S3 account only",
 				"responses": {
 					"200": {
 						"description": "Access key has been created"
 					},
-					"404": {
-						"description": "No Data Found"
-					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid request URL"
+					},
+					"404": {
+						"description": "No Data Found: A specified resource could not be found."
 					}
 				},
 				"content": {
@@ -751,10 +661,10 @@
 						"description": "Ok"
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid request URL"
 					},
 					"404": {
-						"description": "Users Not Found"
+						"description": "No Data Found: Users Not Found"
 					}
 				},
 				"content": {
@@ -784,37 +694,25 @@
 			  "summary": "Get the bucket list: Accessible to S3 account only",
 			  "responses": {
 				"200": {
-					"description": "OK"
-				},
-				"201": {
-					"description": "No Content"
+					"description": "OK: Bucket list has been fetched successfully."
 				},
 				"400": {
-					"description": "Bad Request"
-				},
-				"401": {
-					"description": "Unauthorized"
-				},
+					"description": "Bad Request: An argument is missing or not valid"
+				},	
 				"403": {
-					"description": "Forbidden"
+					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 				},
 				"404": {
-					"description": "No Data Found"
-				},
-				"409": {
-					"description": "Conflict"
+					"description": "No Data Found: A specified resource could not be found."
 				},
 				"422": {
-					"description": "Unprocessable Entity"
+					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 				},
 				"499": {
-					"description": "Call Cancelled"
+					"description": "Call Cancelled: Call cancelled by client."
 				},
 				"500": {
-					"description": "Internal Server Error"
-				},
-				"501": {
-					"description": "Not Implemented"
+					"description": "Internal Server Error: When requested resource is not available."
 				}
 			},
 			  "content": {
@@ -834,10 +732,25 @@
 			  "summary": "Add bucket: Accessible to S3 account only",
 			  "responses": {
 				"200": {
-				  "description": "OK"
+				  "description": "OK: Bucket created successfully."
 				},
 				"400": {
-				  "description": "Bad Request"
+					"description": "Bad Request: An argument is missing or not valid"
+				},
+				"403": {
+					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
+				},
+				"409": {
+					"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
+				},
+				"422": {
+					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+				},
+				"499": {
+					"description": "Call Cancelled: Call cancelled by client."
+				},
+				"500": {
+					"description": "Internal Server Error: When requested resource is not available."
 				}
 			  },
 			  "content": {
