@@ -56,8 +56,8 @@
               <span :id="'copy-tooltip-'+i">{{ $t("s3.account.copy-tooltip") }}</span>
             </v-tooltip>
           </span>
-        </span>  
-      </div>    
+        </span> 
+      </div>
     </cortx-has-access>
     <v-row>
       <v-col class="py-0 col-7">
@@ -138,7 +138,7 @@
         <cortx-has-access
           :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
         >
-          <cortx-access-key-management :s3Url="s3Url.toString()" :s3UrlNone= "s3UrlNone"></cortx-access-key-management>
+          <cortx-access-key-management :s3Url="s3Url.toString()" :s3UrlNone= "s3UrlNone" ></cortx-access-key-management>
         </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-5">
@@ -500,7 +500,7 @@
             <td class="py-2 cortx-text-bold credentials-item-label" id="s3-access-key-popup-label">
               {{ $t("s3.account.url-label") }}
             </td>
-            <td class="py-2">{{ s3Url[0] }}, {{s3Url[1]}}</td>
+            <td class="py-2">{{ s3Url.toString() }}</td>
           </tr>
           <tr>
             <td class="py-2 cortx-text-bold credentials-item-label">
@@ -513,6 +513,18 @@
               {{ $t("s3.account.secret-key") }}
             </td>
             <td class="py-2" id="s3-secret-key-popup-value">{{ account.secret_key }}</td>
+          </tr>
+          <tr>
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-account-id-popup-label">
+             {{ $t("s3.account.account_id") }}
+            </td>
+            <td class="py-2" id="s3-secret-key-popup-value">{{ account.account_id }}</td>
+          </tr>
+          <tr>
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-canonical-id-popup-label">
+              {{ $t("s3.account.canonial_id") }}
+            </td>
+            <td class="py-2" id="s3-secret-key-popup-value">{{ account.canonical_id }}</td>
           </tr>
         </table>
         <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note")}}</div>
@@ -653,6 +665,7 @@ export default class CortxAccountManagement extends Vue {
     if (this.s3Url[0] === "http://None") {
       this.s3UrlNone = true;
     }
+
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
@@ -685,7 +698,11 @@ export default class CortxAccountManagement extends Vue {
       "," +
       this.account.access_key +
       "," +
-      this.account.secret_key
+      this.account.secret_key +
+      "," +
+      this.account.account_id +
+      "," +
+      this.account.canonical_id
     );
   }
 
