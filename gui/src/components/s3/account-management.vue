@@ -500,7 +500,7 @@
             <td class="py-2 cortx-text-bold credentials-item-label" id="s3-access-key-popup-label">
               {{ $t("s3.account.url-label") }}
             </td>
-            <td class="py-2">{{ s3Url.toString() }}</td>
+           <td class="py-2">{{ s3Url[0] }}, {{s3Url[1]}}</td>
           </tr>
           <tr>
             <td class="py-2 cortx-text-bold credentials-item-label">
