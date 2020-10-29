@@ -142,25 +142,26 @@ export default class CortxAccessKeyManagementIAM extends Vue {
 
   constructor() {
     super();
-
     this.showConfirmDeleteDialog = false;
     this.showAccessKeyDetailsDialog = false;
     this.accessKeyDetails = {};
     this.accessKeyTableHeaderList = [
       {
-        text: this.$t("s3.access-key.table-headers.access_key"),
         value: "access_key",
         sortable: false
       },
       {
-        text: this.$t("s3.access-key.table-headers.secret_key"),
         value: "secret_key",
         sortable: false
       },
       { text: "", value: "data-table-expand" }
     ];
   }
-
+public async mounted() {
+    this.accessKeyTableHeaderList[0].text = this.$t("s3.access-key.table-headers.access_key");
+    this.accessKeyTableHeaderList[1].text = this.$t("s3.access-key.table-headers.secret_key");
+     
+  }
   public async createAccessKey() {
     if (!this.userNameIAM) {
       return;
