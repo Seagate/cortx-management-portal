@@ -522,7 +522,7 @@
           </tr>
           <tr>
             <td class="py-2 cortx-text-bold credentials-item-label" id="s3-canonical-id-popup-label">
-              {{ $t("s3.account.canonial_id") }}
+              {{ $t("s3.account.canonical_id") }}
             </td>
             <td class="py-2" id="s3-secret-key-popup-value">{{ account.canonical_id }}</td>
           </tr>
