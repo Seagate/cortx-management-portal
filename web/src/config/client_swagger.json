@@ -18,9 +18,6 @@
 					"400": {
 						"description": "Bad Request: Invalid request message received."
 					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
 					},
@@ -45,7 +42,7 @@
 						"description": "Bad Request: Request body is missing or Username or password is missing"
 					},
 					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
+						"description": "Unauthorized: Username and password combination is incorrect"
 					},
 					"422": {
 						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
@@ -135,9 +132,6 @@
 					},
 					"403": {
 					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."	
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
@@ -235,9 +229,6 @@
 					},
 					"404": {
 						"description": "This error is raised for all cases when we don't have permissions"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
@@ -390,9 +381,6 @@
 					"403": {
 					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
 					},
@@ -426,9 +414,6 @@
 					},
 					"403": {
 					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
@@ -633,9 +618,6 @@
 					"403": {
 					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
 					},
@@ -662,9 +644,6 @@
 					},
 					"400": {
 						"description": "Bad Request: Invalid request URL"
-					},
-					"409": {
-						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
 					},
 					"404": {
 						"description": "No Data Found: A specified resource could not be found."
@@ -748,9 +727,6 @@
 				"403": {
 					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 				},
-				"422": {
-					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-				},
 				"499": {
 					"description": "Call Cancelled: Call cancelled by client."
 				},
@@ -785,9 +761,6 @@
 				},
 				"403": {
 					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-				},
-				"409": {
-					"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
 				},
 				"422": {
 					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
@@ -882,9 +855,6 @@
 				},
 				"403": {
 					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-				},
-				"422": {
-					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 				},
 				"499": {
 					"description": "Call Cancelled: Call cancelled by client."
@@ -1019,9 +989,6 @@
 					"403": {
 						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
 					},
@@ -1152,9 +1119,6 @@
 					"404": {
 						"description": "No Data Found: A specified resource could not be found."
 					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
 					},
@@ -1194,9 +1158,6 @@
 					},
 					"404": {
 						"description": "No Data Found: A specified resource could not be found."
-					},
-					"409": {
-						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
 					},
 					"422": {
 						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
@@ -1285,9 +1246,6 @@
 					},
 					"403": {
 					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
@@ -1463,9 +1421,6 @@
 					"404": {
 						"description": "No Data Found: A specified resource could not be found."
 					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
 					},
@@ -1564,9 +1519,6 @@
 					},
 					"404": {
 						"description": "No Data Found: A specified resource could not be found."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
@@ -1672,9 +1624,6 @@
 					"404": {
 						"description": "No Data Found: A specified resource could not be found."
 					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
 					},
@@ -1721,9 +1670,6 @@
 					"422": {
 						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
 					"500": {
 						"description": "Internal Server Error: When requested resource is not available."
 					}
@@ -1761,9 +1707,6 @@
 					},
 					"404": {
 						"description": "No Data Found: A specified resource could not be found."
-					},
-					"409": {
-						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
 					},
 					"422": {
 						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
@@ -1822,9 +1765,6 @@
 					"401": {
 						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
 					},
@@ -1859,9 +1799,6 @@
 					},
 					"403": {
 						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
@@ -1903,9 +1840,6 @@
 					},
 					"403": {
 						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
@@ -1949,9 +1883,6 @@
 					},
 					"403": {
 						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
@@ -2005,9 +1936,6 @@
 					},
 					"401": {
 						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
@@ -2093,9 +2021,6 @@
 					"403": {
 						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
 					},
@@ -2133,9 +2058,6 @@
 					},
 					"404": {
 						"description": "No Data Found: A specified resource could not be found."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
 						"description": "Call Cancelled: Call cancelled by client."
