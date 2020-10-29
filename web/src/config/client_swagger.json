@@ -420,7 +420,7 @@
 					},
 					"400": {
 						"description": "Bad Request: An argument is missing or not valid"
-					},	
+					},
 					"401": {
 						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
@@ -741,7 +741,7 @@
 				},
 				"400": {
 					"description": "Bad Request: An argument is missing or not valid"
-				},	
+				},
 				"401": {
 					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 				},
@@ -838,7 +838,7 @@
 					},
 					"401": {
 						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},	
+					},
 					"403": {
 						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
