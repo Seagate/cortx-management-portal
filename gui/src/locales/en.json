@@ -410,26 +410,6 @@
     "pageNotFoundMsg": "(404) Page Not Found",
     "pageNotFound": "The page you are looking for does not exist."
   },
-  "settings": {
-    "dataNetworkIPv4": "Data network settings: IPv4",
-    "forManualOption": "For Manual option, you must configure Virtual IP address and values for Node 0 and Node 1.",
-    "mandatoryField": "Fields marked with * are mandatory.",
-    "DNSResolverSettings": "DNS resolver settings",
-    "managementSettingIPv4": "Management network settings: IPv4",
-    "managementSettingIPv4Msg": "Configure the Virtual IP address for managing this system.",
-    "notificationSettingsEmail": "Notification settings: Email",
-    "notificationSettingsEmailMsg": "Allows you to configure email servers for notifications.",
-    "NTPSettings": "Network time protocol (NTP) settings",
-    "SSLCertificateUpload": "SSL certificate upload",
-    "SSLCertificateUploadMsg": "By default, the system uses the SSL certificate provided by Seagate. To use a different SSL certificate, click Choose File to browse and select the appropriate SSL Certificate file. Click Upload certificate to upload the selected SSL certificate.",
-    "UDX": "UDX",
-    "name": "Name",
-    "product ID": "Product ID",
-    "serialNumber": "Serial number",
-    "type": "Type",
-    "UUID": "UUID",
-    "vendorID": "Vendor ID"
-  },
   "widget": {
     "1By2Hrs": "1/2 Hrs", 
     "1Hrs": "1 Hrs", 

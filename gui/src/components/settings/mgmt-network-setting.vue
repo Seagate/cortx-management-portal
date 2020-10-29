@@ -46,12 +46,15 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxNetworkSettingsIpv4Config from "../onboarding/system-config/mgmt-network/network-settings-ipv4-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import i18n from "../../i18n";
+import i18n from "./settings.json";
 
 @Component({
   name: "cortx-mgmt-settings",
   components: {
     cortxNetworkSettingsIpv4: CortxNetworkSettingsIpv4Config
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxMangementSetting extends Vue {
