@@ -1,8 +1,8 @@
 {
   "login": {
-    "welcome": "Welcome!",
+    "welcome": "Welcome!!!",
     "start": "Start",
-    "getStated": "Click Start to proceed with onboarding steps.",
+    "getStated": "Click on Start to proceed with the onboarding steps.",
     "login-label": "Login",
     "login-btn": "Login",
     "user-name-placeholder": "Username",
@@ -39,7 +39,7 @@
     },
     "download-csv-dialog": {
       "created": "Access key created",
-      "message": "Click Download and close to save this information in CSV format.",
+      "message": "Save this information, you will not see it again. Download as CSV and close.",
       "btn": "Download and close"
     },
     "account": {
@@ -99,7 +99,7 @@
     }
   },
   "common": {
-    "title": "Cortx",
+    "pageTitle": "Cortx",
     "create-btn": "Create",
     "update-btn": "Update",
     "cancel-btn": "Cancel",
@@ -116,14 +116,14 @@
     "Id": "Id",
     "name": "Name",
     "poweredBy": "Powered by",
+    "accept": "Accept",
+    "cancel": "Cancel",
+    "login": "Login",
+    "logout": "Logout",
     "start": "Start",
     "apply": "Apply",
     "upload": "Upload",
-    "cancel": "Cancel",
-    "accept": "Accept",
-    "email": "Email",
-    "login": "Login",
-    "action": "Action"
+    "email": "Email"
   },
   "csmuser": {
     "user-setting-label": "User settings: Local",
@@ -157,7 +157,7 @@
     "email-notification": "Subscribe to email notification.",
     "email-notification-tooltip": "Subscribed for email notification.",
     "usernameTooltipMessage": "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-).",
-    "passwordTooltipMessage": "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, and One number",
+    "passwordTooltipMessage": "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, One number",
     "currentPasswordTooltipMsg": "Enter the current password of user",
     "user-success-message": " user created successfully.",
     "user-delete-success-message": " user deleted successfully.",
@@ -200,16 +200,16 @@
     "password-required": "Password is required",
     "invalid-password": "Invalid password",
     "confirm-pass": "Confirm password",
-    "S3BucketDetails": "Bucket details",
+    "S3BucketDetails": "S3 Bucket details",
     "password-match": "Passwords do not match",
     "iam-details": "IAM User details",
     "username-required": "Username is required",
     "invalid-user": "Invalid username",
     "bucket-required": "Bucket name is required",
     "invalid-bucketname": "Invalid bucket name",
-    "iagreetext": "I agree to the following",
+    "iagreetext": "I agree to the following:",
     "firstcheck-text": "A dedicated Lyve Pilot Bucket will be created in my account.",
-    "secondcheck-text": "A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot Bucket, and not to other data.",
+    "secondcheck-text": "A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot bucket, and not to other data.",
     "register-btn": "Register",
     "clear": "Clear",
     "s3AccountKey": "S3 Account Access Key",
@@ -223,7 +223,8 @@
     "version": "Version:",
     "build": "Build:",
     "release": "Release:",
-    "COMPONENTS": "COMPONENTS"
+    "COMPONENTS": "COMPONENTS",
+    "SerialNumber": "Serial No:"
   },
   "onBoarding": {
     "systemName": "System name",
@@ -274,8 +275,7 @@
     "searchDomainRequired": "Search domain is required.",
     "DNSResolverSettings": "DNS resolver settings",
     "updateFirmware": "Update firmware",
-    "updateStorageEnclosure": "Update the storage enclosure firmware. Upload the firmware bundle file (.bin) received from Seagate.",
-    "updateStorageEnclosureClick": "Click Start update once the bundle file is uploaded successfully.",
+    "updateStorageEnclosure": "Update the storage enclosure firmware. Upload the firmware bundle file (.bin) received from Seagate. <br> Click Start update once the bundle file is uploaded successfully.",
     "uploadNewFirmware": "Upload new firmware file",
     "invalidFile": "Invalid file.",
     "interfaceSelection": "Interface Selection",
@@ -356,74 +356,25 @@
     "local": "Local"
   },
   "health": {
-    "storage_encl": "Storage enclosure"
-  },
-  "admin": {
-    "headerText": "Admin user configuration",
-    "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
-    "adminUsernameReq": "Username is required.",
-    "usernameInvalid": "Invalid username.",
-    "invalidRootUsername": " The username must not be 'root' or 'Root'.",
-    "applyContinue": "Apply and continue"
-  },
-  "alerts": {
-    "comments": "Comments",
-    "noComments": "No comments",
-    "commentRequired": "Comment is required.",
-    "commentCannotBeMoreThan250Char": "Comment cannot be more than 250 characters.",
-    "cluster": "Cluster",
-    "site": "Site",
-    "rack": "Rack",
-    "node": "Node",
-    "resourceType": "Resource type",
-    "resourceId": "Resource id",
-    "nodeId": "Node id",
-    "state": "State",
-    "volumeGroup": "Volume group",
-    "volumeName": "Volume name",
-    "nodeName": "Nodename",
-    "version": "Version",
-    "totalSize": "Total size",
-    "size": "Size",
-    "sensorName": "Sensor name",
-    "location": "Location",
-    "serialNumber": "Serial number",
-    "createdTime": "Created time",
-    "updatedTime": "Updated time",
-    "acknowledged": "Acknowledged",
-    "resolved": "Resolved",
-    "reason": "Reason",
-    "recommendations": "Recommendations",
-    "details": "Details",
-    "alertDetails": "Alert Details",
-    "displayAllAlerts": "Displays all the alerts which are generated.",
-    "alerts": "Alerts",
-    "alertsByDefault": "All the alerts which are generated, by default are displayed under New Alerts.",
-    "displayAcknowledgedOrResolved": "Displays alerts which are either acknowledged or resolved.",
-    "displayAcknowledgedAndResolved": "Displays alerts which are both, acknowledged and resolved.",
-    "acknowledgeAll": "Acknowledge all",
-    "action": "Action",
-    "component": "Component",
-    "module": "Module",
-    "addComments": "Add comments",
-    "goToDetailsPage": "Go to alert details page",
-    "newAlerts": "New Alerts"
-  },
-  "dashboard": {
-    "capacity": "Capacity",
-    "available": "Available",
-    "used": "Used",
-    "total": "Total",
-    "performance": "Performance",
-    "logout": "Logout",
+    "storage_encl": "Storage enclosure",
     "health": "Health",
     "healthMsg": "Displays the health of the storage enclosure and the servers (nodes) connected to it.",
     "view": "View",
     "NA": "NA",
     "action": "Action",
     "healthView": "Health View",
-    "healthViewSeverity": "Health View (Severity",
+    "healthViewSeverity": "Health View (Severity"
+  },
+  "performance": {
+    "performance": "Performance",
     "addGraph": "Add Graph"
+  },
+  "admin": {
+    "headerText": "Admin user configuration",
+    "adminUsernameReq": "Username is required.",
+    "usernameInvalid": "Invalid username.",
+    "invalidRootUsername": "The username must not be 'root' or 'Root'.",
+    "applyContinue": "Apply and continue"
   },
   "maintenance": {
     "auditLog": "Audit log",
@@ -483,16 +434,21 @@
     "vendorID": "Vendor ID"
   },
   "widget": {
-    "1By2Hrs": "1/2 Hrs",
-    "1Hrs": "1 Hrs",
-    "2Hrs": "2 Hrs",
-    "6Hrs": "6 Hrs",
-    "12Hrs": "12 Hrs",
-    "1Day": "1 Day",
-    "unableToFetch": "Unable To Fetch Performance Data"
+    "1By2Hrs": "1/2 Hrs", 
+    "1Hrs": "1 Hrs", 
+    "2Hrs": "2 Hrs", 
+    "6Hrs": "6 Hrs", 
+    "12Hrs": "12 Hrs", 
+    "1Day": "1 Day", 
+    "unableToFetch": "Unable To Fetch Performance Data",
+    "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
+    "adminUsernameReq":"Username is required.",
+    "usernameInvalid":"Invalid username.",
+    "invalidRootUsername":"The username must not be 'root' or 'Root'.",
+    "applyContinue":"Apply and continue"
   },
   "license": {
     "header": "To set up your system, you must accept the Terms and Conditions.",
-    "getStarted": "Accept Terms & Conditions"
+    "getStarted": "Get started"
   }
 }
