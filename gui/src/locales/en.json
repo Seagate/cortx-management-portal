@@ -69,7 +69,9 @@
       "loading-update": "Updating account...",
       "account-table": "Account name,Account Url,Access key,Secret key\n",
       "copy-tooltip": "Copy url to clipboard",
-      "url-note": "Note: This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface."
+      "url-note": "Note: This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface.",
+      "account_id":"Account id",
+      "canonical_id":"Canonical id"
     },
     "bucket": {
       "name-require": "Bucket name is required.",
