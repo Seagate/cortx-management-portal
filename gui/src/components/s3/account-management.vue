@@ -514,6 +514,18 @@
             </td>
             <td class="py-2" id="s3-secret-key-popup-value">{{ account.secret_key }}</td>
           </tr>
+          <tr>
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-account-id-popup-label">
+             {{ $t("s3.account.account_id") }}
+            </td>
+            <td class="py-2" id="s3-secret-key-popup-value">{{ account.account_id }}</td>
+          </tr>
+          <tr>
+            <td class="py-2 cortx-text-bold credentials-item-label" id="s3-canonical-id-popup-label">
+              {{ $t("s3.account.canonial_id") }}
+            </td>
+            <td class="py-2" id="s3-secret-key-popup-value">{{ account.canonical_id }}</td>
+          </tr>
         </table>
         <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note")}}</div>
 
@@ -686,7 +698,11 @@ export default class CortxAccountManagement extends Vue {
       "," +
       this.account.access_key +
       "," +
-      this.account.secret_key
+      this.account.secret_key +
+      "," +
+      this.account.account_id +
+      "," +
+      this.account.canonical_id
     );
   }
 
