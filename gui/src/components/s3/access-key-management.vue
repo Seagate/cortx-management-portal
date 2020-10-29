@@ -92,7 +92,7 @@
       :show="showAccessKeyDetailsDialog"
       :title="$t('s3.download-csv-dialog.created')"
       :tableContent="accessKeyDetails"
-      :s3UrlNone = "s3UrlNone"
+      :s3UrlNone="s3UrlNone"
       @closeDialog="showAccessKeyDetailsDialog = false"
     ></cortx-download-csv-dialog>
   </div>
@@ -113,13 +113,13 @@ import i18n from "./s3.json";
   components: { CortxDownloadCsvDialog },
   i18n: {
     messages: i18n
-  },
+  }
 })
 export default class CortxAccessKeyManagement extends Vue {
   @Prop({ required: true, default: "" })
   public s3Url: string;
 
-  @Prop({ required: false, default: false})
+  @Prop({ required: false, default: false })
   public s3UrlNone: boolean;
 
   private showConfirmDeleteDialog: boolean;
@@ -137,7 +137,7 @@ export default class CortxAccessKeyManagement extends Vue {
     this.showConfirmDeleteDialog = false;
     this.showAccessKeyDetailsDialog = false;
     this.accessKeyDetails = {};
-   this.accessKeyTableHeaderList = [
+    this.accessKeyTableHeaderList = [
       {
         value: "access_key",
         sortable: false
@@ -147,14 +147,17 @@ export default class CortxAccessKeyManagement extends Vue {
         sortable: false
       },
       { text: "", value: "data-table-expand" }
-    ];    
+    ];
   }
 
   public async mounted() {
-    this.accessKeyTableHeaderList[0].text = this.$t("s3.access-key.table-headers.access_key");
-    this.accessKeyTableHeaderList[1].text = this.$t("s3.access-key.table-headers.secret_key");
-     await this.getAllAccessKeys();
-     
+    this.accessKeyTableHeaderList[0].text = this.$t(
+      "s3.access-key.table-headers.access_key"
+    );
+    this.accessKeyTableHeaderList[1].text = this.$t(
+      "s3.access-key.table-headers.secret_key"
+    );
+    await this.getAllAccessKeys();
   }
   public async createAccessKey() {
     this.$store.dispatch(
@@ -168,9 +171,7 @@ export default class CortxAccessKeyManagement extends Vue {
       [`${this.$t(
         "s3.access-key.table-headers.access_key"
       )}`]: createAccessKeyDetails.access_key_id,
-      [`${this.$t(
-        "s3.account.url-label-no-colon"
-      )}`]: this.s3Url,
+      [`${this.$t("s3.account.url-label-no-colon")}`]: this.s3Url,
       [`${this.$t(
         "s3.access-key.table-headers.secret_key"
       )}`]: createAccessKeyDetails.secret_key

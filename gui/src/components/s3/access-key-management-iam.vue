@@ -157,10 +157,13 @@ export default class CortxAccessKeyManagementIAM extends Vue {
       { text: "", value: "data-table-expand" }
     ];
   }
-public async mounted() {
-    this.accessKeyTableHeaderList[0].text = this.$t("s3.access-key.table-headers.access_key");
-    this.accessKeyTableHeaderList[1].text = this.$t("s3.access-key.table-headers.secret_key");
-     
+  public async mounted() {
+    this.accessKeyTableHeaderList[0].text = this.$t(
+      "s3.access-key.table-headers.access_key"
+    );
+    this.accessKeyTableHeaderList[1].text = this.$t(
+      "s3.access-key.table-headers.secret_key"
+    );
   }
   public async createAccessKey() {
     if (!this.userNameIAM) {
@@ -182,9 +185,7 @@ public async mounted() {
       [`${this.$t(
         "s3.access-key.table-headers.user_name"
       )}`]: createAccessKeyDetails.user_name,
-      [`${this.$t(
-        "s3.account.url-label-no-colon"
-      )}`]: this.s3Url,
+      [`${this.$t("s3.account.url-label-no-colon")}`]: this.s3Url,
       [`${this.$t(
         "s3.access-key.table-headers.access_key"
       )}`]: createAccessKeyDetails.access_key_id,
