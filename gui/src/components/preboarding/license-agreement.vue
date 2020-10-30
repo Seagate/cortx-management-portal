@@ -81,7 +81,7 @@
                 class="cortx-btn-tertiary"
                 @click="cancelAgreement"
               >
-                {{ $t("admin.cancel") }}
+                {{ $t("common.cancel") }}
               </button>
             </div>
           </div>
