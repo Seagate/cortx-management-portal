@@ -125,7 +125,7 @@
 						"description": "OK: List of CSM users"
 					},
 					"400": {
-						"description": "Bad Request : Request body missing or S3 account with same name as passed CSM username already exists"
+						"description": "Bad Request: Invalid request URL."
 					},
 					"401": {
 						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
@@ -946,7 +946,7 @@
 					"description": "OK: Bucket name deleted successfully"
 				},
 				"400": {
-					"description": "Bad Request: Request body is missing or Username or password is missing"
+					"description": "Bad Request: Invalid request URL."
 				},
 				"401": {
 					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
