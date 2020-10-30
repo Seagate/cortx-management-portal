@@ -16,6 +16,24 @@
             "confirm-password-invalid": "Passwords do not match.",
             "accept": "Accept",
             "cancel": "Cancel"
+          },
+          "license": {
+            "header": "To set up your system, you must accept the Terms and Conditions.",
+            "getStarted": "Get started"
+          },
+          "login": {
+            "welcome": "Welcome!!!",
+            "start": "Start",
+            "getStated": "Click on Start to proceed with the onboarding steps.",
+            "login-label": "Login",
+            "login-btn": "Login",
+            "user-name-placeholder": "Username",
+            "password-placeholder": "Password",
+            "user-name-required": "Username is required.",
+            "password-required": "Password is required.",
+            "login-failed": "Login failed !",
+            "login": "Login"
+
           }
     },
     "ru": {
@@ -35,6 +53,23 @@
             "confirm-password-invalid": "Passwords do not match.",
             "accept": "Accept",
             "cancel": "Cancel"
+          },
+          "license": {
+            "header": "To set up your system, you must accept the Terms and Conditions.",
+            "getStarted": "Get started"
+          },
+          "login": {
+            "welcome": "Welcome!!!",
+            "start": "Start",
+            "getStated": "Click on Start to proceed with the onboarding steps.",
+            "login-label": "Login",
+            "login-btn": "Login",
+            "user-name-placeholder": "Username",
+            "password-placeholder": "Password",
+            "user-name-required": "Username is required.",
+            "password-required": "Password is required.",
+            "login-failed": "Login failed !",
+            "login": "Login"
           }
     }
 }
