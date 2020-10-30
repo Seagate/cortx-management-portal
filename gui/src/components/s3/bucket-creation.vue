@@ -41,7 +41,6 @@
                 >
                   <span>{{ header.text }}</span>
                 </th>
-                <th class="tableheader" />
               </tr>
             </template>
 
@@ -381,9 +380,13 @@ export default class CortxBucketCreation extends Vue {
     this.showBucketPolicyDialog = false;
     this.bucketsTableHeaderList = [
       {
-        text: "Name",
+        text: i18n.t("common.name"),
         value: "name",
         sortable: false
+      },
+      { 
+        text: i18n.t("common.action"), 
+        value: "data-table-expand" 
       }
     ];
   }
