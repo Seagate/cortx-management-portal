@@ -404,12 +404,6 @@
     "upload": "Upload",
     "cancel": "Cancel"
   },
-  "security": {
-    "accessDenied": "Access Denied",
-    "accessDeniedMsg": "This is a secure area. You are not authorized to see this page.",
-    "pageNotFoundMsg": "(404) Page Not Found",
-    "pageNotFound": "The page you are looking for does not exist."
-  },
   "settings": {
     "dataNetworkIPv4": "Data network settings: IPv4",
     "forManualOption": "For Manual option, you must configure Virtual IP address and values for Node 0 and Node 1.",
