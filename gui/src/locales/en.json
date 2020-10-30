@@ -1,8 +1,8 @@
 {
   "login": {
-    "welcome": "Welcome!",
+    "welcome": "Welcome!!!",
     "start": "Start",
-    "getStated": "Click Start to proceed with onboarding steps.",
+    "getStated": "Click on Start to proceed with on onboarding steps.",
     "login-label": "Login",
     "login-btn": "Login",
     "user-name-placeholder": "Username",
@@ -39,7 +39,7 @@
     },
     "download-csv-dialog": {
       "created": "Access key created",
-      "message": "Click Download and close to save this information in CSV format.",
+      "message": "Save this information, you will not see it again. Download as CSV and close.",
       "btn": "Download and close"
     },
     "account": {
@@ -69,7 +69,9 @@
       "loading-update": "Updating account...",
       "account-table": "Account name,Account Url,Access key,Secret key\n",
       "copy-tooltip": "Copy url to clipboard",
-      "url-note": "Note: This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface."
+      "url-note": "Note: This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface.",
+      "account_id":"Account id",
+      "canonical_id":"Canonical id"
     },
     "bucket": {
       "name-require": "Bucket name is required.",
@@ -97,7 +99,7 @@
     }
   },
   "common": {
-    "pageTitle": "CORTX",
+    "pageTitle": "Cortx",
     "create-btn": "Create",
     "update-btn": "Update",
     "cancel-btn": "Cancel",
@@ -121,7 +123,7 @@
     "accept": "Accept",
     "email": "Email",
     "login": "Login",
-    "action": "Action"
+    "logout": "Logout"
   },
   "csmuser": {
     "user-setting-label": "User settings: Local",
@@ -155,7 +157,7 @@
     "email-notification": "Subscribe to email notification.",
     "email-notification-tooltip": "Subscribed for email notification.",
     "usernameTooltipMessage": "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-).",
-    "passwordTooltipMessage": "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, and One number",
+    "passwordTooltipMessage": "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, One number",
     "currentPasswordTooltipMsg": "Enter the current password of user",
     "user-success-message": " user created successfully.",
     "user-delete-success-message": " user deleted successfully.",
@@ -198,16 +200,16 @@
     "password-required": "Password is required",
     "invalid-password": "Invalid password",
     "confirm-pass": "Confirm password",
-    "S3BucketDetails": "Bucket details",
+    "S3BucketDetails": "S3 Bucket details",
     "password-match": "Passwords do not match",
     "iam-details": "IAM User details",
     "username-required": "Username is required",
     "invalid-user": "Invalid username",
     "bucket-required": "Bucket name is required",
     "invalid-bucketname": "Invalid bucket name",
-    "iagreetext": "I agree to the following",
+    "iagreetext": "I agree to the following:",
     "firstcheck-text": "A dedicated Lyve Pilot Bucket will be created in my account.",
-    "secondcheck-text": "A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot Bucket, and not to other data.",
+    "secondcheck-text": "A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot bucket, and not to other data.",
     "register-btn": "Register",
     "clear": "Clear",
     "s3AccountKey": "S3 Account Access Key",
@@ -221,7 +223,8 @@
     "version": "Version:",
     "build": "Build:",
     "release": "Release:",
-    "COMPONENTS": "COMPONENTS"
+    "COMPONENTS": "COMPONENTS",
+    "SerialNumber": "Serial No:"
   },
   "onBoarding": {
     "systemName": "System name",
@@ -354,15 +357,26 @@
     "local": "Local"
   },
   "health": {
-    "storage_encl": "Storage enclosure"
+    "storage_encl": "Storage enclosure",
+    "health": "Health",
+    "healthMsg": "Displays the health of the storage enclosure and the servers (nodes) connected to it.",
+    "view": "View",
+    "NA": "NA",
+    "action": "Action",
+    "healthView": "Health View",
+    "healthViewSeverity": "Health View (Severity"
+  },
+  "performance": {
+    "performance": "Performance",
+    "addGraph": "Add Graph"
   },
   "admin": {
     "headerText": "Admin user configuration",
-    "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
     "adminUsernameReq": "Username is required.",
     "usernameInvalid": "Invalid username.",
-    "invalidRootUsername": " The username must not be 'root' or 'Root'.",
-    "applyContinue": "Apply and continue"
+    "invalidRootUsername": "The username must not be 'root' or 'Root'.",
+    "applyContinue": "Apply and continue",
+    "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once."
   },
   "alerts": {
     "comments": "Comments",
@@ -487,10 +501,15 @@
     "6Hrs": "6 Hrs",
     "12Hrs": "12 Hrs",
     "1Day": "1 Day",
-    "unableToFetch": "Unable To Fetch Performance Data"
+    "unableToFetch": "Unable To Fetch Performance Data",
+    "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
+    "adminUsernameReq":"Username is required.",
+    "usernameInvalid":"Invalid username.",
+    "invalidRootUsername":"The username must not be 'root' or 'Root'.",
+    "applyContinue":"Apply and continue"
   },
   "license": {
     "header": "To set up your system, you must accept the Terms and Conditions.",
-    "getStarted": "Accept Terms & Conditions"
+    "getStarted": "Accept Terms & Condition"
   }
 }
