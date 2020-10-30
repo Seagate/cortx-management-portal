@@ -72,7 +72,7 @@
                 class="cortx-btn-primary mr-2"
                 @click="acceptAgreement"
               >
-                {{ $t("admin.accept") }}
+                {{ $t("common.accept") }}
               </button>
 
               <button
