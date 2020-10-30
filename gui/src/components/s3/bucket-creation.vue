@@ -195,10 +195,15 @@
           }}</span>
           <table class="mt-2 ml-9 cortx-text-md">
             <tr id="bucket-url-tr">
-              <td id="bucket-url-td-label" class="py-2 cortx-text-bold bucket-url-label">
+              <td
+                id="bucket-url-td-label"
+                class="py-2 cortx-text-bold bucket-url-label"
+              >
                 {{ $t("s3.bucket.url-label") }}
               </td>
-              <td id="bucket-url-td-value" class="py-2 bucket-url-text">{{ bucketUrl }}</td>
+              <td id="bucket-url-td-value" class="py-2 bucket-url-text">
+                {{ bucketUrl }}
+              </td>
             </tr>
           </table>
         </v-card-title>
@@ -317,7 +322,7 @@ import { required, helpers, minLength } from "vuelidate/lib/validators";
 import { Bucket } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import i18n from "../../i18n";
+import i18n from "./s3.json";
 
 import {
   bucketNameRegex,
@@ -326,7 +331,10 @@ import {
 import CommonUtils from "../../common/common-utils";
 
 @Component({
-  name: "cortx-bucket-creation"
+  name: "cortx-bucket-creation",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxBucketCreation extends Vue {
   public createBucketForm = {
@@ -378,19 +386,20 @@ export default class CortxBucketCreation extends Vue {
     this.showBucketCreateSuccessDialog = false;
     this.showConfirmDeleteDialog = false;
     this.showBucketPolicyDialog = false;
+  }
+  public beforeMount() {
     this.bucketsTableHeaderList = [
       {
-        text: i18n.t("common.name"),
+        text: this.$t("common.name"),
         value: "name",
         sortable: false
       },
-      { 
-        text: i18n.t("common.action"), 
-        value: "data-table-expand" 
+      {
+        text: this.$t("common.action"),
+        value: "data-table-expand"
       }
     ];
   }
-
   public data() {
     return {
       JSONError: ""
@@ -404,7 +413,7 @@ export default class CortxBucketCreation extends Vue {
   public async getAllBuckets() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.bucket.fetching-bucket")
+      this.$t("s3.bucket.fetching-bucket")
     );
     const res: any = await Api.getAll(apiRegister.s3_bucket);
     this.bucketsList = res && res.data ? res.data.buckets : [];
@@ -415,7 +424,7 @@ export default class CortxBucketCreation extends Vue {
   public async createBucket() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.bucket.creating-bucket")
+      this.$t("s3.bucket.creating-bucket")
     );
     const res = await Api.post(
       apiRegister.s3_bucket,
@@ -454,7 +463,9 @@ export default class CortxBucketCreation extends Vue {
   }
 
   public openConfirmDeleteDialog(bucketName: string) {
-    this.confirmMsg = `${i18n.t("s3.bucket.delete-confirm-msg")} ${bucketName}?`;
+    this.confirmMsg = `${this.$t(
+      "s3.bucket.delete-confirm-msg"
+    )} ${bucketName}?`;
     this.bucketToDelete = bucketName;
     this.showConfirmDeleteDialog = true;
   }
@@ -466,7 +477,7 @@ export default class CortxBucketCreation extends Vue {
     this.bucketName = bucketname;
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.bucket.fetching-policy")
+      this.$t("s3.bucket.fetching-policy")
     );
     try {
       const res: any = await Api.getAll(
@@ -500,7 +511,7 @@ export default class CortxBucketCreation extends Vue {
     this.showBucketPolicyDialog = false;
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.bucket.updating-policy")
+      this.$t("s3.bucket.updating-policy")
     );
     await Api.put(apiRegister.bucket_policy, policy, this.bucketName);
     this.policyJSON = "";
@@ -510,7 +521,7 @@ export default class CortxBucketCreation extends Vue {
     this.showBucketPolicyDialog = false;
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.bucket.delete-policy")
+      this.$t("s3.bucket.delete-policy")
     );
     await Api.delete(apiRegister.bucket_policy, this.bucketName);
     this.$store.dispatch("systemConfig/hideLoader");
@@ -518,7 +529,7 @@ export default class CortxBucketCreation extends Vue {
   private async deleteBucket() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.bucket.delete-bucket") + this.bucketToDelete
+      this.$t("s3.bucket.delete-bucket") + this.bucketToDelete
     );
     await Api.delete(apiRegister.s3_bucket, this.bucketToDelete);
     this.$store.dispatch("systemConfig/hideLoader");

@@ -555,11 +555,14 @@ import {
   passwordTooltipMessage,
   accountNameTooltipMessage
 } from "./../../common/regex-helpers";
-import i18n from "../../i18n";
+import i18n from "./s3.json";
 import CommonUtils from "../../common/common-utils";
 
 @Component({
   name: "cortx-account-management",
+   i18n: {
+    messages: i18n
+  },
   components: { CortxAccessKeyManagement }
 })
 export default class CortxAccountManagement extends Vue {
@@ -645,7 +648,7 @@ export default class CortxAccountManagement extends Vue {
   public async getAllAccounts() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.account.loading-list")
+      this.$t("s3.account.loading-list")
     );
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
@@ -660,7 +663,7 @@ export default class CortxAccountManagement extends Vue {
   public async createAccount() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.account.loading-create")
+      this.$t("s3.account.loading-create")
     );
     const res = await Api.post(
       apiRegister.s3_account,
@@ -701,7 +704,7 @@ export default class CortxAccountManagement extends Vue {
     };
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.account.loading-update")
+      this.$t("s3.account.loading-update")
     );
     const res = await Api.patch(
       apiRegister.s3_account,
