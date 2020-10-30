@@ -41,7 +41,6 @@
                 >
                   <span>{{ header.text }}</span>
                 </th>
-                <th class="tableheader" />
               </tr>
             </template>
 
@@ -196,10 +195,15 @@
           }}</span>
           <table class="mt-2 ml-9 cortx-text-md">
             <tr id="bucket-url-tr">
-              <td id="bucket-url-td-label" class="py-2 cortx-text-bold bucket-url-label">
+              <td
+                id="bucket-url-td-label"
+                class="py-2 cortx-text-bold bucket-url-label"
+              >
                 {{ $t("s3.bucket.url-label") }}
               </td>
-              <td id="bucket-url-td-value" class="py-2 bucket-url-text">{{ bucketUrl }}</td>
+              <td id="bucket-url-td-value" class="py-2 bucket-url-text">
+                {{ bucketUrl }}
+              </td>
             </tr>
           </table>
         </v-card-title>
@@ -382,15 +386,20 @@ export default class CortxBucketCreation extends Vue {
     this.showBucketCreateSuccessDialog = false;
     this.showConfirmDeleteDialog = false;
     this.showBucketPolicyDialog = false;
+  }
+  public beforeMount() {
     this.bucketsTableHeaderList = [
       {
-        text: "Name",
+        text: this.$t("common.name"),
         value: "name",
         sortable: false
+      },
+      {
+        text: this.$t("common.action"),
+        value: "data-table-expand"
       }
     ];
   }
-
   public data() {
     return {
       JSONError: ""
@@ -454,7 +463,9 @@ export default class CortxBucketCreation extends Vue {
   }
 
   public openConfirmDeleteDialog(bucketName: string) {
-    this.confirmMsg = `${this.$t("s3.bucket.delete-confirm-msg")} ${bucketName}?`;
+    this.confirmMsg = `${this.$t(
+      "s3.bucket.delete-confirm-msg"
+    )} ${bucketName}?`;
     this.bucketToDelete = bucketName;
     this.showConfirmDeleteDialog = true;
   }

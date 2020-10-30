@@ -158,7 +158,7 @@ export default class CortxAccessKeyManagementIAM extends Vue {
         value: "secret_key",
         sortable: false
       },
-      { text: "", value: "data-table-expand" }
+      { text: this.$t("common.action"), value: "data-table-expand" }
     ];
   }
   public async createAccessKey() {
