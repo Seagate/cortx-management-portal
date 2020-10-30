@@ -105,7 +105,6 @@ import { AccessKey } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import CortxDownloadCsvDialog from "./download-csv-dialog.vue";
-// import i18n from "./../../i18n";
 import i18n from "./s3.json";
 
 @Component({
@@ -138,8 +137,8 @@ export default class CortxAccessKeyManagement extends Vue {
     this.showAccessKeyDetailsDialog = false;
     this.accessKeyDetails = {};
   }
-  public mounted() {
-    this.getAllAccessKeys();
+  public async mounted() {
+     await this.getAllAccessKeys();
   }
   public beforeMount() {
     this.accessKeyTableHeaderList = [
