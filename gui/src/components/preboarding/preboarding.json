@@ -1,0 +1,40 @@
+{
+    "en": {
+        "admin": {
+            "headerText": "Admin user configuration",
+            "adminUsernameReq": "Username is required.",
+            "usernameInvalid": "Invalid username.",
+            "invalidRootUsername": "The username must not be 'root' or 'Root'.",
+            "applyContinue": "Apply and continue",
+            "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
+            "email":"Email",
+            "email-required": "Email is required.",
+            "email-invalid": "Invalid Email ID.",
+            "password-required": "Password is required.",
+            "password-invalid": "Invalid password.",
+            "confirm-password": "Confirm password",
+            "confirm-password-invalid": "Passwords do not match.",
+            "accept": "Accept",
+            "cancel": "Cancel"
+          }
+    },
+    "ru": {
+        "admin": {
+            "headerText": "Admin user configuration",
+            "adminUsernameReq": "Username is required.",
+            "usernameInvalid": "Invalid username.",
+            "invalidRootUsername": "The username must not be 'root' or 'Root'.",
+            "applyContinue": "Apply and continue",
+            "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
+            "email":"Email",
+            "email-required": "Email is required.",
+            "email-invalid": "Invalid Email ID.",
+            "password-required": "Password is required.",
+            "password-invalid": "Invalid password.",
+            "confirm-password": "Confirm password",
+            "confirm-password-invalid": "Passwords do not match.",
+            "accept": "Accept",
+            "cancel": "Cancel"
+          }
+    }
+}
