@@ -3071,6 +3071,9 @@
 					"401": {
 						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
+					"403": {
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
+					},
 					"422": {
 						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
@@ -3112,6 +3115,9 @@
 					},
 					"401": {
 						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
+					},
+					"403": {
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"422": {
 						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
@@ -3221,6 +3227,9 @@
 				"401": {
 					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 				},
+				"403": {
+					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
+				},
 				"422": {
 					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 				},
@@ -3266,6 +3275,9 @@
 				},
 				"401": {
 					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
+				},
+				"403": {
+					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 				},
 				"422": {
 					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
@@ -3361,6 +3373,9 @@
 					"401": {
 						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
+					"403": {
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
+					},
 					"422": {
 						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
@@ -3407,6 +3422,9 @@
 					"401": {
 						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
+					"403": {
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
+					},
 					"422": {
 						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
@@ -3438,37 +3456,22 @@
 				],
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Hotfix status fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid Certificate"
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"parameters": [
@@ -3486,43 +3489,28 @@
 				"tags": [
 					"System Maintenance"
 				],
-				"summary": "Node Status",
+				"summary": "To get cluster node status",
 				"produces": [
 					"application/json"
 				],
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: node status fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid Certificate"
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"parameters": [
@@ -3540,43 +3528,31 @@
 				"tags": [
 					"System Maintenance"
 				],
-				"summary": "Start Node",
+				"summary": "To start node",
 				"produces": [
 					"application/json"
 				],
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Node has been started."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: When an invalid response message is received for any of the cli commands"
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"parameters": [
@@ -3608,43 +3584,31 @@
 				"tags": [
 					"System Maintenance"
 				],
-				"summary": "Stop Node",
+				"summary": "To stop node",
 				"produces": [
 					"application/json"
 				],
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Node has been stopped."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: When an invalid response message is received for any of the cli commands"
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"parameters": [
@@ -3676,43 +3640,31 @@
 				"tags": [
 					"System Maintenance"
 				],
-				"summary": "Shutdown Node",
+				"summary": "To shutdown node",
 				"produces": [
 					"application/json"
 				],
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Node has been shutdown."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: When an invalid response message is received for any of the cli commands"
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"parameters": [
