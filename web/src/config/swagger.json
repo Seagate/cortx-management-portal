@@ -2854,37 +2854,16 @@
 				"summary": "Get Registration token to register UDX device.",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Registration token fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Bad Request: Invalid request URL"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2898,37 +2877,16 @@
 				"summary": "Get registered UDX device details.",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: UDX device details fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Bad Request: Invalid request URL"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2940,37 +2898,19 @@
 				"summary": "Register UDX device.",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Registered UDX device successfully."
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Bad Request: Invalid request URL"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -3003,37 +2943,25 @@
 				"summary": "Get Audit logs: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Audit logs are fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid Range query."
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -3074,37 +3002,25 @@
 				"summary": "Download Audit logs: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Audit logs downloaded successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid Range query."
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client.."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -3147,37 +3063,22 @@
 			  "summary": "Firmaware upload",
 			  "responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Package uploaded."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid Package"
 					},
 					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"parameters": [
@@ -3204,37 +3105,22 @@
 			  "summary": "Firmaware update start",
 			  "responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Firmware package uploaded."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid Package"
 					},
 					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 			  "parameters": [
@@ -3252,40 +3138,25 @@
 			  "tags": [
 				"Firmware Update "
 			  ],
-			  "summary": "Firmaware update status",
+			  "summary": "To get Firmaware update status",
 			  "responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Firmware update fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid Range query."
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 			  "parameters": [
@@ -3303,40 +3174,25 @@
 			  "tags": [
 				"Firmware Update "
 			  ],
-			  "summary": "Firmaware update availability",
+			  "summary": "To get firmaware update availability",
 			  "responses": {
 				"200": {
-					"description": "OK"
-				},
-				"201": {
-					"description": "No Content"
+					"description": "OK: Firmware update availability fetched successfully."
 				},
 				"400": {
-					"description": "Bad Request"
+					"description": "Bad Request: Invalid Range query."
 				},
 				"401": {
-					"description": "Unauthorized"
+					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 				},
 				"403": {
-					"description": "Forbidden"
-				},
-				"404": {
-					"description": "No Data Found"
-				},
-				"409": {
-					"description": "Conflict"
-				},
-				"422": {
-					"description": "Unprocessable Entity"
+					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 				},
 				"499": {
-					"description": "Call Cancelled"
+					"description": "Call Cancelled: Call cancelled by client."
 				},
 				"500": {
-					"description": "Internal Server Error"
-				},
-				"501": {
-					"description": "Not Implemented"
+					"description": "Internal Server Error: When requested resource is not available."
 				}
 			},
 			  "parameters": [
@@ -3354,40 +3210,25 @@
 			  "tags": [
 				"SSL Certificate"
 			  ],
-			  "summary": "SSL Certificate upload",
+			  "summary": "To upload SSL Certificate",
 			  "responses": {
 				"200": {
-					"description": "OK"
-				},
-				"201": {
-					"description": "No Content"
+					"description": "OK: SSL Certificate uploaded."
 				},
 				"400": {
-					"description": "Bad Request"
+					"description": "Bad Request: Invalid Certificate"
 				},
 				"401": {
-					"description": "Unauthorized"
-				},
-				"403": {
-					"description": "Forbidden"
-				},
-				"404": {
-					"description": "No Data Found"
-				},
-				"409": {
-					"description": "Conflict"
+					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 				},
 				"422": {
-					"description": "Unprocessable Entity"
+					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 				},
 				"499": {
-					"description": "Call Cancelled"
+					"description": "Call Cancelled: Call cancelled by client."
 				},
 				"500": {
-					"description": "Internal Server Error"
-				},
-				"501": {
-					"description": "Not Implemented"
+					"description": "Internal Server Error: When requested resource is not available."
 				}
 			},
 			"produces": [
@@ -3418,37 +3259,22 @@
 			  "summary": "SSL Certificate install",
 			  "responses": {
 				"200": {
-					"description": "OK"
-				},
-				"201": {
-					"description": "No Content"
+					"description": "OK: SSL Certificate installed."
 				},
 				"400": {
-					"description": "Bad Request"
+					"description": "Bad Request: Invalid Certificate"
 				},
 				"401": {
-					"description": "Unauthorized"
-				},
-				"403": {
-					"description": "Forbidden"
-				},
-				"404": {
-					"description": "No Data Found"
-				},
-				"409": {
-					"description": "Conflict"
+					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 				},
 				"422": {
-					"description": "Unprocessable Entity"
+					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 				},
 				"499": {
-					"description": "Call Cancelled"
+					"description": "Call Cancelled: Call cancelled by client."
 				},
 				"500": {
-					"description": "Internal Server Error"
-				},
-				"501": {
-					"description": "Not Implemented"
+					"description": "Internal Server Error: When requested resource is not available."
 				}
 			},
 			  "produces": [
@@ -3483,40 +3309,25 @@
 			  "tags": [
 				"SSL Certificate"
 			  ],
-			  "summary": "SSL Certificate status",
+			  "summary": "To get SSL Certificate status",
 			  "responses": {
 				"200": {
-					"description": "OK"
-				},
-				"201": {
-					"description": "No Content"
+					"description": "OK: Certificate status fetched successfully."
 				},
 				"400": {
-					"description": "Bad Request"
+					"description": "Bad Request: Invalid Certificate"
 				},
 				"401": {
-					"description": "Unauthorized"
+					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 				},
 				"403": {
-					"description": "Forbidden"
-				},
-				"404": {
-					"description": "No Data Found"
-				},
-				"409": {
-					"description": "Conflict"
-				},
-				"422": {
-					"description": "Unprocessable Entity"
+					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 				},
 				"499": {
-					"description": "Call Cancelled"
+					"description": "Call Cancelled: Call cancelled by client."
 				},
 				"500": {
-					"description": "Internal Server Error"
-				},
-				"501": {
-					"description": "Not Implemented"
+					"description": "Internal Server Error: When requested resource is not available."
 				}
 			},
 			  "produces": [
@@ -3542,37 +3353,22 @@
 				],
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Hotfix update uploaded."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: When an invalid response message is received for any of the cli commands"
 					},
 					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"parameters": [
@@ -3597,43 +3393,28 @@
 				"tags": [
 					"Hotfix Update"
 				],
-				"summary": "Start Hotfix update",
+				"summary": "To start Hotfix update",
 				"produces": [
 					"application/json"
 				],
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Hotfix updated successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: When an invalid response message is received for any of the cli commands"
 					},
 					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"parameters": [
