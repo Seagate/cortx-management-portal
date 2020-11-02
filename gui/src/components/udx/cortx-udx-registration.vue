@@ -483,7 +483,10 @@ import apiRegister from "../../services/api-register";
 
 @Component({
   name: "cortx-udx-registration",
-  components: { CortxDownloadCsvDialog }
+  components: { CortxDownloadCsvDialog },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxUDXRegistration extends Vue {
   public registrationToken: string = "";
@@ -531,24 +534,27 @@ export default class CortxUDXRegistration extends Vue {
     super();
     this.showAccessKeyDetailsDialog = false;
     this.accessKeyDetails = {};
+  }
+
+  public beforeMount() {
     this.accessKeyTableHeaderList = [
       {
-        text: i18n.t("udx-registration.access_key"),
+        text: this.$t("udx-registration.access_key"),
         value: "access_key",
         sortable: false
       },
       {
-        text: i18n.t("udx-registration.secret_key"),
+        text: this.$t("udx-registration.secret_key"),
         value: "secret_key",
         sortable: false
       },
       {
-        text: i18n.t("udx-registration.iam_access_key"),
+        text: this.$t("udx-registration.iam_access_key"),
         value: "IAM access_key",
         sortable: false
       },
       {
-        text: i18n.t("udx-registration.iam_secret_key"),
+        text: this.$t("udx-registration.iam_secret_key"),
         value: "IAM secret_key",
         sortable: false
       },
@@ -579,15 +585,15 @@ export default class CortxUDXRegistration extends Vue {
     if (res && res.data) {
       this.registrationResponse = res.data;
       this.accessKeyDetails = {
-        [`${i18n.t("udx-registration.access_key")}`]: this
+        [`${this.$t("udx-registration.access_key")}`]: this
           .registrationResponse.s3_account.access_key,
-        [`${i18n.t("udx-registration.secret_key")}`]: this
+        [`${this.$t("udx-registration.secret_key")}`]: this
           .registrationResponse.s3_account.secret_key,
-        [`${i18n.t("udx-registration.iam_access_key")}`]: this
+        [`${this.$t("udx-registration.iam_access_key")}`]: this
           .registrationResponse.iam_user.access_key,
-        [`${i18n.t("udx-registration.iam_secret_key")}`]: this
+        [`${this.$t("udx-registration.iam_secret_key")}`]: this
           .registrationResponse.iam_user.secret_key,
-        [`${i18n.t("udx-registration.bucket_name")}`]: "ldp-" + this.registrationForm.bucketName
+        [`${this.$t("udx-registration.bucket_name")}`]: "ldp-" + this.registrationForm.bucketName
 
       };
       this.showAccessKeyDetailsDialog = true;
