@@ -1470,7 +1470,7 @@
 					"type": "string"
 				}]
 			}
-		},	
+		},
 		"/s3/access_keys?user_name={user_name}": {
 			"get": {
 				"tags": ["Iam User Access Key"],
@@ -1605,37 +1605,22 @@
 				"summary": "Gets Alerts: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Alert list fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Request body missing or invlaid json"
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -1733,7 +1718,6 @@
 						"type": "Boolean",
 						"default": false
 					}
-
 				]
 			},
 			"patch": {
@@ -1741,37 +1725,28 @@
 				"summary": "Acknowledge Alerts: Accessible to CSM users having manage permission",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Acknowledged Alerts successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Request body missing or invlaid json"
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -1801,37 +1776,25 @@
 				"summary": "Get Alert: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Alert fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Request body missing or invlaid json"
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -1855,37 +1818,25 @@
 				"summary": "Edit Alert: Accessible to CSM users having manage permission and it will update the acknowledge flag",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Acknowledge Alert successfully."
 					},
 					"400": {
-						"description": "Bad Request"
-					},
-					"401": {
-						"description": "Unauthorized"
+						"description": "Bad Request: Invalid Parameter for alerts"
 					},
 					"403": {
-						"description": "Forbidden"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -1924,37 +1875,25 @@
 				"summary": "Get alert history: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Alerts history fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid request message received."
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
+					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2043,37 +1982,22 @@
 				"summary": "Get alert history for specific alert: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Alerts history fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
 					},
 					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2101,37 +2025,22 @@
 				"summary": "Get alert comments for specific alert: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Alert comment fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
 					},
 					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"422": {
-						"description": "Unprocessable Entity"
-					},
-					"499": {
-						"description": "Call Cancelled"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2156,38 +2065,26 @@
 				"tags": ["Alerts"],
 				"summary": "Add comments to the Alert: Accessible to CSM users having manage permission",
 				"responses": {
-					"200": {
-						"description": "OK"
-					},
 					"201": {
-						"description": "No Content"
+						"description": "OK: Comment added successfully"
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
 					},
 					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
+						"description": "No Data Found: A specified resource could not be found."
 					},
 					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2229,37 +2126,19 @@
 				"summary": "Get Health Summary of the system: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Health Summary of the system fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
 					},
 					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2279,37 +2158,22 @@
 				"summary": "Get Health of nodes: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Health of the nodes fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2337,35 +2201,20 @@
 					"200": {
 						"description": "OK"
 					},
-					"201": {
-						"description": "No Content"
-					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2393,37 +2242,22 @@
 				"summary": "Get Health of resources with severity: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: resource health fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
@@ -2464,37 +2298,19 @@
 				"summary": "Get statetics: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: statetics are fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
 					},
 					"401": {
-						"description": "Unauthorized"
-					},
-					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: Stats: Invalid metric list"
 					}
 				},
 				"content": {
@@ -2563,37 +2379,22 @@
 				"summary": "Get the Storage Capacity: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
-					},
-					"201": {
-						"description": "No Content"
+						"description": "OK: Storage capacity fetched successfully."
 					},
 					"400": {
-						"description": "Bad Request"
+						"description": "Bad Request: Invalid unit. Please enter unit from ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']. Default unit is: BYTE"
 					},
 					"401": {
-						"description": "Unauthorized"
+						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
 					},
 					"403": {
-						"description": "Forbidden"
-					},
-					"404": {
-						"description": "No Data Found"
-					},
-					"409": {
-						"description": "Conflict"
-					},
-					"422": {
-						"description": "Unprocessable Entity"
+						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
 					},
 					"499": {
-						"description": "Call Cancelled"
+						"description": "Call Cancelled: Call cancelled by client."
 					},
 					"500": {
-						"description": "Internal Server Error"
-					},
-					"501": {
-						"description": "Not Implemented"
+						"description": "Internal Server Error: When requested resource is not available."
 					}
 				},
 				"content": {
