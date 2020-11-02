@@ -1,16 +1,4 @@
 {
-  "login": {
-    "welcome": "Welcome!",
-    "start": "Start",
-    "getStated": "Click Start to proceed with onboarding steps.",
-    "login-label": "Login",
-    "login-btn": "Login",
-    "user-name-placeholder": "Username",
-    "password-placeholder": "Password",
-    "user-name-required": "Username is required.",
-    "password-required": "Password is required.",
-    "login-failed": "Login failed !"
-  },
   "common": {
     "pageTitle": "Cortx",
     "create-btn": "Create",
@@ -360,9 +348,5 @@
     "usernameInvalid":"Invalid username.",
     "invalidRootUsername":"The username must not be 'root' or 'Root'.",
     "applyContinue":"Apply and continue"
-  },
-  "license": {
-    "header": "To set up your system, you must accept the Terms and Conditions.",
-    "getStarted": "Accept Terms & Conditions"
   }
 }
