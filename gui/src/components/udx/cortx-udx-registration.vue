@@ -457,7 +457,7 @@
     </div>
      <cortx-download-csv-dialog
       :show="showAccessKeyDetailsDialog"
-      :title="$t('s3.download-csv-dialog.created')"
+      :title="$t('udx-registration.created')"
       :tableContent="accessKeyDetails"
        @closeDialog="closeDialogbox()"
     ></cortx-download-csv-dialog>
@@ -468,7 +468,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import CortxDownloadCsvDialog from "./../s3/download-csv-dialog.vue";
-import i18n from "./../../i18n";
+import i18n from "./udx.json";
 import {
   udxURLRegex,
   accountNameRegex,
@@ -533,22 +533,22 @@ export default class CortxUDXRegistration extends Vue {
     this.accessKeyDetails = {};
     this.accessKeyTableHeaderList = [
       {
-        text: i18n.t("s3.access-key.table-headers.access_key"),
+        text: i18n.t("udx-registration.access_key"),
         value: "access_key",
         sortable: false
       },
       {
-        text: i18n.t("s3.access-key.table-headers.secret_key"),
+        text: i18n.t("udx-registration.secret_key"),
         value: "secret_key",
         sortable: false
       },
       {
-        text: i18n.t("s3.access-key.table-headers.iam_access_key"),
+        text: i18n.t("udx-registration.iam_access_key"),
         value: "IAM access_key",
         sortable: false
       },
       {
-        text: i18n.t("s3.access-key.table-headers.iam_secret_key"),
+        text: i18n.t("udx-registration.iam_secret_key"),
         value: "IAM secret_key",
         sortable: false
       },
@@ -579,15 +579,15 @@ export default class CortxUDXRegistration extends Vue {
     if (res && res.data) {
       this.registrationResponse = res.data;
       this.accessKeyDetails = {
-        [`${i18n.t("s3.access-key.table-headers.access_key")}`]: this
+        [`${i18n.t("udx-registration.access_key")}`]: this
           .registrationResponse.s3_account.access_key,
-        [`${i18n.t("s3.access-key.table-headers.secret_key")}`]: this
+        [`${i18n.t("udx-registration.secret_key")}`]: this
           .registrationResponse.s3_account.secret_key,
-        [`${i18n.t("s3.access-key.table-headers.iam_access_key")}`]: this
+        [`${i18n.t("udx-registration.iam_access_key")}`]: this
           .registrationResponse.iam_user.access_key,
-        [`${i18n.t("s3.access-key.table-headers.iam_secret_key")}`]: this
+        [`${i18n.t("udx-registration.iam_secret_key")}`]: this
           .registrationResponse.iam_user.secret_key,
-        [`${i18n.t("s3.access-key.table-headers.bucket_name")}`]: "ldp-" + this.registrationForm.bucketName
+        [`${i18n.t("udx-registration.bucket_name")}`]: "ldp-" + this.registrationForm.bucketName
 
       };
       this.showAccessKeyDetailsDialog = true;
