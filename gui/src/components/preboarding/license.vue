@@ -43,11 +43,14 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import LicenseAgreement from "./license-agreement.vue";
-import i18n from "./../../i18n";
+import i18n from "./preboarding.json";
 
 @Component({
   name: "cortx-welcome",
-  components: { LicenseAgreement }
+  components: { LicenseAgreement },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxLicense extends Vue {
   private data() {
