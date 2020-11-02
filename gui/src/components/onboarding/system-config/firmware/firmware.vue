@@ -20,7 +20,9 @@
       {{ $t("onBoarding.updateFirmware") }}
     </div>
     <div class="mt-3" id="lblFirmwareUploadmsg">
-      {{ $t("onBoarding.updateStorageEnclosure") }}
+      {{ $t("onBoarding.updateStorageEnclosure") }} 
+      <br />
+      {{ $t("onBoarding.updateStorageEnclosureClick") }} 
     </div>  
     <div
       class="mt-3 pa-3 cortx-last-upgrade-info-container cortx-text-md"
