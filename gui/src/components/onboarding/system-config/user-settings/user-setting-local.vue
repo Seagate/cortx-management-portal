@@ -89,7 +89,6 @@
                     />
                   </span>
                 </th>
-                <th class="tableheader" />
               </tr>
             </template>
             <template v-slot:item="props">
@@ -829,6 +828,10 @@ export default class CortxUserSettingLocal extends Vue {
           text: "Roles",
           value: "roles",
           sortable: false
+        },
+        {
+          text: "Action",
+          value: "data-table-expand"
         }
       ],
       userData: [],
