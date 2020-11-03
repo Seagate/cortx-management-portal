@@ -110,10 +110,13 @@ import {
   Ipv6
 } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-network-settings-ipv4"
+  name: "cortx-network-settings-ipv4",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNetworkSettingsIpv4 extends Vue {
   private data() {

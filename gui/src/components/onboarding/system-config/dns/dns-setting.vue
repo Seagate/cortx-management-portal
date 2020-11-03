@@ -31,12 +31,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDnsSettingConfig from "./dns-setting-config.vue";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "cortx-dns-setting",
   components: {
     cortxDnsSettingConfig: CortxDnsSettingConfig
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxDnsSetting extends Vue {}

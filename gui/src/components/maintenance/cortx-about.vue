@@ -30,7 +30,7 @@
           <td style="width: 100px;">
             <label class="cortx-text-bold">{{$t("aboutUs.name")}}</label>
           </td>
-          <td style="padding-top: 2px;">
+          <td class="cortx-td">
             <label>{{ versionDetails.NAME }}</label>
           </td>
         </tr>
@@ -38,7 +38,7 @@
           <td>
             <label class="cortx-text-bold">{{$t("aboutUs.version")}}</label>
           </td>
-          <td style="padding-top: 2px;">
+          <td class="cortx-td">
             <label>{{ versionDetails.VERSION }}</label>
           </td>
         </tr>
@@ -46,7 +46,7 @@
           <td>
             <label class="cortx-text-bold">{{$t("aboutUs.build")}}</label>
           </td>
-          <td style="padding-top: 2px;">
+          <td class="cortx-td">
             <label>{{ versionDetails.BUILD }}</label>
           </td>
         </tr>
@@ -54,8 +54,16 @@
           <td>
             <label class="cortx-text-bold">{{$t("aboutUs.release")}}</label>
           </td>
-          <td style="padding-top: 2px;">
+          <td class="cortx-td">
             <label>{{ versionDetails.RELEASE }}</label>
+          </td>
+        </tr>
+         <tr v-if="serialNumber">
+          <td>
+          <label class="cortx-text-bold">{{$t("aboutUs.SerialNumber")}}</label>
+          </td>
+          <td class="cortx-td">
+             <label>- {{ serialNumber }}</label>
           </td>
         </tr>
       </table>
@@ -97,17 +105,26 @@ export default class Cortxaboutpage extends Vue {
         BUILD: "-" as string,
         RELEASE: null,
         COMPONENTS: []
-      }
+      },
+      serialNumber: "-" as string
     };
   }
-
   public async mounted() {
+    await this.getApplianceDetails();
     await this.getVersion();
   }
-
   public async getVersion() {
+     this.$store.dispatch(
+        "systemConfig/showLoader",
+        "fetching details..."
+      );
     const res = await Api.getAll(apiRegister.version);
     this.$data.versionDetails = res.data;
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
+   public async getApplianceDetails() {
+    const res = await Api.getAll(apiRegister.appliance_info);
+    this.$data.serialNumber = res.data[0].serial_number;
   }
 }
 </script>
@@ -118,5 +135,8 @@ export default class Cortxaboutpage extends Vue {
   &:before {
     left: 0;
   }
+  .cortx-td {
+    padding-top: 2px;
+}
 }
 </style>
