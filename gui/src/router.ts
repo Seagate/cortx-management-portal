@@ -55,7 +55,7 @@ import CortxNtpSetting from "./components/settings/ntp-setting.vue";
 import CortxAbout from "./components/maintenance/cortx-about.vue";
 import CortxHealthSubmenu from "./components/health/cortx-health-menu.vue";
 import CortxHealthView from "./components/health/cortx-health-view.vue";
-import CortxHealthAlertDetails from "./components/health/cortx-health-alert-details.vue";
+import CortxSeverityBasedHealthView from "./components/health/cortx-severity-based-health-view.vue";
 import CortxHealth from "./components/health/cortx-health.vue";
 import store from "./store/store";
 
@@ -193,7 +193,10 @@ const router = new Router({
               path: "",
               name: "health",
               component: CortxHealthSubmenu,
-              meta: { requiresAuth: true }
+              meta: {
+                requiresAuth: true,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
             },
             {
               path: "healthview",
@@ -202,9 +205,9 @@ const router = new Router({
               meta: { requiresAuth: true }
             },
             {
-              path: "healthview/:alert_id",
-              name: "health-alerts-details",
-              component: CortxHealthAlertDetails,
+              path: "healthview/severity/:severity",
+              name: "health-view-severity-based",
+              component: CortxSeverityBasedHealthView,
               meta: { requiresAuth: true }
             }
           ]
@@ -290,12 +293,12 @@ const router = new Router({
           ]
         },
         {
-          path: "udx",
-          name: "udx",
+          path: "ldp",
+          name: "ldp",
           component: CortxUDX,
           meta: {
             requiresAuth: true,
-            requiredAccess: userPermissions.maintenance + userPermissions.list
+            requiredAccess: userPermissions.lyve_pilot + userPermissions.list
           }
         },
         {
@@ -310,7 +313,10 @@ const router = new Router({
               path: "",
               name: "maintenance-menu",
               component: CortxMaintenanceMenu,
-              meta: { requiresAuth: true }
+              meta: {
+                requiresAuth: true,
+                requiredAccess: userPermissions.users + userPermissions.list
+              }
             },
             {
               path: "auditlog",
@@ -350,17 +356,18 @@ const router = new Router({
                 requiredAccess:
                   userPermissions.maintenance + userPermissions.list
               }
-            },
-            {
-              path: "node_replacement",
-              name: "node_replacement",
-              component: CortxNodeReplacement,
-              meta: {
-                requiresAuth: true,
-                requiredAccess:
-                  userPermissions.replace_node + userPermissions.create
-              }
             }
+            // commented code for EOS-13871
+            // {
+            //   path: "node_replacement",
+            //   name: "node_replacement",
+            //   component: CortxNodeReplacement,
+            //   meta: {
+            //     requiresAuth: true,
+            //     requiredAccess:
+            //       userPermissions.replace_node + userPermissions.create
+            //   }
+            // }
           ]
         },
         {

@@ -15,12 +15,12 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2 body-2">
+  <div class="cortx-p-1 body-2">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblDns">
-      DNS resolver settings
+      {{ $t("settings.DNSResolverSettings") }}
     </div>
     <div class="mt-3" id="lblDnsMsg">
-      Fields marked with * are mandatory.
+      {{ $t("settings.mandatoryField") }}
     </div>
     <v-divider class="mt-2" />
     <cortxDnsSettingConfig @apply-settings="applySettingsConfirmation" />
@@ -38,6 +38,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDnsSettingConfig from "../onboarding/system-config/dns/dns-setting-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-dns-data-setting",

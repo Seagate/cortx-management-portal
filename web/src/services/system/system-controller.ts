@@ -38,6 +38,11 @@ export const getHealthComponents = async (req: Request, res: Response)=> {
   return healthSummaryData;
 }
 
+export const getHealthResources = async (req: Request, res: Response)=> {
+  const healthResourcesData = await Api.getAll(apiRegister.health_resources, req, res);
+  return healthResourcesData;
+}
+
 export const getNodeHealth = async (req: Request, res: Response)=> {
     let healthSummaryData = await Api.getAll(apiRegister.node_health, req, res);
     return healthSummaryData;
@@ -83,14 +88,15 @@ export const shutdownNode = async (req: Request, res: Response) => {
  * @param req
  * @param res
  */
-export const getNodeReplacementStatus = async (req: Request, res: Response) => {
-  return await Api.getAll(apiRegister.node_replace_status, req, res);
-};
+// commented as per bug EOS-13871
+// export const getNodeReplacementStatus = async (req: Request, res: Response) => {
+//   return await Api.getAll(apiRegister.node_replace_status, req, res);
+// };
 /**
  * This is responsible to replace node.
  * @param req
  * @param res
  */
-export const replaceNode = async (req: Request, res: Response) => {
-  return await Api.post(apiRegister.node_replace, req, res);
-};
+// export const replaceNode = async (req: Request, res: Response) => {
+//   return await Api.post(apiRegister.node_replace, req, res);
+// };

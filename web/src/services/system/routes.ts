@@ -24,8 +24,7 @@ import {
   getHealthView,
   getNodeHealth,
   getHealthComponents,
-  getNodeReplacementStatus,
-  replaceNode
+  getHealthResources
 } from "./system-controller";
 import { checkRequiredParams } from "./../../middleware/validator";
 import HttpStatus from "http-status-codes";
@@ -73,6 +72,21 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getHealthComponents(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      },
+    ],
+  },
+  {
+    path: "/api/v1/system/health/resources",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getHealthResources(req, res);
           res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
@@ -155,34 +169,35 @@ export default [
       }
     ]
   },
-  {
-    path: "/api/v1/maintenance/cluster/replace_node_status",
-    method: "get",
-    handler: [
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await getNodeReplacementStatus(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      }
-    ]
-  },
-  {
-    path: "/api/v1/maintenance/cluster/replace_node",
-    method: "post",
-    handler: [
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await replaceNode(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      }
-    ]
-  }
+  // commented as per bug EOS-13871
+  // {
+  //   path: "/api/v1/maintenance/cluster/replace_node_status",
+  //   method: "get",
+  //   handler: [
+  //     checkRequiredParams,
+  //     async (req: Request, res: Response) => {
+  //       try {
+  //         const result = await getNodeReplacementStatus(req, res);
+  //         res.status(res.statusCode).send(result);
+  //       } catch (err) {
+  //         throw err;
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/api/v1/maintenance/cluster/replace_node",
+  //   method: "post",
+  //   handler: [
+  //     checkRequiredParams,
+  //     async (req: Request, res: Response) => {
+  //       try {
+  //         const result = await replaceNode(req, res);
+  //         res.status(res.statusCode).send(result);
+  //       } catch (err) {
+  //         throw err;
+  //       }
+  //     }
+  //   ]
+  // }
 ];

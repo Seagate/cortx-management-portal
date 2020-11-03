@@ -99,6 +99,7 @@
       :show="showAccessKeyDetailsDialog"
       :title="$t('s3.download-csv-dialog.created')"
       :tableContent="accessKeyDetails"
+      :s3UrlNone="s3UrlNone"
       @closeDialog="showAccessKeyDetailsDialog = false"
     ></cortx-download-csv-dialog>
   </div>
@@ -127,9 +128,14 @@ export default class CortxAccessKeyManagementIAM extends Vue {
   private accountToDelete: string = "";
   private MAX_ACCESS_KEYS: number = 2;
   private SECRET_KEY_PLACEHOLDER: string = "XXXX";
-
   @Prop({ required: true, default: "" })
   private userNameIAM!: string;
+
+  @Prop({ required: true, default: "" })
+  private s3Url: string;
+
+  @Prop({ required: false, default: false })
+  private s3UrlNone: boolean;
 
   constructor() {
     super();
@@ -148,7 +154,7 @@ export default class CortxAccessKeyManagementIAM extends Vue {
         value: "secret_key",
         sortable: false
       },
-      { text: "", value: "data-table-expand" }
+      { text: i18n.t("common.action"), value: "data-table-expand" }
     ];
   }
 
@@ -168,11 +174,13 @@ export default class CortxAccessKeyManagementIAM extends Vue {
       }
     );
     const createAccessKeyDetails = res && res.data ? res.data : {};
-
     this.accessKeyDetails = {
       [`${i18n.t(
         "s3.access-key.table-headers.user_name"
       )}`]: createAccessKeyDetails.user_name,
+      [`${i18n.t(
+        "s3.account.url-label-no-colon"
+      )}`]: this.s3Url,
       [`${i18n.t(
         "s3.access-key.table-headers.access_key"
       )}`]: createAccessKeyDetails.access_key_id,
@@ -180,6 +188,10 @@ export default class CortxAccessKeyManagementIAM extends Vue {
         "s3.access-key.table-headers.secret_key"
       )}`]: createAccessKeyDetails.secret_key
     };
+
+    if (this.s3UrlNone) {
+      delete this.accessKeyDetails["S3 URL"];
+    }
 
     this.showAccessKeyDetailsDialog = true;
     this.$store.dispatch("systemConfig/hideLoader");

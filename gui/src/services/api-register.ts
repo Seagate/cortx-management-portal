@@ -65,5 +65,7 @@ export default {
   node_health: `/api/${version}/system/health/node`,
   version: `/api/${version}/product_version`,
   health_components: `api/${version}/system/health/components`,
-  system_status: `/api/${version}/system/status`
+  system_status: `/api/${version}/system/status`,
+  health_resources: `api/${version}/system/health/resources`,
+  appliance_info:`/api/${version}/appliance_info`
 };

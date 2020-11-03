@@ -25,7 +25,7 @@ export const accountNameTooltipMessage =
 
 export const usernameTooltipMessage =
   // tslint:disable-next-line
-  "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-).";
+  "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-). The username must not be 'root' or 'Root'.";
 
 export const bucketNameRegex = helpers.regex(
   "bucketNameRegex",
@@ -41,7 +41,7 @@ export const passwordRegex = helpers.regex(
 );
 export const passwordTooltipMessage =
   // tslint:disable-next-line
-  "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, One number";
+  "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, and One number";
 
 export const iamPathRegex = helpers.regex("pathRegex", /^(\/[^/ ]*)+\/?$/);
 // tslint:disable-next-line
@@ -72,4 +72,8 @@ export const ipOrDomainRegex = helpers.regex(
 export const applianceNameRegex = helpers.regex(
   "applianceNameRegex",
   /^[A-Za-z0-9_-]+$/
+);
+export const userNameRegex = helpers.regex(
+  "userNameRegex",
+  /^((?!root)(?!Root).)*$/
 );

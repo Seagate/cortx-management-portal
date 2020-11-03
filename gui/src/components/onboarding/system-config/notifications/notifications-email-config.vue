@@ -21,25 +21,25 @@
         <div class="col-2 body-2 column">
           <div class="mt-2 font-weight-bold">
             <div class="cortx-form-group">
-              <label id="lblEmailSMTP">SMTP server*: </label>
+              <label id="lblEmailSMTP">{{ $t("onBoarding.SMTPServer") }}*: </label>
             </div>
             <div class="cortx-form-group">
-              <label id="lblEmailSenderEmail">Sender email*:</label>
+              <label id="lblEmailSenderEmail">{{ $t("onBoarding.senderEmail") }}*:</label>
             </div>
             <div class="cortx-form-group">
-              <label id="lblEmailProtocol">Protocol*:</label>
+              <label id="lblEmailProtocol">{{ $t("onBoarding.protocol") }}*:</label>
             </div>
             <div class="cortx-form-group">
-              <label id="lblEmailSMTPPort">SMTP port*:</label>
+              <label id="lblEmailSMTPPort">{{ $t("onBoarding.SMTPPort") }}*:</label>
             </div>
             <div class="cortx-form-group">
-              <label id="lblEmailSenderPass">Sender password*:</label>
+              <label id="lblEmailSenderPass">{{ $t("onBoarding.senderPassword") }}*:</label>
             </div>
             <div class="cortx-form-group">
-              <label id="lblEmailSenderConfirmPass">Confirm password*:</label>
+              <label id="lblEmailSenderConfirmPass">{{ $t("onBoarding.confirmPassword") }}*:</label>
             </div>
             <div class="cortx-form-group">
-              <label id="lblEmailReceiverEmail">Receiver emails*:</label>
+              <label id="lblEmailReceiverEmail">{{ $t("onBoarding.receiverEmails") }}*:</label>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.smtpserver.$dirty && !$v.smtpserver.required"
-                >SMTP server is required.</label
+                >{{ $t("onBoarding.SMTPServerReq") }}</label
               >
             </div>
           </div>
@@ -83,10 +83,10 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.senderemail.$dirty && !$v.senderemail.required" id="notification-email-required"
-                >Sender email is required.</label
+                >{{ $t("onBoarding.senderEmailReq") }}</label
               >
               <label v-if="$v.senderemail.$dirty && !$v.senderemail.email" id="notification-email-invalid"
-                >Invalid email.</label
+                >{{ $t("onBoarding.invalidEmail") }}</label
               >
             </div>
           </div>
@@ -97,13 +97,14 @@
             }"
           >
             <cortx-dropdown
+              id="notification-protocol-dropdownbox"
               @update:selectedOption="handleDropdownSelect"
               :options="protocolList"
               :title="protocol ? protocol : undefined"
             ></cortx-dropdown>
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.protocol.$dirty && !$v.protocol.required" id="notification-protocol-required"
-                >Protocol is required.</label
+                >{{ $t("onBoarding.protocolIsReq") }}</label
               >
             </div>
           </div>
@@ -123,10 +124,10 @@
             />
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.smtpport.$dirty && !$v.smtpport.required" id="notification-smtpport-required"
-                >SMTP port is required.</label
+                >{{ $t("onBoarding.SMTPPortRequired") }}</label
               >
               <label v-if="$v.smtpport.$dirty && !$v.smtpport.maxValue" id="notification-smtpport-invalid"
-                >SMTP port is not valid.</label
+                >{{ $t("onBoarding.SMTPPortNotValid") }}</label
               >
             </div>
           </div>
@@ -147,12 +148,12 @@
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.required" id="notification-senderpassword-required"
-                >Sender password is required.</label
+                >{{ $t("onBoarding.senderPasswordRequired") }}</label
               >
               <label
                id="notification-senderpassword"
                 v-if="$v.senderpassword.$dirty && !$v.senderpassword.minLength"
-                >Minimum 4 characters are required.</label
+                >{{ $t("onBoarding.min4CharRequired") }}</label
               >
             </div>
           </div>
@@ -176,7 +177,7 @@
                   $v.confirmpassword.$dirty &&
                     !$v.confirmpassword.sameAsPassword
                 "
-                >Confirm password do not match.</label
+                >{{ $t("onBoarding.confirmPasswordDoNotMatch") }}</label
               >
             </div>
           </div>
@@ -196,14 +197,14 @@
             ></textarea>
             <div class="cortx-form-group-label cortx-form-group-error-msg">
               <label v-if="$v.emailaddress.$dirty && !$v.emailaddress.required"
-                >Email is required.</label
+                >{{ $t("onBoarding.emailRequired") }}</label
               >
               <label
                 v-if="
                   $v.emailaddress.$dirty &&
                     !$v.emailaddress.commaSeparatedEmailsRegex
                 "
-                >Enter valid comma (,) separated emails.</label
+                >{{ $t("onBoarding.emailCommaSeparated") }}</label
               >
             </div>
           </div>
@@ -216,7 +217,7 @@
         @click="sendTestEmail()"
         :disabled="$v.$invalid || testEmailInProgress"
       >
-        Send test email
+        {{ $t("onBoarding.sendTestEmail") }}
       </button>
       <span
         id="notification-emailmsg"
@@ -239,7 +240,7 @@
       @click="applySettings()"
       class="cortx-btn-primary cortx-float-l my-10"
     >
-      Apply
+      {{ $t("common.apply") }}
     </button>
   </v-container>
 </template>
@@ -261,6 +262,7 @@ import {
   maxValue
 } from "vuelidate/lib/validators";
 import { commaSeparatedEmailsRegex } from "./../../../../common/regex-helpers";
+import i18n from "../.././../../i18n";
 
 @Component({
   name: "cortx-notification"

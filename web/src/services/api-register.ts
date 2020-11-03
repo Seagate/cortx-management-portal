@@ -45,7 +45,7 @@ export default {
   node_shutdown: `/api/${version}/maintenance/cluster/shutdown`,
   node_replace: `/api/${version}/maintenance/cluster/replace_node`,
   node_replace_status: `/api/${version}/maintenance/cluster/replace_node_status`,
-  health_summary: `/api/${version}/system/health/summary`,
+  health_summary: `/api/${version}/system/health/summary`,  
   health_view: `/api/${version}/system/health/view`,
   node_health: `/api/${version}/system/health/node`,
   send_test_email: `/api/${version}/sysconfig_helpers/email_test`,
@@ -61,5 +61,7 @@ export default {
   ssl_status: `/api/${version}/tls/bundle/status`,
   product_version: `/api/${version}/product_version`,
   health_components: `/api/${version}/system/health/components`,
-  system_status: `/api/${version}/system/status`
+  system_status: `/api/${version}/system/status`,
+  health_resources: `/api/${version}/system/health/resources`,
+  appliance_info:`/api/${version}/appliance_info`
 };

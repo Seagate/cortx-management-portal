@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2 body-2">
+  <div class="cortx-p-1 body-2">
     <div id="system-maintenance-title-container">
       <label
         id="system-maintenance-title"
@@ -204,16 +204,21 @@ export default class CortxMaintenance extends Vue {
     try {
     const res: any = await Api.getAll(apiRegister.node_status);
     const nodeDetails = res && res.data ? res.data : null;
-
     if (nodeDetails && nodeDetails.node_status) {
       nodeDetails.node_status.forEach((e: any) => {
         if (e.online) {
             if (e.standby) {
-              this.$data.resourceState.standby.push(e.name);
+              e.hostname !== null
+                ? this.$data.resourceState.standby.push(e.hostname)
+                : this.$data.resourceState.standby.push(e.name);
             } else {
-          this.$data.resourceState.online.push(e.name);
-        }
-            this.$data.resourceState.offline.push(e.name);
+              e.hostname !== null
+                ? this.$data.resourceState.online.push(e.hostname)
+                : this.$data.resourceState.online.push(e.name);
+            }
+            e.hostname !== null
+              ? this.$data.resourceState.offline.push(e.hostname)
+              : this.$data.resourceState.offline.push(e.name);
           } else {
             this.$data.shutdownNode = e.name;
         }
@@ -225,7 +230,6 @@ export default class CortxMaintenance extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
   }
-
   private async closeConfirmationDialog(confirmation: boolean) {
     this.$data.showConfirmationDialog = false;
     if (confirmation) {
@@ -240,7 +244,6 @@ export default class CortxMaintenance extends Vue {
           resource_name: this.$data.resource[this.$data.actionMethod]
         });
         const nodeActionDetails = res && res.data ? res.data : null;
-
         if (nodeActionDetails && nodeActionDetails.message) {
           this.$data.actionMessage = res.message;
         }
@@ -257,11 +260,9 @@ export default class CortxMaintenance extends Vue {
           shutdown: ""
         };
       }
-
       await this.getNodeStatus();
     }
   }
-
   private handleClientCloseRequest(error: any) {
         if (error && error.status === 499) {
           this.$data.showInfoDialog = true;
@@ -280,7 +281,6 @@ export default class CortxMaintenance extends Vue {
   private stopSelectedResource(action: boolean) {
     this.$data.confirmationDialogMessage =
       i18n.t("systemMaintenance.confirm-message-node-stop");
-
     this.$data.actionMethod = i18n.t("systemMaintenance.stop-action-method");
     this.$data.confirmationDialogSeverity = i18n.t("systemMaintenance.danger-severity");
     this.$data.showConfirmationDialog = true;
@@ -297,7 +297,6 @@ export default class CortxMaintenance extends Vue {
       i18n.t("systemMaintenance.confirm-message-node-shutdown");
     this.$data.confirmationDialogSubMessage =
       i18n.t("systemMaintenance.confirm-message-shutdown-sub");
-
     this.$data.actionMethod = i18n.t("systemMaintenance.shutdown-action-method");
     this.$data.confirmationDialogSeverity = i18n.t("systemMaintenance.danger-severity");
     this.$data.showConfirmationDialog = true;

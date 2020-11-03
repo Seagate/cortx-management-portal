@@ -36,7 +36,7 @@
                 >{{ $t("onBoarding.enterValidSystemName") }}</label
               >
               <label v-else-if="$v.appliance.$dirty && !$v.appliance.minLength"
-                >{{ $t("onBoarding.minimumFourChartSystemName") }}</label
+                >{{ $t("onBoarding.minimumTwoChartSystemName") }}</label
               >
               <label v-else-if="$v.appliance.$dirty && !$v.appliance.maxLength"
               >{{ $t("onBoarding.maxChartSystemName") }}</label>
@@ -54,7 +54,7 @@
       @click="applySettings()"
       class="cortx-btn-primary cortx-float-l my-10"
     >
-      Apply
+      {{ $t("common.apply") }}
     </button>
   </v-container>
 </template>

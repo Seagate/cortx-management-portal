@@ -21,20 +21,16 @@
     </div>
     <v-divider class="mx-0 grey darken-3"></v-divider>
     <v-container class="black px-10 pt-5" fluid>
-      <div class="ml-4 mt-4 white--text">
-        To set up your system, you must accept the EULA.
+      <div class="ml-4 mt-4 white--text mb-5">
+        {{ $t("license.header") }}
       </div>
-      <div class="ml-4 mt-1 mb-8 white--text">
-        Click Get started to agree
-        <span class="csmprimary--text">EULA.</span>
-      </div>
-        <button
+      <button
         id="show-license-agreement-dialogbtn"
         type="button"
         class="cortx-btn-primary-dark ml-4"
         @click="showLicenseAgreement = true"
       >
-        <span>Get started</span>
+        <span>{{ $t("license.getStarted") }}</span>
       </button>
       <LicenseAgreement
        id="license-agreement-close"
@@ -47,6 +43,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import LicenseAgreement from "./license-agreement.vue";
+import i18n from "./../../i18n";
 
 @Component({
   name: "cortx-welcome",

@@ -64,7 +64,7 @@
               />
             </span>
           </th>
-          <th class="tableheader">Action</th>
+          <th class="tableheader">{{ $t("alerts.action") }}</th>
         </tr>
       </template>
       <template v-slot:item="props">
@@ -129,6 +129,7 @@ import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { AlertQueryParam, AlertObject } from "./../../models/alert";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-alert-occurrences",

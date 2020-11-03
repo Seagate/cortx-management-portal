@@ -14,21 +14,21 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-<template>
-  <cortx-alert-details />
-</template>
- <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { Api } from "./../../services/api";
-import apiRegister from "./../../services/api-register";
-import { AlertObject } from "../../models/alert";
-import CortxAlertDetails from "./../alerts/alert-details.vue";
+import { DirectiveOptions } from "vue";
 
-@Component({
-  name: "cortx-health-alert-details",
-  components: { CortxAlertDetails }
-})
-export default class CortxHealthAlertDetails extends Vue {}
-</script>
-<style lang="scss" scoped>
-</style>
+const createURL = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, (url: string) => {
+        return "<a href=" + url + " target='_blank'>" + url + "</a>";
+    });
+};
+
+const buildLinkDirective: DirectiveOptions = {
+    bind: (el, binding, vnode) => {
+        el.innerHTML = createURL(el.innerText);
+    }
+};
+
+export {
+    buildLinkDirective
+};

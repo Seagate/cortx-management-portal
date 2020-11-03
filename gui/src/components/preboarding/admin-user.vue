@@ -24,12 +24,10 @@
         class="ml-4 mb-1 black--text font-weight-bold"
         style="font-size: 18px"
       >
-        Admin user configuration
+        {{ $t("admin.headerText") }}
       </div>
       <div class="ml-4 my-2" id="admin-configuarion-text">
-        Configure the username and password for the user with administrative
-        rights. You must remember the admin user login credentials because the
-        admin user can be created only once.
+        {{ $t("admin.adminConfigurationText") }}
       </div>
       <v-divider class="mt-2" />
       <div class="ma-4">
@@ -68,14 +66,21 @@
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.required
                       "
-                      >Username is required.</label
+                      > {{ $t("admin.adminUsernameReq") }}</label
                     >
                     <label id="admin-username-invalid"
                       v-else-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.accountNameRegex
                       "
-                      >Invalid username.</label
+                      >{{ $t("admin.usernameInvalid") }}</label
+                    >
+                    <label id="admin-username-invalid"
+                     v-else-if="
+                        $v.createAccount.username.$dirty &&
+                          !$v.createAccount.username.userNameRegex
+                      "
+                      >{{ $t("admin.invalidRootUsername") }}</label
                     >
                   </div>
                 </div>
@@ -93,7 +98,7 @@
                     class="cortx-form-group-label"
                     for="Email"
                     id="lblAdminEmail"
-                    >Email*</label
+                    >{{ $t("csmuser.email") }}</label
                   >
                   <div></div>
                   <input
@@ -110,14 +115,14 @@
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.required
                       "
-                      >Email is required.</label
+                      > {{ $t("csmuser.email-required") }}</label
                     >
                     <label id="admin-email-invalid"
                       v-else-if="
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.email
                       "
-                      >Invalid email.</label
+                      >{{ $t("csmuser.email-invalid") }}</label
                     >
                   </div>
                 </div>
@@ -158,14 +163,14 @@
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.required
                       "
-                      >Password is required.</label
+                      >{{ $t("csmuser.password-required") }}</label
                     >
                     <label id="admin-password-invalid"
                       v-else-if="
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.passwordRegex
                       "
-                      >Invalid password.</label
+                      >{{ $t("csmuser.password-invalid") }}</label
                     >
                   </div>
                 </div>
@@ -184,7 +189,7 @@
                     class="cortx-form-group-label"
                     for="confirmPassword"
                     id="lblConfirmAdminPassword"
-                    >Confirm password*</label
+                    >{{ $t("csmuser.confirm-password") }}*</label
                   >
                   <div></div>
                   <input
@@ -202,25 +207,11 @@
                         $v.createAccount.confirmPassword.$dirty &&
                           !$v.createAccount.confirmPassword.sameAsPassword
                       "
-                      >Passwords do not match.</label
+                      >{{ $t("csmuser.confirm-password-invalid") }}</label
                     >
                   </div>
                 </div>
               </div>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="pt-0">
-              <label class="cortx-ckb-container" for="emailCheckID" id="admin-emailnotificationlbl">
-                Subscribe to email notifications
-                <input
-                  type="checkbox"
-                  name="emailCheckID"
-                  v-model="createAccount.alert_notification"
-                  id="emailCheckID"
-                />
-                <span class="cortx-ckb-tick"></span>
-              </label>
             </v-col>
           </v-row>
           <button
@@ -230,7 +221,7 @@
             @click="gotToNextPage()"
             :disabled="!systemStatus || $v.createAccount.$invalid || createUserInProgress"
           >
-            Apply and continue
+            {{ $t("admin.applyContinue") }}
           </button>
         </form>
         <div v-if="!isValidResponse" class="red--text mt-2" id="admin-invalidmsg">
@@ -253,10 +244,13 @@ import {
   passwordRegex,
   passwordTooltipMessage,
   usernameTooltipMessage,
-  commaSeparatedEmailsRegex
+  commaSeparatedEmailsRegex,
+  userNameRegex
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
+import i18n from "./../../i18n";
 import CortxMessageDialog from "../widgets/cortx-message-dialog.vue";
+
 @Component({
   name: "cortx-admin-user",
   components: {
@@ -267,7 +261,7 @@ export default class CortxAdminUser extends Vue {
   @Validations()
   private validations = {
     createAccount: {
-      username: { required, accountNameRegex },
+      username: { required, accountNameRegex, userNameRegex},
       password: { required, passwordRegex },
       confirmPassword: {
         sameAsPassword: sameAs("password")
@@ -282,7 +276,7 @@ export default class CortxAdminUser extends Vue {
         password: "",
         confirmPassword: "",
         email: "",
-        alert_notification: true
+        alert_notification: true,
       },
       isValidResponse: true,
       invalidMessage: "",

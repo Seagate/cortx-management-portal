@@ -15,16 +15,18 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2">
-    <h1>Access Denied</h1>
+  <div class="cortx-p-1">
+    <h1>{{ $t("security.accessDenied") }}</h1>
     <p>
-      This is a secure area. You are not authorized to see this page.
+      {{ $t("security.accessDeniedMsg") }}
     </p>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import i18n from "../../i18n";
+
 @Component({
   name: "cortx-unauthorized-access"
 })

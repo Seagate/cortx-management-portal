@@ -15,16 +15,18 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2">
-    <h1>(404) Page Not Found</h1>
+  <div class="cortx-p-1">
+    <h1>{{ $t("security.pageNotFoundMsg") }}</h1>
     <p>
-      The page you are looking for does not exist.
+      {{ $t("security.pageNotFoundMsg") }}
     </p>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import i18n from "../../i18n";
+
 @Component({
   name: "cortx-not-found"
 })

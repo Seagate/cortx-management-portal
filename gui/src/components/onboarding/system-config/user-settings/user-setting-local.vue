@@ -89,7 +89,6 @@
                     />
                   </span>
                 </th>
-                <th class="tableheader" />
               </tr>
             </template>
             <template v-slot:item="props">
@@ -470,10 +469,10 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-expansion-panels class="ml-5 mr-4 mt-3">
-              <v-expansion-panel>
-                <v-expansion-panel-header class="pl-3"
-                  >Change password</v-expansion-panel-header
+            <v-expansion-panels class="ml-5 mr-4 mt-3" id="open-expansionbox">
+              <v-expansion-panel >
+                <v-expansion-panel-header class="pl-3" id="change-password-text"
+                  >{{ $t("onBoarding.changePassword") }}</v-expansion-panel-header
                 >
                 <v-expansion-panel-content>
                   <v-row>
@@ -829,6 +828,10 @@ export default class CortxUserSettingLocal extends Vue {
           text: "Roles",
           value: "roles",
           sortable: false
+        },
+        {
+          text: "Action",
+          value: "data-table-expand"
         }
       ],
       userData: [],
@@ -923,11 +926,11 @@ export default class CortxUserSettingLocal extends Vue {
       delete selectedItem.roles;
       delete selectedItem.confirmPassword;
     }
-    delete selectedItem.username;
+    const { username, ...editData } = selectedItem;
     this.$store.dispatch("systemConfig/showLoader", "Updating user details...");
     const res = await Api.patch(
       apiRegister.csm_user,
-      selectedItem,
+      editData,
       selectedItem.id
     );
     this.closeEditUserForm();

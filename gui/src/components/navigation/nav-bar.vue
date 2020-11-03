@@ -39,7 +39,7 @@
       </cortx-has-access>
     </div>
     <div class="cortx-nav-bottom" v-if="brandName">
-      <div class="cortx-brand-text">Powered by</div>
+      <div class="cortx-brand-text">{{ $t("common.poweredBy") }}</div>
       <img class="cortx-nav-item-icon-default cortx-img-responsive"
         :src="require('@/assets/Cortx-logo-GRN.svg/')" />
     </div>
@@ -47,6 +47,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import i18n from "../../i18n";
 
 @Component({
   name: "cortx-nav-bar"
@@ -76,11 +77,11 @@ export default class CortxNavBar extends Vue {
       requiredAccess: "s3accounts"
     },
     {
-      title: "UDX",
-      path: "/udx",
+      title: "Lyve Pilot",
+      path: "/ldp",
       iconDefault: require("@/assets/navigation/udx-grey.svg"),
       iconActive: require("@/assets/navigation/udx-white.svg"),
-      requiredAccess: "maintenance"
+      requiredAccess: "lyve_pilot"
     },
     {
       title: "Settings",
@@ -99,7 +100,7 @@ export default class CortxNavBar extends Vue {
   ];
 
   public mounted() {
-    this.brandName = process.env.VUE_APP_BRANDNAME !== "CORTX";
+    this.brandName = process.env.VUE_APP_BRANDNAME !== "cortx";
   }
 
   get alertNotifications() {
@@ -115,7 +116,6 @@ export default class CortxNavBar extends Vue {
   bottom: 0;
   z-index: 5;
   width: 8.75em;
-  padding-top: 0.75em;
   background: #000000;
 }
 .cortx-nav-item {
