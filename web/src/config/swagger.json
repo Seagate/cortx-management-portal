@@ -24,7 +24,7 @@
 					"500": {
 						"description": "Internal Server Error: When requested resource is not available."
 					}
-				}, 
+				},
 				"content": {
 					"application/json": {}
 				}
