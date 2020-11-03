@@ -25,10 +25,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import i18n from "../../i18n";
+import i18n from "./security.json";
 
 @Component({
-  name: "cortx-not-found"
+  name: "cortx-not-found",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNotFound extends Vue {}
 </script>
