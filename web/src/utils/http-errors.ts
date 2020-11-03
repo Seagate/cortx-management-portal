@@ -101,3 +101,10 @@ export class HTTP422Error extends HTTPCsmClientError {
     super(message);
   }
 }
+export class HTTP503Error extends HTTPCsmClientError {
+  readonly statusCode = HttpStatus.SERVICE_UNAVAILABLE ;
+
+  constructor(message: string | object = "Service unavailable") {
+    super(message);
+  }
+} 

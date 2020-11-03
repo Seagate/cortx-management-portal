@@ -18,7 +18,8 @@ import { Request, Response, request, response } from "express";
 import {
   getLastUpgradeStatus,
   hotfixUpload,
-  startUpgrade
+  startUpgrade,
+  getSystemStaus
 } from "./software-controller";
 import { checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from "http-status-codes";
@@ -56,5 +57,31 @@ export default [
         res.status(res.statusCode).send(result);
       }
     ]
-  }
+  },
+  { 
+    path: "/api/v1/system/status",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getSystemStaus(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/system/status/:consul",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        const result = await getSystemStaus(req, res);
+        res.status(res.statusCode).send(result);
+      }
+    ]
+  },
 ];

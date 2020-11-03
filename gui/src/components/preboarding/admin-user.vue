@@ -219,7 +219,7 @@
             type="button"
             class="cortx-btn-primary"
             @click="gotToNextPage()"
-            :disabled="$v.createAccount.$invalid || createUserInProgress"
+            :disabled="!systemStatus || $v.createAccount.$invalid || createUserInProgress"
           >
             {{ $t("admin.applyContinue") }}
           </button>
@@ -227,6 +227,7 @@
         <div v-if="!isValidResponse" class="red--text mt-2" id="admin-invalidmsg">
           {{ invalidMessage }}
         </div>
+        <CortxMessageDialog></CortxMessageDialog>
       </div>
     </div>
   </v-container>
@@ -248,9 +249,12 @@ import {
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
 import i18n from "./../../i18n";
-
+import CortxMessageDialog from "../widgets/cortx-message-dialog.vue";
 @Component({
-  name: "cortx-admin-user"
+  name: "cortx-admin-user",
+  components: {
+    CortxMessageDialog
+  }
 })
 export default class CortxAdminUser extends Vue {
   @Validations()
@@ -279,6 +283,33 @@ export default class CortxAdminUser extends Vue {
       passwordTooltipMessage,
       usernameTooltipMessage
     };
+  }
+   public async mounted() {
+    await this.getSyetmStatus();
+  }
+  public async getSyetmStatus() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "checking service status..."
+    );
+    try {
+      const dbName = { key: "consul"};
+      const res: any = await Api.getAll(apiRegister.system_status, dbName );
+      this.$store.dispatch("systemConfig/hideLoader");
+    } catch (error) {
+      this.$data.systemStatus = false;
+      let errorMessage = "please check service status";
+      if (error && error.error) {
+        errorMessage = error.error.message;
+      }
+      throw {
+        error: {
+          message: errorMessage
+        }
+      };
+    } finally {
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
   }
   private async gotToNextPage() {
     const queryParams = {
