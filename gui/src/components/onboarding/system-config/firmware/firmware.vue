@@ -56,7 +56,7 @@ Click Start update once the bundle file is uploaded successfully.
         type="button"
         class="ml-5 cortx-btn-primary"
         @click="startUpgrade()"
-        :disabled="
+        :disabled="!isPackageAvailable ||
           !isPackageAvailable ||
             (lastUpgradeStatus && lastUpgradeStatus.status === 'in_progress')
         "
@@ -120,17 +120,41 @@ export default class CortxFirmware extends Vue {
     isDirty: false,
     isValid: false
   };
-
+  public systemStatus: boolean = true;
   public async mounted() {
+     await this.getSyetmStatus();
     await this.getLastUpgradeStatus();
     await this.getPackageAvailability();
   }
-
+public async getSyetmStatus() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+       "checking service status..."
+    );
+    try {
+      const res: any = await Api.getAll(apiRegister.system_status);
+      this.$store.dispatch("systemConfig/hideLoader");
+    } catch (error) {
+      this.$data.systemStatus = false;
+      let errorMessage = "please check service status";
+      if (error && error.error) {
+        errorMessage = error.error.message;
+      }
+      throw {
+        error: {
+          message: errorMessage
+        }
+      };
+    } finally {
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
+  }
   public async getLastUpgradeStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Fetching last update status..."
     );
+    this.getSyetmStatus();
     const res: any = await Api.getAll(apiRegister.last_upgrade_status);
     this.lastUpgradeStatus =
       res && res.data ? res.data : null;
