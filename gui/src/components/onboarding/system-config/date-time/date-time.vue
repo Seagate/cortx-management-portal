@@ -32,12 +32,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDateTimeConfig from "./date-time-config.vue";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "cortx-date-time",
   components: {
     cortxDateTimeConfig: CortxDateTimeConfig
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxDateTime extends Vue {}

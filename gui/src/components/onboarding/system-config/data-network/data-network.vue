@@ -65,10 +65,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { EVENT_BUS } from "./../../../../main";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-data-network"
+  name: "cortx-data-network",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxDataNetwork extends Vue {
   public data() {

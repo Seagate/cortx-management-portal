@@ -42,12 +42,15 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDataNetworkIpv4Config from "../onboarding/system-config/data-network/data-network-ipv4-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import i18n from "../../i18n";
+import i18n from "./settings.json";
 
 @Component({
   name: "cortx-data-network-setting",
   components: {
     cortxDataNetworkIpv4Config: CortxDataNetworkIpv4Config
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxDataNetworkSetting extends Vue {
