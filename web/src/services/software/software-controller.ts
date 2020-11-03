@@ -32,3 +32,10 @@ export const startUpgrade = async (req: Request, res: Response) => {
   const result = await Api.post(apiRegister.hotfix_start, req, res);
   return result;
 };
+export const getSystemStaus = async (req: Request, res: Response) => {
+  console.log('getting');
+  let systemStatus = Api.getAll(apiRegister.system_status, req, res);
+  let result = await systemStatus;
+  console.log(result,'result');
+  return result;
+};

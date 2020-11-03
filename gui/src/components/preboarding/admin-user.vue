@@ -20,7 +20,8 @@
       <div class="cortx-brand-logo"></div>
     </div>
     <div class="body-2 ma-5">
-      <div id="admin-configuration-title"
+      <div
+        id="admin-configuration-title"
         class="ml-4 mb-1 black--text font-weight-bold"
         style="font-size: 18px"
       >
@@ -60,23 +61,29 @@
                     v-model.trim="createAccount.username"
                     @input="$v.createAccount.username.$touch"
                   />
-                  <div class="cortx-form-group-label cortx-form-group-error-msg">
-                    <label id="admin-username-required"
+                  <div
+                    class="cortx-form-group-label cortx-form-group-error-msg"
+                  >
+                    <label
+                      id="admin-username-required"
                       v-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.required
                       "
-                      > {{ $t("admin.adminUsernameReq") }}</label
                     >
-                    <label id="admin-username-invalid"
+                      {{ $t("admin.adminUsernameReq") }}</label
+                    >
+                    <label
+                      id="admin-username-invalid"
                       v-else-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.accountNameRegex
                       "
                       >{{ $t("admin.usernameInvalid") }}</label
                     >
-                    <label id="admin-username-invalid"
-                     v-else-if="
+                    <label
+                      id="admin-username-invalid"
+                      v-else-if="
                         $v.createAccount.username.$dirty &&
                           !$v.createAccount.username.userNameRegex
                       "
@@ -109,15 +116,20 @@
                     v-model.trim="createAccount.email"
                     @input="$v.createAccount.email.$touch"
                   />
-                  <div class="cortx-form-group-label cortx-form-group-error-msg">
-                    <label id="admin-email-required"
+                  <div
+                    class="cortx-form-group-label cortx-form-group-error-msg"
+                  >
+                    <label
+                      id="admin-email-required"
                       v-if="
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.required
                       "
-                      > {{ $t("admin.email-required") }}</label
                     >
-                    <label id="admin-email-invalid"
+                      {{ $t("admin.email-required") }}</label
+                    >
+                    <label
+                      id="admin-email-invalid"
                       v-else-if="
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.email
@@ -157,15 +169,19 @@
                     v-model.trim="createAccount.password"
                     @input="$v.createAccount.password.$touch"
                   />
-                  <div class="cortx-form-group-label cortx-form-group-error-msg">
-                    <label id="admin-password-required"
+                  <div
+                    class="cortx-form-group-label cortx-form-group-error-msg"
+                  >
+                    <label
+                      id="admin-password-required"
                       v-if="
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.required
                       "
                       >{{ $t("admin.password-required") }}</label
                     >
-                    <label id="admin-password-invalid"
+                    <label
+                      id="admin-password-invalid"
                       v-else-if="
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.passwordRegex
@@ -201,8 +217,11 @@
                     @input="$v.createAccount.confirmPassword.$touch"
                     v-on:keyup.enter="handleEnterEvent()"
                   />
-                  <div class="cortx-form-group-label cortx-form-group-error-msg">
-                    <label id="admin-confirmpass-notmatch"
+                  <div
+                    class="cortx-form-group-label cortx-form-group-error-msg"
+                  >
+                    <label
+                      id="admin-confirmpass-notmatch"
                       v-if="
                         $v.createAccount.confirmPassword.$dirty &&
                           !$v.createAccount.confirmPassword.sameAsPassword
@@ -219,14 +238,21 @@
             type="button"
             class="cortx-btn-primary"
             @click="gotToNextPage()"
-            :disabled="$v.createAccount.$invalid || createUserInProgress"
+            :disabled="
+              !systemStatus || $v.createAccount.$invalid || createUserInProgress
+            "
           >
             {{ $t("admin.applyContinue") }}
           </button>
         </form>
-        <div v-if="!isValidResponse" class="red--text mt-2" id="admin-invalidmsg">
+        <div
+          v-if="!isValidResponse"
+          class="red--text mt-2"
+          id="admin-invalidmsg"
+        >
           {{ invalidMessage }}
         </div>
+        <CortxMessageDialog></CortxMessageDialog>
       </div>
     </div>
   </v-container>
@@ -248,18 +274,22 @@ import {
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
 import i18n from "./preboarding.json";
+import CortxMessageDialog from "../widgets/cortx-message-dialog.vue";
 
 @Component({
   name: "cortx-admin-user",
-   i18n: {
+  i18n: {
     messages: i18n
+  },
+  components: {
+    CortxMessageDialog
   }
 })
 export default class CortxAdminUser extends Vue {
   @Validations()
   private validations = {
     createAccount: {
-      username: { required, accountNameRegex, userNameRegex},
+      username: { required, accountNameRegex, userNameRegex },
       password: { required, passwordRegex },
       confirmPassword: {
         sameAsPassword: sameAs("password")
@@ -274,14 +304,43 @@ export default class CortxAdminUser extends Vue {
         password: "",
         confirmPassword: "",
         email: "",
-        alert_notification: true,
+        alert_notification: true
       },
       isValidResponse: true,
       invalidMessage: "",
       createUserInProgress: false,
       passwordTooltipMessage,
-      usernameTooltipMessage
+      usernameTooltipMessage,
+      systemStatus: true
     };
+  }
+
+  public async mounted() {
+    await this.getSyetmStatus();
+  }
+  public async getSyetmStatus() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "checking service status..."
+    );
+    try {
+      const dbName = { key: "consul"};
+      const res: any = await Api.getAll(apiRegister.system_status, dbName );
+      this.$store.dispatch("systemConfig/hideLoader");
+    } catch (error) {
+      this.$data.systemStatus = false;
+      let errorMessage = "please check service status";
+      if (error && error.error) {
+        errorMessage = error.error.message;
+      }
+      throw {
+        error: {
+          message: errorMessage
+        }
+      };
+    } finally {
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
   }
   private async gotToNextPage() {
     const queryParams = {
