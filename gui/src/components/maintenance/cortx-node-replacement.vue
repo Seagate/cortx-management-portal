@@ -138,10 +138,13 @@ import { LastNodeReplacementStatus } from "../../models/node-replacement";
 import { Validations } from "vuelidate-property-decorators";
 import { minValue, maxValue, helpers } from "vuelidate/lib/validators";
 import { ipOrDomainRegex } from "./../../common/regex-helpers";
-import i18n from "../../i18n";
+import i18n from "./maintenance.json";
 
 @Component({
-  name: "cortx-node-replacement"
+  name: "cortx-node-replacement",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNodeReplacement extends Vue {
   @Validations()
