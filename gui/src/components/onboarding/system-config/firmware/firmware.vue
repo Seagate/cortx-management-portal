@@ -131,14 +131,14 @@ export default class CortxFirmware extends Vue {
    public async getSyetmStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "checking service status..."
+      i18n.t("onBoarding.serviceStatus")
     );
     try {
       const res: any = await Api.getAll(apiRegister.system_status);
       this.$store.dispatch("systemConfig/hideLoader");
     } catch (error) {
       this.$data.systemStatus = false;
-      let errorMessage = "please check service status";
+      let errorMessage =  i18n.t("onBoarding.errorMessage");
       if (error && error.error) {
         errorMessage = error.error.message;
       }
