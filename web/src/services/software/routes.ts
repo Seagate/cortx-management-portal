@@ -74,7 +74,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/system/:consul",
+    path: "/api/v1/system/status/:consul",
     method: "get",
     handler: [
       checkRequiredParams,
