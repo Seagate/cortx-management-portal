@@ -93,10 +93,13 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required } from "vuelidate/lib/validators";
 import { UserLoginQueryParam } from "./../../models/user-login";
-import i18n from "./../../i18n";
+import i18n from "./preboarding.json";
 
 @Component({
-  name: "cortx-login"
+  name: "cortx-login",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxLogin extends Vue {
   public loginForm: UserLoginQueryParam = {
@@ -118,8 +121,8 @@ export default class CortxLogin extends Vue {
       isValidLogin: true,
       loginInProgress: false,
       isUserLoggedIn: false,
-      userNamePlaceholder: i18n.t("login.user-name-placeholder"),
-      passwordPlaceholder: i18n.t("login.password-placeholder")
+      userNamePlaceholder: this.$t("login.user-name-placeholder"),
+      passwordPlaceholder: this.$t("login.password-placeholder")
     };
   }
 
