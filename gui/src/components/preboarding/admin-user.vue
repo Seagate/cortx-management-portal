@@ -321,7 +321,7 @@ export default class CortxAdminUser extends Vue {
   public async getSyetmStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
-      "checking service status..."
+      this.$t("admin.serviceStatus")
     );
     try {
       const dbName = { key: "consul"};
@@ -329,7 +329,7 @@ export default class CortxAdminUser extends Vue {
       this.$store.dispatch("systemConfig/hideLoader");
     } catch (error) {
       this.$data.systemStatus = false;
-      let errorMessage = "please check service status";
+      let errorMessage = this.$t("admin.errorMessage");
       if (error && error.error) {
         errorMessage = error.error.message;
       }
