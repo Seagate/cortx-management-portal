@@ -411,6 +411,8 @@ export abstract class Api {
             return new HTTPError.HTTP409Error(response);
         } else if (statusCode == HttpStatus.UNPROCESSABLE_ENTITY) {
             return new HTTPError.HTTP422Error(response);
+        } else if (statusCode == HttpStatus.SERVICE_UNAVAILABLE) {
+            return new HTTPError.HTTP503Error(response);
         } else {
             return new HTTPError.HTTP400Error(response);
         }
