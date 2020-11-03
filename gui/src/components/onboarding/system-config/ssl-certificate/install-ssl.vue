@@ -47,10 +47,13 @@ import {
 import { EVENT_BUS } from "./../../../../main";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers } from "vuelidate/lib/validators";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-install-ssl"
+  name: "cortx-install-ssl",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxInstallSSL extends Vue {
   @Prop({ required: true })
