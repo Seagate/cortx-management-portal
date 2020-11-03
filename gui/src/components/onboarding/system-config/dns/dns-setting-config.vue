@@ -59,7 +59,7 @@
                 </div>
               </div>
               <div
-                class="cortx-form-group cortx-form-group-custom mt-3"
+                class="cortx-form-group cortx-form-group-custom mt-3 mb-4"
                 :class="{
                   'cortx-form-group--error': node.search_domain.$error
                 }"
@@ -116,10 +116,13 @@ import {
   ipAddress,
   requiredIf
 } from "vuelidate/lib/validators";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-dns-setting-config"
+  name: "cortx-dns-setting-config",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxDnsSettingConfig extends Vue {
   @Validations()

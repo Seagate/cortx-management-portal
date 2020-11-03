@@ -42,12 +42,15 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxNotifications from "../onboarding/system-config/notifications/notifications-email-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import i18n from "../../i18n";
+import i18n from "./settings.json";
 
 @Component({
   name: "cortx-notification-email-settings",
   components: {
     cortxNotifications: CortxNotifications
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxNotificationEmailSettings extends Vue {

@@ -72,10 +72,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { EVENT_BUS } from "./../../../../main";
-import i18n from "../../../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-user-setting"
+  name: "cortx-user-setting",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxUserSetting extends Vue {
   private data() {

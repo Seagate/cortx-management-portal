@@ -98,7 +98,7 @@
                     class="cortx-form-group-label"
                     for="Email"
                     id="lblAdminEmail"
-                    >{{ $t("csmuser.email") }}</label
+                    >{{ $t("admin.email") }}</label
                   >
                   <div></div>
                   <input
@@ -115,14 +115,14 @@
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.required
                       "
-                      > {{ $t("csmuser.email-required") }}</label
+                      > {{ $t("admin.email-required") }}</label
                     >
                     <label id="admin-email-invalid"
                       v-else-if="
                         $v.createAccount.email.$dirty &&
                           !$v.createAccount.email.email
                       "
-                      >{{ $t("csmuser.email-invalid") }}</label
+                      >{{ $t("admin.email-invalid") }}</label
                     >
                   </div>
                 </div>
@@ -163,14 +163,14 @@
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.required
                       "
-                      >{{ $t("csmuser.password-required") }}</label
+                      >{{ $t("admin.password-required") }}</label
                     >
                     <label id="admin-password-invalid"
                       v-else-if="
                         $v.createAccount.password.$dirty &&
                           !$v.createAccount.password.passwordRegex
                       "
-                      >{{ $t("csmuser.password-invalid") }}</label
+                      >{{ $t("admin.password-invalid") }}</label
                     >
                   </div>
                 </div>
@@ -189,7 +189,7 @@
                     class="cortx-form-group-label"
                     for="confirmPassword"
                     id="lblConfirmAdminPassword"
-                    >{{ $t("csmuser.confirm-password") }}*</label
+                    >{{ $t("admin.confirm-password") }}*</label
                   >
                   <div></div>
                   <input
@@ -207,7 +207,7 @@
                         $v.createAccount.confirmPassword.$dirty &&
                           !$v.createAccount.confirmPassword.sameAsPassword
                       "
-                      >{{ $t("csmuser.confirm-password-invalid") }}</label
+                      >{{ $t("admin.confirm-password-invalid") }}</label
                     >
                   </div>
                 </div>
@@ -247,10 +247,13 @@ import {
   userNameRegex
 } from "./../../common/regex-helpers";
 import { invalid } from "moment";
-import i18n from "./../../i18n";
+import i18n from "./preboarding.json";
 
 @Component({
-  name: "cortx-admin-user"
+  name: "cortx-admin-user",
+   i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAdminUser extends Vue {
   @Validations()
