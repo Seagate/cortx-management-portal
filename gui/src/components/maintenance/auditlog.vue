@@ -85,10 +85,13 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import moment from "moment";
-import i18n from "../../i18n";
+import i18n from "./maintenance.json";
 
 @Component({
-  name: "cortx-auditlog"
+  name: "cortx-auditlog",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAuditLog extends Vue {
   private data() {
