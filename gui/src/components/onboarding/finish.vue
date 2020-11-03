@@ -50,10 +50,13 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import i18n from "./../../i18n";
+import i18n from "./onboarding.json";
 
 @Component({
-  name: "cortx-onboarding-finish"
+  name: "cortx-onboarding-finish",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxOnboardingFinish extends Vue {
   private logout() {

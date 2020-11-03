@@ -105,12 +105,15 @@ import {
   ipAddress,
   requiredIf
 } from "vuelidate/lib/validators";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "upload-ssl-config",
   components: {
     CortxInstallSSL
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxUploadSSLConfig extends Vue {
