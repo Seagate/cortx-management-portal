@@ -105,7 +105,8 @@
     "version": "Version:",
     "build": "Build:",
     "release": "Release:",
-    "COMPONENTS": "COMPONENTS"
+    "COMPONENTS": "COMPONENTS",
+    "SerialNumber": "Serial No:"
   },
   "onBoarding": {
     "systemName": "System name",
