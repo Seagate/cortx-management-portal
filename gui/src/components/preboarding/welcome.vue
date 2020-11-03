@@ -40,10 +40,13 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import i18n from "./../../i18n";
+import i18n from "./preboarding.json";
 
 @Component({
-  name: "cortx-get-started"
+  name: "cortx-get-started",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxWelcome extends Vue {}
 </script>
