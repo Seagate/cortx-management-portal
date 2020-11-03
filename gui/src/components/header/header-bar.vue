@@ -53,7 +53,7 @@
             <template v-slot:activator="{ on }">
               <img :src="require('@/assets/logout.svg/')" v-on="on"  id="logout-icon"/>
             </template>
-            <span id="logoutlbl">{{ $t("dashboard.logout") }}</span>
+            <span id="logoutlbl">{{ $t("common.logout") }}</span>
           </v-tooltip>
         </div>
       </div>

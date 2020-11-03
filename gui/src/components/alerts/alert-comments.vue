@@ -99,10 +99,13 @@ import { required, maxLength } from "vuelidate/lib/validators";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { AlertComment } from "../../models/alert";
-import i18n from "../../i18n";
+import i18n from "./alert.json";
 
 @Component({
-  name: "cortx-alert-comments"
+  name: "cortx-alert-comments",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAlertComments extends Vue {
   @Prop({ required: true })

@@ -92,7 +92,7 @@
           <label
             :class="alert.resolved ? '' : 'cortx-alert-status-chip-disabled'"
             style="float: left;"
-          >{{ $t("alerts.Resolved") }} |</label>
+          >{{ $t("alerts.resolved") }} |</label>
           <img
             v-if="alert.acknowledged"
             class="cortx-float-l"
@@ -182,7 +182,7 @@ import AlertExtendedInfoComp from "./alert-extended-info.vue";
 import CortxAlertComments from "./alert-comments.vue";
 import CortxAlertOccurrences from "./alert-occurrences.vue";
 import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
-import i18n from "../../i18n";
+import i18n from "./alert.json";
 
 @Component({
   name: "cortx-alert-details",
@@ -191,6 +191,9 @@ import i18n from "../../i18n";
     CortxAlertComments,
     CortxAlertOccurrences,
     CortxTabs
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxAlertDetails extends Vue {

@@ -66,10 +66,13 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import i18n from "../../i18n";
+import i18n from "./s3.json";
 
 @Component({
-  name: "cortx-bucketconfigsummary"
+  name: "cortx-bucketconfigsummary",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxConfigurationSummary extends Vue {
   private data() {

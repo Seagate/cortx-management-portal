@@ -94,11 +94,14 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { agreementText } from "./../../common/license-agreement-text";
 import { buildLinkDirective } from "../widgets/build-link-directive";
-import i18n from "./../../i18n";
+import i18n from "./preboarding.json";
 
 @Component({
   name: "cortx-onboarding-finish",
-  directives: { "cortx-build-link": buildLinkDirective }
+  directives: { "cortx-build-link": buildLinkDirective },
+   i18n: {
+    messages: i18n
+  }
 })
 export default class CortxOnboardingFinish extends Vue {
   private data() {
