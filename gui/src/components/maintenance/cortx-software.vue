@@ -127,10 +127,13 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import i18n from "../../i18n";
+import i18n from "./maintenance.json";
 
 @Component({
-  name: "cortx-hotfix"
+  name: "cortx-hotfix",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxHotfix extends Vue {
   public lastUpgradeStatus: any = null;
