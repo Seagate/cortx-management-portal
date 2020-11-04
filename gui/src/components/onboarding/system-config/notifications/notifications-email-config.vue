@@ -262,10 +262,13 @@ import {
   maxValue
 } from "vuelidate/lib/validators";
 import { commaSeparatedEmailsRegex } from "./../../../../common/regex-helpers";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-notification"
+  name: "cortx-notification",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNotifications extends Vue {
   @Validations()
