@@ -123,7 +123,8 @@
     "accept": "Accept",
     "email": "Email",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "action": "Action"
   },
   "csmuser": {
     "user-setting-label": "User settings: Local",
@@ -511,5 +512,11 @@
   "license": {
     "header": "To set up your system, you must accept the Terms and Conditions.",
     "getStarted": "Accept Terms & Condition"
+  },
+  "regex-validation": {
+    "bucket-input-tooltip":"The bucket name must be of minimum 4 characters and maximum 56 characters. Only lowercase, numbers, dash(-) and dot (.) are allowed. The bucket name cannot start and end with a dash (-) or dot(.)." ,
+    "account-tooltip":"The account name must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-).",
+    "username-tooltip": "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-). The username must not be 'root' or 'Root'.",
+    "password-tooltip": "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, and One number"
   }
 }
