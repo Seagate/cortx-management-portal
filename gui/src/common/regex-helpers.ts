@@ -29,10 +29,10 @@ export const usernameTooltipMessage =
 
 export const bucketNameRegex = helpers.regex(
   "bucketNameRegex",
-  /^[a-z0-9][a-z0-9-]{3,54}[a-z0-9]$/
+  /^[a-z0-9][a-z0-9-.]{3,54}[a-z0-9]$/
 );
 export const bucketNameTooltipMessage = `The bucket name must be of minimum 4 characters and maximum 56 characters.
-Only lowercase, numbers, and dash (-) are allowed. The bucket name cannot start and end with a dash (-).`;
+Only lowercase, numbers, period(.) and dash (-) are allowed. The bucket name cannot start and end with a dash (-).`;
 
 export const passwordRegex = helpers.regex(
   "passwordRegex",
