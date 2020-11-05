@@ -366,7 +366,7 @@ export default class CortxBucketCreation extends Vue {
   private bucketToDelete: string = "";
   private policyJSON: any = "";
   private bucketName: any = "";
-  private bucketNameTooltipMessage: string = bucketNameTooltipMessage;
+  private bucketNameTooltipMessage = bucketNameTooltipMessage;
   private bucketUrl = "";
   private noBucketPolicy: boolean;
 
@@ -381,13 +381,13 @@ export default class CortxBucketCreation extends Vue {
     this.showBucketPolicyDialog = false;
     this.bucketsTableHeaderList = [
       {
-        text: "Name",
+        text: i18n.t("common.name"),
         value: "name",
         sortable: false
       },
-      { 
-        text: "Action", 
-        value: "data-table-expand" 
+      {
+        text: i18n.t("common.action"),
+        value: "data-table-expand"
       }
     ];
   }

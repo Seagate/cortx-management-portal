@@ -423,8 +423,8 @@ export default class CortxIAMUserManagement extends Vue {
   private usersList: IAMUser[] = [];
   private user: IAMUser;
   private userToDelete: string = "";
-  private passwordTooltipMessage: string = passwordTooltipMessage;
-  private usernameTooltipMessage: string = usernameTooltipMessage;
+  private passwordTooltipMessage = passwordTooltipMessage;
+  private usernameTooltipMessage = usernameTooltipMessage;
   private credentialsFileContent: string = "";
   private isCredentialsFileDownloaded: boolean = false;
   private selectedIAMUser: string = "";
