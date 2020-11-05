@@ -488,9 +488,9 @@ import apiRegister from "../../services/api-register";
 export default class CortxUDXRegistration extends Vue {
   public registrationToken: string = "";
   public registrationResponse: any = null;
-  public passwordTooltipMessage: string = passwordTooltipMessage;
-  public accountNameTooltipMessage: string = accountNameTooltipMessage;
-  public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
+  public passwordTooltipMessage = passwordTooltipMessage;
+  public accountNameTooltipMessage = accountNameTooltipMessage;
+  public bucketNameTooltipMessage = udxBucketNameTooltipMessage;
   public registrationForm = {
     url: "",
     accountName: "",
