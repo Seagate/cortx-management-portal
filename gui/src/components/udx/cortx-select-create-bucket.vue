@@ -72,7 +72,10 @@
         <button class="cortx-btn-primary" @click="createBucket()">
           Create bucket
         </button>
-        <button class="cortx-btn-secondary cortx-btn-cancel" @click="isCreateBucket=false">
+        <button
+          class="cortx-btn-secondary cortx-btn-cancel"
+          @click="isCreateBucket = false"
+        >
           Cancel
         </button>
       </v-col>
@@ -103,7 +106,7 @@ export default class CortxSelectCreateBucket extends Vue {
   public authToken: string;
 
   public registrationForm = {
-    bucketName: "",
+    bucketName: ""
   };
 
   @Validations()
@@ -119,10 +122,12 @@ export default class CortxSelectCreateBucket extends Vue {
         auth_token: this.authToken
       }
     };
+    this.$store.dispatch("systemConfig/showLoader", "Fetching butcket list...");
     const res = await Api.getAllWithConfig(apiRegister.s3_bucket, config);
     if (res && res.data) {
       this.bucketList = res.data;
     }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 
   private createBucket() {
