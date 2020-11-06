@@ -80,7 +80,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import { Validations } from "vuelidate-property-decorators";
@@ -98,9 +98,9 @@ export default class CortxSelectCreateBucket extends Vue {
   private isCreateBucket: boolean = false;
   private selectedBucket: string = "";
   private bucketList: any[] = [];
-  constructor() {
-    super();
-  }
+
+  @Prop({ required: true, default: "" })
+  public authToken: string;
 
   public registrationForm = {
     bucketName: "",
@@ -114,7 +114,12 @@ export default class CortxSelectCreateBucket extends Vue {
   };
 
   public async mounted() {
-    const res = await Api.getAll(apiRegister.s3_bucket);
+    const config: any = {
+      headers: {
+        auth_token: this.authToken
+      }
+    };
+    const res = await Api.getAllWithConfig(apiRegister.s3_bucket, config);
     if (res && res.data) {
       this.bucketList = res.data;
     }
