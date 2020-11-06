@@ -36,13 +36,9 @@ opensource@seagate.com or cortx-questions@seagate.com. */
         <v-divider></v-divider>
 
         <v-stepper-step :complete="stepNumber > 4" step="4">
-          Registration Token
+          Registration 
         </v-stepper-step>
         <v-divider></v-divider>
-
-        <v-stepper-step step="5">
-          Register
-        </v-stepper-step>
       </v-stepper-header>
 
       <v-stepper-items>
@@ -81,26 +77,133 @@ opensource@seagate.com or cortx-questions@seagate.com. */
           </v-btn>
         </v-stepper-content>
         <v-stepper-content step="4">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
-          <button class="cortx-btn-primary" @click="stepNumber = 5">
-            Continue
+           <v-row>
+            <v-col class="py-0 pr-0">
+           <div id="udx-reg-token-container" >
+            <div class="udx-reg-token-lbl">
+              <label class="cortx-text-lg cortx-float-l" id="udx-tocken-title">{{ $t("udx-registration.registration-token") }}</label>
+              <label class="cortx-float-l mt-1 ml-1">
+                <cortx-info-tooltip
+                  message="On your Lyve Pilot web portal choose 'Add Device' and then enter the identification token below."
+                />
+              </label>
+            </div>
+            <div id="udx-reg-token" class="mt-1">
+              <label id="udx-reg-token-part-1" class="float-left">{{
+                registrationToken.substring(0, 4)
+              }}</label>
+              <label id="udx-reg-token-part-2" class="float-left ml-2">{{
+                registrationToken.substring(4, 8)
+              }}</label>
+              <label id="udx-reg-token-part-3" class="float-left ml-2">{{
+                registrationToken.substring(8, 12)
+              }}</label>
+            </div>
+          </div>
+            </v-col>
+          </v-row>
+         
+      <v-row>
+         <div class="row ma-0">
+             <template>
+        <div class="col-8 body-2 column mr-5 pt-0">
+                  <table class="cortx-text-lg" id="s3information">
+                    <tr id="smtp-server">
+                      <td class="table-data-label" id="s3data"><h4>S3 Account:</h4></td>
+                      <td id="smtp-server-value">s3nxchvj</td>
+                    </tr>
+                     <tr id="smtp-server">
+                      <td class="table-data-label" id="iamdada"><h4>IAM User:</h4></td>
+                      <td id="smtp-server-value">testIMA</td>
+                    </tr>
+                    <tr id="bucketdata">
+                      <td id="sender-email-label"><h4>bucket Name :</h4></td>
+                      <td id="sender-email-value">ldp-bucket</td>
+                    </tr>
+                  </table>
+                </div>
+                  </template>
+         </div>
+      </v-row>
+         
+          <v-row>
+            <v-col class="py-0 pr-0">
+          <div class="cortx-form-group">
+            <label class="cortx-form-group-label" for="url" id="udx-url-label">
+              <cortx-info-tooltip label="URL*" message="Enter the URL provided by your UDX portal." />
+            </label>
+            <input
+              class="cortx-form__input_text"
+              type="text"
+            />
+          </div>
+            </v-col>
+            <v-col class="py-0 pr-0">
+           <div class="cortx-form-group">
+            <label class="cortx-form-group-label" for="pin" id="udx-pin-label">
+              <cortx-info-tooltip label="PIN*" message="Enter the PIN provided by your UDX portal." />
+            </label>
+            <input
+              class="cortx-form__input_text"
+              type="text"
+            />
+          </div>
+            </v-col>
+          </v-row>
+          <v-row>
+        <v-col class="py-0">
+          <label class="cortx-text-md" id="udx-agreelbl"
+            >{{ $t("udx-registration.iagreetext") }}:</label
+          >
+          <br />
+          <label
+            class="cortx-ckb-container"
+            for="consentOne"
+            id="udx-firstcheck"
+          >
+            {{ $t("udx-registration.firstcheck-text") }}
+            <input
+              type="checkbox"
+              name="consentOne"
+              v-model="consentOne"
+              id="consentOne"
+            />
+            <span class="cortx-ckb-tick"></span>
+          </label>
+          <br />
+          <label
+            class="cortx-ckb-container"
+            for="consentTwo"
+            id="udx-secondcheck"
+          >
+            {{ $t("udx-registration.secondcheck-text") }}
+            <input
+              type="checkbox"
+              name="consentTwo"
+              v-model="consentTwo"
+              id="consentTwo"
+            />
+            <span class="cortx-ckb-tick"></span>
+          </label>
+        </v-col>
+      </v-row>
+      <br>
+          <button
+            id="udx-registrationbtn"
+            type="button"
+            class="cortx-btn-primary"
+          >
+            {{ $t("udx-registration.register-btn") }}
           </button>
-
-          <v-btn text>
-            Cancel
-          </v-btn>
-        </v-stepper-content>
-        <v-stepper-content step="5">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
-          <button class="cortx-btn-primary" @click="stepNumber = 1; createBucket=false">
-            Continue
+          <button
+            createBucket=false
+            id="udx-clearbtn"
+            type="button"
+            class="ml-8 cortx-btn-secondary"
+            @click="clearRegistrationForm()"
+          >
+            {{ $t("udx-registration.clear") }}
           </button>
-
-          <v-btn text>
-            Cancel
-          </v-btn>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -141,11 +244,25 @@ export default class CortxUDXRegistration extends Vue {
   public s3URL: any[] = [];
   public authToken: string = "";
   public isCreateAccount: boolean = false;
+   public registrationToken: string = "";
 
   public setS3URL(s3URL: any[]) {
     this.s3URL = s3URL;
   }
-
+public async mounted() {
+     await this.getRegistrationToken();
+  }
+  public async getRegistrationToken() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Fetching registration token..."
+    );
+    const res = await Api.getAll(apiRegister.udx_registration_token);
+    if (res && res.data) {
+      this.registrationToken = res.data.registrationToken;
+    }
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
   public setAuthToken(authToken: string) {
     this.authToken = authToken;
     this.stepNumber = 2;
