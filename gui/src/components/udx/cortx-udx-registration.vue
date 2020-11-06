@@ -59,81 +59,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
         </v-stepper-content>
 
         <v-stepper-content step="2">
-          <v-row v-if="!createBucket">
-            <v-col class="py-0 pr-0">
-              <cortx-dropdown
-                title="-- Select Bucket --"
-                :selectedOption.sync="selectedBucket"
-                :options="bucketList"
-              ></cortx-dropdown>
-              <br />
-              <button class="cortx-btn-tertiary create-new-bucket"
-                @click="createBucket=true"
-                type="button">
-                Create new Bucket
-              </button>
-              <br />
-              <button class="cortx-btn-primary"
-                @click="stepNumber = 3">
-                Continue
-              </button>
-            </v-col>
-          </v-row>
-          <v-row v-if="createBucket">
-            <v-col class="py-0 pr-0">
-              <div
-                class="cortx-form-group"
-                :class="{
-                  'cortx-form-group--error':
-                    $v.registrationForm.bucketName.$error
-                }"
-              >
-                <label
-                  class="cortx-form-group-label"
-                  for="bucketName"
-                  id="udx-bucket-namelbl"
-                >
-                  <cortx-info-tooltip
-                    label="Bucket name*"
-                    :message="bucketNameTooltipMessage"
-                  />
-                </label>
-                <div class="cortx-bucket-input-prefix">
-                  <label>ldp-</label>
-                </div>
-                <input
-                  class="cortx-form__input_text cortx-bucket-input"
-                  type="text"
-                  id="bucketName"
-                  name="bucketName"
-                  v-model.trim="registrationForm.bucketName"
-                  @input="$v.registrationForm.bucketName.$touch"
-                />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="udx-bucketname-required"
-                    v-if="
-                      $v.registrationForm.bucketName.$dirty &&
-                        !$v.registrationForm.bucketName.required
-                    "
-                    >{{ $t("udx-registration.bucket-required") }}</label
-                  >
-                  <label
-                    id="udx-bucketname-invalid"
-                    v-else-if="
-                      $v.registrationForm.bucketName.$dirty &&
-                        !$v.registrationForm.bucketName.udxBucketNameRegex
-                    "
-                    >{{ $t("udx-registration.invalid-bucketname") }}</label
-                  >
-                </div>
-              </div>
-              <button class="cortx-btn-primary"
-                @click="stepNumber = 3">
-                Create bucket
-              </button>
-            </v-col>
-          </v-row>
+          <cortx-select-create-bucket @onChange="updateStep()" ></cortx-select-create-bucket>
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -622,6 +548,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
       </v-row>
     </div>
     <cortx-download-csv-dialog
+      v-if="false"
       :show="showAccessKeyDetailsDialog"
       :title="$t('s3.download-csv-dialog.created')"
       :tableContent="accessKeyDetails"
@@ -634,6 +561,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import CortxDownloadCsvDialog from "./../s3/download-csv-dialog.vue";
+import CortxSelectCreateBucket from "./cortx-select-create-bucket.vue";
 import i18n from "./../../i18n";
 import {
   udxURLRegex,
@@ -648,7 +576,10 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 @Component({
   name: "cortx-udx-registration",
-  components: { CortxDownloadCsvDialog },
+  components: {
+    CortxDownloadCsvDialog,
+    CortxSelectCreateBucket
+  },
   data() {
     return {
       stepNumber: 2
@@ -732,14 +663,8 @@ export default class CortxUDXRegistration extends Vue {
 
   public async mounted() {
     // await this.getRegistrationToken();
-    await this.getBucketList();
   }
-  public async getBucketList() {
-    const res = await Api.getAll(apiRegister.s3_bucket);
-    if (res && res.data) {
-      console.log(res.data)
-    }
-  }
+
   public async registerUDX() {
     this.$store.dispatch("systemConfig/showLoader", "Registering UDX...");
     const res = await Api.post(
@@ -805,6 +730,11 @@ export default class CortxUDXRegistration extends Vue {
     this.showAccessKeyDetailsDialog = false;
     this.$emit("complete");
   }
+
+  private updateStep(selectedBucket: string) {
+    this.$data.stepNumber = this.$data.stepNumber + 1;
+    this.selectedBucket = selectedBucket;
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -832,18 +762,5 @@ export default class CortxUDXRegistration extends Vue {
 .cortx-modal-footer {
   height: 3.5em;
   padding: 0.5em;
-}
-.cortx-bucket-input-prefix {
-  height: 40px;
-  padding-top: 8px;
-  float: left;
-}
-.cortx-bucket-input {
-  width: 290px;
-  float: left;
-}
-.create-new-bucket {
-  padding: 0;
-  text-decoration: underline;
 }
 </style>
