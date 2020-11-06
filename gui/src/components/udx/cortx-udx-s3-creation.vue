@@ -175,6 +175,19 @@
         </div>
       </v-col>
     </v-row>
+    <v-row>
+        <v-col class="pt-0">
+            <button
+            id="s3-crete-accountbtn"
+            type="button"
+            class="cortx-btn-primary"
+            @click="createAccount()"
+            :disabled="$v.createAccountForm.$invalid"
+            >
+            {{ $t("s3.account.create-account-btn") }}
+            </button>
+        </v-col>
+    </v-row>
     <v-dialog
       v-model="showAccountDetailsDialog"
       persistent
@@ -273,7 +286,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import { Account } from "../../models/s3";
@@ -329,8 +342,11 @@ export default class CortxS3Account extends Vue {
   private credentialsFileContent: string = "";
   private showEditAccountForm: boolean;
   private editAccoutName: string;
-  private s3Url = [];
   private s3UrlNone: boolean = false;
+
+  
+  @Prop({ required: false })
+  public s3Url: any;
 
   constructor() {
     super();
@@ -386,8 +402,7 @@ export default class CortxS3Account extends Vue {
     this.isCredentialsFileDownloaded = true;
     this.showAccountDetailsDialog = false;
     this.showCreateAccountForm = false;
-    this.clearCreateAccountForm();
-    this.$emit("goToNext");
+    this.login();
   }
   public clearCreateAccountForm() {
     this.createAccountForm.confirmPassword = "";
@@ -396,6 +411,24 @@ export default class CortxS3Account extends Vue {
     this.createAccountForm.account.account_email = "";
     if (this.$v.createAccountForm) {
       this.$v.createAccountForm.$reset();
+    }
+  }
+
+  public async login() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Logging in..."
+    );
+    const selectedAccount: any = this.createAccountForm.account.account_name;
+    const loginCredentials: any = {
+      username: this.createAccountForm.account.account_name,
+      password: this.createAccountForm.account.password
+    };
+    const res = await Api.post(apiRegister.login, loginCredentials);
+    this.$store.dispatch("systemConfig/hideLoader");
+    if (res && res.headers) {
+      this.$emit('setAuthToken', res.headers.authorization);
+       this.clearCreateAccountForm();
     }
   }
 }

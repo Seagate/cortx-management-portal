@@ -46,8 +46,10 @@ opensource@seagate.com or cortx-questions@seagate.com. */
           <div style="min-height: 300px;" v-if="stepNumber === 1">
             <cortx-S3-account
               v-if="isCreateAccount"
-              ref="s3Account"
-              @goToNext= "goToNextPage()">
+              ref="s3Account" 
+              :s3Url = s3URL
+              @setAuthToken="setAuthToken"
+            >
             </cortx-S3-account>
             <LoginExistingS3Account v-else
               @createAccount="isCreateAccount = true"

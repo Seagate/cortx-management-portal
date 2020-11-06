@@ -87,6 +87,7 @@ import apiRegister from "../../services/api-register";
 export default class LoginExistingS3Account extends Vue {
   public accountsList: any[] = [];
   public s3Url: any[] = [];
+  private s3UrlNone: boolean = false;
 
   public loginForm = {
     account: {
@@ -120,6 +121,11 @@ export default class LoginExistingS3Account extends Vue {
       this.accountsList = res.data.s3_accounts.map((e: any) => {
         return { label: e.account_name, value: e.account_name };
       });
+      this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
+      if (this.s3Url[0] === "http://None") {
+         this.s3UrlNone = true;
+      }
+      
       this.$emit('setS3URL', this.s3Url);
     }
 
