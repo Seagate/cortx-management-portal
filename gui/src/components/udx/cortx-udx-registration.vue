@@ -243,6 +243,7 @@ export default class CortxUDXRegistration extends Vue {
   public stepNumber: number = 1;
   public s3URL: any[] = [];
   public authToken: string = "";
+  public selectedBucket: string = "";
   public isCreateAccount: boolean = false;
    public registrationToken: string = "";
 
@@ -266,6 +267,11 @@ public async mounted() {
   public setAuthToken(authToken: string) {
     this.authToken = authToken;
     this.stepNumber = 2;
+  }
+
+  private updateStep(selectedBucket) {
+    this.stepNumber = this.stepNumber + 1;
+    this.selectedBucket = selectedBucket;
   }
 }
 </script>
