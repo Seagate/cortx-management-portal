@@ -47,13 +47,12 @@ opensource@seagate.com or cortx-questions@seagate.com. */
 
       <v-stepper-items>
         <v-stepper-content step="1">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
-          <button class="cortx-btn-primary" @click="stepNumber = 2">
+          <cortx-S3-account ref="s3Account" @goToNext= "goToNextPage()"></cortx-S3-account>
+          <button class="cortx-btn-primary" @click="gotoBucket()">
             Continue
           </button>
 
-          <v-btn text>
+          <v-btn text>  
             Cancel
           </v-btn>
         </v-stepper-content>
@@ -562,6 +561,7 @@ import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import CortxDownloadCsvDialog from "./../s3/download-csv-dialog.vue";
 import CortxSelectCreateBucket from "./cortx-select-create-bucket.vue";
+import CortxS3Account from  "./cortx-udx-s3-creation.vue";
 import i18n from "./../../i18n";
 import {
   udxURLRegex,
@@ -578,11 +578,12 @@ import apiRegister from "../../services/api-register";
   name: "cortx-udx-registration",
   components: {
     CortxDownloadCsvDialog,
-    CortxSelectCreateBucket
+    CortxSelectCreateBucket,
+    CortxS3Account
   },
   data() {
     return {
-      stepNumber: 2
+      stepNumber: 1
     };
   }
 })
@@ -734,6 +735,14 @@ export default class CortxUDXRegistration extends Vue {
   private updateStep(selectedBucket: string) {
     this.$data.stepNumber = this.$data.stepNumber + 1;
     this.selectedBucket = selectedBucket;
+  }
+
+  public async gotoBucket() {
+    this.$refs.s3Account.createAccount();
+  }
+
+  public goToNextPage () {
+   this.$data.stepNumber = 2;
   }
 }
 </script>
