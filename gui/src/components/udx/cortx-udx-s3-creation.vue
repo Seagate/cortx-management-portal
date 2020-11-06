@@ -176,17 +176,15 @@
       </v-col>
     </v-row>
     <v-row>
-        <v-col class="pt-0">
-            <button
-            id="s3-crete-accountbtn"
-            type="button"
-            class="cortx-btn-primary"
-            @click="createAccount()"
-            :disabled="$v.createAccountForm.$invalid"
-            >
-            {{ $t("s3.account.create-account-btn") }}
-            </button>
-        </v-col>
+      <v-col class="pt-0">
+        <button
+          id="s3-crete-accountbtn"
+          type="button"
+          class="cortx-btn-primary"
+          @click="createAccount()"
+          :disabled="$v.createAccountForm.$invalid"
+        >{{ $t("s3.account.create-account-btn") }}</button>
+      </v-col>
     </v-row>
     <v-dialog
       v-model="showAccountDetailsDialog"
@@ -223,12 +221,12 @@
             >{{ $t("s3.account.account-name") }}</td>
             <td class="py-2" id="s3-account-name-popup-value">{{ account.account_name }}</td>
           </tr>
-          <tr v-if="!s3UrlNone">
+          <tr v-if="!s3UrlInfo.s3UrlNone">
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-access-key-popup-label"
             >{{ $t("s3.account.url-label") }}</td>
-            <td class="py-2">{{ s3Url[0] }}, {{ s3Url[1] }}</td>
+            <td class="py-2">{{ s3UrlInfo.s3Url[0] }}, {{ s3UrlInfo.s3Url[1] }}</td>
           </tr>
           <tr>
             <td
@@ -259,7 +257,7 @@
           </tr>
         </table>
 
-        <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note") }}</div>
+        <div v-if="s3UrlInfo.s3UrlNone" class="pl-7">{{ $t("s3.account.url-note") }}</div>
 
         <v-card-actions>
           <a
@@ -268,7 +266,7 @@
             :href="credentialsFileContent"
             download="credentials.csv"
             @click="downloadAndClose()"
-          >{{ $t("s3.account.download-as-csv") }}</a>
+          >{{ $t("s3.account.download-as-csv-continue") }}</a>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -312,6 +310,9 @@ export default class CortxS3Account extends Vue {
     confirmPassword: ""
   };
 
+  @Prop({ required: false })
+  public s3UrlInfo: any;
+
   @Validations()
   public validations = {
     createAccountForm: {
@@ -343,10 +344,6 @@ export default class CortxS3Account extends Vue {
   private showEditAccountForm: boolean;
   private editAccoutName: string;
   private s3UrlNone: boolean = false;
-
-  
-  @Prop({ required: false })
-  public s3Url: any;
 
   constructor() {
     super();
@@ -387,7 +384,7 @@ export default class CortxS3Account extends Vue {
       "Account name,S3 URL,Access key,Secret key\n" +
       this.account.account_name +
       "," +
-      `${this.s3Url[0]} ${this.s3Url[1]}` +
+      `${this.s3UrlInfo.s3Url[0]} ${this.s3UrlInfo.s3Url[1]}` +
       "," +
       this.account.access_key +
       "," +
@@ -398,7 +395,7 @@ export default class CortxS3Account extends Vue {
       this.account.canonical_id
     );
   }
-  private async downloadAndClose() {
+  public async downloadAndClose() {
     this.isCredentialsFileDownloaded = true;
     this.showAccountDetailsDialog = false;
     this.showCreateAccountForm = false;
@@ -415,10 +412,7 @@ export default class CortxS3Account extends Vue {
   }
 
   public async login() {
-    this.$store.dispatch(
-      "systemConfig/showLoader",
-      "Logging in..."
-    );
+    this.$store.dispatch("systemConfig/showLoader", "Logging in...");
     const selectedAccount: any = this.createAccountForm.account.account_name;
     const loginCredentials: any = {
       username: this.createAccountForm.account.account_name,
@@ -427,8 +421,8 @@ export default class CortxS3Account extends Vue {
     const res = await Api.post(apiRegister.login, loginCredentials);
     this.$store.dispatch("systemConfig/hideLoader");
     if (res && res.headers) {
-      this.$emit('setAuthToken', res.headers.authorization);
-       this.clearCreateAccountForm();
+      this.$emit("setAuthToken", res.headers.authorization);
+      this.clearCreateAccountForm();
     }
   }
 }

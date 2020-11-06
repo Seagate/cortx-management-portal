@@ -28,8 +28,7 @@
         class="cortx-form-group-label cortx-cursor-pointer"
         style="color: #6ebe49; text-decoration: underline;"
         @click="triggerCreateAccount()"
-        >Create new account</label
-      >
+      >Create new account</label>
     </div>
     <div
       class="cortx-form-group"
@@ -37,13 +36,7 @@
         'cortx-form-group--error': $v.loginForm.account.password.$error
       }"
     >
-      <label
-        class="cortx-form-group-label"
-        for="accountPassword"
-        id="s3-lblpassword"
-      >
-        Password*
-      </label>
+      <label class="cortx-form-group-label" for="accountPassword" id="s3-lblpassword">Password*</label>
       <input
         class="cortx-form__input_text"
         type="password"
@@ -59,8 +52,7 @@
             $v.loginForm.account.password.$dirty &&
             !$v.loginForm.account.password.required
           "
-          >Password is required.</label
-        >
+        >Password is required.</label>
       </div>
     </div>
     <button
@@ -69,9 +61,7 @@
       class="cortx-btn-primary"
       @click="login()"
       :disabled="$v.loginForm.$invalid"
-    >
-      Login and continue
-    </button>
+    >Login and continue</button>
   </div>
 </template>
 <script lang="ts">
@@ -87,7 +77,8 @@ import apiRegister from "../../services/api-register";
 export default class LoginExistingS3Account extends Vue {
   public accountsList: any[] = [];
   public s3Url: any[] = [];
-  private s3UrlNone: boolean = false;
+  public s3UrlNone: boolean = false;
+  public s3UrlInfo: any;
 
   public loginForm = {
     account: {
@@ -123,24 +114,21 @@ export default class LoginExistingS3Account extends Vue {
       });
       this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
       if (this.s3Url[0] === "http://None") {
-         this.s3UrlNone = true;
+        this.s3UrlNone = true;
       }
-      
-      this.$emit('setS3URL', this.s3Url);
+      this.s3UrlInfo = { s3Url: this.s3Url, s3UrlNone: this.s3UrlNone };
+      this.$emit("setS3URL", this.s3UrlInfo);
     }
 
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
   public triggerCreateAccount() {
-    this.$emit('createAccount');
+    this.$emit("createAccount");
   }
 
   public async login() {
-    this.$store.dispatch(
-      "systemConfig/showLoader",
-      "Logging in..."
-    );
+    this.$store.dispatch("systemConfig/showLoader", "Logging in...");
     const selectedAccount: any = this.loginForm.account.account_name;
     const loginCredentials: any = {
       username: selectedAccount.value,
@@ -149,7 +137,7 @@ export default class LoginExistingS3Account extends Vue {
     const res = await Api.post(apiRegister.login, loginCredentials);
     this.$store.dispatch("systemConfig/hideLoader");
     if (res && res.headers) {
-      this.$emit('setAuthToken', res.headers.authorization);
+      this.$emit("setAuthToken", res.headers.authorization);
     }
   }
 }

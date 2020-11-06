@@ -47,7 +47,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
             <cortx-S3-account
               v-if="isCreateAccount"
               ref="s3Account" 
-              :s3Url = s3URL
+              :s3UrlInfo = s3UrlInfo
               @setAuthToken="setAuthToken"
             >
             </cortx-S3-account>
@@ -217,7 +217,7 @@ import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import CortxDownloadCsvDialog from "./../s3/download-csv-dialog.vue";
 import CortxSelectCreateBucket from "./cortx-select-create-bucket.vue";
-import CortxS3Account from  "./cortx-udx-s3-creation.vue";
+import CortxS3Account from "./cortx-udx-s3-creation.vue";
 import i18n from "./../../i18n";
 import {
   udxURLRegex,
@@ -243,14 +243,14 @@ import LoginExistingS3Account from "./login-existing-s3account.vue";
 })
 export default class CortxUDXRegistration extends Vue {
   public stepNumber: number = 1;
-  public s3URL: any[] = [];
+  public s3UrlInfo: any[] = [];
   public authToken: string = "";
   public selectedBucket: string = "";
   public isCreateAccount: boolean = false;
    public registrationToken: string = "";
 
-  public setS3URL(s3URL: any[]) {
-    this.s3URL = s3URL;
+  public setS3URL(s3UrlInfo: any[]) {
+    this.s3UrlInfo = s3UrlInfo;
   }
 public async mounted() {
      await this.getRegistrationToken();
@@ -271,7 +271,7 @@ public async mounted() {
     this.stepNumber = 2;
   }
 
-  private updateStep(selectedBucket) {
+  private updateStep(selectedBucket: any) {
     this.stepNumber = this.stepNumber + 1;
     this.selectedBucket = selectedBucket;
   }
