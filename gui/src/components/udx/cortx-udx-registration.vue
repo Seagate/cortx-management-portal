@@ -1,19 +1,15 @@
-/*
- * CORTX-CSM: CORTX Management web and CLI interface.
- * Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- * For any questions about this software or licensing,
- * please email opensource@seagate.com or cortx-questions@seagate.com.
- */
+/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
+Seagate Technology LLC and/or its Affiliates * This program is free software:
+you can redistribute it and/or modify * it under the terms of the GNU Affero
+General Public License as published * by the Free Software Foundation, either
+version 3 of the License, or * (at your option) any later version. * This
+program is distributed in the hope that it will be useful, * but WITHOUT ANY
+WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
+details. * You should have received a copy of the GNU Affero General Public
+License * along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing, * please email
+opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div>
     <div class="udx-page-title">
@@ -63,15 +59,81 @@
         </v-stepper-content>
 
         <v-stepper-content step="2">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
-          <button class="cortx-btn-primary" @click="stepNumber = 3">
-            Continue
-          </button>
-
-          <v-btn text>
-            Cancel
-          </v-btn>
+          <v-row v-if="!createBucket">
+            <v-col class="py-0 pr-0">
+              <cortx-dropdown
+                title="-- Select Bucket --"
+                :selectedOption.sync="selectedBucket"
+                :options="bucketList"
+              ></cortx-dropdown>
+              <br />
+              <button class="cortx-btn-tertiary create-new-bucket"
+                @click="createBucket=true"
+                type="button">
+                Create new Bucket
+              </button>
+              <br />
+              <button class="cortx-btn-primary"
+                @click="stepNumber = 3">
+                Continue
+              </button>
+            </v-col>
+          </v-row>
+          <v-row v-if="createBucket">
+            <v-col class="py-0 pr-0">
+              <div
+                class="cortx-form-group"
+                :class="{
+                  'cortx-form-group--error':
+                    $v.registrationForm.bucketName.$error
+                }"
+              >
+                <label
+                  class="cortx-form-group-label"
+                  for="bucketName"
+                  id="udx-bucket-namelbl"
+                >
+                  <cortx-info-tooltip
+                    label="Bucket name*"
+                    :message="bucketNameTooltipMessage"
+                  />
+                </label>
+                <div class="cortx-bucket-input-prefix">
+                  <label>ldp-</label>
+                </div>
+                <input
+                  class="cortx-form__input_text cortx-bucket-input"
+                  type="text"
+                  id="bucketName"
+                  name="bucketName"
+                  v-model.trim="registrationForm.bucketName"
+                  @input="$v.registrationForm.bucketName.$touch"
+                />
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                  <label
+                    id="udx-bucketname-required"
+                    v-if="
+                      $v.registrationForm.bucketName.$dirty &&
+                        !$v.registrationForm.bucketName.required
+                    "
+                    >{{ $t("udx-registration.bucket-required") }}</label
+                  >
+                  <label
+                    id="udx-bucketname-invalid"
+                    v-else-if="
+                      $v.registrationForm.bucketName.$dirty &&
+                        !$v.registrationForm.bucketName.udxBucketNameRegex
+                    "
+                    >{{ $t("udx-registration.invalid-bucketname") }}</label
+                  >
+                </div>
+              </div>
+              <button class="cortx-btn-primary"
+                @click="stepNumber = 3">
+                Create bucket
+              </button>
+            </v-col>
+          </v-row>
         </v-stepper-content>
 
         <v-stepper-content step="3">
@@ -99,7 +161,7 @@
         <v-stepper-content step="5">
           <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
 
-          <button class="cortx-btn-primary" @click="stepNumber = 1">
+          <button class="cortx-btn-primary" @click="stepNumber = 1; createBucket=false">
             Continue
           </button>
 
@@ -495,56 +557,6 @@
           }}</label>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col class="py-0 pr-0">
-          <div
-            class="cortx-form-group"
-            :class="{
-              'cortx-form-group--error': $v.registrationForm.bucketName.$error
-            }"
-          >
-            <label
-              class="cortx-form-group-label"
-              for="bucketName"
-              id="udx-bucket-namelbl"
-            >
-              <cortx-info-tooltip
-                label="Bucket name*"
-                :message="bucketNameTooltipMessage"
-              />
-            </label>
-            <div class="cortx-bucket-input-prefix">
-              <label>ldp-</label>
-            </div>
-            <input
-              class="cortx-form__input_text cortx-bucket-input"
-              type="text"
-              id="bucketName"
-              name="bucketName"
-              v-model.trim="registrationForm.bucketName"
-              @input="$v.registrationForm.bucketName.$touch"
-            />
-            <div class="cortx-form-group-label cortx-form-group-error-msg">
-              <label
-                id="udx-bucketname-required"
-                v-if="
-                  $v.registrationForm.bucketName.$dirty &&
-                    !$v.registrationForm.bucketName.required
-                "
-                >{{ $t("udx-registration.bucket-required") }}</label
-              >
-              <label
-                id="udx-bucketname-invalid"
-                v-else-if="
-                  $v.registrationForm.bucketName.$dirty &&
-                    !$v.registrationForm.bucketName.udxBucketNameRegex
-                "
-                >{{ $t("udx-registration.invalid-bucketname") }}</label
-              >
-            </div>
-          </div>
-        </v-col>
-      </v-row>
       <v-divider class="mb-5" />
       <v-row>
         <v-col class="py-0">
@@ -639,7 +651,7 @@ import apiRegister from "../../services/api-register";
   components: { CortxDownloadCsvDialog },
   data() {
     return {
-      stepNumber: 1
+      stepNumber: 2
     };
   }
 })
@@ -652,6 +664,9 @@ export default class CortxUDXRegistration extends Vue {
   private showAccessKeyDetailsDialog: boolean;
   private accessKeyDetails: any = {};
   private accessKeyTableHeaderList: any[];
+  private createBucket: boolean = false;
+  private selectedBucket: string = "";
+  private bucketList: any[] = [];
   constructor() {
     super();
     this.showAccessKeyDetailsDialog = false;
@@ -716,7 +731,14 @@ export default class CortxUDXRegistration extends Vue {
   }
 
   public async mounted() {
-    await this.getRegistrationToken();
+    // await this.getRegistrationToken();
+    await this.getBucketList();
+  }
+  public async getBucketList() {
+    const res = await Api.getAll(apiRegister.s3_bucket);
+    if (res && res.data) {
+      console.log(res.data)
+    }
   }
   public async registerUDX() {
     this.$store.dispatch("systemConfig/showLoader", "Registering UDX...");
@@ -819,5 +841,9 @@ export default class CortxUDXRegistration extends Vue {
 .cortx-bucket-input {
   width: 290px;
   float: left;
+}
+.create-new-bucket {
+  padding: 0;
+  text-decoration: underline;
 }
 </style>
