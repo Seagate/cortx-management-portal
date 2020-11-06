@@ -137,6 +137,7 @@ import apiRegister from "./../../services/api-register";
 import { HealthSummary } from "../../models/system";
 import i18n from "../../i18n";
 import * as d3 from "d3";
+import { linkHorizontal } from "d3";
 
 @Component({
   name: "cortx-health-view"
@@ -166,7 +167,7 @@ export default class CortxHealthView extends Vue {
     critical: 0
   };
   
-  // public treeIcon = require("./../../assets/nodes.PNG");
+  // public treeIcon = require("./../../assets/info-alert-green.svg");
   public data() {
     return {
       alertStatus: require("./../../common/const-string.json"),
@@ -177,8 +178,8 @@ export default class CortxHealthView extends Vue {
 
   
   public async mounted() {
-    
-  // var treeIcon = require("./../../assets/nodes.PNG");
+   
+  // public treeIcon = require("./../../assets/info-alert-green.png");
     //  Tree Code
 var treeData =
   {
@@ -369,74 +370,200 @@ var treeData =
     ]
   };
 
-
-// set the dimensions and margins of the diagram
-var margin = {top: 120, right: 100, bottom: 50, left: 150},
-    width = 1000 - margin.left - margin.right,
-    height = 800 - margin.top - margin.bottom;
-
-// declares a tree layout and assigns the size
-var treemap = d3.tree()
-    .size([height, width]);
-
-//  assigns the data to a hierarchy using parent-child relationships
-var nodes = d3.hierarchy(treeData, function(d) {
-    return d.children;
-  });
-
-// maps the node data to the tree layout
-nodes = treemap(nodes);
+// Set the dimensions and margins of the diagram
+var margin = {top: 20, right: 90, bottom: 30, left: 90},
+width = 1800 - margin.left - margin.right,
+height = 1000 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
 var svg = d3.select("#treeContainer").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom),
-    g = svg.append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+.attr("width", width + margin.right + margin.left)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", "translate("
+      + margin.left + "," + margin.top + ")");
 
-// adds the links between the nodes
-var link = g.selectAll(".link")
-    .data( nodes.descendants().slice(1))
-  .enter().append("path")
-    .attr("class", "link")
-    .style("fill", "none")
-    .style("stroke", "black")
-    .attr("d", function(d) {
-       return "M" + d.y + "," + d.x
-         + "C" + (d.y + d.parent.y) / 2 + "," + d.x
-         + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
-         + " " + d.parent.y + "," + d.parent.x;
-       });
+var i = 0,
+duration = 750,
+root;
 
-// adds each node as a group
-var node = g.selectAll(".node")
-    .data(nodes.descendants())
-  .enter().append("g")
-    .attr("class", function(d) { 
-      return "node" + 
-        (d.children ? " node--internal" : " node--leaf"); })
-    .attr("transform", function(d) { 
-      return "translate(" + d.y + "," + d.x + ")"; });
+// declares a tree layout and assigns the size
+var treemap = d3.tree().size([height, width]);
 
-// adds images as nodes
-node.append("image")
-  .attr("xlink:href", "")
-  .attr("x", "-12px")
-  .attr("y", "-12px")
-  .attr("width", "24px")
-  .attr("height", "24px");
+// Assigns parent, children, height, depth
+root = d3.hierarchy(treeData, function(d: any) { return d.children; });
+console.log(root);
+root.x0 = height / 2;
+root.y0 = 0;
 
-// adds the text to the node
-node.append("text")
+// Collapse after the second level
+root.children.forEach(collapse);
+
+update(root);
+
+// Collapse the node and all it's children
+function collapse(d: any) {
+if(d.children) {
+d._children = d.children
+d._children.forEach(collapse)
+d.children = null
+}
+}
+
+function update(source) {
+
+// Assigns the x and y position for the nodes
+var treeData = treemap(root);
+
+// Compute the new tree layout.
+var nodes = treeData.descendants(),
+  links = treeData.descendants().slice(1);
+
+// Normalize for fixed-depth.
+nodes.forEach(function(d: any){ d.y = d.depth * 180});
+
+// ****************** Nodes section ***************************
+
+// Update the nodes...
+var node = svg.selectAll('g.node')
+  .data(nodes, function(d: any) {return d.id || (d.id = ++i); });
+
+// Enter any new modes at the parent's previous position.
+var nodeEnter = node.enter().append('g')
+  .attr('class', 'node')
+  .attr("transform", function(d: any) {
+    return "translate(" + source.y0 + "," + source.x0 + ")";
+})
+.on('click', click);
+
+// Add Circle for the nodes
+nodeEnter
+//   .append('circle')
+//   .attr('class', 'node')
+//   .attr('r', 1e-6)
+//   .style("fill", function(d: any) {
+//       return d._children ? "lightsteelblue" : "#fff";
+//   })
+  .append("image")
+  .attr('class', 'node')
+  .attr("xlink:href", "/img/acknowledge-default.be6686ad.svg")
+  .attr("x", "-20px")
+  .attr("y", "-20px")
+  .attr("width", "40px")
+  .attr("height", "40px");;
+
+// Add labels for the nodes
+nodeEnter.append('text')
   .attr("dy", ".35em")
-  .attr("x", function(d) { return d.children ? -13 : 13; })
-  .style("text-anchor", function(d) { 
-    return d.children ? "end" : "start"; })
-  .text(function(d) { return d.data.name; });
+  .attr("x", function(d: any) {
+      return d.children || d._children ? -13 : 13;
+  })
+  .attr("text-anchor", function(d: any) {
+      return d.children || d._children ? "end" : "start";
+  })
+  .text(function(d: any) { return d.data.name; });
 
+// UPDATE
+var nodeUpdate = nodeEnter.merge(node);
+
+// Transition to the proper position for the node
+nodeUpdate.transition()
+.duration(duration)
+.attr("transform", function(d: any) { 
+    return "translate(" + d.y + "," + d.x + ")";
+ });
+
+// Update the node attributes and style
+nodeUpdate.select('image.node')
+.attr('r', 10)
+.style("fill", function(d: any) {
+    return d._children ? "lightsteelblue" : "#fff";
+})
+.attr('cursor', 'pointer');
+
+
+// Remove any exiting nodes
+var nodeExit = node.exit().transition()
+  .duration(duration)
+  .attr("transform", function(d: any) {
+      return "translate(" + source.y + "," + source.x + ")";
+  })
+  .remove();
+
+// On exit reduce the node circles size to 0
+nodeExit.select('circle')
+.attr('r', 1e-6);
+
+// On exit reduce the opacity of text labels
+nodeExit.select('text')
+.style('fill-opacity', 1e-6);
+
+// ****************** links section ***************************
+
+// Update the links...
+var link = svg.selectAll('path.link')
+  .data(links, function(d: any) { return d.id; });
+  console.log(link);
+
+// Enter any new links at the parent's previous position.
+var linkEnter = link.enter().insert('path', "g")
+  .attr("class", "link")
+  .attr('d', function(d: any){
+    var o = {x: source.x0, y: source.y0}
+    return diagonal(o, o)
+  });
+
+// UPDATE
+var linkUpdate = linkEnter.merge(link);
+
+// Transition back to the parent element position
+linkUpdate.transition()
+  .duration(duration)
+  .attr('d', function(d: any){ return diagonal(d, d.parent) });
+
+// Remove any exiting links
+var linkExit = link.exit().transition()
+  .duration(duration)
+  .attr('d', function(d: any) {
+    var o = {x: source.x, y: source.y}
+    return diagonal(o, o)
+  })
+  .remove();
+
+// Store the old positions for transition.
+nodes.forEach(function(d: any){
+d.x0 = d.x;
+d.y0 = d.y;
+});
+
+var path;
+// Creates a curved (diagonal) path from parent to the child nodes
+function diagonal(s: any, d: any) {
+
+path = `M ${s.y} ${s.x}
+        C ${(s.y + d.y) / 2} ${s.x},
+          ${(s.y + d.y) / 2} ${d.x},
+          ${d.y} ${d.x}`
+
+console.log(path);
+
+return path
+}
+
+// Toggle children on click.
+function click(d: any) {
+if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+update(d);
+}
+}
     // tree Code
 
     this.$store.dispatch("systemConfig/showLoaderMessage", {

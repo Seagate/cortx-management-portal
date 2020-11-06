@@ -758,13 +758,26 @@ tbody tr:hover {
 }
 /* tree css */
 
+div#treeContainer {
+  width: 1170px;
+  overflow-x: auto;
+}
 .node circle {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 3px;
 }
 
-.node text { font: 12px sans-serif; }
+.node text { 
+  font: 20px sans-serif; 
+  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+}
+
+.node image {
+  /* background-image: url('../assets/acknowledge-default.svg'); */
+  background-color: #4b813d;
+  background-position: left center;
+}
 
 .node--internal text {
   text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
@@ -772,7 +785,7 @@ tbody tr:hover {
 
 .link {
   fill: none;
-  stroke: #ccc;
-  stroke-width: 1px;
+  stroke: #4b813d;
+  stroke-width: 2px;
 }
 /* tree css ends */

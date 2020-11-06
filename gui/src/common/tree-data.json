@@ -1,0 +1,187 @@
+{
+    "name": "cluster",
+    // "icon": require("./../../../assets/nodes.PNG"),
+    "children": [
+      {
+        "name": "sites",
+       // "icon": require("./../../../assets/nodes.PNG"),
+        "children": [
+          {
+            "name": "rack",
+            // "icon": require("./../../../assets/nodes.PNG"),
+            "children": [
+                {
+                    "name": "nodes",
+                    // "icon": require("./../../../assets/nodes.PNG"),
+                    "children": [
+                        {
+                            "name": "storage_encl",
+                            // "icon": require("./../../../assets/nodes.PNG"),
+                            "children": [
+                                {
+                                    "name": "hw",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "fru",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                            "children": [
+                                                {
+                                                    "name": "disks",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "psus",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "controllers",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "fans",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "sideplane_expander",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "sw",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "logical_volume",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "interfaces",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "sas_port",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "platform_sensors",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "current",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        },
+                                        {
+                                            "name": "temperature",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        },
+                                        {
+                                            "name": "voltage",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "node:smc21-m10.colo.seagate.com",
+                            // "icon": require("./../../../assets/nodes.PNG"),
+                            "children": [
+                                {
+                                    "name": "hw",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "fru",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                            "children": [
+                                                {
+                                                    "name": "fans",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "psus",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "os",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "cortx_sw",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        },
+                                        {
+                                            "name": "operating_system",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "interfaces",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "sas_port",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "platform_sensors",
+                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                    "children": [
+                                        {
+                                            "name": "temperature",
+                                            // "icon": require("./../../../assets/nodes.PNG"),
+                                            "children": [
+                                                {
+                                                    "name": "node:sensor:temperature-CPU1 Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-CPU2 Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-PCH Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-System Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-Peripheral Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                },
+                                                {
+                                                    "name": "node:sensor:temperature-MB_NIC Temp",
+                                                    // "icon": require("./../../../assets/nodes.PNG"),
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+
+                        }
+                    ]
+                }
+            ]
+          }
+        ]
+      }
+    ]
+  }
