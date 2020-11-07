@@ -1,10 +1,26 @@
+/*
+* CORTX-CSM: CORTX Management web and CLI interface.
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing,
+* please email opensource@seagate.com or cortx-questions@seagate.com.
+*/
 <template>
   <div>
     <v-row v-if="!isCreateBucket">
       <v-col class="py-0 pr-0">
         <cortx-dropdown
           title="-- Select Bucket --"
-          :selectedOption.sync="selectedBucket"
+          :selectedOption.sync="registrationForm.bucketName"
           :options="bucketList"
         ></cortx-dropdown>
         <br />
@@ -72,7 +88,10 @@
         <button class="cortx-btn-primary" @click="createBucket()">
           Create bucket
         </button>
-        <button class="cortx-btn-secondary cortx-btn-cancel" @click="isCreateBucket=false">
+        <button
+          class="cortx-btn-secondary cortx-btn-cancel"
+          @click="isCreateBucket = false"
+        >
           Cancel
         </button>
       </v-col>
@@ -80,7 +99,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import { Validations } from "vuelidate-property-decorators";
@@ -96,14 +115,13 @@ import {
 export default class CortxSelectCreateBucket extends Vue {
   public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
   private isCreateBucket: boolean = false;
-  private selectedBucket: string = "";
   private bucketList: any[] = [];
-  constructor() {
-    super();
-  }
+
+  @Prop({ required: true, default: "" })
+  public authToken: string;
 
   public registrationForm = {
-    bucketName: "",
+    bucketName: ""
   };
 
   @Validations()
@@ -114,14 +132,21 @@ export default class CortxSelectCreateBucket extends Vue {
   };
 
   public async mounted() {
-    const res = await Api.getAll(apiRegister.s3_bucket);
+    const config: any = {
+      headers: {
+        auth_token: this.authToken
+      }
+    };
+    this.$store.dispatch("systemConfig/showLoader", "Fetching butcket list...");
+    const res = await Api.getAllWithConfig(apiRegister.s3_bucket, config);
     if (res && res.data) {
       this.bucketList = res.data;
     }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 
   private createBucket() {
-    this.$emit("onChange", this.selectedBucket);
+    this.$emit("onChange", this.registrationForm.bucketName);
   }
 }
 </script>

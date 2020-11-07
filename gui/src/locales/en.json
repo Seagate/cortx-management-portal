@@ -71,7 +71,8 @@
       "copy-tooltip": "Copy url to clipboard",
       "url-note": "Note: This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface.",
       "account_id":"Account id",
-      "canonical_id":"Canonical id"
+      "canonical_id":"Canonical id",
+      "download-as-csv-continue": "Download and continue"
     },
     "bucket": {
       "name-require": "Bucket name is required.",
