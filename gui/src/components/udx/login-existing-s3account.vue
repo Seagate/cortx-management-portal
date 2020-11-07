@@ -137,7 +137,7 @@ export default class LoginExistingS3Account extends Vue {
     const res = await Api.post(apiRegister.login, loginCredentials);
     this.$store.dispatch("systemConfig/hideLoader");
     if (res && res.headers) {
-      this.$emit("setAuthToken", res.headers.authorization);
+      this.$emit("setAuthToken", res.headers.authorization, this.loginForm.account.account_name);
     }
   }
 }
