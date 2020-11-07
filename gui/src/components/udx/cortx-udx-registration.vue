@@ -73,7 +73,8 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <cortx-iam-user :authToken="authToken"></cortx-iam-user>
+          <cortx-iam-user :authToken="authToken"
+            @onChange="updateStep4"></cortx-iam-user>
         </v-stepper-content>
 
         <v-stepper-content step="4">
@@ -346,6 +347,11 @@ export default class CortxUDXRegistration extends Vue {
   private updateStep(selectedBucket: any) {
     this.stepNumber = this.stepNumber + 1;
     this.registrationForm.bucketName = selectedBucket;
+  }
+
+  private updateStep4(iamUser: string) {
+    this.stepNumber = this.stepNumber + 1;
+    this.registrationForm.iamUsername = iamUser;
   }
 
   public async registerUDX() {

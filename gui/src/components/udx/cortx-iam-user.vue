@@ -165,6 +165,10 @@ export default class CortxIamUser extends Vue {
   private credentialsFileContent: string = "";
   private isCredentialsFileDownloaded: boolean = false;
   private s3Url = [];
+  public policyJSON: string;
+  public noBucketPolicy: boolean = false;
+  public bucketname: string = "Buvket Name from parent";
+
 
   @Prop({ required: true, default: "" })
   public authToken: string;
@@ -217,6 +221,10 @@ export default class CortxIamUser extends Vue {
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showUserDetailsDialog = true;
+
+    this.getPolicyDetails();
+    
+    this.$emit("onChange", this.registrationForm.iamUsername);
   }
   public getCredentialsFileContent(): string {
     return (
@@ -233,6 +241,21 @@ export default class CortxIamUser extends Vue {
       "," +
       this.user.secret_key
     );
+  }
+  public async getPolicyDetails() {
+        // Get policy details
+        try {
+            const res: any = await Api.getAll(
+            apiRegister.bucket_policy + "/" + this.bucketname);
+            this.policyJSON = JSON.stringify(res.data, null, 4);
+        } catch (error) {
+            this.policyJSON = "";
+            this.noBucketPolicy = true;
+        }
+        // Update entry
+        const policy = JSON.parse(this.policyJSON);
+        await Api.put(apiRegister.bucket_policy, policy, this.bucketname);
+
   }
 }
 </script>
