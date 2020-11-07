@@ -100,6 +100,18 @@ export abstract class Api {
       });
   }
 
+  public static async postAllWithConfig(url: string, config: object, payload: object): Promise<ApiResponse> {
+    return await axios
+      .post(url, payload, config)
+      .then(response => {
+        return Promise.resolve(this.buildSuccessResponse(response));
+      })
+      .catch(error => {
+        const apiResponse: ApiResponse = this.getResponseFromError(error);
+        return Promise.reject(apiResponse);
+      });
+  }
+
   // Wrapper method to for get api
   public static async getFile(url: string, queryParams?: object) {
     return await axios.get(url, { responseType: "blob" });

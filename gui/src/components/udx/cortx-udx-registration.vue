@@ -73,16 +73,9 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
-          <button class="cortx-btn-primary" @click="stepNumber = 4">
-            Continue
-          </button>
-
-          <v-btn text>
-            Cancel
-          </v-btn>
+          <cortx-iam-user :authToken="authToken"></cortx-iam-user>
         </v-stepper-content>
+
         <v-stepper-content step="4">
           <v-row>
             <v-col class="py-0 pr-0">
@@ -269,6 +262,7 @@ import {
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import LoginExistingS3Account from "./login-existing-s3account.vue";
+import CortxIamUser from "./cortx-iam-user.vue";
 
 @Component({
   name: "cortx-udx-registration",
@@ -276,7 +270,8 @@ import LoginExistingS3Account from "./login-existing-s3account.vue";
     CortxDownloadCsvDialog,
     CortxSelectCreateBucket,
     CortxS3Account,
-    LoginExistingS3Account
+    LoginExistingS3Account,
+    CortxIamUser
   }
 })
 export default class CortxUDXRegistration extends Vue {
