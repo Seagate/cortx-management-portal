@@ -1,0 +1,234 @@
+<template>
+  <div>
+      <v-row>
+        <v-col class="py-0 pr-0">
+          <div
+            class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error': $v.registrationForm.iamUsername.$error
+            }"
+          >
+            <label
+              class="cortx-form-group-label"
+              for="iamUsername"
+              id="udx-iamuserlbl"
+            >
+              <cortx-info-tooltip
+                label="Username*"
+                :message="accountNameTooltipMessage"
+              />
+            </label>
+            <input
+              class="cortx-form__input_text"
+              type="text"
+              id="iamUsername"
+              name="iamUsername"
+              v-model.trim="registrationForm.iamUsername.user_name"
+              @input="$v.registrationForm.iamUsername.$touch"
+            />
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label
+                id="udx-iamusername-required"
+                v-if="
+                  $v.registrationForm.iamUsername.$dirty &&
+                    !$v.registrationForm.iamUsername.required
+                "
+                >{{ $t("udx-registration.username-required") }}</label
+              >
+              <label
+                id="udx-iamusername-invalid"
+                v-else-if="
+                  $v.registrationForm.iamUsername.$dirty &&
+                    !$v.registrationForm.iamUsername.accountNameRegex
+                "
+                >{{ $t("udx-registration.invalid-user") }}</label
+              >
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col class="py-0 pr-0">
+          <div
+            class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error':
+                $v.registrationForm.iamUserPassword.$error
+            }"
+          >
+            <label
+              class="cortx-form-group-label"
+              for="iamUserPassword"
+              id="udx-iamuserpasswordlbl"
+            >
+              <cortx-info-tooltip
+                label="Password*"
+                :message="passwordTooltipMessage"
+              />
+            </label>
+            <input
+              class="cortx-form__input_text"
+              type="password"
+              id="iamUserPassword"
+              name="iamUserPassword"
+              v-model.trim="registrationForm.iamUserPassword"
+              @input="$v.registrationForm.iamUserPassword.$touch"
+            />
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label
+                id="udx-iampassword-required"
+                v-if="
+                  $v.registrationForm.iamUserPassword.$dirty &&
+                    !$v.registrationForm.iamUserPassword.required
+                "
+                >{{ $t("udx-registration.password-required") }}</label
+              >
+              <label
+                id="udx-iampassword-invalid"
+                v-else-if="
+                  $v.registrationForm.iamUserPassword.$dirty &&
+                    !$v.registrationForm.iamUserPassword.passwordRegex
+                "
+                >{{ $t("udx-registration.invalid-password") }}</label
+              >
+            </div>
+          </div>
+        </v-col>
+        <v-col class="py-0 pl-0">
+          <div
+            class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error':
+                $v.registrationForm.iamUserConfirmPassword.$error
+            }"
+          >
+            <label
+              class="cortx-form-group-label"
+              for="iamUserConfirmPassword"
+              id="udx-confirm-passwordlbl"
+              >{{ $t("udx-registration.confirm-pass") }}*</label
+            >
+            <input
+              class="cortx-form__input_text"
+              type="password"
+              id="iamUserConfirmPassword"
+              name="iamUserConfirmPassword"
+              v-model.trim="registrationForm.iamUserConfirmPassword"
+              @input="$v.registrationForm.iamUserConfirmPassword.$touch"
+            />
+            <span
+              class="cortx-form-group-label cortx-form-group-error-msg"
+              v-if="
+                $v.registrationForm.iamUserConfirmPassword.$dirty &&
+                  !$v.registrationForm.iamUserConfirmPassword
+                    .sameAsIAMUserPassword
+              "
+              >{{ $t("udx-registration.password-match") }}</span
+            >
+          </div>
+        </v-col>
+      </v-row>      
+      <v-row>
+        <v-col>
+            <button class="cortx-btn-primary" @click="createUser()">
+            Create
+            </button>
+        </v-col>
+      </v-row>
+  </div>
+</template>
+<script lang="ts">
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { Validations } from "vuelidate-property-decorators";
+import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
+import { IAMUser } from "../../models/s3";
+import i18n from "./../../i18n";
+import {
+  udxURLRegex,
+  accountNameRegex,
+  udxBucketNameRegex,
+  passwordRegex,
+  accountNameTooltipMessage,
+  passwordTooltipMessage
+} from "../../common/regex-helpers";
+import { Api } from "../../services/api";
+import apiRegister from "../../services/api-register";
+
+@Component({
+  name: "cortx-iam-user"
+})
+export default class CortxIamUser extends Vue {
+  public passwordTooltipMessage: string = passwordTooltipMessage;
+  public accountNameTooltipMessage: string = accountNameTooltipMessage;
+  private showUserDetailsDialog: boolean;
+  private user: IAMUser;
+  private credentialsFileContent: string = "";
+  private isCredentialsFileDownloaded: boolean = false;
+  private s3Url = [];
+
+  constructor() {
+    super();
+    this.user = {} as IAMUser;
+  }
+  public registrationForm = {
+    iamUsername: { } as IAMUser,
+    iamUserPassword: "",
+    iamUserConfirmPassword: ""
+  };
+  @Validations()
+  public validations = {
+    registrationForm: {
+      url: { required, udxURLRegex },
+      accountName: { required, accountNameRegex },
+      accountEmail: { required, email },
+      accountPassword: { required, passwordRegex },
+      accountConfirmPassword: {
+        sameAsAccountPassword: sameAs("accountPassword")
+      },
+      iamUsername: { required, accountNameRegex },
+      iamUserPassword: { required, passwordRegex },
+      iamUserConfirmPassword: {
+        sameAsIAMUserPassword: sameAs("iamUserPassword")
+      },
+      bucketName: { required, udxBucketNameRegex }
+    }
+  };
+ 
+  public async createUser() {
+    this.$store.dispatch("systemConfig/showLoader", "Creating IAM user...");
+    const tempUser = this.registrationForm.iamUsername;
+    tempUser.require_reset = true;
+    const res: any = await Api.post(apiRegister.s3_iam_user, tempUser);
+    if (!res.error) {
+        console.log(res);
+        console.log("--------------------------");
+      this.user = res.data;
+      console.log(this.user);
+      this.isCredentialsFileDownloaded = false;
+      this.credentialsFileContent =
+        "data:text/plain;charset=utf-8," +
+        encodeURIComponent(this.getCredentialsFileContent());
+    }
+    this.$store.dispatch("systemConfig/hideLoader");
+    this.showUserDetailsDialog = true;
+  }
+  public getCredentialsFileContent(): string {
+    return (
+      "User name,User id,S3 URL,ARN,Access key,Secret key\n" +
+      this.user.user_name +
+      "," +
+      this.user.user_id +
+      "," +
+      `${this.s3Url[0]} ${this.s3Url[1]}` +
+      "," +
+      this.user.arn +
+      "," +
+      this.user.access_key_id +
+      "," +
+      this.user.secret_key
+    );
+  }
+}
+</script>
+<style lang="scss" scoped>
+</style>
