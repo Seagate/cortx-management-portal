@@ -23,6 +23,7 @@
             type="text"
             id="iamUsername"
             name="iamUsername"
+            autocomplete="off"
             v-model.trim="registrationForm.iamUsername"
             @input="$v.registrationForm.iamUsername.$touch"
           />
@@ -71,6 +72,7 @@
             type="password"
             id="iamUserPassword"
             name="iamUserPassword"
+            autocomplete="off"
             v-model.trim="registrationForm.iamUserPassword"
             @input="$v.registrationForm.iamUserPassword.$touch"
           />
@@ -113,6 +115,7 @@
             type="password"
             id="iamUserConfirmPassword"
             name="iamUserConfirmPassword"
+            autocomplete="off"
             v-model.trim="registrationForm.iamUserConfirmPassword"
             @input="$v.registrationForm.iamUserConfirmPassword.$touch"
           />
@@ -193,13 +196,13 @@ export default class CortxIamUser extends Vue {
       }
     }
   };
-  public config = {
-    headers: {
-      auth_token: this.authToken
-    }
-  };
 
   public async createUser() {
+    const config = {
+      headers: {
+        auth_token: this.authToken
+      }
+    };
     this.$store.dispatch("systemConfig/showLoader", "Creating IAM user...");
     const IAMUSER = {
       user_name: this.registrationForm.iamUsername,
@@ -209,7 +212,7 @@ export default class CortxIamUser extends Vue {
 
     const res = await Api.postAllWithConfig(
       apiRegister.s3_iam_user,
-      this.config,
+      config,
       IAMUSER
     );
 
@@ -244,10 +247,15 @@ export default class CortxIamUser extends Vue {
     );
   }
   public async getPolicyDetails() {
+    const config = {
+      headers: {
+        auth_token: this.authToken
+      }
+    };
     // Get policy details    
     const resp = await Api.getAllWithConfig(
       apiRegister.bucket_policy + "/" + this.bucketName,
-      this.config
+      config
     );
     if (!resp.error) {
       this.policyJSON = JSON.stringify(resp.data, null, 4);
@@ -258,7 +266,7 @@ export default class CortxIamUser extends Vue {
     // Update entry
     const policy = JSON.parse(this.policyJSON);
     const response: any = await Api.put(
-      apiRegister.bucket_policy, policy, this.bucketName, this.config
+      apiRegister.bucket_policy, policy, this.bucketName, config
       );
   }
 }
