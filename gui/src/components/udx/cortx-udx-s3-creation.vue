@@ -254,7 +254,7 @@
               {{ account.account_name }}
             </td>
           </tr>
-          <tr v-if="!s3UrlInfo.s3UrlNone">
+          <tr v-if="s3UrlInfo && !s3UrlInfo.s3UrlNone">
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-access-key-popup-label"
@@ -308,7 +308,7 @@
           </tr>
         </table>
 
-        <div v-if="s3UrlInfo.s3UrlNone" class="pl-7">
+        <div v-if="s3UrlInfo && s3UrlInfo.s3UrlNone" class="pl-7">
           {{ $t("s3.account.url-note") }}
         </div>
 
@@ -324,16 +324,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <cortx-confirmation-dialog
-      id="s3-confirmation-dialog"
-      :show="showConfirmDeleteDialog"
-      title="Confirmation"
-      message="Are you sure you want to delete the account?"
-      severity="warning"
-      @closeDialog="closeConfirmDeleteDialog"
-      cancelButtonText="No"
-    ></cortx-confirmation-dialog>
   </div>
 </template>
 
@@ -365,7 +355,7 @@ export default class CortxS3Account extends Vue {
   };
 
   @Prop({ required: false })
-  public s3UrlInfo: any;
+  public s3UrlInfo: any = { s3Url:'', s3UrlNone:'' };
 
   @Validations()
   public validations = {
@@ -483,7 +473,7 @@ export default class CortxS3Account extends Vue {
     const res = await Api.post(apiRegister.login, loginCredentials);
     this.$store.dispatch("systemConfig/hideLoader");
     if (res && res.headers) {
-      this.$emit("setAuthToken", res.headers.authorization);
+      this.$emit("setAuthToken", res.headers.authorization, this.createAccountForm.account.account_name);
       this.clearCreateAccountForm();
     }
   }
