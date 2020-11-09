@@ -280,7 +280,7 @@ import CortxIamUser from "./cortx-iam-user.vue";
 })
 export default class CortxUDXRegistration extends Vue {
   public stepNumber: number = 1;
-  public s3UrlInfo: any[] = [];
+  public s3UrlInfo: Object;
   public authToken: string = "";
   public isCreateAccount: boolean = false;
   public registrationToken: string = "";
@@ -321,7 +321,7 @@ export default class CortxUDXRegistration extends Vue {
     }
   };
 
-  public setS3URL(s3UrlInfo: any[]) {
+  public setS3URL(s3UrlInfo: Object) {
     this.s3UrlInfo = s3UrlInfo;
   }
 
