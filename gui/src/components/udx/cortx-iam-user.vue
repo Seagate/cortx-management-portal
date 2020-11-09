@@ -94,7 +94,7 @@
           </div>
         </div>
       </v-col>
-      <v-col class="py-0 pl-0">
+      <v-col class="py-0 pr-0">
         <div
           class="cortx-form-group"
           :class="{
@@ -193,6 +193,11 @@ export default class CortxIamUser extends Vue {
       }
     }
   };
+  public config = {
+    headers: {
+      auth_token: this.authToken
+    }
+  };
 
   public async createUser() {
     this.$store.dispatch("systemConfig/showLoader", "Creating IAM user...");
@@ -202,23 +207,14 @@ export default class CortxIamUser extends Vue {
       password: this.registrationForm.iamUserPassword
     } as IAMUser;
 
-    const config: any = {
-      headers: {
-        auth_token: this.authToken
-      }
-    };
-
     const res = await Api.postAllWithConfig(
       apiRegister.s3_iam_user,
-      config,
+      this.config,
       IAMUSER
     );
 
     if (!res.error) {
-      console.log(res);
-      console.log("--------------------------");
       this.user = res.data;
-      console.log(this.user);
       this.isCredentialsFileDownloaded = false;
       this.credentialsFileContent =
         "data:text/plain;charset=utf-8," +
@@ -248,19 +244,22 @@ export default class CortxIamUser extends Vue {
     );
   }
   public async getPolicyDetails() {
-    // Get policy details
-    try {
-      const res: any = await Api.getAll(
-        apiRegister.bucket_policy + "/" + this.bucketName
-      );
-      this.policyJSON = JSON.stringify(res.data, null, 4);
-    } catch (error) {
+    // Get policy details    
+    const resp = await Api.getAllWithConfig(
+      apiRegister.bucket_policy + "/" + this.bucketName,
+      this.config
+    );
+    if (!resp.error) {
+      this.policyJSON = JSON.stringify(resp.data, null, 4);
+    } else {
       this.policyJSON = "";
       this.noBucketPolicy = true;
-    }
+    }    
     // Update entry
     const policy = JSON.parse(this.policyJSON);
-    await Api.put(apiRegister.bucket_policy, policy, this.bucketName);
+    const response: any = await Api.put(
+      apiRegister.bucket_policy, policy, this.bucketName, this.config
+      );
   }
 }
 </script>
