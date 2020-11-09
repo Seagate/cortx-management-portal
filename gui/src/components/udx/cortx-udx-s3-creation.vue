@@ -21,11 +21,15 @@
         <div
           class="cortx-form-group"
           :class="{
-                  'cortx-form-group--error':
-                    $v.createAccountForm.account.account_name.$error
-                }"
+            'cortx-form-group--error':
+              $v.createAccountForm.account.account_name.$error
+          }"
         >
-          <label class="cortx-form-group-label" for="accountName" id="s3-lblaccountname">
+          <label
+            class="cortx-form-group-label"
+            for="accountName"
+            id="s3-lblaccountname"
+          >
             <cortx-info-tooltip
               id="account-name-label"
               label="Account name*"
@@ -45,18 +49,19 @@
             <label
               id="s3-accountname-reuired"
               v-if="
-                      $v.createAccountForm.account.account_name.$dirty &&
-                        !$v.createAccountForm.account.account_name.required
-                    "
-            >{{ $t("s3.account.name-required") }}</label>
+                $v.createAccountForm.account.account_name.$dirty &&
+                  !$v.createAccountForm.account.account_name.required
+              "
+              >{{ $t("s3.account.name-required") }}</label
+            >
             <label
               id="s3account-invalid"
               v-else-if="
-                      $v.createAccountForm.account.account_name.$dirty &&
-                        !$v.createAccountForm.account.account_name
-                          .accountNameRegex
-                    "
-            >{{ $t("s3.account.invalid-account") }}</label>
+                $v.createAccountForm.account.account_name.$dirty &&
+                  !$v.createAccountForm.account.account_name.accountNameRegex
+              "
+              >{{ $t("s3.account.invalid-account") }}</label
+            >
           </div>
         </div>
       </v-col>
@@ -64,15 +69,16 @@
         <div
           class="cortx-form-group"
           :class="{
-                  'cortx-form-group--error':
-                    $v.createAccountForm.account.account_email.$error
-                }"
+            'cortx-form-group--error':
+              $v.createAccountForm.account.account_email.$error
+          }"
         >
           <label
             class="cortx-form-group-label"
             for="accountEmail"
             id="s3-lblemail"
-          >{{ $t("s3.account.email-label") }}</label>
+            >{{ $t("s3.account.email-label") }}</label
+          >
           <input
             class="cortx-form__input_text"
             type="text"
@@ -86,17 +92,19 @@
             <label
               id="s3-email-required"
               v-if="
-                      $v.createAccountForm.account.account_email.$dirty &&
-                        !$v.createAccountForm.account.account_email.required
-                    "
-            >{{ $t("s3.account.email-required") }}</label>
+                $v.createAccountForm.account.account_email.$dirty &&
+                  !$v.createAccountForm.account.account_email.required
+              "
+              >{{ $t("s3.account.email-required") }}</label
+            >
             <label
               id="s3-email-invalid"
               v-else-if="
-                      $v.createAccountForm.account.account_email.$dirty &&
-                        !$v.createAccountForm.account.account_email.email
-                    "
-            >{{ $t("s3.account.invalid-email") }}</label>
+                $v.createAccountForm.account.account_email.$dirty &&
+                  !$v.createAccountForm.account.account_email.email
+              "
+              >{{ $t("s3.account.invalid-email") }}</label
+            >
           </div>
         </div>
       </v-col>
@@ -106,11 +114,15 @@
         <div
           class="cortx-form-group"
           :class="{
-                  'cortx-form-group--error':
-                    $v.createAccountForm.account.password.$error
-                }"
+            'cortx-form-group--error':
+              $v.createAccountForm.account.password.$error
+          }"
         >
-          <label class="cortx-form-group-label" for="accountPassword" id="s3-lblpassword">
+          <label
+            class="cortx-form-group-label"
+            for="accountPassword"
+            id="s3-lblpassword"
+          >
             <cortx-info-tooltip
               id="aacount-password"
               label="Password*"
@@ -129,17 +141,19 @@
             <label
               id="s3-password-required"
               v-if="
-                      $v.createAccountForm.account.password.$dirty &&
-                        !$v.createAccountForm.account.password.required
-                    "
-            >Password is required.</label>
+                $v.createAccountForm.account.password.$dirty &&
+                  !$v.createAccountForm.account.password.required
+              "
+              >Password is required.</label
+            >
             <label
               id="s3-password-invalid"
               v-else-if="
-                      $v.createAccountForm.account.password.$dirty &&
-                        !$v.createAccountForm.account.password.passwordRegex
-                    "
-            >Invalid password.</label>
+                $v.createAccountForm.account.password.$dirty &&
+                  !$v.createAccountForm.account.password.passwordRegex
+              "
+              >Invalid password.</label
+            >
           </div>
         </div>
       </v-col>
@@ -147,15 +161,16 @@
         <div
           class="cortx-form-group"
           :class="{
-                  'cortx-form-group--error':
-                    $v.createAccountForm.confirmPassword.$error
-                }"
+            'cortx-form-group--error':
+              $v.createAccountForm.confirmPassword.$error
+          }"
         >
           <label
             class="cortx-form-group-label"
             for="confirmPassword"
             id="s3-lblconfirmpassword"
-          >Confirm password*</label>
+            >Confirm password*</label
+          >
           <input
             class="cortx-form__input_text"
             type="password"
@@ -168,10 +183,11 @@
             id="s3-password-notmatch"
             class="cortx-form-group-label cortx-form-group-error-msg"
             v-if="
-                    $v.createAccountForm.confirmPassword.$dirty &&
-                      !$v.createAccountForm.confirmPassword.sameAsPassword
-                  "
-          >Passwords do not match</span>
+              $v.createAccountForm.confirmPassword.$dirty &&
+                !$v.createAccountForm.confirmPassword.sameAsPassword
+            "
+            >Passwords do not match</span
+          >
         </div>
       </v-col>
     </v-row>
@@ -183,7 +199,17 @@
           class="cortx-btn-primary"
           @click="createAccount()"
           :disabled="$v.createAccountForm.$invalid"
-        >{{ $t("s3.account.create-account-btn") }}</button>
+        >
+          {{ $t("s3.account.create-account-btn") }}
+        </button>
+        <button
+          id="s3-cancel-accountbtn"
+          type="button"
+          class="cortx-btn-secondary cancel-button"
+          @click="cancelAccount()"
+        >
+          {{ $t("common.cancel") }}
+        </button>
       </v-col>
     </v-row>
     <v-dialog
@@ -204,7 +230,10 @@
         <v-divider />
 
         <div class="mt-2 pl-7" style="height: 30px;">
-          <img class="cortx-float-l mr-1" :src="require('@/assets/actions/warning-orange.svg')" />
+          <img
+            class="cortx-float-l mr-1"
+            :src="require('@/assets/actions/warning-orange.svg')"
+          />
           <span
             id="s3-warning-text"
             class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
@@ -218,46 +247,70 @@
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-account-name-popup-label"
-            >{{ $t("s3.account.account-name") }}</td>
-            <td class="py-2" id="s3-account-name-popup-value">{{ account.account_name }}</td>
+            >
+              {{ $t("s3.account.account-name") }}
+            </td>
+            <td class="py-2" id="s3-account-name-popup-value">
+              {{ account.account_name }}
+            </td>
           </tr>
           <tr v-if="!s3UrlInfo.s3UrlNone">
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-access-key-popup-label"
-            >{{ $t("s3.account.url-label") }}</td>
-            <td class="py-2">{{ s3UrlInfo.s3Url[0] }}, {{ s3UrlInfo.s3Url[1] }}</td>
+            >
+              {{ $t("s3.account.url-label") }}
+            </td>
+            <td class="py-2">
+              {{ s3UrlInfo.s3Url[0] }}, {{ s3UrlInfo.s3Url[1] }}
+            </td>
           </tr>
           <tr>
-            <td
-              class="py-2 cortx-text-bold credentials-item-label"
-            >{{ $t("s3.account.access-key") }}</td>
-            <td class="py-2" id="s3-access-key-popup-value">{{ account.access_key }}</td>
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.account.access-key") }}
+            </td>
+            <td class="py-2" id="s3-access-key-popup-value">
+              {{ account.access_key }}
+            </td>
           </tr>
           <tr>
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-secret-key-popup-label"
-            >{{ $t("s3.account.secret-key") }}</td>
-            <td class="py-2" id="s3-secret-key-popup-value">{{ account.secret_key }}</td>
+            >
+              {{ $t("s3.account.secret-key") }}
+            </td>
+            <td class="py-2" id="s3-secret-key-popup-value">
+              {{ account.secret_key }}
+            </td>
           </tr>
           <tr>
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-account-id-popup-label"
-            >{{ $t("s3.account.account_id") }}</td>
-            <td class="py-2" id="s3-secret-key-popup-value">{{ account.account_id }}</td>
+            >
+              {{ $t("s3.account.account_id") }}
+            </td>
+            <td class="py-2" id="s3-secret-key-popup-value">
+              {{ account.account_id }}
+            </td>
           </tr>
           <tr>
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-canonical-id-popup-label"
-            >{{ $t("s3.account.canonical_id") }}</td>
-            <td class="py-2" id="s3-secret-key-popup-value">{{ account.canonical_id }}</td>
+            >
+              {{ $t("s3.account.canonical_id") }}
+            </td>
+            <td class="py-2" id="s3-secret-key-popup-value">
+              {{ account.canonical_id }}
+            </td>
           </tr>
         </table>
 
-        <div v-if="s3UrlInfo.s3UrlNone" class="pl-7">{{ $t("s3.account.url-note") }}</div>
+        <div v-if="s3UrlInfo.s3UrlNone" class="pl-7">
+          {{ $t("s3.account.url-note") }}
+        </div>
 
         <v-card-actions>
           <a
@@ -266,7 +319,8 @@
             :href="credentialsFileContent"
             download="credentials.csv"
             @click="downloadAndClose()"
-          >{{ $t("s3.account.download-as-csv-continue") }}</a>
+            >{{ $t("s3.account.download-as-csv-continue") }}</a
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -353,10 +407,16 @@ export default class CortxS3Account extends Vue {
     this.showConfirmDeleteDialog = false;
     this.showEditAccountForm = false;
   }
+
   public data() {
     return {
       constStr: require("./../../common/const-string.json")
     };
+  }
+
+  public cancelAccount() {
+    this.clearCreateAccountForm();
+    this.$emit("createAccount", false);
   }
 
   public async createAccount() {
@@ -395,12 +455,14 @@ export default class CortxS3Account extends Vue {
       this.account.canonical_id
     );
   }
+
   public async downloadAndClose() {
     this.isCredentialsFileDownloaded = true;
     this.showAccountDetailsDialog = false;
     this.showCreateAccountForm = false;
     this.login();
   }
+
   public clearCreateAccountForm() {
     this.createAccountForm.confirmPassword = "";
     this.createAccountForm.account.password = "";
@@ -476,5 +538,8 @@ tbody tr:active {
 }
 .credentials-item-label {
   width: 10rem;
+}
+.cancel-button {
+  margin-left: 15px;
 }
 </style>

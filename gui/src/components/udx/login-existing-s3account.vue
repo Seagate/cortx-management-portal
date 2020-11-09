@@ -42,6 +42,7 @@
         type="password"
         id="accountPassword"
         name="accountPassword"
+        autocomplete="off"
         v-model.trim="loginForm.account.password"
         @input="$v.loginForm.account.password.$touch"
       />
@@ -124,7 +125,7 @@ export default class LoginExistingS3Account extends Vue {
   }
 
   public triggerCreateAccount() {
-    this.$emit("createAccount");
+    this.$emit("createAccount", true);
   }
 
   public async login() {

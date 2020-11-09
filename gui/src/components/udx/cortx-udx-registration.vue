@@ -46,17 +46,18 @@
 
       <v-stepper-items>
         <v-stepper-content step="1">
-          <div style="min-height: 300px;" v-if="stepNumber === 1">
+          <div v-if="stepNumber === 1">
             <cortx-S3-account
               v-if="isCreateAccount"
               ref="s3Account"
               :s3UrlInfo="s3UrlInfo"
+              @createAccount="toggleCreateAccount"
               @setAuthToken="setAuthToken"
             >
             </cortx-S3-account>
             <LoginExistingS3Account
               v-else
-              @createAccount="isCreateAccount = true"
+              @createAccount="toggleCreateAccount"
               @setS3URL="setS3URL"
               @setAuthToken="setAuthToken"
             />
@@ -73,7 +74,9 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <cortx-iam-user :authToken="authToken"
+          <cortx-iam-user
+            :authToken="authToken"
+            :bucketName="registrationForm.bucketName"
             @onChange="updateStep4"></cortx-iam-user>
         </v-stepper-content>
 
@@ -388,6 +391,11 @@ export default class CortxUDXRegistration extends Vue {
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
+  
+  public toggleCreateAccount(isCreateAccount: boolean) {
+    this.isCreateAccount = isCreateAccount;
+  }
+
   public clearRegistrationForm() {
     this.registrationForm.url = "";
     this.registrationForm.accountName = "";

@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
+  <div class="bucket-container">
     <v-row v-if="!isCreateBucket">
       <v-col class="py-0 pr-0">
         <cortx-dropdown
@@ -24,20 +24,26 @@
           :options="bucketList"
         ></cortx-dropdown>
         <br />
+        <label v-if="!bucketList.length">No Bucket found. Please proceed by creating a new bucket.</label>
+        <br />
         <button
           class="cortx-btn-tertiary create-new-bucket"
-          @click="isCreateBucket = true"
+          @click="isCreateBucket=!isCreateBucket"
           type="button"
         >
           Create new Bucket
         </button>
         <br />
-        <button class="cortx-btn-primary" @click="createBucket()">
+        <button
+          class="cortx-btn-primary"
+          type="button"
+          :disabled="$v.registrationForm.bucketName.$invalid"
+          @click="createBucket()">
           Continue
         </button>
       </v-col>
     </v-row>
-    <v-row v-if="isCreateBucket">
+    <v-row v-else>
       <v-col class="py-0 pr-0">
         <div
           class="cortx-form-group"
@@ -64,6 +70,7 @@
             id="bucketName"
             name="bucketName"
             v-model.trim="registrationForm.bucketName"
+            autocomplete="off"
             @input="$v.registrationForm.bucketName.$touch"
           />
           <div class="cortx-form-group-label cortx-form-group-error-msg">
@@ -85,12 +92,17 @@
             >
           </div>
         </div>
-        <button class="cortx-btn-primary" @click="createBucket()">
+        <button
+          class="cortx-btn-primary"
+          type="button"
+          :disabled="$v.registrationForm.bucketName.$invalid"
+          @click="createBucket()">
           Create bucket
         </button>
         <button
+          type="button"
           class="cortx-btn-secondary cortx-btn-cancel"
-          @click="isCreateBucket = false"
+          @click="isCreateBucket=!isCreateBucket"
         >
           Cancel
         </button>
@@ -138,9 +150,9 @@ export default class CortxSelectCreateBucket extends Vue {
       }
     };
     this.$store.dispatch("systemConfig/showLoader", "Fetching butcket list...");
-    const res = await Api.getAllWithConfig(apiRegister.s3_bucket, config);
-    if (res && res.data) {
-      this.bucketList = res.data;
+    const res: any = await Api.getAllWithConfig(apiRegister.s3_bucket, config);
+    if (res && res.data && res.data.buckets) {
+      this.bucketList = res.data.buckets;
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
