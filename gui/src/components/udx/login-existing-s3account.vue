@@ -111,7 +111,7 @@ export default class LoginExistingS3Account extends Vue {
 
     if (res && res.data) {
       this.accountsList = res.data.s3_accounts.map((e: any) => {
-        return { label: e.account_name, value: e.account_email };
+        return { label: e.account_name, value: e.account_name, email: e.account_email };
       });
       this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
       if (this.s3Url[0] === "http://None") {

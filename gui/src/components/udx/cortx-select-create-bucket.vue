@@ -120,6 +120,8 @@ import {
   udxBucketNameRegex,
   udxBucketNameTooltipMessage
 } from "../../common/regex-helpers";
+import i18n from "./../../i18n";
+import { Bucket } from "../../models/s3";
 
 @Component({
   name: "cortx-select-create-bucket"
@@ -132,9 +134,12 @@ export default class CortxSelectCreateBucket extends Vue {
   @Prop({ required: true, default: "" })
   public authToken: string;
 
+  public bucketUrl: string;
   public registrationForm = {
     bucketName: ""
   };
+
+  
 
   @Validations()
   public validations = {
@@ -157,7 +162,29 @@ export default class CortxSelectCreateBucket extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
-  private createBucket() {
+  private async createBucket() {
+    const createBucketForm = {
+      bucket: {} as Bucket
+    };
+    const config: any = {
+      headers: {
+        auth_token: this.authToken
+      }
+    };
+    createBucketForm.bucket.bucket_name = this.registrationForm.bucketName;
+    
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      i18n.t("s3.bucket.creating-bucket")
+    );
+    const res = await Api.postAllWithConfig(
+      apiRegister.s3_bucket,
+      config,
+      createBucketForm.bucket
+    );
+    this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
+    
+    this.$store.dispatch("systemConfig/hideLoader");
     this.$emit("onChange", this.registrationForm.bucketName);
   }
 }

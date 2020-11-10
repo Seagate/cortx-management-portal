@@ -352,7 +352,7 @@ export default class CortxUDXRegistration extends Vue {
   public setAuthToken(authToken: string, accountName: any, password: string) {
     this.authToken = authToken;
     this.registrationForm.accountName = accountName.label;
-    this.registrationForm.accountEmail = accountName.value;
+    this.registrationForm.accountEmail = accountName.email;
     this.registrationForm.accountPassword = password;
     this.stepNumber = 2;
   }
@@ -456,5 +456,8 @@ export default class CortxUDXRegistration extends Vue {
 .cortx-modal-footer {
   height: 3.5em;
   padding: 0.5em;
+}
+.v-stepper__items {
+  overflow: visible;
 }
 </style>
