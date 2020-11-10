@@ -228,7 +228,7 @@ export default class CortxIamUser extends Vue {
 
     this.getPolicyDetails();
 
-    this.$emit("onChange", this.registrationForm.iamUsername);
+    this.$emit("onChange", this.registrationForm.iamUsername, this.registrationForm.iamUserPassword);
   }
   public getCredentialsFileContent(): string {
     return (

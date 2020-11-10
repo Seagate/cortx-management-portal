@@ -111,7 +111,7 @@ export default class LoginExistingS3Account extends Vue {
 
     if (res && res.data) {
       this.accountsList = res.data.s3_accounts.map((e: any) => {
-        return { label: e.account_name, value: e.account_name };
+        return { label: e.account_name, value: e.account_email };
       });
       this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
       if (this.s3Url[0] === "http://None") {
@@ -138,7 +138,8 @@ export default class LoginExistingS3Account extends Vue {
     const res = await Api.post(apiRegister.login, loginCredentials);
     this.$store.dispatch("systemConfig/hideLoader");
     if (res && res.headers) {
-      this.$emit("setAuthToken", res.headers.authorization, this.loginForm.account.account_name);
+      this.$emit("setAuthToken", res.headers.authorization,
+      this.loginForm.account.account_name, this.loginForm.account.password);
     }
   }
 }

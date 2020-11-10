@@ -473,7 +473,13 @@ export default class CortxS3Account extends Vue {
     const res = await Api.post(apiRegister.login, loginCredentials);
     this.$store.dispatch("systemConfig/hideLoader");
     if (res && res.headers) {
-      this.$emit("setAuthToken", res.headers.authorization, this.createAccountForm.account.account_name);
+      this.$emit(
+        "setAuthToken",
+        res.headers.authorization,
+        this.createAccountForm.account.account_name,
+        this.createAccountForm.account.password,
+        this.createAccountForm.account.account_email
+      );
       this.clearCreateAccountForm();
     }
   }

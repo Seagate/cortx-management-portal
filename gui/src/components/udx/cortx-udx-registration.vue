@@ -52,7 +52,7 @@
               ref="s3Account"
               :s3UrlInfo="s3UrlInfo"
               @createAccount="toggleCreateAccount"
-              @setAuthToken="setAuthToken"
+              @setAuthToken="createdS3Account"
             >
             </cortx-S3-account>
             <LoginExistingS3Account
@@ -114,7 +114,7 @@
           <v-row>
             <v-col class="py-0 pr-0">
               <h4>S3 Account: {{ registrationForm.accountName }}</h4>
-              <h4>IAM User: </h4>
+              <h4>IAM User: {{ registrationForm.iamUsername }}</h4>
               <h4>bucket Name: {{ `ldp-${registrationForm.bucketName}` }}</h4>
             </v-col>
           </v-row>
@@ -283,7 +283,7 @@ export default class CortxUDXRegistration extends Vue {
   public s3UrlInfo: Object;
   public authToken: string = "";
   public isCreateAccount: boolean = false;
-  public registrationToken: string = "";
+  public registrationToken: string = "49BUI8FNSWGZ";
   private accessKeyDetails: any = {};
   public registrationResponse: any = null;
   private showAccessKeyDetailsDialog: boolean;
@@ -326,7 +326,7 @@ export default class CortxUDXRegistration extends Vue {
   }
 
   public async mounted() {
-    // await this.getRegistrationToken();
+    await this.getRegistrationToken();
   }
 
   public async getRegistrationToken() {
@@ -341,9 +341,19 @@ export default class CortxUDXRegistration extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
-  public setAuthToken(authToken: string, accountName: any) {
+  public createdS3Account(authToken: string, accountName: any, password: string, email: string) {
+    this.authToken = authToken;
+    this.registrationForm.accountName = accountName;
+    this.registrationForm.accountEmail = email;
+    this.registrationForm.accountPassword = password;
+    this.stepNumber = 2;
+  }
+
+  public setAuthToken(authToken: string, accountName: any, password: string) {
     this.authToken = authToken;
     this.registrationForm.accountName = accountName.label;
+    this.registrationForm.accountEmail = accountName.value;
+    this.registrationForm.accountPassword = password;
     this.stepNumber = 2;
   }
 
@@ -352,12 +362,18 @@ export default class CortxUDXRegistration extends Vue {
     this.registrationForm.bucketName = selectedBucket;
   }
 
-  private updateStep4(iamUser: string) {
+  private updateStep4(IAMUser: string, IAMPassword: string) {
     this.stepNumber = this.stepNumber + 1;
-    this.registrationForm.iamUsername = iamUser;
+    this.registrationForm.iamUsername = IAMUser;
+    this.registrationForm.iamUserPassword = IAMPassword;
   }
 
   public async registerUDX() {
+    const config: any = {
+      headers: {
+        auth_token: this.authToken
+      }
+    };
     this.$store.dispatch("systemConfig/showLoader", "Registering UDX...");
     const res = await Api.post(
       apiRegister.udx_registration,
@@ -388,6 +404,7 @@ export default class CortxUDXRegistration extends Vue {
           "ldp-" + this.registrationForm.bucketName
       };
       this.showAccessKeyDetailsDialog = true;
+      this.$emit("complete");
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
