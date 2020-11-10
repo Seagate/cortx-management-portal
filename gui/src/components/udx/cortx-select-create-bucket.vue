@@ -23,22 +23,19 @@
           :selectedOption.sync="registrationForm.bucketName"
           :options="bucketList"
         ></cortx-dropdown>
-        <br />
-        <label v-if="!bucketList.length">No Bucket found. Please proceed by creating a new bucket.</label>
+        <div v-if="!bucketList.length">
+          No Bucket found. Please proceed by creating a new bucket.
+        </div>
         <br />
         <button
           class="cortx-btn-tertiary create-new-bucket"
-          @click="isCreateBucket=!isCreateBucket"
+          @click="isCreateBucket = !isCreateBucket"
           type="button"
         >
           Create new Bucket
         </button>
         <br />
-        <button
-          class="cortx-btn-primary"
-          type="button"
-          :disabled="$v.registrationForm.bucketName.$invalid"
-          @click="createBucket()">
+        <button class="cortx-btn-primary" type="button" @click="createBucket()">
           Continue
         </button>
       </v-col>
@@ -69,24 +66,24 @@
             type="text"
             id="bucketName"
             name="bucketName"
-            v-model.trim="registrationForm.bucketName"
+            v-model.trim="registrationForm.createBucketName"
             autocomplete="off"
-            @input="$v.registrationForm.bucketName.$touch"
+            @input="$v.registrationForm.createBucketName.$touch"
           />
           <div class="cortx-form-group-label cortx-form-group-error-msg">
             <label
               id="udx-bucketname-required"
               v-if="
-                $v.registrationForm.bucketName.$dirty &&
-                  !$v.registrationForm.bucketName.required
+                $v.registrationForm.createBucketName.$dirty &&
+                  !$v.registrationForm.createBucketName.required
               "
               >{{ $t("udx-registration.bucket-required") }}</label
             >
             <label
               id="udx-bucketname-invalid"
               v-else-if="
-                $v.registrationForm.bucketName.$dirty &&
-                  !$v.registrationForm.bucketName.udxBucketNameRegex
+                $v.registrationForm.createBucketName.$dirty &&
+                  !$v.registrationForm.createBucketName.udxBucketNameRegex
               "
               >{{ $t("udx-registration.invalid-bucketname") }}</label
             >
@@ -95,14 +92,15 @@
         <button
           class="cortx-btn-primary"
           type="button"
-          :disabled="$v.registrationForm.bucketName.$invalid"
-          @click="createBucket()">
+          :disabled="$v.registrationForm.createBucketName.$invalid"
+          @click="createBucket()"
+        >
           Create bucket
         </button>
         <button
           type="button"
           class="cortx-btn-secondary cortx-btn-cancel"
-          @click="isCreateBucket=!isCreateBucket"
+          @click="isCreateBucket = !isCreateBucket"
         >
           Cancel
         </button>
@@ -136,15 +134,15 @@ export default class CortxSelectCreateBucket extends Vue {
 
   public bucketUrl: string;
   public registrationForm = {
-    bucketName: ""
+    bucketName: {} as any,
+    createBucketName: ""
   };
-
-  
 
   @Validations()
   public validations = {
     registrationForm: {
-      bucketName: { required, udxBucketNameRegex }
+      bucketName: { required, udxBucketNameRegex },
+      createBucketName: { required, udxBucketNameRegex }
     }
   };
 
@@ -157,35 +155,40 @@ export default class CortxSelectCreateBucket extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Fetching butcket list...");
     const res: any = await Api.getAllWithConfig(apiRegister.s3_bucket, config);
     if (res && res.data && res.data.buckets) {
-      this.bucketList = res.data.buckets;
+      this.bucketList = res.data.buckets.map((bucket: any) => {
+        return { label: bucket.name, value: bucket.name };
+      });
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
   private async createBucket() {
-    const createBucketForm = {
-      bucket: {} as Bucket
-    };
-    const config: any = {
-      headers: {
-        auth_token: this.authToken
-      }
-    };
-    createBucketForm.bucket.bucket_name = this.registrationForm.bucketName;
-    
-    this.$store.dispatch(
-      "systemConfig/showLoader",
-      i18n.t("s3.bucket.creating-bucket")
-    );
-    const res = await Api.postAllWithConfig(
-      apiRegister.s3_bucket,
-      config,
-      createBucketForm.bucket
-    );
-    this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
-    
-    this.$store.dispatch("systemConfig/hideLoader");
-    this.$emit("onChange", this.registrationForm.bucketName);
+    const bucketName: string = this.isCreateBucket ? this.registrationForm.createBucketName : this.registrationForm.bucketName.label;
+    if (this.isCreateBucket) {
+      const createBucketForm = {
+        bucket: {} as Bucket
+      };
+      const config: any = {
+        headers: {
+          auth_token: this.authToken
+        }
+      };
+      createBucketForm.bucket.bucket_name = bucketName;
+
+      this.$store.dispatch(
+        "systemConfig/showLoader",
+        i18n.t("s3.bucket.creating-bucket")
+      );
+      const res = await Api.postAllWithConfig(
+        apiRegister.s3_bucket,
+        config,
+        createBucketForm.bucket
+      );
+      this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
+
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
+    this.$emit("onChange", bucketName);
   }
 }
 </script>
