@@ -118,6 +118,7 @@
               <h4>S3 Account: {{ registrationForm.accountName }}</h4>
               <h4>IAM User: {{ registrationForm.iamUsername }}</h4>
               <h4>bucket Name: {{ `ldp-${registrationForm.bucketName}` }}</h4>
+              <br />
             </v-col>
           </v-row>
 
@@ -398,23 +399,7 @@ export default class CortxUDXRegistration extends Vue {
       payload,
       { timeout: 120000 }
     );
-    if (res && res.data) {
-      this.registrationResponse = res.data;
-      this.accessKeyDetails = {
-        [`${i18n.t("s3.access-key.table-headers.access_key")}`]: this
-          .registrationResponse.s3_account.access_key,
-        [`${i18n.t("s3.access-key.table-headers.secret_key")}`]: this
-          .registrationResponse.s3_account.secret_key,
-        [`${i18n.t("s3.access-key.table-headers.iam_access_key")}`]: this
-          .registrationResponse.iam_user.access_key,
-        [`${i18n.t("s3.access-key.table-headers.iam_secret_key")}`]: this
-          .registrationResponse.iam_user.secret_key,
-        [`${i18n.t("s3.access-key.table-headers.bucket_name")}`]:
-          "ldp-" + this.registrationForm.bucketName
-      };
-      this.showAccessKeyDetailsDialog = true;
-      this.$emit("complete");
-    }
+    this.$emit("complete");
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
