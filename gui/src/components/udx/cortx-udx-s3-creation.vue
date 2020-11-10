@@ -17,9 +17,9 @@
 <template>
   <div class="pa-2" id="s3-create-account-form">
     <v-row>
-      <v-col class="pl-4 col-6 pb-0">
+      <v-col class="pl-4 col-4 pb-0">
         <div
-          class="cortx-form-group"
+          class="cortx-form-group-custom"
           :class="{
             'cortx-form-group--error':
               $v.createAccountForm.account.account_name.$error
@@ -65,9 +65,9 @@
           </div>
         </div>
       </v-col>
-      <v-col class="pl-4 col-6 pb-0">
+      <v-col class="pl-4 col-4 pb-0">
         <div
-          class="cortx-form-group"
+          class="cortx-form-group-custom"
           :class="{
             'cortx-form-group--error':
               $v.createAccountForm.account.account_email.$error
@@ -110,9 +110,9 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col class="pl-4 col-6">
+      <v-col class="pl-4 col-4">
         <div
-          class="cortx-form-group"
+          class="cortx-form-group-custom"
           :class="{
             'cortx-form-group--error':
               $v.createAccountForm.account.password.$error
@@ -157,9 +157,9 @@
           </div>
         </div>
       </v-col>
-      <v-col class="pl-4 col-6">
+      <v-col class="pl-4 col-4">
         <div
-          class="cortx-form-group"
+          class="cortx-form-group-custom"
           :class="{
             'cortx-form-group--error':
               $v.createAccountForm.confirmPassword.$error
