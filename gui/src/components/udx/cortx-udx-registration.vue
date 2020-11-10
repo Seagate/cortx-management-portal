@@ -225,11 +225,12 @@
             type="button"
             class="cortx-btn-primary"
             @click="registerUDX()"
-          >
-            <!-- :disabled="
+            :disabled="
               $v.registrationForm.$invalid ||
               !registrationForm.consentOne ||
-              !registrationForm.consentTwo" -->
+              !registrationForm.consentTwo"
+          >
+            
             {{ $t("udx-registration.register-btn") }}
           </button>
           <button
@@ -305,19 +306,7 @@ export default class CortxUDXRegistration extends Vue {
   @Validations()
   public validations = {
     registrationForm: {
-      url: { required, udxURLRegex },
-      accountName: { required, accountNameRegex },
-      accountEmail: { required, email },
-      accountPassword: { required, passwordRegex },
-      accountConfirmPassword: {
-        sameAsAccountPassword: sameAs("accountPassword")
-      },
-      iamUsername: { required, accountNameRegex },
-      iamUserPassword: { required, passwordRegex },
-      iamUserConfirmPassword: {
-        sameAsIAMUserPassword: sameAs("iamUserPassword")
-      },
-      bucketName: { required, udxBucketNameRegex }
+      url: { required, udxURLRegex }
     }
   };
 
@@ -415,14 +404,11 @@ export default class CortxUDXRegistration extends Vue {
 
   public clearRegistrationForm() {
     this.registrationForm.url = "";
-    this.registrationForm.accountName = "";
     this.registrationForm.accountEmail = "";
     this.registrationForm.accountPassword = "";
     this.registrationForm.accountConfirmPassword = "";
-    this.registrationForm.iamUsername = "";
     this.registrationForm.iamUserPassword = "";
     this.registrationForm.iamUserConfirmPassword = "";
-    this.registrationForm.bucketName = "";
     this.registrationForm.consentOne = false;
     this.registrationForm.consentTwo = false;
     if (this.$v.registrationForm) {
