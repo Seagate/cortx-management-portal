@@ -355,7 +355,7 @@ export default class CortxS3Account extends Vue {
   };
 
   @Prop({ required: false })
-  public s3UrlInfo: Object;
+  public s3UrlInfo: any;
 
   @Validations()
   public validations = {

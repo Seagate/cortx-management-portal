@@ -280,13 +280,11 @@ import CortxIamUser from "./cortx-iam-user.vue";
 })
 export default class CortxUDXRegistration extends Vue {
   public stepNumber: number = 1;
-  public s3UrlInfo: Object;
+  public s3UrlInfo: any;
   public authToken: string = "";
   public isCreateAccount: boolean = false;
   public registrationToken: string = "49BUI8FNSWGZ";
-  private accessKeyDetails: any = {};
   public registrationResponse: any = null;
-  private showAccessKeyDetailsDialog: boolean;
 
   public registrationForm = {
     url: "",
@@ -301,6 +299,8 @@ export default class CortxUDXRegistration extends Vue {
     consentOne: false,
     consentTwo: false
   };
+  private accessKeyDetails: any = {};
+  private showAccessKeyDetailsDialog: boolean;
 
   @Validations()
   public validations = {
@@ -321,7 +321,7 @@ export default class CortxUDXRegistration extends Vue {
     }
   };
 
-  public setS3URL(s3UrlInfo: Object) {
+  public setS3URL(s3UrlInfo: any) {
     this.s3UrlInfo = s3UrlInfo;
   }
 
@@ -357,15 +357,15 @@ export default class CortxUDXRegistration extends Vue {
     this.stepNumber = 2;
   }
 
-  private updateStep(selectedBucket: any) {
+  public updateStep(selectedBucket: any) {
     this.stepNumber = this.stepNumber + 1;
     this.registrationForm.bucketName = selectedBucket;
   }
 
-  private updateStep4(IAMUser: string, IAMPassword: string) {
+  public updateStep4(iamUser: string, iamPassword: string) {
     this.stepNumber = this.stepNumber + 1;
-    this.registrationForm.iamUsername = IAMUser;
-    this.registrationForm.iamUserPassword = IAMPassword;
+    this.registrationForm.iamUsername = iamUser;
+    this.registrationForm.iamUserPassword = iamPassword;
   }
 
   public async registerUDX() {
@@ -408,7 +408,7 @@ export default class CortxUDXRegistration extends Vue {
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
-  
+
   public toggleCreateAccount(isCreateAccount: boolean) {
     this.isCreateAccount = isCreateAccount;
   }
