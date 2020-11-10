@@ -26,15 +26,15 @@
         <div v-if="!bucketList.length">
           No Bucket found. Please proceed by creating a new bucket.
         </div>
-        <br />
-        <button
-          class="cortx-btn-tertiary create-new-bucket"
-          @click="isCreateBucket = !isCreateBucket"
-          type="button"
-        >
-          Create new Bucket
-        </button>
-        <br />
+        <div>
+          <button
+            class="cortx-btn-tertiary create-new-bucket"
+            @click="isCreateBucket = !isCreateBucket"
+            type="button"
+          >
+            Create new Bucket
+          </button>
+        </div>
         <button class="cortx-btn-primary" type="button" @click="createBucket()">
           Continue
         </button>

@@ -46,7 +46,7 @@
 
       <v-stepper-items>
         <v-stepper-content step="1">
-          <div v-if="stepNumber === 1">
+          <div v-if="stepNumber === 1" style="min-height: 260px">
             <cortx-S3-account
               v-if="isCreateAccount"
               ref="s3Account"
@@ -66,6 +66,7 @@
 
         <v-stepper-content step="2">
           <cortx-select-create-bucket
+            style="min-height: 260px"
             v-if="stepNumber === 2"
             :authToken="authToken"
             @onChange="updateStep"
@@ -77,7 +78,8 @@
           <cortx-iam-user
             :authToken="authToken"
             :bucketName="registrationForm.bucketName"
-            @onChange="updateStep4"></cortx-iam-user>
+            @onChange="updateStep4"
+          ></cortx-iam-user>
         </v-stepper-content>
 
         <v-stepper-content step="4">
@@ -227,10 +229,10 @@
             @click="registerUDX()"
             :disabled="
               $v.registrationForm.$invalid ||
-              !registrationForm.consentOne ||
-              !registrationForm.consentTwo"
+                !registrationForm.consentOne ||
+                !registrationForm.consentTwo
+            "
           >
-            
             {{ $t("udx-registration.register-btn") }}
           </button>
           <button
@@ -302,6 +304,8 @@ export default class CortxUDXRegistration extends Vue {
   };
   private accessKeyDetails: any = {};
   private showAccessKeyDetailsDialog: boolean;
+  private secretKey:string = "";
+  private accessKey: string = "";
 
   @Validations()
   public validations = {
@@ -330,7 +334,12 @@ export default class CortxUDXRegistration extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
-  public createdS3Account(authToken: string, accountName: any, password: string, email: string) {
+  public createdS3Account(
+    authToken: string,
+    accountName: any,
+    password: string,
+    email: string
+  ) {
     this.authToken = authToken;
     this.registrationForm.accountName = accountName;
     this.registrationForm.accountEmail = email;
@@ -351,10 +360,11 @@ export default class CortxUDXRegistration extends Vue {
     this.registrationForm.bucketName = selectedBucket;
   }
 
-  public updateStep4(iamUser: string, iamPassword: string) {
+  public updateStep4(secretKey: string, accessKey: string, username: string) {
     this.stepNumber = this.stepNumber + 1;
-    this.registrationForm.iamUsername = iamUser;
-    this.registrationForm.iamUserPassword = iamPassword;
+    this.registrationForm.iamUsername = username;
+    this.secretKey = secretKey;
+    this.accessKey = accessKey;
   }
 
   public async registerUDX() {
@@ -364,18 +374,28 @@ export default class CortxUDXRegistration extends Vue {
       }
     };
     this.$store.dispatch("systemConfig/showLoader", "Registering UDX...");
+    const payload = {
+      registerDeviceParams: {
+        url: this.registrationForm.url,
+        regPin: "0000",
+        regToken: this.registrationToken
+      },
+      accessParams: {
+        accountName: this.registrationForm.accountName,
+        uri: "s3://192.168.27.254:80",
+        credentials: {
+          accessKey: this.accessKey,
+          secretKey: this.secretKey
+        }
+      },
+      internalCortxParams: {
+        bucketName: this.registrationForm.bucketName
+      }
+    };
+
     const res = await Api.post(
       apiRegister.udx_registration,
-      {
-        url: this.registrationForm.url,
-        pin: "0000",
-        s3_account_name: this.registrationForm.accountName,
-        s3_account_email: this.registrationForm.accountEmail,
-        s3_account_password: this.registrationForm.accountPassword,
-        iam_user_name: this.registrationForm.iamUsername,
-        iam_user_password: this.registrationForm.iamUserPassword,
-        bucket_name: "ldp-" + this.registrationForm.bucketName
-      },
+      payload,
       { timeout: 120000 }
     );
     if (res && res.data) {
@@ -442,8 +462,5 @@ export default class CortxUDXRegistration extends Vue {
 .cortx-modal-footer {
   height: 3.5em;
   padding: 0.5em;
-}
-.v-stepper__items {
-  overflow: visible;
 }
 </style>
