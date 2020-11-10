@@ -252,22 +252,50 @@ export default class CortxIamUser extends Vue {
         auth_token: this.authToken
       }
     };
-    // Get policy details    
-    const resp = await Api.getAllWithConfig(
-      apiRegister.bucket_policy + "/" + this.bucketName,
-      config
-    );
-    if (!resp.error) {
+    // Get policy details 
+    try {
+      const resp = await Api.getAllWithConfig(
+        apiRegister.bucket_policy + "/" + this.bucketName,
+        config
+      );
       this.policyJSON = JSON.stringify(resp.data, null, 4);
-    } else {
+    } catch (error) {
       this.policyJSON = "";
       this.noBucketPolicy = true;
-    }    
+    }
     // Update entry
-    const policy = JSON.parse(this.policyJSON);
-    const response: any = await Api.put(
-      apiRegister.bucket_policy, policy, this.bucketName, config
-      );
+    const resource: string = "arn:aws:s3:::" + this.bucketName + "/*";
+    const date: string = new Date().toDateString();
+    if (this.noBucketPolicy) {
+      this.policyJSON = JSON.stringify({
+                          Version: date,
+                          Statement: [{
+                            Sid: this.user.user_id,
+                            Action: ["s3:GetObject"],
+                            Effect: "Allow",
+                            Resource: resource,
+                            Principal: "*"
+                          }]
+                        });
+      const policy = JSON.parse(this.policyJSON);
+      const response: any = await Api.put(
+        apiRegister.bucket_policy, policy, this.bucketName, config
+        );
+    } else {
+      const policy = JSON.parse(this.policyJSON);
+      const statement = {
+                          "Sid": this.user.user_id,
+                          "Action": ["s3:GetObject"],
+                          "Effect": "Allow",
+                          "Resource": resource,
+                          "Principal": "*"
+                        }
+      policy.Statement.push(statement);
+      const response: any = await Api.put(
+        apiRegister.bucket_policy, policy, this.bucketName, config
+        );
+    }
+
   }
 }
 </script>
