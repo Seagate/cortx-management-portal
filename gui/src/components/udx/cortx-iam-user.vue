@@ -270,11 +270,14 @@ export default class CortxIamUser extends Vue {
       this.policyJSON = JSON.stringify({
                           Version: date,
                           Statement: [{
-                            Sid: this.user.user_id,
-                            Action: ["s3:GetObject"],
+                            Sid: "UdxIamAccountPerm",
+                            Action: ['s3:GetObject', 's3:PutObject',
+                            's3:ListMultipartUploadParts', 's3:AbortMultipartUpload',
+                            's3:GetObjectAcl', 's3:PutObjectAcl',
+                            's3:PutObjectTagging'],
                             Effect: "Allow",
                             Resource: resource,
-                            Principal: "*"
+                            Principal: {"AWS" : this.user.arn}
                           }]
                         });
       const policy = JSON.parse(this.policyJSON);
@@ -284,11 +287,14 @@ export default class CortxIamUser extends Vue {
     } else {
       const policy = JSON.parse(this.policyJSON);
       const statement = {
-                          "Sid": this.user.user_id,
-                          "Action": ["s3:GetObject"],
+                          "Sid": "UdxIamAccountPerm",
+                          "Action": ['s3:GetObject', 's3:PutObject',
+                            's3:ListMultipartUploadParts', 's3:AbortMultipartUpload',
+                            's3:GetObjectAcl', 's3:PutObjectAcl',
+                            's3:PutObjectTagging'],
                           "Effect": "Allow",
                           "Resource": resource,
-                          "Principal": "*"
+                          "Principal": {"AWS" : this.user.arn}
                         }
       policy.Statement.push(statement);
       const response: any = await Api.put(
