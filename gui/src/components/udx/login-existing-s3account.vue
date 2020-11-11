@@ -36,7 +36,7 @@
         'cortx-form-group--error': $v.loginForm.account.password.$error
       }"
     >
-      <label class="cortx-form-group-label" for="accountPassword" id="s3-lblpassword">{{ $t("login.password") }}*</label>
+      <label class="cortx-form-group-label" for="accountPassword" id="s3-lblpassword">{{ $t("login.password-placeholder") }}*</label>
       <input
         class="cortx-form__input_text"
         type="password"
