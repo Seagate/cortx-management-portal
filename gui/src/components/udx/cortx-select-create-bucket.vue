@@ -35,7 +35,9 @@
             {{ $t("udx-registration.createNewBucket") }}
           </button>
         </div>
-        <button class="cortx-btn-primary" type="button" @click="createBucket()">
+        <button class="cortx-btn-primary" type="button" @click="createBucket()"
+        :disabled="$v.registrationForm.bucketName.$invalid"
+        >
           {{ $t("common.continue") }}
         </button>
         <button
@@ -145,7 +147,7 @@ export default class CortxSelectCreateBucket extends Vue {
   @Validations()
   public validations = {
     registrationForm: {
-      bucketName: { required, udxBucketNameRegex },
+      bucketName: { required },
       createBucketName: { required, udxBucketNameRegex }
     }
   };

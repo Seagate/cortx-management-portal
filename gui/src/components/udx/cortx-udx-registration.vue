@@ -181,7 +181,9 @@
                     message="Enter the PIN provided by your UDX portal."
                   />
                 </label>
-                <input class="cortx-form__input_text" type="text" />
+                <input class="cortx-form__input_text" type="number" 
+                v-model.trim="registrationForm.pin"
+                />
               </div>
             </v-col>
           </v-row>
@@ -300,13 +302,15 @@ export default class CortxUDXRegistration extends Vue {
     iamUserConfirmPassword: "",
     bucketName: "",
     consentOne: false,
-    consentTwo: false
+    consentTwo: false,
+    pin: ""
   };
 
   @Validations()
   public validations = {
     registrationForm: {
-      url: { required, udxURLRegex }
+      url: { required, udxURLRegex },
+      pin: { required }
     }
   };
 
@@ -430,6 +434,7 @@ export default class CortxUDXRegistration extends Vue {
     this.registrationForm.accountConfirmPassword = "";
     this.registrationForm.iamUserPassword = "";
     this.registrationForm.iamUserConfirmPassword = "";
+    this.registrationForm.pin = "";
     this.registrationForm.consentOne = false;
     this.registrationForm.consentTwo = false;
     if (this.$v.registrationForm) {

@@ -17,7 +17,7 @@
 <template>
   <div>
     <div class="cortx-form-group">
-      <label class="cortx-form-group-label">Account*</label>
+      <label class="cortx-form-group-label" :message="accountNameTooltipMessage">Account*</label>
       <cortx-dropdown
         id="account-list-dropdown"
         :options="accountsList"
@@ -36,7 +36,13 @@
         'cortx-form-group--error': $v.loginForm.account.password.$error
       }"
     >
-      <label class="cortx-form-group-label" for="accountPassword" id="s3-lblpassword">{{ $t("login.password-placeholder") }}*</label>
+      <label class="cortx-form-group-label" for="accountPassword" id="s3-lblpassword">
+        <cortx-info-tooltip
+          id="aacount-password"
+          label="Password*"
+          :message="passwordTooltipMessage"
+        />
+      </label>
       <input
         class="cortx-form__input_text"
         type="password"
@@ -54,6 +60,14 @@
             !$v.loginForm.account.password.required
           "
         >{{ $t("common.password-required") }}</label>
+        <label
+              id="s3-password-invalid"
+              v-else-if="
+                $v.loginForm.account.password.$dirty &&
+                  !$v.loginForm.account.password.passwordRegex
+              "
+              >{{ $t("common.invalid-pass") }}</label
+        >        
       </div>
     </div>
     <button
@@ -71,11 +85,18 @@ import { Validations } from "vuelidate-property-decorators";
 import { required } from "vuelidate/lib/validators";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import {
+  accountNameRegex,
+  passwordRegex,
+  passwordTooltipMessage,
+  accountNameTooltipMessage
+} from "./../../common/regex-helpers";
 
 @Component({
   name: "login-existing-s3account"
 })
 export default class LoginExistingS3Account extends Vue {
+  public passwordTooltipMessage: string = passwordTooltipMessage;
   public accountsList: any[] = [];
   public s3Url: any[] = [];
   public s3UrlNone: boolean = false;
@@ -93,7 +114,7 @@ export default class LoginExistingS3Account extends Vue {
     loginForm: {
       account: {
         account_name: { required },
-        password: { required }
+        password: { required, passwordRegex }
       }
     }
   };
