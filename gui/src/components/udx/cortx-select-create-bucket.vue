@@ -35,7 +35,9 @@
             {{ $t("udx-registration.createNewBucket") }}
           </button>
         </div>
-        <button class="cortx-btn-primary" type="button" @click="createBucket()">
+        <button class="cortx-btn-primary" type="button" @click="createBucket()"
+        :disabled="$v.registrationForm.bucketName.$invalid"
+        >
           {{ $t("common.continue") }}
         </button>
         <button
@@ -107,10 +109,9 @@
         <button
           type="button"
           class="cortx-btn-secondary cortx-btn-cancel"
-          :disabled="$v.registrationForm.bucketName.$invalid"
           @click="isCreateBucket = !isCreateBucket"
         >
-          {{ $t("common.continue") }}
+          {{ $t("common.back") }}
         </button>
       </v-col>
     </v-row>
