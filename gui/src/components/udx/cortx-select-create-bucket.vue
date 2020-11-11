@@ -107,6 +107,7 @@
         <button
           type="button"
           class="cortx-btn-secondary cortx-btn-cancel"
+          :disabled="$v.registrationForm.bucketName.$invalid"
           @click="isCreateBucket = !isCreateBucket"
         >
           {{ $t("common.continue") }}
@@ -148,7 +149,7 @@ export default class CortxSelectCreateBucket extends Vue {
   @Validations()
   public validations = {
     registrationForm: {
-      bucketName: { required, udxBucketNameRegex },
+      bucketName: { required },
       createBucketName: { required, udxBucketNameRegex }
     }
   };
