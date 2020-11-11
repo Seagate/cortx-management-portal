@@ -17,7 +17,7 @@
 <template>
   <div>
     <div class="cortx-form-group">
-      <label class="cortx-form-group-label" :message="accountNameTooltipMessage">Account*</label>
+      <label class="cortx-form-group-label">Account*</label>
       <cortx-dropdown
         id="account-list-dropdown"
         :options="accountsList"
