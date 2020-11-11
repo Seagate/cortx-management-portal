@@ -16,15 +16,16 @@
 */
 <template>
   <div class="pa-5">
-    <div
-      class="cortx-back-btn"
-      @click="$router.go(-1)"
-    >
+    <div class="cortx-back-btn" @click="$router.go(-1)">
       <img :src="require('@/assets/arrow-left.svg')" />
       <span class="mt-1">{{ $t("common.back") }}</span>
     </div>
-    <div class="cortx-text-lg cortx-text-bold">{{ $t("dashboard.healthViewSeverity") }}: {{ severity }})</div>
-    <div class="cortx-text-md cortx-text-bold" v-if="componentLabel">{{ componentLabel }}</div>
+    <div class="cortx-text-lg cortx-text-bold">
+      {{ $t("dashboard.healthViewSeverity") }}: {{ severity }})
+    </div>
+    <div class="cortx-text-md cortx-text-bold" v-if="componentLabel">
+      {{ componentLabel }}
+    </div>
 
     <v-data-table
       calculate-widths
@@ -56,19 +57,18 @@
       </template>
       <template v-slot:item="props">
         <tr style="color: #000000;">
-          <td>{{props.item.component_id}}</td>
+          <td>{{ props.item.component_id }}</td>
           <td>
             <div
-              v-if="
-               props.item.health === 'OK' || props.item.health === 'NA'
-              "
+              v-if="props.item.health === 'OK' || props.item.health === 'NA'"
               class="cortx-status-chip cortx-chip-ok"
               v-bind:title="props.item.health"
             ></div>
             <div
               v-else-if="
                 props.item.severity === alertStatus.informational ||
-                  props.item.severity === 'NA' || props.item.severity === ''
+                  props.item.severity === 'NA' ||
+                  props.item.severity === ''
               "
               class="cortx-status-chip cortx-chip-warning"
               title="warning"
@@ -86,17 +86,22 @@
               class="cortx-status-chip cortx-chip-warning"
               v-bind:title="props.item.severity"
             ></div>
-
           </td>
-          <td v-if="props.item.alert_uuid !== 'NA' && props.item.health !== 'OK' && props.item.health !== 'NA'">
+          <td
+            v-if="
+              props.item.alert_uuid !== 'NA' &&
+                props.item.health !== 'OK' &&
+                props.item.health !== 'NA'
+            "
+          >
             <img
-             id="healthview-zoomicon"
+              id="healthview-zoomicon"
               :src="require('@/assets/zoom-in.svg')"
               class="cortx-cursor-pointer"
               @click="$router.push(`/alerts/${props.item.alert_uuid}`)"
             />
-           </td>
-           <td v-else>{{ $t("dashboard.NA") }}</td>
+          </td>
+          <td v-else>{{ $t("dashboard.NA") }}</td>
         </tr>
       </template>
     </v-data-table>
@@ -143,9 +148,10 @@ export default class CortxSeverityBasedHealthView extends Vue {
     };
     if (this.$route.query.component_id) {
       query_params.component_id = this.$route.query.component_id;
-      this.componentLabel = this.$route.query.component_id === "storage_encl"
-                            ? i18n.t("health.storage_encl")
-                            : this.$route.query.component_id;
+      this.componentLabel =
+        this.$route.query.component_id === "storage_encl"
+          ? i18n.t("health.storage_encl")
+          : this.$route.query.component_id;
     }
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,

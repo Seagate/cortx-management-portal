@@ -119,6 +119,7 @@
               <h4>IAM User: {{ registrationForm.iamUsername }}</h4>
               <h4>bucket Name: {{ `ldp-${registrationForm.bucketName}` }}</h4>
               <br />
+              <br />
             </v-col>
           </v-row>
 
@@ -237,13 +238,12 @@
             {{ $t("udx-registration.register-btn") }}
           </button>
           <button
-            createBucket="false"
-            id="udx-clearbtn"
+            id="udx-backbtn"
             type="button"
-            class="ml-8 cortx-btn-secondary"
-            @click="clearRegistrationForm()"
+            class="cortx-btn-secondary ml-5"
+            @click="backToPreviousStep()"
           >
-            {{ $t("udx-registration.clear") }}
+            {{ $t("common.back") }}
           </button>
         </v-stepper-content>
       </v-stepper-items>
@@ -305,7 +305,7 @@ export default class CortxUDXRegistration extends Vue {
   };
   private accessKeyDetails: any = {};
   private showAccessKeyDetailsDialog: boolean;
-  private secretKey:string = "";
+  private secretKey: string = "";
   private accessKey: string = "";
 
   @Validations()
@@ -335,6 +335,10 @@ export default class CortxUDXRegistration extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
+  public backToPreviousStep() {
+    this.stepNumber = this.stepNumber - 1;
+  }
+
   public createdS3Account(
     authToken: string,
     accountName: any,
@@ -356,16 +360,30 @@ export default class CortxUDXRegistration extends Vue {
     this.stepNumber = 2;
   }
 
-  public updateStep(selectedBucket: any) {
-    this.stepNumber = this.stepNumber + 1;
-    this.registrationForm.bucketName = selectedBucket;
+  public updateStep(back: boolean, selectedBucket: any) {
+    if (back) {
+      this.clearRegistrationForm();
+      this.stepNumber = this.stepNumber - 1;
+    } else {
+      this.stepNumber = this.stepNumber + 1;
+      this.registrationForm.bucketName = selectedBucket;
+    }
   }
 
-  public updateStep4(secretKey: string, accessKey: string, username: string) {
-    this.stepNumber = this.stepNumber + 1;
-    this.registrationForm.iamUsername = username;
-    this.secretKey = secretKey;
-    this.accessKey = accessKey;
+  public updateStep4(
+    back: boolean,
+    secretKey: string,
+    accessKey: string,
+    username: string
+  ) {
+    if (back) {
+      this.stepNumber = this.stepNumber - 1;
+    } else {
+      this.stepNumber = this.stepNumber + 1;
+      this.registrationForm.iamUsername = username;
+      this.secretKey = secretKey;
+      this.accessKey = accessKey;
+    }
   }
 
   public async registerUDX() {
@@ -394,11 +412,9 @@ export default class CortxUDXRegistration extends Vue {
       }
     };
 
-    const res = await Api.post(
-      apiRegister.udx_registration,
-      payload,
-      { timeout: 120000 }
-    );
+    const res = await Api.post(apiRegister.udx_registration, payload, {
+      timeout: 120000
+    });
     this.$emit("complete");
     this.$store.dispatch("systemConfig/hideLoader");
   }
