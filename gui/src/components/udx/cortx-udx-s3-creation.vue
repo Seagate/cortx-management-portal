@@ -144,7 +144,7 @@
                 $v.createAccountForm.account.password.$dirty &&
                   !$v.createAccountForm.account.password.required
               "
-              >Password is required.</label
+              >{{ $t("common.password-required") }}</label
             >
             <label
               id="s3-password-invalid"
@@ -152,7 +152,7 @@
                 $v.createAccountForm.account.password.$dirty &&
                   !$v.createAccountForm.account.password.passwordRegex
               "
-              >Invalid password.</label
+              >{{ $t("common.invalid-pass") }}</label
             >
           </div>
         </div>
@@ -169,7 +169,7 @@
             class="cortx-form-group-label"
             for="confirmPassword"
             id="s3-lblconfirmpassword"
-            >Confirm password*</label
+            >{{ $t("common.confirm-pass-label") }}*</label
           >
           <input
             class="cortx-form__input_text"
@@ -186,7 +186,7 @@
               $v.createAccountForm.confirmPassword.$dirty &&
                 !$v.createAccountForm.confirmPassword.sameAsPassword
             "
-            >Passwords do not match</span
+            >{{ $t("common.pass-not-match") }}</span
           >
         </div>
       </v-col>

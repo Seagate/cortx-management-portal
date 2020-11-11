@@ -385,9 +385,9 @@ export default class CortxBucketCreation extends Vue {
         value: "name",
         sortable: false
       },
-      { 
-        text: "Action", 
-        value: "data-table-expand" 
+      {
+        text: "Action",
+        value: "data-table-expand"
       }
     ];
   }

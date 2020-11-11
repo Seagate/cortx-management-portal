@@ -217,27 +217,17 @@ export default class CortxIamUser extends Vue {
   public policyJSON: string;
   public noBucketPolicy: boolean = false;
   public isUserAlreadyCreated: boolean = false;
-  private showUserDetailsDialog: boolean;
-  private user: IAMUser;
-  private credentialsFileContent: string = "";
-  private isCredentialsFileDownloaded: boolean = false;
-  private s3Url = [];
+  public registrationForm = {
+    iamUsername: "",
+    iamUserPassword: "",
+    iamUserConfirmPassword: ""
+  };
 
   @Prop({ required: true, default: "" })
   public authToken: string;
 
   @Prop({ required: true })
   public bucketName: string;
-
-  constructor() {
-    super();
-    this.user = {} as IAMUser;
-  }
-  public registrationForm = {
-    iamUsername: "",
-    iamUserPassword: "",
-    iamUserConfirmPassword: ""
-  };
 
   @Validations()
   public validations = {
@@ -250,6 +240,17 @@ export default class CortxIamUser extends Vue {
     }
   };
 
+  private showUserDetailsDialog: boolean;
+  private user: IAMUser;
+  private credentialsFileContent: string = "";
+  private isCredentialsFileDownloaded: boolean = false;
+  private s3Url = [];
+
+  constructor() {
+    super();
+    this.user = {} as IAMUser;
+  }
+
   public async mounted() {
     this.clearForm();
   }
@@ -259,7 +260,7 @@ export default class CortxIamUser extends Vue {
     this.clearForm();
   }
 
-  clearForm() {
+  public clearForm() {
     this.registrationForm = {
       iamUsername: "",
       iamUserPassword: "",

@@ -78,7 +78,7 @@ export default class CortxCapacityGauge extends Vue {
           if (this.chartDataVal >= 90) {
             this.usedLegendClass = "capacity-used-red";
           }
-        } 
+        }
         const chart = c3.generate({
           bindto: "#gauge_capacity",
           legend: {

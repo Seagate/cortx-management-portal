@@ -16,13 +16,25 @@
 */
 <template>
   <div class="cortx-p-1">
-    <v-row :style="{'min-height':chartRowHeightPx, 'border-bottom': '2px solid rgba(0, 0, 0, 0.12)'}">
+    <v-row
+      :style="{
+        'min-height': chartRowHeightPx,
+        'border-bottom': '2px solid rgba(0, 0, 0, 0.12)'
+      }"
+    >
       <v-col class="pt-0 pb-0" md="12" style="height: 100%;">
         <cortx-stats-medium />
       </v-col>
     </v-row>
-    <v-row :style="{'min-height':alertTblRowHeightPx}">
-      <v-col class="pt-2 pb-0 pr-0" md="4" :style="{'min-height':alertTblRowHeightPx, 'border-right': '2px solid rgba(0, 0, 0, 0.12)'}">
+    <v-row :style="{ 'min-height': alertTblRowHeightPx }">
+      <v-col
+        class="pt-2 pb-0 pr-0"
+        md="4"
+        :style="{
+          'min-height': alertTblRowHeightPx,
+          'border-right': '2px solid rgba(0, 0, 0, 0.12)'
+        }"
+      >
         <cortx-capacity-guage />
       </v-col>
       <v-col class="pt-2 pb-0" md="8" style="height: 100%;">
@@ -48,7 +60,6 @@ import { EVENT_BUS } from "../../main";
   }
 })
 export default class Dashboard extends Vue {
-
   public alertTblRowHeight: number = 0;
   public alertTblRowHeightPx: string = "";
   public chartRowHeightPx: string = "";
@@ -75,7 +86,7 @@ export default class Dashboard extends Vue {
      * Need to subtract header height(50px) and container padding(30px)
      * i.e. 80px and divide it by 2 for both halves.
      */
-    const calcHeight: number = Math.floor((window.innerHeight - 80)/2);
+    const calcHeight: number = Math.floor((window.innerHeight - 80) / 2);
     /**
      * Check if the calculated height is less than minimum 290px
      * the assign 290px height to chartRowHeightPx
@@ -90,5 +101,4 @@ export default class Dashboard extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

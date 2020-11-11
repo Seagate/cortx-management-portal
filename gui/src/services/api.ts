@@ -26,7 +26,7 @@ axios.interceptors.request.use(
   config => {
     const constStr = require("../common/const-string.json");
 
-    if(config.headers.auth_token){
+    if (config.headers.auth_token) {
       config.headers.Authorization = config.headers.auth_token;
       delete config.headers.auth_token;
     } else {

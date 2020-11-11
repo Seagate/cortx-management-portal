@@ -24,7 +24,7 @@
           :options="bucketList"
         ></cortx-dropdown>
         <div v-if="!bucketList.length">
-          No Bucket found. Please proceed by creating a new bucket.
+          {{ $t("udx-registration.noBucketFound") }}
         </div>
         <div>
           <button
@@ -66,7 +66,7 @@
             />
           </label>
           <div class="cortx-bucket-input-prefix">
-            <label>ldp-</label>
+            <label>{{ $t("udx-registration.ldp") }}</label>
           </div>
           <input
             class="cortx-form__input_text cortx-bucket-input"
@@ -109,7 +109,7 @@
           class="cortx-btn-secondary cortx-btn-cancel"
           @click="isCreateBucket = !isCreateBucket"
         >
-          {{ $t("common.continue") }}
+          {{ $t("common.cancel") }}
         </button>
       </v-col>
     </v-row>
@@ -133,17 +133,14 @@ import { Bucket } from "../../models/s3";
 })
 export default class CortxSelectCreateBucket extends Vue {
   public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
-  private isCreateBucket: boolean = false;
-  private bucketList: any[] = [];
-
-  @Prop({ required: true, default: "" })
-  public authToken: string;
-
   public bucketUrl: string;
   public registrationForm = {
     bucketName: {} as any,
     createBucketName: ""
   };
+
+  @Prop({ required: true, default: "" })
+  public authToken: string;
 
   @Validations()
   public validations = {
@@ -152,6 +149,8 @@ export default class CortxSelectCreateBucket extends Vue {
       createBucketName: { required, udxBucketNameRegex }
     }
   };
+  private isCreateBucket: boolean = false;
+  private bucketList: any[] = [];
 
   public async mounted() {
     const config: any = {

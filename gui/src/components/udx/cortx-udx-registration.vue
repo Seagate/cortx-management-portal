@@ -115,9 +115,9 @@
 
           <v-row>
             <v-col class="py-0 pr-0">
-              <h4>S3 Account: {{ registrationForm.accountName }}</h4>
-              <h4>IAM User: {{ registrationForm.iamUsername }}</h4>
-              <h4>bucket Name: {{ `ldp-${registrationForm.bucketName}` }}</h4>
+              <h4>{{ $t("udx-registration.S3Account") }}: {{ registrationForm.accountName }}</h4>
+              <h4>{{ $t("udx-registration.IAMUser") }}: {{ registrationForm.iamUsername }}</h4>
+              <h4>{{ $t("udx-registration.bucketName") }}: {{ `ldp-${registrationForm.bucketName}` }}</h4>
               <br />
               <br />
             </v-col>
@@ -289,7 +289,6 @@ export default class CortxUDXRegistration extends Vue {
   public isCreateAccount: boolean = false;
   public registrationToken: string = "49BUI8FNSWGZ";
   public registrationResponse: any = null;
-
   public registrationForm = {
     url: "",
     accountName: "",
@@ -303,10 +302,6 @@ export default class CortxUDXRegistration extends Vue {
     consentOne: false,
     consentTwo: false
   };
-  private accessKeyDetails: any = {};
-  private showAccessKeyDetailsDialog: boolean;
-  private secretKey: string = "";
-  private accessKey: string = "";
 
   @Validations()
   public validations = {
@@ -314,6 +309,11 @@ export default class CortxUDXRegistration extends Vue {
       url: { required, udxURLRegex }
     }
   };
+
+  private accessKeyDetails: any = {};
+  private showAccessKeyDetailsDialog: boolean;
+  private secretKey: string = "";
+  private accessKey: string = "";
 
   public setS3URL(s3UrlInfo: any) {
     this.s3UrlInfo = s3UrlInfo;
@@ -343,11 +343,11 @@ export default class CortxUDXRegistration extends Vue {
     authToken: string,
     accountName: any,
     password: string,
-    email: string
+    accountEmail: string
   ) {
     this.authToken = authToken;
     this.registrationForm.accountName = accountName;
-    this.registrationForm.accountEmail = email;
+    this.registrationForm.accountEmail = accountEmail;
     this.registrationForm.accountPassword = password;
     this.stepNumber = 2;
   }
