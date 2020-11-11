@@ -177,7 +177,9 @@
     </v-row>
     <v-row>
       <v-col>
-        <button class="cortx-btn-primary" type="button" @click="createUser()">
+        <button class="cortx-btn-primary" type="button" 
+        @click="createUser()"
+        :disabled="$v.registrationForm.$invalid">
           {{ $t("common.create-btn") }}
         </button>
         <button
