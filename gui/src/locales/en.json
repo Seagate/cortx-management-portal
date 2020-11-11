@@ -124,7 +124,8 @@
     "accept": "Accept",
     "email": "Email",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "continue": "Continue"
   },
   "csmuser": {
     "user-setting-label": "User settings: Local",
@@ -216,7 +217,10 @@
     "s3AccountKey": "S3 Account Access Key",
     "s3AccountSecretKey": "S3 Account Secret Key",
     "userAccessKey": "IAM User Access Key",
-    "userAccessSecretKey": "IAM User Secret Key"
+    "userAccessSecretKey": "IAM User Secret Key",
+    "createIAMUser": "Create IAM User",
+    "userAlreadyExist": "User already Exist with",
+    "createNewBucket": "Create new Bucket"
   },
   "aboutUs": {
     "title": "About",
@@ -489,7 +493,7 @@
     "SSLCertificateUploadMsg": "By default, the system uses the SSL certificate provided by Seagate. To use a different SSL certificate, click Choose File to browse and select the appropriate SSL Certificate file. Click Upload certificate to upload the selected SSL certificate.",
     "UDX": "UDX",
     "name": "Name",
-    "product ID": "Product ID",
+    "productID": "Product ID",
     "serialNumber": "Serial number",
     "type": "Type",
     "UUID": "UUID",

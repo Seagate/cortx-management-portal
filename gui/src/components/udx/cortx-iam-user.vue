@@ -15,7 +15,35 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
+  <div v-if="isUserAlreadyCreated">
+    {{ $t("udx-registration.userAlreadyExist") }}:
+    {{ registrationForm.iamUsername }}
+    <br />
+    <button
+      class="cortx-btn-tertiary create-new-bucket"
+      @click="createANewUser()"
+      type="button"
+    >
+      {{ $t("udx-registration.createIAMUser") }}
+    </button>
+
+    <br />
+    <button
+      class="cortx-btn-primary"
+      @click="continueToNextStep()"
+      type="button"
+    >
+      {{ $t("common.continue") }}
+    </button>
+    <button
+      class="cortx-btn-secondary ml-5"
+      @click="backToPreviousStep()"
+      type="button"
+    >
+      {{ $t("common.back") }}
+    </button>
+  </div>
+  <div v-else>
     <v-row>
       <v-col class="py-0 pr-0">
         <div
@@ -149,8 +177,15 @@
     </v-row>
     <v-row>
       <v-col>
-        <button class="cortx-btn-primary" @click="createUser()">
-          Create
+        <button class="cortx-btn-primary" type="button" @click="createUser()">
+          {{ $t("common.create-btn") }}
+        </button>
+        <button
+          class="cortx-btn-secondary ml-5"
+          @click="backToPreviousStep()"
+          type="button"
+        >
+          {{ $t("common.back") }}
         </button>
       </v-col>
     </v-row>
@@ -179,13 +214,14 @@ import apiRegister from "../../services/api-register";
 export default class CortxIamUser extends Vue {
   public passwordTooltipMessage: string = passwordTooltipMessage;
   public accountNameTooltipMessage: string = accountNameTooltipMessage;
+  public policyJSON: string;
+  public noBucketPolicy: boolean = false;
+  public isUserAlreadyCreated: boolean = false;
   private showUserDetailsDialog: boolean;
   private user: IAMUser;
   private credentialsFileContent: string = "";
   private isCredentialsFileDownloaded: boolean = false;
   private s3Url = [];
-  public policyJSON: string;
-  public noBucketPolicy: boolean = false;
 
   @Prop({ required: true, default: "" })
   public authToken: string;
@@ -202,6 +238,7 @@ export default class CortxIamUser extends Vue {
     iamUserPassword: "",
     iamUserConfirmPassword: ""
   };
+
   @Validations()
   public validations = {
     registrationForm: {
@@ -212,6 +249,41 @@ export default class CortxIamUser extends Vue {
       }
     }
   };
+
+  public async mounted() {
+    this.clearForm();
+  }
+
+  public createANewUser() {
+    this.isUserAlreadyCreated = false;
+    this.clearForm();
+  }
+
+  clearForm() {
+    this.registrationForm = {
+      iamUsername: "",
+      iamUserPassword: "",
+      iamUserConfirmPassword: ""
+    };
+    if (this.$v.registrationForm) {
+      this.$v.registrationForm.$reset();
+    }
+  }
+
+  public continueToNextStep() {
+    this.isUserAlreadyCreated = true;
+    this.$emit(
+      "onChange",
+      false,
+      this.user.secret_key,
+      this.user.access_key_id,
+      this.user.user_name
+    );
+  }
+
+  public backToPreviousStep() {
+    this.$emit("onChange", true);
+  }
 
   public async createUser() {
     const config = {
@@ -235,6 +307,7 @@ export default class CortxIamUser extends Vue {
     if (!res.error) {
       this.user = res.data;
       this.isCredentialsFileDownloaded = false;
+      this.isUserAlreadyCreated = false;
       this.credentialsFileContent =
         "data:text/plain;charset=utf-8," +
         encodeURIComponent(this.getCredentialsFileContent());
@@ -243,9 +316,16 @@ export default class CortxIamUser extends Vue {
     this.showUserDetailsDialog = true;
 
     this.getPolicyDetails();
-
-    this.$emit("onChange", this.user.secret_key, this.user.access_key_id, this.user.user_name);
+    this.isUserAlreadyCreated = true;
+    this.$emit(
+      "onChange",
+      false,
+      this.user.secret_key,
+      this.user.access_key_id,
+      this.user.user_name
+    );
   }
+
   public getCredentialsFileContent(): string {
     return (
       "User name,User id,S3 URL,ARN,Access key,Secret key\n" +
@@ -268,7 +348,7 @@ export default class CortxIamUser extends Vue {
         auth_token: this.authToken
       }
     };
-    // Get policy details 
+    // Get policy details
     try {
       const resp = await Api.getAllWithConfig(
         apiRegister.bucket_policy + "/" + this.bucketName,
@@ -284,41 +364,63 @@ export default class CortxIamUser extends Vue {
     const date: string = new Date().toDateString();
     if (this.noBucketPolicy) {
       this.policyJSON = JSON.stringify({
-                          Version: date,
-                          Statement: [{
-                            Sid: "UdxIamAccountPerm",
-                            Action: ['s3:GetObject', 's3:PutObject',
-                            's3:ListMultipartUploadParts', 's3:AbortMultipartUpload',
-                            's3:GetObjectAcl', 's3:PutObjectAcl',
-                            's3:PutObjectTagging'],
-                            Effect: "Allow",
-                            Resource: resource,
-                            Principal: {"AWS" : this.user.arn}
-                          }]
-                        });
+        Version: date,
+        Statement: [
+          {
+            Sid: "UdxIamAccountPerm",
+            Action: [
+              "s3:GetObject",
+              "s3:PutObject",
+              "s3:ListMultipartUploadParts",
+              "s3:AbortMultipartUpload",
+              "s3:GetObjectAcl",
+              "s3:PutObjectAcl",
+              "s3:PutObjectTagging"
+            ],
+            Effect: "Allow",
+            Resource: resource,
+            Principal: { AWS: this.user.arn }
+          }
+        ]
+      });
       const policy = JSON.parse(this.policyJSON);
       const response: any = await Api.put(
-        apiRegister.bucket_policy, policy, this.bucketName, config
-        );
+        apiRegister.bucket_policy,
+        policy,
+        this.bucketName,
+        config
+      );
     } else {
       const policy = JSON.parse(this.policyJSON);
       const statement = {
-                          "Sid": "UdxIamAccountPerm",
-                          "Action": ['s3:GetObject', 's3:PutObject',
-                            's3:ListMultipartUploadParts', 's3:AbortMultipartUpload',
-                            's3:GetObjectAcl', 's3:PutObjectAcl',
-                            's3:PutObjectTagging'],
-                          "Effect": "Allow",
-                          "Resource": resource,
-                          "Principal": {"AWS" : this.user.arn}
-                        }
+        Sid: "UdxIamAccountPerm",
+        Action: [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListMultipartUploadParts",
+          "s3:AbortMultipartUpload",
+          "s3:GetObjectAcl",
+          "s3:PutObjectAcl",
+          "s3:PutObjectTagging"
+        ],
+        Effect: "Allow",
+        Resource: resource,
+        Principal: { AWS: this.user.arn }
+      };
       policy.Statement.push(statement);
       const response: any = await Api.put(
-        apiRegister.bucket_policy, policy, this.bucketName, config
-        );
+        apiRegister.bucket_policy,
+        policy,
+        this.bucketName,
+        config
+      );
     }
-
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.create-new-bucket {
+  padding: 0;
+  text-decoration: underline;
+}
+</style>

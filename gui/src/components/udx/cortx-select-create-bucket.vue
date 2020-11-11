@@ -32,11 +32,18 @@
             @click="isCreateBucket = !isCreateBucket"
             type="button"
           >
-            Create new Bucket
+            {{ $t("udx-registration.createNewBucket") }}
           </button>
         </div>
         <button class="cortx-btn-primary" type="button" @click="createBucket()">
-          Continue
+          {{ $t("common.continue") }}
+        </button>
+        <button
+          class="cortx-btn-secondary ml-5"
+          type="button"
+          @click="backToPreviousStep()"
+        >
+          {{ $t("common.back") }}
         </button>
       </v-col>
     </v-row>
@@ -95,14 +102,14 @@
           :disabled="$v.registrationForm.createBucketName.$invalid"
           @click="createBucket()"
         >
-          Create bucket
+          {{ $t("udx-registration.createNewBucket") }}
         </button>
         <button
           type="button"
           class="cortx-btn-secondary cortx-btn-cancel"
           @click="isCreateBucket = !isCreateBucket"
         >
-          Cancel
+          {{ $t("common.continue") }}
         </button>
       </v-col>
     </v-row>
@@ -162,8 +169,18 @@ export default class CortxSelectCreateBucket extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
+  public backToPreviousStep() {
+    this.registrationForm.createBucketName = "";
+    if (this.$v.registrationForm) {
+      this.$v.registrationForm.$reset();
+    }
+    this.$emit("onChange", true);
+  }
+
   private async createBucket() {
-    const bucketName: string = this.isCreateBucket ? this.registrationForm.createBucketName : this.registrationForm.bucketName.label;
+    const bucketName: string = this.isCreateBucket
+      ? this.registrationForm.createBucketName
+      : this.registrationForm.bucketName.label;
     if (this.isCreateBucket) {
       const createBucketForm = {
         bucket: {} as Bucket
@@ -188,7 +205,7 @@ export default class CortxSelectCreateBucket extends Vue {
 
       this.$store.dispatch("systemConfig/hideLoader");
     }
-    this.$emit("onChange", bucketName);
+    this.$emit("onChange", false, bucketName);
   }
 }
 </script>
