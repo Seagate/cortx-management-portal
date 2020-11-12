@@ -24,23 +24,23 @@
     <v-stepper v-model="stepNumber">
       <v-stepper-header>
         <v-stepper-step :complete="stepNumber > 1" step="1">
-          Login/Create Account
-          <small>Login using existing account or create a new Account</small>
+          {{ $t("udx-registration.loginCreateAccount") }}
+          <small>{{ $t("udx-registration.loginCreateAccountMsg") }}</small>
         </v-stepper-step>
         <v-divider></v-divider>
 
         <v-stepper-step :complete="stepNumber > 2" step="2">
-          Select/Create Bucket
+          {{ $t("udx-registration.selectCreateBucket") }}
         </v-stepper-step>
         <v-divider></v-divider>
 
         <v-stepper-step :complete="stepNumber > 3" step="3">
-          Create IAM Account
+          {{ $t("udx-registration.createIAMAccount") }}
         </v-stepper-step>
         <v-divider></v-divider>
 
         <v-stepper-step :complete="stepNumber > 4" step="4">
-          Registration
+          {{ $t("udx-registration.udx-registration") }}
         </v-stepper-step>
       </v-stepper-header>
 
@@ -69,6 +69,7 @@
             style="min-height: 260px"
             v-if="stepNumber === 2"
             :authToken="authToken"
+            :bucketName="registrationForm.bucketName"
             @onChange="updateStep"
           >
           </cortx-select-create-bucket>
@@ -94,7 +95,7 @@
                   >
                   <label class="cortx-float-l mt-1 ml-1">
                     <cortx-info-tooltip
-                      message="On your Lyve Pilot web portal choose 'Add Device' and then enter the identification token below."
+                      :message="$t('udx-registration.onYourLyvePilot')"
                     />
                   </label>
                 </div>
@@ -115,60 +116,15 @@
 
           <v-row>
             <v-col class="py-0 pr-0">
+              <br />
               <h4>{{ $t("udx-registration.S3Account") }}: {{ registrationForm.accountName }}</h4>
               <h4>{{ $t("udx-registration.IAMUser") }}: {{ registrationForm.iamUsername }}</h4>
               <h4>{{ $t("udx-registration.bucketName") }}: {{ `ldp-${registrationForm.bucketName}` }}</h4>
-              <br />
               <br />
             </v-col>
           </v-row>
 
           <v-row>
-            <v-col class="py-0 pr-0">
-              <div
-                class="cortx-form-group"
-                :class="{
-                  'cortx-form-group--error': $v.registrationForm.url.$error
-                }"
-              >
-                <label
-                  class="cortx-form-group-label"
-                  for="url"
-                  id="udx-url-label"
-                >
-                  <cortx-info-tooltip
-                    label="URL*"
-                    message="Enter the URL provided by your UDX portal."
-                  />
-                </label>
-                <input
-                  class="cortx-form__input_text"
-                  type="text"
-                  id="url"
-                  name="url"
-                  v-model.trim="registrationForm.url"
-                  @input="$v.registrationForm.url.$touch"
-                />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="udx-url-required"
-                    v-if="
-                      $v.registrationForm.url.$dirty &&
-                        !$v.registrationForm.url.required
-                    "
-                    >{{ $t("udx-registration.udx-url-required") }}</label
-                  >
-                  <label
-                    id="udx-url-invalid"
-                    v-else-if="
-                      $v.registrationForm.url.$dirty &&
-                        !$v.registrationForm.url.udxURLRegex
-                    "
-                    >{{ $t("udx-registration.invalid-url") }}</label
-                  >
-                </div>
-              </div>
-            </v-col>
             <v-col class="py-0 pr-0">
               <div class="cortx-form-group">
                 <label
@@ -177,7 +133,7 @@
                   id="udx-pin-label"
                 >
                   <cortx-info-tooltip
-                    label="PIN*"
+                    :label="$t('udx-registration.deviceRegistrationPIN')"
                     message="Enter the PIN provided by your Lyve Pilot portal."
                   />
                 </label>
@@ -250,7 +206,7 @@ export default class CortxUDXRegistration extends Vue {
   public s3UrlInfo: any;
   public authToken: string = "";
   public isCreateAccount: boolean = false;
-  public registrationToken: string = "49BUI8FNSWGZ";
+  public registrationToken: string = "";
   public registrationResponse: any = null;
   public registrationForm = {
     url: "",
@@ -268,7 +224,6 @@ export default class CortxUDXRegistration extends Vue {
   @Validations()
   public validations = {
     registrationForm: {
-      url: { required, udxURLRegex },
       pin: { required }
     }
   };

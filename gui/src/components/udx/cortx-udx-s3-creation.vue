@@ -32,7 +32,7 @@
           >
             <cortx-info-tooltip
               id="account-name-label"
-              label="Account name*"
+              :label="`${$t('udx-registration.accountName')}*`"
               :message="accountNameTooltipMessage"
             />
           </label>
@@ -125,7 +125,7 @@
           >
             <cortx-info-tooltip
               id="aacount-password"
-              label="Password*"
+              :label="`${$t('udx-registration.password-placeholder')}*`"
               :message="passwordTooltipMessage"
             />
           </label>

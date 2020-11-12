@@ -39,7 +39,7 @@
       <label class="cortx-form-group-label" for="accountPassword" id="s3-lblpassword">
         <cortx-info-tooltip
           id="aacount-password"
-          label="Password*"
+          :label="`${$t('login.password-placeholder')}*`"
           :message="passwordTooltipMessage"
         />
       </label>
