@@ -178,7 +178,7 @@
                 >
                   <cortx-info-tooltip
                     label="PIN*"
-                    message="Enter the PIN provided by your UDX portal."
+                    message="Enter the PIN provided by your Lyve Pilot portal."
                   />
                 </label>
                 <input class="cortx-form__input_text" type="number" 
