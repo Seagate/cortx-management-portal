@@ -127,6 +127,9 @@ export default class CortxSelectCreateBucket extends Vue {
   @Prop({ required: true, default: "" })
   public authToken: string;
 
+  @Prop({ default: "" })
+  public bucketName: string;
+
   @Validations()
   public validations = {
     registrationForm: {
@@ -143,6 +146,9 @@ export default class CortxSelectCreateBucket extends Vue {
         auth_token: this.authToken
       }
     };
+    if(this.bucketName) {
+      this.registrationForm.bucketName.label = this.bucketName;
+    }
     this.$store.dispatch("systemConfig/showLoader", "Fetching butcket list...");
     const res: any = await Api.getAllWithConfig(apiRegister.s3_bucket, config);
     if (res && res.data && res.data.buckets) {
