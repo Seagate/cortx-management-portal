@@ -28,7 +28,7 @@
         class="cortx-form-group-label cortx-cursor-pointer"
         style="color: #6ebe49; text-decoration: underline;"
         @click="triggerCreateAccount()"
-      >Create new account</label>
+      >{{ $t("udx-registration.createNewAccount") }}</label>
     </div>
     <div
       class="cortx-form-group"
@@ -59,14 +59,14 @@
             $v.loginForm.account.password.$dirty &&
             !$v.loginForm.account.password.required
           "
-        >Password is required.</label>
+        >{{ $t("common.password-required") }}</label>
         <label
               id="s3-password-invalid"
               v-else-if="
                 $v.loginForm.account.password.$dirty &&
                   !$v.loginForm.account.password.passwordRegex
               "
-              >Invalid password.</label
+              >{{ $t("common.invalid-pass") }}</label
         >        
       </div>
     </div>
@@ -76,7 +76,7 @@
       class="cortx-btn-primary"
       @click="login()"
       :disabled="$v.loginForm.$invalid"
-    >Login and continue</button>
+    >{{ $t("udx-registration.loginAndContinue") }}</button>
   </div>
 </template>
 <script lang="ts">

@@ -220,7 +220,14 @@
     "userAccessSecretKey": "IAM User Secret Key",
     "createIAMUser": "Create new IAM User",
     "userAlreadyExist": "User already Exist with",
-    "createNewBucket": "Create new Bucket"
+    "createNewBucket": "Create new Bucket",
+    "noBucketFound": "No Bucket found. Please proceed by creating a new bucket.",
+    "ldp": "ldp-",
+    "S3Account": "S3 Account",
+    "IAMUser": "IAM User",
+    "bucketName": "Bucket Name",
+    "loginAndContinue": "Login And Continue",
+    "createNewAccount": "Create new account"
   },
   "aboutUs": {
     "title": "About",
