@@ -324,6 +324,7 @@ export default class CortxUDXRegistration extends Vue {
   }
 
   public updateStep(back: boolean, selectedBucket: any) {
+    this.isCreateAccount = false;
     if (back) {
       this.clearRegistrationForm();
       this.stepNumber = this.stepNumber - 1;
