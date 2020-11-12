@@ -19,15 +19,12 @@
     {{ $t("udx-registration.userAlreadyExist") }}:
     {{ registrationForm.iamUsername }}
     <br />
-    <button
-      class="cortx-btn-tertiary create-new-bucket"
-      @click="createANewUser()"
-      type="button"
-    >
-      {{ $t("udx-registration.createIAMUser") }}
-    </button>
-
-    <br />
+    <div class="mb-2">
+      <label
+        class="cortx-form-group-label cortx-cursor-pointer create-new-user"
+        @click="createANewUser()"
+      >{{ $t("udx-registration.createIAMUser") }}</label>
+    </div> 
     <button
       class="cortx-btn-primary"
       @click="continueToNextStep()"
@@ -421,8 +418,8 @@ export default class CortxIamUser extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.create-new-bucket {
-  padding: 0;
-  text-decoration: underline;
+.create-new-user {
+ color: #6ebe49; 
+ text-decoration: underline;
 }
 </style>

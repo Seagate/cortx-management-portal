@@ -23,30 +23,24 @@
           :selectedOption.sync="registrationForm.bucketName"
           :options="bucketList"
         ></cortx-dropdown>
-        <div v-if="!bucketList.length">
-          No Bucket found. Please proceed by creating a new bucket.
-        </div>
-        <div>
-          <button
-            class="cortx-btn-tertiary create-new-bucket"
+        <div v-if="!bucketList.length">No Bucket found. Please proceed by creating a new bucket.</div>
+        <div class="mb-1">
+          <label
+            class="cortx-form-group-label cortx-cursor-pointer create-new-user"
             @click="isCreateBucket = !isCreateBucket"
-            type="button"
-          >
-            {{ $t("udx-registration.createNewBucket") }}
-          </button>
+          >{{ $t("udx-registration.createNewBucket") }}</label>
         </div>
-        <button class="cortx-btn-primary" type="button" @click="createBucket()"
-        :disabled="$v.registrationForm.bucketName.$invalid"
-        >
-          {{ $t("common.continue") }}
-        </button>
+        <button
+          class="cortx-btn-primary"
+          type="button"
+          @click="createBucket()"
+          :disabled="$v.registrationForm.bucketName.$invalid"
+        >{{ $t("common.continue") }}</button>
         <button
           class="cortx-btn-secondary ml-5"
           type="button"
           @click="backToPreviousStep()"
-        >
-          {{ $t("common.back") }}
-        </button>
+        >{{ $t("common.back") }}</button>
       </v-col>
     </v-row>
     <v-row v-else>
@@ -57,15 +51,8 @@
             'cortx-form-group--error': $v.registrationForm.bucketName.$error
           }"
         >
-          <label
-            class="cortx-form-group-label"
-            for="bucketName"
-            id="udx-bucket-namelbl"
-          >
-            <cortx-info-tooltip
-              label="Bucket name*"
-              :message="bucketNameTooltipMessage"
-            />
+          <label class="cortx-form-group-label" for="bucketName" id="udx-bucket-namelbl">
+            <cortx-info-tooltip label="Bucket name*" :message="bucketNameTooltipMessage" />
           </label>
           <div class="cortx-bucket-input-prefix">
             <label>ldp-</label>
@@ -86,16 +73,14 @@
                 $v.registrationForm.createBucketName.$dirty &&
                   !$v.registrationForm.createBucketName.required
               "
-              >{{ $t("udx-registration.bucket-required") }}</label
-            >
+            >{{ $t("udx-registration.bucket-required") }}</label>
             <label
               id="udx-bucketname-invalid"
               v-else-if="
                 $v.registrationForm.createBucketName.$dirty &&
                   !$v.registrationForm.createBucketName.udxBucketNameRegex
               "
-              >{{ $t("udx-registration.invalid-bucketname") }}</label
-            >
+            >{{ $t("udx-registration.invalid-bucketname") }}</label>
           </div>
         </div>
         <button
@@ -103,16 +88,12 @@
           type="button"
           :disabled="$v.registrationForm.createBucketName.$invalid"
           @click="createBucket()"
-        >
-          {{ $t("udx-registration.createNewBucket") }}
-        </button>
+        >{{ $t("udx-registration.createNewBucket") }}</button>
         <button
           type="button"
           class="cortx-btn-secondary cortx-btn-cancel"
           @click="isCreateBucket = !isCreateBucket"
-        >
-          {{ $t("common.back") }}
-        </button>
+        >{{ $t("common.back") }}</button>
       </v-col>
     </v-row>
   </div>
@@ -221,9 +202,9 @@ export default class CortxSelectCreateBucket extends Vue {
   width: 290px;
   float: left;
 }
-.create-new-bucket {
-  padding: 0;
-  text-decoration: underline;
+.create-new-user {
+ color: #6ebe49; 
+ text-decoration: underline;
 }
 .cortx-btn-cancel {
   margin-left: 15px;

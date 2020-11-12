@@ -187,43 +187,6 @@
               </div>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col class="py-0">
-              <label class="cortx-text-md" id="udx-agreelbl"
-                >{{ $t("udx-registration.iagreetext") }}:</label
-              >
-              <br />
-              <label
-                class="cortx-ckb-container"
-                for="consentOne"
-                id="udx-firstcheck"
-              >
-                {{ $t("udx-registration.firstcheck-text") }}
-                <input
-                  type="checkbox"
-                  name="consentOne"
-                  v-model="registrationForm.consentOne"
-                  id="consentOne"
-                />
-                <span class="cortx-ckb-tick"></span>
-              </label>
-              <br />
-              <label
-                class="cortx-ckb-container"
-                for="consentTwo"
-                id="udx-secondcheck"
-              >
-                {{ $t("udx-registration.secondcheck-text") }}
-                <input
-                  type="checkbox"
-                  name="consentTwo"
-                  v-model="registrationForm.consentTwo"
-                  id="consentTwo"
-                />
-                <span class="cortx-ckb-tick"></span>
-              </label>
-            </v-col>
-          </v-row>
           <br />
 
           <button
@@ -232,9 +195,7 @@
             class="cortx-btn-primary"
             @click="registerUDX()"
             :disabled="
-              $v.registrationForm.$invalid ||
-                !registrationForm.consentOne ||
-                !registrationForm.consentTwo
+              $v.registrationForm.$invalid
             "
           >
             {{ $t("udx-registration.register-btn") }}
@@ -302,8 +263,6 @@ export default class CortxUDXRegistration extends Vue {
     iamUserPassword: "",
     iamUserConfirmPassword: "",
     bucketName: "",
-    consentOne: false,
-    consentTwo: false,
     pin: ""
   };
   private accessKeyDetails: any = {};
@@ -435,8 +394,6 @@ export default class CortxUDXRegistration extends Vue {
     this.registrationForm.iamUserPassword = "";
     this.registrationForm.iamUserConfirmPassword = "";
     this.registrationForm.pin = "";
-    this.registrationForm.consentOne = false;
-    this.registrationForm.consentTwo = false;
     if (this.$v.registrationForm) {
       this.$v.registrationForm.$reset();
     }
