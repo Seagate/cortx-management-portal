@@ -69,6 +69,7 @@
             style="min-height: 260px"
             v-if="stepNumber === 2"
             :authToken="authToken"
+            :bucketName="registrationForm.bucketName"
             @onChange="updateStep"
           >
           </cortx-select-create-bucket>
@@ -133,7 +134,7 @@
                 >
                   <cortx-info-tooltip
                     :label="$t('udx-registration.deviceRegistrationPIN')"
-                    message="Enter the PIN provided by your UDX portal."
+                    message="Enter the PIN provided by your Lyve Pilot portal."
                   />
                 </label>
                 <input class="cortx-form__input_text" type="number" 
@@ -205,7 +206,7 @@ export default class CortxUDXRegistration extends Vue {
   public s3UrlInfo: any;
   public authToken: string = "";
   public isCreateAccount: boolean = false;
-  public registrationToken: string = "49BUI8FNSWGZ";
+  public registrationToken: string = "";
   public registrationResponse: any = null;
   public registrationForm = {
     url: "",
