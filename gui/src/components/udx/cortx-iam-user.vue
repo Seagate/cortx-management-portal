@@ -55,7 +55,7 @@
             id="udx-iamuserlbl"
           >
             <cortx-info-tooltip
-              label="Username*"
+              :label="`${$t('login.user-name-placeholder')}*`"
               :message="accountNameTooltipMessage"
             />
           </label>
@@ -104,7 +104,7 @@
             id="udx-iamuserpasswordlbl"
           >
             <cortx-info-tooltip
-              label="Password*"
+              :label="`${$t('login.password-placeholder')}*`"
               :message="passwordTooltipMessage"
             />
           </label>

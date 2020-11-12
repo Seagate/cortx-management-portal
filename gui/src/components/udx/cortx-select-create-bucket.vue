@@ -18,6 +18,11 @@
   <div class="bucket-container">
     <v-row v-if="!isCreateBucket">
       <v-col class="py-0 pr-0">
+        <label class="cortx-form-group-label" for="bucketName" id="udx-bucket-namelbl">
+          <cortx-info-tooltip
+            :label="`${$t('udx-registration.bucketName')}*`"
+            :message="bucketNameTooltipMessage" />
+        </label>
         <cortx-dropdown
           title="-- Select Bucket --"
           :selectedOption.sync="registrationForm.bucketName"
@@ -52,7 +57,9 @@
           }"
         >
           <label class="cortx-form-group-label" for="bucketName" id="udx-bucket-namelbl">
-            <cortx-info-tooltip label="Bucket name*" :message="bucketNameTooltipMessage" />
+            <cortx-info-tooltip
+              :label="`${$t('udx-registration.bucketName')}*`"
+              :message="bucketNameTooltipMessage" />
           </label>
           <div class="cortx-bucket-input-prefix">
             <label>{{ $t("udx-registration.ldp") }}</label>
