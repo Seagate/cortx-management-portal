@@ -57,7 +57,7 @@
       "update-btn": "Update",
       "add-new-account": "Add new account",
       "account-created": "Account created: access key and secret key",
-      "save-info": "Save this information, you will not see it again. Download as CSV and close.",
+      "save-info": "Save this information, you will not see it again. Download as CSV and continue.",
       "account-name": "Account name",
       "s3-url": "S3 URL",
       "access-key": "Access key",
@@ -235,7 +235,8 @@
     "deviceRegistrationPIN": "Device Registration PIN",
     "onYourLyvePilot": "On your Lyve Pilot web portal choose 'Add Device' and then enter the identification token below.",
     "accountName": "Account name",
-    "selectBucket": "Select Bucket"
+    "selectBucket": "Select Bucket",
+    "account": "Account"
   },
   "aboutUs": {
     "title": "About",

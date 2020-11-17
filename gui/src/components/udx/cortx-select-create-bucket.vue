@@ -119,6 +119,7 @@ import {
 } from "../../common/regex-helpers";
 import i18n from "./../../i18n";
 import { Bucket } from "../../models/s3";
+import { CortxDropdownOption } from "../widgets/dropdown/cortx-dropdown";
 
 @Component({
   name: "cortx-select-create-bucket"
@@ -127,7 +128,7 @@ export default class CortxSelectCreateBucket extends Vue {
   public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
   public bucketUrl: string;
   public registrationForm = {
-    bucketName: {} as any,
+    bucketName: {} as CortxDropdownOption,
     createBucketName: ""
   };
 
@@ -147,15 +148,20 @@ export default class CortxSelectCreateBucket extends Vue {
   private isCreateBucket: boolean = false;
   private bucketList: any[] = [];
 
+  public beforeMount() {
+    if (this.bucketName) {
+      this.registrationForm.bucketName.label = this.bucketName;
+      this.registrationForm.bucketName.value = this.bucketName;
+    }
+  }
+
   public async mounted() {
     const config: any = {
       headers: {
         auth_token: this.authToken
       }
     };
-    if(this.bucketName) {
-      this.registrationForm.bucketName.label = this.bucketName;
-    }
+
     this.$store.dispatch("systemConfig/showLoader", "Fetching butcket list...");
     const res: any = await Api.getAllWithConfig(apiRegister.s3_bucket, config);
     if (res && res.data && res.data.buckets) {
@@ -177,7 +183,7 @@ export default class CortxSelectCreateBucket extends Vue {
   private async createBucket() {
     const bucketName: string = this.isCreateBucket
       ? this.registrationForm.createBucketName
-      : this.registrationForm.bucketName.label;
+      : this.registrationForm.bucketName.value;
     if (this.isCreateBucket) {
       const createBucketForm = {
         bucket: {} as Bucket

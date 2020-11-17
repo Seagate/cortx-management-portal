@@ -15,14 +15,14 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
+  <form autocomplete="off" id="login-s3-account">
     <div class="cortx-form-group">
-      <label class="cortx-form-group-label">Account*</label>
+      <label class="cortx-form-group-label">{{ $t("udx-registration.account") }}*</label>
       <cortx-dropdown
         id="account-list-dropdown"
         :options="accountsList"
         :selectedOption.sync="loginForm.account.account_name"
-        title="-- Select --"
+        title="-- Select Account --"
       ></cortx-dropdown>
       <label
         class="cortx-form-group-label cortx-cursor-pointer"
@@ -77,7 +77,7 @@
       @click="login()"
       :disabled="$v.loginForm.$invalid"
     >{{ $t("udx-registration.loginAndContinue") }}</button>
-  </div>
+  </form>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -159,8 +159,12 @@ export default class LoginExistingS3Account extends Vue {
     const res = await Api.post(apiRegister.login, loginCredentials);
     this.$store.dispatch("systemConfig/hideLoader");
     if (res && res.headers) {
-      this.$emit("setAuthToken", res.headers.authorization,
-      this.loginForm.account.account_name, this.loginForm.account.password);
+      this.$emit(
+        "setAuthToken",
+        res.headers.authorization,
+        this.loginForm.account.account_name,
+        this.loginForm.account.password
+      );
     }
   }
 }

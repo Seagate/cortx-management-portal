@@ -40,7 +40,7 @@
       {{ $t("common.back") }}
     </button>
   </div>
-  <div v-else>
+  <form autocomplete="off" id="create-iam-user" v-else>
     <v-row>
       <v-col class="py-0 pr-0">
         <div
@@ -188,7 +188,7 @@
         </button>
       </v-col>
     </v-row>
-  </div>
+  </form>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from "vue-property-decorator";

@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div id="s3-create-account-form">
+  <form autocomplete="off" id="s3-create-account-form">
     <v-row>
       <v-col class="py-0 pr-0">
         <div
@@ -125,7 +125,7 @@
           >
             <cortx-info-tooltip
               id="aacount-password"
-              :label="`${$t('udx-registration.password-placeholder')}*`"
+              :label="`${$t('login.password-placeholder')}*`"
               :message="passwordTooltipMessage"
             />
           </label>
@@ -169,7 +169,7 @@
             class="cortx-form-group-label"
             for="confirmPassword"
             id="s3-lblconfirmpassword"
-            >{{ $t("common.confirm-pass-label") }}*</label
+            >{{ $t("common.confirm-pass-label") }}</label
           >
           <input
             class="cortx-form__input_text"
@@ -324,7 +324,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </form>
 </template>
 
 <script lang="ts">

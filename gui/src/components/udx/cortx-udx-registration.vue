@@ -46,7 +46,7 @@
 
       <v-stepper-items>
         <v-stepper-content step="1">
-          <div v-if="stepNumber === 1" style="min-height: 260px">
+          <div v-if="stepNumber === 1">
             <cortx-S3-account
               v-if="isCreateAccount"
               ref="s3Account"
@@ -66,7 +66,6 @@
 
         <v-stepper-content step="2">
           <cortx-select-create-bucket
-            style="min-height: 260px"
             v-if="stepNumber === 2"
             :authToken="authToken"
             :bucketName="registrationForm.bucketName"
@@ -91,13 +90,7 @@
                   <label
                     class="cortx-text-lg cortx-float-l"
                     id="udx-tocken-title"
-                    >{{ $t("udx-registration.registration-token") }}</label
-                  >
-                  <label class="cortx-float-l mt-1 ml-1">
-                    <cortx-info-tooltip
-                      :message="$t('udx-registration.onYourLyvePilot')"
-                    />
-                  </label>
+                    >{{ $t("udx-registration.registration-token") }}</label>
                 </div>
                 <div id="udx-reg-token" class="mt-1">
                   <label id="udx-reg-token-part-1" class="float-left">{{
@@ -123,47 +116,48 @@
               <br />
             </v-col>
           </v-row>
-
-          <v-row>
-            <v-col class="py-0 pr-0">
-              <div class="cortx-form-group">
-                <label
-                  class="cortx-form-group-label"
-                  for="pin"
-                  id="udx-pin-label"
-                >
-                  <cortx-info-tooltip
-                    :label="$t('udx-registration.deviceRegistrationPIN')"
-                    message="Enter the PIN provided by your Lyve Pilot portal."
+          <form autocomplete="off" id="create-new-lyvepilot">
+            <v-row>
+              <v-col class="py-0 pr-0">
+                <div class="cortx-form-group">
+                  <label
+                    class="cortx-form-group-label"
+                    for="pin"
+                    id="udx-pin-label"
+                  >
+                    <cortx-info-tooltip
+                      :label="$t('udx-registration.deviceRegistrationPIN')"
+                      message="Enter the PIN provided by your Lyve Pilot portal."
+                    />
+                  </label>
+                  <input class="cortx-form__input_text" type="number" 
+                  v-model.trim="registrationForm.pin"
                   />
-                </label>
-                <input class="cortx-form__input_text" type="number" 
-                v-model.trim="registrationForm.pin"
-                />
-              </div>
-            </v-col>
-          </v-row>
-          <br />
+                </div>
+              </v-col>
+            </v-row>
+            <br />
 
-          <button
-            id="udx-registrationbtn"
-            type="button"
-            class="cortx-btn-primary"
-            @click="registerUDX()"
-            :disabled="
-              $v.registrationForm.$invalid
-            "
-          >
-            {{ $t("udx-registration.register-btn") }}
-          </button>
-          <button
-            id="udx-backbtn"
-            type="button"
-            class="cortx-btn-secondary ml-5"
-            @click="backToPreviousStep()"
-          >
-            {{ $t("common.back") }}
-          </button>
+            <button
+              id="udx-registrationbtn"
+              type="button"
+              class="cortx-btn-primary"
+              @click="registerUDX()"
+              :disabled="
+                $v.registrationForm.$invalid
+              "
+            >
+              {{ $t("udx-registration.register-btn") }}
+            </button>
+            <button
+              id="udx-backbtn"
+              type="button"
+              class="cortx-btn-secondary ml-5"
+              @click="backToPreviousStep()"
+            >
+              {{ $t("common.back") }}
+            </button>
+          </form>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
