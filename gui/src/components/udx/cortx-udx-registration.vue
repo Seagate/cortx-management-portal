@@ -118,6 +118,54 @@
           </v-row>
           <form autocomplete="off" id="create-new-lyvepilot">
             <v-row>
+               <v-col class="py-0 pr-0">
+                <div
+                  class="cortx-form-group"
+                  :class="{
+                    'cortx-form-group--error': $v.registrationForm.url.$error
+                  }"
+                >
+                  <label
+                    class="cortx-form-group-label"
+                    for="url"
+                    id="udx-url-label"
+                  >
+                    <cortx-info-tooltip
+                      label="URL*"
+                      message="Enter the URL provided by your UDX portal."
+                    />
+                  </label>
+                  <input
+                    class="cortx-form__input_text"
+                    type="text"
+                    id="url"
+                    name="url"
+                    :disabled="!isDevEnv"
+                    v-model.trim="registrationForm.url"
+                    @input="$v.registrationForm.url.$touch"
+                  />
+                  <div class="cortx-form-group-label cortx-form-group-error-msg">
+                    <label
+                      id="udx-url-required"
+                      v-if="
+                        $v.registrationForm.url.$dirty &&
+                          !$v.registrationForm.url.required
+                      "
+                      >{{ $t("udx-registration.udx-url-required") }}</label
+                    >
+                    <label
+                      id="udx-url-invalid"
+                      v-else-if="
+                        $v.registrationForm.url.$dirty &&
+                          !$v.registrationForm.url.udxURLRegex
+                      "
+                      >{{ $t("udx-registration.invalid-url") }}</label
+                    >
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+            <v-row>
               <v-col class="py-0 pr-0">
                 <div class="cortx-form-group">
                   <label
@@ -200,7 +248,9 @@ export default class CortxUDXRegistration extends Vue {
   public s3UrlInfo: any;
   public authToken: string = "";
   public isCreateAccount: boolean = false;
+  public isDevEnv: boolean = false;
   public registrationToken: string = "";
+  public s3URI: string = "";
   public registrationResponse: any = null;
   public registrationForm = {
     url: "",
@@ -218,6 +268,7 @@ export default class CortxUDXRegistration extends Vue {
   @Validations()
   public validations = {
     registrationForm: {
+      url: { required, udxURLRegex },
       pin: { required }
     }
   };
@@ -243,6 +294,13 @@ export default class CortxUDXRegistration extends Vue {
     const res = await Api.getAll(apiRegister.udx_registration_token);
     if (res && res.data) {
       this.registrationToken = res.data.registrationToken;
+    }
+    const resUDXSASS = await Api.getAll(apiRegister.udx_saas);
+    if (resUDXSASS && resUDXSASS.data) {
+      this.registrationForm.url = resUDXSASS.data.saas_url;
+    }
+    if (this.$route.query && this.$route.query.dev) {
+      this.isDevEnv = (this.$route.query.dev === "true");
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
@@ -272,7 +330,7 @@ export default class CortxUDXRegistration extends Vue {
     this.stepNumber = 2;
   }
 
-  public updateStep(back: boolean, selectedBucket: any) {
+  public updateStep(back: boolean, selectedBucket: string, s3URI: string) {
     this.isCreateAccount = false;
     if (back) {
       this.clearRegistrationForm();
@@ -280,6 +338,7 @@ export default class CortxUDXRegistration extends Vue {
     } else {
       this.stepNumber = this.stepNumber + 1;
       this.registrationForm.bucketName = selectedBucket;
+      this.s3URI = s3URI;
     }
   }
 
@@ -309,12 +368,12 @@ export default class CortxUDXRegistration extends Vue {
     const payload = {
       registerDeviceParams: {
         url: this.registrationForm.url,
-        regPin: "0000",
+        regPin: this.registrationForm.pin,
         regToken: this.registrationToken
       },
       accessParams: {
         accountName: this.registrationForm.accountName,
-        uri: "s3://192.168.27.254:80",
+        uri: this.s3URI,
         credentials: {
           accessKey: this.accessKey,
           secretKey: this.secretKey

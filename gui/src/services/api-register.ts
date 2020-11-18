@@ -66,5 +66,6 @@ export default {
   version: `/api/${version}/product_version`,
   health_components: `api/${version}/system/health/components`,
   health_resources: `api/${version}/system/health/resources`,
-  appliance_info: `/api/${version}/appliance_info`
+  appliance_info: `/api/${version}/appliance_info`,
+  udx_saas: `/api/${version}/udx_saas`
 };

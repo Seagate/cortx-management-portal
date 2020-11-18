@@ -119,7 +119,6 @@ import {
 } from "../../common/regex-helpers";
 import i18n from "./../../i18n";
 import { Bucket } from "../../models/s3";
-import { CortxDropdownOption } from "../widgets/dropdown/cortx-dropdown";
 
 @Component({
   name: "cortx-select-create-bucket"
@@ -127,8 +126,9 @@ import { CortxDropdownOption } from "../widgets/dropdown/cortx-dropdown";
 export default class CortxSelectCreateBucket extends Vue {
   public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
   public bucketUrl: string;
+  public s3URI: string = "";
   public registrationForm = {
-    bucketName: {} as CortxDropdownOption,
+    bucketName: {} as any,
     createBucketName: ""
   };
 
@@ -166,7 +166,7 @@ export default class CortxSelectCreateBucket extends Vue {
     const res: any = await Api.getAllWithConfig(apiRegister.s3_bucket, config);
     if (res && res.data && res.data.buckets) {
       this.bucketList = res.data.buckets.map((bucket: any) => {
-        return { label: bucket.name, value: bucket.name };
+        return { label: bucket.name, value: bucket.name, s3URI: bucket.s3_uri };
       });
     }
     this.$store.dispatch("systemConfig/hideLoader");
@@ -184,6 +184,7 @@ export default class CortxSelectCreateBucket extends Vue {
     const bucketName: string = this.isCreateBucket
       ? this.registrationForm.createBucketName
       : this.registrationForm.bucketName.value;
+
     if (this.isCreateBucket) {
       const createBucketForm = {
         bucket: {} as Bucket
@@ -205,10 +206,16 @@ export default class CortxSelectCreateBucket extends Vue {
         createBucketForm.bucket
       );
       this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
+      this.s3URI = res && res.data.bucket_url ? res.data.s3_uri : "NA";
 
       this.$store.dispatch("systemConfig/hideLoader");
     }
-    this.$emit("onChange", false, bucketName);
+
+    const URI: string = this.isCreateBucket
+      ? this.s3URI
+      : this.registrationForm.bucketName.s3URI;
+
+    this.$emit("onChange", false, bucketName, URI);
   }
 }
 </script>
