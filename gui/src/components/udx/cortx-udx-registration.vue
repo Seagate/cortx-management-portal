@@ -291,6 +291,9 @@ export default class CortxUDXRegistration extends Vue {
       "systemConfig/showLoader",
       "Fetching registration token..."
     );
+    if (this.$route.query && this.$route.query.dev) {
+      this.isDevEnv = (this.$route.query.dev === "true");
+    }
     const res = await Api.getAll(apiRegister.udx_registration_token);
     if (res && res.data) {
       this.registrationToken = res.data.registrationToken;
@@ -298,9 +301,6 @@ export default class CortxUDXRegistration extends Vue {
     const resUDXSASS = await Api.getAll(apiRegister.udx_saas);
     if (resUDXSASS && resUDXSASS.data) {
       this.registrationForm.url = resUDXSASS.data.saas_url;
-    }
-    if (this.$route.query && this.$route.query.dev) {
-      this.isDevEnv = (this.$route.query.dev === "true");
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
