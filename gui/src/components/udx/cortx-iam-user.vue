@@ -159,6 +159,7 @@
             autocomplete="off"
             v-model.trim="registrationForm.iamUserConfirmPassword"
             @input="$v.registrationForm.iamUserConfirmPassword.$touch"
+            v-on:keyup.enter="createUser()"
           />
           <span
             class="cortx-form-group-label cortx-form-group-error-msg"

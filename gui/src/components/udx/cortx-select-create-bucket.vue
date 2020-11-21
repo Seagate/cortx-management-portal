@@ -18,16 +18,18 @@
   <div class="bucket-container">
     <v-row v-if="!isCreateBucket">
       <v-col class="py-0 pr-0">
-        <label class="cortx-form-group-label" for="bucketName" id="udx-bucket-namelbl">
-          <cortx-info-tooltip
-            :label="`${$t('udx-registration.bucketName')}*`"
-            :message="bucketNameTooltipMessage" />
-        </label>
-        <cortx-dropdown
-          title="-- Select Bucket --"
-          :selectedOption.sync="registrationForm.bucketName"
-          :options="bucketList"
-        ></cortx-dropdown>
+        <div class="mb-1">
+          <label class="cortx-form-group-label" for="bucketName" id="udx-bucket-namelbl">
+            {{ $t('udx-registration.bucketName') }}*
+          </label>
+        </div>
+        <div class="mb-1">
+          <cortx-dropdown
+            title="-- Select Bucket --"
+            :selectedOption.sync="registrationForm.bucketName"
+            :options="bucketList"
+          ></cortx-dropdown>
+        </div>
         <div v-if="!bucketList.length">No Bucket found. Please proceed by creating a new bucket.</div>
         <div class="mb-1">
           <label
@@ -41,11 +43,6 @@
           @click="createBucket()"
           :disabled="$v.registrationForm.bucketName.$invalid"
         >{{ $t("common.continue") }}</button>
-        <button
-          class="cortx-btn-secondary ml-5"
-          type="button"
-          @click="backToPreviousStep()"
-        >{{ $t("common.back") }}</button>
       </v-col>
     </v-row>
     <v-row v-else>
@@ -61,9 +58,6 @@
               :label="`${$t('udx-registration.bucketName')}*`"
               :message="bucketNameTooltipMessage" />
           </label>
-          <div class="cortx-bucket-input-prefix">
-            <label>{{ $t("udx-registration.ldp") }}</label>
-          </div>
           <input
             class="cortx-form__input_text cortx-bucket-input"
             type="text"
@@ -72,6 +66,7 @@
             v-model.trim="registrationForm.createBucketName"
             autocomplete="off"
             @input="$v.registrationForm.createBucketName.$touch"
+            v-on:keyup.enter="createBucket()"
           />
           <div class="cortx-form-group-label cortx-form-group-error-msg">
             <label
@@ -115,7 +110,7 @@ import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import {
   udxBucketNameRegex,
-  udxBucketNameTooltipMessage
+  bucketNameTooltipMessage
 } from "../../common/regex-helpers";
 import i18n from "./../../i18n";
 import { Bucket } from "../../models/s3";
@@ -124,7 +119,7 @@ import { Bucket } from "../../models/s3";
   name: "cortx-select-create-bucket"
 })
 export default class CortxSelectCreateBucket extends Vue {
-  public bucketNameTooltipMessage: string = udxBucketNameTooltipMessage;
+  public bucketNameTooltipMessage: string = bucketNameTooltipMessage;
   public bucketUrl: string;
   public s3URI: string = "";
   public registrationForm = {
@@ -170,14 +165,6 @@ export default class CortxSelectCreateBucket extends Vue {
       });
     }
     this.$store.dispatch("systemConfig/hideLoader");
-  }
-
-  public backToPreviousStep() {
-    this.registrationForm.createBucketName = "";
-    if (this.$v.registrationForm) {
-      this.$v.registrationForm.$reset();
-    }
-    this.$emit("onChange", true);
   }
 
   private async createBucket() {

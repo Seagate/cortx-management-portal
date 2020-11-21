@@ -31,16 +31,19 @@
 
         <v-stepper-step :complete="stepNumber > 2" step="2">
           {{ $t("udx-registration.selectCreateBucket") }}
+          <small>{{ $t("udx-registration.selectCreateBucketMsg") }}</small>
         </v-stepper-step>
         <v-divider></v-divider>
 
         <v-stepper-step :complete="stepNumber > 3" step="3">
           {{ $t("udx-registration.createIAMAccount") }}
+          <small>{{ $t("udx-registration.createIAMAccountMsg") }}</small>
         </v-stepper-step>
         <v-divider></v-divider>
 
         <v-stepper-step :complete="stepNumber > 4" step="4">
           {{ $t("udx-registration.udx-registration") }}
+          <small>{{ $t("udx-registration.udx-registrationMsg") }}</small>
         </v-stepper-step>
       </v-stepper-header>
 
@@ -120,7 +123,6 @@
             <v-row>
                <v-col class="py-0 pr-0">
                 <div
-                  class="cortx-form-group"
                   :class="{
                     'cortx-form-group--error': $v.registrationForm.url.$error
                   }"
@@ -130,12 +132,10 @@
                     for="url"
                     id="udx-url-label"
                   >
-                    <cortx-info-tooltip
-                      label="URL*"
-                      message="Enter the URL provided by your UDX portal."
-                    />
+                  URL* : {{ registrationForm.url }}
                   </label>
                   <input
+                    v-if="hideInput"
                     class="cortx-form__input_text"
                     type="text"
                     id="url"
@@ -180,6 +180,7 @@
                   </label>
                   <input class="cortx-form__input_text" type="number" 
                   v-model.trim="registrationForm.pin"
+                  v-on:keyup.enter="registerUDX()"
                   />
                 </div>
               </v-col>
@@ -252,6 +253,7 @@ export default class CortxUDXRegistration extends Vue {
   public registrationToken: string = "";
   public s3URI: string = "";
   public registrationResponse: any = null;
+  public hideInput: boolean = false;
   public registrationForm = {
     url: "",
     accountName: "",

@@ -178,6 +178,7 @@
             name="confirmPassword"
             v-model.trim="createAccountForm.confirmPassword"
             @input="$v.createAccountForm.confirmPassword.$touch"
+            v-on:keyup.enter="createAccount()"
           />
           <span
             id="s3-password-notmatch"

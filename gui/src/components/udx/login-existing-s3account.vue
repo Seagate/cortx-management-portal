@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <form autocomplete="off" id="login-s3-account">
+  <form autocomplete="off" id="login-s3-account" onSubmit="return false;">
     <div class="cortx-form-group">
       <label class="cortx-form-group-label">{{ $t("udx-registration.account") }}*</label>
       <cortx-dropdown
@@ -30,18 +30,12 @@
         @click="triggerCreateAccount()"
       >{{ $t("udx-registration.createNewAccount") }}</label>
     </div>
-    <div
-      class="cortx-form-group"
+    <div class="cortx-form-group"
       :class="{
         'cortx-form-group--error': $v.loginForm.account.password.$error
-      }"
-    >
+      }">
       <label class="cortx-form-group-label" for="accountPassword" id="s3-lblpassword">
-        <cortx-info-tooltip
-          id="aacount-password"
-          :label="`${$t('login.password-placeholder')}*`"
-          :message="passwordTooltipMessage"
-        />
+      {{ $t('login.password-placeholder') }}*
       </label>
       <input
         class="cortx-form__input_text"
@@ -51,6 +45,7 @@
         autocomplete="off"
         v-model.trim="loginForm.account.password"
         @input="$v.loginForm.account.password.$touch"
+        v-on:keyup.enter="loginS3Account()"
       />
       <div class="cortx-form-group-label cortx-form-group-error-msg">
         <label
@@ -60,21 +55,17 @@
             !$v.loginForm.account.password.required
           "
         >{{ $t("common.password-required") }}</label>
-        <label
-              id="s3-password-invalid"
-              v-else-if="
-                $v.loginForm.account.password.$dirty &&
-                  !$v.loginForm.account.password.passwordRegex
-              "
-              >{{ $t("common.invalid-pass") }}</label
-        >        
+
+        <label v-if="!isValidLogin && $v.loginForm.account.password.$dirty && $v.loginForm.account.password.required">
+          {{ $t("login.login-failed") }}
+        </label>
       </div>
     </div>
     <button
       id="login-btn"
       type="button"
       class="cortx-btn-primary"
-      @click="login()"
+      @click="loginS3Account()"
       :disabled="$v.loginForm.$invalid"
     >{{ $t("udx-registration.loginAndContinue") }}</button>
   </form>
@@ -101,6 +92,7 @@ export default class LoginExistingS3Account extends Vue {
   public s3Url: any[] = [];
   public s3UrlNone: boolean = false;
   public s3UrlInfo: any;
+  public isValidLogin: boolean = true;
 
   public loginForm = {
     account: {
@@ -114,7 +106,7 @@ export default class LoginExistingS3Account extends Vue {
     loginForm: {
       account: {
         account_name: { required },
-        password: { required, passwordRegex }
+        password: { required }
       }
     }
   };
@@ -149,23 +141,28 @@ export default class LoginExistingS3Account extends Vue {
     this.$emit("createAccount", true);
   }
 
-  public async login() {
+  public async loginS3Account() {
     this.$store.dispatch("systemConfig/showLoader", "Logging in...");
     const selectedAccount: any = this.loginForm.account.account_name;
     const loginCredentials: any = {
       username: selectedAccount.value,
       password: this.loginForm.account.password
     };
-    const res = await Api.post(apiRegister.login, loginCredentials);
-    this.$store.dispatch("systemConfig/hideLoader");
-    if (res && res.headers) {
-      this.$emit(
-        "setAuthToken",
-        res.headers.authorization,
-        this.loginForm.account.account_name,
-        this.loginForm.account.password
-      );
+    try {
+      const res = await Api.post(apiRegister.login, loginCredentials);
+      if (res && res.headers) {
+        this.$emit(
+          "setAuthToken",
+          res.headers.authorization,
+          this.loginForm.account.account_name,
+          this.loginForm.account.password
+        );
+      }
+    } catch (error) {
+      console.log("unauthorize --- incorrect password");
+      this.isValidLogin = false;
     }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 }
 </script>
