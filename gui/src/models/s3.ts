@@ -21,6 +21,8 @@ export interface Account {
   password: string;
   access_key: string;
   secret_key: string;
+  account_id: string;
+  canonical_id: string;
 }
 export interface AccessKey {
   user_name: string;

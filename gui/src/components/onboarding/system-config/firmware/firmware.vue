@@ -111,10 +111,13 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../../../services/api";
 import apiRegister from "../../../../services/api-register";
 import { LastUpgradeStatus } from "../../../../models/firmware";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-firmware"
+  name: "cortx-firmware",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxFirmware extends Vue {
   public lastUpgradeStatus: LastUpgradeStatus | null = null;

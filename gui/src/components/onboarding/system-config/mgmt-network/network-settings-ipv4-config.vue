@@ -107,10 +107,13 @@ import {
   Ipv4
 } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-network-settings-ipv4-config"
+  name: "cortx-network-settings-ipv4-config",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNetworkSettingsIpv4Config extends Vue {
   @Validations()

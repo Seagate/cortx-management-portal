@@ -70,10 +70,13 @@ import {
   maxLength
 } from "vuelidate/lib/validators";
 import { applianceNameRegex } from "./../../../../common/regex-helpers";
-import i18n from "./../../../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-appliance-name-config"
+  name: "cortx-appliance-name-config",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxApplianceNameConfig extends Vue {
   @Validations()

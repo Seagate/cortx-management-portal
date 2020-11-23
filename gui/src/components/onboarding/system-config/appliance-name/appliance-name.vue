@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <div class="pl-4 body-2">
+      {{ $t("") | json }}
       <div class="title mt-0 font-weight-bold" id="lblAppliance">
         {{$t("onBoarding.systemName")}}
       </div>
@@ -13,12 +14,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxApplianceNameConfig from "./appliance-name-config.vue";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "cortx-appliance-name",
   components: {
     cortxApplianceNameConfig: CortxApplianceNameConfig
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxApplianceName extends Vue {}

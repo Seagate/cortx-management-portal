@@ -35,12 +35,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxNetworkSettingsIpv4Config from "./network-settings-ipv4-config.vue";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "cortx-network-settings-ipv4",
   components: {
     cortxNetworkSettingsIpv4: CortxNetworkSettingsIpv4Config
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxNetworkSettingsIpv4 extends Vue {}
