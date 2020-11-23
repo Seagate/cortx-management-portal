@@ -146,12 +146,18 @@ export default class CortxFirmware extends Vue {
     } catch (error) {
       this.$data.systemStatus = false;
       let errorMessage = "please check service status";
-      if (error && error.error) {
-        errorMessage = error.error.message;
-      }
+       let consul= error.data.consul;
+       let es= error.data.es;
+      if (error.data.consul!=="success"&& error.data.es!=="success" ) {
+        errorMessage = consul + ' ' + 'and' + ' ' + es;
+      }else if(error.data.consul!=="success"){
+          errorMessage = consul ;
+       }else if(error.data.es!=="success"){
+          errorMessage = es ;
+       }
       throw {
         error: {
-          message: errorMessage
+          message: 'error'
         }
       };
     } finally {
