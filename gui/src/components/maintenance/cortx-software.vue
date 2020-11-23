@@ -150,11 +150,17 @@ export default class CortxHotfix extends Vue {
       const res: any = await Api.getAll(apiRegister.system_status);
       this.$store.dispatch("systemConfig/hideLoader");
     } catch (error) {
-      this.$data.systemStatus = false;
-     let errorMessage =  i18n.t("maintenance.errorMessage");
-      if (error && error.error) {
-        errorMessage = error.error.message;
-      }
+       this.$data.systemStatus = false;
+      let errorMessage = "please check service status";
+       let consul= error.data.consul;
+       let es= error.data.es;
+      if (error.data.consul!=="success"&& error.data.es!=="success" ) {
+        errorMessage = consul + ' ' + 'and' + ' ' + es;
+      }else if(error.data.consul!=="success"){
+          errorMessage = consul ;
+       }else if(error.data.es!=="success"){
+          errorMessage = es ;
+       }
       throw {
         error: {
           message: errorMessage

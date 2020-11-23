@@ -138,10 +138,16 @@ public async getSyetmStatus() {
       this.$store.dispatch("systemConfig/hideLoader");
     } catch (error) {
       this.$data.systemStatus = false;
-     let errorMessage =  i18n.t("onBoarding.errorMessage");
-      if (error && error.error) {
-        errorMessage = error.error.message;
-      }
+      let errorMessage = "please check service status";
+       let consul= error.data.consul;
+       let es= error.data.es;
+      if (error.data.consul!=="success"&& error.data.es!=="success" ) {
+        errorMessage = consul + ' ' + 'and' + ' ' + es;
+      }else if(error.data.consul!=="success"){
+          errorMessage = consul ;
+       }else if(error.data.es!=="success"){
+          errorMessage = es ;
+       }
       throw {
         error: {
           message: errorMessage
