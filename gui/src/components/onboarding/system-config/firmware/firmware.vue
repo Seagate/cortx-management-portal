@@ -57,7 +57,7 @@
         type="button"
         class="ml-5 cortx-btn-primary"
         @click="startUpgrade()"
-        :disabled="
+        :disabled="!isSystemStable ||
           !isPackageAvailable ||
             (lastUpgradeStatus && lastUpgradeStatus.status === 'in_progress')
         "
