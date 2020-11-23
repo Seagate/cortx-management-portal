@@ -17,7 +17,7 @@
 <template>
   <div class="cortx-p-1">
     <div class="cortx-text-lg cortx-text-bold" id="lblAbout">
-      {{ $t("aboutUs.title") }}
+      {{$t("aboutUs.title")}}
       <a href="https://github.com/Seagate" target="_blank">
         <img
           id="about-seagte-github"

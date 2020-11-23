@@ -226,8 +226,7 @@ import {
   udxBucketNameRegex,
   passwordRegex,
   accountNameTooltipMessage,
-  passwordTooltipMessage,
-  udxBucketNameTooltipMessage
+  passwordTooltipMessage
 } from "../../common/regex-helpers";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";

@@ -16,7 +16,10 @@
 */
 <template>
   <div class="pa-5">
-    <div class="cortx-back-btn" @click="$router.go(-1)">
+    <div 
+      class="cortx-back-btn" 
+      @click="$router.go(-1)"
+    >
       <img :src="require('@/assets/arrow-left.svg')" />
       <span class="mt-1">{{ $t("common.back") }}</span>
     </div>
