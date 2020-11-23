@@ -355,8 +355,8 @@
     "ifYouConfigureLater": "If you intend to configure later, you may skip to the next step.",
     "startUpdate": "Start update",
     "local": "Local",
-    "errorMessage" : "please check service status",
-    "serviceStatus" : "checking service status..."
+    "errorMessage" : "Please check service status.",
+    "serviceStatus" : "Checking service status..."
   },
   "health": {
     "storage_encl": "Storage enclosure",

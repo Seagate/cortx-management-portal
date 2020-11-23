@@ -74,7 +74,7 @@
         type="button"
         class="ml-5 cortx-btn-primary"
         @click="startUpgrade()"
-        :disabled="!systemStatus || !isPackageAvailable"
+        :disabled="!isSystemStable || !isPackageAvailable"
       >
         {{ $t("maintenance.startUpdate") }}
       </button>
@@ -136,7 +136,7 @@ export default class CortxHotfix extends Vue {
     isDirty: false,
     isValid: false,
   };
-  public systemStatus: boolean = true;
+  public isSystemStable: boolean = true;
   public async mounted() {
     await this.getSyetmStatus();
     await this.getLastUpgradeStatus();
@@ -150,8 +150,8 @@ export default class CortxHotfix extends Vue {
       const res: any = await Api.getAll(apiRegister.system_status);
       this.$store.dispatch("systemConfig/hideLoader");
     } catch (error) {
-       this.$data.systemStatus = false;
-      let errorMessage = "please check service status";
+       this.$data.isSystemStable = false;
+      let errorMessage = "Please check service status.";
        let consul= error.data.consul;
        let es= error.data.es;
       if (error.data.consul!=="success"&& error.data.es!=="success" ) {
