@@ -239,7 +239,7 @@
             class="cortx-btn-primary"
             @click="gotToNextPage()"
             :disabled="
-              !systemStatus || $v.createAccount.$invalid || createUserInProgress
+              !isSystemStable || $v.createAccount.$invalid || createUserInProgress
             "
           >
             {{ $t("admin.applyContinue") }}
@@ -311,7 +311,7 @@ export default class CortxAdminUser extends Vue {
       createUserInProgress: false,
       passwordTooltipMessage,
       usernameTooltipMessage,
-      systemStatus: true
+      isSystemStable: true
     };
   }
 
@@ -328,8 +328,8 @@ export default class CortxAdminUser extends Vue {
       const res: any = await Api.getAll(apiRegister.system_status, dbName );
       this.$store.dispatch("systemConfig/hideLoader");
     } catch (error) {
-      this.$data.systemStatus = false;
-      let errorMessage = "please check service status";
+      this.$data.isSystemStable = false;
+      let errorMessage = "Please check service status.";
        let consul= error.data.consul;
        let es= error.data.es;
       if (error.data.consul!=="success"&& error.data.es!=="success" ) {
