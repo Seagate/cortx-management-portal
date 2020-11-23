@@ -159,7 +159,6 @@ export default class LoginExistingS3Account extends Vue {
         );
       }
     } catch (error) {
-      console.log("unauthorize --- incorrect password");
       this.isValidLogin = false;
     }
     this.$store.dispatch("systemConfig/hideLoader");
