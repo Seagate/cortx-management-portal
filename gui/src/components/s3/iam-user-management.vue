@@ -453,9 +453,9 @@ export default class CortxIAMUserManagement extends Vue {
         value: "arn",
         sortable: false
       },
-      {
-        text: "Action",
-        value: "data-table-expand"
+      { 
+        text: "Action", 
+        value: "data-table-expand" 
       }
     ];
 
