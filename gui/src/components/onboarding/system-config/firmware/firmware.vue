@@ -14,6 +14,7 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
+
 <template>
   <div>
     <div class="cortx-text-lg cortx-text-bold" id="lblUpdateFirmware">
