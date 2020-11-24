@@ -25,10 +25,17 @@ import { ApiResponse } from "./api-model";
 axios.interceptors.request.use(
   config => {
     const constStr = require("../common/const-string.json");
-    const token = localStorage.getItem(constStr.access_token);
-    if (token) {
-      config.headers.Authorization = token;
+
+    if (config.headers.auth_token) {
+      config.headers.Authorization = config.headers.auth_token;
+      delete config.headers.auth_token;
+    } else {
+      const token = localStorage.getItem(constStr.access_token);
+      if (token) {
+        config.headers.Authorization = token;
+      }
     }
+
     if (config.timeout === -1) {
       config.timeout = 0;
     } else if (config.timeout === 0) {
@@ -54,7 +61,7 @@ axios.interceptors.response.use(
   },
   error => {
     // Handle Unauthorised response. Re-route to login page if unauthorised response received.
-    if (error.response && error.response.status === 401) {
+    if (error.response && error.response.status === 401 && !error.request.responseURL.includes("api/v1/login")) {
       const constStr = require("../common/const-string.json");
       localStorage.removeItem(constStr.access_token);
       localStorage.removeItem(constStr.username);
@@ -80,6 +87,31 @@ export abstract class Api {
         return Promise.reject(apiResponse);
       });
   }
+
+  public static async getAllWithConfig(url: string, config: object): Promise<ApiResponse> {
+    return await axios
+      .get(url, config)
+      .then(response => {
+        return Promise.resolve(this.buildSuccessResponse(response));
+      })
+      .catch(error => {
+        const apiResponse: ApiResponse = this.getResponseFromError(error);
+        return Promise.reject(apiResponse);
+      });
+  }
+
+  public static async postAllWithConfig(url: string, config: object, payload: object): Promise<ApiResponse> {
+    return await axios
+      .post(url, payload, config)
+      .then(response => {
+        return Promise.resolve(this.buildSuccessResponse(response));
+      })
+      .catch(error => {
+        const apiResponse: ApiResponse = this.getResponseFromError(error);
+        return Promise.reject(apiResponse);
+      });
+  }
+
   // Wrapper method to for get api
   public static async getFile(url: string, queryParams?: object) {
     return await axios.get(url, { responseType: "blob" });
