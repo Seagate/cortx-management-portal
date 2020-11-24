@@ -378,7 +378,9 @@
         "selectingLocalUsers": "Selecting Local Users will allow you to create and manage any users that can access this system. You can control which users have access to make configuration changes to the system, control which users can access certain interfaces, and setup user attributes specific to individual users.",
         "ifYouConfigureLater": "If you intend to configure later, you may skip to the next step.",
         "startUpdate": "Start update",
-        "local": "Local"
+        "local": "Local",
+        "errorMessage" : "Please check service status.",
+        "serviceStatus" : "Checking service status..."
     },
     "health": {
         "storage_encl": "Storage enclosure",
@@ -490,7 +492,10 @@
         "startUpdate": "Start update",
         "invalidFile": "Invalid file.",
         "upload": "Upload",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "errorMessage" : "Please check service status.",
+        "serviceStatus" : "Checking service status..."
+
     },
     "security": {
         "accessDenied": "Access Denied",
