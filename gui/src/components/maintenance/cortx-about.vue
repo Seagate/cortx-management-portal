@@ -17,7 +17,7 @@
 <template>
   <div class="cortx-p-1">
     <div class="cortx-text-lg cortx-text-bold" id="lblAbout">
-      {{$t("aboutUs.title")}}
+      {{ $t("aboutUs.title") }}
       <a href="https://github.com/Seagate" target="_blank">
         <img
           id="about-seagte-github"
@@ -69,7 +69,7 @@
             }}</label>
           </td>
           <td class="cortx-td">
-            <label>- {{ serialNumber }}</label>
+            <label>{{ serialNumber }}</label>
           </td>
         </tr>
       </table>
@@ -96,6 +96,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import i18n from "./../../i18n";
+
 @Component({
   name: "cortx-about"
 })
