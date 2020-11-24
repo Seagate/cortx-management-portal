@@ -18,6 +18,10 @@ import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response } from "express";
 
+export const getUDXSaaS = async (req: Request, res: Response) => {
+    let result = await Api.getAll(apiRegister.udx_saas, req, res);
+    return result;
+};
 
 export const getUDXDevices = async (req: Request, res: Response) => {
     let result = await Api.getAll(apiRegister.udx_devices, req, res);
