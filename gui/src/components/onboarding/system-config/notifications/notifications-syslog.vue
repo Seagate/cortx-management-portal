@@ -57,10 +57,13 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Syslog } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-data-network-ipv4"
+  name: "cortx-data-network-ipv4",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxDataNetworkIpv4 extends Vue {
   private data() {

@@ -29,12 +29,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxUploadSSLConfig from "../onboarding/system-config/ssl-certificate/upload-ssl-config.vue";
-import i18n from "../../i18n";
+import i18n from "./settings.json";
 
 @Component({
   name: "upload-ssl-setting",
   components: {
     cortxUploadSSLConfig: CortxUploadSSLConfig
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxUploadSSLSetting extends Vue {}

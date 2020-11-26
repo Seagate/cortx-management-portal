@@ -38,12 +38,15 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDnsSettingConfig from "../onboarding/system-config/dns/dns-setting-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import i18n from "../../i18n";
+import i18n from "./settings.json";
 
 @Component({
   name: "cortx-dns-data-setting",
   components: {
     cortxDnsSettingConfig: CortxDnsSettingConfig
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxDnsDataSetting extends Vue {

@@ -92,10 +92,13 @@ import { EVENT_BUS } from "./../../../../main";
 import * as moment from "moment-timezone";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers } from "vuelidate/lib/validators";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-date-time-config"
+  name: "cortx-date-time-config",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxDateTimeConfig extends Vue {
   @Validations()

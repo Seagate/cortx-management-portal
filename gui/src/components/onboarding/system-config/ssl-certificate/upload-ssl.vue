@@ -44,12 +44,15 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 import CortxUploadSSLConfig from "./upload-ssl-config.vue";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "uploade-ssl",
   components: {
     cortxUploadSSLConfig: CortxUploadSSLConfig
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxUploadSSL extends Vue {}

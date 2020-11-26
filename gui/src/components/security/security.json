@@ -1,0 +1,18 @@
+{
+    "en": {
+        "security": {
+            "accessDenied": "Access Denied",
+            "accessDeniedMsg": "This is a secure area. You are not authorized to see this page.",
+            "pageNotFoundMsg": "(404) Page Not Found",
+            "pageNotFound": "The page you are looking for does not exist."
+        }
+    },
+    "ru": {
+        "security": {
+            "accessDenied": "Access Denied",
+            "accessDeniedMsg": "This is a secure area. You are not authorized to see this page.",
+            "pageNotFoundMsg": "(404) Page Not Found",
+            "pageNotFound": "The page you are looking for does not exist."
+        }
+    }
+}
