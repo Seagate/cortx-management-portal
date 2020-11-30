@@ -126,7 +126,7 @@
         "login": "Login",
         "logout": "Logout",
         "continue": "Continue",
-        "not-available": "NA"
+        "not_available": "NA"
     },
     "csmuser": {
         "user-setting-label": "User settings: Local",
@@ -195,7 +195,7 @@
         "udx-url-required": "URL is required",
         "invalid-url": "Invalid URL",
         "s3-details": "S3 Account details",
-        "account-details": "Account details",
+        "account_details": "Account details",
         "url": "URL",
         "accountname-required": "Account name is required",
         "invalid-name": "Invalid account name",

@@ -115,12 +115,12 @@
               <v-expansion-panels class="mt-2 mb-5">
                 <v-expansion-panel>
                   <v-expansion-panel-header class="cortx-text-lg font-weight-bold">
-                    {{ $t("udx-registration.account-details") }}
+                    {{ $t("udx-registration.account_details") }}
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    <div>{{ $t("udx-registration.S3Account") }}: {{ registrationForm.accountName || $t("common.not-available") }}</div>
-                    <div>{{ $t("udx-registration.IAMUser") }}: {{ registrationForm.iamUsername || $t("common.not-available") }}</div>
-                    <div>{{ $t("udx-registration.bucketName") }}: {{ registrationForm.bucketName || $t("common.not-available") }}</div>
+                    <div>{{ $t("udx-registration.S3Account") }}: {{ registrationForm.accountName || $t("common.not_available") }}</div>
+                    <div>{{ $t("udx-registration.IAMUser") }}: {{ registrationForm.iamUsername || $t("common.not_available") }}</div>
+                    <div>{{ $t("udx-registration.bucketName") }}: {{ registrationForm.bucketName || $t("common.not_available") }}</div>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -140,7 +140,7 @@
                     for="url"
                     id="udx-url-label"
                   >
-                  {{ $t("udx-registration.url") }}*: {{ registrationForm.url || $t("common.not-available") }}
+                  {{ $t("udx-registration.url") }}*: {{ registrationForm.url || $t("common.not_available") }}
                   </label>
                   <input
                     v-if="hideInput"
