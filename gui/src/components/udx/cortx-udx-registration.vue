@@ -118,9 +118,9 @@
                     {{ $t("udx-registration.account-details") }}
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    <div>{{ $t("udx-registration.S3Account") }}: {{ registrationForm.accountName || $t("common.NA") }}</div>
-                    <div>{{ $t("udx-registration.IAMUser") }}: {{ registrationForm.iamUsername || $t("common.NA") }}</div>
-                    <div>{{ $t("udx-registration.bucketName") }}: {{ registrationForm.bucketName || $t("common.NA") }}</div>
+                    <div>{{ $t("udx-registration.S3Account") }}: {{ registrationForm.accountName || $t("common.not-available") }}</div>
+                    <div>{{ $t("udx-registration.IAMUser") }}: {{ registrationForm.iamUsername || $t("common.not-available") }}</div>
+                    <div>{{ $t("udx-registration.bucketName") }}: {{ registrationForm.bucketName || $t("common.not-available") }}</div>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -140,7 +140,7 @@
                     for="url"
                     id="udx-url-label"
                   >
-                  {{ $t("udx-registration.url") }}*: {{ registrationForm.url || $t("common.NA") }}
+                  {{ $t("udx-registration.url") }}*: {{ registrationForm.url || $t("common.not-available") }}
                   </label>
                   <input
                     v-if="hideInput"

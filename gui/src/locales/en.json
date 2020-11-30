@@ -126,7 +126,7 @@
         "login": "Login",
         "logout": "Logout",
         "continue": "Continue",
-        "NA": "NA"
+        "not-available": "NA"
     },
     "csmuser": {
         "user-setting-label": "User settings: Local",
