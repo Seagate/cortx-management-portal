@@ -195,7 +195,7 @@
         "udx-url-required": "URL is required",
         "invalid-url": "Invalid URL",
         "s3-details": "S3 Account details",
-        "accountDetails": "Account details",
+        "account-details": "Account details",
         "url": "URL",
         "accountname-required": "Account name is required",
         "invalid-name": "Invalid account name",

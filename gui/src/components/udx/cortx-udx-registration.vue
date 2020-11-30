@@ -115,7 +115,7 @@
               <v-expansion-panels class="mt-2 mb-5">
                 <v-expansion-panel>
                   <v-expansion-panel-header class="cortx-text-lg font-weight-bold">
-                    {{ $t("udx-registration.accountDetails") }}
+                    {{ $t("udx-registration.account-details") }}
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     <div>{{ $t("udx-registration.S3Account") }}: {{ registrationForm.accountName || $t("common.NA") }}</div>
