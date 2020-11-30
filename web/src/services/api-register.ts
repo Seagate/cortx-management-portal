@@ -27,6 +27,7 @@ export default {
   admin_user_logout: `/api/${version}/logout`,
   udx_register_device: `/usl/v1/registerDevice`,
   udx_registration_token: `/usl/v1/registrationToken`,
+  udx_saas: `/usl/v1/saas`,
   udx_devices: `/usl/v1/devices`,
   s3_accounts: `/api/${version}/s3_accounts`,
   iam_users: `/api/${version}/iam_users`,
@@ -61,6 +62,7 @@ export default {
   ssl_status: `/api/${version}/tls/bundle/status`,
   product_version: `/api/${version}/product_version`,
   health_components: `/api/${version}/system/health/components`,
+  system_status: `/api/${version}/system/status`,
   health_resources: `/api/${version}/system/health/resources`,
   appliance_info:`/api/${version}/appliance_info`
 };

@@ -1811,12 +1811,6 @@
 					"application/json": {}
 				},
 				"parameters": [{
-					"name": "node_id",
-					"in": "query",
-					"description": "Specifies the node id",
-					"required": false,
-					"type": "string"
-				}, {
 					"name": "authorization",
 					"in": "header",
 					"required": true,
@@ -1824,13 +1818,13 @@
 				}]
 			}
 		},
-		"/system/health/view": {
+		"/system/health/components": {
 			"get": {
 				"tags": ["Health"],
-				"summary": "Get Health of nodes with alerts: Accessible to CSM users having monitor and manage permissions",
+				"summary": "Get components of nodes and their health: Accessible to CSM users having monitor and manage permissions",
 				"responses": {
 					"200": {
-						"description": "OK"
+						"description": "OK: Health of the nodes fetched successfully."
 					},
 					"400": {
 						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
@@ -1898,14 +1892,14 @@
 					{
 						"name": "component_id",
 						"in": "query",
-						"description": "Specifies the node id",
+						"description": "Specifies the component id",
 						"required": false,
 						"type": "string"
 					},
 					{
 						"name": "severity",
 						"in": "query",
-						"description": "Specifies the node id",
+						"description": "Specifies the severity",
 						"required": false,
 						"enum": [
 							"ok",

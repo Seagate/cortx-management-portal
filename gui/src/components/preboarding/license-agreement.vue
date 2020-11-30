@@ -49,7 +49,7 @@
                         {{ section.bulleted_text.title }}
                       </label>
                     </div>
-                    <ol class="ordered-list">
+                    <ol class="ordered-list pl-8">
                       <template v-for="(text_item, index) in section.bulleted_text.texts">
                         <li v-bind:key="index" :class="{'font-weight-bold': text_item.title}">
                           <span
