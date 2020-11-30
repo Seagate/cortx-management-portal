@@ -125,7 +125,8 @@
         "email": "Email",
         "login": "Login",
         "logout": "Logout",
-        "continue": "Continue"
+        "continue": "Continue",
+        "NA": "NA"
     },
     "csmuser": {
         "user-setting-label": "User settings: Local",
@@ -194,6 +195,8 @@
         "udx-url-required": "URL is required",
         "invalid-url": "Invalid URL",
         "s3-details": "S3 Account details",
+        "accountDetails": "Account details",
+        "url": "URL",
         "accountname-required": "Account name is required",
         "invalid-name": "Invalid account name",
         "email": "Email id*",
@@ -222,7 +225,6 @@
         "userAlreadyExist": "User already Exist with",
         "createNewBucket": "Create new Bucket",
         "noBucketFound": "No Bucket found. Please proceed by creating a new bucket.",
-        "ldp": "ldp-",
         "S3Account": "S3 Account",
         "IAMUser": "IAM User",
         "bucketName": "Bucket Name",
@@ -515,7 +517,7 @@
         "NTPSettings": "Network time protocol (NTP) settings",
         "SSLCertificateUpload": "SSL certificate upload",
         "SSLCertificateUploadMsg": "By default, the system uses the SSL certificate provided by Seagate. To use a different SSL certificate, click Choose File to browse and select the appropriate SSL Certificate file. Click Upload certificate to upload the selected SSL certificate.",
-        "UDX": "UDX",
+        "ldp": "LDP",
         "name": "Name",
         "productID": "Product ID",
         "serialNumber": "Serial number",

@@ -48,7 +48,7 @@ export default class CortxUDX extends Vue {
   }
 
   public async getUDXDetails() {
-    this.$store.dispatch("systemConfig/showLoader", "Fetching UDX details...");
+    this.$store.dispatch("systemConfig/showLoader", "Fetching LDP details...");
     const res = await Api.getAll(apiRegister.udx_device);
     if (res && res.data && res.data.length > 0) {
       this.udx = res.data[0];
