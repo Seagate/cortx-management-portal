@@ -77,8 +77,8 @@ const router = new Router({
           meta: { requiresAuth: false }
         },
         {
-          path: "gdpr",
-          name: "gdpr",
+          path: "eula",
+          name: "eula",
           component: CortxLicense,
           meta: { requiresAuth: false }
         },

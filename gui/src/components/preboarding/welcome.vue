@@ -31,7 +31,7 @@
         id="welcome-startbtn"
         type="button"
         class="cortx-btn-primary-dark ml-4"
-        @click="$router.push('gdpr')"
+        @click="$router.push('eula')"
       >
         <span>{{ $t("login.start") }}</span>
       </button>
