@@ -20,9 +20,17 @@ export const accountNameRegex = helpers.regex(
   "accountNameRegex",
   /^[a-zA-Z0-9_-]{4,56}$/
 );
+
+export const iamUserNameRegex = helpers.regex(
+  "accountNameRegex",
+  /^[\w@+=.,-]{1,64}$/
+);
+
 export const accountNameTooltipMessage = i18n.t("regex-validation.account-tooltip");
 
 export const usernameTooltipMessage =  i18n.t("regex-validation.username-tooltip");
+
+export const iamUsernameTooltipMessage = i18n.t("regex-validation.iam-user-tooltip");
 
 export const bucketNameRegex = helpers.regex(
   "bucketNameRegex",

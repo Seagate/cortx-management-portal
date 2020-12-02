@@ -166,9 +166,10 @@
     "applyContinue":"Apply and continue"
   },
   "regex-validation": {
-    "bucket-input-tooltip":"The bucket name must be of minimum 4 characters and maximum 56 characters. Only lowercase, numbers, dash(-) and dot (.) are allowed. The bucket name cannot start and end with a dash (-) or dot(.)." ,
-    "account-tooltip":"The account name must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-).",
+    "bucket-input-tooltip": "The bucket name must be of minimum 4 characters and maximum 56 characters. Only lowercase, numbers, dash(-) and dot (.) are allowed. The bucket name cannot start and end with a dash (-) or dot(.)." ,
+    "account-tooltip": "The account name must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-).",
     "username-tooltip": "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-). The username must not be 'root' or 'Root'.",
-    "password-tooltip": "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, and One number"
+    "password-tooltip": "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, and One number",
+    "iam-user-tooltip": "The username must be of minimum 1 characters and maximum 64 characters. The username must be alphanumeric and can contain underscore (_) and dash (-). The username must not be 'root' or 'Root'."
   }
 }
