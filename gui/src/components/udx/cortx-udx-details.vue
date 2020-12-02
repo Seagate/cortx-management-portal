@@ -57,10 +57,13 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { UDX } from "../../models/udx";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
-import i18n from "../../i18n";
+import i18n from "./udx.json";
 
 @Component({
-  name: "cortx-udx-details"
+  name: "cortx-udx-details",
+  i18n: {
+    messages :i18n
+  }
 })
 export default class CortxUDXDetails extends Vue {
   @Prop({ required: true })
