@@ -756,3 +756,8 @@ tbody tr:hover {
 .c3 .c3-axis-y2 text.c3-axis-y2-label {
   fill: rgb(255, 0, 0);
 }
+
+.v-stepper__step .v-stepper__step__step.primary {
+  background-color: #6ebe49 !important;
+  border-color: #6ebe49 !important;
+}
