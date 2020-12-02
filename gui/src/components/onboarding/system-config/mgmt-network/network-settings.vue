@@ -66,10 +66,13 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { SystemConfigObject } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-network-settings"
+  name: "cortx-network-settings",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNetworkSettings extends Vue {
   public data() {

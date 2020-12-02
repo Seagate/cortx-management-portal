@@ -15,7 +15,9 @@
       "confirm-password": "Confirm password",
       "confirm-password-invalid": "Passwords do not match.",
       "accept": "Accept",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "systemStatus" : "checking service status...",
+      "errorMessage" : "please check service status"
     },
     "license": {
       "header": "To set up your system, you must accept the Terms and Conditions.",
@@ -50,7 +52,9 @@
       "confirm-password": "Confirm password",
       "confirm-password-invalid": "Passwords do not match.",
       "accept": "Accept",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "systemStatus" : "checking service status...",
+      "errorMessage" : "please check service status"
     },
     "license": {
       "header": "To set up your system, you must accept the Terms and Conditions.",

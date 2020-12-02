@@ -14,16 +14,17 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
+
 <template>
   <div>
     <div class="cortx-text-lg cortx-text-bold" id="lblUpdateFirmware">
       {{ $t("onBoarding.updateFirmware") }}
     </div>
     <div class="mt-3" id="lblFirmwareUploadmsg">
-      {{ $t("onBoarding.updateStorageEnclosure") }} 
+      {{ $t("onBoarding.updateStorageEnclosure") }}
       <br />
-      {{ $t("onBoarding.updateStorageEnclosureClick") }} 
-    </div>  
+      {{ $t("onBoarding.updateStorageEnclosureClick") }}
+    </div>
     <div
       class="mt-3 pa-3 cortx-last-upgrade-info-container cortx-text-md"
       v-if="lastUpgradeStatus"
@@ -34,9 +35,11 @@
             <label class="cortx-text-bold">Last update status:</label>
           </td>
           <td style="padding-top: 3px;">
-            <label>{{ lastUpgradeStatus.status? lastUpgradeStatus.status.toUpperCase(): "Not available" }}</label>
-            
-            
+            <label>{{
+              lastUpgradeStatus.status
+                ? lastUpgradeStatus.status.toUpperCase()
+                : "Not available"
+            }}</label>
           </td>
         </tr>
       </table>
@@ -58,7 +61,8 @@
         class="ml-5 cortx-btn-primary"
         @click="startUpgrade()"
         :disabled="
-          !isPackageAvailable ||
+          !isSystemStable ||
+            !isPackageAvailable ||
             (lastUpgradeStatus && lastUpgradeStatus.status === 'in_progress')
         "
       >
@@ -108,10 +112,13 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../../../services/api";
 import apiRegister from "../../../../services/api-register";
 import { LastUpgradeStatus } from "../../../../models/firmware";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-firmware"
+  name: "cortx-firmware",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxFirmware extends Vue {
   public lastUpgradeStatus: LastUpgradeStatus | null = null;
@@ -122,20 +129,49 @@ export default class CortxFirmware extends Vue {
     isDirty: false,
     isValid: false
   };
-
+  public isSystemStable: boolean = true;
   public async mounted() {
+    await this.getSyetmStatus();
     await this.getLastUpgradeStatus();
     await this.getPackageAvailability();
   }
-
+  public async getSyetmStatus() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "checking service status..."
+    );
+    try {
+      const res: any = await Api.getAll(apiRegister.system_status);
+      this.$store.dispatch("systemConfig/hideLoader");
+    } catch (error) {
+      this.$data.isSystemStable = false;
+      let errorMessage = "Please check service status.";
+       let consul= error.data.consul;
+       let es= error.data.es;
+      if (error.data.consul!=="success"&& error.data.es!=="success" ) {
+        errorMessage = consul + ' ' + 'and' + ' ' + es;
+      }else if(error.data.consul!=="success"){
+          errorMessage = consul ;
+       }else if(error.data.es!=="success"){
+          errorMessage = es ;
+       }
+      throw {
+        error: {
+          message: 'error'
+        }
+      };
+    } finally {
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
+  }
   public async getLastUpgradeStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Fetching last update status..."
     );
+    this.getSyetmStatus();
     const res: any = await Api.getAll(apiRegister.last_upgrade_status);
-    this.lastUpgradeStatus =
-      res && res.data ? res.data : null;
+    this.lastUpgradeStatus = res && res.data ? res.data : null;
     this.$store.dispatch("systemConfig/hideLoader");
   }
 

@@ -61,5 +61,7 @@ export default {
   ssl_status: `/api/${version}/tls/bundle/status`,
   product_version: `/api/${version}/product_version`,
   health_components: `/api/${version}/system/health/components`,
-  health_resources: `/api/${version}/system/health/resources`
+  health_resources: `/api/${version}/system/health/resources`,
+  system_status: `/api/${version}/system/status`,
+  appliance_info:`/api/${version}/appliance_info`
 };
