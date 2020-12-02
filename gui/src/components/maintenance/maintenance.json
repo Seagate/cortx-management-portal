@@ -49,7 +49,9 @@
             "startUpdate": "Start update",
             "invalidFile": "Invalid file.",
             "upload": "Upload",
-            "cancel": "Cancel"
+            "cancel": "Cancel",
+            "errorMessage" : "please check service status",
+            "serviceStatus" :  "checking service status..."
         }
     },
     "ru": {
@@ -102,7 +104,10 @@
             "startUpdate": "Start update",
             "invalidFile": "Invalid file.",
             "upload": "Upload",
-            "cancel": "Cancel"
+            "cancel": "Cancel",
+            "errorMessage" : "please check service status",
+            "serviceStatus" :  "checking service status..."
+
         }
     }
 }
