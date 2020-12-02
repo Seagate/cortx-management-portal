@@ -130,6 +130,7 @@ export default class HeaderBar extends Vue {
   line-height: 20px;
   text-align: center;
   color: #ffffff;
+  white-space: nowrap;
 }
 .cortx-header-right-aligned-items {
   margin-left: auto;
