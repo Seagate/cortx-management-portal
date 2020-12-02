@@ -68,37 +68,6 @@
     "user-success-dialog-btn": "Ok",
     "user-delete-confirm-msg": "Are you sure you want to delete this user?"
   },
-  "udx-registration": {
-    "udx-registration": "Lyve Pilot Registration",
-    "registration-token":"Your registration token",
-    "udx-url-required":"URL is required",
-    "invalid-url":"Invalid URL",
-    "s3-details":"Account details",
-    "S3BucketDetails": "Bucket details",
-    "accountname-required":"Account name is required",
-    "invalid-name":"Invalid account name",
-    "email":"Email id*",
-    "email-reqiured":"Email id is required",
-    "invalid-email":"Invalid email id",
-    "password-required":"Password is required",
-    "invalid-password":"Invalid password",
-    "confirm-pass":"Confirm password*",
-    "password-match":"Passwords do not match",
-    "iam-details":"IAM User details",
-    "username-required":"Username is required",
-    "invalid-user":"Invalid username",
-    "bucket-required":"Bucket name is required",
-    "invalid-bucketname":"Invalid bucket name",
-    "iagreetext":"I agree to the following",
-    "firstcheck-text":"A dedicated Lyve Pilot Bucket will be created in my account.",
-    "secondcheck-text":"A Lyve Pilot IAM User will be created having complete access only to the Lyve Pilot Bucket, and not to other data.",
-    "register-btn":"Register",
-    "clear":"Clear",
-    "s3AccountKey": "S3 Account Access Key",
-    "s3AccountSecretKey": "S3 Account Secret Key",
-    "userAccessKey": "IAM User Access Key",
-    "userAccessSecretKey": "IAM User Secret Key"
-  },
   "aboutUs": {
     "title": "About",
     "name": "Name:",
@@ -125,45 +94,15 @@
     "invalidRootUsername": "The username must not be 'root' or 'Root'.",
     "applyContinue": "Apply and continue"
   },
-  "settings": {
-    "dataNetworkIPv4": "Data network settings: IPv4",
-    "forManualOption": "For Manual option, you must configure Virtual IP address and values for Node 0 and Node 1.",
-    "mandatoryField": "Fields marked with * are mandatory.",
-    "DNSResolverSettings": "DNS resolver settings",
-    "managementSettingIPv4": "Management network settings: IPv4",
-    "managementSettingIPv4Msg": "Configure the Virtual IP address for managing this system.",
-    "notificationSettingsEmail": "Notification settings: Email",
-    "notificationSettingsEmailMsg": "Allows you to configure email servers for notifications.",
-    "NTPSettings": "Network time protocol (NTP) settings",
-    "SSLCertificateUpload": "SSL certificate upload",
-    "SSLCertificateUploadMsg": "By default, the system uses the SSL certificate provided by Seagate. To use a different SSL certificate, click Choose File to browse and select the appropriate SSL Certificate file. Click Upload certificate to upload the selected SSL certificate.",
-    "UDX": "UDX",
-    "name": "Name",
-    "product ID": "Product ID",
-    "serialNumber": "Serial number",
-    "type": "Type",
-    "UUID": "UUID",
-    "vendorID": "Vendor ID"
-  },
   "security": {
     "accessDenied": "Access Denied",
     "accessDeniedMsg": "This is a secure area. You are not authorized to see this page.",
     "pageNotFoundMsg": "(404) Page Not Found",
     "pageNotFound": "The page you are looking for does not exist."
   },
-  "widget": {
-    "1By2Hrs": "1/2 Hrs", 
-    "1Hrs": "1 Hrs", 
-    "2Hrs": "2 Hrs", 
-    "6Hrs": "6 Hrs", 
-    "12Hrs": "12 Hrs", 
-    "1Day": "1 Day", 
-    "unableToFetch": "Unable To Fetch Performance Data",
-    "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
-    "adminUsernameReq":"Username is required.",
-    "usernameInvalid":"Invalid username.",
-    "invalidRootUsername":"The username must not be 'root' or 'Root'.",
-    "applyContinue":"Apply and continue"
+  "license": {
+    "header": "To set up your system, you must accept the Terms and Conditions.",
+    "getStarted": "Accept Terms & Conditions"
   },
   "regex-validation": {
     "bucket-input-tooltip": "The bucket name must be of minimum 4 characters and maximum 56 characters. Only lowercase, numbers, dash(-) and dot (.) are allowed. The bucket name cannot start and end with a dash (-) or dot(.)." ,
@@ -171,5 +110,5 @@
     "username-tooltip": "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-). The username must not be 'root' or 'Root'.",
     "password-tooltip": "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, and One number",
     "iam-user-tooltip": "The username must be of minimum 1 characters and maximum 64 characters. The username must be alphanumeric and can contain underscore (_) and dash (-). The username must not be 'root' or 'Root'."
-  }
+  } 
 }

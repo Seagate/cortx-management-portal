@@ -92,7 +92,7 @@ import * as c3 from "c3";
 import { PerformanceStatsQueryParams } from "./../../models/performance-stats";
 import StatsUtility from "../../common/stats-utility";
 import * as d3 from "d3";
-import i18n from "./../../i18n";
+import i18n from "./widgets.json";
 
 export interface StatsQueryParams {
   from: number;
@@ -104,7 +104,10 @@ export interface StatsQueryParams {
 }
 
 @Component({
-  name: "cortx-line-chart"
+  name: "cortx-line-chart",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxLineChart extends Vue {
   @Prop({ required: true })

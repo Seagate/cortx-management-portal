@@ -31,7 +31,9 @@
       <table>
         <tr>
           <td style="width: 180px;">
-            <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateStatus") }}:</label>
+            <label class="cortx-text-bold"
+              >{{ $t("maintenance.lastUpdateStatus") }}:</label
+            >
           </td>
           <td style="padding-top: 2px;">
             <label>{{
@@ -43,13 +45,17 @@
         </tr>
         <tr v-if="lastUpgradeStatus.version">
           <td>
-            <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateVersion") }}:</label>
+            <label class="cortx-text-bold"
+              >{{ $t("maintenance.lastUpdateVersion") }}:</label
+            >
           </td>
           <td style="padding-top: 2px;">{{ lastUpgradeStatus.version }}</td>
         </tr>
         <tr v-if="lastUpgradeStatus.description">
           <td>
-            <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateDescription") }}:</label>
+            <label class="cortx-text-bold"
+              >{{ $t("maintenance.lastUpdateDescription") }}:</label
+            >
           </td>
           <td style="padding-top: 2px;">
             <label>{{ lastUpgradeStatus.description }}</label>
@@ -74,7 +80,7 @@
         type="button"
         class="ml-5 cortx-btn-primary"
         @click="startUpgrade()"
-        :disabled="!isPackageAvailable"
+        :disabled="!isSystemStable || !isPackageAvailable"
       >
         {{ $t("maintenance.startUpdate") }}
       </button>
@@ -137,18 +143,48 @@ export default class CortxHotfix extends Vue {
   public hotfixPackage: File | null = null;
   public hotfixPackageFormValidation: any = {
     isDirty: false,
-    isValid: false,
+    isValid: false
   };
-
+  public isSystemStable: boolean = true;
   public async mounted() {
+    await this.getSyetmStatus();
     await this.getLastUpgradeStatus();
   }
-
+  public async getSyetmStatus() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      this.$t("maintenance.serviceStatus")
+    );
+    try {
+      const res: any = await Api.getAll(apiRegister.system_status);
+      this.$store.dispatch("systemConfig/hideLoader");
+    } catch (error) {
+      this.$data.isSystemStable = false;
+      let errorMessage = "Please check service status.";
+       let consul= error.data.consul;
+       let es= error.data.es;
+      if (error.data.consul!=="success"&& error.data.es!=="success" ) {
+        errorMessage = consul + ' ' + 'and' + ' ' + es;
+      }else if(error.data.consul!=="success"){
+          errorMessage = consul ;
+       }else if(error.data.es!=="success"){
+          errorMessage = es ;
+       }
+      throw {
+        error: {
+          message: errorMessage
+        }
+      };
+    } finally {
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
+  }
   public async getLastUpgradeStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Fetching last update status..."
     );
+    this.getSyetmStatus();
     const res: any = await Api.getAll(apiRegister.hotfix_status);
     this.lastUpgradeStatus = res && res.data ? res.data : null;
     if (this.lastUpgradeStatus.status === "uploaded") {
@@ -188,8 +224,8 @@ export default class CortxHotfix extends Vue {
         }
         throw {
           error: {
-            message: errorMessage,
-          },
+            message: errorMessage
+          }
         };
       } finally {
         this.closeUploadForm();
