@@ -22,7 +22,7 @@ export const accountNameRegex = helpers.regex(
 );
 
 export const iamUserNameRegex = helpers.regex(
-  "accountNameRegex",
+  "iamUserNameRegex",
   /^[\w@+=.,-]{1,64}$/
 );
 
