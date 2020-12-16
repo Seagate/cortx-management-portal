@@ -94,9 +94,9 @@ export default class CortxDropdown extends Vue {
   font: inherit;
 }
 .cortx-dropdown-menu {
-  position: absolute;
+  position: fixed;
   background: #ffffff;
-  width: 100%;
+  width: inherit;
   max-height: 188px;
   box-shadow: 8px 6px 8px rgba(0, 0, 0, 0.12);
   z-index: 4;
