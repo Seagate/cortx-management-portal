@@ -17,7 +17,7 @@
 <template>
   <div>
     <div class="udx-page-title">
-      <label class="cortx-text-lg cortx-text-bold">{{ $t("settings.UDX") }}</label>
+      <label class="cortx-text-lg cortx-text-bold">{{ $t("settings.ldp") }}</label>
     </div>
     <div class="mt-2">
       <div id="udx-device-details-container" v-if="udx">
