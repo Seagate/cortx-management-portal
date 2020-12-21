@@ -111,19 +111,12 @@
           </v-row>
 
           <v-row>
-            <v-col class="p-0" md="4">
-              <v-expansion-panels class="mt-2 mb-5">
-                <v-expansion-panel>
-                  <v-expansion-panel-header class="cortx-text-lg font-weight-bold">
-                    {{ $t("udx-registration.account_details") }}
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <div>{{ $t("udx-registration.S3Account") }}: {{ registrationForm.accountName || $t("common.not_available") }}</div>
-                    <div>{{ $t("udx-registration.IAMUser") }}: {{ registrationForm.iamUsername || $t("common.not_available") }}</div>
-                    <div>{{ $t("udx-registration.bucketName") }}: {{ registrationForm.bucketName || $t("common.not_available") }}</div>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
+            <v-col class="py-0 pr-0">
+              <br />
+              <h4>{{ $t("udx-registration.S3Account") }}: {{ registrationForm.accountName }}</h4>
+              <h4>{{ $t("udx-registration.IAMUser") }}: {{ registrationForm.iamUsername }}</h4>
+              <h4>{{ $t("udx-registration.bucketName") }}: {{ `ldp-${registrationForm.bucketName}` }}</h4>
+              <br />
             </v-col>
           </v-row>
 
@@ -140,7 +133,7 @@
                     for="url"
                     id="udx-url-label"
                   >
-                  {{ $t("udx-registration.url") }}*: {{ registrationForm.url || $t("common.not_available") }}
+                  {{ $t("udx-registration.url") }}*: {{ registrationForm.url }}
                   </label>
                   <input
                     v-if="hideInput"
@@ -373,7 +366,7 @@ export default class CortxUDXRegistration extends Vue {
         auth_token: this.authToken
       }
     };
-    this.$store.dispatch("systemConfig/showLoader", "Registering LDP...");
+    this.$store.dispatch("systemConfig/showLoader", i18n.t("udx-registration.registeringLDP"));
     const payload = {
       registerDeviceParams: {
         url: this.registrationForm.url,

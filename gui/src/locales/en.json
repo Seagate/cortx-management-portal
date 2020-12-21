@@ -125,8 +125,7 @@
         "email": "Email",
         "login": "Login",
         "logout": "Logout",
-        "continue": "Continue",
-        "not_available": "NA"
+        "continue": "Continue"
     },
     "csmuser": {
         "user-setting-label": "User settings: Local",
@@ -195,7 +194,6 @@
         "udx-url-required": "URL is required",
         "invalid-url": "Invalid URL",
         "s3-details": "S3 Account details",
-        "account_details": "Account details",
         "url": "URL",
         "accountname-required": "Account name is required",
         "invalid-name": "Invalid account name",
@@ -241,7 +239,9 @@
         "onYourLyvePilot": "On your Lyve Pilot web portal choose 'Add Device' and then enter the identification token below.",
         "accountName": "Account name",
         "selectBucket": "Select Bucket",
-        "account": "Account"
+        "account": "Account",
+        "registeringLDP": "Registering LDP...",
+        "fetchingLDP": "Fetching LDP details..."
     },
     "aboutUs": {
         "title": "About",

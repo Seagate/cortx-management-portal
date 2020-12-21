@@ -28,6 +28,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import CortxUDXDetails from "./cortx-udx-details.vue";
 import CortxUDXRegistration from "./cortx-udx-registration.vue";
+import i18n from "./../../i18n";
 
 @Component({
   name: "cortx-udx",
@@ -48,7 +49,7 @@ export default class CortxUDX extends Vue {
   }
 
   public async getUDXDetails() {
-    this.$store.dispatch("systemConfig/showLoader", "Fetching LDP details...");
+    this.$store.dispatch("systemConfig/showLoader", i18n.t("udx-registration.fetchingLDP"));
     const res = await Api.getAll(apiRegister.udx_device);
     if (res && res.data && res.data.length > 0) {
       this.udx = res.data[0];
