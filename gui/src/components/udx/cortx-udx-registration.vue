@@ -119,6 +119,7 @@
               <br />
             </v-col>
           </v-row>
+
           <form autocomplete="off" id="create-new-lyvepilot">
             <v-row>
                <v-col class="py-0 pr-0">
@@ -132,7 +133,7 @@
                     for="url"
                     id="udx-url-label"
                   >
-                  URL* : {{ registrationForm.url }}
+                  {{ $t("udx-registration.url") }}*: {{ registrationForm.url }}
                   </label>
                   <input
                     v-if="hideInput"
@@ -365,7 +366,7 @@ export default class CortxUDXRegistration extends Vue {
         auth_token: this.authToken
       }
     };
-    this.$store.dispatch("systemConfig/showLoader", "Registering UDX...");
+    this.$store.dispatch("systemConfig/showLoader", i18n.t("udx-registration.registeringLDP"));
     const payload = {
       registerDeviceParams: {
         url: this.registrationForm.url,
