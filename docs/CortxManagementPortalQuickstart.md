@@ -368,6 +368,8 @@ The Curl command for getting the URL is:
 
 **Sample Output:** 
 
+![](/images/SwaggerForCORTX.png)
+
 `curl -X GET "https://10.230.255.16:28100/api/v1/auditlogs/show/s3?start_date=1607500000&end_date=1607549999" -H "accept: application/json" -H "authorization: Bearer [AUTH]"`
  
  Don't forget to run the command: `curl -X POST "https://10.230.255.16:28100/api/v1/login" -H "accept: application/json" -H "Content-Type: application/json" -d "{ "username": "Administrator", "password": "Seagate@1"}"`
