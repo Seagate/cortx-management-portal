@@ -21,13 +21,13 @@
       :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update"
     >
     <div class="mt-3" id="lblDnsMsg" v-if="tabsInfo.selectedTab === 1">
-     All the alerts which are generated, by default are displayed under New Alerts.
+      {{ $t("alerts.alertsByDefault") }}
     </div> 
-     <div class="mt-3" id="lblDnsMsg" v-if="tabsInfo.selectedTab === 2">
-       Displays alerts which are either acknowledged or resolved.
-    </div> 
-     <div class="mt-3" id="lblDnsMsg" v-if="tabsInfo.selectedTab === 3">
-       Displays alerts which are both, acknowledged and resolved.
+    <div class="mt-3" id="lblDnsMsg" v-if="tabsInfo.selectedTab === 2">
+      {{ $t("alerts.displayAcknowledgedOrResolved") }}
+    </div>
+    <div class="mt-3" id="lblDnsMsg" v-if="tabsInfo.selectedTab === 3">
+      {{ $t("alerts.displayAcknowledgedAndResolved") }}
     </div> 
 
       <button id="alert-acknowlegeall"
@@ -37,7 +37,7 @@
         @click="showConfirmationDialog = true"
         :disabled="alertObject.alerts.length === 0"
       >
-        Acknowledge all
+        {{ $t("alerts.acknowledgeAll") }}
       </button>
     </cortx-has-access>
     <v-data-table
@@ -89,7 +89,7 @@
               />
             </span>
           </th>
-          <th class="tableheader" style="min-width: 90px;">Action</th>
+          <th class="tableheader" style="min-width: 90px;">{{ $t("alerts.action") }}</th>
         </tr>
       </template>
       <template v-slot:item="props">
@@ -99,47 +99,47 @@
           </td>
           <td style="white-space: nowrap;">
             <div>
-              <span>Resource type: {{ props.item.module_name }}</span><br />
-              <span>Resource id: {{ props.item.resource_id }} | State: {{ props.item.state }}</span><br />
-              <span>Node id: {{ props.item.node_id }}</span>
+              <span>{{ $t("alerts.resourceType") }}: {{ props.item.module_name }}</span><br />
+              <span>{{ $t("alerts.resourceId") }}: {{ props.item.resource_id }} | {{ $t("alerts.state") }}: {{ props.item.state }}</span><br />
+              <span>{{ $t("alerts.nodeId") }}: {{ props.item.node_id }}</span>
             </div>
             <div>
               <span v-if="props.item.module_type === 'logical_volume'"
-                >Volume group: {{ props.item.volume_group }} | Volume name:
+                >{{ $t("alerts.volumeGroup") }}: {{ props.item.volume_group }} | {{ $t("alerts.volumeName") }}:
                 {{ props.item.name }}</span
               >
               <span v-else-if="props.item.module_type === 'system'"
-                >Version: {{ props.item.version }} | Nodename:
+                >{{ $t("alerts.version") }}: {{ props.item.version }} | {{ $t("alerts.nodeName") }}:
                 {{ props.item.name }}</span
               >
               <span v-else-if="props.item.module_type === 'volume'"
-                >Size: {{ props.item.volume_size }} | Total size:
+                >{{ $t("alerts.size") }}: {{ props.item.volume_size }} | {{ $t("alerts.totalSize") }}:
                 {{ props.item.volume_total_size }}</span
               >
               <span v-else-if="props.item.module_type === 'current'"
-                >Sensor name: {{ props.item.name }}</span
+                >{{ $t("alerts.sensorName") }}: {{ props.item.name }}</span
               >
               <span v-else-if="props.item.module_name === 'enclosure:fru:psu'"
-                >Location: {{ props.item.location }}</span
+                >{{ $t("alerts.location") }}: {{ props.item.location }}</span
               >
               <span
                 v-else-if="
                   props.item.module_name === 'enclosure:fru:fan' ||
                     props.item.module_type === 'enclosure:fru:sideplane'
                 "
-                >Name: {{ props.item.name }} | Location:
+                >{{ $t("common.name") }}: {{ props.item.name }} | {{ $t("alerts.location") }}:
                 {{ props.item.location }}</span
               >
               <span v-else-if="props.item.module_name === 'enclosure:fru:disk'"
-                >Serial number: {{ props.item.serial_number }} | Size:
+                >{{ $t("alerts.serialNumber") }}: {{ props.item.serial_number }} | {{ $t("alerts.size") }}:
                 {{ props.item.volume_size }}</span
               >
               <span v-else-if="props.item.module_type === 'controller'"
-                >Serial number: {{ props.item.serial_number }}</span
+                >{{ $t("alerts.serialNumber") }}: {{ props.item.serial_number }}</span
               >
               <div>
               <span v-if="props.item.module_type === 'iem'"
-                >Source: {{ props.item.source  }} | Component: {{ props.item.component }} | Module: {{ props.item.module }} </span
+                >{{ $t("alerts.source") }}: {{ props.item.source  }} | {{ $t("alerts.component") }}: {{ props.item.component }} | {{ $t("alerts.module") }}: {{ props.item.module }} </span
               ></div>
             </div>
           </td>
@@ -189,7 +189,7 @@
                   @click="$router.push('/alerts/' + props.item.alert_uuid)"
                 />
               </template>
-              <span>Go to alert details page</span>
+              <span>{{ $t("alerts.goToDetailsPage") }}</span>
             </v-tooltip>
             <div v-if="!(props.item.acknowledged && props.item.resolved)" class="cortx-float-l">
                 <v-tooltip left>
@@ -201,7 +201,7 @@
                       @click="showAlertCommentsDialog(props.item.alert_uuid)">
                     </div>
                   </template>
-                  <span>Add comments</span>
+                  <span>{{ $t("alerts.addComments") }}</span>
                 </v-tooltip>
                 <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update">
                 <v-tooltip left>
@@ -243,11 +243,15 @@ import AlertsMixin from "./../../mixins/alerts";
 import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
 import CortxAlertComments from "./alert-comments.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
+import i18n from "./alert.json";
 
 @Component({
   name: "cortx-alert-large",
   components: { CortxTabs, CortxAlertComments },
-  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
+  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAlertLarge extends Mixins(AlertsMixin) {
   public isShowCommentsDialog: boolean = false;

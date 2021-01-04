@@ -17,14 +17,13 @@
 <template>
   <div class="cortx-p-1 body-2">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblIpv4DataNetwork">
-      Data network settings: IPv4
+      {{ $t("settings.dataNetworkIPv4") }}
     </div>
     <div class="mt-3" id="lblIpv4Msg">
-      For Manual option, you must configure Virtual IP address and values for
-      Node 0 and Node 1.
+      {{ $t("settings.forManualOption") }}
     </div>
     <div class="mt-3" id="lblMandatoryMsg">
-      Fields marked with * are mandatory.
+      {{ $t("settings.mandatoryField") }}
     </div>
     <v-divider class="mt-2" />
     <cortxDataNetworkIpv4Config @apply-settings="applySettingsConfirmation" />
@@ -43,11 +42,15 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDataNetworkIpv4Config from "../onboarding/system-config/data-network/data-network-ipv4-config.vue";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
+import i18n from "./settings.json";
 
 @Component({
   name: "cortx-data-network-setting",
   components: {
     cortxDataNetworkIpv4Config: CortxDataNetworkIpv4Config
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxDataNetworkSetting extends Vue {

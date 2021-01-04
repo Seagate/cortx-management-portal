@@ -61,10 +61,13 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import i18n from "./../../i18n";
+import i18n from "./s3.json";
 
 @Component({
-  name: "cortx-download-csv-dialog"
+  name: "cortx-download-csv-dialog",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxDownloadCsvDialog extends Vue {
   private isCredentialsFileDownloaded: boolean = false;

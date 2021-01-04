@@ -16,9 +16,7 @@
 */
 <template>
   <div class="pa-5">
-    <div class="cortx-text-lg cortx-text-bold pr-2">Health View Test
-      <button style="{ float: right; border: 1px solid blue; font-size: 12px; background-color: #eee; padding: 5px 15px; color: #6ebe49; }" onclick="isHidden = false">Show Tree</button>
-    </div>
+    <div class="cortx-text-lg cortx-text-bold pr-2">{{ $t("health.healthView") }}</div>
     <div>
       <div class="cortx-health-summary-container">
         <div class="cortx-text-lg cortx-float-l cortx-text-bold">{{componentName}}</div>
@@ -78,7 +76,7 @@
           >
             <span>{{ header.text }}</span>
           </th>
-          <th class="tableheader">Action</th>
+          <th class="tableheader">{{ $t("health.action") }}</th>
         </tr>
       </template>
       <template v-slot:item="props">
@@ -123,7 +121,7 @@
               @click="$router.push(`/alerts/${props.item.alert_uuid}`)"
             />
            </td>
-           <td v-else>NA</td>
+           <td v-else>{{ $t("health.NA") }}</td>
         </tr>
       </template>
     </v-data-table>

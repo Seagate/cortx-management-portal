@@ -25,7 +25,7 @@ export const accountNameTooltipMessage =
 
 export const usernameTooltipMessage =
   // tslint:disable-next-line
-  "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-).The username must not be 'root' or 'Root'";
+  "The username must be of minimum 4 characters and maximum 56 characters. The username must be alphanumeric and can contain underscore (_) and dash (-). The username must not be 'root' or 'Root'.";
 
 export const bucketNameRegex = helpers.regex(
   "bucketNameRegex",
@@ -41,7 +41,7 @@ export const passwordRegex = helpers.regex(
 );
 export const passwordTooltipMessage =
   // tslint:disable-next-line
-  "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, One number";
+  "Password must contain: Minimum 8 characters, One uppercase letter, One lowercase letter, One special character, and One number";
 
 export const iamPathRegex = helpers.regex("pathRegex", /^(\/[^/ ]*)+\/?$/);
 // tslint:disable-next-line
@@ -55,8 +55,6 @@ export const udxBucketNameRegex = helpers.regex(
   /^[a-z0-9-]{0,51}[a-z0-9]$/
 );
 // tslint:disable-next-line
-export const udxBucketNameTooltipMessage = `To identify the S3 bucket correctly, the Bucket name will always use "udx" as its prefix. The bucket name must be of minimum 5 characters and maximum 56 characters.
-  Only lowercase, numbers, and dash (-) are allowed. The bucket name cannot start and end with a dash (-).`;
 
 export const udxURLRegex = helpers.regex(
   "udxURLRegex",

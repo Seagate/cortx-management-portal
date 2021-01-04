@@ -121,10 +121,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Ldap } from "./../../../../models/system-configuration";
-import i18n from "./../../../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-user-setting-ldap"
+  name: "cortx-user-setting-ldap",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxUserSettingLdap extends Vue {
   private data() {

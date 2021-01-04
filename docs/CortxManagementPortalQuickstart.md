@@ -363,4 +363,4 @@ Please contribute to the [CORTX Open Source project](CONTRIBUTING.md) and join o
 
 ### Reach Out to Us
 
-You can reach out to us with your questions, feedback, and comments through our [CORTX Communication Channels](SUPPORT.md)
+You can reach out to us with your questions, feedback, and comments through our [CORTX Communication Channels](/SUPPORT.md)

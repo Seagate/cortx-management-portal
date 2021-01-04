@@ -35,12 +35,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxNotifications from "./notifications-email-config.vue";
-import i18n from "../.././../../i18n";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "cortx-notification-email",
   components: {
     cortxNotifications: CortxNotifications
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxNotificationEmail extends Vue {}
