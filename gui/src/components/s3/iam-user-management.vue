@@ -134,7 +134,7 @@
                 >
                   <cortx-info-tooltip
                     label="Username*"
-                    :message="usernameTooltipMessage"
+                    :message="iamUsernameTooltipMessage"
                   />
                 </label>
                 <input
@@ -158,7 +158,7 @@
                     id="iam-username-invalid"
                     v-else-if="
                       $v.createUserForm.iamUser.user_name.$dirty &&
-                        !$v.createUserForm.iamUser.user_name.accountNameRegex
+                        !$v.createUserForm.iamUser.user_name.iamUserNameRegex
                     "
                     >{{ $t("s3.iam.invalid-user") }}</label
                   >
@@ -384,11 +384,11 @@ import apiRegister from "../../services/api-register";
 import CortxAccessKeyManagement from "./access-key-management-iam.vue";
 import CommonUtils from "../../common/common-utils";
 import {
-  accountNameRegex,
+  iamUserNameRegex,
   iamPathRegex,
   passwordRegex,
   passwordTooltipMessage,
-  usernameTooltipMessage
+  iamUsernameTooltipMessage
 } from "./../../common/regex-helpers";
 import i18n from "./s3.json";
 
@@ -412,7 +412,7 @@ export default class CortxIAMUserManagement extends Vue {
   public validations = {
     createUserForm: {
       iamUser: {
-        user_name: { required, accountNameRegex },
+        user_name: { required, iamUserNameRegex },
         password: { required, passwordRegex }
       },
       confirmPassword: {
@@ -431,8 +431,8 @@ export default class CortxIAMUserManagement extends Vue {
   private usersList: IAMUser[] = [];
   private user: IAMUser;
   private userToDelete: string = "";
-  private passwordTooltipMessage: string = passwordTooltipMessage;
-  private usernameTooltipMessage: string = usernameTooltipMessage;
+  private passwordTooltipMessage = passwordTooltipMessage;
+  private iamUsernameTooltipMessage = iamUsernameTooltipMessage;
   private credentialsFileContent: string = "";
   private isCredentialsFileDownloaded: boolean = false;
   private selectedIAMUser: string = "";
