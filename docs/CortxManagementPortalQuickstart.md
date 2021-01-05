@@ -7,6 +7,7 @@ This guide provides a step-by-step walkthrough for getting you CORTX-Management-
 - [1.3 Run Unit Test](#13-Run-Unit-Test)
 - [1.4 Deploy the CORTX-Management-Portal on your VM](#14-Deploy-the-CORTX-Management-Portal-on-your-VM)
 - [1.5 Run Cortx-Management-Portal UI](#15-Run-Cortx-Management-Portal)
+- [1.6 REST API document](#16-REST-API-document)
 
 ## 1.0 Prerequisites
 
@@ -353,6 +354,32 @@ To run the cortx-management-portal node application:
    </p>
    </details>
 
+## 1.6 REST API document
+
+CORTX Management Swagger is available [here](https://<management_IP>:28100/api-docs).
+
+The Curl command for getting the URL is:
+
+`curl -X GET "https://:28100/api/v1/stats?metric=throughput.read.mb&from=1607481696&to=1607481711&total_sample=1" -H "accept: application/json" -H "authorization: Bearer [AUTH]"`
+
+**Sample URL:**
+
+`https://<mgmt_ip>:28100/api/v1/stats?metric=throughput.read.mb&from=1607481696&to=1607481711&total_sample=1`
+
+**Sample Output:** 
+
+![](/images/SwaggerForCORTX.png)
+
+`curl -X GET "https://10.230.255.16:28100/api/v1/auditlogs/show/s3?start_date=1607500000&end_date=1607549999" -H "accept: application/json" -H "authorization: Bearer [AUTH]"`
+ 
+ Don't forget to run the command: `curl -X POST "https://10.230.255.16:28100/api/v1/login" -H "accept: application/json" -H "Content-Type: application/json" -d "{ "username": "Administrator", "password": "Seagate@1"}"`
+
+`[
+"a9202d6a64d94fa1ac6b6d09a902ae2b84390e4557004d19b4a471cd2525f429 gtbucket1 [10/Dec/2020:00:07:53 +0530]172.16.1.78 847912992506 47b522c3-0bfe-4214-bb58-0bc843235daf REST.GET.BUCKETLOCATION gtbucket1/ GET /gtbucket1?location HTTP/1.1200 - 136 0 6666 - aws-cli/2.1.7 Python/3.7.3 Linux/3.10.0-1127.el7.x86_64 exe/x86_64.centos.7 prompt/off command/s3api.get-bucket-location -SigV4 - AuthHeader 172.16.8.16",
+"f191c3c1fe654072abfbf1bcba0a0ae626d5fb429ef44574a12882c906814f39 gtbucket [10/Dec/2020:00:07:41 +0530]172.16.1.78 847912992506 85e639c7-40ca-4897-a9a9-c1cb83781a8b REST.GET.BUCKETLOCATION gtbucket/ GET /gtbucket?location HTTP/1.1403 AccessDenied 0 0 6969 - aws-cli/2.1.7 Python/3.7.3 Linux/3.10.0-1127.el7.x86_64 exe/x86_64.centos.7 prompt/off command/s3api.get-bucket-location -SigV4 - AuthHeader 172.16.8.16"
+]
+`
+
 ## You're All Set & You're Awesome!
 
 We thank you for stopping by to check out the CORTX Community. We are fully dedicated to our mission to build open source technologies that help the world save unlimited data and solve challenging data problems. Join our mission to help reinvent a data-driven world. 
@@ -363,4 +390,4 @@ Please contribute to the [CORTX Open Source project](CONTRIBUTING.md) and join o
 
 ### Reach Out to Us
 
-You can reach out to us with your questions, feedback, and comments through our [CORTX Communication Channels](/SUPPORT.md)
+You can reach out to us with your questions, feedback, and comments through our [CORTX Communication Channels](/SUPPORT.md
