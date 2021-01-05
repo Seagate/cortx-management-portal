@@ -226,7 +226,8 @@ import {
   udxBucketNameRegex,
   passwordRegex,
   accountNameTooltipMessage,
-  passwordTooltipMessage
+  passwordTooltipMessage,
+  udxBucketNameTooltipMessage
 } from "../../common/regex-helpers";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
@@ -252,6 +253,9 @@ export default class CortxUDXRegistration extends Vue {
   public registrationToken: string = "";
   public s3URI: string = "";
   public registrationResponse: any = null;
+  public passwordTooltipMessage = passwordTooltipMessage;
+  public accountNameTooltipMessage = accountNameTooltipMessage;
+  public bucketNameTooltipMessage = udxBucketNameTooltipMessage;
   public hideInput: boolean = false;
   public registrationForm = {
     url: "",
