@@ -382,8 +382,8 @@ export default class CortxS3Account extends Vue {
   private accountsTableHeaderList: any[];
   private accountsList: Account[] = [];
   private accountToDelete: string = "";
-  private passwordTooltipMessage: string = passwordTooltipMessage;
-  private accountNameTooltipMessage: string = accountNameTooltipMessage;
+  private passwordTooltipMessage = passwordTooltipMessage;
+  private accountNameTooltipMessage = accountNameTooltipMessage;
   private isCredentialsFileDownloaded: boolean = false;
   private credentialsFileContent: string = "";
   private showEditAccountForm: boolean;

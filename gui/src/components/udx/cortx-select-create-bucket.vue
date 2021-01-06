@@ -119,7 +119,7 @@ import { Bucket } from "../../models/s3";
   name: "cortx-select-create-bucket"
 })
 export default class CortxSelectCreateBucket extends Vue {
-  public bucketNameTooltipMessage: string = bucketNameTooltipMessage;
+  public bucketNameTooltipMessage = bucketNameTooltipMessage;
   public bucketUrl: string;
   public s3URI: string = "";
   public registrationForm = {
