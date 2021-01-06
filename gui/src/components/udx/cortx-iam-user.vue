@@ -212,8 +212,8 @@ import apiRegister from "../../services/api-register";
   name: "cortx-iam-user"
 })
 export default class CortxIamUser extends Vue {
-  public passwordTooltipMessage: string = passwordTooltipMessage;
-  public accountNameTooltipMessage: string = accountNameTooltipMessage;
+  public passwordTooltipMessage = passwordTooltipMessage;
+  public accountNameTooltipMessage = accountNameTooltipMessage;
   public policyJSON: string;
   public noBucketPolicy: boolean = false;
   public isUserAlreadyCreated: boolean = false;

@@ -87,7 +87,7 @@ import {
   name: "login-existing-s3account"
 })
 export default class LoginExistingS3Account extends Vue {
-  public passwordTooltipMessage: string = passwordTooltipMessage;
+  public passwordTooltipMessage = passwordTooltipMessage;
   public accountsList: any[] = [];
   public s3Url: any[] = [];
   public s3UrlNone: boolean = false;
