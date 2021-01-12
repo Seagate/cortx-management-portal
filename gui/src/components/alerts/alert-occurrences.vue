@@ -64,7 +64,7 @@
               />
             </span>
           </th>
-          <th class="tableheader">Action</th>
+          <th class="tableheader">{{ $t("alerts.action") }}</th>
         </tr>
       </template>
       <template v-slot:item="props">
@@ -129,10 +129,14 @@ import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { AlertQueryParam, AlertObject } from "./../../models/alert";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
+import i18n from "./alert.json";
 
 @Component({
   name: "cortx-alert-occurrences",
-  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
+  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAlertOccurrences extends Vue {
   public alertObject: AlertObject = {} as AlertObject;

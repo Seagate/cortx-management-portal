@@ -53,7 +53,7 @@
             <template v-slot:activator="{ on }">
               <img :src="require('@/assets/logout.svg/')" v-on="on"  id="logout-icon"/>
             </template>
-            <span id="logoutlbl">Logout</span>
+            <span id="logoutlbl">{{ $t("common.logout") }}</span>
           </v-tooltip>
         </div>
       </div>
@@ -64,6 +64,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import store from "../../store/store";
 import VueNativeSock from "vue-native-websocket";
+import i18n from "../../i18n";
 
 @Component({
   name: "HeaderBar"
@@ -129,6 +130,7 @@ export default class HeaderBar extends Vue {
   line-height: 20px;
   text-align: center;
   color: #ffffff;
+  white-space: nowrap;
 }
 .cortx-header-right-aligned-items {
   margin-left: auto;

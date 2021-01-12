@@ -18,10 +18,10 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblDns">
-        DNS resolver settings
+        {{ $t("onBoarding.DNSResolverSettings") }}
       </div>
       <div class="mt-3" id="lblMandatoryMsg">
-        Fields marked with * are mandatory.
+        {{ $t("onBoarding.mandatoryField") }}
       </div>
     </div>
     <v-divider class="mt-2" />
@@ -31,11 +31,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDnsSettingConfig from "./dns-setting-config.vue";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "cortx-dns-setting",
   components: {
     cortxDnsSettingConfig: CortxDnsSettingConfig
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxDnsSetting extends Vue {}

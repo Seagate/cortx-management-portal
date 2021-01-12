@@ -15,15 +15,12 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2 body-2">
+  <div class="cortx-p-1 body-2">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblSSLUpload">
-      SSL certificate upload
+      {{ $t("settings.SSLCertificateUpload") }}
     </div>
     <div class="mt-3" id="lblSSLUploadMsg">
-      By default, the system uses the SSL certificate provided by Seagate. To
-      use a different SSL certificate, click Choose File to browse and select
-      the appropriate SSL Certificate file. Click Upload certificate to upload
-      the selected SSL certificate.
+      {{ $t("settings.SSLCertificateUploadMsg") }}
     </div>
     <v-divider class="mt-2" />
     <cortxUploadSSLConfig />
@@ -32,11 +29,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxUploadSSLConfig from "../onboarding/system-config/ssl-certificate/upload-ssl-config.vue";
+import i18n from "./settings.json";
 
 @Component({
   name: "upload-ssl-setting",
   components: {
     cortxUploadSSLConfig: CortxUploadSSLConfig
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxUploadSSLSetting extends Vue {}

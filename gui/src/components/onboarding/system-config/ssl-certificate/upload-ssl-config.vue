@@ -24,7 +24,7 @@
         <table>
           <tr>
             <td style="width: 180px;">
-              <label class="cortx-text-bold">Last installation status:</label>
+              <label class="cortx-text-bold">{{ $t("onBoarding.lastInstallationStatus") }}:</label>
             </td>
             <td>
               <label>{{ lastSSLStatus.status }}</label>
@@ -32,7 +32,7 @@
           </tr>
           <tr>
             <td>
-              <label class="cortx-text-bold">Last certificate filename:</label>
+              <label class="cortx-text-bold">{{ $t("onBoarding.lastCertificateFilename") }}:</label>
             </td>
             <td>
               <label>{{ lastSSLStatus.filename }}</label>
@@ -40,13 +40,13 @@
           </tr>
           <tr>
             <td>
-              <label class="cortx-text-bold">Last certificate upload date:</label>
+              <label class="cortx-text-bold">{{ $t("onBoarding.lastCertificateUploadDate") }}:</label>
             </td>
             <td>{{ lastSSLStatus.date }}</td>
           </tr>
           <tr>
             <td>
-              <label class="cortx-text-bold">Serial number:</label>
+              <label class="cortx-text-bold">{{ $t("onBoarding.serialNumber") }}:</label>
             </td>
             <td>
               <label>{{ lastSSLStatus.serial_number }}</label>
@@ -74,7 +74,7 @@
                 class="cortx-btn-primary mt-3"
                 @click="uploadCertificate()"
               >
-                Upload certificate
+                {{ $t("onBoarding.uploadCertificate") }}
               </button>
               <span class="ml-5" v-if="$route.path !== '/onboarding'">
                 <CortxInstallSSL :installStatus="buttonStatus" />
@@ -105,10 +105,15 @@ import {
   ipAddress,
   requiredIf
 } from "vuelidate/lib/validators";
+import i18n from "../../onboarding.json";
+
 @Component({
   name: "upload-ssl-config",
   components: {
     CortxInstallSSL
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxUploadSSLConfig extends Vue {

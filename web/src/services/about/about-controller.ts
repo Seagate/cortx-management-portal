@@ -26,3 +26,11 @@ export const getVersion = async (req: Request, res: Response) => {
     let result = await versionData;
     return result;
 };
+/**
+ * This method is responsible to get appliance data
+ */
+export const getApplianceInfo = async (req: Request, res: Response) => {
+    let applianceData = Api.getAll(apiRegister.appliance_info, req, res);
+    let result = await applianceData;
+    return result;
+};

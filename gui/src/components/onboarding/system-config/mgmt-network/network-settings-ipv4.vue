@@ -18,13 +18,13 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblNetworkIP4">
-        Management network settings: IPv4
+        {{ $t("onBoarding.managementSettingsIPv4") }}
       </div>
       <div class="mt-3" id="lblNetworkMsg">
-        Configure the Virtual IP address for managing this system.
+        {{ $t("onBoarding.configVirtualIP") }}
       </div>
        <div class="mt-3" id="lblMandatoryMsg">
-        Fields marked with * are mandatory.
+        {{ $t("onBoarding.mandatoryField") }}
       </div>
       <v-divider class="mt-2" />
       <cortxNetworkSettingsIpv4 />
@@ -35,11 +35,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxNetworkSettingsIpv4Config from "./network-settings-ipv4-config.vue";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "cortx-network-settings-ipv4",
   components: {
     cortxNetworkSettingsIpv4: CortxNetworkSettingsIpv4Config
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxNetworkSettingsIpv4 extends Vue {}

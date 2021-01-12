@@ -18,14 +18,13 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblIpv4Dns">
-        Data network settings: IPv4
+        {{ $t("onBoarding.dataNetworkSettingIpv4") }}
       </div>
       <div class="mt-3" id="lblIpv4Msg">
-        For Manual option, you must configure Virtual IP address and values for
-        Node 0 and Node 1.
+        {{ $t("onBoarding.manualOption") }}
       </div>
       <div class="mt-3" id="lblMandatoryMsg">
-        Fields marked with * are mandatory.
+        {{ $t("onBoarding.mandatoryField") }}
       </div>
       <v-divider class="mt-2" />
       <cortxDataNetworkIpv4Config />
@@ -36,11 +35,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDataNetworkIpv4Config from "./data-network-ipv4-config.vue";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "cortx-data-network-ipv4",
   components: {
     cortxDataNetworkIpv4Config: CortxDataNetworkIpv4Config
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxDataNetworkIpv4 extends Vue {}

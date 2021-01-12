@@ -18,9 +18,9 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="font-weight-bold mt-5" id="lblIp4Source">
-        Source:
+        {{ $t("common.source") }}:
         <label class="cortx-rdb-container ml-9">
-          DHCP
+          {{ $t("onBoarding.DHCP") }}
           <input
             type="radio"
             name="DHCP"
@@ -35,7 +35,7 @@
         <div class="col-1 body-2 column pa-0 node-container">
           <div class="mt-5 font-weight-bold">
             <div class="mt-7">
-              <label>VIP*: </label>
+              <label>{{ $t("onBoarding.VIP") }}*: </label>
             </div>
           </div>
         </div>
@@ -64,13 +64,13 @@
                 <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="node.ip_address.$dirty && !node.ip_address.required"
-                    >IP address is required.</label
+                    >{{ $t("onBoarding.ipAddressReq") }}</label
                   >
                   <label
                     v-else-if="
                       node.ip_address.$dirty && !node.ip_address.ipAddress
                     "
-                    >Invalid IP address.</label
+                    >{{ $t("onBoarding.invalidIpAddress") }}</label
                   >
                 </div>
               </div>
@@ -87,7 +87,7 @@
       @click="applySettings()"
       class="cortx-btn-primary cortx-float-l my-10"
     >
-      Apply
+      {{ $t("common.apply") }}
     </button>
   </v-container>
 </template>
@@ -107,9 +107,13 @@ import {
   Ipv4
 } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-network-settings-ipv4-config"
+  name: "cortx-network-settings-ipv4-config",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNetworkSettingsIpv4Config extends Vue {
   @Validations()

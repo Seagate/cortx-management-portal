@@ -20,14 +20,13 @@
       <v-col cols="6" class="mt-0 pt-0">
         <div class="body-2">
           <div class="title mt-0" id="lblIp6MNS">
-            Management network settings: IPv6
+            {{ $t("onBoarding.managementSettingsIPv6") }}
           </div>
           <div class="mt-6" id="lblIPMsg">
-            You need to configure a single IP address for management of this
-            system.
+            {{ $t("onBoarding.youNeedToConfig") }}
           </div>
           <v-divider class="mt-2" />
-          <div class="font-weight-bold mt-6">Source</div>
+          <div class="font-weight-bold mt-6">{{ $t("common.source") }}</div>
           <div class="mt-4">
             <input
               type="radio"
@@ -35,7 +34,7 @@
               value="manual"
               id="rbtnIp6Source"
             />
-            <span class="ml-3 font-weight-bold">Manual</span>
+            <span class="ml-3 font-weight-bold">{{ $t("common.manual") }}</span>
             <input
               class="ml-10"
               type="radio"
@@ -44,10 +43,10 @@
               value="DHCP"
               id="rbtnIp6Source"
             />
-            <span class="ml-3 font-weight-bold" id="lblIp6DHCP">DHCP</span>
+            <span class="ml-3 font-weight-bold" id="lblIp6DHCP">{{ $t("onBoarding.DHCP") }}</span>
           </div>
           <div class="mt-4">
-            <span class="font-weight-bold" id="lblIp4Gateway">Gateway</span>
+            <span class="font-weight-bold" id="lblIp4Gateway">{{ $t("onBoarding.Gateway") }}</span>
             <div>
               <input
                 class="input-text"
@@ -59,7 +58,7 @@
             </div>
           </div>
           <div class="font-weight-bold mt-6" id="lblIp4StaticAddress">
-            Static address
+            {{ $t("onBoarding.staticAddress") }}
           </div>
           <v-divider class="mt-2" width="300" />
           <v-row v-for="(value, i) in staticIpList" :key="value + i">
@@ -75,7 +74,7 @@
             </v-col>
           </v-row>
           <div class="mt-4">
-            <span class="font-weight-bold" id="lblIp6Adress">IP address</span>
+            <span class="font-weight-bold" id="lblIp6Adress">{{ $t("onBoarding.ipAddress") }}</span>
             <div>
               <input
                 class="input-text"
@@ -96,7 +95,7 @@
             ]"
             @click="addIpAddress(newAddress)"
           >
-            + Add another static address (maximum of 4)
+            + {{ $t("onBoarding.addAnotherStaticAddress") }}
           </div>
         </div>
       </v-col>
@@ -111,9 +110,13 @@ import {
   Ipv6
 } from "./../../../../models/system-configuration";
 import { EVENT_BUS } from "./../../../../main";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-network-settings-ipv4"
+  name: "cortx-network-settings-ipv4",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNetworkSettingsIpv4 extends Vue {
   private data() {

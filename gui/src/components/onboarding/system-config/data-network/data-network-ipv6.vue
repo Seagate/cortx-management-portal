@@ -24,12 +24,12 @@
     ></v-img>
     <v-divider />
     <div class="body-2">
-      <div class="title mt-6" id="lblIpv6DNS">Data network settings: IPv6</div>
+      <div class="title mt-6" id="lblIpv6DNS">{{ $t("onBoarding.dataNetworkSettingIpv6") }}</div>
       <div class="mt-2" id="lblIpv6Msg">
-        You need to configure a single IP address for management of this system.
+        {{ $t("onBoarding.youNeedToConfig") }}
       </div>
       <v-divider class="mt-2" />
-      <div class="font-weight-bold mt-6 black--text">Source</div>
+      <div class="font-weight-bold mt-6 black--text">{{ $t("onBoarding.source") }}</div>
       <div class="mt-4">
         <input
           type="radio"
@@ -39,7 +39,7 @@
           id="rbtnIpv6Manual"
         />
         <span class="ml-2 font-weight-bold black--text" id="lblIpv6Manual"
-          >Manual</span
+          >{{ $t("onBoarding.manual") }}</span
         >
         <input
           class="ml-6"
@@ -50,7 +50,7 @@
           id="rbtnIpv6DHCP"
         />
         <span class="ml-2 font-weight-bold black--text" id="lblIpv6Dhcp"
-          >DHCP</span
+          >{{ $t("onBoarding.DHCP") }}</span
         >
       </div>
     </div>
@@ -58,12 +58,12 @@
       <template v-for="node in ipv6Nodes">
         <div class="col-4 body-2 column" :key="node.id">
           <span class="font-weight-medium black--text" id="lblIpv6Node0"
-            >Node {{ node.id }}</span
+            >{{ $t("onBoarding.node") }} {{ node.id }}</span
           >
           <v-divider class="mt-2" />
           <div class="mt-5">
             <span class="font-weight-medium black--text" id="lblIpv6Gateway"
-              >Gateway</span
+              >{{ $t("onBoarding.gateway") }}</span
             >
             <div>
               <input
@@ -79,7 +79,7 @@
             class="font-weight-medium mt-8 black--text"
             id="lblIpv6Staticaddress"
           >
-            Static address
+            {{ $t("onBoarding.staticAddress") }}
           </div>
           <v-divider class="mt-2" />
           <v-row
@@ -100,7 +100,7 @@
           </v-row>
           <div class="mt-4">
             <span class="font-weight-medium black--text" id="lblIPv6Ipadreess"
-              >IP address</span
+              >{{ $t("onBoarding.ipAddress") }}</span
             >
             <div>
               <input
@@ -122,14 +122,14 @@
             ]"
             @click="addIpAddressNode(ipaddressNode[node.id], node.id)"
           >
-            + Add another static address (maximum of 4)
+            + {{ $t("onBoarding.addAnotherStaticAddress") }}
           </div>
         </div>
       </template>
     </div>
     <div class="mt-8">
       <p v-if="!isValid" class="red--text error-message">
-        Please enter valid values.
+        {{ $t("onBoarding.enterValidValues") }}
       </p>
       <v-btn
         elevation="0"
@@ -137,13 +137,13 @@
         @click="gotToNextPage()"
         id="btnIpv6ApplyContinue"
       >
-        <span class="white--text">Apply and Continue</span>
+        <span class="white--text">{{ $t("onBoarding.applyAndContinue") }}</span>
       </v-btn>
       <span
         class="csmprimary--text ml-8 pointer"
         @click="gotToPrevPage()"
         id="lblIpv6Back"
-        >Back to previous step</span
+        >{{ $t("onBoarding.backToPreviousStep") }}</span
       >
     </div>
   </v-container>
@@ -154,9 +154,13 @@ import {
   SystemConfigObject,
   DataNetworkIpv6
 } from "./../../../../models/system-configuration";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-data-network-ipv6"
+  name: "cortx-data-network-ipv6",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxDataNetworkIpv6 extends Vue {
   private data() {

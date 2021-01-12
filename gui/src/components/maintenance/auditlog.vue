@@ -17,52 +17,86 @@
 <template>
   <div>
     <div id="auditlog" class="mb-4">
-      <label id="auditlog-title" class="cortx-text-bold cortx-text-lg">Audit log</label>
+      <label
+        id="auditlog-title"
+        class="cortx-text-bold cortx-text-lg"
+      >{{ $t("maintenance.auditLog") }}</label>
       <div class="mt-1 cortx-text-md">
-        <label id="auditlogtextlbl">Download or view audit logs for the selected time period.</label>
+        <label id="auditlogtextlbl">{{ $t("maintenance.downloadOrView") }}</label>
       </div>
     </div>
     <v-divider class="my-4" />
 
     <div class="col-4 py-0">
       <div class="cortx-form-group">
-        <label class="cortx-form-group-label" for="cmdComponent" id="lblComponent">Component*</label>
-        <cortx-dropdown id="auditlog-component"
+        <label
+          class="cortx-form-group-label"
+          for="cmdComponent"
+          id="lblComponent"
+        >{{ $t("maintenance.component") }}*</label>
+        <cortx-dropdown
+          id="auditlog-component"
           @update:selectedOption="handleComponentDropdownSelect"
           :options="componentList"
           :title="component ? component : undefined"
         ></cortx-dropdown>
 
-        <label class="cortx-form-group-label" for="cmdTimeRange" id="lblTimeRange">Time period*</label>
-        <cortx-dropdown id="auditlog-timeperiod"
+        <label
+          class="cortx-form-group-label"
+          for="cmdTimeRange"
+          id="lblTimeRange"
+        >{{ $t("maintenance.timePeriod") }}*</label>
+        <cortx-dropdown
+          id="auditlog-timeperiod"
           @update:selectedOption="handleTimerangeDropdownSelect"
           :options="timerangeList"
           :title="timerangeLabel ? timerangeLabel : undefined"
         ></cortx-dropdown>
       </div>
       <div class="mt-8 nav-btn">
-        <button type="button" class="cortx-btn-primary mr-2" @click="downloadAuditLogs()" id="auditlog-downlodbtn">Download</button>
-        <button type="button" class="cortx-btn-primary" @click="showAuditLogs()" id="auditlog-viewbtn">View</button>
+        <button
+          type="button"
+          class="cortx-btn-primary mr-2"
+          @click="downloadAuditLogs()"
+          id="auditlog-downlodbtn"
+          :disabled="!component||!timerangeLabel"
+        >{{ $t("maintenance.download") }}</button>
+        <button
+          type="button"
+          class="cortx-btn-primary"
+          @click="showAuditLogs()"
+          id="auditlog-viewbtn"
+          :disabled="!component||!timerangeLabel"
+        >{{ $t("maintenance.view") }}</button>
       </div>
     </div>
     <div class="ma-3 mt-5" v-if="showLog">
-      <span class="cortx-text-bold cortx-text-lg" id="auditlogtext">Logs</span>
+      <span class="cortx-text-bold cortx-text-lg" id="auditlogtext">{{ $t("maintenance.logs") }}</span>
       <v-divider class="my-2"></v-divider>
-      <span class="mb-1 d-block" v-for="(log, index) in showLog" :key="index" id="auditlog-data">{{ log }}</span>
+      <span
+        class="mb-1 d-block"
+        v-for="(log, index) in showLog"
+        :key="index"
+        id="auditlog-data"
+      >{{ log }}</span>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import moment from "moment";
+import i18n from "./maintenance.json";
 
 @Component({
-  name: "cortx-auditlog"
+  name: "cortx-auditlog",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAuditLog extends Vue {
   private data() {
     return {
-      component: "CSM",
+      component: "",
       componentList: [
         {
           label: "CSM",
@@ -74,7 +108,7 @@ export default class CortxAuditLog extends Vue {
         }
       ],
       timerange: "1",
-      timerangeLabel: "One day",
+      timerangeLabel: "",
       timerangeList: [
         {
           label: "One day",
@@ -125,12 +159,13 @@ export default class CortxAuditLog extends Vue {
       })
       .then(response => {
         this.$data.showLog = response.data;
+        this.$store.dispatch("systemConfig/hideLoader");
       })
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("Show audit log failed");
+        this.$store.dispatch("systemConfig/hideLoader");
       });
-    this.$store.dispatch("systemConfig/hideLoader");
   }
   private downloadAuditLogs() {
     this.$store.dispatch(
@@ -161,12 +196,13 @@ export default class CortxAuditLog extends Vue {
         );
         document.body.appendChild(link);
         link.click();
+        this.$store.dispatch("systemConfig/hideLoader");
       })
       .catch(() => {
         // tslint:disable-next-line: no-console
         console.error("download failed");
+        this.$store.dispatch("systemConfig/hideLoader");
       });
-    this.$store.dispatch("systemConfig/hideLoader");
   }
   private handleTimerangeDropdownSelect(selected: any) {
     this.$data.timerange = selected.value;

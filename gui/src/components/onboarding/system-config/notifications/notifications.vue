@@ -18,22 +18,18 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblNotification">
-        Notification settings
+        {{ $t("onBoarding.notificationSettings") }}
       </div>
       <div class="mt-3">
         <div class="font-weight-regular black--text" id="lblNotificationMsg">
-          You can receive notifications about system updates and alerts via
-          email. It is recommended to configure at least one email to receive
-          the notifications and alerts. You have an option to skip configuring
-          the notifications. However, it is not recommended. You should
-          configure at least one email to receive the system notifications and
-          alerts.
+          {{ $t("onBoarding.notificationSettingsMsg") }}
         </div>
 
         <v-divider class="mt-3" />
         <div class="mt-6">
           <label class="cortx-ckb-container" for="chkNotificationEmail">
-            Email
+            {{ $t("common.email") }}
+            
             <input
               type="checkbox"
               v-model="isEmailSettingsStatus"
@@ -47,12 +43,12 @@
             class="mt-2 font-weight-regular black--text"
             id="lblNotificationConfig"
           >
-            Allows you to configure email servers for notifications.
+            {{ $t("onBoarding.notificationConfig") }}
           </div>
         </div>
         <div class="mt-5">
           <label class="cortx-ckb-container" for="chkNotificationSkip">
-            Skip this step
+            {{ $t("onBoarding.skipStep") }}
             <input
               type="checkbox"
               v-model="isSkip"
@@ -63,8 +59,7 @@
             <span class="cortx-ckb-tick"></span>
           </label>
           <div class="mt-2 font-weight-regular black--text">
-            You can configure the notifications later. However, it is not
-            recommended.
+            {{ $t("onBoarding.configLater") }}
           </div>
         </div>
       </div>
@@ -75,9 +70,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { EVENT_BUS } from "./../../../../main";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-notifications"
+  name: "cortx-notifications",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNotifications extends Vue {
   public data() {

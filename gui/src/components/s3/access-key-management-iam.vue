@@ -112,10 +112,13 @@ import { AccessKey } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import CortxDownloadCsvDialog from "./download-csv-dialog.vue";
-import i18n from "./../../i18n";
+import i18n from "./s3.json";
 
 @Component({
   name: "cortx-access-key-management-iam",
+  i18n: {
+    messages: i18n
+  },
   components: { CortxDownloadCsvDialog }
 })
 export default class CortxAccessKeyManagementIAM extends Vue {
@@ -134,37 +137,37 @@ export default class CortxAccessKeyManagementIAM extends Vue {
   @Prop({ required: true, default: "" })
   private s3Url: string;
 
-  @Prop({ required: true, default: false })
+  @Prop({ required: false, default: false })
   private s3UrlNone: boolean;
 
   constructor() {
     super();
-
     this.showConfirmDeleteDialog = false;
     this.showAccessKeyDetailsDialog = false;
     this.accessKeyDetails = {};
+  }
+  public beforeMount() {
     this.accessKeyTableHeaderList = [
       {
-        text: i18n.t("s3.access-key.table-headers.access_key"),
+        text: this.$t("s3.access-key.table-headers.access_key"),
         value: "access_key",
         sortable: false
       },
       {
-        text: i18n.t("s3.access-key.table-headers.secret_key"),
+        text: this.$t("s3.access-key.table-headers.secret_key"),
         value: "secret_key",
         sortable: false
       },
-      { text: "", value: "data-table-expand" }
+      { text: this.$t("common.action"), value: "data-table-expand" }
     ];
   }
-
   public async createAccessKey() {
     if (!this.userNameIAM) {
       return;
     }
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.access-key.create-message")
+      this.$t("s3.access-key.create-message")
     );
     const res = await Api.post(
       apiRegister.s3_access_keys,
@@ -175,16 +178,14 @@ export default class CortxAccessKeyManagementIAM extends Vue {
     );
     const createAccessKeyDetails = res && res.data ? res.data : {};
     this.accessKeyDetails = {
-      [`${i18n.t(
+      [`${this.$t(
         "s3.access-key.table-headers.user_name"
       )}`]: createAccessKeyDetails.user_name,
-      [`${i18n.t(
-        "s3.account.url-label-no-colon"
-      )}`]: this.s3Url,
-      [`${i18n.t(
+      [`${this.$t("s3.account.url-label-no-colon")}`]: this.s3Url,
+      [`${this.$t(
         "s3.access-key.table-headers.access_key"
       )}`]: createAccessKeyDetails.access_key_id,
-      [`${i18n.t(
+      [`${this.$t(
         "s3.access-key.table-headers.secret_key"
       )}`]: createAccessKeyDetails.secret_key
     };
@@ -206,7 +207,7 @@ export default class CortxAccessKeyManagementIAM extends Vue {
     }
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.access-key.get-message-iam")
+      this.$t("s3.access-key.get-message-iam")
     );
     const res: any = await Api.getAll(apiRegister.s3_access_keys, {
       user_name: this.userNameIAM
@@ -216,7 +217,7 @@ export default class CortxAccessKeyManagementIAM extends Vue {
   }
 
   public openConfirmDeleteDialog(accountName: string) {
-    this.confirmDeleteDialogMessage = `${i18n.t(
+    this.confirmDeleteDialogMessage = `${this.$t(
       "s3.access-key.delete-confirmation",
       { key: accountName }
     )}`;
@@ -236,7 +237,7 @@ export default class CortxAccessKeyManagementIAM extends Vue {
     }
     this.$store.dispatch(
       "systemConfig/showLoader",
-      i18n.t("s3.access-key.delete-message") + this.accountToDelete
+      this.$t("s3.access-key.delete-message") + this.accountToDelete
     );
     await Api.delete(apiRegister.s3_access_keys, this.accountToDelete, {
       params: { user_name: this.userNameIAM }

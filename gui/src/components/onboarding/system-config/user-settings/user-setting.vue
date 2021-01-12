@@ -18,23 +18,20 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblUserSetting">
-        User settings
+        {{ $t("onBoarding.userSettings") }}
       </div>
       <div class="mt-4">
         <div class="font-weight-regular black--text" id="lblUsrSettingMsg">
-          You have already set up a user for managing this system. Use the
-          following screens to add additional user to more finely control access
-          to this system.
+          {{ $t("onBoarding.userSettingsMsg") }}
         </div>
 
         <div class="mt-5 font-weight-regular black--text">
-          Choose the user options below that apply to your administration
-          environment.
+          {{ $t("onBoarding.chooseUserOptions") }}
         </div>
         <v-divider class="mt-5" />
         <div class="mt-5">
           <label class="cortx-ckb-container" for="chkUsrSettingLocal">
-            Local
+            {{ $t("onBoarding.local") }}
             <input
               type="checkbox"
               v-model="isLocalUserStatus"
@@ -45,16 +42,12 @@
             <span class="cortx-ckb-tick"></span>
           </label>
           <div class="mt-2 font-weight-regular black--text">
-            Selecting Local Users will allow you to create and manage any users
-            that can access this system. You can control which users have access
-            to make configuration changes to the system, control which users can
-            access certain interfaces, and setup user attributes specific to
-            individual users.
+            {{ $t("onBoarding.selectingLocalUsers") }}
           </div>
         </div>
         <div class="mt-5">
           <label class="cortx-ckb-container" for="chkUsrSettingSkip">
-            Skip this step
+            {{ $t("onBoarding.skipStep") }}
             <input
               type="checkbox"
               v-model="isSkip"
@@ -68,7 +61,7 @@
             class="mt-2 font-weight-regular black--text"
             id="lblUsrSettingConfigSkip"
           >
-            If you intend to configure later, you may skip to the next step.
+            {{ $t("onBoarding.ifYouConfigureLater") }}
           </div>
         </div>
       </div>
@@ -79,9 +72,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { EVENT_BUS } from "./../../../../main";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-user-setting"
+  name: "cortx-user-setting",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxUserSetting extends Vue {
   private data() {

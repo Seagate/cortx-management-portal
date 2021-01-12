@@ -1,0 +1,34 @@
+{
+    "en": {
+        "widget": {
+            "1By2Hrs": "1/2 Hrs",
+            "1Hrs": "1 Hrs",
+            "2Hrs": "2 Hrs",
+            "6Hrs": "6 Hrs",
+            "12Hrs": "12 Hrs",
+            "1Day": "1 Day",
+            "unableToFetch": "Unable To Fetch Performance Data",
+            "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
+            "adminUsernameReq": "Username is required.",
+            "usernameInvalid": "Invalid username.",
+            "invalidRootUsername": "The username must not be 'root' or 'Root'.",
+            "applyContinue": "Apply and continue"
+        }
+    },
+    "ru": {
+        "widget": {
+            "1By2Hrs": "1/2 Hrs",
+            "1Hrs": "1 Hrs",
+            "2Hrs": "2 Hrs",
+            "6Hrs": "6 Hrs",
+            "12Hrs": "12 Hrs",
+            "1Day": "1 Day",
+            "unableToFetch": "Unable To Fetch Performance Data",
+            "adminConfigurationText": "Configure the username and password for the user with administrative rights. You must remember the admin user login credentials because the admin user can be created only once.",
+            "adminUsernameReq": "Username is required.",
+            "usernameInvalid": "Invalid username.",
+            "invalidRootUsername": "The username must not be 'root' or 'Root'.",
+            "applyContinue": "Apply and continue"
+        }
+    }
+}

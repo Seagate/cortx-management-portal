@@ -18,10 +18,10 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="title mt-0 font-weight-bold" id="lblDTSetDateTime">
-        Network time protocol (NTP) settings
+        {{ $t("onBoarding.NTPTimeProtocol") }}
       </div>
       <div class="mt-3" id="lblMandatoryMsg">
-        Fields marked with * are mandatory.
+        {{ $t("onBoarding.mandatoryField") }}
       </div>
       <v-divider class="mt-2" />
       <cortxDateTimeConfig />
@@ -32,11 +32,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxDateTimeConfig from "./date-time-config.vue";
+import i18n from "../../onboarding.json";
 
 @Component({
   name: "cortx-date-time",
   components: {
     cortxDateTimeConfig: CortxDateTimeConfig
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxDateTime extends Vue {}

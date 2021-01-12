@@ -21,10 +21,10 @@
         <div class="col-2 body-2 column node-container">
           <div class="mt-5 font-weight-bold">
             <div class="mt-6 dns-label">
-              <label id="dns-serverlbl">DNS servers*:</label>
+              <label id="dns-serverlbl">{{ $t("onBoarding.DNSServers") }}*:</label>
             </div>
             <div class>
-              <label id="dns-domainslbl">Search domains*:</label>
+              <label id="dns-domainslbl">{{ $t("onBoarding.searchDomains") }}*:</label>
             </div>
           </div>
         </div>
@@ -54,12 +54,12 @@
                 <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label id="dns-addess-reuired"
                     v-if="node.dns_servers.$dirty && !node.dns_servers.required"
-                    >DNS address is required.</label
+                    >{{ $t("onBoarding.DNSRequired") }}</label
                   >
                 </div>
               </div>
               <div
-                class="cortx-form-group cortx-form-group-custom mt-3"
+                class="cortx-form-group cortx-form-group-custom mt-3 mb-4"
                 :class="{
                   'cortx-form-group--error': node.search_domain.$error
                 }"
@@ -79,7 +79,7 @@
                     v-if="
                       node.search_domain.$dirty && !node.search_domain.required
                     "
-                    >Search domain is required.</label
+                    >{{ $t("onBoarding.searchDomainRequired") }}</label
                   >
                 </div>
               </div>
@@ -97,7 +97,7 @@
       @click="applySettings()"
       class="cortx-btn-primary cortx-float-l my-10"
     >
-      Apply
+      {{ $t("common.apply") }}
     </button>
   </v-container>
 </template>
@@ -116,8 +116,13 @@ import {
   ipAddress,
   requiredIf
 } from "vuelidate/lib/validators";
+import i18n from "../../onboarding.json";
+
 @Component({
-  name: "cortx-dns-setting-config"
+  name: "cortx-dns-setting-config",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxDnsSettingConfig extends Vue {
   @Validations()

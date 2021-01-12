@@ -17,7 +17,7 @@
  <template>
   <div class="pa-5">
     <div class="cortx-text-lg cortx-text-bold" id="performance-text">
-      Performance
+      {{ $t("performance.performance") }}
     </div>
     <button
       id="peformance-addgraphbtn"
@@ -26,7 +26,7 @@
       @click="addChart()"
       class="mt-3 mb-2 cortx-btn-primary"
     >
-      Add Graph
+      {{ $t("performance.addGraph") }}
     </button>
 
     <div :key="chartId" v-for="chartId in chartList">
@@ -51,10 +51,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxLineChart from "../widgets/line-chart.vue";
+import i18n from "./performance.json";
+
 @Component({
   name: "cortx-performance-large",
   components: {
     cortxLineChart: CortxLineChart
+  },
+  i18n: {
+    messages: i18n
   }
 })
 export default class CortxPerformanceLarge extends Vue {

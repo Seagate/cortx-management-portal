@@ -15,16 +15,16 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-2 body-2">
+  <div class="cortx-p-1 body-2">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblIpv4DataNetwork">
-      Node replacement
+      {{ $t("maintenance.nodeReplacement") }}
     </div>
     <v-divider class="mt-2 mb-4" />
     <div
       class="mt-4 mb-6 pa-3 cortx-last-upgrade-info-container cortx-text-md"
       v-if="lastNodeReplacementStatus.status"
     >
-      <label class="cortx-text-bold">Last node replacement status</label>
+      <label class="cortx-text-bold">{{ $t("maintenance.lastNodeReplacementStatus") }}</label>
       <button
         id="btnRefresh"
         type="button"
@@ -32,10 +32,10 @@
         @click="getLastNodeReplacementStatus()"
         style="height: 25px; padding-left: 10px; padding-right: 10px;"
       >
-        Refresh
+        {{ $t("maintenance.refresh") }}
       </button>
       <v-divider class="mt-2 mb-4" />
-      <label>Replacement of</label>
+      <label>{{ $t("maintenance.replacementOf") }}</label>
       <label>{{ " " + lastNodeReplacementStatus.node_id + " " }}</label>
       <label>is</label>
       <label class="text-capitalize">{{
@@ -59,7 +59,7 @@
             'cortx-form-group--error': $v.ipHostname.$error
           }"
         >
-          <label class="cortx-form-group-label">IP/Hostname (optional)</label>
+          <label class="cortx-form-group-label">{{ $t("maintenance.IPHostnameOptional") }}</label>
           <input
             class="cortx-form__input_text"
             type="text"
@@ -72,7 +72,7 @@
           <div class="cortx-form-group-label cortx-form-group-error-msg">
             <label
               v-if="$v.ipHostname.$dirty && !$v.ipHostname.ipOrDomainRegex"
-              >Invalid IP/Hostname.</label
+              >{{ $t("maintenance.invalidIPHostname") }}</label
             >
           </div>
         </div>
@@ -82,7 +82,7 @@
             'cortx-form-group--error': $v.sshPort.$error
           }"
         >
-          <label class="cortx-form-group-label">Port (optional)</label>
+          <label class="cortx-form-group-label">{{ $t("maintenance.portOptional") }}</label>
           <input
             class="cortx-form__input_text"
             type="number"
@@ -93,7 +93,7 @@
           />
           <div class="cortx-form-group-label cortx-form-group-error-msg">
             <label v-if="$v.sshPort.$dirty && !$v.sshPort.maxValue"
-              >SSH port is not valid.</label
+              >{{ $t("maintenance.invalidSSH") }}</label
             >
           </div>
         </div>
@@ -105,18 +105,16 @@
           style="margin-top: 2px;"
           :disabled="!selectedNode.value"
         >
-          Replace node
+          {{ $t("maintenance.replaceNode") }}
         </button>
       </v-col>
       <v-col md="8" class="py-0 pr-0">
         <div v-if="!canReplaceNode">
           <p class="cortx-text-lg cortx-text-primary font-weight-bold">
-            All nodes are online.
+            {{ $t("maintenance.allNodesOnline") }}
           </p>
           <p class="cortx-text-md font-weight-bold">
-          Note: Node replacement is only available when any one of the nodes is in
-          shutdown state. In order to complete node replacement please shutdown the
-          node from system maintenance page.
+          {{ $t("maintenance.allNodesOnlineNote") }}
           </p>
         </div>
       </v-col>
@@ -140,9 +138,13 @@ import { LastNodeReplacementStatus } from "../../models/node-replacement";
 import { Validations } from "vuelidate-property-decorators";
 import { minValue, maxValue, helpers } from "vuelidate/lib/validators";
 import { ipOrDomainRegex } from "./../../common/regex-helpers";
+import i18n from "./maintenance.json";
 
 @Component({
-  name: "cortx-node-replacement"
+  name: "cortx-node-replacement",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxNodeReplacement extends Vue {
   @Validations()

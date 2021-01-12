@@ -25,21 +25,19 @@
     <v-divider />
     <div>
       <div class="title mt-6 csmprimary--text" id="lblInterface">
-        Interface Selection
+        {{ $t("onBoarding.interfaceSelection") }}
       </div>
     </div>
     <div class="mt-4">
       <div class="font-weight-regular black--text" id="lblInterfaceMsg">
-        Select an Object-Based Interface (S3) or a Network File System (NFS), or
-        both.
+        {{ $t("onBoarding.selectObjectBased") }}
       </div>
 
       <div
         class="mt-5 font-weight-regular black--text"
         id="lblInterfaceMsgChoose"
       >
-        Choose which interface(s) you'd like to establish. You must pick at
-        least one of these.
+        {{ $t("onBoarding.chooseWhichInterface") }}
       </div>
       <v-divider class="mt-5" />
       <div class="mt-5">
@@ -53,13 +51,13 @@
         <span
           class="ml-3 font-weight-medium csmprimary--text"
           id="lblInterfaceChooseStorage"
-          >Object-Based Storage (S3)</span
+          >{{ $t("onBoarding.objectBasedStorage") }}</span
         >
         <div
           class="mt-5 font-weight-regular black--text"
           id="lblInterfaceConfig"
         >
-          Start configuration for Object-Based Storage (S3).
+          {{ $t("onBoarding.startConfigObjectBased") }}
         </div>
       </div>
       <div class="mt-5">
@@ -73,10 +71,10 @@
         <span
           class="ml-3 font-weight-medium csmprimary--text"
           id="lblInterfaceNFS"
-          >Network File System (NFS)</span
+          >{{ $t("onBoarding.NFS") }}</span
         >
         <div class="mt-5 font-weight-regular black--text">
-          Start configuration for Network File System (NFS).
+          {{ $t("onBoarding.startConfigNFS") }}
         </div>
       </div>
     </div>
@@ -88,22 +86,26 @@
         @click="gotToNextPage()"
         id="btnInterfaceContinue"
       >
-        <span class="white--text">Continue</span>
+        <span class="white--text">{{ $t("onBoarding.continue") }}</span>
       </v-btn>
       <span
         class="csmprimary--text ml-8 pointer"
         @click="gotToPrevPage()"
         id="lblInterfaceBack"
-        >Back to previous step</span
+        >{{ $t("onBoarding.BackToPreviousStep") }}</span
       >
     </div>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import i18n from "../../onboarding.json";
 
 @Component({
-  name: "cortx-interface-select"
+  name: "cortx-interface-select",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxInterfaceSelect extends Vue {
   private data() {

@@ -18,14 +18,14 @@
   <v-container class="mt-0 ml-0">
     <div class="pl-4 body-2">
       <div class="font-weight-bold mt-5">
-        Source:
+        {{ $t("onBoarding.source") }}:
         <label class="cortx-rdb-container ml-9">
-          Manual
+          {{ $t("onBoarding.manual") }}
           <input type="radio" name="source" v-model="source" value="manual" />
           <span class="cortx-rdb-tick" id="lblIp4Manual"></span>
         </label>
         <label class="cortx-rdb-container ml-6">
-          DHCP
+          {{ $t("onBoarding.DHCP") }}
           <input
             type="radio"
             name="DHCP"
@@ -41,7 +41,7 @@
         <div class="col-1 body-2 column pa-0 node-container">
           <div class="mt-5 font-weight-bold">
             <div class="mt-7">
-              <label>VIP*: </label>
+              <label>{{ $t("onBoarding.VIP") }}*: </label>
             </div>
           </div>
         </div>
@@ -70,19 +70,19 @@
                 <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     v-if="node.ip_address.$dirty && !node.ip_address.required"
-                    >IP address is required.</label
+                    >{{ $t("onBoarding.ipAddressReq") }}</label
                   >
                   <label
                     v-else-if="
                       node.ip_address.$dirty && !node.ip_address.ipAddress
                     "
-                    >Invalid IP address.</label
+                    >{{ $t("onBoarding.invalidIpAddress") }}</label
                   >
                   <label
                     v-else-if="
                       node.ip_address.$dirty && !node.ip_address.isUnique
                     "
-                    >IP address must be unique for VIP and nodes.</label
+                    >{{ $t("onBoarding.ipAddressUnique") }}</label
                   >
                 </div>
               </div>
@@ -95,13 +95,13 @@
         <div class="col-1 body-2 column pa-0 node-container mr-12">
           <div class="mt-5 font-weight-bold">
             <div class="mt-12">
-              <label>IP address*:</label>
+              <label>{{ $t("onBoarding.ipAddress") }}*:</label>
             </div>
             <div class="mt-12">
-              <label>Netmask*:</label>
+              <label>{{ $t("onBoarding.netmask") }}*:</label>
             </div>
             <div class="mt-12">
-              <label>Gateway:</label>
+              <label>{{ $t("onBoarding.gateway") }}:</label>
             </div>
           </div>
         </div>
@@ -133,19 +133,19 @@
               <div class="cortx-form-group-label cortx-form-group-error-msg">
                 <label
                   v-if="node.ip_address.$dirty && !node.ip_address.required"
-                  >IP address is required.</label
+                  >{{ $t("onBoarding.ipAddressReq") }}</label
                 >
                 <label
                   v-else-if="
                     node.ip_address.$dirty && !node.ip_address.ipAddress
                   "
-                  >Invalid IP address.</label
+                  >{{ $t("onBoarding.invalidIpAddress") }}</label
                 >
                 <label
                   v-else-if="
                     node.ip_address.$dirty && !node.ip_address.isUnique
                   "
-                  >IP address must be unique for VIP and nodes.</label
+                  >{{ $t("onBoarding.ipAddressUnique") }}</label
                 >
               </div>
             </div>
@@ -168,11 +168,11 @@
               />
               <div class="cortx-form-group-label cortx-form-group-error-msg">
                 <label v-if="node.netmask.$dirty && !node.netmask.required"
-                  >Netmask is required.</label
+                  >{{ $t("onBoarding.netmaskReq") }}</label
                 >
                 <label
                   v-else-if="node.netmask.$dirty && !node.netmask.ipAddress"
-                  >Invalid netmask.</label
+                  >{{ $t("onBoarding.invalidNetmask") }}</label
                 >
               </div>
             </div>
@@ -195,7 +195,7 @@
               />
               <div class="cortx-form-group-label cortx-form-group-error-msg">
                 <label v-if="node.gateway.$dirty && !node.gateway.ipAddress"
-                  >Invalid gateway.</label
+                  >{{ $t("onBoarding.invalidGateway") }}</label
                 >
               </div>
             </div>
@@ -211,7 +211,7 @@
       @click="applySettings()"
       class="cortx-btn-primary cortx-float-l my-10"
     >
-      Apply
+      {{ $t("common.apply") }}
     </button>
   </v-container>
 </template>
@@ -230,8 +230,13 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 import { EVENT_BUS } from "./../../../../main";
+import i18n from "../../onboarding.json";
+
 @Component({
-  name: "cortx-data-network-ipv4-config"
+  name: "cortx-data-network-ipv4-config",
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxDataNetworkIpv4Config extends Vue {
   @Validations()

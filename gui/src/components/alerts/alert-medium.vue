@@ -18,7 +18,7 @@
   <div id="alertMediumContainer">
     <cortx-health-summary />
     <div style="height: 30px;">
-      <div class="cortx-alert-title" id="alert-new-alerts">New alerts</div>
+      <div class="cortx-alert-title" id="alert-new-alerts">{{ $t("alerts.newAlerts") }}</div>
       <img
         id="alert-zoom"
         :src="require('@/assets/zoom-in.svg')"
@@ -26,12 +26,12 @@
         @click="$router.push('/alerts')"
       />
     </div>
-    <div class="mt-3">
+    <div class="mt-1">
       <v-data-table
         calculate-widths
         :items="alertObject.alerts"
         item-key="updated_time"
-        height="250"
+        :height="tableHeight"
         :items-per-page.sync="itemsPerPage"
         :footer-props="{
           'items-per-page-options': [50, 100, 150, 200]
@@ -138,14 +138,33 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import AlertsMixin from "./../../mixins/alerts";
 import CortxHealthSummary from "../system/health-summary.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
+import i18n from "./alert.json";
+import { EVENT_BUS } from "../../main";
 
 @Component({
   name: "cortx-alert-medium",
   components: { CortxHealthSummary },
-  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
+  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAlertMedium extends Mixins(AlertsMixin) {
+
+  @Prop({ required: false })
+  public parentHeight: number;
+
+  public tableHeight: string = "250";
+
+  public created() {
+    EVENT_BUS.$on("windowResized", (parentHeight: number) => {
+      this.calculateTableHeight(parentHeight);
+    });
+  }
+
   public async mounted() {
+    this.calculateTableHeight(this.parentHeight);
+
     if (this.alertPageFilter !== "new") {
       this.alertPageFilter = "new";
       this.$store.commit("alerts/resetAlertQueryParams");
@@ -178,6 +197,31 @@ export default class CortxAlertMedium extends Mixins(AlertsMixin) {
     await this.onSortPaginate();
   }
 
+  public destroyed() {
+    EVENT_BUS.$off("windowResized");
+  }
+
+  public calculateTableHeight(parentHeight: number) {
+    if (parentHeight) {
+      /**
+       * Need to subtract health summary component height
+       * and title container height from parent height i.e 74px
+       * to get exact height of the alert table.
+       */
+      const calcHeight: number = parentHeight - 74;
+
+      /**
+       * If calculated height is less than 250px
+       * then set table height to 250px.
+       */
+      if (calcHeight < 250) {
+        this.tableHeight = "250";
+      } else {
+        this.tableHeight = calcHeight.toString();
+      }
+    }
+  }
+
   get sortInfo() {
     return this.$store.getters["alerts/getSortInfo"];
   }
@@ -200,15 +244,5 @@ export default class CortxAlertMedium extends Mixins(AlertsMixin) {
 .cortx-alert-navigate {
   float: right;
   cursor: pointer;
-}
-@media screen and (min-height: 600px) {
-  #alertMediumContainer {
-    padding-left: 20px;
-  }
-}
-@media screen and (min-height: 900px) {
-  #alertMediumContainer {
-    padding: 20px;
-  }
 }
 </style>
