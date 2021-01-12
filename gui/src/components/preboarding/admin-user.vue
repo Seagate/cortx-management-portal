@@ -239,7 +239,9 @@
             class="cortx-btn-primary"
             @click="gotToNextPage()"
             :disabled="
-              !isSystemStable || $v.createAccount.$invalid || createUserInProgress
+              !isSystemStable ||
+                $v.createAccount.$invalid ||
+                createUserInProgress
             "
           >
             {{ $t("admin.applyContinue") }}
@@ -315,30 +317,30 @@ export default class CortxAdminUser extends Vue {
     };
   }
 
-  public async mounted() {
+  private async mounted() {
     await this.getSyetmStatus();
   }
-  public async getSyetmStatus() {
+  private async getSyetmStatus() {
     this.$store.dispatch(
       "systemConfig/showLoader",
       this.$t("admin.serviceStatus")
     );
     try {
-      const dbName = { key: "consul"};
-      const res: any = await Api.getAll(apiRegister.system_status, dbName );
+      const dbName = { key: "consul" };
+      const res: any = await Api.getAll(apiRegister.system_status, dbName);
       this.$store.dispatch("systemConfig/hideLoader");
     } catch (error) {
       this.$data.isSystemStable = false;
       let errorMessage = "Please check service status.";
-       let consul= error.data.consul;
-       let es= error.data.es;
-      if (error.data.consul!=="success"&& error.data.es!=="success" ) {
-        errorMessage = consul + ' ' + 'and' + ' ' + es;
-      }else if(error.data.consul!=="success"){
-          errorMessage = consul ;
-       }else if(error.data.es!=="success"){
-          errorMessage = es ;
-       }
+      const consul = error.data.consul;
+      const es = error.data.es;
+      if (error.data.consul !== "success" && error.data.es !== "success") {
+        errorMessage = `${consul} and ${es}`;
+      } else if (error.data.consul !== "success") {
+        errorMessage = consul;
+      } else if (error.data.es !== "success") {
+        errorMessage = es;
+      }
       throw {
         error: {
           message: errorMessage

@@ -116,12 +116,12 @@ export default class Cortxaboutpage extends Vue {
       serialNumber: "-" as string
     };
   }
-  
+
   public async mounted() {
     await this.getApplianceDetails();
     await this.getVersion();
   }
-  
+
   public async getVersion() {
     this.$store.dispatch("systemConfig/showLoader", "fetching details...");
     const res = await Api.getAll(apiRegister.version);
