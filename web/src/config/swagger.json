@@ -2908,6 +2908,44 @@
 				}]
 			}
 		},
+		"/tls/bundle/details": {
+			"get": {
+			  "tags": [
+				"SSL Certificate"
+			  ],
+			  "summary": "To get SSL Certificate details",
+			  "responses": {
+				"200": {
+					"description": "OK: Certificate details fetched successfully."
+				},
+				"400": {
+					"description": "Bad Request: Invalid Certificate"
+				},
+				"401": {
+					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
+				},
+				"403": {
+					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
+				},
+				"499": {
+					"description": "Call Cancelled: Call cancelled by client."
+				},
+				"500": {
+					"description": "Internal Server Error: When requested resource is not available."
+				}
+			},
+			  "produces": [
+				"application/json"
+			],
+			"parameters": [
+				{
+					"name": "authorization",
+					"in": "header",
+					"required": true,
+					"type": "string"
+				}]
+			}
+		},
 		"/update/hotfix/upload": {
 			"post": {
 				"tags": [
