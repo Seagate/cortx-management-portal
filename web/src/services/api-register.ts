@@ -59,6 +59,7 @@ export default {
   ssl_upload: `/api/${version}/tls/bundle/upload`,
   ssl_install: `/api/${version}/tls/bundle/install`,
   ssl_status: `/api/${version}/tls/bundle/status`,
+  ssl_details: `/api/${version}/tls/bundle/details`,
   product_version: `/api/${version}/product_version`,
   health_components: `/api/${version}/system/health/components`,
   health_resources: `/api/${version}/system/health/resources`,
