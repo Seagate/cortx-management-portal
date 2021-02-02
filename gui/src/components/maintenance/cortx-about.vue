@@ -88,7 +88,101 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-  </div>
+    <v-expansion-panels  class="mt-2" >
+      <v-expansion-panel >
+        <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="issuer-details-dropdown">
+          {{ $t("aboutUs.issuer_details") }}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+         <div class="cortx-last-upgrade-info-container cortx-text-md" id="ssl-issuer-details">
+        <table >
+        <tr>
+          <td style="width: 150px;">
+            <label class="cortx-text-bold" id="issuer_common_name_lbl">{{ $t("aboutUs.common_name") }}</label>
+          </td>
+          <td class="cortx-td">
+            <label id="issuer_common_name_value">{{ issuerDetails.commonName }}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="cortx-text-bold" id="issuer-country_name_lbl">{{ $t("aboutUs.country_name") }}</label>
+          </td>
+          <td class="cortx-td">
+            <label id="issuer_country_name_value">{{ issuerDetails.countryName }}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="cortx-text-bold" id="issuer_locality_name_lbl">{{ $t("aboutUs.locality_name") }}</label>
+          </td>
+          <td class="cortx-td">
+            <label id="issuer_locality_name_value">{{ issuerDetails.localityName }}</label>
+          </td>
+          
+        </tr>
+         <tr>
+          <td>
+            <label class="cortx-text-bold" id="issuer_organization_name_lbl">{{ $t("aboutUs.organization_name") }}</label>
+          </td>
+          <td class="cortx-td">
+            <label id="issuer_organization_name_value">{{ issuerDetails.organizationName }}</label>
+          </td>
+          
+        </tr>
+      </table>
+    </div>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+     <v-expansion-panels  class="mt-2" > 
+      <v-expansion-panel>
+        <v-expansion-panel-header class="cortx-text-lg font-weight-bold" id="subject-details-dropdown">
+          {{ $t("aboutUs.subject") }}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+         <div class="cortx-last-upgrade-info-container cortx-text-md" id="ssl-subject-details">
+        <table>
+        <tr>
+          <td style="width: 150px;">
+            <label class="cortx-text-bold" id="subject_common_name_lbl">{{ $t("aboutUs.common_name") }}</label>
+          </td>
+          <td class="cortx-td">
+            <label id="subject_common_name_value">{{ subject.commonName }}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="cortx-text-bold" id="subject_country_name_lbl">{{ $t("aboutUs.country_name") }}</label>
+          </td>
+          <td class="cortx-td">
+            <label id="subject-country_name_value">{{ subject.countryName }}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="cortx-text-bold" id="subject_locality_name_lbl">{{ $t("aboutUs.locality_name") }}</label>
+          </td>
+          <td class="cortx-td">
+            <label id="subject_locality_name_value">{{ subject.localityName }}</label>
+          </td>
+          
+        </tr>
+         <tr>
+          <td>
+            <label class="cortx-text-bold" id="subject_organization_name_lbl">{{ $t("aboutUs.organization_name") }}</label>
+          </td>
+          <td class="cortx-td">
+            <label id="subject_organization_name_value">{{ subject.organizationName }}</label>
+          </td>
+          
+        </tr>
+      </table>
+    </div>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </div> 
 </template>
 
 <script lang="ts">
@@ -113,11 +207,26 @@ export default class Cortxaboutpage extends Vue {
         RELEASE: null,
         COMPONENTS: []
       },
+      issuerDetails:{
+        commonName:"-" as string,
+        countryName:"-" as string,
+        localityName:"-" as string,
+        organizationName:"-" as string,
+
+      },
+      subject:{
+        commonName:"-" as string,
+        countryName:"-" as string,
+        localityName:"-" as string,
+        organizationName:"-" as string,
+
+      },
       serialNumber: "-" as string
     };
   }
   
   public async mounted() {
+    await this.getSSLDetails();
     await this.getApplianceDetails();
     await this.getVersion();
   }
@@ -128,10 +237,15 @@ export default class Cortxaboutpage extends Vue {
     this.$data.versionDetails = res.data;
     this.$store.dispatch("systemConfig/hideLoader");
   }
-
   public async getApplianceDetails() {
     const res = await Api.getAll(apiRegister.appliance_info);
     this.$data.serialNumber = res.data[0].serial_number;
+  }
+  public async getSSLDetails(){
+  const res = await Api.getAll(apiRegister.ssl_details);
+  this.$data.issuerDetails = res.data.cert_details.issuer;
+  this.$data.subject = res.data.cert_details.subject;
+
   }
 }
 </script>

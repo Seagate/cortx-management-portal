@@ -248,7 +248,16 @@
         "build": "Build:",
         "release": "Release:",
         "COMPONENTS": "COMPONENTS",
-        "SerialNumber": "Serial No:"
+        "SerialNumber": "Serial No:",
+        "common_name":"Common Name",
+        "country_name":"Country Name",
+        "locality_name":"Locality Name",
+        "organization_name":"Organization Name",
+        "issuer_details":"Issuer Details",
+        "subject":"Subject Details"
+
+
+
     },
     "onBoarding": {
         "systemName": "System name",
