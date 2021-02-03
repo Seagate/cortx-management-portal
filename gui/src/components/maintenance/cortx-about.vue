@@ -224,17 +224,20 @@ export default class Cortxaboutpage extends Vue {
       {
         id: 1,
         label: "Component Details",
-        show: true
+        show: true,
+        requiredAccess: "Component"
       },
       {
         id: 2,
         label: "Issuer SSL Details",
-        show: true
+        show: true,
+        requiredAccess: "Issuer"
       },
       {
         id: 3,
         label: "Subject SSL Details",
-        show: true
+        show: true,
+        requiredAccess: "Subject"
       }
     ],
     selectedTab: 1
