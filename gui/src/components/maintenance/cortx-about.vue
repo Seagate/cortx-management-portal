@@ -313,6 +313,7 @@ export default class Cortxaboutpage extends Vue {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .cortx-brand-logo {
   padding-top: 20px;
