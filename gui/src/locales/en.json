@@ -72,7 +72,9 @@
             "url-note": "Note: This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface.",
             "account_id": "Account id",
             "canonical_id": "Canonical id",
-            "download-as-csv-continue": "Download and continue"
+            "download-as-csv-continue": "Download and continue",
+            "reset-password": "Reset Password",
+            "reset-btn": "Reset"
         },
         "bucket": {
             "name-require": "Bucket name is required.",
@@ -96,7 +98,8 @@
             "invalid-user": "Invalid username.",
             "create-user-btn": "Create user",
             "user-key-access": "User created:access key and secret key",
-            "confirm-msg": "Are you sure you want to delete IAM user"
+            "confirm-msg": "Are you sure you want to delete IAM user",
+            "reset-password": "Reset Password"
         }
     },
     "common": {

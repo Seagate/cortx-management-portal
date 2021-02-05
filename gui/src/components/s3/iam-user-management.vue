@@ -99,6 +99,16 @@
                       src="./../../assets/actions/delete-green.svg"
                     />
                   </cortx-has-access>
+                  <div>
+                    <button
+                      id="s3-reset-account"
+                      type="button"
+                      class="mt-4 mb-2 cortx-btn-primary"
+                      @click="onResetBtnClick(props.item.user_name)"
+                    >
+                    {{ $t("s3.iam.reset-password") }}
+                    </button>                  
+                  </div>
                 </td>
               </tr>
             </template>
@@ -112,6 +122,111 @@
             ></cortx-access-key-management>
           </cortx-has-access>
         </cortx-has-access>
+      </v-col>
+      <v-col class="py-0 col-3">
+        <div v-if="showResetAccountForm" class="pa-2">
+          <v-row>
+            <v-col class="pb-0">
+              <div
+                class="cortx-form-group-custom"
+                :class="{
+                  'cortx-form-group--error': $v.resetAccountForm.password.$error
+                }"
+              >
+                <label
+                  class="cortx-form-group-label"
+                  for="accountPasswordReset"
+                  id="s3-resetpasswordlbl"
+                >
+                  <cortx-info-tooltip
+                    label="Password*"
+                    :message="passwordTooltipMessage"
+                  />
+                </label>
+                <input
+                  class="cortx-form__input_text"
+                  type="password"
+                  id="accountPasswordReset"
+                  name="accountPasswordReset"
+                  v-model.trim="resetAccountForm.password"
+                  @input="$v.resetAccountForm.password.$touch"
+                />
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                  <label
+                    id="s3-resetpassword-required"
+                    v-if="
+                      $v.resetAccountForm.password.$dirty &&
+                        !$v.resetAccountForm.password.required
+                    "
+                    >Password is required.</label
+                  >
+                  <label
+                    id="s3-resetpassword-invalid"
+                    v-else-if="
+                      $v.resetAccountForm.password.$dirty &&
+                        !$v.resetAccountForm.password.passwordRegex
+                    "
+                    >Invalid password.</label
+                  >
+                </div>
+              </div>
+            </v-col>
+            <v-col class="pl-4 col-6">
+              <div
+                class="cortx-form-group-custom"
+                :class="{
+                  'cortx-form-group--error':
+                    $v.resetAccountForm.confirmPassword.$error
+                }"
+              >
+                <label
+                  class="cortx-form-group-label"
+                  for="confirmPassword"
+                  id="s3-lblconfirmpassword"
+                  >Confirm password*</label
+                >
+                <input
+                  class="cortx-form__input_text"
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  v-model.trim="resetAccountForm.confirmPassword"
+                  @input="$v.resetAccountForm.confirmPassword.$touch"
+                />
+                <span
+                  id="s3-password-notmatch"
+                  class="cortx-form-group-label cortx-form-group-error-msg"
+                  v-if="
+                    $v.resetAccountForm.confirmPassword.$dirty &&
+                      !$v.resetAccountForm.confirmPassword.sameAsPassword
+                  "
+                  >Passwords do not match</span
+                >
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <button
+                type="button"
+                id="btnResetPassword"
+                class="cortx-btn-primary"
+                @click="resetPassword()"
+                :disabled="$v.resetAccountForm.$invalid"
+              >
+                {{ $t("s3.account.reset-btn") }}
+              </button>
+              <button
+                type="button"
+                id="btncancelResetpass"
+                class="cortx-btn-tertiary"
+                @click="closeResetPasswordForm()"
+              >
+                {{ $t("s3.account.cancel-btn") }}
+              </button>
+            </v-col>
+          </v-row>
+        </div>
       </v-col>
       <v-col class="py-0 col-3">
         <div v-if="showCreateUserForm" class="pa-2">
@@ -399,18 +514,28 @@ export default class CortxIAMUserManagement extends Vue {
     confirmPassword: ""
   };
   public iamConfirmMsg: string = "";
+  public resetAccountForm = {
+    password: "",
+    confirmPassword: ""
+  };
 
   @Validations()
   public validations = {
     createUserForm: {
       iamUser: {
-        user_name: { required, accountNameRegex },
+        user_name: { required, iamUserNameRegex },
         password: { required, passwordRegex }
       },
       confirmPassword: {
         sameAsPassword: sameAs(() => {
           return this.createUserForm.iamUser.password;
         })
+      }
+    },
+    resetAccountForm: {
+      password: { required, passwordRegex },
+      confirmPassword: {
+        sameAsPassword: sameAs("password")
       }
     }
   };
@@ -423,12 +548,14 @@ export default class CortxIAMUserManagement extends Vue {
   private usersList: IAMUser[] = [];
   private user: IAMUser;
   private userToDelete: string = "";
-  private passwordTooltipMessage: string = passwordTooltipMessage;
-  private usernameTooltipMessage: string = usernameTooltipMessage;
+  private passwordTooltipMessage = passwordTooltipMessage;
+  private iamUsernameTooltipMessage = iamUsernameTooltipMessage;
   private credentialsFileContent: string = "";
   private isCredentialsFileDownloaded: boolean = false;
   private selectedIAMUser: string = "";
   private itemsPerPage: number = 5;
+  private showResetAccountForm: boolean;
+  private resetAccoutName: string;
   private s3Url = [];
   private s3UrlNone: boolean = false;
 
@@ -436,7 +563,8 @@ export default class CortxIAMUserManagement extends Vue {
     super();
     this.showCreateUserForm = false;
     this.showUserDetailsDialog = false;
-    this.showConfirmDeleteDialog = false;
+    this.showConfirmDeleteDialog = false;    
+    this.showResetAccountForm = false;
     this.usersTableHeaderList = [
       {
         text: "Username",
@@ -453,9 +581,9 @@ export default class CortxIAMUserManagement extends Vue {
         value: "arn",
         sortable: false
       },
-      { 
-        text: "Action", 
-        value: "data-table-expand" 
+      {
+        text: "Action",
+        value: "data-table-expand"
       }
     ];
 
@@ -549,6 +677,37 @@ export default class CortxIAMUserManagement extends Vue {
     this.iamConfirmMsg = `${i18n.t("s3.iam.confirm-msg")} ${username}?`;
     this.userToDelete = username;
     this.showConfirmDeleteDialog = true;
+  }
+  
+  public onResetBtnClick(username: string) {
+    this.resetAccoutName = username;
+    this.showResetAccountForm = true;
+  }
+  
+  public async resetPassword() {
+    const updateDetails = {
+      password: this.resetAccountForm.password
+    };
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      this.$t("s3.account.loading-update")
+    );
+    const res = await Api.patch(
+      apiRegister.s3_account,
+      updateDetails,
+      this.resetAccoutName ? this.resetAccoutName : ""
+    );
+    this.closeResetPasswordForm();
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
+  public closeResetPasswordForm() {
+    this.resetAccountForm = {
+      password: ""
+    };
+    if (this.$v.resetAccountForm) {
+      this.$v.resetAccountForm.$reset();
+    }
+    this.showResetAccountForm = !this.showResetAccountForm;
   }
 
   public async closeConfirmDeleteDialog(confirmation: boolean) {
