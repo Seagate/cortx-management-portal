@@ -95,7 +95,7 @@
           <tr>
             <td style="width: 150px;">
               <label class="cortx-text-bold" id="issuer_common_name_lbl">{{
-                $t("aboutUs.common_name")
+                $t("aboutUs.common_name_lbl")
               }}</label>
             </td>
             <td class="cortx-td">
@@ -107,7 +107,7 @@
           <tr>
             <td>
               <label class="cortx-text-bold" id="issuer-country_name_lbl">{{
-                $t("aboutUs.country_name")
+                $t("aboutUs.country_name_lbl")
               }}</label>
             </td>
             <td class="cortx-td">
@@ -119,7 +119,7 @@
           <tr>
             <td>
               <label class="cortx-text-bold" id="issuer_locality_name_lbl">{{
-                $t("aboutUs.locality_name")
+                $t("aboutUs.locality_name_lbl")
               }}</label>
             </td>
             <td class="cortx-td">
@@ -133,7 +133,7 @@
               <label
                 class="cortx-text-bold"
                 id="issuer_organization_name_lbl"
-                >{{ $t("aboutUs.organization_name") }}</label
+                >{{ $t("aboutUs.organization_name_lbl") }}</label
               >
             </td>
             <td class="cortx-td">
@@ -153,7 +153,7 @@
           <tr>
             <td style="width: 150px;">
               <label class="cortx-text-bold" id="subject_common_name_lbl">{{
-                $t("aboutUs.common_name")
+                $t("aboutUs.common_name_lbl")
               }}</label>
             </td>
             <td class="cortx-td">
@@ -165,7 +165,7 @@
           <tr>
             <td>
               <label class="cortx-text-bold" id="subject_country_name_lbl">{{
-                $t("aboutUs.country_name")
+                $t("aboutUs.country_name_lbl")
               }}</label>
             </td>
             <td class="cortx-td">
@@ -177,7 +177,7 @@
           <tr>
             <td>
               <label class="cortx-text-bold" id="subject_locality_name_lbl">{{
-                $t("aboutUs.locality_name")
+                $t("aboutUs.locality_name_lbl")
               }}</label>
             </td>
             <td class="cortx-td">
@@ -191,7 +191,7 @@
               <label
                 class="cortx-text-bold"
                 id="subject_organization_name_lbl"
-                >{{ $t("aboutUs.organization_name") }}</label
+                >{{ $t("aboutUs.organization_name_lbl") }}</label
               >
             </td>
             <td class="cortx-td">
@@ -248,9 +248,10 @@ export default class Cortxaboutpage extends Vue {
   };
   public issuerDetails: any;
   public subject: any;
-  private showComponentTab: boolean = true;
-  private showIssuerTab: boolean = false;
-  private showSubjectTab: boolean = false;
+  public showComponentTab: boolean = true;
+  public showIssuerTab: boolean = false;
+  public showSubjectTab: boolean = false;
+
   @Watch("tabsInfo.selectedTab")
   public onPropertyChanged(value: number, oldValue: number) {
     switch (value) {
@@ -293,7 +294,7 @@ export default class Cortxaboutpage extends Vue {
   }
 
   public async getVersion() {
-    this.$store.dispatch("systemConfig/showLoader", "fetching details...");
+    this.$store.dispatch("systemConfig/showLoader", "Fetching details...");
     const res = await Api.getAll(apiRegister.version);
     this.$data.versionDetails = res.data;
     this.$store.dispatch("systemConfig/hideLoader");

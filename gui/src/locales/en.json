@@ -249,15 +249,10 @@
         "release": "Release:",
         "COMPONENTS": "COMPONENTS",
         "SerialNumber": "Serial No:",
-        "common_name":"Common Name",
-        "country_name":"Country Name",
-        "locality_name":"Locality Name",
-        "organization_name":"Organization Name",
-        "issuer_details":"Issuer Details",
-        "subject":"Subject Details"
-
-
-
+        "common_name_lbl":"Common Name",
+        "country_name_lbl":"Country Name",
+        "locality_name_lbl":"Locality Name",
+        "organization_name_lbl":"Organization Name"
     },
     "onBoarding": {
         "systemName": "System name",
