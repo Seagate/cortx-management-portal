@@ -16,7 +16,7 @@ please email opensource@seagate.com or cortx-questions@seagate.com.
 -->
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/0d5a80a03e08449482ab4da5185b7000)](https://www.codacy.com/gh/Seagate/cortx-management-portal/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Seagate/cortx-management-portal&amp;utm_campaign=Badge_Grade) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://github.com/Seagate/cortx-management-portal/blob/main/LICENSE)
-[![Slack](https://img.shields.io/badge/chat-on%20Slack-blue")](https://bit.ly/3609FAb)
+[![Slack](https://img.shields.io/badge/chat-on%20Slack-blue")](https://bit.ly/3609FAb) [![YouTube](https://img.shields.io/badge/Video-YouTube-red)](https://cortx.link/videos)
 
 
 # CORTX-Management Portal
