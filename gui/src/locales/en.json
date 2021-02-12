@@ -108,6 +108,7 @@
         "ok-text": "Ok",
         "password-required": "Password is required.",
         "invalid-pass": "Invalid password.",
+        "new-pass-label": "New passowrd*",
         "confirm-pass-label": "Confirm password*",
         "pass-not-match": "Passwords do not match",
         "confirm-dialog": {

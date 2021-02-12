@@ -100,12 +100,20 @@
                       class="cortx-cursor-pointer"
                       src="./../../assets/actions/delete-green.svg"
                     />
-                    <img
-                      id="iam-reset-password"
-                      v-on:click="onResetBtnClick(props.item.user_name)"
-                      class="cortx-cursor-pointer"
-                      src="@/assets/actions/edit-green.svg"
-                    />
+                    <v-tooltip right max-width="300">
+                      <template v-slot:activator="{ on }">
+                        <img
+                          id="iam-reset-password"
+                          v-on:click="onResetBtnClick(props.item.user_name)"
+                          v-on="on"
+                          class="cortx-cursor-pointer"
+                          src="@/assets/actions/edit-green.svg"
+                        />
+                      </template>
+                      <span id="reset-password-tooltip">
+                        {{ $t("s3.account.reset-password") }}
+                      </span>
+                    </v-tooltip>
                   </cortx-has-access>
                 </td>
               </tr>
@@ -292,8 +300,9 @@
         </cortx-has-access>
       </v-col>
     </v-row>
+
     <v-dialog 
-      v-model="showResetAccountForm" 
+      v-model="showResetPasswordDialog" 
       persistent
       max-width="500" 
       id="s3-resetaccount-form">
@@ -307,7 +316,7 @@
           />
         </v-card-title>        
         <v-divider />
-            <v-col class="col-6 ml-7">
+            <v-col class="col-6 ml-7 pb-o">
               <div
                 class="cortx-form-group-custom"
                 :class="{
@@ -317,25 +326,25 @@
               >
                 <label
                   class="cortx-form-group-label"
-                  for="userPassword"
-                  id="iam-passwordlbl"
+                  for="user-password"
+                  id="iam-password-label"
                 >
                   <cortx-info-tooltip
-                    label="Password*"
+                    :label="$t('common.new-pass-label')"
                     :message="passwordTooltipMessage"
                   />
                 </label>
                 <input
                   class="cortx-form__input_text"
                   type="password"
-                  id="userPassword"
-                  name="userPassword"
+                  id="user-password"
+                  name="user-password"
                   v-model.trim="resetAccountForm.password"
                   @input="$v.resetAccountForm.password.$touch"
                 />
                 <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
-                    id="iam-password-required"
+                    id="iam-password-required-error"
                     v-if="
                       $v.resetAccountForm.password.$dirty &&
                         !$v.resetAccountForm.password.required
@@ -343,7 +352,7 @@
                     >{{ $t("common.password-required") }}</label
                   >
                   <label
-                    id="iam-password-invalid"
+                    id="iam-password-invalid-error"
                     v-else-if="
                       $v.resetAccountForm.password.$dirty &&
                         !$v.resetAccountForm.password.passwordRegex
@@ -353,7 +362,7 @@
                 </div>
               </div>
             </v-col>
-            <v-col class="col-6 ml-7">
+            <v-col class="col-6 ml-7 pt-0">
               <div
                 class="cortx-form-group-custom"
                 :class="{
@@ -363,20 +372,20 @@
               >
                 <label
                   class="cortx-form-group-label"
-                  for="confirmPassword"
-                  id="iam-confirmpasslbl"
+                  for="confirm-password"
+                  id="iam-confirmpass-label"
                   >{{ $t("common.confirm-pass-label") }}</label
                 >
                 <input
                   class="cortx-form__input_text"
                   type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
+                  id="confirm-password"
+                  name="confirm-password"
                   v-model.trim="resetAccountForm.confirmPassword"
                   @input="$v.resetAccountForm.confirmPassword.$touch"
                 />
                 <span
-                  id="iam-confirmpass-notmatch"
+                  id="iam-confirmpass-notmatch-error"
                   class="cortx-form-group-label cortx-form-group-error-msg"
                   v-if="
                     $v.resetAccountForm.confirmPassword.$dirty &&
@@ -386,10 +395,10 @@
                 >
               </div>
             </v-col>
-            <v-col class="col-6 ml-7">
+            <v-col class="col-6 ml-7 pb-6">
               <button
                 type="button"
-                id="btnResetPassword"
+                id="reset-password-button"
                 class="cortx-btn-primary"
                 @click="resetPassword()"
                 :disabled="$v.resetAccountForm.$invalid"
@@ -398,7 +407,7 @@
               </button>
               <button
                 type="button"
-                id="btncancelResetpass"
+                id="cancel-button"
                 class="cortx-btn-tertiary"
                 @click="closeResetPasswordForm()"
               >
@@ -407,6 +416,7 @@
             </v-col>
       </v-card>
     </v-dialog>
+
     <v-dialog
       v-model="showUserDetailsDialog"
       persistent
@@ -569,7 +579,7 @@ export default class CortxIAMUserManagement extends Vue {
   private itemsPerPage: number = 5;
   private s3Url = [];
   private s3UrlNone: boolean = false;  
-  private showResetAccountForm: boolean;
+  private showResetPasswordDialog: boolean;
   private resetAccoutName: string;
 
   constructor() {
@@ -577,7 +587,7 @@ export default class CortxIAMUserManagement extends Vue {
     this.showCreateUserForm = false;
     this.showUserDetailsDialog = false;
     this.showConfirmDeleteDialog = false;
-    this.showResetAccountForm = false;
+    this.showResetPasswordDialog = false;
     this.usersTableHeaderList = [
       {
         text: "Username",
@@ -727,7 +737,7 @@ export default class CortxIAMUserManagement extends Vue {
   }
   
   public onResetBtnClick(item: any) {
-    this.showResetAccountForm = true;
+    this.showResetPasswordDialog = true;
     this.resetAccoutName = item;
   }
 
@@ -755,7 +765,7 @@ export default class CortxIAMUserManagement extends Vue {
     if (this.$v.resetAccountForm) {
       this.$v.resetAccountForm.$reset();
     }
-    this.showResetAccountForm = !this.showResetAccountForm;
+    this.showResetPasswordDialog = !this.showResetPasswordDialog;
   }
 }
 </script>
