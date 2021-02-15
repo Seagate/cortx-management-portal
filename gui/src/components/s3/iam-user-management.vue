@@ -318,7 +318,7 @@
         <v-divider />
             <v-col class="col-6 ml-7 pb-o">
               <div
-                class="cortx-form-group-custom"
+                class="cortx-form-group"
                 :class="{
                   'cortx-form-group--error':
                     $v.resetAccountForm.password.$error
@@ -364,7 +364,7 @@
             </v-col>
             <v-col class="col-6 ml-7 pt-0">
               <div
-                class="cortx-form-group-custom"
+                class="cortx-form-group"
                 :class="{
                   'cortx-form-group--error':
                     $v.resetAccountForm.confirmPassword.$error
