@@ -36,7 +36,7 @@
     <cortx-has-access
       :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
     >
-      <div class="mt-2 pl-2">
+      <div class="mt-2 pl-2" v-if="showS3URL">
         <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
           {{ $t("s3.account.url-label") }}
         </label>
@@ -661,6 +661,7 @@ export default class CortxAccountManagement extends Vue {
   private editAccoutName: string;
   private s3Url = [];
   private s3UrlNone: boolean = false;
+  private showS3URL: boolean = false;
 
   constructor() {
     super();
@@ -700,8 +701,13 @@ export default class CortxAccountManagement extends Vue {
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
     this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
+    
     if (this.s3Url[0] === "http://None") {
       this.s3UrlNone = true;
+    }
+    this.s3Url = this.s3Url.filter(function(a){return (a !== 'http://None' && a !== 'https://None') });
+    if (this.s3Url.length) {
+      this.showS3URL = true;
     }
 
     this.$store.dispatch("systemConfig/hideLoader");
