@@ -48,7 +48,7 @@
               <tr :id="props.item.name">
                 <td id="bucket-name">
                   {{ props.item.name }}
-                  <v-tooltip right max-width="300" v-if="props.item.bucket_url">
+                  <v-tooltip right max-width="300" v-if="props.item.bucket_url && !props.item.bucket_url.includes('/None/')">
                     <template v-slot:activator="{ on }">
                       <img
                         :id="`copy-bucket-url-${props.item.name}`"
@@ -194,7 +194,7 @@
             $t("s3.bucket.created-successfully")
           }}</span>
           <table class="mt-2 ml-9 cortx-text-md">
-            <tr id="bucket-url-tr">
+            <tr id="bucket-url-tr" v-if="!bucketUrlNone">
               <td
                 id="bucket-url-td-label"
                 class="py-2 cortx-text-bold bucket-url-label"
@@ -377,6 +377,7 @@ export default class CortxBucketCreation extends Vue {
   private bucketNameTooltipMessage = bucketNameTooltipMessage;
   private bucketUrl = "";
   private noBucketPolicy: boolean;
+  private bucketUrlNone: boolean = false;
 
   constructor() {
     super();
@@ -431,6 +432,9 @@ export default class CortxBucketCreation extends Vue {
       this.createBucketForm.bucket
     );
     this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
+    if (this.bucketUrl.includes("/None/")) {
+      this.bucketUrlNone = true;
+    }
     if (!res.error) {
       this.showBucketCreateSuccessDialog = true;
     }
