@@ -723,6 +723,7 @@ export default class CortxAccountManagement extends Vue {
       this.credentialsFileContent =
         "data:text/plain;charset=utf-8," +
         encodeURIComponent(this.getCredentialsFileContent());
+        this.s3UrlNone = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showAccountDetailsDialog = true;
