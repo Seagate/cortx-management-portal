@@ -48,6 +48,10 @@ export class SocketService {
             wslistener.onerror = function (err: any) {
                 console.log("TCL: SocketService -> wslistener.onerror -> err", err);
             }
+            ws.onclose = (closeEvent: any) => {
+                console.log("logger: WebSocket connection closed");
+                wslistener.close();
+            };
         });
     }
 }
