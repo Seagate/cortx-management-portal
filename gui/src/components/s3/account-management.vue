@@ -36,7 +36,7 @@
     <cortx-has-access
       :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
     >
-      <div class="mt-2 pl-2" v-if="!s3UrlNone">
+      <div class="mt-2 pl-2" v-if="!isS3UrlNone">
         <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
           {{ $t("s3.account.url-label") }}
         </label>
@@ -142,7 +142,7 @@
         >
           <cortx-access-key-management
             :s3Url="s3Url.toString()"
-            :s3UrlNone="s3UrlNone"
+            :s3UrlNone="isS3UrlNone"
           ></cortx-access-key-management>
         </cortx-has-access>
       </v-col>
@@ -510,7 +510,7 @@
               {{ account.account_name }}
             </td>
           </tr>
-          <tr v-if="!s3UrlNone">
+          <tr v-if="!isS3UrlNone">
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-access-key-popup-label"
@@ -562,7 +562,7 @@
           </tr>
         </table>
 
-        <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note") }}</div>
+        <div v-if="isS3UrlNone" class="pl-7">{{ $t("s3.account.url-note") }}</div>
 
         <v-card-actions>
           <a
@@ -660,7 +660,7 @@ export default class CortxAccountManagement extends Vue {
   private showEditAccountForm: boolean;
   private editAccoutName: string;
   private s3Url = [];
-  private s3UrlNone: boolean = false;
+  private isS3UrlNone: boolean = true;
 
   constructor() {
     super();
@@ -700,10 +700,7 @@ export default class CortxAccountManagement extends Vue {
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
     this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
-    
-    if (this.s3Url.length && this.s3Url[0] === "http://None") {
-      this.s3UrlNone = true;
-    }
+    this.isS3UrlNone = this.s3Url.length == 0 || this.s3Url[0] === "http://None";
 
     this.$store.dispatch("systemConfig/hideLoader");
   }
@@ -723,7 +720,7 @@ export default class CortxAccountManagement extends Vue {
       this.credentialsFileContent =
         "data:text/plain;charset=utf-8," +
         encodeURIComponent(this.getCredentialsFileContent());
-        this.s3UrlNone = true;
+        this.isS3UrlNone = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showAccountDetailsDialog = true;

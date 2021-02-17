@@ -194,7 +194,7 @@
             $t("s3.bucket.created-successfully")
           }}</span>
           <table class="mt-2 ml-9 cortx-text-md">
-            <tr id="bucket-url-tr" v-if="!bucketUrlNone">
+            <tr id="bucket-url-tr" v-if="!isBucketUrlNone">
               <td
                 id="bucket-url-td-label"
                 class="py-2 cortx-text-bold bucket-url-label"
@@ -377,7 +377,7 @@ export default class CortxBucketCreation extends Vue {
   private bucketNameTooltipMessage = bucketNameTooltipMessage;
   private bucketUrl = "";
   private noBucketPolicy: boolean;
-  private bucketUrlNone: boolean = false;
+  private isBucketUrlNone: boolean = false;
 
   constructor() {
     super();
@@ -433,7 +433,7 @@ export default class CortxBucketCreation extends Vue {
     );
     this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
     if (this.bucketUrl.includes("/None/")) {
-      this.bucketUrlNone = true;
+      this.isBucketUrlNone = true;
     }
     if (!res.error) {
       this.showBucketCreateSuccessDialog = true;
