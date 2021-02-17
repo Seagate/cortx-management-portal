@@ -719,6 +719,14 @@
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
     ></cortx-confirmation-dialog>
+
+    <cortx-confirmation-dialog
+      id="s3-success-dialog"
+      :show="showSuccessDialog"
+      title="Success"
+      :message= successMessage
+      @closeDialog="closeSuccessDialog"
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -806,6 +814,7 @@ export default class CortxAccountManagement extends Vue {
   private s3UrlNone: boolean = false;
   private showResetPasswordDialog: boolean;
   private resetAccoutName: string;
+  private showSuccessDialog: boolean = false;
 
   constructor() {
     super();
@@ -836,7 +845,8 @@ export default class CortxAccountManagement extends Vue {
     return {
       constStr: require("./../../common/const-string.json"),
       userData: [],
-      loggedInUserName: localStorage.getItem("username")
+      loggedInUserName: localStorage.getItem("username"),
+      successMessage: ""
     };
   }
   public async mounted() {
@@ -1047,6 +1057,13 @@ export default class CortxAccountManagement extends Vue {
       this.resetAccoutName ? this.resetAccoutName : ""
     );
     this.closeResetPasswordForm();
+    this.$store.dispatch("systemConfig/hideLoader");
+    this.$data.successMessage = `${this.$t("s3.account.password-reset-message")} ${res.data.account_name}`;
+    this.showSuccessDialog = true;
+  }
+
+  public async closeSuccessDialog() {
+    this.showSuccessDialog = false;
   }
 
   public closeResetPasswordForm() {

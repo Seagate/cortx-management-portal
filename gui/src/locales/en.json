@@ -72,7 +72,8 @@
             "url-note": "Note: This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface.",
             "account_id": "Account id",
             "canonical_id": "Canonical id",
-            "download-as-csv-continue": "Download and continue"
+            "download-as-csv-continue": "Download and continue",
+            "password-reset-message": "Password updated successfully for "
         },
         "bucket": {
             "name-require": "Bucket name is required.",
