@@ -501,7 +501,7 @@
           />
         </v-card-title>        
         <v-divider />
-            <v-col class="col-6 ml-7 pb-o">
+            <v-col class="col-6 ml-7 pb-0">
               <div
                 class="cortx-form-group"
                 :class="{
@@ -580,7 +580,7 @@
                 >
               </div>
             </v-col>
-            <v-col class="col-6 ml-7 pb-6">
+            <v-col class="col-6 ml-7 pb-6 pt-0">
               <button
                 type="button"
                 id="reset-password-button"
