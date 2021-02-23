@@ -18,7 +18,7 @@ Name: <RPM_NAME>
 Version: %{version}
 Release: %{dist}
 Summary: CSM Tools
-License: Seagate Proprietary
+License: Seagate
 URL: http://gitlab.mero.colo.seagate.com/eos/csm
 Source0: <PRODUCT>-csm_web-%{version}.tar.gz
 %define debug_package %{nil}

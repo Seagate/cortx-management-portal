@@ -15,22 +15,11 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 import { Request, Response, request, response } from "express";
-import { getSessionKey, saveUser, logout, getAdminUser, license } from "./login-controller";
+import { saveUser, logout, getAdminUser, license } from "./login-controller";
 import { checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
 export default [
-  {
-    path: "/api/v1/sessionkey",
-    method: "get",
-    handler: [
-      checkRequiredParams, // <-- this line
-      async (req: Request, res: Response) => {
-        const result = await getSessionKey(req.query.user);
-        res.status(res.statusCode).send(result);
-      }
-    ]
-  },
   {
     path: "/api/v1/login",
     method: "post",
