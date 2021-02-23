@@ -507,8 +507,10 @@
       id="iam-success-dialog"
       :show="showSuccessDialog"
       title="Success"
-      :message= successMessage
+      :message="successMessage"
       @closeDialog="closeSuccessDialog"
+      confirmButtonText="Ok"
+      cancelButtonText=""
     ></cortx-confirmation-dialog>
   </div>
 </template>
@@ -590,6 +592,7 @@ export default class CortxIAMUserManagement extends Vue {
   private showResetPasswordDialog: boolean;
   private resetAccoutName: string;
   private showSuccessDialog: boolean = false;
+  private successMessage: string = "";
 
   constructor() {
     super();
@@ -620,11 +623,6 @@ export default class CortxIAMUserManagement extends Vue {
     ];
 
     this.user = {} as IAMUser;
-  }
-  public data() {
-    return {
-      successMessage: ""
-    };
   }
 
   public async mounted() {
@@ -770,7 +768,7 @@ export default class CortxIAMUserManagement extends Vue {
     );
     this.closeResetPasswordForm();
     this.$store.dispatch("systemConfig/hideLoader");
-    this.$data.successMessage = `${this.$t("s3.account.password-reset-message")} ${res.data.account_name}`;
+    this.successMessage = `${this.$t("s3.account.password-reset-message")} ${res.data.account_name}`;
     this.showSuccessDialog = true;
   }
 

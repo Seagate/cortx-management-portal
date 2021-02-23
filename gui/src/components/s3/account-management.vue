@@ -119,7 +119,7 @@
                   />
                 </cortx-has-access>
                 <div
-                  v-if = "isLoggedInUserAdminOrManage()">
+                  v-if = "isResetPasswordAllowed">
                   <v-tooltip right max-width="300">
                     <template v-slot:activator="{ on }">
                       <img
@@ -724,8 +724,10 @@
       id="s3-success-dialog"
       :show="showSuccessDialog"
       title="Success"
-      :message= successMessage
+      :message="successMessage"
       @closeDialog="closeSuccessDialog"
+      confirmButtonText="Ok"
+      cancelButtonText=""
     ></cortx-confirmation-dialog>
   </div>
 </template>
@@ -815,6 +817,10 @@ export default class CortxAccountManagement extends Vue {
   private showResetPasswordDialog: boolean;
   private resetAccoutName: string;
   private showSuccessDialog: boolean = false;
+  private userData: any[];
+  private loggedInUserName: string = "";
+  private successMessage: string = "";
+  private isResetPasswordAllowed: boolean = false;
 
   constructor() {
     super();
@@ -824,6 +830,7 @@ export default class CortxAccountManagement extends Vue {
     this.showConfirmDeleteDialog = false;
     this.showEditAccountForm = false;
     this.showResetPasswordDialog = false;
+    this.loggedInUserName = localStorage.getItem("username");
     this.accountsTableHeaderList = [
       {
         text: "Account name",
@@ -844,9 +851,6 @@ export default class CortxAccountManagement extends Vue {
   public data() {
     return {
       constStr: require("./../../common/const-string.json"),
-      userData: [],
-      loggedInUserName: localStorage.getItem("username"),
-      successMessage: ""
     };
   }
   public async mounted() {
@@ -867,42 +871,21 @@ export default class CortxAccountManagement extends Vue {
     
     const cms_res = await Api.getAll(apiRegister.csm_user);
     if (cms_res && cms_res.data && cms_res.data.users) {
-      this.$data.userData = cms_res.data.users;
+      this.userData = cms_res.data.users;
     }
 
+    this.isLoggedInUserAdminOrManage();
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
-  private isLoggedInUserAdminOrManage() {
-    let isAllowed;
-    const data = this.$data.userData.find((element: any) => {
-      if (
-        this.strEqualityCaseInsensitive(
-          element.username,
-          this.$data.loggedInUserName
-        )
-      ) {
+  public isLoggedInUserAdminOrManage() {
+    const usersData = this.userData.find((element: any) => {
+      if (element.username.localeCompare(this.loggedInUserName, undefined, { sensitivity: "base" }) === 0) {
         return true;
       }
     });
-
-    if (data) {
-      isAllowed = this.isAllowedUser(data);
-    }
-    return isAllowed;
-  }
-
-  private strEqualityCaseInsensitive(first: string, second: string) {
-    return (
-      first.localeCompare(second, undefined, { sensitivity: "base" }) === 0
-    );
-  }
-
-  private isAllowedUser(item: any) {
-    if (item.roles.includes("admin") || item.roles.includes("manage")) {
-      return true;
-    }  else {
-      return false;
+    if (usersData) {
+      this.isResetPasswordAllowed = usersData.roles.includes("admin") || usersData.roles.includes("manage")
     }
   }
 
@@ -1058,7 +1041,7 @@ export default class CortxAccountManagement extends Vue {
     );
     this.closeResetPasswordForm();
     this.$store.dispatch("systemConfig/hideLoader");
-    this.$data.successMessage = `${this.$t("s3.account.password-reset-message")} ${res.data.account_name}`;
+    this.successMessage = `${this.$t("s3.account.password-reset-message")} ${res.data.account_name}`;
     this.showSuccessDialog = true;
   }
 
