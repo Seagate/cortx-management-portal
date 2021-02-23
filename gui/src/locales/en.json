@@ -116,6 +116,7 @@
         "back": "Back",
         "Id": "Id",
         "name": "Name",
+        "action": "Action",
         "poweredBy": "Powered by",
         "start": "Start",
         "apply": "Apply",
