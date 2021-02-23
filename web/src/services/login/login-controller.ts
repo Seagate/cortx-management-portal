@@ -14,21 +14,9 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-import { getSessionKeys } from "./providers/session-provider";
 import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response, request, response } from "express";
-
-export const getSessionKey = async (user: string) => {
-  // if (q.length < 3) {
-  //   return {
-  //     type: "FeatureCollection",
-  //     features: []
-  //   };
-  // }
-
-  return await getSessionKeys(user);
-};
 
 /**
  * This method is to get the admin user details
