@@ -14,6 +14,9 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
+import dotenv from "dotenv";
+
+dotenv.config();
 import { createLogger, format, transports } from 'winston';
 const { combine, timestamp , json } = format;
 const logger = createLogger({
