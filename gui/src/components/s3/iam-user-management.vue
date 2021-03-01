@@ -19,7 +19,7 @@
     <cortx-has-access
       :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
     >
-      <div class="mt-2 pl-2">
+      <div class="mt-2 pl-2" v-if="!isS3UrlNone">
         <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
           {{ $t("s3.account.url-label") }}
         </label>
@@ -125,7 +125,7 @@
             <cortx-access-key-management
               :userNameIAM="selectedIAMUser"
               :s3Url="s3Url.toString()"
-              :s3UrlNone="s3UrlNone"
+              :s3UrlNone="isS3UrlNone"
             ></cortx-access-key-management>
           </cortx-has-access>
         </cortx-has-access>
@@ -453,7 +453,7 @@
             </td>
             <td class="py-2">{{ user.user_id }}</td>
           </tr>
-          <tr v-if="!s3UrlNone">
+          <tr v-if="!isS3UrlNone">
             <td class="py-2 cortx-text-bold credentials-item-label">
               {{ $t("s3.account.s3-url") }}
             </td>
@@ -479,7 +479,7 @@
           </tr>
         </table>
 
-        <div v-if="s3UrlNone" class="pl-7">{{ $t("s3.account.url-note") }}</div>
+        <div v-if="isS3UrlNone" class="pl-7">{{ $t("s3.account.url-note") }}</div>
         <v-card-actions>
           <a
             id="iam-downloadcsvfile"
@@ -588,11 +588,11 @@ export default class CortxIAMUserManagement extends Vue {
   private selectedIAMUser: string = "";
   private itemsPerPage: number = 5;
   private s3Url = [];
-  private s3UrlNone: boolean = false;  
   private showResetPasswordDialog: boolean;
   private resetAccoutName: string;
   private showSuccessDialog: boolean = false;
   private successMessage: string = "";
+  private isS3UrlNone: boolean = true;
 
   constructor() {
     super();
@@ -637,9 +637,7 @@ export default class CortxIAMUserManagement extends Vue {
     const res: any = await Api.getAll(apiRegister.s3_iam_user);
     this.usersList = res && res.data ? res.data.iam_users : [];
     this.s3Url = res && res.data.s3_urls ? res.data.s3_urls : [];
-    if (this.s3Url[0] === "http://None") {
-      this.s3UrlNone = true;
-    }
+    this.isS3UrlNone = this.s3Url.length === 0;
     this.selectedIAMUser = this.usersList.length
       ? this.usersList[0].user_name
       : "";
@@ -657,6 +655,7 @@ export default class CortxIAMUserManagement extends Vue {
       this.credentialsFileContent =
         "data:text/plain;charset=utf-8," +
         encodeURIComponent(this.getCredentialsFileContent());
+        this.isS3UrlNone = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showUserDetailsDialog = true;
