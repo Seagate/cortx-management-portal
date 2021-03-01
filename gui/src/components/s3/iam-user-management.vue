@@ -222,7 +222,7 @@
                       $v.createUserForm.iamUser.password.$dirty &&
                         !$v.createUserForm.iamUser.password.passwordRegex
                     "
-                    >{{ $t("common.invalid-pass") }}</label
+                    >{{ $t("common.invalid-password") }}</label
                   >
                 </div>
               </div>
@@ -241,7 +241,7 @@
                   class="cortx-form-group-label"
                   for="confirmPassword"
                   id="iam-confirmpasslbl"
-                  >{{ $t("common.confirm-pass-label") }}</label
+                  >{{ $t("common.confirm-password-label") }}</label
                 >
                 <input
                   class="cortx-form__input_text"
@@ -258,7 +258,7 @@
                     $v.createUserForm.confirmPassword.$dirty &&
                       !$v.createUserForm.confirmPassword.sameAsPassword
                   "
-                  >{{ $t("common.pass-not-match") }}</span
+                  >{{ $t("common.password-not-match") }}</span
                 >
               </div>
             </v-col>
@@ -330,7 +330,7 @@
                   id="iam-password-label"
                 >
                   <cortx-info-tooltip
-                    :label="$t('common.new-pass-label')"
+                    :label="$t('common.new-password-label')"
                     :message="passwordTooltipMessage"
                   />
                 </label>
@@ -357,7 +357,7 @@
                       $v.resetAccountForm.password.$dirty &&
                         !$v.resetAccountForm.password.passwordRegex
                     "
-                    >{{ $t("common.invalid-pass") }}</label
+                    >{{ $t("common.invalid-password") }}</label
                   >
                 </div>
               </div>
@@ -374,7 +374,7 @@
                   class="cortx-form-group-label"
                   for="confirm-password"
                   id="iam-confirmpass-label"
-                  >{{ $t("common.confirm-pass-label") }}</label
+                  >{{ $t("common.confirm-password-label") }}</label
                 >
                 <input
                   class="cortx-form__input_text"
@@ -391,7 +391,7 @@
                     $v.resetAccountForm.confirmPassword.$dirty &&
                       !$v.resetAccountForm.confirmPassword.sameAsPassword
                   "
-                  >{{ $t("common.pass-not-match") }}</span
+                  >{{ $t("common.password-not-match") }}</span
                 >
               </div>
             </v-col>

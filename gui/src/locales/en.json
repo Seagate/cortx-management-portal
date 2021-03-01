@@ -108,10 +108,10 @@
         "delete-btn": "Delete",
         "ok-text": "Ok",
         "password-required": "Password is required.",
-        "invalid-pass": "Invalid password.",
-        "new-pass-label": "New passowrd*",
-        "confirm-pass-label": "Confirm password*",
-        "pass-not-match": "Passwords do not match",
+        "invalid-password": "Invalid password.",
+        "new-password-label": "New passowrd*",
+        "confirm-password-label": "Confirm password*",
+        "password-not-match": "Passwords do not match",
         "confirm-dialog": {
             "title": "Confirmation"
         },
