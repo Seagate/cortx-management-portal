@@ -34,3 +34,7 @@ export const certificateAvailability = async (req: Request, res: Response) => {
   const result = await Api.getAll(apiRegister.ssl_status, req, res);
   return result;
 };
+export const certificateDetails = async (req: Request, res: Response) => {
+  const result = await Api.getAll(apiRegister.ssl_details, req, res);
+  return result;
+};
