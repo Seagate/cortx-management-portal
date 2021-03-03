@@ -19,6 +19,7 @@ please email opensource@seagate.com or cortx-questions@seagate.com.
 [![Slack](https://img.shields.io/badge/chat-on%20Slack-blue")](https://bit.ly/3609FAb) [![YouTube](https://img.shields.io/badge/Video-YouTube-red)](https://cortx.link/videos)
 
 
+
 # CORTX-Management Portal
 
 CORTX Management Portal provides user interface (UI) to facilitate the easy utility of different CORTX components and features. It communicates with CORTX manager through middleware application. The CORTX Manager communicates with different CORTX components and features and gives proper response to CORTX Management Portal.
