@@ -592,7 +592,6 @@ export default class CortxIAMUserManagement extends Vue {
   private resetAccoutName: string;
   private showSuccessDialog: boolean = false;
   private successMessage: string = "";
-
   private isS3UrlNone: boolean = true;
 
   constructor() {
