@@ -72,7 +72,8 @@
             "url-note": "Note: This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface.",
             "account_id": "Account id",
             "canonical_id": "Canonical id",
-            "download-as-csv-continue": "Download and continue"
+            "download-as-csv-continue": "Download and continue",
+            "password-reset-message": "Password updated successfully for "
         },
         "bucket": {
             "name-require": "Bucket name is required.",
@@ -107,15 +108,17 @@
         "delete-btn": "Delete",
         "ok-text": "Ok",
         "password-required": "Password is required.",
-        "invalid-pass": "Invalid password.",
-        "confirm-pass-label": "Confirm password*",
-        "pass-not-match": "Passwords do not match",
+        "invalid-password": "Invalid password.",
+        "new-password-label": "New passowrd*",
+        "confirm-password-label": "Confirm password*",
+        "password-not-match": "Passwords do not match",
         "confirm-dialog": {
             "title": "Confirmation"
         },
         "back": "Back",
         "Id": "Id",
         "name": "Name",
+        "action": "Action",
         "poweredBy": "Powered by",
         "start": "Start",
         "apply": "Apply",
