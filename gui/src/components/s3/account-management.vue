@@ -118,6 +118,23 @@
                     src="@/assets/actions/edit-green.svg"
                   />
                 </cortx-has-access>
+                <div
+                  v-if = "isResetPasswordAllowed">
+                  <v-tooltip right max-width="300">
+                    <template v-slot:activator="{ on }">
+                      <img
+                        id="iam-reset-password"
+                        v-on:click="onResetBtnClick(item)"
+                        v-on="on"
+                        class="cortx-cursor-pointer"
+                        src="@/assets/actions/edit-green.svg"
+                      />
+                    </template>
+                    <span id="reset-password-tooltip">
+                      {{ $t("s3.account.reset-password") }}
+                    </span>
+                  </v-tooltip>
+                </div>
                 <cortx-has-access
                   class="mx-2"
                   :to="
@@ -468,6 +485,122 @@
         </cortx-has-access>
       </v-col>
     </v-row>
+    
+    <v-dialog 
+      v-model="showResetPasswordDialog" 
+      persistent
+      max-width="500" 
+      id="s3-resetaccount-form">
+      <v-card>
+        <v-card-title class="title mt-6 ml-3">
+          <span>{{ $t("s3.account.reset-password") }}</span>
+          <img id="close-reset-password-dialog"
+            class="cortx-modal-close"
+            :src="require('@/assets/close-green.svg')"
+            @click="closeResetPasswordForm()"
+          />
+        </v-card-title>        
+        <v-divider />
+            <v-col class="col-6 ml-7 pb-0">
+              <div
+                class="cortx-form-group"
+                :class="{
+                  'cortx-form-group--error':
+                    $v.resetAccountForm.password.$error
+                }"
+              >
+                <label
+                  class="cortx-form-group-label"
+                  for="user-password"
+                  id="iam-password-label"
+                >
+                  <cortx-info-tooltip
+                    :label="$t('common.new-password-label')"
+                    :message="passwordTooltipMessage"
+                  />
+                </label>
+                <input
+                  class="cortx-form__input_text"
+                  type="password"
+                  id="user-password"
+                  name="user-password"
+                  v-model.trim="resetAccountForm.password"
+                  @input="$v.resetAccountForm.password.$touch"
+                />
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                  <label
+                    id="iam-password-required-error"
+                    v-if="
+                      $v.resetAccountForm.password.$dirty &&
+                        !$v.resetAccountForm.password.required
+                    "
+                    >{{ $t("common.password-required") }}</label
+                  >
+                  <label
+                    id="iam-password-invalid-error"
+                    v-else-if="
+                      $v.resetAccountForm.password.$dirty &&
+                        !$v.resetAccountForm.password.passwordRegex
+                    "
+                    >{{ $t("common.invalid-password") }}</label
+                  >
+                </div>
+              </div>
+            </v-col>
+            <v-col class="col-6 ml-7 pt-0">
+              <div
+                class="cortx-form-group"
+                :class="{
+                  'cortx-form-group--error':
+                    $v.resetAccountForm.confirmPassword.$error
+                }"
+              >
+                <label
+                  class="cortx-form-group-label"
+                  for="confirm-password"
+                  id="iam-confirmpass-label"
+                  >{{ $t("common.confirm-password-label") }}</label
+                >
+                <input
+                  class="cortx-form__input_text"
+                  type="password"
+                  id="confirm-password"
+                  name="confirm-password"
+                  v-model.trim="resetAccountForm.confirmPassword"
+                  @input="$v.resetAccountForm.confirmPassword.$touch"
+                />
+                <span
+                  id="iam-confirmpass-notmatch-error"
+                  class="cortx-form-group-label cortx-form-group-error-msg"
+                  v-if="
+                    $v.resetAccountForm.confirmPassword.$dirty &&
+                      !$v.resetAccountForm.confirmPassword.sameAsPassword
+                  "
+                  >{{ $t("common.password-not-match") }}</span
+                >
+              </div>
+            </v-col>
+            <v-col class="col-6 ml-7 pb-6 pt-0">
+              <button
+                type="button"
+                id="reset-password-button"
+                class="cortx-btn-primary"
+                @click="resetPassword()"
+                :disabled="$v.resetAccountForm.$invalid"
+              >
+                {{ $t("s3.account.reset-btn") }}
+              </button>
+              <button
+                type="button"
+                id="cancel-button"
+                class="cortx-btn-tertiary"
+                @click="closeResetPasswordForm()"
+              >
+                {{ $t("s3.account.cancel-btn") }}
+              </button>
+            </v-col>
+      </v-card>
+    </v-dialog>
 
     <v-dialog
       v-model="showAccountDetailsDialog"
@@ -586,6 +719,16 @@
       @closeDialog="closeConfirmDeleteDialog"
       cancelButtonText="No"
     ></cortx-confirmation-dialog>
+
+    <cortx-confirmation-dialog
+      id="s3-success-dialog"
+      :show="showSuccessDialog"
+      title="Success"
+      :message="successMessage"
+      @closeDialog="closeSuccessDialog"
+      confirmButtonText="Ok"
+      cancelButtonText=""
+    ></cortx-confirmation-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -622,6 +765,10 @@ export default class CortxAccountManagement extends Vue {
     password: "",
     confirmPassword: ""
   };
+  public resetAccountForm = {
+    password: "",
+    confirmPassword: ""
+  };
 
   @Validations()
   public validations = {
@@ -638,6 +785,12 @@ export default class CortxAccountManagement extends Vue {
       }
     },
     editAccountForm: {
+      password: { required, passwordRegex },
+      confirmPassword: {
+        sameAsPassword: sameAs("password")
+      }
+    },
+    resetAccountForm: {
       password: { required, passwordRegex },
       confirmPassword: {
         sameAsPassword: sameAs("password")
@@ -660,6 +813,14 @@ export default class CortxAccountManagement extends Vue {
   private showEditAccountForm: boolean;
   private editAccoutName: string;
   private s3Url = [];
+  private showResetPasswordDialog: boolean;
+  private resetAccoutName: string;
+  private showSuccessDialog: boolean = false;
+  private userData: any[];
+  private loggedInUserName: string = "";
+  private successMessage: string = "";
+  private isResetPasswordAllowed: boolean = false;
+
   private isS3UrlNone: boolean = true;
 
   constructor() {
@@ -669,6 +830,8 @@ export default class CortxAccountManagement extends Vue {
     this.showAccountDetailsDialog = false;
     this.showConfirmDeleteDialog = false;
     this.showEditAccountForm = false;
+    this.showResetPasswordDialog = false;
+    this.loggedInUserName = localStorage.getItem("username");
     this.accountsTableHeaderList = [
       {
         text: "Account name",
@@ -680,12 +843,15 @@ export default class CortxAccountManagement extends Vue {
         value: "account_email",
         sortable: false
       },
-      { text: "", value: "data-table-expand" }
+      { 
+        text: "Action", 
+        value: "data-table-expand" 
+      }
     ];
   }
   public data() {
     return {
-      constStr: require("./../../common/const-string.json")
+      constStr: require("./../../common/const-string.json"),
     };
   }
   public async mounted() {
@@ -701,8 +867,25 @@ export default class CortxAccountManagement extends Vue {
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
     this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
     this.isS3UrlNone = this.s3Url.length === 0;
+ 
+    const cms_res = await Api.getAll(apiRegister.csm_user);
+    if (cms_res && cms_res.data && cms_res.data.users) {
+      this.userData = cms_res.data.users;
+    }
 
+    this.isLoggedInUserAdminOrManage();
     this.$store.dispatch("systemConfig/hideLoader");
+  }
+
+  public isLoggedInUserAdminOrManage() {
+    const usersData = this.userData.find((element: any) => {
+      if (element.username.localeCompare(this.loggedInUserName, undefined, { sensitivity: "base" }) === 0) {
+        return true;
+      }
+    });
+    if (usersData) {
+      this.isResetPasswordAllowed = usersData.roles.includes("admin") || usersData.roles.includes("manage")
+    }
   }
 
   public async createAccount() {
@@ -836,6 +1019,45 @@ export default class CortxAccountManagement extends Vue {
     this.showCreateAccountForm = false;
     this.clearCreateAccountForm();
     await this.getAllAccounts();
+  }
+
+  public onResetBtnClick(item: any) {
+    this.showResetPasswordDialog = true;
+    this.resetAccoutName = item.account_name;
+  }
+
+  public async resetPassword() {
+    const updateDetails = {
+      password: this.resetAccountForm.password
+    };
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      this.$t("s3.account.loading-update")
+    );
+    const res = await Api.patch(
+      apiRegister.s3_account,
+      updateDetails,
+      this.resetAccoutName ? this.resetAccoutName : ""
+    );
+    this.closeResetPasswordForm();
+    this.$store.dispatch("systemConfig/hideLoader");
+    this.successMessage = `${this.$t("s3.account.password-reset-message")} ${res.data.account_name}`;
+    this.showSuccessDialog = true;
+  }
+
+  public async closeSuccessDialog() {
+    this.showSuccessDialog = false;
+  }
+
+  public closeResetPasswordForm() {
+    this.resetAccountForm = {
+      password: "",
+      confirmPassword: ""
+    };
+    if (this.$v.resetAccountForm) {
+      this.$v.resetAccountForm.$reset();
+    }
+    this.showResetPasswordDialog = !this.showResetPasswordDialog;
   }
 }
 </script>
