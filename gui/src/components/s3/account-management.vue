@@ -831,7 +831,7 @@ export default class CortxAccountManagement extends Vue {
     this.showConfirmDeleteDialog = false;
     this.showEditAccountForm = false;
     this.showResetPasswordDialog = false;
-    this.loggedInUserName = localStorage.getItem("username");
+    this.loggedInUserName = localStorage.getItem("username") || "";
     this.accountsTableHeaderList = [
       {
         text: "Account name",
@@ -843,9 +843,9 @@ export default class CortxAccountManagement extends Vue {
         value: "account_email",
         sortable: false
       },
-      { 
-        text: "Action", 
-        value: "data-table-expand" 
+      {
+        text: "Action",
+        value: "data-table-expand"
       }
     ];
   }
@@ -867,7 +867,7 @@ export default class CortxAccountManagement extends Vue {
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
     this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
     this.isS3UrlNone = this.s3Url.length === 0;
- 
+
     const cms_res = await Api.getAll(apiRegister.csm_user);
     if (cms_res && cms_res.data && cms_res.data.users) {
       this.userData = cms_res.data.users;
@@ -878,13 +878,13 @@ export default class CortxAccountManagement extends Vue {
   }
 
   public isLoggedInUserAdminOrManage() {
-    const usersData = this.userData.find((element: any) => {
+    const usersData = this.userData.find((element: any): any => {
       if (element.username.localeCompare(this.loggedInUserName, undefined, { sensitivity: "base" }) === 0) {
         return true;
       }
     });
     if (usersData) {
-      this.isResetPasswordAllowed = usersData.roles.includes("admin") || usersData.roles.includes("manage")
+      this.isResetPasswordAllowed = usersData.roles.includes("admin") || usersData.roles.includes("manage");
     }
   }
 
@@ -903,7 +903,7 @@ export default class CortxAccountManagement extends Vue {
       this.credentialsFileContent =
         "data:text/plain;charset=utf-8," +
         encodeURIComponent(this.getCredentialsFileContent());
-        this.isS3UrlNone = true;
+      this.isS3UrlNone = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showAccountDetailsDialog = true;
@@ -1000,26 +1000,6 @@ export default class CortxAccountManagement extends Vue {
     }
     this.accountToDelete = "";
   }
-  private async deleteAccount() {
-    this.$store.dispatch(
-      "systemConfig/showLoader",
-      "Deleting account " + this.accountToDelete
-    );
-    await Api.delete(apiRegister.s3_account, this.accountToDelete);
-    this.$store.dispatch("systemConfig/hideLoader");
-    localStorage.removeItem(this.$data.constStr.username);
-    this.$router.push("/login");
-  }
-  private async copyS3Url(url: string) {
-    CommonUtils.copyUrlToClipboard(url);
-  }
-  private async downloadAndClose() {
-    this.isCredentialsFileDownloaded = true;
-    this.showAccountDetailsDialog = false;
-    this.showCreateAccountForm = false;
-    this.clearCreateAccountForm();
-    await this.getAllAccounts();
-  }
 
   public onResetBtnClick(item: any) {
     this.showResetPasswordDialog = true;
@@ -1059,6 +1039,28 @@ export default class CortxAccountManagement extends Vue {
     }
     this.showResetPasswordDialog = !this.showResetPasswordDialog;
   }
+
+  private async deleteAccount() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Deleting account " + this.accountToDelete
+    );
+    await Api.delete(apiRegister.s3_account, this.accountToDelete);
+    this.$store.dispatch("systemConfig/hideLoader");
+    localStorage.removeItem(this.$data.constStr.username);
+    this.$router.push("/login");
+  }
+  private async copyS3Url(url: string) {
+    CommonUtils.copyUrlToClipboard(url);
+  }
+  private async downloadAndClose() {
+    this.isCredentialsFileDownloaded = true;
+    this.showAccountDetailsDialog = false;
+    this.showCreateAccountForm = false;
+    this.clearCreateAccountForm();
+    await this.getAllAccounts();
+  }
+
 }
 </script>
 <style lang="scss" scoped>

@@ -53,7 +53,7 @@
       "confirm-password-invalid": "Passwords do not match.",
       "accept": "Accept",
       "cancel": "Cancel",
-      "systemStatus" : "checking service status...",
+      "systemStatus" : "Checking service status...",
       "errorMessage" : "please check service status"
     },
     "license": {

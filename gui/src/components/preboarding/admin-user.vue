@@ -287,6 +287,7 @@ import CortxMessageDialog from "../widgets/cortx-message-dialog.vue";
 })
 export default class CortxAdminUser extends Vue {
   @Validations()
+
   private validations = {
     createAccount: {
       username: { required, accountNameRegex, userNameRegex },
@@ -297,6 +298,42 @@ export default class CortxAdminUser extends Vue {
       email: { required, email }
     }
   };
+
+  public async mounted() {
+    await this.getSyetmStatus();
+  }
+
+  public async getSyetmStatus() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      this.$t("admin.systemStatus")
+    );
+    try {
+      const dbName = { key: "consul"};
+      const res: any = await Api.getAll(apiRegister.system_status, dbName );
+      this.$store.dispatch("systemConfig/hideLoader");
+    } catch (error) {
+      this.$data.isSystemStable = false;
+      let errorMessage = "Please check service status.";
+      const consul = error.data.consul;
+      const es = error.data.es;
+      if (error.data.consul !== "success" && error.data.es !== "success") {
+        errorMessage = consul + " " + "and" + " " + es;
+      } else if (error.data.consul !== "success") {
+        errorMessage = consul ;
+      } else if (error.data.es !== "success") {
+        errorMessage = es ;
+      }
+      throw {
+        error: {
+          message: errorMessage
+        }
+      };
+    } finally {
+      this.$store.dispatch("systemConfig/hideLoader");
+    }
+  }
+
   private data() {
     return {
       createAccount: {
@@ -315,39 +352,6 @@ export default class CortxAdminUser extends Vue {
     };
   }
 
-  public async mounted() {
-    await this.getSyetmStatus();
-  }
-  public async getSyetmStatus() {
-    this.$store.dispatch(
-      "systemConfig/showLoader",
-      this.$t("admin.serviceStatus")
-    );
-    try {
-      const dbName = { key: "consul"};
-      const res: any = await Api.getAll(apiRegister.system_status, dbName );
-      this.$store.dispatch("systemConfig/hideLoader");
-    } catch (error) {
-      this.$data.isSystemStable = false;
-      let errorMessage = "Please check service status.";
-       let consul= error.data.consul;
-       let es= error.data.es;
-      if (error.data.consul!=="success"&& error.data.es!=="success" ) {
-        errorMessage = consul + ' ' + 'and' + ' ' + es;
-      }else if(error.data.consul!=="success"){
-          errorMessage = consul ;
-       }else if(error.data.es!=="success"){
-          errorMessage = es ;
-       }
-      throw {
-        error: {
-          message: errorMessage
-        }
-      };
-    } finally {
-      this.$store.dispatch("systemConfig/hideLoader");
-    }
-  }
   private async gotToNextPage() {
     const queryParams = {
       username: this.$data.createAccount.username,
@@ -377,6 +381,7 @@ export default class CortxAdminUser extends Vue {
       this.$store.dispatch("systemConfig/hideLoader");
     }
   }
+
   private handleEnterEvent() {
     if (
       this.$v.createAccount &&
@@ -386,6 +391,7 @@ export default class CortxAdminUser extends Vue {
       this.gotToNextPage();
     }
   }
+
 }
 </script>
 

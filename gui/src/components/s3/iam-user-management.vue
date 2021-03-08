@@ -655,7 +655,7 @@ export default class CortxIAMUserManagement extends Vue {
       this.credentialsFileContent =
         "data:text/plain;charset=utf-8," +
         encodeURIComponent(this.getCredentialsFileContent());
-        this.isS3UrlNone = true;
+      this.isS3UrlNone = true;
     }
     this.$store.dispatch("systemConfig/hideLoader");
     this.showUserDetailsDialog = true;
@@ -746,7 +746,7 @@ export default class CortxIAMUserManagement extends Vue {
     this.showCreateUserForm = false;
     await this.getAllUsers();
   }
-  
+
   public onResetBtnClick(item: any) {
     this.showResetPasswordDialog = true;
     this.resetAccoutName = item;
@@ -774,7 +774,7 @@ export default class CortxIAMUserManagement extends Vue {
   public async closeSuccessDialog() {
     this.showSuccessDialog = false;
   }
-  
+
   public closeResetPasswordForm() {
     this.resetAccountForm = {
       password: "",
