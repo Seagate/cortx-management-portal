@@ -30,12 +30,12 @@
     >
       <table>
         <tr>
-          <td style="width: 180px;">
+          <td style="width: 180px">
             <label class="cortx-text-bold"
               >{{ $t("maintenance.lastUpdateStatus") }}:</label
             >
           </td>
-          <td style="padding-top: 2px;">
+          <td style="padding-top: 2px">
             <label>{{
               lastUpgradeStatus.status
                 ? lastUpgradeStatus.status.toUpperCase()
@@ -49,7 +49,7 @@
               >{{ $t("maintenance.lastUpdateVersion") }}:</label
             >
           </td>
-          <td style="padding-top: 2px;">{{ lastUpgradeStatus.version }}</td>
+          <td style="padding-top: 2px">{{ lastUpgradeStatus.version }}</td>
         </tr>
         <tr v-if="lastUpgradeStatus.description">
           <td>
@@ -57,7 +57,7 @@
               >{{ $t("maintenance.lastUpdateDescription") }}:</label
             >
           </td>
-          <td style="padding-top: 2px;">
+          <td style="padding-top: 2px">
             <label>{{ lastUpgradeStatus.description }}</label>
           </td>
         </tr>
@@ -97,7 +97,7 @@
         class="cortx-form-group-label cortx-form-group-error-msg mt-3"
         v-if="
           hotfixPackageFormValidation.isDirty &&
-            !hotfixPackageFormValidation.isValid
+          !hotfixPackageFormValidation.isValid
         "
       >
         <label>{{ $t("maintenance.invalidFile") }}</label>
@@ -161,15 +161,13 @@ export default class CortxHotfix extends Vue {
     } catch (error) {
       this.$data.isSystemStable = false;
       let errorMessage = "Please check service status.";
-       let consul= error.data.consul;
-       let es= error.data.es;
-      if (error.data.consul!=="success"&& error.data.es!=="success" ) {
-        errorMessage = consul + ' ' + 'and' + ' ' + es;
-      }else if(error.data.consul!=="success"){
-          errorMessage = consul ;
-       }else if(error.data.es!=="success"){
-          errorMessage = es ;
-       }
+      if (error.data.consul !== "success" && error.data.es !== "success") {
+        errorMessage = error.data.consul + " " + "and" + " " + error.data.es;
+      } else if (error.data.consul !== "success") {
+        errorMessage = error.data.consul;
+      } else if (error.data.es !== "success") {
+        errorMessage = error.data.es;
+      }
       throw {
         error: {
           message: errorMessage
