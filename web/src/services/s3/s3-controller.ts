@@ -49,6 +49,12 @@ export const deleteIAMUser = async (username: string, req: Request, res: Respons
     let result = await Api.delete(apiRegister.iam_users, req, res, tempUsername);
     return result;
 };
+
+export const resetPassword = async (req: Request, res: Response) => {
+    let resetPassword = Api.patch(apiRegister.iam_users, req, res, req.params.account_name);
+    let result = await resetPassword;
+    return result;
+};
 /**
  * 
  * @param req Update s3 account password data
