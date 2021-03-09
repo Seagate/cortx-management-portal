@@ -16,8 +16,8 @@
       "confirm-password-invalid": "Passwords do not match.",
       "accept": "Accept",
       "cancel": "Cancel",
-      "systemStatus" : "checking service status...",
-      "errorMessage" : "please check service status"
+      "systemStatus" : "Checking service status...",
+      "errorMessage" : "Please check service status"
     },
     "license": {
       "header": "To set up your system, you must accept the Terms and Conditions.",
