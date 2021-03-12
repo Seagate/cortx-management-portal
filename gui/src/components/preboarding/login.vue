@@ -189,19 +189,7 @@ export default class CortxLogin extends Vue {
 
   private navigate() {
     if (this.$route.name === "normal-login") {
-      // Check if user is S3 user by checking the s3accounts:update permission
-      // As only the s3 user will have this permission
-      const vueInstance: any = this;
-      if (
-        vueInstance.$hasAccessToCsm(
-          vueInstance.$cortxUserPermissions.s3accounts +
-            vueInstance.$cortxUserPermissions.update
-        )
-      ) {
-        this.$router.push("/manage/s3");
-      } else {
-        this.$router.push("/");
-      }
+      this.$router.push("/");
     } else {
       this.$router.push("/onboarding");
     }
