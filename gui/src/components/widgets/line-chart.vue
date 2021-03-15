@@ -386,7 +386,6 @@ export default class CortxLineChart extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import "./../../../node_modules/c3/c3.min.css";
 .tab-label {
   cursor: pointer;
   text-transform: none;

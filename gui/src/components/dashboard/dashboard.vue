@@ -96,4 +96,5 @@ export default class Dashboard extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+@import "./../../../node_modules/c3/c3.min.css";
 </style>

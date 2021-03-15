@@ -127,8 +127,6 @@ export default class CortxCapacityGauge extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import "./../../../node_modules/c3/c3.min.css";
-
 .capacity-used-green {
   height: 13px;
   width: 13px;

@@ -29,8 +29,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
-import * as c3 from "c3";
+import { Component, Vue, Mixins } from "vue-property-decorator";
 import { PerformanceStatsQueryParams } from "./../../../models/performance-stats";
 import CortxLineChart from "./../../widgets/line-chart.vue";
 import i18n from "../dashboard.json";
