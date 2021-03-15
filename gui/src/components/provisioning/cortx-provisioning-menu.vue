@@ -72,14 +72,6 @@ export default class CortxProvisioningSubmenu extends Vue {
     methods or global variables declared using `Vue.prototype`.
     */
     const vueInstance: any = this;
-    if (
-      vueInstance.$hasAccessToCsm(
-        vueInstance.$cortxUserPermissions.s3accounts +
-          vueInstance.$cortxUserPermissions.update
-      )
-    ) {
-      this.$router.push("/manage/s3");
-    }
 
     this.tabsInfo.tabs = this.tabsInfo.tabs.map((tab: any) => {
       tab.show = vueInstance.$hasAccessToCsm(
