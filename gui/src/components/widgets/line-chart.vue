@@ -413,7 +413,6 @@ export default class CortxLineChart extends Vue {
   border-width: 1px;
   border-color: #b7b7b7;
 }
-
 .loader-body {
   padding: 10px;
 }
