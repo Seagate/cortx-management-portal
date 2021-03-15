@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 import { Request, Response } from "express";
-import { getAllAccounts, createAccount, deleteAccount, getAllIAMUsers, createIAMUser, deleteIAMUser, updateAccount } from "./s3-controller";
+import { getAllAccounts, createAccount, deleteAccount, getAllIAMUsers, createIAMUser, deleteIAMUser, resetPassword, updateAccount } from "./s3-controller";
 import { checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -140,6 +140,21 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await deleteIAMUser(req.params.username, req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/iam_users/:account_name",
+    method: "patch",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await resetPassword(req, res);
           res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
