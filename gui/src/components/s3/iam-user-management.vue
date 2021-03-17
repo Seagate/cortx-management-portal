@@ -771,7 +771,7 @@ export default class CortxIAMUserManagement extends Vue {
     this.closeResetPasswordForm();
     this.$store.dispatch("systemConfig/hideLoader");
     this.successMessage = `${this.$t("s3.account.password-reset-message")} ${
-      res.data.account_name
+      res.data.user_name
     }`;
     this.showSuccessDialog = true;
   }
