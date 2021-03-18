@@ -54,7 +54,7 @@ export abstract class Api {
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
             console.log('headers:--------> ' + JSON.stringify(req.headers))
-
+            
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 headers: {
@@ -88,6 +88,7 @@ export abstract class Api {
             var query_index = urle.indexOf('?');
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
+            console.log('headers:--------> ' + JSON.stringify(req.headers))
 
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
@@ -125,6 +126,7 @@ export abstract class Api {
             var query_index = urle.indexOf('?');
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
+            console.log('headers:--------> ' + JSON.stringify(req.headers))
 
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
@@ -160,6 +162,7 @@ export abstract class Api {
             // -- end --
             
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            console.log('headers:--------> ' + JSON.stringify(req.headers))
             const options = {
                 method: "PATCH",
                 headers: {
@@ -195,7 +198,7 @@ export abstract class Api {
             }
             console.log("put: " + puturl);
             // -- end --
-            
+            console.log('headers:--------> ' + JSON.stringify(req.headers))
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "put",
@@ -229,7 +232,7 @@ export abstract class Api {
             }
             console.log("POST: " + posturl);
             // -- end --
-            
+            console.log('headers:--------> ' + JSON.stringify(req.headers))
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "POST",
@@ -311,7 +314,7 @@ export abstract class Api {
             }
             console.log("DELETE: " + deleteUrl);
             // -- end --
-            
+            console.log('headers:--------> ' + JSON.stringify(req.headers))
             const requestData = req && req.body ? JSON.stringify(req.body) : "";
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
