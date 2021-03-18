@@ -53,13 +53,17 @@ export abstract class Api {
             var query_index = urle.indexOf('?');
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
+            console.log('headers:--------> ' + JSON.stringify(req.headers))
 
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 headers: {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
-                    'authorization': authorization
+                    'authorization': authorization,
+                    'x-forwarded-host': req.headers ? ( req.headers['x-forwarded-host'] ? req.headers['x-forwarded-host'] : ""): "",
+                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
             logger.info('GET: ' + geturl);
@@ -90,7 +94,10 @@ export abstract class Api {
                 headers: {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
-                    'authorization': authorization
+                    'authorization': authorization,
+                    'x-forwarded-host': req.headers ? ( req.headers['x-forwarded-host'] ? req.headers['x-forwarded-host'] : ""): "",
+                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
             logger.info('GET: ' + geturl);
@@ -124,7 +131,10 @@ export abstract class Api {
                 headers: {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
-                    'authorization': authorization
+                    'authorization': authorization,
+                    'x-forwarded-host': req.headers ? ( req.headers['x-forwarded-host'] ? req.headers['x-forwarded-host'] : ""): "",
+                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
             logger.info('GET: ' + geturl);
@@ -156,7 +166,10 @@ export abstract class Api {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'Content-Length': requestData.length,
-                    'authorization': authorization
+                    'authorization': authorization,
+                    'x-forwarded-host': req.headers ? ( req.headers['x-forwarded-host'] ? req.headers['x-forwarded-host'] : ""): "",
+                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
             logger.info('PATCH: ' + patchurl);
@@ -190,7 +203,10 @@ export abstract class Api {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'Content-Length': requestData.length,
-                    'authorization': authorization
+                    'authorization': authorization,
+                    'x-forwarded-host': req.headers ? ( req.headers['x-forwarded-host'] ? req.headers['x-forwarded-host'] : ""): "",
+                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
             logger.info('PUT: ' + puturl);
@@ -221,7 +237,10 @@ export abstract class Api {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'Content-Length': requestData.length,
-                    'authorization': authorization
+                    'authorization': authorization,
+                    'x-forwarded-host': req.headers ? ( req.headers['x-forwarded-host'] ? req.headers['x-forwarded-host'] : ""): "",
+                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
             logger.info('POST: ' + posturl);
@@ -301,7 +320,10 @@ export abstract class Api {
                     'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
                     'Content-Type': 'application/json',
                     'Content-Length': requestData.length,
-                    'authorization': authorization
+                    'authorization': authorization,
+                    'x-forwarded-host': req.headers ? ( req.headers['x-forwarded-host'] ? req.headers['x-forwarded-host'] : ""): "",
+                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
             logger.info('DELETE: ' + deleteUrl);
