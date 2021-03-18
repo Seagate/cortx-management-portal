@@ -757,6 +757,7 @@ export default class CortxIAMUserManagement extends Vue {
 
   public async resetPassword() {
     const updateDetails = {
+      user_name: this.resetAccoutName,
       password: this.resetAccountForm.password
     };
     this.$store.dispatch(
