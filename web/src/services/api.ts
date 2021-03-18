@@ -66,6 +66,7 @@ export abstract class Api {
                     'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -101,6 +102,7 @@ export abstract class Api {
                     'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleFileResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = err.message;
@@ -139,6 +141,7 @@ export abstract class Api {
                     'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -175,6 +178,7 @@ export abstract class Api {
                     'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('PATCH: ' + patchurl);
             let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -212,6 +216,7 @@ export abstract class Api {
                     'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('PUT: ' + puturl);
             let httpRequest = http_agent.request(puturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -243,9 +248,10 @@ export abstract class Api {
                     'authorization': authorization,
                     'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                     'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
+                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): ""
                 }
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('POST: ' + posturl);
             let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 console.log("1. " + err);
@@ -288,11 +294,14 @@ export abstract class Api {
                 form.append(name, fs.createReadStream(file.path), {filename: file.originalFilename});
                 const headers = form.getHeaders();
                 headers['authorization'] = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-                
+                headers['x-forwarded-host'] = req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
+                headers['x-forwarded-proto'] = req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+                headers['x-forwarded-for'] = req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): ""
                 const options = {
                     method: 'POST',
                     headers: headers,
                 };
+                logger.info('options headers:--------> ' + JSON.stringify(headers));
                 const httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                     let error = new HTTPError.HTTP500Error(err.message);
                     reject(error);
@@ -329,6 +338,7 @@ export abstract class Api {
                     'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
                 }
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('DELETE: ' + deleteUrl);
             let httpRequest = http_agent.request(deleteUrl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
