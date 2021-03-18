@@ -63,7 +63,7 @@ export abstract class Api {
                     'authorization': authorization,
                     'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                     'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
+                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
                 }
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
@@ -99,7 +99,7 @@ export abstract class Api {
                     'authorization': authorization,
                     'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                     'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
+                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
                 }
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
@@ -138,7 +138,7 @@ export abstract class Api {
                     'authorization': authorization,
                     'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                     'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
+                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
                 }
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
@@ -175,7 +175,7 @@ export abstract class Api {
                     'authorization': authorization,
                     'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                     'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
+                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
                 }
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
@@ -213,7 +213,7 @@ export abstract class Api {
                     'authorization': authorization,
                     'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                     'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
+                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
                 }
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
@@ -248,7 +248,7 @@ export abstract class Api {
                     'authorization': authorization,
                     'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                     'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): ""
+                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
                 }
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
@@ -296,7 +296,7 @@ export abstract class Api {
                 headers['authorization'] = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
                 headers['x-forwarded-host'] = req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                 headers['x-forwarded-proto'] = req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                headers['x-forwarded-for'] = req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): ""
+                headers['x-forwarded-for'] = req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): ""
                 const options = {
                     method: 'POST',
                     headers: headers,
@@ -335,7 +335,7 @@ export abstract class Api {
                     'authorization': authorization,
                     'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                     'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.headers ? ( req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : ""): "",
+                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
                 }
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
