@@ -865,12 +865,12 @@ export default class CortxAccountManagement extends Vue {
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
     this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
     this.isS3UrlNone = this.s3Url.length === 0;
-
-    const cms_res = await Api.getAll(apiRegister.csm_user);
-    if (cms_res && cms_res.data && cms_res.data.users) {
-      this.userData = cms_res.data.users;
+    if (!(this.$route.name === "s3")) {
+      const cms_res = await Api.getAll(apiRegister.csm_user);
+      if (cms_res && cms_res.data && cms_res.data.users) {
+        this.userData = cms_res.data.users;
+      }
     }
-
     this.isLoggedInUserAdminOrManage();
     this.$store.dispatch("systemConfig/hideLoader");
   }
