@@ -338,7 +338,7 @@ export abstract class Api {
         var client_ip = (typeof req.headers['x-forwarded-for'] === 'string'
                 && req.headers['x-forwarded-for'].split(',').shift())
                 || req.connection?.remoteAddress;
-        if(client_ip && client_ip.startsWith("::ffff:")){
+        if(client_ip) {
             client_ip = client_ip.replace("::ffff:", "")
         }
         return client_ip;
