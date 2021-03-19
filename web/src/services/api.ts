@@ -54,17 +54,11 @@ export abstract class Api {
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            var headers = {}
+            Api.setHeaders(req, headers)
+
             const options = {
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'authorization': authorization,
-                    'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
-                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
-                }
+                headers: headers
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('GET: ' + geturl);
@@ -90,17 +84,10 @@ export abstract class Api {
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            var headers = {}
+            Api.setHeaders(req, headers)
             const options = {
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'authorization': authorization,
-                    'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
-                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
-                }
+                headers: headers
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('GET: ' + geturl);
@@ -129,17 +116,10 @@ export abstract class Api {
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            var headers = {}
+            Api.setHeaders(req, headers)
             const options = {
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'authorization': authorization,
-                    'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
-                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
-                }
+                headers: headers
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('GET: ' + geturl);
@@ -164,19 +144,13 @@ export abstract class Api {
             console.log("PATCH: " + patchurl);
             // -- end --
             
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
+            var headers = {}
+            Api.setHeaders(req, headers)
+
             const options = {
                 method: "PATCH",
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization,
-                    'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
-                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
-                }
+                headers: headers
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('PATCH: ' + patchurl);
@@ -203,18 +177,11 @@ export abstract class Api {
             console.log("put: " + puturl);
             // -- end --
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            var headers = {}
+            Api.setHeaders(req, headers)
             const options = {
                 method: "put",
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization,
-                    'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
-                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
-                }
+                headers: headers
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('PUT: ' + puturl);
@@ -238,18 +205,11 @@ export abstract class Api {
             console.log("POST: " + posturl);
             // -- end --
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            var headers = {}
+            Api.setHeaders(req, headers)
             const options = {
                 method: "POST",
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization,
-                    'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
-                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
-                }
+                headers: headers
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('POST: ' + posturl);
@@ -293,10 +253,11 @@ export abstract class Api {
                 const form = new FormData();
                 form.append(name, fs.createReadStream(file.path), {filename: file.originalFilename});
                 const headers = form.getHeaders();
+                var client_ip = Api.getClientIP(req);
                 headers['authorization'] = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
                 headers['x-forwarded-host'] = req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                 headers['x-forwarded-proto'] = req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                headers['x-forwarded-for'] = req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): ""
+                headers['x-forwarded-for'] = client_ip;
                 const options = {
                     method: 'POST',
                     headers: headers,
@@ -324,19 +285,14 @@ export abstract class Api {
             console.log("DELETE: " + deleteUrl);
             // -- end --
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
+            var headers = {}
+            Api.setHeaders(req, headers)
+
             const requestData = req && req.body ? JSON.stringify(req.body) : "";
             let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "DELETE",
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization,
-                    'x-forwarded-host': req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
-                    'x-forwarded-proto': req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-                    'x-forwarded-for': req.connection ? ( req.connection.remoteAddress ? req.connection.remoteAddress : ""): "",
-                }
+                headers: headers
             }
             logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('DELETE: ' + deleteUrl);
@@ -377,6 +333,27 @@ export abstract class Api {
                 }
             });
         };
+    }
+    private static getClientIP(req: Request) {
+        var client_ip = (typeof req.headers['x-forwarded-for'] === 'string'
+                && req.headers['x-forwarded-for'].split(',').shift())
+                || req.connection?.remoteAddress;
+        if(client_ip && client_ip.includes("::ffff:")){
+            client_ip = client_ip.replace("::ffff:", "")
+        }
+        return client_ip;
+    }
+    private static setHeaders(req: Request, headers: any) {
+        const requestData = req && req.body ? JSON.stringify(req.body) : "";
+        var client_ip = Api.getClientIP(req);
+        let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+        headers['user-agent'] = req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "";
+        headers['Content-Type'] = 'application/json',
+        headers['Content-Length'] = requestData.length,
+        headers['authorization'] = authorization,
+        headers['x-forwarded-host'] = req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
+        headers['x-forwarded-proto'] = req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+        headers['x-forwarded-for'] = client_ip
     }
     private static handleFileResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
         return (req: any) => {
