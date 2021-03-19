@@ -256,11 +256,6 @@ export default class CortxLineChart extends Vue {
         "performanceStats/getThroughputPerformanceStats",
         queryParams
       );
-      const demoData = [
-        ["x", new Date().getTime()],
-        ["throughput_read", 0],
-        ["throughput_write", 0]
-      ];
       try {
         obj
           .then(data => {
@@ -270,7 +265,8 @@ export default class CortxLineChart extends Vue {
               this.showComponentLoader = false;
               const y1label: string = StatsUtility.getYaxisLabel(this.metric1);
               const y2label: string = StatsUtility.getYaxisLabel(this.metric2);
-              const y2Obj: any = StatsUtility.getYtwoObject(this.metric2);
+              const y2Obj: any = {};
+              y2Obj[this.metric2] = "y2";
               this.chart = c3.generate({
                 // bindto: "#line_chart",
                 bindto: "#" + this.chartId,
