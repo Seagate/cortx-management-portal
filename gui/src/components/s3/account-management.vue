@@ -99,22 +99,24 @@
               </tr>
             </template>
             <template v-slot:item.data-table-expand="{ item }">
-              <div style="width: 90px">
-                <cortx-has-access
-                  class="mx-2"
-                  :to="
-                    $cortxUserPermissions.s3accounts +
-                    $cortxUserPermissions.update
-                  "
-                >
-                  <img
-                    id="s3-edit-account"
-                    v-on:click="onEditBtnClick(item)"
-                    class="cortx-cursor-pointer"
-                    src="@/assets/actions/edit-green.svg"
-                  />
-                </cortx-has-access>
-                <div v-if="isResetPasswordAllowed">
+              <div class="wrapper-width">
+                <div v-if="isUpdatePasswordAllowed" class="cortx-float-l cortx-margin-r">
+                  <v-tooltip right max-width="300">
+                    <template v-slot:activator="{ on }">                      
+                      <img
+                        id="s3-edit-account"
+                        v-on:click="onEditBtnClick(item)"
+                        v-on="on"
+                        class="cortx-cursor-pointer"
+                        src="@/assets/actions/edit-green.svg"
+                      />
+                    </template>
+                    <span id="update-password-tooltip">
+                      {{ $t("s3.account.update-password") }}
+                    </span>
+                  </v-tooltip>
+                </div>
+                <div v-if="isResetPasswordAllowed" class="cortx-float-l cortx-margin-r">
                   <v-tooltip right max-width="300">
                     <template v-slot:activator="{ on }">
                       <img
@@ -130,20 +132,22 @@
                     </span>
                   </v-tooltip>
                 </div>
-                <cortx-has-access
-                  class="mx-2"
-                  :to="
-                    $cortxUserPermissions.s3accounts +
-                    $cortxUserPermissions.delete
-                  "
-                >
-                  <img
-                    id="s3-delete-account"
-                    @click="openConfirmDeleteDialog(item.account_name)"
-                    class="cortx-cursor-pointer"
-                    src="@/assets/actions/delete-green.svg"
-                  />
-                </cortx-has-access>
+                <div v-if="isDeleteAccountAllowed" class="cortx-float-l">
+                  <v-tooltip right max-width="300">
+                    <template v-slot:activator="{ on }">
+                      <img
+                        id="s3-delete-account"
+                        v-on:click="openConfirmDeleteDialog(item.account_name)"
+                        v-on="on"
+                        class="cortx-cursor-pointer"
+                        src="@/assets/actions/delete-green.svg"
+                      />
+                    </template>
+                    <span id="reset-password-tooltip">
+                      {{ $t("s3.account.delete-account") }}
+                    </span>
+                  </v-tooltip>
+                </div>
               </div>
             </template>
           </v-data-table>
@@ -745,6 +749,7 @@ import {
 } from "./../../common/regex-helpers";
 import i18n from "./s3.json";
 import CommonUtils from "../../common/common-utils";
+import { userPermissions } from "../../common/user-permissions-map"
 
 @Component({
   name: "cortx-account-management",
@@ -818,6 +823,8 @@ export default class CortxAccountManagement extends Vue {
   private loggedInUserName: string | null = "";
   private successMessage: string = "";
   private isResetPasswordAllowed: boolean = false;
+  private isUpdatePasswordAllowed: boolean = false;
+  private isDeleteAccountAllowed: boolean = false;
 
   private isS3UrlNone: boolean = true;
 
@@ -853,6 +860,7 @@ export default class CortxAccountManagement extends Vue {
     };
   }
   public async mounted() {
+    this.checkPermissions();
     await this.getAllAccounts();
   }
 
@@ -865,29 +873,21 @@ export default class CortxAccountManagement extends Vue {
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
     this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
     this.isS3UrlNone = this.s3Url.length === 0;
-    if (!(this.$route.name === "s3")) {
-      const cms_res = await Api.getAll(apiRegister.csm_user);
-      if (cms_res && cms_res.data && cms_res.data.users) {
-        this.userData = cms_res.data.users;
-      }
-    }
-    this.isLoggedInUserAdminOrManage();
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
-  public isLoggedInUserAdminOrManage() {
-    const usersData = this.userData.find((element: any) => {
-      if (
-        element.username.localeCompare(this.loggedInUserName, undefined, {
-          sensitivity: "base"
-        }) === 0
-      ) {
-        return true;
+  public async checkPermissions() {    
+    const routerApp: any = this;
+    if (routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
+      this.isDeleteAccountAllowed = true;
+    }
+    if (routerApp.$hasAccessToCsm(userPermissions.users + userPermissions.list)) {
+      const cms_res = await Api.getAll(apiRegister.csm_user + "/" + this.loggedInUserName);
+      if (cms_res && cms_res.data) {
+        this.isResetPasswordAllowed = cms_res.data.roles.includes("admin") || cms_res.data.roles.includes("manage");
       }
-    });
-    if (usersData) {
-      this.isResetPasswordAllowed =
-        usersData.roles.includes("admin") || usersData.roles.includes("manage");
+    } else if (routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
+      this.isUpdatePasswordAllowed = true;
     }
   }
 
@@ -1118,5 +1118,11 @@ tbody tr:active {
 }
 .credentials-item-label {
   width: 10rem;
+}
+.wrapper-width {
+  width: 70px;
+}
+.cortx-margin-r {
+  margin-right: 10px
 }
 </style>
