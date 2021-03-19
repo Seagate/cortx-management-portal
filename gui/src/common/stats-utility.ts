@@ -22,8 +22,6 @@ export default abstract class StatsUtility {
 
   // params : metricValue = selected stats metric value.
   public static getYaxisLabel(metricValue: string): any {
-    // console.log(metricValue,'hhhh');
-    // console.log(metricValue.split("_")[0],'kk');
     switch (metricValue.split("_")[0]) {
       case "throughput":
         return "MB Transferred Per Second";
