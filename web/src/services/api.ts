@@ -54,8 +54,7 @@ export abstract class Api {
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            var headers = {}
-            Api.setHeaders(req, headers)
+            var headers = Api.setHeaders(req);
 
             const options = {
                 headers: headers
@@ -84,8 +83,7 @@ export abstract class Api {
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            var headers = {}
-            Api.setHeaders(req, headers)
+            var headers = Api.setHeaders(req);
             const options = {
                 headers: headers
             }
@@ -116,8 +114,7 @@ export abstract class Api {
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            var headers = {}
-            Api.setHeaders(req, headers)
+            var headers = Api.setHeaders(req);
             const options = {
                 headers: headers
             }
@@ -145,8 +142,7 @@ export abstract class Api {
             // -- end --
             
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            var headers = {}
-            Api.setHeaders(req, headers)
+            var headers = Api.setHeaders(req);
 
             const options = {
                 method: "PATCH",
@@ -177,8 +173,8 @@ export abstract class Api {
             console.log("put: " + puturl);
             // -- end --
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            var headers = {}
-            Api.setHeaders(req, headers)
+            var headers = Api.setHeaders(req);
+
             const options = {
                 method: "put",
                 headers: headers
@@ -205,8 +201,8 @@ export abstract class Api {
             console.log("POST: " + posturl);
             // -- end --
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            var headers = {}
-            Api.setHeaders(req, headers)
+            var headers = Api.setHeaders(req);
+
             const options = {
                 method: "POST",
                 headers: headers
@@ -254,9 +250,9 @@ export abstract class Api {
                 form.append(name, fs.createReadStream(file.path), {filename: file.originalFilename});
                 const headers = form.getHeaders();
                 const client_ip = Api.getClientIP(req);
-                headers['authorization'] = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-                headers['x-forwarded-host'] = req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
-                headers['x-forwarded-proto'] = req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
+                headers['authorization'] = req.headers.authorization ? req.headers.authorization : "";
+                headers['x-forwarded-host'] =  req.headers['host'] ? req.headers['host'] : "";
+                headers['x-forwarded-proto'] =  req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : "";
                 headers['x-forwarded-for'] = client_ip;
                 const options = {
                     method: 'POST',
@@ -285,8 +281,7 @@ export abstract class Api {
             console.log("DELETE: " + deleteUrl);
             // -- end --
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
-            var headers = {}
-            Api.setHeaders(req, headers)
+            var headers = Api.setHeaders(req);
 
             const requestData = req && req.body ? JSON.stringify(req.body) : "";
             const options = {
@@ -342,17 +337,19 @@ export abstract class Api {
         }
         return client_ip;
     }
-    private static setHeaders(req: Request, headers: any) {
-        const requestData = req && req.body ? JSON.stringify(req.body) : "";
+    private static setHeaders(req: Request) {
+        const requestData = req.body ? JSON.stringify(req.body) : "";
         const client_ip = Api.getClientIP(req);
-        const authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-        headers['user-agent'] = req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "";
-        headers['Content-Type'] = 'application/json',
-        headers['Content-Length'] = requestData.length,
-        headers['authorization'] = authorization,
-        headers['x-forwarded-host'] = req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
-        headers['x-forwarded-proto'] = req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
-        headers['x-forwarded-for'] = client_ip
+        var headers = {
+            'Content-Type': 'application/json',
+            'Content-Length': requestData.length,
+            'authorization': req.headers.authorization ? req.headers.authorization : "",
+            'user-agent': req.headers['user-agent'] ? req.headers['user-agent'] : "",
+            'x-forwarded-host':  req.headers['host'] ? req.headers['host'] : "",
+            'x-forwarded-proto': req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : "",
+            'x-forwarded-for': client_ip            
+        };
+        return headers;        
     }
     private static handleFileResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
         return (req: any) => {
