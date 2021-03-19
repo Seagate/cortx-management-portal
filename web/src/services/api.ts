@@ -253,7 +253,7 @@ export abstract class Api {
                 const form = new FormData();
                 form.append(name, fs.createReadStream(file.path), {filename: file.originalFilename});
                 const headers = form.getHeaders();
-                var client_ip = Api.getClientIP(req);
+                const client_ip = Api.getClientIP(req);
                 headers['authorization'] = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
                 headers['x-forwarded-host'] = req.headers ? ( req.headers['host'] ? req.headers['host'] : ""): "",
                 headers['x-forwarded-proto'] = req.headers ? ( req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : ""): "",
@@ -289,7 +289,6 @@ export abstract class Api {
             Api.setHeaders(req, headers)
 
             const requestData = req && req.body ? JSON.stringify(req.body) : "";
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
                 method: "DELETE",
                 headers: headers
@@ -345,8 +344,8 @@ export abstract class Api {
     }
     private static setHeaders(req: Request, headers: any) {
         const requestData = req && req.body ? JSON.stringify(req.body) : "";
-        var client_ip = Api.getClientIP(req);
-        let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+        const client_ip = Api.getClientIP(req);
+        const authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
         headers['user-agent'] = req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "";
         headers['Content-Type'] = 'application/json',
         headers['Content-Length'] = requestData.length,
