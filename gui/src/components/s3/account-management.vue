@@ -860,7 +860,7 @@ export default class CortxAccountManagement extends Vue {
     };
   }
   public async mounted() {
-    this.checkPermissions();
+    await this.checkPermissions();
     await this.getAllAccounts();
   }
 
@@ -877,16 +877,16 @@ export default class CortxAccountManagement extends Vue {
   }
 
   public async checkPermissions() {    
-    const routerApp: any = this;
-    if (routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
+    const vueInstance: any = this;
+    if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
       this.isDeleteAccountAllowed = true;
     }
-    if (routerApp.$hasAccessToCsm(userPermissions.users + userPermissions.list)) {
+    if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.list)) {
       const cms_res = await Api.getAll(apiRegister.csm_user + "/" + this.loggedInUserName);
       if (cms_res && cms_res.data) {
         this.isResetPasswordAllowed = cms_res.data.roles.includes("admin") || cms_res.data.roles.includes("manage");
       }
-    } else if (routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
+    } else if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
       this.isUpdatePasswordAllowed = true;
     }
   }

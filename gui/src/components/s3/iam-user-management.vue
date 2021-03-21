@@ -638,7 +638,7 @@ export default class CortxIAMUserManagement extends Vue {
   }
 
   public async mounted() {    
-    this.checkPermissions();
+    await this.checkPermissions();
     await this.getAllUsers();
   }
 
@@ -658,8 +658,8 @@ export default class CortxIAMUserManagement extends Vue {
   }
 
   public async checkPermissions() {
-    const routerApp: any = this;
-    if (routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
+    const vueInstance: any = this;
+    if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
       this.isDeleteAccountAllowed = true;
     }
   }
