@@ -62,6 +62,8 @@
       "account_id":"Account id",
       "canonical_id":"Canonical id",
       "reset-password": "Reset password",
+      "update-password": "Update password",
+      "delete-account": "Delete Account",
       "reset-btn": "Reset"
     },
     "bucket": {
@@ -156,6 +158,8 @@
       "account_id":"Account id",
       "canonical_id":"Canonical id",
       "reset-password": "Reset password",
+      "update-password": "Update password",
+      "delete-account": "Delete Account",
       "reset-btn": "Reset"
     },
     "bucket": {
