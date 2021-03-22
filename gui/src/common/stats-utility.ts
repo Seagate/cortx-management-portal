@@ -127,27 +127,16 @@ export default abstract class StatsUtility {
     chartType: string = "",
     paramList: any[]
   ) {
-    const c3Format: any = { ...payload };
-    const outputFormat: any[][] = [];
-    if (c3Format.metrics !== undefined) {
-      for (
-        let metricNo = 0;
-        metricNo <= c3Format.metrics.length - 1;
-        metricNo++
-      ) {
-        if (c3Format.metrics[metricNo].data !== undefined) {
-          if (metricNo === 0) {
-            c3Format.metrics[metricNo].data[0].unshift("x");
-            outputFormat.push(c3Format.metrics[metricNo].data[0]);
-          }
-          c3Format.metrics[metricNo].data[1].unshift(
-            this.replaceCharInStr(c3Format.metrics[metricNo].name, ".", "_")
-          );
-          outputFormat.push(c3Format.metrics[metricNo].data[1]);
-        }
-      }
+    const outputFormat: any[] = [];
+    if (payload.metrics && payload.metrics.length > 0) {
+      outputFormat.push(["x", ...payload.metrics[0].data[0]]);
+      payload.metrics.forEach((metric: any) => {
+        outputFormat.push([
+          metric.name.replace(".", "_"),
+          ...metric.data[1]
+        ])
+      });
     }
-
     return outputFormat;
   }
 
