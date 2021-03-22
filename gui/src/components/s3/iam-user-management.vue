@@ -88,33 +88,40 @@
                   {{ props.item.arn }}
                 </td>
                 <td>
-                  <cortx-has-access
-                    :to="
-                      $cortxUserPermissions.s3iamusers +
-                      $cortxUserPermissions.delete
-                    "
-                  >
-                    <img
-                      id="iam-delete-user"
-                      @click="openConfirmDeleteDialog(props.item.user_name)"
-                      class="cortx-cursor-pointer"
-                      src="./../../assets/actions/delete-green.svg"
-                    />
-                    <v-tooltip right max-width="300">
-                      <template v-slot:activator="{ on }">
-                        <img
-                          id="iam-reset-password"
-                          v-on:click="onResetBtnClick(props.item.user_name)"
-                          v-on="on"
-                          class="cortx-cursor-pointer"
-                          src="@/assets/actions/edit-green.svg"
-                        />
-                      </template>
-                      <span id="reset-password-tooltip">
-                        {{ $t("s3.account.reset-password") }}
-                      </span>
-                    </v-tooltip>
-                  </cortx-has-access>
+                  <div v-if="isDeleteAccountAllowed">
+                    <div class="cortx-float-l cortx-margin-r">
+                      <v-tooltip right max-width="300">
+                        <template v-slot:activator="{ on }">
+                          <img
+                            id="iam-delete-user"
+                            v-on:click="openConfirmDeleteDialog(props.item.user_name)"
+                            v-on="on"
+                            class="cortx-cursor-pointer"
+                            src="./../../assets/actions/delete-green.svg"
+                          />
+                        </template>
+                        <span id="delete-account-tooltip">
+                          {{ $t("s3.account.delete-account") }}
+                        </span>
+                      </v-tooltip>
+                    </div>
+                    <div class="cortx-float-l">
+                      <v-tooltip right max-width="300">
+                        <template v-slot:activator="{ on }">
+                          <img
+                            id="iam-reset-password"
+                            v-on:click="onResetBtnClick(props.item.user_name)"
+                            v-on="on"
+                            class="cortx-cursor-pointer"
+                            src="@/assets/actions/edit-green.svg"
+                          />
+                        </template>
+                        <span id="reset-password-tooltip">
+                          {{ $t("s3.account.reset-password") }}
+                        </span>
+                      </v-tooltip>
+                    </div>
+                  </div>
                 </td>
               </tr>
             </template>
@@ -534,6 +541,7 @@ import {
   iamUsernameTooltipMessage
 } from "./../../common/regex-helpers";
 import i18n from "./s3.json";
+import { userPermissions } from "../../common/user-permissions-map"
 
 @Component({
   name: "cortx-iam-user-management",
@@ -596,6 +604,7 @@ export default class CortxIAMUserManagement extends Vue {
   private showSuccessDialog: boolean = false;
   private successMessage: string = "";
   private isS3UrlNone: boolean = true;
+  private isDeleteAccountAllowed: boolean = false;
 
   constructor() {
     super();
@@ -628,7 +637,8 @@ export default class CortxIAMUserManagement extends Vue {
     this.user = {} as IAMUser;
   }
 
-  public async mounted() {
+  public async mounted() {    
+    await this.checkPermissions();
     await this.getAllUsers();
   }
 
@@ -645,6 +655,13 @@ export default class CortxIAMUserManagement extends Vue {
       ? this.usersList[0].user_name
       : "";
     this.$store.dispatch("systemConfig/hideLoader");
+  }
+
+  public async checkPermissions() {
+    const vueInstance: any = this;
+    if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
+      this.isDeleteAccountAllowed = true;
+    }
   }
 
   public async createUser() {
@@ -757,6 +774,7 @@ export default class CortxIAMUserManagement extends Vue {
 
   public async resetPassword() {
     const updateDetails = {
+      user_name: this.resetAccoutName,
       password: this.resetAccountForm.password
     };
     this.$store.dispatch(
@@ -771,7 +789,7 @@ export default class CortxIAMUserManagement extends Vue {
     this.closeResetPasswordForm();
     this.$store.dispatch("systemConfig/hideLoader");
     this.successMessage = `${this.$t("s3.account.password-reset-message")} ${
-      res.data.account_name
+      res.data.user_name
     }`;
     this.showSuccessDialog = true;
   }
@@ -805,5 +823,8 @@ export default class CortxIAMUserManagement extends Vue {
   display: inline-block;
   padding-top: 10px;
   color: #ffffff;
+}
+.cortx-margin-r {
+  margin-right: 10px;
 }
 </style>
