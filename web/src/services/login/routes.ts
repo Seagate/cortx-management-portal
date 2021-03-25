@@ -21,7 +21,7 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/login",
+    path: "/api/:version/login",
     method: "post",
     handler: [
       checkRequiredParams,

@@ -24,7 +24,7 @@ import { Request, Response, request, response } from "express";
  * @param res 
  */
 export const getAdminUser = async (req: Request, res: Response) => {
-  let adminUser = Api.post(apiRegister.admin_user, req, res);
+  let adminUser = Api.post(apiRegister.admin_user(req.params.version), req, res);
   return adminUser;
 };
 

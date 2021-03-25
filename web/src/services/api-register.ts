@@ -22,7 +22,7 @@ export default {
   all_system_config: `/api/${version}/sysconfig`,
   stats: `/api/${version}/stats`,
   csm_user: `/api/${version}/csm/users`,
-  admin_user: `/api/${version}/login`,
+  admin_user: (version :string) => `/api/${version}/login`,
   admin_user_create: `/api/${version}/preboarding/user`,
   admin_user_logout: `/api/${version}/logout`,
   udx_register_device: `/usl/v1/registerDevice`,
