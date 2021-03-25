@@ -27,7 +27,7 @@ export default {
   admin_user_logout: `/api/${version}/logout`,
   udx_register_device: `/usl/v1/registerDevice`,
   udx_registration_token: `/usl/v1/registrationToken`,
-  udx_saas: `/usl/v1/saas`,
+  udx_saas: `/usl/v1/udx_saas`,
   udx_devices: `/usl/v1/devices`,
   s3_accounts: `/api/${version}/s3_accounts`,
   iam_users: `/api/${version}/iam_users`,
