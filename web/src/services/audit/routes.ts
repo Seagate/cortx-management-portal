@@ -16,14 +16,15 @@
 */
 import { Request, Response, request, response } from "express";
 import { downloadAuditlog, showAuditlog } from "./audit-controller";
-import { checkRequiredParams } from "../../middleware/validator";
+import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/auditlogs/download/:component",
+    path: "/api/:version/auditlogs/download/:component",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await downloadAuditlog(req, res);        
@@ -32,9 +33,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/auditlogs/show/:component",
+    path: "/api/:version/auditlogs/show/:component",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await showAuditlog(req, res);

@@ -22,7 +22,7 @@ import { Request, Response } from "express";
  * This method is responsible to get version
  */
 export const getVersion = async (req: Request, res: Response) => {
-    let versionData = Api.getAll(apiRegister.product_version, req, res);
+    let versionData = Api.getAll(apiRegister.get_product_version(req.params.version), req, res);
     let result = await versionData;
     return result;
 };
@@ -30,7 +30,7 @@ export const getVersion = async (req: Request, res: Response) => {
  * This method is responsible to get appliance data
  */
 export const getApplianceInfo = async (req: Request, res: Response) => {
-    let applianceData = Api.getAll(apiRegister.appliance_info, req, res);
+    let applianceData = Api.getAll(apiRegister.get_appliance_info(req.params.version), req, res);
     let result = await applianceData;
     return result;
 };

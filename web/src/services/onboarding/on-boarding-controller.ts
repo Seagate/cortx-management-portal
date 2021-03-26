@@ -23,7 +23,7 @@ import { Request, Response, request, response } from "express";
  * @param query
  */
 export const getAllSystemConfig = async (req: Request, res: Response) => {
-  return await Api.getAll(apiRegister.all_system_config, req, res);
+  return await Api.getAll(apiRegister.get_all_system_config(req.params.version), req, res);
 };
 
 /**
@@ -32,7 +32,7 @@ export const getAllSystemConfig = async (req: Request, res: Response) => {
  */
 export const getSystemConfig = async (req: Request, res: Response) => {
   return await Api.get(
-    apiRegister.all_system_config,
+    apiRegister.get_all_system_config(req.params.version),
     req,
     res,
     req.params.config_id
@@ -45,7 +45,7 @@ export const getSystemConfig = async (req: Request, res: Response) => {
  * @param res
  */
 export const saveSystemConfig = async (req: Request, res: Response) => {
-  return await Api.post(apiRegister.all_system_config, req, res);
+  return await Api.post(apiRegister.get_all_system_config(req.params.version), req, res);
 };
 /**
  * This is responsible to sending Test Email.
@@ -53,12 +53,12 @@ export const saveSystemConfig = async (req: Request, res: Response) => {
  * @param res
  */
 export const sendTestEmail = async (req: Request, res: Response) => {
-  return await Api.post(apiRegister.send_test_email, req, res);
+  return await Api.post(apiRegister.get_send_test_email(req.params.version), req, res);
 };
 
 export const updateSystemConfig = async (req: Request, res: Response) => {
   return await Api.put(
-    apiRegister.all_system_config,
+    apiRegister.get_all_system_config(req.params.version),
     req,
     res,
     req.params.config_id

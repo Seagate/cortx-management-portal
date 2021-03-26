@@ -19,21 +19,21 @@ import apiRegister from "./../api-register";
 import { Request, Response } from "express";
 
 export const getLastUpgradeStatus = async (req: Request, res: Response) => {
-    const result = await Api.getAll(apiRegister.last_upgrade_status, req, res);
+    const result = await Api.getAll(apiRegister.get_last_upgrade_status(req.params.version), req, res);
     return result;
 };
 
 export const firmwareUpload = async (req: Request, res: Response) => {
-    const result = await Api.uploadFiles(apiRegister.upload_firmware, req, res);
+    const result = await Api.uploadFiles(apiRegister.get_upload_firmware(req.params.version), req, res);
     return result;
 };
 
 export const startUpgrade = async (req: Request, res: Response) => {
-    const result = await Api.post(apiRegister.start_firmware_upgrade, req, res);
+    const result = await Api.post(apiRegister.get_start_firmware_upgrade(req.params.version), req, res);
     return result;
 };
 
 export const packageAvailability = async (req: Request, res: Response) => {
-    const result = await Api.getAll(apiRegister.firmware_package_availability, req, res);
+    const result = await Api.getAll(apiRegister.get_firmware_package_availability(req.params.version), req, res);
     return result;
 };

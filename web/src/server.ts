@@ -24,7 +24,6 @@ import middleware from "./middleware";
 import errorHandlers from "./middleware/error-handlers";
 import routes from "./services";
 import { SocketService } from "./services/websocket/socket-service";
-import { checkApiVersion } from "./middleware/api-version";
 
 require("dotenv").config({ path: __dirname + "/.env" });
 
@@ -41,7 +40,6 @@ process.on("unhandledRejection", e => {
 const router = express();
 router.use('/public', express.static('public'));
 router.use(cors());
-router.use('/api/:version', checkApiVersion);
 applyMiddleware(middleware, router);
 applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);

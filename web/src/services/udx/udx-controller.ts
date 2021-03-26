@@ -20,21 +20,21 @@ import { Request, Response } from "express";
 
 
 export const getUDXDevices = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.udx_devices, req, res);
+    let result = await Api.getAll(apiRegister.get_udx_devices(req.params.version), req, res);
     return result;
 };
 
 export const getIdentificationToken = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.udx_registration_token, req, res);
+    let result = await Api.getAll(apiRegister.get_udx_registration_token(req.params.version), req, res);
     return result;
 };
 
 export const registerUDX = async (req: Request, res: Response) => {
-    let result = await Api.post(apiRegister.udx_register_device, req, res);
+    let result = await Api.post(apiRegister.get_udx_register_device(req.params.version), req, res);
     return result;
 };
 
 export const getUDXRegistrationStatus = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.udx_register_device, req, res);
+    let result = await Api.getAll(apiRegister.get_udx_register_device(req.params.version), req, res);
     return result;
 };

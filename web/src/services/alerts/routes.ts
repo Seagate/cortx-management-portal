@@ -16,7 +16,7 @@
 */
 import { Request, Response, request, response } from "express";
 import { getAlerts,getAlertsHistory,getAlertHistrorydetailsById, getAlertById, updateAlert, updateAlerts, getCommentsForAlert, addCommentToAlert } from "./alerts-controller";
-import { checkRequiredParams } from './../../middleware/validator';
+import { checkApiVersion, checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
 
@@ -26,9 +26,10 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/alerts",
+    path: "/api/:version/alerts",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -41,9 +42,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts_history",
+    path: "/api/:version/alerts_history",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -56,9 +58,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts_history/:alert_id",
+    path: "/api/:version/alerts_history/:alert_id",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -72,9 +75,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts/:alert_id",
+    path: "/api/:version/alerts/:alert_id",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -88,9 +92,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts/:alert_id",
+    path: "/api/:version/alerts/:alert_id",
     method: "patch",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -104,9 +109,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts",
+    path: "/api/:version/alerts",
     method: "patch",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -120,9 +126,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts/:alert_id/comments",
+    path: "/api/:version/alerts/:alert_id/comments",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -136,9 +143,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts/:alert_id/comments",
+    path: "/api/:version/alerts/:alert_id/comments",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {

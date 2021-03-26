@@ -23,7 +23,7 @@ import { Request, Response, request, response } from "express";
  * @param query 
  */
 export const getStats = async (req: Request, res: Response, pathparam?: string) => {
-    let url = apiRegister.stats;
+    let url = apiRegister.get_stats(req.params.version);
     if (pathparam) {
         url += "/" + pathparam;
     }
