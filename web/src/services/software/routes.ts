@@ -21,14 +21,15 @@ import {
   startUpgrade,
   getSystemStaus
 } from "./software-controller";
-import { checkRequiredParams } from "../../middleware/validator";
+import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from "http-status-codes";
 
 export default [
   {
-    path: "/api/v1/update/hotfix/status",
+    path: "/api/:version/update/hotfix/status",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getLastUpgradeStatus(req, res);
@@ -37,9 +38,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/update/hotfix/upload",
+    path: "/api/:version/update/hotfix/upload",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await hotfixUpload(req, res);
@@ -48,9 +50,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/update/hotfix/start",
+    path: "/api/:version/update/hotfix/start",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await startUpgrade(req, res);
@@ -59,9 +62,10 @@ export default [
     ]
   },
   { 
-    path: "/api/v1/system/status",
+    path: "/api/:version/system/status",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -74,9 +78,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/system/status/:consul",
+    path: "/api/:version/system/status/:consul",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getSystemStaus(req, res);

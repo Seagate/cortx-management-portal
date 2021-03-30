@@ -19,7 +19,7 @@ import apiRegister from "./../api-register";
 import { Request, Response, request, response } from "express";
 
 export const downloadAuditlog = async (req: Request, res: Response) => {
-  let url = apiRegister.auditlogs;
+  let url = apiRegister.get_auditlogs(req.params.version);
   if (req.params.component) {
     url += "/download/" + req.params.component;
   }
@@ -28,7 +28,7 @@ export const downloadAuditlog = async (req: Request, res: Response) => {
 };
 
 export const showAuditlog = async (req: Request, res: Response) => {
-  let url = apiRegister.auditlogs;
+  let url = apiRegister.get_auditlogs(req.params.version);
   if (req.params.component) {
     url += "/show/" + req.params.component;
   }

@@ -23,7 +23,7 @@ import { Request, Response, request, response } from "express";
  * @param query 
  */
 export const getCapacity = async (req: Request, res: Response) => {
-    let capacityData = Api.getAll(apiRegister.capacity, req, res);
+    let capacityData = Api.getAll(apiRegister.get_capacity(req.params.version), req, res);
     let result = await capacityData;
     return result;
 };

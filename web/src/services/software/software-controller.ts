@@ -19,21 +19,21 @@ import apiRegister from "../api-register";
 import { Request, Response } from "express";
 
 export const getLastUpgradeStatus = async (req: Request, res: Response) => {
-  const result = await Api.getAll(apiRegister.hotfix_status, req, res);
+  const result = await Api.getAll(apiRegister.get_hotfix_status(req.params.version), req, res);
   return result;
 };
 
 export const hotfixUpload = async (req: Request, res: Response) => {
-  const result = await Api.uploadFiles(apiRegister.hotfix_upload, req, res);
+  const result = await Api.uploadFiles(apiRegister.get_hotfix_upload(req.params.version), req, res);
   return result;
 };
 
 export const startUpgrade = async (req: Request, res: Response) => {
-  const result = await Api.post(apiRegister.hotfix_start, req, res);
+  const result = await Api.post(apiRegister.get_hotfix_start(req.params.version), req, res);
   return result;
 };
 export const getSystemStaus = async (req: Request, res: Response) => {
-  let systemStatus = Api.getAll(apiRegister.system_status, req, res);
+  let systemStatus = Api.getAll(apiRegister.get_system_status(req.params.version), req, res);
   let result = await systemStatus;
   return result;
 };

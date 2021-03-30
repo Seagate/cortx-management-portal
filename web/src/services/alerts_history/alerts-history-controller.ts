@@ -29,13 +29,13 @@ import { Request, Response, request, response } from "express";
  * @param limit 
  */
 export const getAlertsHistory = async (req: Request, res: Response) => {
-    let alertData = Api.getAll(apiRegister.all_alerts_history, req, res);
+    let alertData = Api.getAll(apiRegister.get_all_alerts_history(req.params.version), req, res);
     let result = await alertData;
     return result;
 };
 
 export const getAlertHistoryById = async (req: Request, res: Response) => {
-    let alertData = Api.getAll(apiRegister.all_alerts_history + "/" + req.params.alert_id, req, res);
+    let alertData = Api.getAll(apiRegister.get_all_alerts_history(req.params.version) + "/" + req.params.alert_id, req, res);
     let result = await alertData;
     return result;
 };

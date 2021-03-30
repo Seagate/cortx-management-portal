@@ -16,7 +16,7 @@
 */
 import { Request, Response, request, response } from "express";
 import { getAlertsHistory, getAlertHistoryById } from "./alerts-history-controller";
-import { checkRequiredParams } from './../../middleware/validator';
+import { checkApiVersion, checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
 
@@ -26,9 +26,10 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/alerts_history",
+    path: "/api/:version/alerts_history",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -41,9 +42,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/alerts_history/:alert_id",
+    path: "/api/:version/alerts_history/:alert_id",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
