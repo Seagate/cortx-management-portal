@@ -220,12 +220,23 @@ export default class CortxLineChart extends Vue {
 
   // Component Lifecycle created event : prefetching past half an hour of data by default.
   public created() {
-    this.initThrouthputStats(1800);
+   this.initThrouthputStats(1800);
+    document.addEventListener('visibilitychange',this.changeTabDetection)
   }
-
+  public changeTabDetection(){
+     if( document.hidden){
+          this.ispollThroughPut = false;
+       }
+       else{
+          this.initThrouthputStats(1800);
+       }
+  }
   // Component Lifecycle distroyed event: stoping polling process.
   public destroyed() {
     this.ispollThroughPut = false;
+    document.removeEventListener('visibilitychange',this.changeTabDetection)
+    
+   
   }
 
   // Common method prefetch data and initialize polling\
@@ -345,9 +356,11 @@ export default class CortxLineChart extends Vue {
         this.showComponentLoader = false;
       }
       const that = this;
+      const elasticSerchOffset = 5;
+     
       // this elasticSerchOffset need to be substracted in "from time" of the request
       // to remove a corner case where elastic search stops giving data due to some time lag
-      const elasticSerchOffset = 5;
+    
       that.throughputPoll = setInterval(() => {
         if (that.ispollThroughPut === true) {
           const query = {
