@@ -235,8 +235,6 @@ export default class CortxLineChart extends Vue {
   public destroyed() {
     this.ispollThroughPut = false;
     document.removeEventListener('visibilitychange',this.changeTabDetection)
-    
-   
   }
 
   // Common method prefetch data and initialize polling\
