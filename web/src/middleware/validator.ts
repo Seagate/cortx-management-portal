@@ -277,3 +277,17 @@ let validateParams = (requiredParams: any, params: any, req: Request, res: Respo
     throw new HTTP400Error("Some error occurred.");
   }
 }
+
+export const checkApiVersion = (req: Request, res: Response, next: NextFunction): void => {
+  switch (req.params.version) {
+    case "v1":
+      next();
+      break;
+    case "v2":
+      next();
+      break;
+    default:
+      throw new HTTP400Error("API version is invalid.");
+      break;
+  }
+}
