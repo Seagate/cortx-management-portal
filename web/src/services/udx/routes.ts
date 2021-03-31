@@ -16,7 +16,7 @@
 */
 import { Request, Response } from "express";
 import { getUDXSaaS, getUDXDevices, getIdentificationToken, registerUDX, getUDXRegistrationStatus } from "./udx-controller";
-import { checkRequiredParams } from './../../middleware/validator';
+import { checkApiVersion, checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
 
@@ -26,9 +26,10 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/udx_device/registration",
+    path: "/api/:version/udx_device/registration",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -41,9 +42,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/udx_device/registration_token",
+    path: "/api/:version/udx_device/registration_token",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -56,7 +58,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/udx_saas",
+    path: "/api/:version/udx_saas",
     method: "get",
     handler: [
       checkRequiredParams,
@@ -71,9 +73,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/udx_device",
+    path: "/api/:version/udx_device",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -86,9 +89,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/udx_device/registration",
+    path: "/api/:version/udx_device/registration",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {

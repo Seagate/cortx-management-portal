@@ -277,3 +277,16 @@ let validateParams = (requiredParams: any, params: any, req: Request, res: Respo
     throw new HTTP400Error("Some error occurred.");
   }
 }
+
+export const checkApiVersion = (req: Request, res: Response, next: NextFunction): void => {
+  // Since version changes do not occur often switch case statement is used here. This can be changed to a list when there are many api versions
+  switch (req.params.version) {
+    case "v1":
+    case "v2":
+      next();
+      break;
+    default:
+      throw new HTTP400Error("API version is invalid.");
+      break;
+  }
+}
