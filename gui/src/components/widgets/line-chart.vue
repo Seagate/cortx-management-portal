@@ -59,22 +59,34 @@
           style="border-bottom: 1px solid lightgrey;"
         >
           <v-tab @click="tabChange(1800)" id="1/2hrstab">
-            <label class="tab-label" id="1/2hrstablbl">{{ $t("widget.1By2Hrs") }}</label>
+            <label class="tab-label" id="1/2hrstablbl">{{
+              $t("widget.1By2Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(3600)" id="onehrstab">
-            <label class="tab-label" id="onehrstablbl">{{ $t("widget.1Hrs") }}</label>
+            <label class="tab-label" id="onehrstablbl">{{
+              $t("widget.1Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(7200)" id="twohrstab">
-            <label class="tab-label" id="twohrstablbl">{{ $t("widget.2Hrs") }}</label>
+            <label class="tab-label" id="twohrstablbl">{{
+              $t("widget.2Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(21600)" id="sixhrstab">
-            <label class="tab-label" id="sixhrstablbl">{{ $t("widget.6Hrs") }}</label>
+            <label class="tab-label" id="sixhrstablbl">{{
+              $t("widget.6Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(43200)" id="twelvehrstab">
-            <label class="tab-label" id="twelvehrstablbl">{{ $t("widget.12Hrs") }}</label>
+            <label class="tab-label" id="twelvehrstablbl">{{
+              $t("widget.12Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(86400)" id="onedaytab">
-            <label class="tab-label" id="onedaytablbl">{{ $t("widget.1Day") }}</label>
+            <label class="tab-label" id="onedaytablbl">{{
+              $t("widget.1Day")
+            }}</label>
           </v-tab>
         </v-tabs>
       </v-col>
@@ -220,21 +232,20 @@ export default class CortxLineChart extends Vue {
 
   // Component Lifecycle created event : prefetching past half an hour of data by default.
   public created() {
-   this.initThrouthputStats(1800);
-    document.addEventListener('visibilitychange',this.changeTabDetection)
+    this.initThrouthputStats(1800);
+    document.addEventListener("visibilitychange", this.changeTabDetection);
   }
-  public changeTabDetection(){
-     if( document.hidden){
-          this.ispollThroughPut = false;
-       }
-       else{
-          this.initThrouthputStats(1800);
-       }
+  public changeTabDetection() {
+    if (document.hidden) {
+      this.ispollThroughPut = false;
+    } else {
+      this.initThrouthputStats(1800);
+    }
   }
   // Component Lifecycle distroyed event: stoping polling process.
   public destroyed() {
     this.ispollThroughPut = false;
-    document.removeEventListener('visibilitychange',this.changeTabDetection)
+    document.removeEventListener("visibilitychange", this.changeTabDetection);
   }
 
   // Common method prefetch data and initialize polling\
@@ -355,10 +366,10 @@ export default class CortxLineChart extends Vue {
       }
       const that = this;
       const elasticSerchOffset = 5;
-     
+
       // this elasticSerchOffset need to be substracted in "from time" of the request
       // to remove a corner case where elastic search stops giving data due to some time lag
-    
+
       that.throughputPoll = setInterval(() => {
         if (that.ispollThroughPut === true) {
           const query = {
