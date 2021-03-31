@@ -23,7 +23,7 @@ import { Request, Response, request, response } from "express";
  * @param query 
  */
 export const getUserConfig = async (req: Request, res: Response) => {
-    let alertData = Api.getAll(apiRegister.get_all_system_config(req.params.version), req, res);
+    let alertData = Api.getAll(apiRegister.get_all_system_config_endpt(req.params.version), req, res);
     let result = await alertData;
     return result;
 };
@@ -34,7 +34,7 @@ export const getUserConfig = async (req: Request, res: Response) => {
  * @param res 
  */
 export const saveUserConfig = async (req: Request, res: Response) => {
-    let alertData = Api.post(apiRegister.get_all_system_config(req.params.version), req, res);
+    let alertData = Api.post(apiRegister.get_all_system_config_endpt(req.params.version), req, res);
     let result = await alertData;
     return result;
 };
@@ -45,7 +45,7 @@ export const saveUserConfig = async (req: Request, res: Response) => {
  * @param res 
  */
 export const updateUserConfig= async (req: Request, res: Response) => {
-    let alertData = Api.put(apiRegister.get_all_system_config(req.params.version), req, res, req.params.user_config_id);
+    let alertData = Api.put(apiRegister.get_all_system_config_endpt(req.params.version), req, res, req.params.user_config_id);
     let result = await alertData;
     return result;
 };

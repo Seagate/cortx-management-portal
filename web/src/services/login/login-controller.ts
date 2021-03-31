@@ -24,7 +24,7 @@ import { Request, Response, request, response } from "express";
  * @param res 
  */
 export const getAdminUser = async (req: Request, res: Response) => {
-  let adminUser = Api.post(apiRegister.get_admin_user(req.params.version), req, res);
+  let adminUser = Api.post(apiRegister.get_admin_user_endpt(req.params.version), req, res);
   return adminUser;
 };
 
@@ -34,7 +34,7 @@ export const getAdminUser = async (req: Request, res: Response) => {
  * @param res 
  */
 export const logout = async (req: Request, res: Response) => {
-  let adminUser = Api.post(apiRegister.get_admin_user_logout(req.params.version), req, res)
+  let adminUser = Api.post(apiRegister.get_admin_user_logout_endpt(req.params.version), req, res)
   return adminUser;
 };
 
@@ -44,13 +44,13 @@ export const logout = async (req: Request, res: Response) => {
  * @param res 
  */
 export const saveUser = async (req: Request, res: Response) => {
-  let adminUser = Api.post(apiRegister.get_admin_user_create(req.params.version), req, res);
+  let adminUser = Api.post(apiRegister.get_admin_user_create_endpt(req.params.version), req, res);
   return adminUser;
 };
 /**
  * added license key 
  */
 export const license = async (req: Request, res: Response) => {
-  let addlicense = Api.post(apiRegister.get_addlicensekey(req.params.version), req, res)
+  let addlicense = Api.post(apiRegister.get_addlicensekey_endpt(req.params.version), req, res)
   return addlicense;
 };

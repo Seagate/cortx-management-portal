@@ -24,7 +24,7 @@ import { Request, Response, request, response } from "express";
  * @param res 
  */
 export const getUserById = async (req: Request, res: Response) => {
-  let url = apiRegister.get_csm_user(req.params.version);
+  let url = apiRegister.get_csm_user_endpt(req.params.version);
   if(req.params.user_id){
     url += "/" + req.params.user_id;
   }
@@ -39,7 +39,7 @@ export const getUserById = async (req: Request, res: Response) => {
  * @param res 
  */
 export const getUsers = async (req: Request, res: Response) => {
-  let csmusers = Api.getAll(apiRegister.get_csm_user(req.params.version), req, res);
+  let csmusers = Api.getAll(apiRegister.get_csm_user_endpt(req.params.version), req, res);
   return csmusers;
 };
 
@@ -49,7 +49,7 @@ export const getUsers = async (req: Request, res: Response) => {
  * @param res 
  */
 export const saveUser = async (req: Request, res: Response) => {
-  let adminUser = Api.post(apiRegister.get_csm_user(req.params.version), req, res);
+  let adminUser = Api.post(apiRegister.get_csm_user_endpt(req.params.version), req, res);
   return adminUser;
 };
 
@@ -59,7 +59,7 @@ export const saveUser = async (req: Request, res: Response) => {
  * @param res 
  */
 export const updateUser = async (req: Request, res: Response) => {
-  let adminUser = Api.patch(apiRegister.get_csm_user(req.params.version), req, res, req.params.user_id);
+  let adminUser = Api.patch(apiRegister.get_csm_user_endpt(req.params.version), req, res, req.params.user_id);
   return adminUser;
 };
 
@@ -69,7 +69,7 @@ export const updateUser = async (req: Request, res: Response) => {
  * @param res 
  */
 export const deleteUser = async (req: Request, res: Response) => {
-  let adminUser = Api.delete(apiRegister.get_csm_user(req.params.version), req, res, req.params.user_id);
+  let adminUser = Api.delete(apiRegister.get_csm_user_endpt(req.params.version), req, res, req.params.user_id);
   return adminUser;
 };
 /**
@@ -78,5 +78,5 @@ export const deleteUser = async (req: Request, res: Response) => {
  * @param res
  */
 export const getUserPermissions = async (req: Request, res: Response) => {
-  return await Api.getAll(apiRegister.get_user_permissions(req.params.version), req, res);
+  return await Api.getAll(apiRegister.get_user_permissions_endpt(req.params.version), req, res);
 };

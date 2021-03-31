@@ -20,38 +20,38 @@ import { Request, Response } from "express";
 
 
 export const getAllAccounts = async (req: Request, res: Response) => {
-    let result: any = await Api.getAll(apiRegister.get_s3_accounts(req.params.version), req, res);
+    let result: any = await Api.getAll(apiRegister.get_s3_accounts_endpt(req.params.version), req, res);
     return result;
 };
 
 export const createAccount = async (req: Request, res: Response) => {
-    let result = await Api.post(apiRegister.get_s3_accounts(req.params.version), req, res);
+    let result = await Api.post(apiRegister.get_s3_accounts_endpt(req.params.version), req, res);
     return result;
 };
 
 export const deleteAccount = async (accountName: string, req: Request, res: Response) => {
-    let result = await Api.delete(apiRegister.get_s3_accounts(req.params.version), req, res, accountName);
+    let result = await Api.delete(apiRegister.get_s3_accounts_endpt(req.params.version), req, res, accountName);
     return result;
 };
 
 export const getAllIAMUsers = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.get_iam_users(req.params.version), req, res);
+    let result = await Api.getAll(apiRegister.get_iam_users_endpt(req.params.version), req, res);
     return result;
 };
 
 export const createIAMUser = async (req: Request, res: Response) => {
-    let result = await Api.post(apiRegister.get_iam_users(req.params.version), req, res);
+    let result = await Api.post(apiRegister.get_iam_users_endpt(req.params.version), req, res);
     return result;
 };
 
 export const deleteIAMUser = async (username: string, req: Request, res: Response) => {
     let tempUsername = encodeURI(username);
-    let result = await Api.delete(apiRegister.get_iam_users(req.params.version), req, res, tempUsername);
+    let result = await Api.delete(apiRegister.get_iam_users_endpt(req.params.version), req, res, tempUsername);
     return result;
 };
 
 export const resetPassword = async (req: Request, res: Response) => {
-    let resetPassword = Api.patch(apiRegister.get_iam_users(req.params.version), req, res, req.params.account_name);
+    let resetPassword = Api.patch(apiRegister.get_iam_users_endpt(req.params.version), req, res, req.params.account_name);
     let result = await resetPassword;
     return result;
 };
@@ -61,7 +61,7 @@ export const resetPassword = async (req: Request, res: Response) => {
  * @param res 
  */
 export const updateAccount = async (req: Request, res: Response) => {
-    let updatePassword = Api.patch(apiRegister.get_s3_accounts(req.params.version), req, res, req.params.account_name);
+    let updatePassword = Api.patch(apiRegister.get_s3_accounts_endpt(req.params.version), req, res, req.params.account_name);
     let result = await updatePassword;
     return result;
 };

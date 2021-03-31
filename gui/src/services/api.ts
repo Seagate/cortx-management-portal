@@ -41,12 +41,6 @@ axios.interceptors.request.use(
     } else if (config.timeout === 0) {
       config.timeout = 20000;
     }
-    if (document.hidden) {
-      config = {
-        ...config,
-        cancelToken: new axios.CancelToken((cancel) => cancel("Request cancelled as page is idle"))
-      };
-    }
     return config;
   },
   error => {

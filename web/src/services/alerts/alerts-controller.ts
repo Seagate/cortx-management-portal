@@ -29,45 +29,45 @@ import { Request, Response, request, response } from "express";
  * @param limit 
  */
 export const getAlerts = async (req: Request, res: Response) => {
-    let alertData = Api.getAll(apiRegister.get_all_alerts(req.params.version), req, res);
+    let alertData = Api.getAll(apiRegister.get_all_alerts_endpt(req.params.version), req, res);
     let result = await alertData;
     return result;
 };
 export const getAlertsHistory = async (req: Request, res: Response) => {
-    let alertHistoryData = Api.getAll(apiRegister.get_alerts_history(req.params.version), req, res);
+    let alertHistoryData = Api.getAll(apiRegister.get_alerts_history_endpt(req.params.version), req, res);
     let result = await alertHistoryData;
     return result;
 };
 
 export const getAlertHistrorydetailsById = async (req: Request, res: Response) => {
-    let getAlertHistrorydetails = Api.getAll(apiRegister.get_alerts_history(req.params.version) + "/" + req.params.alert_id, req, res);
+    let getAlertHistrorydetails = Api.getAll(apiRegister.get_alerts_history_endpt(req.params.version) + "/" + req.params.alert_id, req, res);
     let result = await getAlertHistrorydetails;
     return result;
 };
 export const getAlertById = async (req: Request, res: Response) => {
-    let alertData = Api.getAll(apiRegister.get_all_alerts(req.params.version) + "/" + req.params.alert_id, req, res);
+    let alertData = Api.getAll(apiRegister.get_all_alerts_endpt(req.params.version) + "/" + req.params.alert_id, req, res);
     let result = await alertData;
     return result;
 };
 
 export const updateAlert = async (req: Request, res: Response) => {
-    let alertData = Api.patch(apiRegister.get_all_alerts(req.params.version), req, res, req.params.alert_id);
+    let alertData = Api.patch(apiRegister.get_all_alerts_endpt(req.params.version), req, res, req.params.alert_id);
     let result = await alertData;
     return result;
 };
 
 export const updateAlerts = async (req: Request, res: Response) => {
-    let alertData = Api.patch(apiRegister.get_all_alerts(req.params.version), req, res, "");
+    let alertData = Api.patch(apiRegister.get_all_alerts_endpt(req.params.version), req, res, "");
     let result = await alertData;
     return result;
 };
 
 export const getCommentsForAlert = async (req: Request, res: Response) => {
-    const url = apiRegister.get_all_alerts(req.params.version) + "/" + req.params.alert_id + "/comments";
+    const url = apiRegister.get_all_alerts_endpt(req.params.version) + "/" + req.params.alert_id + "/comments";
     return await Api.getAll(url, req, res);
 };
 
 export const addCommentToAlert = async (req: Request, res: Response) => {
-    const url = apiRegister.get_all_alerts(req.params.version) + "/" + req.params.alert_id + "/comments";
+    const url = apiRegister.get_all_alerts_endpt(req.params.version) + "/" + req.params.alert_id + "/comments";
     return await Api.post(url, req, res);
 };

@@ -18,23 +18,27 @@ import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response } from "express";
 
+export const getUDXSaaS = async (req: Request, res: Response) => {
+    let result = await Api.getAll(apiRegister.get_udx_saas_endpt(req.params.version), req, res);
+    return result;
+};
 
 export const getUDXDevices = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.get_udx_devices(req.params.version), req, res);
+    let result = await Api.getAll(apiRegister.get_udx_devices_endpt(req.params.version), req, res);
     return result;
 };
 
 export const getIdentificationToken = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.get_udx_registration_token(req.params.version), req, res);
+    let result = await Api.getAll(apiRegister.get_udx_registration_token_endpt(req.params.version), req, res);
     return result;
 };
 
 export const registerUDX = async (req: Request, res: Response) => {
-    let result = await Api.post(apiRegister.get_udx_register_device(req.params.version), req, res);
+    let result = await Api.post(apiRegister.get_udx_register_device_endpt(req.params.version), req, res);
     return result;
 };
 
 export const getUDXRegistrationStatus = async (req: Request, res: Response) => {
-    let result = await Api.getAll(apiRegister.get_udx_register_device(req.params.version), req, res);
+    let result = await Api.getAll(apiRegister.get_udx_register_device_endpt(req.params.version), req, res);
     return result;
 };
