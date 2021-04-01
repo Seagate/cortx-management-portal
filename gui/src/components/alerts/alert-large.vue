@@ -101,8 +101,7 @@
             <div>
               <span>{{ $t("alerts.resourceType") }}: {{ props.item.module_name }}</span><br />
               <span>{{ $t("alerts.resourceId") }}: {{ props.item.resource_id }} | {{ $t("alerts.state") }}: {{ props.item.state }}</span><br />
-              <span>{{ $t("alerts.nodeId") }}: {{ props.item.node_id }}</span>
-              <br>
+              <span>{{ $t("alerts.nodeId") }}: {{ props.item.node_id }}</span><br>
               <span>{{ $t("alerts.host_name") }}: {{ props.item.host_id }}</span>
             </div>
             <div>
