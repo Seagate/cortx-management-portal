@@ -16,14 +16,15 @@
 */
 import { Request, Response, request, response } from "express";
 import { saveUser, logout, getAdminUser, license } from "./login-controller";
-import { checkRequiredParams } from "../../middleware/validator";
+import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/login",
+    path: "/api/:version/login",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getAdminUser(req, res).then((response: any) =>{
@@ -34,9 +35,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/logout",
+    path: "/api/:version/logout",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await logout(req, res);
@@ -45,9 +47,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/preboarding/user",
+    path: "/api/:version/preboarding/user",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await saveUser(req, res);
@@ -56,9 +59,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/license/onboarding",
+    path: "/api/:version/license/onboarding",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await license(req, res);

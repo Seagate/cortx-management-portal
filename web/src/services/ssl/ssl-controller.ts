@@ -18,7 +18,7 @@ import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response } from "express";
 export const sslCertificateUpload = async (req: Request, res: Response) => {
-  const result = await Api.uploadFiles(apiRegister.ssl_upload, req, res);
+  const result = await Api.uploadFiles(apiRegister.get_ssl_upload_endpt(req.params.version), req, res);
   return result;
 };
 /**
@@ -27,14 +27,14 @@ export const sslCertificateUpload = async (req: Request, res: Response) => {
  * @param res 
  */
 export const sslCertificateInstall = async (req: Request, res: Response) => {
-  let uploadCertificate = Api.post(apiRegister.ssl_install, req, res);
+  let uploadCertificate = Api.post(apiRegister.get_ssl_install_endpt(req.params.version), req, res);
   return uploadCertificate;
 };
 export const certificateAvailability = async (req: Request, res: Response) => {
-  const result = await Api.getAll(apiRegister.ssl_status, req, res);
+  const result = await Api.getAll(apiRegister.get_ssl_status_endpt(req.params.version), req, res);
   return result;
 };
 export const certificateDetails = async (req: Request, res: Response) => {
-  const result = await Api.getAll(apiRegister.ssl_details, req, res);
+  const result = await Api.getAll(apiRegister.get_ssl_details_endpt(req.params.version), req, res);
   return result;
 };

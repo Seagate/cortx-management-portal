@@ -23,7 +23,7 @@ import { Request, Response, request, response } from "express";
  * @param query
  */
 export const getAccessKeys = async (req: Request, res: Response) => {
-  let accessKeyData = Api.getAll(apiRegister.s3_access_keys, req, res);
+  let accessKeyData = Api.getAll(apiRegister.get_s3_access_keys_endpt(req.params.version), req, res);
   let result = await accessKeyData;
   return result;
 };

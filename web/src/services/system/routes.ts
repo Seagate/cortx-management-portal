@@ -26,7 +26,7 @@ import {
   getHealthComponents,
   getHealthResources
 } from "./system-controller";
-import { checkRequiredParams } from "./../../middleware/validator";
+import { checkApiVersion, checkRequiredParams } from "./../../middleware/validator";
 import HttpStatus from "http-status-codes";
 
 /**
@@ -35,9 +35,10 @@ import HttpStatus from "http-status-codes";
 
 export default [
   {
-    path: "/api/v1/system/health/summary",
+    path: "/api/:version/system/health/summary",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -50,9 +51,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/system/health/view",
+    path: "/api/:version/system/health/view",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -65,9 +67,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/system/health/components",
+    path: "/api/:version/system/health/components",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -80,9 +83,10 @@ export default [
     ],
   },
   {
-    path: "/api/v1/system/health/resources",
+    path: "/api/:version/system/health/resources",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -95,9 +99,10 @@ export default [
     ],
   },
   {
-    path: "/api/v1/system/health/node",
+    path: "/api/:version/system/health/node",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -110,9 +115,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/maintenance/cluster/node_status",
+    path: "/api/:version/maintenance/cluster/node_status",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -125,9 +131,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/maintenance/cluster/start",
+    path: "/api/:version/maintenance/cluster/start",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -140,9 +147,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/maintenance/cluster/stop",
+    path: "/api/:version/maintenance/cluster/stop",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -155,9 +163,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/maintenance/cluster/shutdown",
+    path: "/api/:version/maintenance/cluster/shutdown",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -171,9 +180,10 @@ export default [
   },
   // commented as per bug EOS-13871
   // {
-  //   path: "/api/v1/maintenance/cluster/replace_node_status",
+  //   path: "/api/:version/maintenance/cluster/replace_node_status",
   //   method: "get",
   //   handler: [
+  //     checkApiVersion,
   //     checkRequiredParams,
   //     async (req: Request, res: Response) => {
   //       try {
@@ -186,9 +196,10 @@ export default [
   //   ]
   // },
   // {
-  //   path: "/api/v1/maintenance/cluster/replace_node",
+  //   path: "/api/:version/maintenance/cluster/replace_node",
   //   method: "post",
   //   handler: [
+  //     checkApiVersion,
   //     checkRequiredParams,
   //     async (req: Request, res: Response) => {
   //       try {

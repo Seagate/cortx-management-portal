@@ -16,14 +16,15 @@
 */
 import { Request, Response, request, response } from "express";
 import { getLastUpgradeStatus, firmwareUpload, startUpgrade, packageAvailability } from "./firmware-controller";
-import { checkRequiredParams } from "../../middleware/validator";
+import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
 export default [
     {
-        path: "/api/v1/update/firmware/last_upgrade_status",
+        path: "/api/:version/update/firmware/last_upgrade_status",
         method: "get",
         handler: [
+            checkApiVersion,
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await getLastUpgradeStatus(req, res);
@@ -32,9 +33,10 @@ export default [
         ]
     },
     {
-        path: "/api/v1/update/firmware/upload",
+        path: "/api/:version/update/firmware/upload",
         method: "post",
         handler: [
+            checkApiVersion,
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await firmwareUpload(req, res);
@@ -43,9 +45,10 @@ export default [
         ]
     },
     {
-        path: "/api/v1/update/firmware/start",
+        path: "/api/:version/update/firmware/start",
         method: "post",
         handler: [
+            checkApiVersion,
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await startUpgrade(req, res);
@@ -54,9 +57,10 @@ export default [
         ]
     },
     {
-        path: "/api/v1/update/firmware/availability",
+        path: "/api/:version/update/firmware/availability",
         method: "get",
         handler: [
+            checkApiVersion,
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await packageAvailability(req, res);
