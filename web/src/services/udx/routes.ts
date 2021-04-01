@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 import { Request, Response } from "express";
-import { getUDXSaaS, getUDXDevices, getIdentificationToken, registerUDX, getUDXRegistrationStatus } from "./udx-controller";
+import { getUDXSaaS, getUDXDevices, getIdentificationToken, registerUDX, getUDXRegistrationStatus, getS3URL } from "./udx-controller";
 import { checkApiVersion, checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
@@ -97,6 +97,21 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await registerUDX(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/v1/s3",
+    method: "get",
+    handler: [
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getS3URL(req, res);
           res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
