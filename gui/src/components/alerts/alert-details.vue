@@ -44,6 +44,7 @@
           <label>&nbsp;| {{ $t("alerts.site") }} {{ alertExtendedInfo.site_id }}</label>
           <label>&nbsp;| {{ $t("alerts.rack") }} {{ alertExtendedInfo.rack_id }}</label>
           <label>&nbsp;| {{ $t("alerts.node") }} {{ alertExtendedInfo.node_id }}</label>
+          <label>&nbsp;| {{ $t("alerts.host_name") }} :{{ alert.host_id}}</label>
         </div>
         <div>
           <label>{{ $t("alerts.resourceType") }}: {{ alertExtendedInfo.resource_type }}</label>

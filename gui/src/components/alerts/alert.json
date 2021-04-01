@@ -41,7 +41,8 @@
             "module": "Module",
             "addComments": "Add comments",
             "goToDetailsPage": "Go to alert details page",
-            "newAlerts": "New Alerts"
+            "newAlerts": "New Alerts",
+            "host_name": "Hostname"
         }
     },
     "ru": {
