@@ -87,7 +87,7 @@ export default class HeaderBar extends Vue {
       reconnectionDelay: 3000 // (Number) how long to initially wait before attempting a new (1000) })
     });
     const vueInstance: any = this;
-    if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.list)) {
+    if (vueInstance.$hasAccessToCsm(userPermissions.alerts + userPermissions.list)) {
       this.$store.dispatch("alertDataAction");
     }
     const usernameStr = localStorage.getItem(this.$data.constStr.username);
