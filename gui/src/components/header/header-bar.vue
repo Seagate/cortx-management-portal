@@ -65,6 +65,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import store from "../../store/store";
 import VueNativeSock from "vue-native-websocket";
 import i18n from "../../i18n";
+import { userPermissions } from "../../common/user-permissions-map"
 
 @Component({
   name: "HeaderBar"
@@ -85,7 +86,10 @@ export default class HeaderBar extends Vue {
       reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
       reconnectionDelay: 3000 // (Number) how long to initially wait before attempting a new (1000) })
     });
-    this.$store.dispatch("alertDataAction");
+    const vueInstance: any = this;
+    if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.list)) {
+      this.$store.dispatch("alertDataAction");
+    }
     const usernameStr = localStorage.getItem(this.$data.constStr.username);
     if (usernameStr) {
       this.username = usernameStr;
