@@ -105,7 +105,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3",
+    path: "/api/:version/s3",
     method: "get",
     handler: [
       checkRequiredParams,
