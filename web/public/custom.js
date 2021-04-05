@@ -31,6 +31,8 @@
     brandName.src = "/public/product-name.svg";
     brandName.style = 'display: block';
     icon.appendChild(brandName);
+    var serverTitle = document.querySelector(".servers-title");
+    serverTitle.innerHTML = "Base Path";
     }
     setTimeout(changeLogo, 600);
 })();

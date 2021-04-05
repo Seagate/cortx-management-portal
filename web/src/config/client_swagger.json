@@ -1,2158 +1,2204 @@
 {
-	"swagger": "2.0",
-	"info": {
-		"version": "1.0.0",
-		"title": "CSM"
-	},
-	"basePath": "/api/v1",
-	"produces": ["application/json"],
-	"paths": {
-		"/product_version": {
-			"get": {
-				"tags": ["About"],
-				"summary": "Gets product version and its components",
-				"responses": {
-					"200": {
-						"description": "OK: Product version and components fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: Invalid request message received."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				}, 
-				"content": {
-					"application/json": {}
-				}
-			}
-		},
-		"/login": {
-			"post": {
-				"tags": ["User"],
-				"summary": "This API allow login to Admin user, CSM user and S3 User",
-				"responses": {
-					"200": {
-						"description": "OK: User logged in successfully."
-					},
-					"400": {
-						"description": "Bad Request: Request body is missing or Username or password is missing"
-					},
-					"401": {
-						"description": "Unauthorized: Username and password combination is incorrect"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "User",
-					"in": "body",
-					"description": "CSM User request",
-					"schema": {
-						"type": "object",
-						"required": true,
-						"properties": {
-							"username": {
-								"type": "string",
-								"example": ""
-							},
-							"password": {
-								"type": "string",
-								"example": ""
-							}
-						}
-					}
-				}]
-			}
-		},
-		"/logout": {
-			"post": {
-				"tags": ["User"],
-				"summary": "This API is allow to logout the user",
-				"responses": {
-					"200": {
-						"description": "OK: User logout successfully."
-					},
-					"400": {
-						"description": "Bad Request: This error is raised for all cases when an entity was not found"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."	
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/csm/users": {
-			"get": {
-				"tags": ["CSM User"],
-				"summary": "Get CSM user list: CSM user having permission manage and monitor can get CSM users list",
-				"responses": {
-					"200": {
-						"description": "OK: List of CSM users"
-					},
-					"400": {
-						"description": "Bad Request: Invalid request URL."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			},
-			"post": {
-				"tags": ["CSM User"],
-				"summary": "Create new CSM user: CSM user having permission manage can create new CSM user",
-				"responses": {
-					"201": {
-						"description": "User has been created"
-					},
-					"400": {
-						"description": "Bad Request: Request body is missing or Invalid arguments"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "User",
-					"in": "body",
-					"description": "Create new user request",
-					"schema": {
-						"type": "object",
-						"required": true,
-						"properties": {
-							"username": {
-								"type": "string",
-								"example": "Test2"
-							},
-							"password": {
-								"type": "string",
-								"example": "password"
-							},
-							"email": {
-								"type": "string",
-								"example": "user@test.com"
-							},
-							"roles": {
-								"type": "array",
-								"example": ["manage"]
-							}
-						}
-					}
-				},{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/csm/users/{user_id}": {
-			"get": {
-				"tags": ["CSM User"],
-				"summary": "Get CSM user: CSM user having permission manage and monitor can fetch CSM user info by ID",
-				"responses": {
-					"200": {
-						"description": "OK: CSM user info fetched successfully"
-					},
-					"400": {
-						"description": "Bad Request : Request body missing or S3 account with same name as passed CSM username already exists"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "This error is raised for all cases when we don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "user_id",
-						"in": "path",
-						"description": "Specifies the user id",
-						"required": true,
-						"type": "string"
-					},	
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-				}]
-			},
-			"patch": {
-				"tags": ["CSM User"],
-				"summary": "Update CSM user credentials: CSM user having permission manage can update CSM user",
-				"responses": {
-					"200": {
-						"description": "OK: User updated successfully"
-					},
-					"400": {
-						"description": "Bad Request: Request body missing or Invalid request body"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
+  "openapi": "3.0.0",
+  "info": {
+    "version": "2.0.0",
+    "title": "CSM"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    },
+    {
+      "url": "/api/v2"
+    }
+  ],
+  "paths": {
+    "/product_version": {
+      "get": {
+        "tags": ["About"],
+        "summary": "Gets product version and its components",
+        "responses": {
+          "200": {
+            "description": "OK: Product version and components fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: Invalid request message received."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "This API allow login to Admin user, CSM user and S3 User",
+        "responses": {
+          "200": {
+            "description": "OK: User logged in successfully."
+          },
+          "400": {
+            "description": "Bad Request: Request body is missing or Username or password is missing"
+          },
+          "401": {
+            "description": "Unauthorized: Username and password combination is incorrect"
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "User",
+            "in": "body",
+            "description": "CSM User request",
+            "schema": {
+              "type": "object",
+              "required": true,
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": ""
+                },
+                "password": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["User"],
+        "summary": "This API is allow to logout the user",
+        "responses": {
+          "200": {
+            "description": "OK: User logout successfully."
+          },
+          "400": {
+            "description": "Bad Request: This error is raised for all cases when an entity was not found"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/csm/users": {
+      "get": {
+        "tags": ["CSM User"],
+        "summary": "Get CSM user list: CSM user having permission manage and monitor can get CSM users list",
+        "responses": {
+          "200": {
+            "description": "OK: List of CSM users"
+          },
+          "400": {
+            "description": "Bad Request: Invalid request URL."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "post": {
+        "tags": ["CSM User"],
+        "summary": "Create new CSM user: CSM user having permission manage can create new CSM user",
+        "responses": {
+          "201": {
+            "description": "User has been created"
+          },
+          "400": {
+            "description": "Bad Request: Request body is missing or Invalid arguments"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "User",
+            "in": "body",
+            "description": "Create new user request",
+            "schema": {
+              "type": "object",
+              "required": true,
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "Test2"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "user@test.com"
+                },
+                "roles": {
+                  "type": "array",
+                  "example": ["manage"]
+                }
+              }
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/csm/users/{user_id}": {
+      "get": {
+        "tags": ["CSM User"],
+        "summary": "Get CSM user: CSM user having permission manage and monitor can fetch CSM user info by ID",
+        "responses": {
+          "200": {
+            "description": "OK: CSM user info fetched successfully"
+          },
+          "400": {
+            "description": "Bad Request : Request body missing or S3 account with same name as passed CSM username already exists"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "This error is raised for all cases when we don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "Specifies the user id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "patch": {
+        "tags": ["CSM User"],
+        "summary": "Update CSM user credentials: CSM user having permission manage can update CSM user",
+        "responses": {
+          "200": {
+            "description": "OK: User updated successfully"
+          },
+          "400": {
+            "description": "Bad Request: Request body missing or Invalid request body"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
 
-				"parameters": [
-					{
-						"name": "user_id",
-						"in": "path",
-						"description": "Specifies the user id",
-						"required": true,
-						"type": "string"
-					},	
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-					},
-					{
-					"name": "edit csm user",
-					"in": "body",
-					"description": "Edit CSM user credentials. The 'current_password' property is required for users who change their own password. The superuser can skip this field for all other users.",
-					"schema": {
-						"type": "object",
-						"required": false,
-						"properties": {
-							"roles": {
-								"type": "array",
-								"example": []
-							},
-							"email": {
-								"type": "string",
-								"example": "new@email.com"
-							},
-							"password": {
-								"type": "string",
-								"example": "new_password"
-							},
-							"current_password": {
-								"type": "string",
-								"example": "password"
-							}
-						}
-					}
-				}
-				]
-
-			},
-			"delete": {
-				"tags": ["CSM User"],
-				"summary": "Delete csm user: CSM user having permission manage can delete existing CSM user",
-				"responses": {
-					"200": {
-						"description": "Ok"
-					},
-					"400": {
-						"description": "Bad Request: Request body missing or Invalid request body"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: Users Not Found"
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "user_id",
-						"in": "path",
-						"description": "Specifies the user id",
-						"required": true,
-						"type": "string"
-					},
-				    {
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-				}]
-			}
-		},
-		"/permissions": {
-			"get": {
-				"tags": [
-					"CSM User"
-				],
-				"summary": "Get the User Permissions: Accessible to all the users",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "OK"
-					},
-					"400": {
-						"description": "Could not get permissions from server,check session"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"parameters": [
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-					}
-				]
-			}
-		},
-		"/s3_accounts": {
-			"get": {
-				"tags": ["S3"],
-				"summary": "Get S3 Accounts: Accessible to CSM users with manage and monitor permissions and S3 account",
-				"responses": {
-					"200": {
-						"description": "OK: List of s3 accounts."
-					},
-					"400": {
-						"description": "Bad Request: An argument is missing or not valid"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			},
-			"post": {
-				"tags": ["S3"],
-				"summary": "Create new S3 Account: Accessible to CSM users with manage permission and S3 account",
-				"responses": {
-					"200": {
-						"description": "S3 Account has been created"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"409": {
-						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "S3 Account",
-					"in": "body",
-					"description": "Create new S3 Account request",
-					"schema": {
-						"type": "object",
-						"required": true,
-						"properties": {
-							"account_name": {
-								"type": "string",
-								"example": ""
-							},
-							"account_email": {
-								"type": "string",
-								"example": ""
-							},
-							"password": {
-								"type": "string",
-								"example": ""
-							}
-						}
-					}
-				},{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/s3_accounts/{s3_account_id}": {
-			"patch": {
-				"tags": ["S3"],
-				"summary": "Update S3 account password: Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "OK: S3 Account updated successfully"
-					},
-					"400": {
-						"description": "Bad Request: Request body is missing"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"409": {
-						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "s3_account_id",
-						"in": "path",
-						"description": "Specifies the S3 Account Id",
-						"required": true,
-						"type": "string"
-					},	
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-					},
-					{
-					"name": "Edit S3 Account",
-					"in": "body",
-					"description": "Edit S3 Account",
-					"schema": {
-						"type": "object",
-						"required": true,
-						"properties": {
-							"password": {
-								"type": "string",
-								"example": ""
-							},
-							"reset_access_key": {
-								"type": "boolean",
-								"example": false
-							}
-						}
-					}
-				}
-				]
-			},
-			"delete": {
-				"tags": ["S3"],
-				"summary": "Delete S3 Account: Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "Ok: S3 account deleted successfully."
-					},
-					"400": {
-						"description": "Bad Request: Request body is missing"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: Users Not Found"
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "s3_account_id",
-						"in": "path",
-						"description": "Specifies the S3 Account id",
-						"required": true,
-						"type": "string"
-					},
-				    {
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-				}]
-			}
-		},
-		"/s3/access_keys": {
-			"get": {
-				"tags": ["S3 Access Key"],
-				"summary": "Get S3 account access keys:  Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "OK: S3 Account keys fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: Invalid request URL"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			},
-			"post": {
-				"tags": ["S3 Access Key"],
-				"summary": "Create new S3 account access key:  Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "Access key has been created"
-					},
-					"400": {
-						"description": "Bad Request: Invalid request URL"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/s3/access_keys/{access_key}": {
-			"delete": {
-				"tags": ["S3 Access Key"],
-				"summary": "Delete S3 account access key: Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "Ok: S3 account access key deleted successfully."
-					},
-					"400": {
-						"description": "Bad Request: Invalid request URL"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: Users Not Found"
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "access_key",
-						"in": "path",
-						"description": "Specifies the S3 account access key",
-						"required": true,
-						"type": "string"
-					},
-				    {
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-				}]
-			}
-		},
-		"/s3/bucket": {
-			"get": {
-			  "tags": [
-				"S3"
-			  ],
-			  "summary": "Get the bucket list: Accessible to S3 account only",
-			  "responses": {
-				"200": {
-					"description": "OK: Bucket list has been fetched successfully."
-				},
-				"400": {
-					"description": "Bad Request: An argument is missing or not valid"
-				},
-				"401": {
-					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-				},
-				"403": {
-					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-				},
-				"499": {
-					"description": "Call Cancelled: Call cancelled by client."
-				},
-				"500": {
-					"description": "Internal Server Error: When requested resource is not available."
-				}
-			},
-			  "content": {
-				"application/json": {}
-			  },
-			  "parameters": [{
-				"name": "authorization",
-				"in": "header",
-				"required": true,
-				"type": "string"
-			}]
-			},
-			"post": {
-			  "tags": [
-				"S3"
-			  ],
-			  "summary": "Add bucket: Accessible to S3 account only",
-			  "responses": {
-				"200": {
-				  "description": "OK: Bucket created successfully."
-				},
-				"400": {
-					"description": "Bad Request: An argument is missing or not valid"
-				},
-				"401": {
-					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-				},
-				"403": {
-					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-				},
-				"422": {
-					"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-				},
-				"499": {
-					"description": "Call Cancelled: Call cancelled by client."
-				},
-				"500": {
-					"description": "Internal Server Error: When requested resource is not available."
-				}
-			  },
-			  "content": {
-				"application/json": {}
-			  },
-			  "parameters": [
-				{
-				  "name": "bucket_name",
-				  "in": "body",
-				  "description": "bucket name",
-				  "properties": {
-					"bucket_name": {
-					  "type": "string",
-					  "example": "udx-xyz"
-					}
-				  }
-				},
-				{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}
-			  ]
-			}
-		},
-		"/s3/bucket_policy/{bucket_name}": {
-			"delete": {
-				"tags": [
-				"S3"
-				],
-				"summary": "bucket policy delete: Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "OK: Bucket policy deleted successfully"
-					},
-					"400": {
-						"description": "Bad Request: An argument is missing or not valid"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					}
-				},
-				"content": {
-				"application/json": {}
-				},
-				"parameters": [
-				{
-					"name": "bucket_name",
-					"in": "path",
-					"description": "Specifies the bucket name",
-					"required": true,
-					"type": "string"
-				},
-				{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}
-				]
-			} ,
-			"get": {
-				"tags": [
-				"S3"
-				],
-				"summary": "Get Bucket Policy: Accessible to S3 account only",
-				"responses": {
-				"200": {
-					"description": "OK: Bucket policy fetched successfully."
-				},
-				"400": {
-					"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-				},
-				"401": {
-					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-				},
-				"403": {
-					"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-				},
-				"499": {
-					"description": "Call Cancelled: Call cancelled by client."
-				},
-				"500": {
-					"description": "Internal Server Error: When requested resource is not available."
-				}
-				},
-				"content": {
-				"application/json": {}
-				},
-				"parameters": [
-				{
-					"name": "bucket_name",
-					"in": "path",
-					"description": "Specifies the Bucket name",
-					"required": true,
-					"type": "string"
-				},
-				{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}
-				]
-			},
-			"put": {
-				"tags": [
-				"S3"
-				],
-				"summary": "Edit Bucket Policy: Accessible to S3 account only",
-				"responses": {
-				"200": {
-					"description": "Ok: Bucket policy updated successfully."
-				},
-				"400": {
-					"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-				},
-				"401": {
-					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-				},
-				"404": {
-					"description": "No Data Found: A specified resource could not be found."
-				}
-				},
-				"content": {
-				"application/json": {}
-				},
-				"parameters": [
-				{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				},
-				{
-					"name": "bucket_name",
-					"in": "path",
-					"description": "Specifies the bucket_name",
-					"required": true,
-					"type": "string"
-				},
-				{
-					"name": "policy",
-					"in": "body",
-					"description": "bucket policy request",
-					"schema": {
-					"type": "object",
-					"required": false,
-					"properties": {
-						"policy": {
-						"type": "string"
-						}
-					}
-					}
-				}
-				]
-			}
-		},
-		"/s3/bucket/{bucket_name}": {
-		"delete": {
-			"tags": [
-			"S3"
-			],
-			"summary": "bucket  delete: Accessible to S3 account only",
-			"responses": {
-				"200": {
-					"description": "OK: Bucket name deleted successfully"
-				},
-				"400": {
-					"description": "Bad Request: Invalid request URL."
-				},
-				"401": {
-					"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-				},
-				"404": {
-					"description": "No Data Found: A specified resource could not be found."
-				}
-			},
-			"content": {
-			"application/json": {}
-			},
-			"parameters": [
-			{
-				"name": "bucket_name",
-				"in": "path",
-				"description": "Specifies the bucket name",
-				"required": true,
-				"type": "string"
-			},
-			{
-				"name": "authorization",
-				"in": "header",
-				"required": true,
-				"type": "string"
-			}
-			]
-		}
-		},
-		"/iam_users": {
-			"get": {
-				"tags": ["S3"],
-				"summary": "Get IAM users list: Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "OK: IAM user list fetched successfully."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			},
-			"post": {
-				"tags": ["S3"],
-				"summary": "Create new IAM user: Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "OK: IAM user created successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"409": {
-						"description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "User",
-					"in": "body",
-					"description": "Create new user request",
-					"schema": {
-						"type": "object",
-						"required": true,
-						"properties": {
-							"user_name": {
-								"type": "string",
-								"example": "iam_user"
-							},
-							"password": {
-								"type": "string",
-								"example": "password"
-							},
-							"require_reset": {
-								"type": "boolean"
-							}
-						}
-					}
-				},{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/iam_users/{user_name}": {
-			"delete": {
-				"tags": ["S3"],
-				"summary": "Delete IAM user: Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "OK: IAM user deleted successfully."
-					},
-					"400": {
-						"description": "Bad Request: Root IAM user cannot be deleted or Invalid request body"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "user_name",
-					"in": "path",
-					"description": "Specifies the IAM user name",
-					"required": true,
-					"type": "string"
-				}, {
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},	
-		"/s3/access_keys?user_name={user_name}": {
-			"get": {
-				"tags": ["Iam User Access Key"],
-				"summary": "Get IAM user access keys:  Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "OK: IAM user access key fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "user_name",
-					"in": "path",
-					"description": "Specifies the IAM user name",
-					"required": true,
-					"type": "string"
-				},
-				{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			},
-			"post": {
-				"tags": ["IAM User Access Key"],
-				"summary": "Create new IAM user access key:  Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "Access key has been created"
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "user_name",
-					"in": "path",
-					"description": "Specifies the IAM user name",
-					"required": true,
-					"type": "string"
-				},{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/s3/access_keys/{access_key}?user_name={user_name}": {		
-			"delete": {
-				"tags": ["IAM User Access Key"],
-				"summary": "Delete IAM account access key: Accessible to S3 account only",
-				"responses": {
-					"200": {
-						"description": "Ok: IAM user access key deleted successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "access_key",
-						"in": "path",
-						"description": "Specifies the S3 account access key",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "user_name",
-						"in": "path",
-						"description": "Specifies the IAM user name",
-						"required": true,
-						"type": "string"
-					},
-				    {
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-				}]
-			}
-		},
-		"/alerts": {
-			"get": {
-				"tags": ["Alerts"],
-				"summary": "Gets Alerts: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Alert list fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: Request body missing or invlaid json"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "sortby",
-						"in": "query",
-						"description": "Specifies sort by option",
-						"required": true,
-						"type": "string",
-						"enum": [
-							"created_time"
-						],
-						"default": "created_time"
-					},
-					{
-						"name": "dir",
-						"in": "query",
-						"description": "Specifies sort direction option",
-						"required": true,
-						"type": "string",
-						"enum": [
-							"asc",
-							"desc"
-						],
-						"default": "desc"
-					},
-					{
-						"name": "offset",
-						"in": "query",
-						"description": "Specifies offset of the result",
-						"required": true,
-						"type": "integer",
-						"default": 1
-					},
-					{
-						"name": "limit",
-						"in": "query",
-						"description": "Specifies limit for results per page",
-						"required": true,
-						"type": "integer",
-						"default": 10
-					},
-					{
-						"name": "duration",
-						"in": "query",
-						"description": "Specifies alert history duration 60s, 5m, 2h or 1d ",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "show_all",
-						"in": "query",
-						"description": "Specifies show all alerts",
-						"required": false,
-						"type": "Boolean",
-						"default": false
-					},
-					{
-						"name": "severity",
-						"in": "query",
-						"description": "Specifies serverity of alerts",
-						"required": false,
-						"type": "String"
-					},
-					{
-						"name": "resolved",
-						"in": "query",
-						"description": "Show resolved alerts",
-						"required": false,
-						"type": "Boolean",
-						"default": false
-					},
-					{
-						"name": "acknowledged",
-						"in": "query",
-						"description": "Show acknowledged alerts",
-						"required": false,
-						"type": "Boolean",
-						"default": false
-					},
-					{
-						"name": "show_active",
-						"in": "query",
-						"description": "Show active alerts",
-						"required": false,
-						"type": "Boolean",
-						"default": false
-					}
-				]
-			},
-			"patch": {
-				"tags": ["Alerts"],
-				"summary": "Acknowledge Alerts: Accessible to CSM users having manage permission",
-				"responses": {
-					"200": {
-						"description": "OK: Acknowledged Alerts successfully."
-					},
-					"400": {
-						"description": "Bad Request: Request body missing or invlaid json"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "alert_id list",
-					"in": "body",
-					"description": "Alert Id",
-					"required": true,
-					"schema": {
-						"type": "array",
-						"items": "string",
-						"example": ["alert_id"]
-					}
-				}, {
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/alerts/{alert_id}": {
-			"get": {
-				"tags": ["Alerts"],
-				"summary": "Get Alert: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Alert fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: Request body missing or invlaid json"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "alert_id",
-					"in": "path",
-					"description": "Specifies the alert id",
-					"required": true,
-					"type": "string"
-				}, {
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			},
-			"patch": {
-				"tags": ["Alerts"],
-				"summary": "Edit Alert: Accessible to CSM users having manage permission and it will update the acknowledge flag",
-				"responses": {
-					"200": {
-						"description": "OK: Acknowledge Alert successfully."
-					},
-					"400": {
-						"description": "Bad Request: Invalid Parameter for alerts"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "alert_id",
-					"in": "path",
-					"description": "Specifies the alert id",
-					"required": true,
-					"type": "string"
-				}, {
-					"name": "alert",
-					"in": "body",
-					"description": "Alert request",
-					"schema": {
-						"type": "object",
-						"required": false,
-						"properties": {
-							"acknowledged": {
-								"type": "boolean"
-							}
-						}
-					}
-				}, {
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/alerts_history" : {
-			"get": {
-				"tags": ["Alerts"],
-				"summary": "Get alert history: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Alerts history fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: Invalid request message received."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-					    "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "sortby",
-						"in": "query",
-						"description": "Specifies sort by option",
-						"required": false,
-						"type": "string",
-						"enum": [
-							"created_time"
-						],
-						"default": "created_time"
-					},
-					{
-						"name": "dir",
-						"in": "query",
-						"description": "Specifies sort direction option",
-						"required": false,
-						"type": "string",
-						"enum": [
-							"asc",
-							"desc"
-						],
-						"default": "desc"
-					},
-					{
-						"name": "offset",
-						"in": "query",
-						"description": "Specifies offset of the result",
-						"required": false,
-						"type": "integer",
-						"default": 1
-					},
-					{
-						"name": "limit",
-						"in": "query",
-						"description": "Specifies limit for results per page",
-						"required": false,
-						"type": "integer",
-						"default": 1000
-					},
-					{
-						"name": "sensor_info",
-						"in": "query",
-						"description": "Filter by sensor info",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "start_date",
-						"in": "query",
-						"description": "Specifies start date",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "end_date",
-						"in": "query",
-						"description": "Specifies end date",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "duration",
-						"in": "query",
-						"description": "Specifies alert history duration 60s, 5m, 2h or 1d ",
-						"required": false,
-						"type": "string"
-					}
-				]
-			}
-		},		
-		"/alerts_history/{alert_id}" : {
-			"get": {
-				"tags": ["Alerts"],
-				"summary": "Get alert history for specific alert: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Alerts history fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "alert_id",
-						"in": "path",
-						"description": "Specifies the alert id",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-				}]
-			}
-		},
-		"/alerts/{alert_uuid}/comments" : {
-			"get": {
-				"tags": ["Alerts"],
-				"summary": "Get alert comments for specific alert: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Alert comment fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "alert_uuid",
-						"in": "path",
-						"description": "Specifies the alert uuid",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-				}]
-			},
-			"post": {
-				"tags": ["Alerts"],
-				"summary": "Add comments to the Alert: Accessible to CSM users having manage permission",
-				"responses": {
-					"201": {
-						"description": "OK: Comment added successfully"
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "Comment",
-					"in": "body",
-					"description": "Add comments to the alert",
-					"schema": {
-						"type": "object",
-						"required": true,
-						"properties": {
-							"comment_text": {
-								"type": "string",
-								"example": ""
-							}
-						}
-					}
-				},
-				{
-					"name": "alert_uuid",
-					"in": "path",
-					"description": "Specifies the alert id",
-					"required": true,
-					"type": "string"
-				},
-				{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/system/health/summary": {
-			"get": {
-				"tags": ["Health"],
-				"summary": "Get Health Summary of the system: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Health Summary of the system fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/system/health/node": {
-			"get": {
-				"tags": ["Health"],
-				"summary": "Get Health of nodes: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Health of the nodes fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/system/health/components": {
-			"get": {
-				"tags": ["Health"],
-				"summary": "Get components of nodes and their health: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Health of the nodes fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "node_id",
-					"in": "query",
-					"description": "Specifies the node id",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/system/health/resources": {
-			"get": {
-				"tags": [
-					"Health"
-				],
-				"summary": "Get Health of resources with severity: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: resource health fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "component_id",
-						"in": "query",
-						"description": "Specifies the component id",
-						"required": false,
-						"type": "string"
-					},
-					{
-						"name": "severity",
-						"in": "query",
-						"description": "Specifies the severity",
-						"required": false,
-						"enum": [
-							"ok",
-							"critical",
-							"warning"
-						],
-						"type": "string"
-					},
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-					}
-				]
-			}
-		},
-		"/stats": {
-			"get": {
-				"tags": ["Stats"],
-				"summary": "Get statetics: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: statetics are fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: when an invalid response message is received for any of the cli commands."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: Stats: Invalid metric list"
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "panel",
-					"in": "query",
-					"description": "Panel",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "metric",
-					"in": "query",
-					"description": "Metric",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "id",
-					"in": "query",
-					"description": "stats id",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "from",
-					"in": "query",
-					"description": "from (epoch) time",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "to",
-					"in": "query",
-					"description": "to (epoch) time",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "interval",
-					"in": "query",
-					"description": "interval (epoch) time",
-					"required": false,
-					"type": "integer"
-				}, {
-					"name": "total_sample",
-					"in": "query",
-					"description": "Total Sample",
-					"required": false,
-					"type": "string"
-				}, {
-					"name": "output_format",
-					"in": "query",
-					"description": "Output Format",
-					"required": false,
-					"type": "string",
-					"default": "gui"
-				}, {
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/capacity": {
-			"get": {
-				"tags": ["Storage Capacity"],
-				"summary": "Get the Storage Capacity: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Storage capacity fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: Invalid unit. Please enter unit from ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']. Default unit is: BYTE"
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [{
-					"name": "authorization",
-					"in": "header",
-					"required": true,
-					"type": "string"
-				}]
-			}
-		},
-		"/auditlogs/show/{component}" : {
-			"get": {
-				"tags": ["Audit logs"],
-				"summary": "Get Audit logs: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Audit logs are fetched successfully."
-					},
-					"400": {
-						"description": "Bad Request: Invalid Range query."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "component",
-						"in": "path",
-						"description": "Specifies the component (csm or s3)",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "start_date",
-						"in": "query",
-						"description": "epoch time",
-						"required": true,
-						"type": "integer"
-					}, {
-						"name": "end_date",
-						"in": "query",
-						"description": "epoch time",
-						"required": true,
-						"type": "integer"
-					},
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-				}]
-			}
-		},
-		"/auditlogs/download/{component}" : {
-			"get": {
-				"tags": ["Audit logs"],
-				"summary": "Download Audit logs: Accessible to CSM users having monitor and manage permissions",
-				"responses": {
-					"200": {
-						"description": "OK: Audit logs downloaded successfully."
-					},
-					"400": {
-						"description": "Bad Request: Invalid Range query."
-					},
-					"401": {
-						"description": "Unauthorized: Token has not found or invalid format or session is invalid"
-					},
-					"403": {
-						"description": "Forbidden: This error is raised for all cases when user don't have permissions"
-					},
-					"404": {
-						"description": "No Data Found: A specified resource could not be found."
-					},
-					"422": {
-						"description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-					},
-					"499": {
-						"description": "Call Cancelled: Call cancelled by client.."
-					},
-					"500": {
-						"description": "Internal Server Error: When requested resource is not available."
-					}
-				},
-				"content": {
-					"application/json": {}
-				},
-				"parameters": [
-					{
-						"name": "component",
-						"in": "path",
-						"description": "Specifies the component (csm or s3)",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"name": "start_date",
-						"in": "query",
-						"description": "epoch time",
-						"required": true,
-						"type": "integer"
-					}, {
-						"name": "end_date",
-						"in": "query",
-						"description": "epoch time",
-						"required": true,
-						"type": "integer"
-					},
-					{
-						"name": "authorization",
-						"in": "header",
-						"required": true,
-						"type": "string"
-				}]
-			}
-		}
-	}
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "Specifies the user id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "edit csm user",
+            "in": "body",
+            "description": "Edit CSM user credentials. The 'current_password' property is required for users who change their own password. The superuser can skip this field for all other users.",
+            "schema": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "roles": {
+                  "type": "array",
+                  "example": []
+                },
+                "email": {
+                  "type": "string",
+                  "example": "new@email.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "new_password"
+                },
+                "current_password": {
+                  "type": "string",
+                  "example": "password"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["CSM User"],
+        "summary": "Delete csm user: CSM user having permission manage can delete existing CSM user",
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "400": {
+            "description": "Bad Request: Request body missing or Invalid request body"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: Users Not Found"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "Specifies the user id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/permissions": {
+      "get": {
+        "tags": ["CSM User"],
+        "summary": "Get the User Permissions: Accessible to all the users",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Could not get permissions from server,check session"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/s3_accounts": {
+      "get": {
+        "tags": ["S3"],
+        "summary": "Get S3 Accounts: Accessible to CSM users with manage and monitor permissions and S3 account",
+        "responses": {
+          "200": {
+            "description": "OK: List of s3 accounts."
+          },
+          "400": {
+            "description": "Bad Request: An argument is missing or not valid"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "post": {
+        "tags": ["S3"],
+        "summary": "Create new S3 Account: Accessible to CSM users with manage permission and S3 account",
+        "responses": {
+          "200": {
+            "description": "S3 Account has been created"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "409": {
+            "description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "S3 Account",
+            "in": "body",
+            "description": "Create new S3 Account request",
+            "schema": {
+              "type": "object",
+              "required": true,
+              "properties": {
+                "account_name": {
+                  "type": "string",
+                  "example": ""
+                },
+                "account_email": {
+                  "type": "string",
+                  "example": ""
+                },
+                "password": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/s3_accounts/{s3_account_id}": {
+      "patch": {
+        "tags": ["S3"],
+        "summary": "Update S3 account password: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: S3 Account updated successfully"
+          },
+          "400": {
+            "description": "Bad Request: Request body is missing"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "409": {
+            "description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "s3_account_id",
+            "in": "path",
+            "description": "Specifies the S3 Account Id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Edit S3 Account",
+            "in": "body",
+            "description": "Edit S3 Account",
+            "schema": {
+              "type": "object",
+              "required": true,
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": ""
+                },
+                "reset_access_key": {
+                  "type": "boolean",
+                  "example": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["S3"],
+        "summary": "Delete S3 Account: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "Ok: S3 account deleted successfully."
+          },
+          "400": {
+            "description": "Bad Request: Request body is missing"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: Users Not Found"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "s3_account_id",
+            "in": "path",
+            "description": "Specifies the S3 Account id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/s3/access_keys": {
+      "get": {
+        "tags": ["S3 Access Key"],
+        "summary": "Get S3 account access keys:  Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: S3 Account keys fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: Invalid request URL"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "post": {
+        "tags": ["S3 Access Key"],
+        "summary": "Create new S3 account access key:  Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "Access key has been created"
+          },
+          "400": {
+            "description": "Bad Request: Invalid request URL"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/s3/access_keys/{access_key}": {
+      "delete": {
+        "tags": ["S3 Access Key"],
+        "summary": "Delete S3 account access key: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "Ok: S3 account access key deleted successfully."
+          },
+          "400": {
+            "description": "Bad Request: Invalid request URL"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: Users Not Found"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "access_key",
+            "in": "path",
+            "description": "Specifies the S3 account access key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/s3/bucket": {
+      "get": {
+        "tags": ["S3"],
+        "summary": "Get the bucket list: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: Bucket list has been fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: An argument is missing or not valid"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "post": {
+        "tags": ["S3"],
+        "summary": "Add bucket: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: Bucket created successfully."
+          },
+          "400": {
+            "description": "Bad Request: An argument is missing or not valid"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "bucket_name",
+            "in": "body",
+            "description": "bucket name",
+            "properties": {
+              "bucket_name": {
+                "type": "string",
+                "example": "udx-xyz"
+              }
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/s3/bucket_policy/{bucket_name}": {
+      "delete": {
+        "tags": ["S3"],
+        "summary": "bucket policy delete: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: Bucket policy deleted successfully"
+          },
+          "400": {
+            "description": "Bad Request: An argument is missing or not valid"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "bucket_name",
+            "in": "path",
+            "description": "Specifies the bucket name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "get": {
+        "tags": ["S3"],
+        "summary": "Get Bucket Policy: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: Bucket policy fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "bucket_name",
+            "in": "path",
+            "description": "Specifies the Bucket name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "put": {
+        "tags": ["S3"],
+        "summary": "Edit Bucket Policy: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "Ok: Bucket policy updated successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "bucket_name",
+            "in": "path",
+            "description": "Specifies the bucket_name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "policy",
+            "in": "body",
+            "description": "bucket policy request",
+            "schema": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "policy": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/s3/bucket/{bucket_name}": {
+      "delete": {
+        "tags": ["S3"],
+        "summary": "bucket  delete: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: Bucket name deleted successfully"
+          },
+          "400": {
+            "description": "Bad Request: Invalid request URL."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "bucket_name",
+            "in": "path",
+            "description": "Specifies the bucket name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/iam_users": {
+      "get": {
+        "tags": ["S3"],
+        "summary": "Get IAM users list: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: IAM user list fetched successfully."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "post": {
+        "tags": ["S3"],
+        "summary": "Create new IAM user: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: IAM user created successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "409": {
+            "description": "Conflict: The request could not be completed due to a conflict with the current state of the resource."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "User",
+            "in": "body",
+            "description": "Create new user request",
+            "schema": {
+              "type": "object",
+              "required": true,
+              "properties": {
+                "user_name": {
+                  "type": "string",
+                  "example": "iam_user"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                },
+                "require_reset": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/iam_users/{user_name}": {
+      "delete": {
+        "tags": ["S3"],
+        "summary": "Delete IAM user: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: IAM user deleted successfully."
+          },
+          "400": {
+            "description": "Bad Request: Root IAM user cannot be deleted or Invalid request body"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "user_name",
+            "in": "path",
+            "description": "Specifies the IAM user name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/s3/access_keys?user_name={user_name}": {
+      "get": {
+        "tags": ["Iam User Access Key"],
+        "summary": "Get IAM user access keys:  Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "OK: IAM user access key fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "user_name",
+            "in": "path",
+            "description": "Specifies the IAM user name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "post": {
+        "tags": ["IAM User Access Key"],
+        "summary": "Create new IAM user access key:  Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "Access key has been created"
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "user_name",
+            "in": "path",
+            "description": "Specifies the IAM user name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/s3/access_keys/{access_key}?user_name={user_name}": {
+      "delete": {
+        "tags": ["IAM User Access Key"],
+        "summary": "Delete IAM account access key: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "Ok: IAM user access key deleted successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "access_key",
+            "in": "path",
+            "description": "Specifies the S3 account access key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user_name",
+            "in": "path",
+            "description": "Specifies the IAM user name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/alerts": {
+      "get": {
+        "tags": ["Alerts"],
+        "summary": "Gets Alerts: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Alert list fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: Request body missing or invlaid json"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sortby",
+            "in": "query",
+            "description": "Specifies sort by option",
+            "required": true,
+            "type": "string",
+            "enum": ["created_time"],
+            "default": "created_time"
+          },
+          {
+            "name": "dir",
+            "in": "query",
+            "description": "Specifies sort direction option",
+            "required": true,
+            "type": "string",
+            "enum": ["asc", "desc"],
+            "default": "desc"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Specifies offset of the result",
+            "required": true,
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Specifies limit for results per page",
+            "required": true,
+            "type": "integer",
+            "default": 10
+          },
+          {
+            "name": "duration",
+            "in": "query",
+            "description": "Specifies alert history duration 60s, 5m, 2h or 1d ",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "show_all",
+            "in": "query",
+            "description": "Specifies show all alerts",
+            "required": false,
+            "type": "Boolean",
+            "default": false
+          },
+          {
+            "name": "severity",
+            "in": "query",
+            "description": "Specifies serverity of alerts",
+            "required": false,
+            "type": "String"
+          },
+          {
+            "name": "resolved",
+            "in": "query",
+            "description": "Show resolved alerts",
+            "required": false,
+            "type": "Boolean",
+            "default": false
+          },
+          {
+            "name": "acknowledged",
+            "in": "query",
+            "description": "Show acknowledged alerts",
+            "required": false,
+            "type": "Boolean",
+            "default": false
+          },
+          {
+            "name": "show_active",
+            "in": "query",
+            "description": "Show active alerts",
+            "required": false,
+            "type": "Boolean",
+            "default": false
+          }
+        ]
+      },
+      "patch": {
+        "tags": ["Alerts"],
+        "summary": "Acknowledge Alerts: Accessible to CSM users having manage permission",
+        "responses": {
+          "200": {
+            "description": "OK: Acknowledged Alerts successfully."
+          },
+          "400": {
+            "description": "Bad Request: Request body missing or invlaid json"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "alert_id list",
+            "in": "body",
+            "description": "Alert Id",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": "string",
+              "example": ["alert_id"]
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/alerts/{alert_id}": {
+      "get": {
+        "tags": ["Alerts"],
+        "summary": "Get Alert: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Alert fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: Request body missing or invlaid json"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "alert_id",
+            "in": "path",
+            "description": "Specifies the alert id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "patch": {
+        "tags": ["Alerts"],
+        "summary": "Edit Alert: Accessible to CSM users having manage permission and it will update the acknowledge flag",
+        "responses": {
+          "200": {
+            "description": "OK: Acknowledge Alert successfully."
+          },
+          "400": {
+            "description": "Bad Request: Invalid Parameter for alerts"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "alert_id",
+            "in": "path",
+            "description": "Specifies the alert id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "alert",
+            "in": "body",
+            "description": "Alert request",
+            "schema": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "acknowledged": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/alerts_history": {
+      "get": {
+        "tags": ["Alerts"],
+        "summary": "Get alert history: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Alerts history fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: Invalid request message received."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sortby",
+            "in": "query",
+            "description": "Specifies sort by option",
+            "required": false,
+            "type": "string",
+            "enum": ["created_time"],
+            "default": "created_time"
+          },
+          {
+            "name": "dir",
+            "in": "query",
+            "description": "Specifies sort direction option",
+            "required": false,
+            "type": "string",
+            "enum": ["asc", "desc"],
+            "default": "desc"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Specifies offset of the result",
+            "required": false,
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Specifies limit for results per page",
+            "required": false,
+            "type": "integer",
+            "default": 1000
+          },
+          {
+            "name": "sensor_info",
+            "in": "query",
+            "description": "Filter by sensor info",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Specifies start date",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "Specifies end date",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "duration",
+            "in": "query",
+            "description": "Specifies alert history duration 60s, 5m, 2h or 1d ",
+            "required": false,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/alerts_history/{alert_id}": {
+      "get": {
+        "tags": ["Alerts"],
+        "summary": "Get alert history for specific alert: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Alerts history fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "alert_id",
+            "in": "path",
+            "description": "Specifies the alert id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/alerts/{alert_uuid}/comments": {
+      "get": {
+        "tags": ["Alerts"],
+        "summary": "Get alert comments for specific alert: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Alert comment fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "alert_uuid",
+            "in": "path",
+            "description": "Specifies the alert uuid",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Alerts"],
+        "summary": "Add comments to the Alert: Accessible to CSM users having manage permission",
+        "responses": {
+          "201": {
+            "description": "OK: Comment added successfully"
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "Comment",
+            "in": "body",
+            "description": "Add comments to the alert",
+            "schema": {
+              "type": "object",
+              "required": true,
+              "properties": {
+                "comment_text": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          {
+            "name": "alert_uuid",
+            "in": "path",
+            "description": "Specifies the alert id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/system/health/summary": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Get Health Summary of the system: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Health Summary of the system fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/system/health/node": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Get Health of nodes: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Health of the nodes fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/system/health/components": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Get components of nodes and their health: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Health of the nodes fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "node_id",
+            "in": "query",
+            "description": "Specifies the node id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/system/health/resources": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Get Health of resources with severity: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: resource health fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "component_id",
+            "in": "query",
+            "description": "Specifies the component id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "severity",
+            "in": "query",
+            "description": "Specifies the severity",
+            "required": false,
+            "enum": ["ok", "critical", "warning"],
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/stats": {
+      "get": {
+        "tags": ["Stats"],
+        "summary": "Get statetics: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: statetics are fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: Stats: Invalid metric list"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "panel",
+            "in": "query",
+            "description": "Panel",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "description": "Metric",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "stats id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "from (epoch) time",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "to (epoch) time",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "description": "interval (epoch) time",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "total_sample",
+            "in": "query",
+            "description": "Total Sample",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "output_format",
+            "in": "query",
+            "description": "Output Format",
+            "required": false,
+            "type": "string",
+            "default": "gui"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/capacity": {
+      "get": {
+        "tags": ["Storage Capacity"],
+        "summary": "Get the Storage Capacity: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Storage capacity fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: Invalid unit. Please enter unit from ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']. Default unit is: BYTE"
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/auditlogs/show/{component}": {
+      "get": {
+        "tags": ["Audit logs"],
+        "summary": "Get Audit logs: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Audit logs are fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: Invalid Range query."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "component",
+            "in": "path",
+            "description": "Specifies the component (csm or s3)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "epoch time",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "epoch time",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/auditlogs/download/{component}": {
+      "get": {
+        "tags": ["Audit logs"],
+        "summary": "Download Audit logs: Accessible to CSM users having monitor and manage permissions",
+        "responses": {
+          "200": {
+            "description": "OK: Audit logs downloaded successfully."
+          },
+          "400": {
+            "description": "Bad Request: Invalid Range query."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "403": {
+            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          },
+          "422": {
+            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client.."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "component",
+            "in": "path",
+            "description": "Specifies the component (csm or s3)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "epoch time",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "epoch time",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    }
+  }
 }
