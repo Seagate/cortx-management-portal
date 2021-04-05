@@ -108,6 +108,7 @@ export default [
     path: "/api/:version/s3",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
