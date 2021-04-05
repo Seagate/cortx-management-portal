@@ -21,7 +21,7 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/csm/users",
+    path: "/api/:version/csm/users",
     method: "get",
     handler: [
       checkApiVersion,
@@ -33,7 +33,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/csm/users",
+    path: "/api/:version/csm/users",
     method: "post",
     handler: [
       checkApiVersion,
@@ -45,7 +45,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/csm/users/:user_id",
+    path: "/api/:version/csm/users/:user_id",
     method: "get",
     handler: [
       checkApiVersion,
@@ -57,7 +57,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/csm/users/:user_id",
+    path: "/api/:version/csm/users/:user_id",
     method: "patch",
     handler: [
       checkApiVersion,
@@ -69,7 +69,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/csm/users/:user_id",
+    path: "/api/:version/csm/users/:user_id",
     method: "delete",
     handler: [
       checkApiVersion,
@@ -81,7 +81,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/permissions",
+    path: "/api/:version/permissions",
     method: "get",
     handler: [
       checkApiVersion,
