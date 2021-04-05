@@ -18,13 +18,12 @@ import { Router } from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../config/swagger.json";
 import clientSwaggerDocument from "../config/client_swagger.json";
-import clientSwaggerDocumentv2 from "../config/client_swagger_v2.json";
 
 export const handleAPIDocs = (router: Router) => {
   const options = {
     customCssUrl: '/public/custom.css',
     customJs: '/public/custom.js'
   };
-  router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
-  router.use("/client-api-docs", swaggerUi.serve, swaggerUi.setup(clientSwaggerDocumentv2, options));
+  router.use("/api-docs", swaggerUi.serveFiles(swaggerDocument, options), swaggerUi.setup(swaggerDocument));
+  router.use("/client-api-docs", swaggerUi.serveFiles(clientSwaggerDocument, options), swaggerUi.setup(clientSwaggerDocument));
 }
