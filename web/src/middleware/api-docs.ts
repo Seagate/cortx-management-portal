@@ -24,6 +24,6 @@ export const handleAPIDocs = (router: Router) => {
     customCssUrl: '/public/custom.css',
     customJs: '/public/custom.js'
   };
-  router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
-  router.use("/client-api-docs", swaggerUi.serve, swaggerUi.setup(clientSwaggerDocument, options));
+  router.use("/api-docs", swaggerUi.serveFiles(swaggerDocument, options), swaggerUi.setup(swaggerDocument));
+  router.use("/client-api-docs", swaggerUi.serveFiles(clientSwaggerDocument, options), swaggerUi.setup(clientSwaggerDocument));
 }
