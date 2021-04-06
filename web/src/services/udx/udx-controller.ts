@@ -42,3 +42,8 @@ export const getUDXRegistrationStatus = async (req: Request, res: Response) => {
     let result = await Api.getAll(apiRegister.get_udx_register_device_endpt(req.params.version), req, res);
     return result;
 };
+
+export const getS3URL = async (req: Request, res: Response) => {
+    let result = await Api.getAll(apiRegister.get_s3_url_endpt(req.params.version), req, res);
+    return result;
+};

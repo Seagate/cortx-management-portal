@@ -163,7 +163,10 @@ export default class CortxSelectCreateBucket extends Vue {
       this.bucketList = res.data.buckets.map((bucket: any) => {
         return { label: bucket.name, value: bucket.name, s3URI: bucket.s3_uri };
       });
-    }
+    };
+    const schemas = { schemas: "s3" };
+    const s3url: any = await Api.getAll(apiRegister.s3_url, schemas);
+    this.s3URI = s3url && s3url.data.s3_urls ? s3url.data.s3_urls[0] : "NA";
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
@@ -193,16 +196,11 @@ export default class CortxSelectCreateBucket extends Vue {
         createBucketForm.bucket
       );
       this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
-      this.s3URI = res && res.data.bucket_url ? res.data.s3_uri : "NA";
 
       this.$store.dispatch("systemConfig/hideLoader");
     }
 
-    const URI: string = this.isCreateBucket
-      ? this.s3URI
-      : this.registrationForm.bucketName.s3URI;
-
-    this.$emit("onChange", false, bucketName, URI);
+    this.$emit("onChange", false, bucketName, this.s3URI);
   }
 }
 </script>

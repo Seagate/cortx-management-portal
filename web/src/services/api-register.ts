@@ -28,6 +28,7 @@ export default {
   get_udx_registration_token_endpt: (version :string) => `/usl/${version}/registrationToken`,
   get_udx_saas_endpt: (version :string) => `/usl/${version}/saas`,
   get_udx_devices_endpt: (version :string) => `/usl/${version}/devices`,
+  get_s3_url_endpt: (version :string) => `/api/${version}/s3`,
   get_s3_accounts_endpt: (version :string) => `/api/${version}/s3_accounts`,
   get_iam_users_endpt: (version :string) => `/api/${version}/iam_users`,
   get_s3_bucket_endpt: (version :string) => `/api/${version}/s3/bucket`,
