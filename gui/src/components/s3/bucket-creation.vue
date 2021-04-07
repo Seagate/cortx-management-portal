@@ -488,6 +488,7 @@ export default class CortxBucketCreation extends Vue {
         apiRegister.bucket_policy + "/" + bucketname
       );
       this.policyJSON = JSON.stringify(res.data, null, 4);
+      this.noBucketPolicy = false;
     } catch (error) {
       this.policyJSON = "";
       this.noBucketPolicy = true;
