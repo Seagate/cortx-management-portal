@@ -55,7 +55,7 @@ axios.interceptors.response.use(
   },
   error => {
     // Handle Unauthorised response. Re-route to login page if unauthorised response received.
-    if (error.response && error.response.status === 401 && !error.request.responseURL.includes("api/v1/login")) {
+    if (error.response && error.response.status === 401 && !error.request.responseURL.includes("api/v2/login")) {
       const constStr = require("../common/const-string.json");
       localStorage.removeItem(constStr.access_token);
       localStorage.removeItem(constStr.username);
