@@ -14,7 +14,7 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export const version = "v1";
+export const version = "v2";
 
 export default {
   all_alerts: `/api/${version}/alerts`,
