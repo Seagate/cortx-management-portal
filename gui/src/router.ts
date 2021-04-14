@@ -155,34 +155,7 @@ const router = new Router({
         {
           path: "manage",
           component: CortxProvisioning,
-          meta: { requiresAuth: true },
-          children: [
-            {
-              path: "",
-              name: "provisioning-menu",
-              component: CortxProvisioningMenu,
-              meta: { requiresAuth: true }
-            },
-            {
-              path: "s3",
-              name: "s3",
-              component: CortxS3Management,
-              meta: {
-                requiresAuth: true,
-                requiredAccess:
-                  userPermissions.s3accounts + userPermissions.list
-              }
-            },
-            {
-              path: "usersettinglocal",
-              name: "usersettinglocal",
-              component: CortxUserSettingLocal,
-              meta: {
-                requiresAuth: true,
-                requiredAccess: userPermissions.users + userPermissions.list
-              }
-            }
-          ]
+          meta: { requiresAuth: true }
         },
         {
           path: "health",
@@ -431,7 +404,7 @@ router.beforeEach(async (to, from, next) => {
           }
           if (!routerApp.$hasAccessToCsm(userPermissions.stats + userPermissions.list) &&
             routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
-            next({ path: "/manage/s3" });
+            next({ path: "/manage" });
           }
         }
 

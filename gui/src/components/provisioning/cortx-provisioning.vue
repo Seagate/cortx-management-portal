@@ -15,15 +15,41 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <router-view class="cortx-p-1"></router-view>
+  <div class="cortx-p-1" v-if="isCSMUser">
+    <CortxProvisioningMenu />
+  </div>
+  <div class="cortx-p-1" v-else-if="isS3User">
+    <CortxS3Management />
+  </div>
 </template>
  <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import CortxProvisioningMenu from "./cortx-provisioning-menu.vue";
+import CortxS3Management from "../s3/s3.vue";
+import Router from "vue-router";
+import { userPermissions } from "../../common/user-permissions-map"
 
 @Component({
-  name: "cortx-provisioning"
+  name: "cortx-provisioning",
+  components: { CortxProvisioningMenu, CortxS3Management }
 })
-export default class CortxProvisioning extends Vue {}
+export default class CortxProvisioning extends Vue {  
+  private isCSMUser: boolean = false;
+  private isS3User: boolean = false;
+
+  public async mounted() {
+    await this.checkPermissions();
+  }
+
+  checkPermissions() {    
+    const vueInstance: any = this;
+    if (vueInstance.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) {
+      this.isCSMUser = true;
+    } else if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
+      this.isS3User = true;
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 </style>

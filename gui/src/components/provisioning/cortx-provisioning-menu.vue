@@ -17,9 +17,7 @@
 <template>
   <div>
     <cortx-tabs :tabsInfo="tabsInfo" />
-    <cortx-has-access :to="$cortxUserPermissions.users + $cortxUserPermissions.list">
-      <CortxUserSettingLocal v-if="showUserTab" />
-    </cortx-has-access>
+    <CortxUserSettingLocal v-if="showUserTab" />
 
     <cortx-has-access
       :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list"
