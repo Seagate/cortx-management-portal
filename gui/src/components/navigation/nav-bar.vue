@@ -101,6 +101,11 @@ export default class CortxNavBar extends Vue {
 
   public mounted() {
     this.brandName = process.env.VUE_APP_BRANDNAME !== "CORTX";
+    const vueInstance: any = this;
+    if (!vueInstance.$hasAccessToCsm(vueInstance.$cortxUserPermissions.stats + vueInstance.$cortxUserPermissions.list) &&
+      vueInstance.$hasAccessToCsm(vueInstance.$cortxUserPermissions.s3accounts + vueInstance.$cortxUserPermissions.delete)) {
+      this.navItems[2].path = "/manage/s3";
+    }
   }
 
   get alertNotifications() {
