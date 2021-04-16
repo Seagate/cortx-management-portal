@@ -47,7 +47,7 @@
           </td>
           <td style="padding-top: 2px;">{{ lastUpgradeStatus.version }}</td>
         </tr>
-        <tr v-if="lastUpgradeStatus.description">
+        <tr v-if="lastUpgradeStatus.description && lastUpgradeStatus.description !== 'unknown_desc'">
           <td>
             <label class="cortx-text-bold">{{ $t("maintenance.lastUpdateDescription") }}:</label>
           </td>
