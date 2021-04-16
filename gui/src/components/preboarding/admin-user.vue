@@ -105,7 +105,7 @@
                     class="cortx-form-group-label"
                     for="Email"
                     id="lblAdminEmail"
-                    >{{ $t("admin.email") }}</label
+                    >{{ $t("admin.email") }}*</label
                   >
                   <div></div>
                   <input
