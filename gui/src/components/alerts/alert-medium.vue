@@ -93,38 +93,9 @@
             <td>
               <div
                 style="margin: auto;"
-                v-if="
-                  props.item.severity === alertStatus.critical ||
-                    props.item.severity === alertStatus.error ||
-                props.item.severity === alertStatus.error || 
-                    props.item.severity === alertStatus.error ||
-                    props.item.severity === alertStatus.alert
-                "
-                v-bind:title="props.item.severity"
-                class="cortx-status-chip cortx-chip-alert"
+                :title="props.item.severity"
+                :class="getAlertSeverityStyleClass(props.item.severity)"
               ></div>
-              <div
-                style="margin: auto;"
-                v-else-if="props.item.severity === alertStatus.warning"
-                title="warning"
-                class="cortx-status-chip cortx-chip-warning"
-              ></div>
-              <div
-                style="margin: auto;"
-                v-if="props.item.severity === alertStatus.informational"
-                title="info"
-                class="cortx-status-chip cortx-chip-information"
-              ></div>
-               <div
-              style="margin: auto;"
-              v-if="(props.item.severity !== alertStatus.informational) 
-              && (props.item.severity !== alertStatus.warning)
-              && (props.item.severity !== alertStatus.critical 
-              && props.item.severity !== alertStatus.error 
-              && props.item.severity !== alertStatus.alert)"
-              :title="props.item.severity"
-              class="cortx-status-chip cortx-chip-others"
-            ></div>
             </td>
             <td v-cortx-alert-tbl-description="props.item"></td>
           </tr>
