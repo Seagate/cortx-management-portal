@@ -101,7 +101,7 @@
             <div>
               <span>{{ $t("alerts.resourceType") }}: {{ props.item.module_name }}</span><br />
               <span>{{ $t("alerts.resourceId") }}: {{ props.item.resource_id }} | {{ $t("alerts.state") }}: {{ props.item.state }}</span><br />
-              <span>{{ $t("alerts.nodeId") }}: {{ props.item.node_id }}</span>
+              <span>{{ $t("alerts.host_name") }}: {{ props.item.hostname }}</span>
             </div>
             <div>
               <span v-if="props.item.module_type === 'logical_volume'"
@@ -146,35 +146,8 @@
           <td>
             <div
               style="margin: auto;"
-              v-if="
-                props.item.severity === alertStatus.critical ||
-                  props.item.severity === alertStatus.error || 
-                  props.item.severity === alertStatus.alert
-              "
-              v-bind:title="props.item.severity"
-              class="cortx-status-chip cortx-chip-alert"
-            ></div>
-            <div
-              style="margin: auto;"
-              title="warning"
-              v-else-if="props.item.severity === alertStatus.warning"
-              class="cortx-status-chip cortx-chip-warning"
-            ></div>
-            <div
-              style="margin: auto;"
-              v-if="props.item.severity === alertStatus.informational"
-              title="info"
-              class="cortx-status-chip cortx-chip-information"
-            ></div>
-             <div
-              style="margin: auto;"
-              v-if="(props.item.severity !== alertStatus.informational) 
-              && (props.item.severity !== alertStatus.warning)
-              && (props.item.severity !== alertStatus.critical && 
-              props.item.severity !== alertStatus.error 
-              && props.item.severity !== alertStatus.alert)"
               :title="props.item.severity"
-              class="cortx-status-chip cortx-chip-others"
+              :class="getAlertSeverityStyleClass(props.item.severity)"
             ></div>
           </td>
           <td v-cortx-alert-tbl-description="props.item"></td>
@@ -243,12 +216,15 @@ import AlertsMixin from "./../../mixins/alerts";
 import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
 import CortxAlertComments from "./alert-comments.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
-import i18n from "../../i18n";
+import i18n from "./alert.json";
 
 @Component({
   name: "cortx-alert-large",
   components: { CortxTabs, CortxAlertComments },
-  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective }
+  directives: { "cortx-alert-tbl-description": alertTblDescriptionDirective },
+  i18n: {
+    messages: i18n
+  }
 })
 export default class CortxAlertLarge extends Mixins(AlertsMixin) {
   public isShowCommentsDialog: boolean = false;

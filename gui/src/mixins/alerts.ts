@@ -116,6 +116,32 @@ export default class AlertsMixin extends Vue {
     this.$store.dispatch("alertDataAction");
   }
 
+  public getAlertSeverityStyleClass(severity: string) {
+    let severityStyleClass = "";
+
+    switch (severity) {
+      case "critical":
+      case "error":
+      case "alert":
+        severityStyleClass = "cortx-chip-alert";
+        break;
+
+      case "warning":
+        severityStyleClass = "cortx-chip-warning";
+        break;
+
+      case "informational":
+        severityStyleClass = "cortx-chip-information";
+        break;
+
+      default:
+        severityStyleClass = "cortx-chip-others";
+        break;
+    }
+
+    return `cortx-status-chip ${severityStyleClass}`;
+  }
+
   get currentPage() {
     return this.$store.getters["alerts/getCurrentPage"];
   }
