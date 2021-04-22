@@ -26,7 +26,7 @@ export default {
   get_admin_user_logout_endpt: (version :string) => `/api/${version}/logout`,
   get_udx_register_device_endpt: (version :string) => `/usl/${version}/registerDevice`,
   get_udx_registration_token_endpt: (version :string) => `/usl/${version}/registrationToken`,
-  get_udx_saas_endpt: (version :string) => `/usl/${version}/saas`,
+  get_udx_saas_endpt: (version :string) => `/usl/${version}/udx_saas`,
   get_udx_devices_endpt: (version :string) => `/usl/${version}/devices`,
   get_s3_url_endpt: (version :string) => `/api/${version}/s3`,
   get_s3_accounts_endpt: (version :string) => `/api/${version}/s3_accounts`,
