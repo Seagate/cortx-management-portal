@@ -16,14 +16,15 @@
 */
 import { Request, Response, request, response } from "express";
 import { getUsers, getUserById, saveUser, deleteUser, updateUser, getUserPermissions} from "./user-controller";
-import { checkRequiredParams } from "../../middleware/validator";
+import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/csm/users",
+    path: "/api/:version/csm/users",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getUsers(req, res);
@@ -32,9 +33,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/csm/users",
+    path: "/api/:version/csm/users",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await saveUser(req, res);
@@ -43,9 +45,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/csm/users/:user_id",
+    path: "/api/:version/csm/users/:user_id",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getUserById(req, res);
@@ -54,9 +57,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/csm/users/:user_id",
+    path: "/api/:version/csm/users/:user_id",
     method: "patch",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await updateUser(req, res);
@@ -65,9 +69,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/csm/users/:user_id",
+    path: "/api/:version/csm/users/:user_id",
     method: "delete",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await deleteUser(req, res);
@@ -76,9 +81,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/permissions",
+    path: "/api/:version/permissions",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getUserPermissions(req, res);

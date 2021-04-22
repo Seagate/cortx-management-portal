@@ -16,7 +16,7 @@
 */
 import { Request, Response, request, response } from "express";
 import { getStats } from "./stats"
-import { checkRequiredParams } from './../../middleware/validator';
+import { checkApiVersion, checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
 /**
@@ -25,9 +25,10 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/stats/:statsparam?",
+    path: "/api/:version/stats/:statsparam?",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {

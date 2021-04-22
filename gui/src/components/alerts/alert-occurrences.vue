@@ -76,35 +76,8 @@
           <td>
             <div
               style="margin: auto;"
-              v-if="props.item.severity === alertStatus.warning"
-              class="cortx-status-chip cortx-chip-warning"
-              title="warning"
-            ></div>
-            <div
-              style="margin: auto;"
-              v-else-if="props.item.severity ===alertStatus.critical || props.item.severity === alertStatus.error"
-              class="cortx-status-chip cortx-chip-alert"
-              v-bind:title="props.item.severity"
-            ></div>
-            <div
-              style="margin: auto;"
-              v-else-if="props.item.severity ===alertStatus.warning"
-              class="cortx-status-chip cortx-chip-warning"
-              title="warning"
-            ></div>
-            <div
-              style="margin: auto;"
-              v-if="props.item.severity === alertStatus.informational"
-              class="cortx-status-chip cortx-chip-information"
-              title="info"
-            ></div>
-             <div
-              style="margin: auto;"
-              v-if="(props.item.severity !== alertStatus.informational) 
-              && (props.item.severity !== alertStatus.warning)
-              && (props.item.severity !== alertStatus.critical && props.item.severity !== alertStatus.error)"
-              title="other"
-              class="cortx-status-chip cortx-chip-others"
+              :title="props.item.severity"
+              :class="getAlertSeverityStyleClass(props.item.severity)"
             ></div>
           </td>
           <td v-cortx-alert-tbl-description="props.item"></td>
@@ -216,6 +189,32 @@ export default class CortxAlertOccurrences extends Vue {
     return {
       alertStatus: require("./../../common/const-string.json")
     };
+  }
+
+  public getAlertSeverityStyleClass(severity: string) {
+    let severityStyleClass = "";
+
+    switch (severity) {
+      case "critical":
+      case "error":
+      case "alert":
+        severityStyleClass = "cortx-chip-alert";
+        break;
+
+      case "warning":
+        severityStyleClass = "cortx-chip-warning";
+        break;
+
+      case "informational":
+        severityStyleClass = "cortx-chip-information";
+        break;
+
+      default:
+        severityStyleClass = "cortx-chip-others";
+        break;
+    }
+
+    return `cortx-status-chip ${severityStyleClass}`;
   }
 }
 </script>

@@ -23,7 +23,7 @@ import { Request, Response, request, response } from "express";
  * @param query 
  */
 export const getBuckets = async (req: Request, res: Response) => {
-    let bucketData = Api.getAll(apiRegister.s3_bucket, req, res);
+    let bucketData = Api.getAll(apiRegister.get_s3_bucket_endpt(req.params.version), req, res);
     let result = await bucketData;
     return result;
 };
@@ -34,7 +34,7 @@ export const getBuckets = async (req: Request, res: Response) => {
  * @param res 
  */
 export const createBucket = async (req: Request, res: Response) => {
-    let bucketData = Api.post(apiRegister.s3_bucket, req, res);
+    let bucketData = Api.post(apiRegister.get_s3_bucket_endpt(req.params.version), req, res);
     let result = await bucketData;
     return result;
 };
@@ -45,7 +45,7 @@ export const createBucket = async (req: Request, res: Response) => {
  * @param res 
  */
 export const deleteBucket = async (req: Request, res: Response) => {
-    let bucket = Api.delete(apiRegister.s3_bucket, req, res, req.params.bucket_name);
+    let bucket = Api.delete(apiRegister.get_s3_bucket_endpt(req.params.version), req, res, req.params.bucket_name);
     return bucket;
 };
 /**
@@ -54,7 +54,7 @@ export const deleteBucket = async (req: Request, res: Response) => {
  * @param res 
  */
 export const updateBuketPolicy = async (req: Request, res: Response) => {
-    let updatePolicy = Api.put(apiRegister.bucket_policy, req, res, req.params.bucket_name);
+    let updatePolicy = Api.put(apiRegister.get_bucket_policy_endpt(req.params.version), req, res, req.params.bucket_name);
     let result = await updatePolicy;
     return result;
 };
@@ -64,7 +64,7 @@ export const updateBuketPolicy = async (req: Request, res: Response) => {
  * @param res 
  */
 export const deleteBucketPolicy = async (req: Request, res: Response) => {
-    let deletePolicy = Api.delete(apiRegister.bucket_policy, req, res, req.params.bucket_name);
+    let deletePolicy = Api.delete(apiRegister.get_bucket_policy_endpt(req.params.version), req, res, req.params.bucket_name);
     return deletePolicy;
 };
 /**
@@ -73,7 +73,7 @@ export const deleteBucketPolicy = async (req: Request, res: Response) => {
  * @param res 
  */
 export const getBucketsPolicy = async (req: Request, res: Response) => {
-    let getbucket = Api.get(apiRegister.bucket_policy, req, res, req.params.bucket_name);
+    let getbucket = Api.get(apiRegister.get_bucket_policy_endpt(req.params.version), req, res, req.params.bucket_name);
     let result = await getbucket;
     return result;
 };

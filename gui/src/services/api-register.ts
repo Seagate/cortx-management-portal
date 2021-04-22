@@ -14,7 +14,7 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export const version = "v1";
+export const version = "v2";
 
 export default {
   all_alerts: `/api/${version}/alerts`,
@@ -27,6 +27,7 @@ export default {
   udx_registration: `api/${version}/udx_device/registration`,
   udx_registration_token: `api/${version}/udx_device/registration_token`,
   udx_device: `api/${version}/udx_device`,
+  s3_url: `/api/${version}/s3`,
   s3_account: `/api/${version}/s3_accounts`,
   s3_iam_user: `/api/${version}/iam_users`,
   s3_bucket: `/api/${version}/s3/bucket`,
