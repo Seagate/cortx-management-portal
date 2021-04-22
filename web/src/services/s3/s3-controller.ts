@@ -51,6 +51,7 @@ export const deleteIAMUser = async (username: string, req: Request, res: Respons
 };
 
 export const resetPassword = async (req: Request, res: Response) => {
+	// Reset password
     let resetPassword = Api.patch(apiRegister.get_iam_users_endpt(req.params.version), req, res, req.params.account_name);
     let result = await resetPassword;
     return result;
