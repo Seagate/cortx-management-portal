@@ -56,6 +56,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     let result = await resetPassword;
     return result;
 };
+
 /**
  * 
  * @param req Update s3 account password data
