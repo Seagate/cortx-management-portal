@@ -16,7 +16,12 @@
 */
 <template>
   <div id="alertMediumContainer">
-    <cortx-health-summary />
+    <!--
+      Health-Currently-Unsupported
+      Commenting as this is unsupported feature. Will uncomment this
+      when the feature will be supported.
+    -->
+    <!--cortx-health-summary /-->
     <div style="height: 30px;">
       <div class="cortx-alert-title" id="alert-new-alerts">{{ $t("alerts.newAlerts") }}</div>
       <img
