@@ -252,6 +252,7 @@
         "release": "Release:",
         "COMPONENTS": "COMPONENTS",
         "SerialNumber": "Serial No:",
+        "clusterId": "Cluster ID",
         "common_name_lbl":"Common Name",
         "country_name_lbl":"Country Name",
         "locality_name_lbl":"Locality Name",
