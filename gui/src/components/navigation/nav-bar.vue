@@ -62,12 +62,6 @@ export default class CortxNavBar extends Vue {
       iconActive: require("@/assets/navigation/dashboard-white.svg"),
       requiredAccess: "alerts"
     },
-    /**
-     * Health-Currently-Unsupported
-     * Commenting as this is unsupported feature. Will uncomment this
-     * when the feature will be supported.
-     */
-    /*
     {
       title: "Health",
       path: "/health",
@@ -75,7 +69,6 @@ export default class CortxNavBar extends Vue {
       iconActive: require("@/assets/navigation/health-white.svg"),
       requiredAccess: "sysconfig"
     },
-    */
     {
       title: "Manage",
       path: "/manage",
@@ -111,7 +104,8 @@ export default class CortxNavBar extends Vue {
     const vueInstance: any = this;
     if (!vueInstance.$hasAccessToCsm(vueInstance.$cortxUserPermissions.stats + vueInstance.$cortxUserPermissions.list) &&
       vueInstance.$hasAccessToCsm(vueInstance.$cortxUserPermissions.s3accounts + vueInstance.$cortxUserPermissions.delete)) {
-      this.navItems[2].path = "/manage/s3";
+      var foundIndex = this.navItems.findIndex(x => x.path == "/manage");
+      this.navItems[foundIndex].path = "/manage/s3";
     }
   }
 
