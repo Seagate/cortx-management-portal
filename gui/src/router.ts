@@ -187,12 +187,6 @@ const router = new Router({
             }
           ]
         },
-        /**
-         * Health-Currently-Unsupported
-         * Commenting as this is unsupported feature. Will uncomment this
-         * when the feature will be supported.
-         */
-        /*
         {
           path: "health",
           component: CortxHealth,
@@ -221,7 +215,6 @@ const router = new Router({
             }
           ]
         },
-        */
         {
           path: "settings",
           component: CortxSettings,
