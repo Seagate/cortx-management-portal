@@ -73,12 +73,64 @@
     <div class="ma-3 mt-5" v-if="showLog">
       <span class="cortx-text-bold cortx-text-lg" id="auditlogtext">{{ $t("maintenance.logs") }}</span>
       <v-divider class="my-2"></v-divider>
-      <span
+      <!-- <span
         class="mb-1 d-block"
         v-for="(log, index) in showLog"
         :key="index"
         id="auditlog-data"
-      >{{ log }}</span>
+      >{{ log }}</span> -->
+      <v-data-table
+            calculate-widths
+            :items="auditLogList"
+            item-key="name"
+            class="cortx-table"
+            id="auditLog-datatable"
+            :hide-default-header="true"
+            :hide-default-footer="true"
+            :disable-pagination="true"
+          >
+            <template v-slot:header="{}">
+              <tr id="auditLog-tableheading">
+                <th
+                  v-for="header in auditLogTableHeaderList"
+                  :key="header.text"
+                  class="tableheader"
+                  id="table-name"
+                >
+                  <span>{{ header.text }}</span>
+                </th>
+              </tr>
+            </template>
+
+            <template v-slot:item="props">
+              <tr :id="props.item.timestamp">
+                <td id="auditLog-timestamp">
+                  {{ props.item.timestamp | timeago }}
+                </td>
+                <td id="auditLog-user">
+                  {{ props.item.user }}
+                </td>
+                <td id="auditLog-remote_ip">
+                  {{ props.item.remote_ip }}
+                </td>
+                <td id="auditLog-forwarded_for_ip">
+                  {{ props.item.forwarded_for_ip }}
+                </td>
+                <td id="auditLog-method">
+                  {{ props.item.method }}
+                </td>
+                <td id="auditLog-path">
+                  {{ props.item.path }}
+                </td>
+                <td id="auditLog-user_agent">
+                  {{ props.item.user_agent }}
+                </td>
+                <td id="auditLog-response_code">
+                  {{ props.item.response_code }}
+                </td>
+              </tr>
+            </template>
+          </v-data-table>
     </div>
   </div>
 </template>
@@ -94,6 +146,8 @@ import i18n from "./maintenance.json";
   }
 })
 export default class CortxAuditLog extends Vue {
+  private auditLogTableHeaderList: any[];
+  private auditLogList: any[] = [];
   private data() {
     return {
       component: "",
@@ -159,6 +213,7 @@ export default class CortxAuditLog extends Vue {
       })
       .then(response => {
         this.$data.showLog = response.data;
+        this.auditLogList = this.$data.showLog;
         this.$store.dispatch("systemConfig/hideLoader");
       })
       .catch(() => {
@@ -204,6 +259,44 @@ export default class CortxAuditLog extends Vue {
         this.$store.dispatch("systemConfig/hideLoader");
       });
   }
+   public beforeMount() {
+    this.auditLogTableHeaderList = [
+      {
+        text: 'Timestamp',
+        value: "Timestamp",
+        sortable: false
+      },
+      {
+        text: 'User',
+        value: "user"
+      },
+      {
+        text: 'Remote IP',
+        value: "remote_ip",
+      },
+      {
+        text: 'Forwarded For IP',
+        value: "forwarded_for_ip",
+      },
+      {
+        text: 'Method',
+        value: "method",
+      },
+      {
+        text: 'Path',
+        value: "path",
+      },
+      {
+        text: 'User Agent',
+        value: "user_agent",
+      },
+      {
+        text: 'Response Code',
+        value: "response_code",
+      }
+    ];
+  }
+
   private handleTimerangeDropdownSelect(selected: any) {
     this.$data.timerange = selected.value;
     this.$data.timerangeLabel = selected.label;
