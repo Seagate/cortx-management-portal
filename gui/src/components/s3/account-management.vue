@@ -872,8 +872,7 @@ export default class CortxAccountManagement extends Vue {
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
     this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
-    const isS3UrlFindNoneValue = this.s3Url.filter(url => url.includes("None")).length!==0;
-    this.isS3UrlNone = this.s3Url.length === 0 || isS3UrlFindNoneValue;
+    this.isS3UrlNone = this.s3Url.length === 0 || this.s3Url.filter(url => url.includes("None")).length !== 0;
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
