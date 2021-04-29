@@ -650,7 +650,8 @@ export default class CortxIAMUserManagement extends Vue {
     const res: any = await Api.getAll(apiRegister.s3_iam_user);
     this.usersList = res && res.data ? res.data.iam_users : [];
     this.s3Url = res && res.data.s3_urls ? res.data.s3_urls : [];
-    this.isS3UrlNone = this.s3Url.length === 0;
+    const isS3UrlFindNoneValue = this.s3Url.filter(url => url.includes("None")).length !== 0;
+    this.isS3UrlNone = this.s3Url.length === 0 || isS3UrlFindNoneValue;
     this.selectedIAMUser = this.usersList.length
       ? this.usersList[0].user_name
       : "";
