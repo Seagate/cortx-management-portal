@@ -224,37 +224,37 @@ export default class CortxAuditLog extends Vue {
     {
       text: "User",
       value: "user",
-      sortable: true
+      sortable: false
     },
     {
       text: "Remote IP",
       value: "remote_ip",
-      sortable: true
+      sortable: false
     },
     {
       text: "Forwarded For IP",
       value: "forwarded_for_ip",
-      sortable: true
+      sortable: false
     },
     {
       text: "Method",
       value: "method",
-      sortable: true
+      sortable: false
     },
     {
       text: "Path",
       value: "path",
-      sortable: true
+      sortable: false
     },
     {
       text: "User Agent",
       value: "user_agent",
-      sortable: true
+      sortable: false
     },
     {
       text: "Response Code",
       value: "response_code",
-      sortable: true
+      sortable: false
     }
   ];
   public auditLog: any = {
