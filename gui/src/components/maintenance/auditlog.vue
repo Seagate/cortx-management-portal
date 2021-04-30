@@ -70,20 +70,95 @@
         >{{ $t("maintenance.view") }}</button>
       </div>
     </div>
-    <div class="ma-3 mt-5" v-if="showLog">
-      <span class="cortx-text-bold cortx-text-lg" id="auditlogtext">{{ $t("maintenance.logs") }}</span>
-      <v-divider class="my-2"></v-divider>
-      <span
-        class="mb-1 d-block"
-        v-for="(log, index) in showLog"
-        :key="index"
-        id="auditlog-data"
-      >{{ log }}</span>
-    </div>
+    <template v-if="component === 'CSM'">
+      <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
+        <span class="cortx-text-bold cortx-text-lg" id="csmauditlogtext">{{ $t("maintenance.logs") }}</span>
+        <v-divider class="my-2"></v-divider>
+        <v-data-table
+          calculate-widths
+          :headers="auditLogTableHeaderList"
+          :items="auditLog.logs"
+          :items-per-page.sync="auditLogQueryParams.limit"
+          :footer-props="{
+            'items-per-page-options': [50, 100, 150, 200]
+          }"
+          :page.sync="auditLogQueryParams.offset"
+          :update:page="auditLogQueryParams.offset"
+          :server-items-length="auditLog.total_records"
+          class="cortx-table"
+          id="auditLog-datatable"
+          :hide-default-header="true"
+          @update:items-per-page="getAuditLogs()"
+          @update:page="getAuditLogs()"
+        >
+          <template v-slot:header="{}">
+            <tr>
+              <th
+                v-for="header in auditLogTableHeaderList"
+                :key="header.text"
+                :class="[
+                  'tableheader',
+                  header.sortable ? 'cortx-cursor-pointer' : ''
+                ]"
+                @click="onAuditLogSort(header)"
+              >
+                <span>{{ header.text }}</span>
+                <span v-if="header.value === auditLogQueryParams.sortby">
+                  <img
+                    id="audit-log-desc-icon"
+                    v-if="auditLogQueryParams.dir === 'desc'"
+                    :src="require('@/assets/widget/table-sort-desc.svg/')"
+                    class="d-inline-block"
+                    style="vertical-align: bottom; margin-left: -0.3em;"
+                    height="20"
+                    width="20"
+                  />
+                  <img
+                    id="audit-log-asc-icon"
+                    v-if="auditLogQueryParams.dir === 'asc'"
+                    :src="require('@/assets/widget/table-sort-asc.svg/')"
+                    class="d-inline-block"
+                    style="vertical-align: bottom; margin-left: -0.3em;"
+                    height="20"
+                    width="20"
+                  />
+                </span>
+              </th>
+            </tr>
+          </template>
+          <template v-slot:item.timestamp="props">
+            {{ props.item.timestamp | timeago }}
+          </template>
+        </v-data-table>
+      </div>
+    </template>
+    <template v-else-if="component === 'S3'">
+      <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
+        <span class="cortx-text-bold cortx-text-lg" id="s3auditlogtext">{{ $t("maintenance.logs") }}</span>
+        <v-divider class="my-2"></v-divider>
+        <template v-if="auditLog.logs.length > 0">
+          <span
+            class="mb-1 d-block"
+            v-for="(log, index) in auditLog.logs"
+            :key="index"
+            id="auditlog-data"
+          >{{ log }}</span>
+        </template>
+        <template v-else>
+          <span
+            class="mb-1 d-block"
+            id="auditlog-data"
+          >No logs</span>
+        </template>
+      </div>
+    </template>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import { AuditLogQueryParam } from "../../models/download";
+import { Api } from "../../services/api";
+import apiRegister from "../../services/api-register";
 import moment from "moment";
 import i18n from "./maintenance.json";
 
@@ -94,79 +169,140 @@ import i18n from "./maintenance.json";
   }
 })
 export default class CortxAuditLog extends Vue {
-  private data() {
-    return {
-      component: "",
-      componentList: [
-        {
-          label: "CSM",
-          value: "CSM"
-        },
-        {
-          label: "S3",
-          value: "S3"
-        }
-      ],
-      timerange: "1",
-      timerangeLabel: "",
-      timerangeList: [
-        {
-          label: "One day",
-          value: "1"
-        },
-        {
-          label: "Two days",
-          value: "2"
-        },
-        {
-          label: "Three days",
-          value: "3"
-        },
-        {
-          label: "Four days",
-          value: "4"
-        },
-        {
-          label: "Five days",
-          value: "5"
-        },
-        {
-          label: "Six days",
-          value: "6"
-        },
-        {
-          label: "Seven days",
-          value: "7"
-        }
-      ],
-      to: moment().unix(),
-      showLog: ""
+  public component: string = "";
+  public componentList: any[] = [
+    {
+      label: "CSM",
+      value: "CSM"
+    },
+    {
+      label: "S3",
+      value: "S3"
+    }
+  ];
+  public timerange: string = "1";
+  public timerangeLabel: string = "";
+  public timerangeList: any[] = [
+    {
+      label: "One day",
+      value: "1"
+    },
+    {
+      label: "Two days",
+      value: "2"
+    },
+    {
+      label: "Three days",
+      value: "3"
+    },
+    {
+      label: "Four days",
+      value: "4"
+    },
+    {
+      label: "Five days",
+      value: "5"
+    },
+    {
+      label: "Six days",
+      value: "6"
+    },
+    {
+      label: "Seven days",
+      value: "7"
+    }
+  ];
+  public to: number = moment().unix();
+  public isShowLogs: boolean = false;
+  public auditLogQueryParams: AuditLogQueryParam = {} as AuditLogQueryParam;
+  public auditLogTableHeaderList: any[] = [
+    {
+      text: "Timestamp",
+      value: "timestamp",
+      sortable: true
+    },
+    {
+      text: "User",
+      value: "user",
+      sortable: true
+    },
+    {
+      text: "Remote IP",
+      value: "remote_ip",
+      sortable: true
+    },
+    {
+      text: "Forwarded For IP",
+      value: "forwarded_for_ip",
+      sortable: true
+    },
+    {
+      text: "Method",
+      value: "method",
+      sortable: true
+    },
+    {
+      text: "Path",
+      value: "path",
+      sortable: true
+    },
+    {
+      text: "User Agent",
+      value: "user_agent",
+      sortable: true
+    },
+    {
+      text: "Response Code",
+      value: "response_code",
+      sortable: true
+    }
+  ];
+  public auditLog: any = {
+    logs: [],
+    total_records: 1000
+  };
+
+  public async showAuditLogs() {
+    this.auditLogQueryParams = {
+      component: this.component,
+      timerange: this.timerange,
+      start_date: moment(
+        moment()
+          .subtract(this.timerange, "days")
+          .toDate()
+      ).unix(),
+      end_date: moment(moment().toDate()).unix(),
+      offset: 1,
+      limit: 50
     };
+
+    await this.getAuditLogs();
   }
-  private showAuditLogs() {
-    const that = this;
+
+  public async onAuditLogSort(header: any) {
+    if (header.sortable) {
+      if (this.auditLogQueryParams.sortby && this.auditLogQueryParams.sortby === header.value) {
+        this.auditLogQueryParams.dir = this.auditLogQueryParams.dir === "asc" ? "desc" : "asc";
+      } else {
+        this.auditLogQueryParams.sortby = header.value;
+        this.auditLogQueryParams.dir = "asc";
+      }
+
+      await this.getAuditLogs();
+    }
+  }
+
+  public async getAuditLogs() {
     this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");
-    this.$store
-      .dispatch("download/showAuditLogs", {
-        component: this.$data.component,
-        timerange: this.$data.timerange,
-        from: moment(
-          moment()
-            .subtract(this.$data.timerange, "days")
-            .toDate()
-        ).unix(),
-        to: moment(moment().toDate()).unix()
-      })
-      .then(response => {
-        this.$data.showLog = response.data;
-        this.$store.dispatch("systemConfig/hideLoader");
-      })
-      .catch(() => {
-        // tslint:disable-next-line: no-console
-        console.error("Show audit log failed");
-        this.$store.dispatch("systemConfig/hideLoader");
-      });
+    const res = await Api.getAll(
+      `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
+      this.auditLogQueryParams
+    );
+    this.auditLog = res.data;
+    this.isShowLogs = true;
+    this.$store.dispatch("systemConfig/hideLoader");
   }
+
   private downloadAuditLogs() {
     this.$store.dispatch(
       "systemConfig/showLoader",
@@ -174,14 +310,14 @@ export default class CortxAuditLog extends Vue {
     );
     this.$store
       .dispatch("download/downloadLogs", {
-        component: this.$data.component,
-        timerange: this.$data.timerange,
-        from: moment(
+        component: this.component,
+        timerange: this.timerange,
+        start_date: moment(
           moment()
-            .subtract(this.$data.timerange, "days")
+            .subtract(this.timerange, "days")
             .toDate()
         ).unix(),
-        to: moment(moment().toDate()).unix()
+        end_date: moment(moment().toDate()).unix()
       })
       .then(response => {
         const url = window.URL.createObjectURL(
@@ -205,11 +341,11 @@ export default class CortxAuditLog extends Vue {
       });
   }
   private handleTimerangeDropdownSelect(selected: any) {
-    this.$data.timerange = selected.value;
-    this.$data.timerangeLabel = selected.label;
+    this.timerange = selected.value;
+    this.timerangeLabel = selected.label;
   }
   private handleComponentDropdownSelect(selected: any) {
-    this.$data.component = selected.value;
+    this.component = selected.value;
   }
 }
 </script>
