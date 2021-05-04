@@ -30,9 +30,8 @@ export default class Download extends VuexModule {
     public queryParams: AuditLogQueryParam = {
         component: "CSM",
         timerange: "1d",
-        from: "",
-        to: ""
-
+        start_date: 0,
+        end_date: 0
     };
 
     @Action
@@ -41,22 +40,7 @@ export default class Download extends VuexModule {
         try {
             const res = await Api.getFile(apiRegister.auditlogs + "/download/"
                 + queryParams.component.toLowerCase()
-                + "?start_date=" + queryParams.from + "&end_date=" + queryParams.to + "");
-
-            return res;
-        } catch (e) {
-            // tslint:disable-next-line: no-console
-            console.log("err logger: ", e);
-        }
-    }
-    @Action
-    public async showAuditLogs(queryParams: AuditLogQueryParam) {
-        queryParams = queryParams ? queryParams : this.queryParams;
-
-        try {
-            const res = await Api.getAll(apiRegister.auditlogs + "/show/"
-                + queryParams.component.toLowerCase()
-                + "?start_date=" + queryParams.from + "&end_date=" + queryParams.to + "");
+                + "?start_date=" + queryParams.start_date + "&end_date=" + queryParams.end_date + "");
 
             return res;
         } catch (e) {
