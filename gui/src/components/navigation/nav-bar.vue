@@ -34,14 +34,16 @@
         >
           <img class="cortx-nav-item-icon-default" :src="navItem.iconDefault" />
           <img class="cortx-nav-item-icon-active" :src="navItem.iconActive" />
-          <label  :id="navItem.title">{{ navItem.title }}</label>
+          <label :id="navItem.title">{{ navItem.title }}</label>
         </router-link>
       </cortx-has-access>
     </div>
     <div class="cortx-nav-bottom" v-if="brandName">
       <div class="cortx-brand-text">{{ $t("common.poweredBy") }}</div>
-      <img class="cortx-nav-item-icon-default cortx-img-responsive"
-        :src="require('@/assets/Cortx-logo-GRN.svg/')" />
+      <img
+        class="cortx-nav-item-icon-default cortx-img-responsive"
+        :src="require('@/assets/Cortx-logo-GRN.svg/')"
+      />
     </div>
   </div>
 </template>
@@ -62,12 +64,6 @@ export default class CortxNavBar extends Vue {
       iconActive: require("@/assets/navigation/dashboard-white.svg"),
       requiredAccess: "alerts"
     },
-    /**
-     * Health-Currently-Unsupported
-     * Commenting as this is unsupported feature. Will uncomment this
-     * when the feature will be supported.
-     */
-    /*
     {
       title: "Health",
       path: "/health",
@@ -75,7 +71,6 @@ export default class CortxNavBar extends Vue {
       iconActive: require("@/assets/navigation/health-white.svg"),
       requiredAccess: "sysconfig"
     },
-    */
     {
       title: "Manage",
       path: "/manage",
@@ -109,9 +104,18 @@ export default class CortxNavBar extends Vue {
   public mounted() {
     this.brandName = process.env.VUE_APP_BRANDNAME !== "CORTX";
     const vueInstance: any = this;
-    if (!vueInstance.$hasAccessToCsm(vueInstance.$cortxUserPermissions.stats + vueInstance.$cortxUserPermissions.list) &&
-      vueInstance.$hasAccessToCsm(vueInstance.$cortxUserPermissions.s3accounts + vueInstance.$cortxUserPermissions.delete)) {
-      this.navItems[2].path = "/manage/s3";
+    if (
+      !vueInstance.$hasAccessToCsm(
+        vueInstance.$cortxUserPermissions.stats +
+          vueInstance.$cortxUserPermissions.list
+      ) &&
+      vueInstance.$hasAccessToCsm(
+        vueInstance.$cortxUserPermissions.s3accounts +
+          vueInstance.$cortxUserPermissions.delete
+      )
+    ) {
+      const foundIndex = this.navItems.findIndex(x => x.path === "/manage");
+      this.navItems[foundIndex].path = "/manage/s3";
     }
   }
 
