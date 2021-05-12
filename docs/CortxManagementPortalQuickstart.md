@@ -356,7 +356,7 @@ To run the cortx-management-portal node application:
 
 ## 1.6 REST API document
 
-CORTX Management Swagger is available [here](https://<management_IP>:28100/api-docs).
+CORTX Management Swagger is available by typing https://<management_IP>:28100/api-docs into your browser and replacing <management IP> with your management IP on your CORTX setup.
 
 The Curl command for getting the URL is:
 
