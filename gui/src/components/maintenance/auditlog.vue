@@ -74,7 +74,8 @@
       <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
         <span class="cortx-text-bold cortx-text-lg" id="csmauditlogtext">{{ $t("maintenance.logs") }}</span>
         <v-divider class="my-2"></v-divider>
-        <v-data-table
+        <CortxTable :headers="auditLogTableHeaderList" :records="records" />
+        <!-- <v-data-table
           calculate-widths
           :headers="auditLogTableHeaderList"
           :items="auditLog.logs"
@@ -129,7 +130,7 @@
           <template v-slot:item.timestamp="props">
             {{ props.item.timestamp | timeago }}
           </template>
-        </v-data-table>
+        </v-data-table> -->
       </div>
     </template>
     <template v-else-if="component === 'S3'">
@@ -161,9 +162,11 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import moment from "moment";
 import i18n from "./maintenance.json";
+import CortxTable from "../widgets/cortx-table";
 
 @Component({
   name: "cortx-auditlog",
+  components: { CortxTable },
   i18n: {
     messages: i18n
   }
@@ -257,6 +260,48 @@ export default class CortxAuditLog extends Vue {
       sortable: false
     }
   ];
+  public records: any = [
+    {
+      timestamp: "Aug 2, 2020 16:15:15",
+      user: "admin",
+      "remote_ip": "10.24.69.58",
+      "forwared_for_ip": "21.24.78.54",
+      method: "GET",
+      path: "/api/v2/stats",
+      "user_agent": "Mozilla",
+      "response_code": "200"
+    },
+    {
+      timestamp: "Aug 2, 2020 16:15:15",
+      user: "admin",
+      "remote_ip": "10.24.69.58",
+      "forwared_for_ip": "21.24.78.54",
+      method: "GET",
+      path: "/api/v2/stats",
+      "user_agent": "Mozilla",
+      "response_code": "200"
+    },
+    {
+      timestamp: "Aug 2, 2020 16:15:15",
+      user: "admin",
+      "remote_ip": "10.24.69.58",
+      "forwared_for_ip": "21.24.78.54",
+      method: "GET",
+      path: "/api/v2/stats",
+      "user_agent": "Mozilla",
+      "response_code": "200"
+    },
+    {
+      timestamp: "Aug 2, 2020 16:15:15",
+      user: "admin",
+      "remote_ip": "10.24.69.58",
+      "forwared_for_ip": "21.24.78.54",
+      method: "GET",
+      path: "/api/v2/stats",
+      "user_agent": "Mozilla",
+      "response_code": "200"
+    },
+  ]
   public auditLog: any = {
     logs: [],
     total_records: 1000
