@@ -33,7 +33,7 @@
     },
     "account": {
       "configuration": "S3 configuration",
-      "header-text": "Click Download and close to save this information in CSV format.",
+      "header-text": "Create an S3 account. You must log in to the system using S3 account credentials to manage S3 account, IAM users, and buckets.",
       "url-label": "S3 URL:",
       "url-label-no-colon": "S3 URL",
       "name-required": "Account name is required.",
