@@ -90,6 +90,7 @@
       "user-key-access": "User created:access key and secret key",
       "confirm-msg": "Are you sure you want to delete IAM user",      
       "reset-password": "Reset password",
+      "delete-iam": "Delete IAM User",
       "reset-btn": "Reset"
     }
   }
@@ -186,6 +187,7 @@
       "user-key-access": "User created:access key and secret key",
       "confirm-msg": "Are you sure you want to delete IAM user",
       "reset-password": "Reset password",
+      "delete-iam": "Delete IAM User",
       "reset-btn": "Reset"
     }
   }
