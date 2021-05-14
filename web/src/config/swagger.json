@@ -168,7 +168,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -205,7 +205,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -254,7 +254,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -294,13 +294,13 @@
             "name": "config_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -338,7 +338,7 @@
             "name": "config_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "system_config",
@@ -352,7 +352,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -390,13 +390,13 @@
             "name": "config_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "config_type",
             "in": "query",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "system_config_type",
@@ -410,7 +410,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -454,7 +454,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -537,7 +537,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -599,7 +599,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -640,13 +640,13 @@
             "in": "path",
             "description": "Specifies the user id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -680,13 +680,13 @@
             "in": "path",
             "description": "Specifies the user id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "edit csm user",
@@ -743,13 +743,13 @@
             "in": "path",
             "description": "Specifies the user id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -784,7 +784,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -821,7 +821,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -885,7 +885,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -932,13 +932,13 @@
             "in": "path",
             "description": "Specifies the S3 Account Id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "Edit S3 Account",
@@ -987,13 +987,13 @@
             "in": "path",
             "description": "Specifies the S3 Account id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1030,7 +1030,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -1065,7 +1065,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1097,13 +1097,13 @@
             "in": "path",
             "description": "Specifies the S3 account access key",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1140,7 +1140,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -1178,10 +1178,12 @@
             "name": "bucket_name",
             "in": "body",
             "description": "bucket name",
-            "properties": {
-              "bucket_name": {
-                "type": "string",
-                "example": "udx-xyz"
+            "schema": {
+              "properties": {
+                "bucket_name": {
+                  "type": "string",
+                  "example": "udx-xyz"
+                }
               }
             }
           },
@@ -1189,7 +1191,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1224,13 +1226,13 @@
             "in": "path",
             "description": "Specifies the bucket name",
             "required": true,
-            "type": "string"
+            "schema": { "schema": { "type": "string" } }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -1266,13 +1268,13 @@
             "in": "path",
             "description": "Specifies the Bucket name",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -1301,14 +1303,14 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "bucket_name",
             "in": "path",
             "description": "Specifies the bucket_name",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "policy",
@@ -1354,13 +1356,13 @@
             "in": "path",
             "description": "Specifies the bucket name",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1394,7 +1396,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -1457,7 +1459,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1489,13 +1491,13 @@
             "in": "path",
             "description": "Specifies the IAM user id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1533,13 +1535,13 @@
             "in": "path",
             "description": "Specifies the IAM user name",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -1578,13 +1580,13 @@
             "in": "path",
             "description": "Specifies the IAM user name",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1616,20 +1618,20 @@
             "in": "path",
             "description": "Specifies the S3 account access key",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "user_name",
             "in": "path",
             "description": "Specifies the IAM user name",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1666,14 +1668,14 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "sortby",
             "in": "query",
             "description": "Specifies sort by option",
             "required": true,
-            "type": "string",
+            "schema": { "type": "string" },
             "enum": ["created_time"],
             "default": "created_time"
           },
@@ -1682,7 +1684,7 @@
             "in": "query",
             "description": "Specifies sort direction option",
             "required": true,
-            "type": "string",
+            "schema": { "type": "string" },
             "enum": ["asc", "desc"],
             "default": "desc"
           },
@@ -1691,7 +1693,7 @@
             "in": "query",
             "description": "Specifies offset of the result",
             "required": true,
-            "type": "integer",
+            "schema": { "type": "integer" },
             "default": 1
           },
           {
@@ -1699,7 +1701,7 @@
             "in": "query",
             "description": "Specifies limit for results per page",
             "required": true,
-            "type": "integer",
+            "schema": { "type": "integer" },
             "default": 10
           },
           {
@@ -1707,14 +1709,14 @@
             "in": "query",
             "description": "Specifies alert history duration 60s, 5m, 2h or 1d ",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "show_all",
             "in": "query",
             "description": "Specifies show all alerts",
             "required": false,
-            "type": "Boolean",
+            "schema": { "type": "Boolean" },
             "default": false
           },
           {
@@ -1722,14 +1724,14 @@
             "in": "query",
             "description": "Specifies serverity of alerts",
             "required": false,
-            "type": "String"
+            "schema": { "type": "string" }
           },
           {
             "name": "resolved",
             "in": "query",
             "description": "Show resolved alerts",
             "required": false,
-            "type": "Boolean",
+            "schema": { "type": "Boolean" },
             "default": false
           },
           {
@@ -1737,7 +1739,7 @@
             "in": "query",
             "description": "Show acknowledged alerts",
             "required": false,
-            "type": "Boolean",
+            "schema": { "type": "Boolean" },
             "default": false
           },
           {
@@ -1745,7 +1747,7 @@
             "in": "query",
             "description": "Show active alerts",
             "required": false,
-            "type": "Boolean",
+            "schema": { "type": "Boolean" },
             "default": false
           }
         ]
@@ -1789,16 +1791,16 @@
             "description": "Alert Id",
             "required": true,
             "schema": {
-              "type": "array",
-              "items": "string",
-              "example": ["alert_id"]
-            }
+              "type": "array"
+            },
+            "items": "string",
+            "example": ["alert_id"]
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1839,13 +1841,13 @@
             "in": "path",
             "description": "Specifies the alert id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -1884,7 +1886,7 @@
             "in": "path",
             "description": "Specifies the alert id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "alert",
@@ -1904,7 +1906,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -1944,14 +1946,14 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "sortby",
             "in": "query",
             "description": "Specifies sort by option",
             "required": false,
-            "type": "string",
+            "schema": { "type": "string" },
             "enum": ["created_time"],
             "default": "created_time"
           },
@@ -1960,7 +1962,7 @@
             "in": "query",
             "description": "Specifies sort direction option",
             "required": false,
-            "type": "string",
+            "schema": { "type": "string" },
             "enum": ["asc", "desc"],
             "default": "desc"
           },
@@ -1969,7 +1971,7 @@
             "in": "query",
             "description": "Specifies offset of the result",
             "required": false,
-            "type": "integer",
+            "schema": { "type": "integer" },
             "default": 1
           },
           {
@@ -1977,7 +1979,7 @@
             "in": "query",
             "description": "Specifies limit for results per page",
             "required": false,
-            "type": "integer",
+            "schema": { "type": "integer" },
             "default": 1000
           },
           {
@@ -1985,28 +1987,28 @@
             "in": "query",
             "description": "Filter by sensor info",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "start_date",
             "in": "query",
             "description": "Specifies start date",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "end_date",
             "in": "query",
             "description": "Specifies end date",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "duration",
             "in": "query",
             "description": "Specifies alert history duration 60s, 5m, 2h or 1d ",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2044,13 +2046,13 @@
             "in": "path",
             "description": "Specifies the alert id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2088,13 +2090,13 @@
             "in": "path",
             "description": "Specifies the alert uuid",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       },
@@ -2148,13 +2150,13 @@
             "in": "path",
             "description": "Specifies the alert id",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2188,7 +2190,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2225,7 +2227,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2263,13 +2265,13 @@
             "in": "query",
             "description": "Specifies the node id",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2307,7 +2309,7 @@
             "in": "query",
             "description": "Specifies the node id",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "severity",
@@ -2315,13 +2317,13 @@
             "description": "Specifies the node id",
             "required": false,
             "enum": ["ok", "critical", "warning"],
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2356,63 +2358,63 @@
             "in": "query",
             "description": "Panel",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "metric",
             "in": "query",
             "description": "Metric",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "id",
             "in": "query",
             "description": "stats id",
             "required": false,
-            "type": "integer"
+            "schema": { "type": "integer" }
           },
           {
             "name": "from",
             "in": "query",
             "description": "from (epoch) time",
             "required": false,
-            "type": "integer"
+            "schema": { "type": "integer" }
           },
           {
             "name": "to",
             "in": "query",
             "description": "to (epoch) time",
             "required": false,
-            "type": "integer"
+            "schema": { "type": "integer" }
           },
           {
             "name": "interval",
             "in": "query",
             "description": "interval (epoch) time",
             "required": false,
-            "type": "integer"
+            "schema": { "type": "integer" }
           },
           {
             "name": "total_sample",
             "in": "query",
             "description": "Total Sample",
             "required": false,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "output_format",
             "in": "query",
             "description": "Output Format",
             "required": false,
-            "type": "string",
+            "schema": { "type": "string" },
             "default": "gui"
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2449,7 +2451,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2530,14 +2532,16 @@
             "schema": {
               "type": "object",
               "required": false,
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "example": "localhost:4000"
-                },
-                "pin": {
-                  "type": "string",
-                  "example": "0000"
+              "schema": {
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "example": "localhost:4000"
+                  },
+                  "pin": {
+                    "type": "string",
+                    "example": "0000"
+                  }
                 }
               }
             }
@@ -2581,27 +2585,27 @@
             "in": "path",
             "description": "Specifies the component (csm or s3)",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "start_date",
             "in": "query",
             "description": "epoch time",
             "required": true,
-            "type": "integer"
+            "schema": { "type": "integer" }
           },
           {
             "name": "end_date",
             "in": "query",
             "description": "epoch time",
             "required": true,
-            "type": "integer"
+            "schema": { "type": "integer" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2642,27 +2646,27 @@
             "in": "path",
             "description": "Specifies the component (csm or s3)",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           },
           {
             "name": "start_date",
             "in": "query",
             "description": "epoch time",
             "required": true,
-            "type": "integer"
+            "schema": { "type": "integer" }
           },
           {
             "name": "end_date",
             "in": "query",
             "description": "epoch time",
             "required": true,
-            "type": "integer"
+            "schema": { "type": "integer" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2699,13 +2703,13 @@
             "name": "package",
             "in": "formData",
             "description": ".bin file",
-            "type": "file"
+            "schema": { "type": "file" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2742,7 +2746,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2776,7 +2780,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2810,7 +2814,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2849,13 +2853,13 @@
             "in": "formData",
             "description": ".pem file",
             "required": true,
-            "type": "file"
+            "schema": { "type": "file" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2908,7 +2912,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2943,7 +2947,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -2978,7 +2982,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -3017,13 +3021,13 @@
             "in": "formData",
             "description": ".iso file",
             "required": true,
-            "type": "file"
+            "schema": { "type": "file" }
           },
           {
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -3061,7 +3065,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -3096,7 +3100,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -3131,7 +3135,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -3183,7 +3187,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -3235,7 +3239,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
@@ -3287,7 +3291,7 @@
             "name": "authorization",
             "in": "header",
             "required": true,
-            "type": "string"
+            "schema": { "type": "string" }
           }
         ]
       }
