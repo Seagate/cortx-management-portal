@@ -101,7 +101,7 @@
                           />
                         </template>
                         <span id="delete-account-tooltip">
-                          {{ $t("s3.account.delete-account") }}
+                          {{ $t("s3.iam.delete-iam") }}
                         </span>
                       </v-tooltip>
                     </div>
