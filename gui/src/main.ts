@@ -29,6 +29,8 @@ import CortxInfoTooltip from "./components/widgets/cortx-info-tooltip.vue";
 import CortxConfirmationDialog from "./components/widgets/cortx-confirmation-dialog.vue";
 import CortxDropdown from "./components/widgets/dropdown/cortx-dropdown-view.vue";
 import i18n from "./i18n";
+import { Api } from "./services/api";
+import apiRegister from "./services/api-register";
 
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
@@ -61,6 +63,18 @@ Vue.prototype.$hasAccessToCsm = function(role: string) {
   return false;
 };
 
+/* 
+* v-feature is a dircetive used to Show/Hide unsupported feature on the UI. 
+* Based on the response from API, add this directive to the component.
+*/
+Vue.directive("feature", async function(el, binding, vnode) {
+  const res = await Api.getAll(apiRegister.unsupported_features);
+  // Response expected in below format from unsupported_features API.
+  // const res = {data: {features:["dashboard", "capacity", "alert"]}};
+  if(res && res.data.features.find((elm: any) => elm === binding.value)) {
+    el.style.display = "none";
+  }
+})
 Vue.component("cortx-has-access", CortxHasAccess);
 Vue.component("cortx-info-tooltip", CortxInfoTooltip);
 Vue.component("cortx-confirmation-dialog", CortxConfirmationDialog);

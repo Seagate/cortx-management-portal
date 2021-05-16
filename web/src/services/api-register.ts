@@ -36,6 +36,7 @@ export default {
   get_capacity_endpt: (version :string) => `/api/${version}/capacity`,
   get_bucket_policy_endpt: (version :string) => `/api/${version}/s3/bucket_policy`,
   get_user_permissions_endpt: (version :string) => `/api/${version}/permissions`,
+  get_unsupported_features_endpt: (version :string) => `/api/${version}/unsupportedfeatures`,
   get_addlicensekey_endpt: (version :string) => `/api/${version}/license/onboarding`,
   get_all_alerts_history_endpt: (version :string) => `/api/${version}/alerts_history`,
   get_auditlogs_endpt: (version :string) => `/api/${version}/auditlogs`,

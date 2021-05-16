@@ -24,7 +24,7 @@
       </v-col>
     </v-row>
     <v-row :style="{'min-height':alertTblRowHeightPx}">
-      <v-col
+      <v-col v-feature="capacity"
         class="pt-2 pb-0 pr-0"
         md="4"
         :style="{'min-height':alertTblRowHeightPx, 'border-right': '2px solid rgba(0, 0, 0, 0.12)'}"
@@ -54,6 +54,7 @@ import { EVENT_BUS } from "../../main";
   }
 })
 export default class Dashboard extends Vue {
+  public capacity: string = "capacity";
   public alertTblRowHeight: number = 0;
   public alertTblRowHeightPx: string = "";
   public chartRowHeightPx: string = "";

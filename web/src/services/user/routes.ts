@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 import { Request, Response, request, response } from "express";
-import { getUsers, getUserById, saveUser, deleteUser, updateUser, getUserPermissions} from "./user-controller";
+import { getUsers, getUserById, saveUser, deleteUser, updateUser, getUserPermissions,getUnsupportedFeatures} from "./user-controller";
 import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
@@ -88,6 +88,18 @@ export default [
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await getUserPermissions(req, res);
+        res.status(res.statusCode).send(result);
+      }
+    ]
+  },
+  {
+    path: "/api/:version/unsupportedfeatures",
+    method: "get",
+    handler: [
+      checkApiVersion,
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        const result = await getUnsupportedFeatures(req, res);
         res.status(res.statusCode).send(result);
       }
     ]

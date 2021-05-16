@@ -40,6 +40,7 @@ export default {
   sysconfig: `api/${version}/sysconfig`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
+  unsupported_features: `/api/${version}/unsupportedfeatures`,
   addlicensekey: `/api/${version}/license/onboarding`,
   hotfix_status: `/api/${version}/update/hotfix/status`,
   hotfix_upload: `/api/${version}/update/hotfix/upload`,

@@ -80,3 +80,11 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const getUserPermissions = async (req: Request, res: Response) => {
   return await Api.getAll(apiRegister.get_user_permissions_endpt(req.params.version), req, res);
 };
+/**
+ * This is responsible for getting user unsupported features
+ * @param req 
+ * @param res
+ */
+export const getUnsupportedFeatures = async (req: Request, res: Response) => {
+  return await Api.getAll(apiRegister.get_unsupported_features_endpt(req.params.version), req, res);
+};
