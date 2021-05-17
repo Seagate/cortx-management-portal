@@ -2744,11 +2744,11 @@
           "description": ".bin file",
           "required": true,
           "content": {
-            "multipart/octet-stream": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "fileName": {
+                  "File name": {
                     "type": "string",
                     "format": "binary"
                   }
@@ -2894,19 +2894,29 @@
         "produces": ["application/json"],
         "parameters": [
           {
-            "name": "pemfile",
-            "in": "formData",
-            "description": ".pem file",
-            "required": true,
-            "schema": { "type": "file" }
-          },
-          {
             "name": "authorization",
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "pem file",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File name": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/tls/bundle/install": {
@@ -3064,19 +3074,29 @@
         },
         "parameters": [
           {
-            "name": "package",
-            "in": "formData",
-            "description": ".iso file",
-            "required": true,
-            "schema": { "type": "file" }
-          },
-          {
             "name": "authorization",
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
-        ]
+        ],
+        "requestBody": {
+          "description": ".iso file",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File name": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/update/hotfix/start": {
