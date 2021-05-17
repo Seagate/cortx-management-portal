@@ -35,6 +35,7 @@ Vue.use(Vuex);
 export default class UserLogin extends VuexModule {
   public user: any = {};
   public userPermissions: object = {};
+  public unsupportedFeatures: object = {};
 
   public queryParams: UserLoginQueryParam = {
     username: "",
@@ -50,6 +51,11 @@ export default class UserLogin extends VuexModule {
     this.userPermissions = permissions;
   }
 
+  @Mutation
+  public setUnsupportedFeatures(unsupportedFeatures: any) {
+    this.unsupportedFeatures = unsupportedFeatures;
+  }
+
   // Get user
   get getUser() {
     return this.user;
@@ -57,6 +63,10 @@ export default class UserLogin extends VuexModule {
 
   get getUserPermissions() {
     return this.userPermissions;
+  }
+
+  get getUnsupportedFeatures() {
+    return this.unsupportedFeatures;
   }
 
   @Action({ rawError: true })
@@ -120,6 +130,17 @@ export default class UserLogin extends VuexModule {
       console.error("err logger: ", e);
       throw new Error(e.message);
     }
+  }
+
+  @Action({ rawError: true })
+  public async getUnsupportedFeaturesAction() {
+    /**
+     * TODO: (unsupported-feature)
+     * This is placeholder logic and will be updated when
+     * REST Api is available.
+     */
+    this.context.commit("setUnsupportedFeatures", {});
+    return {};
   }
 
   @Action
