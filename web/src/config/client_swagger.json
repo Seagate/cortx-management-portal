@@ -63,27 +63,28 @@
         "content": {
           "application/json": {}
         },
-        "parameters": [
-          {
-            "name": "User",
-            "in": "body",
-            "description": "CSM User request",
-            "schema": {
-              "type": "object",
-              "required": true,
-              "properties": {
-                "username": {
-                  "type": "string",
-                  "example": ""
-                },
-                "password": {
-                  "type": "string",
-                  "example": ""
+        "requestBody": {
+          "description": "CSM User request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": ""
+                  }
                 }
               }
             }
           }
-        ]
+        }
       }
     },
     "/logout": {
@@ -190,39 +191,42 @@
         },
         "parameters": [
           {
-            "name": "User",
-            "in": "body",
-            "description": "Create new user request",
-            "schema": {
-              "type": "object",
-              "required": true,
-              "properties": {
-                "username": {
-                  "type": "string",
-                  "example": "Test2"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "password"
-                },
-                "email": {
-                  "type": "string",
-                  "example": "user@test.com"
-                },
-                "roles": {
-                  "type": "array",
-                  "example": ["manage"]
-                }
-              }
-            }
-          },
-          {
             "name": "authorization",
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "Create new user request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "Test2"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "user@test.com"
+                  },
+                  "roles": {
+                    "type": "array",
+                    "example": ["manage"]
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/csm/users/{user_id}": {
@@ -308,35 +312,37 @@
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "edit csm user",
-            "in": "body",
-            "description": "Edit CSM user credentials. The 'current_password' property is required for users who change their own password. The superuser can skip this field for all other users.",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "roles": {
-                  "type": "array",
-                  "example": []
-                },
-                "email": {
-                  "type": "string",
-                  "example": "new@email.com"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "new_password"
-                },
-                "current_password": {
-                  "type": "string",
-                  "example": "password"
+          }
+        ],
+        "requestBody": {
+          "description": "Edit CSM user credentials. The 'current_password' property is required for users who change their own password. The superuser can skip this field for all other users.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": false,
+                "properties": {
+                  "roles": {
+                    "type": "array",
+                    "example": []
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "new@email.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "new_password"
+                  },
+                  "current_password": {
+                    "type": "string",
+                    "example": "password"
+                  }
                 }
               }
             }
           }
-        ]
+        }
       },
       "delete": {
         "tags": ["CSM User"],
@@ -480,35 +486,38 @@
         },
         "parameters": [
           {
-            "name": "S3 Account",
-            "in": "body",
-            "description": "Create new S3 Account request",
-            "schema": {
-              "type": "object",
-              "required": true,
-              "properties": {
-                "account_name": {
-                  "type": "string",
-                  "example": ""
-                },
-                "account_email": {
-                  "type": "string",
-                  "example": ""
-                },
-                "password": {
-                  "type": "string",
-                  "example": ""
-                }
-              }
-            }
-          },
-          {
             "name": "authorization",
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "Create new S3 Account request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "account_name": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "account_email": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": ""
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/s3_accounts/{s3_account_id}": {
@@ -560,27 +569,30 @@
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "Edit S3 Account",
-            "in": "body",
-            "description": "Edit S3 Account",
-            "schema": {
-              "type": "object",
-              "required": true,
-              "properties": {
-                "password": {
-                  "type": "string",
-                  "example": ""
-                },
-                "reset_access_key": {
-                  "type": "boolean",
-                  "example": false
+          }
+        ],
+        "requestBody": {
+          "description": "Edit S3 Account",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "reset_access_key": {
+                    "type": "boolean",
+                    "example": false
+                  }
                 }
               }
             }
           }
-        ]
+        }
       },
       "delete": {
         "tags": ["S3"],
@@ -796,25 +808,27 @@
         },
         "parameters": [
           {
-            "name": "bucket_name",
-            "in": "body",
-            "description": "bucket name",
-            "schema": {
-              "properties": {
-                "bucket_name": {
-                  "type": "string",
-                  "example": "udx-xyz"
-                }
-              }
-            }
-          },
-          {
             "name": "authorization",
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "bucket name",
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "bucket_name": {
+                    "type": "string",
+                    "example": "udx-xyz"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/s3/bucket_policy/{bucket_name}": {
@@ -932,22 +946,24 @@
             "description": "Specifies the bucket_name",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "policy",
-            "in": "body",
-            "description": "bucket policy request",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "policy": {
-                  "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "bucket policy request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": false,
+                "properties": {
+                  "policy": {
+                    "type": "string"
+                  }
                 }
               }
             }
           }
-        ]
+        }
       }
     },
     "/s3/bucket/{bucket_name}": {
@@ -1055,34 +1071,37 @@
         },
         "parameters": [
           {
-            "name": "User",
-            "in": "body",
-            "description": "Create new user request",
-            "schema": {
-              "type": "object",
-              "required": true,
-              "properties": {
-                "user_name": {
-                  "type": "string",
-                  "example": "iam_user"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "password"
-                },
-                "require_reset": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
-          {
             "name": "authorization",
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "Create new user request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "user_name": {
+                    "type": "string",
+                    "example": "iam_user"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password"
+                  },
+                  "require_reset": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/iam_users/{user_name}": {
@@ -1153,7 +1172,7 @@
         "parameters": [
           {
             "name": "user_name",
-            "in": "path",
+            "in": "query",
             "description": "Specifies the IAM user name",
             "required": true,
             "schema": { "type": "string" }
@@ -1198,7 +1217,7 @@
         "parameters": [
           {
             "name": "user_name",
-            "in": "path",
+            "in": "query",
             "description": "Specifies the IAM user name",
             "required": true,
             "schema": { "type": "string" }
@@ -1243,7 +1262,7 @@
           },
           {
             "name": "user_name",
-            "in": "path",
+            "in": "query",
             "description": "Specifies the IAM user name",
             "required": true,
             "schema": { "type": "string" }
@@ -1407,23 +1426,25 @@
         },
         "parameters": [
           {
-            "name": "alert_id list",
-            "in": "body",
-            "description": "Alert Id",
-            "required": true,
-            "schema": {
-              "type": "array"
-            },
-            "items": "string",
-            "example": ["alert_id"]
-          },
-          {
             "name": "authorization",
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "Alert Id",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "example": ["alert_id"]
+            }
+          }
+        }
       }
     },
     "/alerts/{alert_id}": {
@@ -1510,26 +1531,28 @@
             "schema": { "type": "string" }
           },
           {
-            "name": "alert",
-            "in": "body",
-            "description": "Alert request",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "acknowledged": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
-          {
             "name": "authorization",
             "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "Alert request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": false,
+                "properties": {
+                  "acknowledged": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/alerts_history": {
@@ -1752,21 +1775,6 @@
         },
         "parameters": [
           {
-            "name": "Comment",
-            "in": "body",
-            "description": "Add comments to the alert",
-            "schema": {
-              "type": "object",
-              "required": true,
-              "properties": {
-                "comment_text": {
-                  "type": "string",
-                  "example": ""
-                }
-              }
-            }
-          },
-          {
             "name": "alert_uuid",
             "in": "path",
             "description": "Specifies the alert id",
@@ -1779,7 +1787,25 @@
             "required": true,
             "schema": { "type": "string" }
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "Add comments to the alert",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "comment_text": {
+                    "type": "string",
+                    "example": ""
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/system/health/summary": {
