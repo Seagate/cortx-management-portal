@@ -74,7 +74,30 @@
       <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
         <span class="cortx-text-bold cortx-text-lg" id="csmauditlogtext">{{ $t("maintenance.logs") }}</span>
         <v-divider class="my-2"></v-divider>
-        <CortxTable :headers="auditLogTableHeaderList" :records="records" />
+        <CortxTable :headers="auditLogTableHeaderList" :records="records" :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" />
+          <!-- <template v-slot:header="{}">
+            <tr>
+              <th
+                style="background-color: gold"
+                v-for="header in auditLogTableHeaderList"
+                :key="header.text"
+              >
+                {{ header.text }}
+              </th>
+            </tr>
+          </template>
+          <template v-slot:item="{ item }">
+            <tr>
+              <td
+                style="background-color: lightblue"
+                v-for="value in Object.values(item)"
+                :key="value"
+              >
+                {{ value }}
+              </td>
+            </tr>
+          </template> -->
+        <!-- </CortxTable> -->
         <!-- <v-data-table
           calculate-widths
           :headers="auditLogTableHeaderList"
@@ -162,7 +185,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import moment from "moment";
 import i18n from "./maintenance.json";
-import CortxTable from "../widgets/cortx-table";
+import CortxTable from "../widgets/cortx-table.vue";
 
 @Component({
   name: "cortx-auditlog",
