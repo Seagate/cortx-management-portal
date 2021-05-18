@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1">
+  <div class="cortx-p-1" v-feature="constString.lyve_pilot">
     <CortxUDXDetails v-if="udx" :udx="udx" />
     <CortxUDXRegistration v-if="showUDXRegistrationForm" @complete="registrationComplete()" />
   </div>
@@ -37,6 +37,12 @@ export default class CortxUDX extends Vue {
   public udx: UDX | null = null;
   public isUDXRegistered: boolean = false;
   public showUDXRegistrationForm: boolean = false;
+
+  public data() {
+    return {
+      constString: require("../../common/const-string.json")
+    };
+  }
 
   public async mounted() {
     await this.getRegistrationStatus();

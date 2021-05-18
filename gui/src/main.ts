@@ -61,6 +61,19 @@ Vue.prototype.$hasAccessToCsm = function(role: string) {
   return false;
 };
 
+Vue.prototype.$getFeatureList = function() {
+  const unsupportedFeatures = this.$store.getters["userLogin/getUnsupportedFeatures"];
+  return unsupportedFeatures;
+};
+
+Vue.directive("feature", function(el, binding, vnode) {
+  const routerApp: any = router.app.$root;
+  const unsupportedFeatures = routerApp.$getFeatureList();
+  if (unsupportedFeatures && unsupportedFeatures[binding.value]) {
+    el.style.display = "none";
+  }
+});
+
 Vue.component("cortx-has-access", CortxHasAccess);
 Vue.component("cortx-info-tooltip", CortxInfoTooltip);
 Vue.component("cortx-confirmation-dialog", CortxConfirmationDialog);

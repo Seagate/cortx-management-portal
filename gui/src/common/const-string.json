@@ -17,5 +17,6 @@
   "throughput": "throughput",
   "latency": "latency",
   "iops": "iops",
-  "alert": "alert"
+  "alert": "alert",
+  "lyve_pilot": "lyve_pilot"
 }

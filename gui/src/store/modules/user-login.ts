@@ -35,6 +35,7 @@ Vue.use(Vuex);
 export default class UserLogin extends VuexModule {
   public user: any = {};
   public userPermissions: object = {};
+  public unsupportedFeatures: object = {};
 
   public queryParams: UserLoginQueryParam = {
     username: "",
@@ -49,6 +50,10 @@ export default class UserLogin extends VuexModule {
   public setUserPermissions(permissions: any) {
     this.userPermissions = permissions;
   }
+  @Mutation
+  public setUnsupportedFeatures(features: any) {
+    this.unsupportedFeatures = features;
+  }
 
   // Get user
   get getUser() {
@@ -57,6 +62,10 @@ export default class UserLogin extends VuexModule {
 
   get getUserPermissions() {
     return this.userPermissions;
+  }
+
+  get getUnsupportedFeatures() {
+    return this.unsupportedFeatures;
   }
 
   @Action({ rawError: true })
@@ -120,6 +129,13 @@ export default class UserLogin extends VuexModule {
       console.error("err logger: ", e);
       throw new Error(e.message);
     }
+  }
+
+  @Action({ rawError: true })
+  public async getUnsupportedFeaturesAction() {
+    const features = require("../../common/unsupported-features.json");
+    this.context.commit("setUnsupportedFeatures", features);
+    return features;
   }
 
   @Action

@@ -168,13 +168,16 @@ export default class CortxLogin extends Vue {
             res.authorization
           );
           localStorage.setItem(this.$data.constStr.username, user.username);
-          return this.$store.dispatch("userLogin/getUserPermissionsAction");
+          return Promise.all([
+            this.$store.dispatch("userLogin/getUserPermissionsAction"),
+            this.$store.dispatch("userLogin/getUnsupportedFeaturesAction")
+          ]);
         } else {
           throw new Error("Login Failed");
         }
       })
-      .then((res: any) => {
-        if (res) {
+      .then((res: any[]) => {
+        if (res && res.length === 2) {
           this.navigate();
         } else {
           throw new Error("Login Failed");
