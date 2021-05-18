@@ -67,8 +67,8 @@ Vue.prototype.$getFeatureList = function() {
 };
 
 Vue.directive("feature", function(el, binding, vnode) {
-  const routerApp: any = router.app.$root;
-  const unsupportedFeatures = routerApp.$getFeatureList();
+  const vueInstance: any = router.app.$root;
+  const unsupportedFeatures = vueInstance.$getFeatureList();
   if (unsupportedFeatures && unsupportedFeatures[binding.value]) {
     el.style.display = "none";
   }
