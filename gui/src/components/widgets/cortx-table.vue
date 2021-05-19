@@ -3,16 +3,13 @@
         <v-data-table
           :v-bind="computedProps"
           :v-on="listeners"
-          calculate-widths
           :items="records"
+          calculate-widths
           class="cortx-table"
           id="auditLog-datatable"
           :hide-default-header="true"
         >
-          <slot v-if="hasSlot"></slot>
-          <!-- <slot name="header" v-if="hasSlot()"></slot>
-          <slot name="item" v-if="hasSlot()"></slot> -->
-          <template v-slot:header="{}" v-if="!hasSlot">
+          <template v-slot:header="{}" >
             <tr>
               <th
                 v-for="header in headers"
@@ -26,7 +23,7 @@
               </th>
             </tr>
           </template>
-          <template v-slot:item="{ item }" v-if="!hasSlot">
+          <template v-slot:item="{ item }">
             <tr>
                 <td
                 v-for="value in Object.values(item)"
@@ -54,6 +51,8 @@ export default class CortxTable extends Vue {
 
   get computedProps() {
     console.log("$props: ", this.$props);
+    console.log("$listeners: ", this.$listeners);
+    console.log("$slots: ", this.$slots);
     console.log("hasSlot: ", !!this.$slots.default);
     console.log("headers: ", this.$props.headers);
     console.log("items: ", this.$props.items);

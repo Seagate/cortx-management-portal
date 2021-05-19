@@ -74,8 +74,8 @@
       <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
         <span class="cortx-text-bold cortx-text-lg" id="csmauditlogtext">{{ $t("maintenance.logs") }}</span>
         <v-divider class="my-2"></v-divider>
-        <CortxTable :headers="auditLogTableHeaderList" :records="records" :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" />
-          <!-- <template v-slot:header="{}">
+        <CortxTable :headers="auditLogTableHeaderList" :records="records" :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" >
+          <template #header="{}">
             <tr>
               <th
                 style="background-color: gold"
@@ -96,8 +96,8 @@
                 {{ value }}
               </td>
             </tr>
-          </template> -->
-        <!-- </CortxTable> -->
+          </template>
+        </CortxTable>
         <!-- <v-data-table
           calculate-widths
           :headers="auditLogTableHeaderList"
