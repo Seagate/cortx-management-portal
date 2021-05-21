@@ -8,7 +8,47 @@
           class="cortx-table"
           id="auditLog-datatable"
           :hide-default-header="true"
+          :hide-default-footer="true"
         >
+          <template #top>
+            <v-container class="ma-0 pl-0">
+              <v-row class="ma-0">
+                <v-col sm="2" class="pl-0">
+                  <v-text-field
+                    outlined
+                    hide-details
+                    placeholder="Search"
+                    height="50px"
+                    color="csmprimary"
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                  >
+                  </v-text-field>
+                </v-col>
+
+                <v-col sm="3" class="d-flex">
+                  <v-icon
+                    color="csmprimary"
+                    class="mr-2"
+                  >
+                    mdi-filter
+                  </v-icon>
+                  <v-select
+                   multiple 
+                   outlined
+                   hide-details 
+                   dense 
+                   color="csmprimary"
+                   :items="['Remote IP', 'Path','Method', 'User Agent']" 
+                   label="Filters" 
+                   class="d-inline" 
+                   ></v-select>
+                </v-col>
+                  
+              </v-row>
+            </v-container>
+          </template>
+
           <template v-slot:header="{}" >
             <tr>
               <th
@@ -23,6 +63,7 @@
               </th>
             </tr>
           </template>
+
           <template v-slot:item="{ item }">
             <tr>
                 <td
@@ -33,6 +74,30 @@
                 </td>
             </tr>
           </template>
+
+          <template #footer="{props}">
+            <v-container>
+              <v-row justify="end" align="center">
+                <v-col sm="4" class="text-right">
+                    <v-pagination
+                      v-model="props.pagination.page"
+                      color="csmprimary"
+                      class="my-1"
+                      total-visible="7"
+                      :length="props.pagination.pageCount"
+                      next-icon="mdi-chevron-double-right"
+                      prev-icon="mdi-chevron-double-left"
+                    ></v-pagination>
+                </v-col>
+                <cortx-dropdown
+                  id="auditlog-component"
+                  :options="[{label:'50 rows', value: 50}, {label:'100 rows', value: 100}, {label:'150 rows', value: 50}]"
+                  :title="component ? component : undefined"
+                  :menuOnTop="true"
+                ></cortx-dropdown>
+              </v-row>
+            </v-container>
+          </template>
         </v-data-table>
     </div>
 </template>
@@ -40,13 +105,18 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { VDataTable } from "vuetify/lib";
+import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
 
-@Component({
+@Component(
+  {
   name: "CortxTable",
-  extends: VDataTable
+  extends: VDataTable,
+  components: { cortxDropdownView }
 })
 export default class CortxTable extends Vue {
   @Prop({required: true}) public records: any;
+  
+  public search: string;
   public hasSlot = !!this.$slots.default
 
   get computedProps() {
@@ -55,6 +125,7 @@ export default class CortxTable extends Vue {
     console.log("$slots: ", this.$slots);
     console.log("hasSlot: ", !!this.$slots.default);
     console.log("headers: ", this.$props.headers);
+    console.log("records: ", this.records);
     console.log("items: ", this.$props.items);
     return {
       ...this.$props,
