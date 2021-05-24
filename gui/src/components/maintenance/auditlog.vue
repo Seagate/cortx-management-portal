@@ -74,7 +74,15 @@
       <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
         <span class="cortx-text-bold cortx-text-lg" id="csmauditlogtext">{{ $t("maintenance.logs") }}</span>
         <v-divider class="my-2"></v-divider>
-        <CortxTable :headers="auditLogTableHeaderList" :records="records" :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" />
+        <CortxTable
+         :headers="auditLogTableHeaderList" 
+         :records="auditLog.logs" 
+         :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" 
+         class="cortx-table"
+         id="auditLog-datatable"
+         @update:items-per-page="getAuditLogs()"
+         @update:page="getAuditLogs()"
+        />
           <!-- <template #header="{}">
             <tr>
               <th
@@ -245,7 +253,8 @@ export default class CortxAuditLog extends Vue {
     {
       text: "Timestamp",
       value: "timestamp",
-      sortable: true
+      sortable: true,
+      type: "time"
     },
     {
       text: "User",
@@ -280,6 +289,11 @@ export default class CortxAuditLog extends Vue {
     {
       text: "Response Code",
       value: "response_code",
+      sortable: false
+    },
+    {
+      text: "Request Id",
+      value: "request_id",
       sortable: false
     }
   ];

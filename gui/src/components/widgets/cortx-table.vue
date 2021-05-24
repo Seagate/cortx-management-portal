@@ -5,10 +5,7 @@
           :v-on="listeners"
           :items="records"
           calculate-widths
-          class="cortx-table"
-          id="auditLog-datatable"
-          :hide-default-header="true"
-          :hide-default-footer="true"
+          :hide-default-header="true" 
         >
           <template #top>
             <v-container class="ma-0 pl-0">
@@ -64,40 +61,47 @@
             </tr>
           </template>
 
+          <!-- <template v-slot:item.timestamp="props">
+            {{ props.item.timestamp | timeago }}
+          </template> -->
+
           <template v-slot:item="{ item }">
             <tr>
                 <td
-                v-for="value in Object.values(item)"
-                :key="value"
+                v-for="[key, value] in Object.entries(item)"
+                :key="item.request_id"
                 >
                 {{ value }}
                 </td>
             </tr>
           </template>
 
-          <template #footer="{props}">
+          <!-- <template #footer="{props}">
             <v-container>
               <v-row justify="end" align="center">
                 <v-col sm="4" class="text-right">
                     <v-pagination
-                      v-model="props.pagination.page"
+                      v-model="page"
                       color="csmprimary"
                       class="my-1"
                       total-visible="7"
+                      page.sync="3"
                       :length="props.pagination.pageCount"
                       next-icon="mdi-chevron-double-right"
                       prev-icon="mdi-chevron-double-left"
+                      @input="handleInput"
                     ></v-pagination>
                 </v-col>
                 <cortx-dropdown
                   id="auditlog-component"
-                  :options="[{label:'50 rows', value: 50}, {label:'100 rows', value: 100}, {label:'150 rows', value: 50}]"
+                  :options="itemsPerPageOptions"
                   :title="component ? component : undefined"
                   :menuOnTop="true"
                 ></cortx-dropdown>
               </v-row>
             </v-container>
-          </template>
+            <pre>{{props}}</pre>
+          </template> -->
         </v-data-table>
     </div>
 </template>
@@ -117,16 +121,18 @@ export default class CortxTable extends Vue {
   @Prop({required: true}) public records: any;
   
   public search: string;
-  public hasSlot = !!this.$slots.default
+  public hasSlot = !!this.$slots.default;
+  public page: number = 1;
+
+  public handleInput(input) {
+    console.log("Page Input: ", input)
+  }
+  
+  get itemsPerPageOptions() {
+    return this.$props.footerProps["items-per-page-options"].map(item => ({label: `${item} rows`, value: item}))  
+  }
 
   get computedProps() {
-    console.log("$props: ", this.$props);
-    console.log("$listeners: ", this.$listeners);
-    console.log("$slots: ", this.$slots);
-    console.log("hasSlot: ", !!this.$slots.default);
-    console.log("headers: ", this.$props.headers);
-    console.log("records: ", this.records);
-    console.log("items: ", this.$props.items);
     return {
       ...this.$props,
       footerProps: this.$props.footerProps
@@ -142,4 +148,5 @@ export default class CortxTable extends Vue {
   }
 }
 
+// :options="[{label:'50 rows', value: 50}, {label:'100 rows', value: 100}, {label:'150 rows', value: 50}]"
 </script>
