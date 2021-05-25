@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
+  <div v-feature="constString.features.manage">
     <cortx-tabs :tabsInfo="tabsInfo" />
     <cortx-has-access :to="$cortxUserPermissions.users + $cortxUserPermissions.list">
       <CortxUserSettingLocal v-if="showUserTab" />
@@ -62,6 +62,12 @@ export default class CortxProvisioningSubmenu extends Vue {
   };
   private showUserTab: boolean = true;
   private showAccountTab: boolean = false;
+
+  public data() {
+    return {
+      constString: require("../../common/const-string.json")
+    };
+  }
 
   public mounted() {
     /*
