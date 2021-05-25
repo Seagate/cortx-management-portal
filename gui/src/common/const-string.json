@@ -31,7 +31,7 @@
     "notification": "notification",
     "dns": "dns",
     "ntp": "ntp",
-    "ssl_upload": "ssl_update",
+    "ssl_upload": "ssl_upload",
     "cluster_management": "cluster_management",
     "hctl_node": "hctl_node"
   }

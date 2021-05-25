@@ -62,15 +62,27 @@ Vue.prototype.$hasAccessToCsm = function(role: string) {
 };
 
 Vue.prototype.$getFeatureList = function() {
-  const unsupportedFeatures = this.$store.getters["userLogin/getUnsupportedFeatures"];
+  const unsupportedFeatures = this.$store.getters[
+    "userLogin/getUnsupportedFeatures"
+  ];
   return unsupportedFeatures;
 };
 
-Vue.directive("feature", function(el, binding, vnode) {
-  const vueInstance: any = router.app.$root;
-  const unsupportedFeatures = vueInstance.$getFeatureList();
-  if (unsupportedFeatures && unsupportedFeatures[binding.value]) {
-    el.style.display = "none";
+Vue.directive("feature", {
+  inserted(el, binding) {
+    const vueInstance: any = router.app.$root;
+    const unsupportedFeatures = vueInstance.$getFeatureList();
+    if (
+      unsupportedFeatures &&
+      unsupportedFeatures.unsupported_features &&
+      unsupportedFeatures.unsupported_features.find(
+        (val: any) => val === binding.value
+      )
+    ) {
+      if (el.parentNode) {
+        el.parentNode.removeChild(el);
+      }
+    }
   }
 });
 

@@ -17,7 +17,7 @@
 <template>
   <div>
     <div v-for="item in menuItems" :key="item.id">
-      <div v-if="item.requiredAccess">
+      <div v-if="item.requiredAccess" v-feature="item.featureId">
         <cortx-has-access
           :to="
             $cortxUserPermissions[item.requiredAccess] +

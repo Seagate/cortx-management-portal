@@ -134,7 +134,7 @@ export default class UserLogin extends VuexModule {
   }
 
   @Action({ rawError: true })
-  public async getUnsupportedFeaturesAction() {    
+  public async getUnsupportedFeaturesAction() {
     try {
       const data = this.context.getters["getUnsupportedFeatures"];
       if (!data.unsupported_features.length) {

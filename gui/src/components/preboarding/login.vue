@@ -122,7 +122,8 @@ export default class CortxLogin extends Vue {
       loginInProgress: false,
       isUserLoggedIn: false,
       userNamePlaceholder: this.$t("login.user-name-placeholder"),
-      passwordPlaceholder: this.$t("login.password-placeholder")
+      passwordPlaceholder: this.$t("login.password-placeholder"),
+      loginFailed: this.$t("login.login-failed")
     };
   }
 
@@ -173,14 +174,14 @@ export default class CortxLogin extends Vue {
             this.$store.dispatch("userLogin/getUnsupportedFeaturesAction")
           ]);
         } else {
-          throw new Error("Login Failed");
+          throw new Error(this.$data.loginFailed);
         }
       })
       .then((res: any[]) => {
-        if (res && res.length === 2) {
+        if (res && res.length) {
           this.navigate();
         } else {
-          throw new Error("Login Failed");
+          throw new Error(this.$data.loginFailed);
         }
       })
       .catch(() => {
