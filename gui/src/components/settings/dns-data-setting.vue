@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1 body-2">
+  <div class="cortx-p-1 body-2" v-feature="constString.features.dns">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblDns">
       {{ $t("settings.DNSResolverSettings") }}
     </div>
@@ -54,7 +54,8 @@ export default class CortxDnsDataSetting extends Vue {
     return {
       sysconfigData: {},
       newConfigData: {},
-      showConfirmDialog: false
+      showConfirmDialog: false,
+      constString: require("../../common/const-string.json")
     };
   }
   private async mounted() {

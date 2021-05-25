@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1 body-2">
+  <div class="cortx-p-1 body-2" v-feature="constString.features.cluster_management">
     <div id="system-maintenance-title-container">
       <label
         id="system-maintenance-title"
@@ -180,7 +180,8 @@ export default class CortxMaintenance extends Vue {
       actionMessage: "",
       showInfoDialog: false,
       stopService: false,
-      infoDialogMessage: this.$t("systemMaintenance.system-info-dialog-message")
+      infoDialogMessage: this.$t("systemMaintenance.system-info-dialog-message"),
+      constString: require("../../common/const-string.json")
     };
   }
   private async mounted() {

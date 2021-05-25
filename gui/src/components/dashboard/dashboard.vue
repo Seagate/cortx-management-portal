@@ -16,7 +16,7 @@
 */
 <template>
   <div class="cortx-p-1">
-    <v-row
+    <v-row v-feature="constString.features.performance"
       :style="{'min-height':chartRowHeightPx, 'border-bottom': '2px solid rgba(0, 0, 0, 0.12)'}"
     >
       <v-col class="pt-0 pb-0" md="12" style="height: 100%;">
@@ -24,14 +24,15 @@
       </v-col>
     </v-row>
     <v-row :style="{'min-height':alertTblRowHeightPx}">
-      <v-col
+      <v-col v-feature="constString.features.capacity"
         class="pt-2 pb-0 pr-0"
         md="4"
         :style="{'min-height':alertTblRowHeightPx, 'border-right': '2px solid rgba(0, 0, 0, 0.12)'}"
       >
         <cortx-capacity-guage />
       </v-col>
-      <v-col class="pt-2 pb-0" md="8" style="height: 100%;">
+      <v-col v-feature="constString.features.alerts"
+        class="pt-2 pb-0" :md="colNumber" style="height: 100%;">
         <cortx-alert-medium :parentHeight="alertTblRowHeight" />
       </v-col>
     </v-row>
@@ -57,9 +58,27 @@ export default class Dashboard extends Vue {
   public alertTblRowHeight: number = 0;
   public alertTblRowHeightPx: string = "";
   public chartRowHeightPx: string = "";
+  public colNumber: number = 8;
+
+  public data() {
+    return {
+      constString: require("../../common/const-string.json")
+    };
+  }
 
   public created() {
     window.addEventListener("resize", this.resizeComponents);
+  }
+
+  public mounted() {
+    /**
+     * If Capacity feature is hidden, alerts table should take full width as performance graph 
+     */
+    if (document.querySelector('div.row > div.col-md-8:only-child')) {
+      this.colNumber = 12;
+    } else {
+      this.colNumber = 8;
+    }
   }
 
   public beforeMount() {

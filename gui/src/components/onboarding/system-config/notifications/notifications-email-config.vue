@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-container class="mt-0 ml-0">
+  <v-container class="mt-0 ml-0" v-feature="constString.features.notification">
     <div class="pl-4 body-2">
       <div class="row mt-5">
         <div class="col-2 body-2 column">
@@ -332,7 +332,8 @@ export default class CortxNotifications extends Vue {
       testEmail: false,
       testEmailInProgress: false,
       testEmailMessage: "",
-      testEmailMessageError: false
+      testEmailMessageError: false,
+      constString: require("../../../../common/const-string.json")
     };
   }
 

@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-container class="pa-0 ma-0 col-12 black black-container-height">
+  <v-container class="pa-0 ma-0 col-12 black black-container-height" v-feature="constString.features.licence_agreement">
     <div class="cortx-header pl-10 py-3">
       <div class="cortx-brand-logo"></div>
     </div>
@@ -56,7 +56,8 @@ export default class CortxLicense extends Vue {
   private data() {
     return {
       showLicenseAgreement: false,
-      getStarted: false
+      getStarted: false,
+      constString: require("../../common/const-string.json")
     };
   }
 

@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1 body-2">
+  <div class="cortx-p-1 body-2" v-feature="constString.features.ssl_upload">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblSSLUpload">
       {{ $t("settings.SSLCertificateUpload") }}
     </div>
@@ -40,6 +40,12 @@ import i18n from "./settings.json";
     messages: i18n
   }
 })
-export default class CortxUploadSSLSetting extends Vue {}
+export default class CortxUploadSSLSetting extends Vue {
+  private data() {
+    return {
+      constString: require("../../common/const-string.json")
+    };
+  }
+}
 </script>
 <style lang="scss" scoped></style>

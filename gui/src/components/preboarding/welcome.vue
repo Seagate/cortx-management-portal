@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-container class="pa-0 ma-0 col-12 black black-container-height">
+  <v-container class="pa-0 ma-0 col-12 black black-container-height" v-feature="constString.features.welcome_page">
     <div class="cortx-header pl-10 py-3">
       <div class="cortx-brand-logo"></div>
     </div>
@@ -48,7 +48,13 @@ import i18n from "./preboarding.json";
     messages: i18n
   }
 })
-export default class CortxWelcome extends Vue {}
+export default class CortxWelcome extends Vue {
+  public data() {
+    return {
+      constString: require("../../common/const-string.json")
+    };
+  }
+}
 </script>
 
 <style lang="scss" scoped></style>

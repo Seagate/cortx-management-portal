@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-container class="white pa-0 ma-0" fluid>
+  <v-container class="white pa-0 ma-0" fluid v-feature="constString.features.admin_user">
     <div class="cortx-header pl-10 py-3 col-12 black">
       <div class="cortx-brand-logo"></div>
     </div>
@@ -314,7 +314,8 @@ export default class CortxAdminUser extends Vue {
       createUserInProgress: false,
       passwordTooltipMessage,
       usernameTooltipMessage,
-      isSystemStable: true
+      isSystemStable: true,
+      constString: require("../../common/const-string.json")      
     };
   }
 

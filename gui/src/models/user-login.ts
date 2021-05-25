@@ -19,3 +19,7 @@ export interface UserLoginQueryParam {
     password: string;
     email?: string;
 }
+
+export interface UnsupportedFeatures {
+    unsupported_features: [];
+}

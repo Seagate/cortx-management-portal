@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1">
+  <div class="cortx-p-1" v-feature="constString.features.health">
     <div>
       <div class="title mt-0 font-weight-bold" id="lblDns">
         {{ $t("health.health") }}:
@@ -91,6 +91,12 @@ export default class CortxHealthSubmenu extends Vue {
   public menu: any[] = [];
   public healthBySeverityRoute: string = "/health/healthview/severity/";
 
+  public data() {
+    return {
+      constString: require("../../common/const-string.json")
+    };
+  }
+  
   public async mounted() {
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,

@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="pa-5">
+  <div class="pa-5" v-feature="alertStatus.features.health">
     <div class="cortx-text-lg cortx-text-bold pr-2">{{ $t("health.healthView") }}</div>
     <div>
       <div class="cortx-health-summary-container">
