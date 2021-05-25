@@ -70,111 +70,20 @@
         >{{ $t("maintenance.view") }}</button>
       </div>
     </div>
-    <template v-if="component === 'CSM'">
-      <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
-        <span class="cortx-text-bold cortx-text-lg" id="csmauditlogtext">{{ $t("maintenance.logs") }}</span>
-        <v-divider class="my-2"></v-divider>
-        <CortxTable
-         :headers="auditLogTableHeaderList" 
-         :records="auditLog.logs" 
-         :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" 
-         class="cortx-table"
-         id="auditLog-datatable"
-         @update:items-per-page="getAuditLogs()"
-         @update:page="getAuditLogs()"
-        />
-          <!-- <template #header="{}">
-            <tr>
-              <th
-                style="background-color: gold"
-                v-for="header in auditLogTableHeaderList"
-                :key="header.text"
-              >
-                {{ header.text }}
-              </th>
-            </tr>
-          </template>
-          <template v-slot:item="{ item }">
-            <tr>
-              <td
-                style="background-color: lightblue"
-                v-for="value in Object.values(item)"
-                :key="value"
-              >
-                {{ value }}
-              </td>
-            </tr>
-          </template>
-        </CortxTable> -->
-        <!-- <v-data-table
-          calculate-widths
-          :headers="auditLogTableHeaderList"
-          :items="auditLog.logs"
-          :items-per-page.sync="auditLogQueryParams.limit"
-          :footer-props="{
-            'items-per-page-options': [50, 100, 150, 200]
-          }"
-          :page.sync="auditLogQueryParams.offset"
-          :update:page="auditLogQueryParams.offset"
-          :server-items-length="auditLog.total_records"
-          class="cortx-table"
-          id="auditLog-datatable"
-          :hide-default-header="true"
-          @update:items-per-page="getAuditLogs()"
-          @update:page="getAuditLogs()"
-        >
-          <template v-slot:header="{}">
-            <tr>
-              <th
-                v-for="header in auditLogTableHeaderList"
-                :key="header.text"
-                :class="[
-                  'tableheader',
-                  header.sortable ? 'cortx-cursor-pointer' : ''
-                ]"
-                @click="onAuditLogSort(header)"
-              >
-                <span>{{ header.text }}</span>
-                <span v-if="header.value === auditLogQueryParams.sortby">
-                  <img
-                    id="audit-log-desc-icon"
-                    v-if="auditLogQueryParams.dir === 'desc'"
-                    :src="require('@/assets/widget/table-sort-desc.svg/')"
-                    class="d-inline-block"
-                    style="vertical-align: bottom; margin-left: -0.3em;"
-                    height="20"
-                    width="20"
-                  />
-                  <img
-                    id="audit-log-asc-icon"
-                    v-if="auditLogQueryParams.dir === 'asc'"
-                    :src="require('@/assets/widget/table-sort-asc.svg/')"
-                    class="d-inline-block"
-                    style="vertical-align: bottom; margin-left: -0.3em;"
-                    height="20"
-                    width="20"
-                  />
-                </span>
-              </th>
-            </tr>
-          </template>
-          <template v-slot:item.timestamp="props">
-            {{ props.item.timestamp | timeago }}
-          </template>
-        </v-data-table> -->
-      </div>
-    </template>
-    <template v-else-if="component === 'S3'">
+    <template>
       <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
         <span class="cortx-text-bold cortx-text-lg" id="s3auditlogtext">{{ $t("maintenance.logs") }}</span>
         <v-divider class="my-2"></v-divider>
         <template v-if="auditLog.logs.length > 0">
-          <span
-            class="mb-1 d-block"
-            v-for="(log, index) in auditLog.logs"
-            :key="index"
-            id="auditlog-data"
-          >{{ log }}</span>
+          <CortxTable
+            :headers="auditLogTableHeaderList" 
+            :records="auditLog.logs" 
+            :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" 
+            class="cortx-table"
+            id="auditLog-datatable"
+            @update:items-per-page="getAuditLogs()"
+            @update:page="getAuditLogs()"
+          />
         </template>
         <template v-else>
           <span
@@ -194,6 +103,7 @@ import apiRegister from "../../services/api-register";
 import moment from "moment";
 import i18n from "./maintenance.json";
 import CortxTable from "../widgets/cortx-table.vue";
+import headerResponse from "./audit-log-headers.json";
 
 @Component({
   name: "cortx-auditlog",
@@ -249,96 +159,8 @@ export default class CortxAuditLog extends Vue {
   public to: number = moment().unix();
   public isShowLogs: boolean = false;
   public auditLogQueryParams: AuditLogQueryParam = {} as AuditLogQueryParam;
-  public auditLogTableHeaderList: any[] = [
-    {
-      text: "Timestamp",
-      value: "timestamp",
-      sortable: true,
-      type: "time"
-    },
-    {
-      text: "User",
-      value: "user",
-      sortable: false
-    },
-    {
-      text: "Remote IP",
-      value: "remote_ip",
-      sortable: false
-    },
-    {
-      text: "Forwarded For IP",
-      value: "forwarded_for_ip",
-      sortable: false
-    },
-    {
-      text: "Method",
-      value: "method",
-      sortable: false
-    },
-    {
-      text: "Path",
-      value: "path",
-      sortable: false
-    },
-    {
-      text: "User Agent",
-      value: "user_agent",
-      sortable: false
-    },
-    {
-      text: "Response Code",
-      value: "response_code",
-      sortable: false
-    },
-    {
-      text: "Request Id",
-      value: "request_id",
-      sortable: false
-    }
-  ];
-  public records: any = [
-    {
-      timestamp: "Aug 2, 2020 16:15:15",
-      user: "admin",
-      "remote_ip": "10.24.69.58",
-      "forwared_for_ip": "21.24.78.54",
-      method: "GET",
-      path: "/api/v2/stats",
-      "user_agent": "Mozilla",
-      "response_code": "200"
-    },
-    {
-      timestamp: "Aug 2, 2020 16:15:15",
-      user: "admin",
-      "remote_ip": "10.24.69.58",
-      "forwared_for_ip": "21.24.78.54",
-      method: "GET",
-      path: "/api/v2/stats",
-      "user_agent": "Mozilla",
-      "response_code": "200"
-    },
-    {
-      timestamp: "Aug 2, 2020 16:15:15",
-      user: "admin",
-      "remote_ip": "10.24.69.58",
-      "forwared_for_ip": "21.24.78.54",
-      method: "GET",
-      path: "/api/v2/stats",
-      "user_agent": "Mozilla",
-      "response_code": "200"
-    },
-    {
-      timestamp: "Aug 2, 2020 16:15:15",
-      user: "admin",
-      "remote_ip": "10.24.69.58",
-      "forwared_for_ip": "21.24.78.54",
-      method: "GET",
-      path: "/api/v2/stats",
-      "user_agent": "Mozilla",
-      "response_code": "200"
-    },
-  ]
+  public auditLogTableHeaderList: any[]= [];
+  
   public auditLog: any = {
     logs: [],
     total_records: 1000
@@ -375,11 +197,13 @@ export default class CortxAuditLog extends Vue {
   }
 
   public async getAuditLogs() {
+    debugger;
     this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");
     const res = await Api.getAll(
       `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
       this.auditLogQueryParams
     );
+    this.auditLogTableHeaderList = headerResponse.auditLogHeaders;
     this.auditLog = res.data;
     this.isShowLogs = true;
     this.$store.dispatch("systemConfig/hideLoader");
