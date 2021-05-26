@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div v-feature="constString.features.manage">
+  <div v-feature="unsupportedFeatures.manage">
     <cortx-tabs :tabsInfo="tabsInfo" />
     <cortx-has-access :to="$cortxUserPermissions.users + $cortxUserPermissions.list">
       <CortxUserSettingLocal v-if="showUserTab" />
@@ -33,6 +33,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import CortxUserSettingLocal from "../onboarding/system-config/user-settings/user-setting-local.vue";
 import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
 import S3Account from "../s3/account-management.vue";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-provisioning-submenu",
@@ -62,12 +63,7 @@ export default class CortxProvisioningSubmenu extends Vue {
   };
   private showUserTab: boolean = true;
   private showAccountTab: boolean = false;
-
-  public data() {
-    return {
-      constString: require("../../common/const-string.json")
-    };
-  }
+  public unsupportedFeatures = unsupportedFeatures;
 
   public mounted() {
     /*

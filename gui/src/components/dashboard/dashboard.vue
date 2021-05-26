@@ -16,7 +16,7 @@
 */
 <template>
   <div class="cortx-p-1">
-    <v-row v-feature="constString.features.performance"
+    <v-row v-feature="unsupportedFeatures.performance"
       :style="{'min-height':chartRowHeightPx, 'border-bottom': '2px solid rgba(0, 0, 0, 0.12)'}"
     >
       <v-col class="pt-0 pb-0" md="12" style="height: 100%;">
@@ -24,15 +24,15 @@
       </v-col>
     </v-row>
     <v-row :style="{'min-height':alertTblRowHeightPx}">
-      <v-col v-feature="constString.features.capacity"
+      <v-col ref="capacity_col" v-feature="unsupportedFeatures.capacity"
         class="pt-2 pb-0 pr-0"
         md="4"
         :style="{'min-height':alertTblRowHeightPx, 'border-right': '2px solid rgba(0, 0, 0, 0.12)'}"
       >
         <cortx-capacity-guage />
       </v-col>
-      <v-col v-feature="constString.features.alerts"
-        class="pt-2 pb-0" :md="colNumber" style="height: 100%;">
+      <v-col v-feature="unsupportedFeatures.alerts"
+        class="pt-2 pb-0" :md="alertSectionColNumber" style="height: 100%;">
         <cortx-alert-medium :parentHeight="alertTblRowHeight" />
       </v-col>
     </v-row>
@@ -40,11 +40,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Ref } from "vue-property-decorator";
 import CortxAlertMedium from "./../alerts/alert-medium.vue";
 import CortxStatsMedium from "./stats/stats-medium.vue";
 import CortxCapacityGuage from "./capacity-gauge.vue";
 import { EVENT_BUS } from "../../main";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-dashboard",
@@ -58,13 +59,11 @@ export default class Dashboard extends Vue {
   public alertTblRowHeight: number = 0;
   public alertTblRowHeightPx: string = "";
   public chartRowHeightPx: string = "";
-  public colNumber: number = 8;
+  public alertSectionColNumber: number = 8;
+  public unsupportedFeatures = unsupportedFeatures;
 
-  public data() {
-    return {
-      constString: require("../../common/const-string.json")
-    };
-  }
+  @Ref("capacity_col")
+  public capacityColRef: any;
 
   public created() {
     window.addEventListener("resize", this.resizeComponents);
@@ -74,10 +73,10 @@ export default class Dashboard extends Vue {
     /**
      * If Capacity feature is hidden, alerts table should take full width as performance graph 
      */
-    if (document.querySelector('div.row > div.col-md-8:only-child')) {
-      this.colNumber = 12;
+    if (this.capacityColRef && this.capacityColRef.hidden) {
+      this.alertSectionColNumber = 12;
     } else {
-      this.colNumber = 8;
+      this.alertSectionColNumber = 8;
     }
   }
 

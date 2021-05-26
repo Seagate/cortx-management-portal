@@ -428,7 +428,7 @@ router.beforeEach(async (to, from, next) => {
         await Promise.all([
           store.dispatch("userLogin/getUserPermissionsAction"),
           store.dispatch("userLogin/getUnsupportedFeaturesAction")
-        ]);
+        ])
         const routerApp: any = router.app.$root;
         if (to.path === "/" && token) {
 

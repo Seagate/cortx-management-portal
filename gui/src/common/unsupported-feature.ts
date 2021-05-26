@@ -14,8 +14,21 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export interface UserLoginQueryParam {
-    username: string;
-    password: string;
-    email?: string;
-}
+export const unsupportedFeatures = {
+    welcome_page: "welcome_page",
+    licence_agreement: "licence_agreement",
+    admin_user: "admin_user",
+    alerts: "alerts",
+    lyve_pilot: "lyve_pilot",
+    capacity: "capacity",
+    performance: "performance",
+    health: "health",
+    manage: "manage",
+    notification: "notification",
+    dns: "dns",
+    ntp: "ntp",
+    ssl_upload: "ssl_upload",
+    cluster_management: "cluster_management",
+    hctl_node: "hctl_node"
+  };
+  

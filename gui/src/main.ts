@@ -74,12 +74,9 @@ Vue.directive("feature", {
     const unsupportedFeatures = vueInstance.$getFeatureList();
     if (
       unsupportedFeatures &&
-      unsupportedFeatures.unsupported_features &&
-      unsupportedFeatures.unsupported_features.find(
-        (val: any) => val === binding.value
-      )
-    ) {
+      unsupportedFeatures[binding.value]) {
       if (el.parentNode) {
+        el.hidden = true;
         el.parentNode.removeChild(el);
       }
     }

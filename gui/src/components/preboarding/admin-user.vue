@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-container class="white pa-0 ma-0" fluid v-feature="constString.features.admin_user">
+  <v-container class="white pa-0 ma-0" fluid v-feature="unsupportedFeatures.admin_user">
     <div class="cortx-header pl-10 py-3 col-12 black">
       <div class="cortx-brand-logo"></div>
     </div>
@@ -277,6 +277,7 @@ import {
 import { invalid } from "moment";
 import i18n from "./preboarding.json";
 import CortxMessageDialog from "../widgets/cortx-message-dialog.vue";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-admin-user",
@@ -288,6 +289,7 @@ import CortxMessageDialog from "../widgets/cortx-message-dialog.vue";
   }
 })
 export default class CortxAdminUser extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
   @Validations()
   public validations = {
     createAccount: {
@@ -314,8 +316,7 @@ export default class CortxAdminUser extends Vue {
       createUserInProgress: false,
       passwordTooltipMessage,
       usernameTooltipMessage,
-      isSystemStable: true,
-      constString: require("../../common/const-string.json")      
+      isSystemStable: true
     };
   }
 

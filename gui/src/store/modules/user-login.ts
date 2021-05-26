@@ -25,7 +25,7 @@ import {
   Action,
   MutationAction
 } from "vuex-module-decorators";
-import { UserLoginQueryParam, UnsupportedFeatures } from "./../../models/user-login";
+import { UserLoginQueryParam } from "./../../models/user-login";
 // import { userPermissions } from "./../../models/user-permissions";
 Vue.use(Vuex);
 
@@ -35,9 +35,7 @@ Vue.use(Vuex);
 export default class UserLogin extends VuexModule {
   public user: any = {};
   public userPermissions: object = {};
-  public unsupportedFeatures: UnsupportedFeatures = {
-    unsupported_features: []
-  };
+  public unsupportedFeatures: any = {};
 
   public queryParams: UserLoginQueryParam = {
     username: "",
@@ -53,7 +51,7 @@ export default class UserLogin extends VuexModule {
     this.userPermissions = permissions;
   }
   @Mutation
-  public setUnsupportedFeatures(features: UnsupportedFeatures) {
+  public setUnsupportedFeatures(features: any) {
     this.unsupportedFeatures = features;
   }
 
@@ -137,11 +135,15 @@ export default class UserLogin extends VuexModule {
   public async getUnsupportedFeaturesAction() {
     try {
       const data = this.context.getters["getUnsupportedFeatures"];
-      if (!data.unsupported_features.length) {
+      if (!data.unsupported_features) {
         const features = await Api.getAll(apiRegister.unsupported_features);
-        if (features && features.data) {
-          this.context.commit("setUnsupportedFeatures", features.data);
-          return features.data;
+        if (features && features.data && features.data.unsupported_features) {
+          const featuresMap = features.data.unsupported_features.reduce((result: any, item: string) => {
+            result[item] = true;
+            return result;
+          }, {});
+          this.context.commit("setUnsupportedFeatures", featuresMap);
+          return featuresMap;
         }
       } else {
         return data;

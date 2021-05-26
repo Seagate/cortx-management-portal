@@ -17,22 +17,5 @@
   "throughput": "throughput",
   "latency": "latency",
   "iops": "iops",
-  "alert": "alert",
-  "features": {
-    "welcome_page": "welcome_page",
-    "licence_agreement": "licence_agreement",
-    "admin_user": "admin_user",
-    "alerts": "alerts",
-    "lyve_pilot": "lyve_pilot",
-    "capacity": "capacity",
-    "performance": "performance",
-    "health": "health",
-    "manage": "manage",
-    "notification": "notification",
-    "dns": "dns",
-    "ntp": "ntp",
-    "ssl_upload": "ssl_upload",
-    "cluster_management": "cluster_management",
-    "hctl_node": "hctl_node"
-  }
+  "alert": "alert"
 }

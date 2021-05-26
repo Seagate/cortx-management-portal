@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1 body-2" v-feature="constString.features.ssl_upload">
+  <div class="cortx-p-1 body-2" v-feature="unsupportedFeatures.ssl_upload">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblSSLUpload">
       {{ $t("settings.SSLCertificateUpload") }}
     </div>
@@ -30,6 +30,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxUploadSSLConfig from "../onboarding/system-config/ssl-certificate/upload-ssl-config.vue";
 import i18n from "./settings.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "upload-ssl-setting",
@@ -41,11 +42,7 @@ import i18n from "./settings.json";
   }
 })
 export default class CortxUploadSSLSetting extends Vue {
-  private data() {
-    return {
-      constString: require("../../common/const-string.json")
-    };
-  }
+  public unsupportedFeatures = unsupportedFeatures;
 }
 </script>
 <style lang="scss" scoped></style>

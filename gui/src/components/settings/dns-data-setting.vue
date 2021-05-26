@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1 body-2" v-feature="constString.features.dns">
+  <div class="cortx-p-1 body-2" v-feature="unsupportedFeatures.dns">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblDns">
       {{ $t("settings.DNSResolverSettings") }}
     </div>
@@ -39,6 +39,7 @@ import CortxDnsSettingConfig from "../onboarding/system-config/dns/dns-setting-c
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import i18n from "./settings.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-dns-data-setting",
@@ -50,12 +51,13 @@ import i18n from "./settings.json";
   }
 })
 export default class CortxDnsDataSetting extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
+
   private data() {
     return {
       sysconfigData: {},
       newConfigData: {},
-      showConfirmDialog: false,
-      constString: require("../../common/const-string.json")
+      showConfirmDialog: false
     };
   }
   private async mounted() {

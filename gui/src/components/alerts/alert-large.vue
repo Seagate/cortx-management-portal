@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1" v-feature="alertStatus.features.alerts">
+  <div class="cortx-p-1" v-feature="unsupportedFeatures.alerts">
     <cortx-tabs :tabsInfo="tabsInfo" />
     <cortx-has-access
       :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update"
@@ -217,6 +217,8 @@ import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
 import CortxAlertComments from "./alert-comments.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
 import i18n from "./alert.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
+import alertStatus from "../../common/const-string.json";
 
 @Component({
   name: "cortx-alert-large",
@@ -230,6 +232,8 @@ export default class CortxAlertLarge extends Mixins(AlertsMixin) {
   public isShowCommentsDialog: boolean = false;
   public alertIdForComments: string = "";
   public showConfirmationDialog: boolean = false;
+  public unsupportedFeatures = unsupportedFeatures;
+  public alertStatus = alertStatus;
   public tabsInfo: TabsInfo = {
     tabs: [
       { id: 1, label: "New alerts", show: true },
@@ -298,12 +302,6 @@ export default class CortxAlertLarge extends Mixins(AlertsMixin) {
 
   get sortInfo() {
     return this.$store.getters["alerts/getSortInfo"];
-  }
-
-  public data() {
-    return {
-      alertStatus: require("./../../common/const-string.json")
-    };
   }
 
   public showAlertCommentsDialog(alertId: string) {

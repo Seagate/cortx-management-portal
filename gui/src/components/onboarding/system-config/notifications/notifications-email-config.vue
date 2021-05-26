@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-container class="mt-0 ml-0" v-feature="constString.features.notification">
+  <v-container class="mt-0 ml-0" v-feature="unsupportedFeatures.notification">
     <div class="pl-4 body-2">
       <div class="row mt-5">
         <div class="col-2 body-2 column">
@@ -263,6 +263,7 @@ import {
 } from "vuelidate/lib/validators";
 import { commaSeparatedEmailsRegex } from "./../../../../common/regex-helpers";
 import i18n from "../../onboarding.json";
+import { unsupportedFeatures } from "../../../../common/unsupported-feature";
 
 @Component({
   name: "cortx-notification",
@@ -271,6 +272,7 @@ import i18n from "../../onboarding.json";
   }
 })
 export default class CortxNotifications extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
   @Validations()
   private validations = {
     smtpserver: {
@@ -332,8 +334,7 @@ export default class CortxNotifications extends Vue {
       testEmail: false,
       testEmailInProgress: false,
       testEmailMessage: "",
-      testEmailMessageError: false,
-      constString: require("../../../../common/const-string.json")
+      testEmailMessageError: false
     };
   }
 

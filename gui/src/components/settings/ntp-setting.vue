@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1 body-2" v-feature="constString.features.ntp">
+  <div class="cortx-p-1 body-2" v-feature="unsupportedFeatures.ntp">
     <div class="cortx-text-lg mt-2 font-weight-bold" id="lblDTSetDateTime">
       {{ $t("settings.NTPSettings") }}
     </div>
@@ -40,6 +40,7 @@ import CortxDateTimeConfig from "../onboarding/system-config/date-time/date-time
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import i18n from "./settings.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-date-time",
@@ -51,12 +52,12 @@ import i18n from "./settings.json";
   }
 })
 export default class CortxNtpSetting extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
   private data() {
     return {
       sysconfigData: {},
       newConfigData: {},
-      showConfirmDialog: false,
-      constString: require("../../common/const-string.json")
+      showConfirmDialog: false
     };
   }
   private async mounted() {

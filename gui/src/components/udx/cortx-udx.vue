@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1" v-feature="constString.lyve_pilot">
+  <div class="cortx-p-1" v-feature="unsupportedFeatures.lyve_pilot">
     <CortxUDXDetails v-if="udx" :udx="udx" />
     <CortxUDXRegistration v-if="showUDXRegistrationForm" @complete="registrationComplete()" />
   </div>
@@ -28,6 +28,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import CortxUDXDetails from "./cortx-udx-details.vue";
 import CortxUDXRegistration from "./cortx-udx-registration.vue";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-udx",
@@ -37,12 +38,7 @@ export default class CortxUDX extends Vue {
   public udx: UDX | null = null;
   public isUDXRegistered: boolean = false;
   public showUDXRegistrationForm: boolean = false;
-
-  public data() {
-    return {
-      constString: require("../../common/const-string.json")
-    };
-  }
+  public unsupportedFeatures = unsupportedFeatures;
 
   public async mounted() {
     await this.getRegistrationStatus();

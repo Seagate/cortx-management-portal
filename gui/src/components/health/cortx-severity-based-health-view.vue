@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="pa-5" v-feature="alertStatus.features.health">
+  <div class="pa-5" v-feature="unsupportedFeatures.health">
     <div
       class="cortx-back-btn"
       @click="$router.go(-1)"
@@ -108,6 +108,8 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import i18n from "../../i18n";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
+import alertStatus from "../../common/const-string.json";
 
 @Component({
   name: "cortx-severity-based-health-view"
@@ -129,12 +131,8 @@ export default class CortxSeverityBasedHealthView extends Vue {
   ];
   public healthComponentData = [];
   public itemsPerPage: number = 100;
-
-  public data() {
-    return {
-      alertStatus: require("./../../common/const-string.json")
-    };
-  }
+  public unsupportedFeatures = unsupportedFeatures;
+  public alertStatus = alertStatus;
 
   public async mounted() {
     this.severity = this.$route.params.severity;

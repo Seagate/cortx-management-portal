@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1 body-2" v-feature="constString.features.cluster_management">
+  <div class="cortx-p-1 body-2" v-feature="unsupportedFeatures.cluster_management">
     <div id="system-maintenance-title-container">
       <label
         id="system-maintenance-title"
@@ -149,6 +149,7 @@ import apiRegister from "../../services/api-register";
 import CortxDropdown from "../widgets/dropdown/cortx-dropdown-view.vue";
 import { CortxDropdownOption } from "../widgets/dropdown/cortx-dropdown-model";
 import i18n from "./maintenance.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-resource",
@@ -158,6 +159,7 @@ import i18n from "./maintenance.json";
   }
 })
 export default class CortxMaintenance extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
   private data() {
     return {
       resource: {
@@ -180,8 +182,7 @@ export default class CortxMaintenance extends Vue {
       actionMessage: "",
       showInfoDialog: false,
       stopService: false,
-      infoDialogMessage: this.$t("systemMaintenance.system-info-dialog-message"),
-      constString: require("../../common/const-string.json")
+      infoDialogMessage: this.$t("systemMaintenance.system-info-dialog-message")
     };
   }
   private async mounted() {
