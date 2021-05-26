@@ -61,6 +61,11 @@ export default class CortxLicense extends Vue {
       getStarted: false
     };
   }
+  
+  private mounted() {
+    const getUnsupportedFeatures = this.$store.dispatch("userLogin/getUnsupportedFeaturesAction");
+    return getUnsupportedFeatures;
+  }
 
   private licenseAcceptedOrClosed(status: boolean) {
     if (status) {

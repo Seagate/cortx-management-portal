@@ -322,6 +322,8 @@ export default class CortxAdminUser extends Vue {
 
   public async mounted() {
     await this.getSyetmStatus();
+    const getUnsupportedFeatures = this.$store.dispatch("userLogin/getUnsupportedFeaturesAction");
+    return getUnsupportedFeatures;
   }
 
   public async getSyetmStatus() {
