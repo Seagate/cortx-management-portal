@@ -3,7 +3,7 @@
         <v-data-table
           :v-bind="computedProps"
           :v-on="listeners"
-          :headers="headers"
+          :headers="modifiedHeaders"
           :items="records"
           calculate-widths
           :hide-default-header="true" 
@@ -49,7 +49,7 @@
 
           <template v-slot:header="{}" >
             <tr>
-              <template v-for="header in headers">
+              <template v-for="header in modifiedHeaders">
                 <th
                   v-if="header.display"
                   :key="header.text"
@@ -99,6 +99,15 @@ export default class CortxVDataTable extends Vue {
   public handleInput(input) {
     console.log("Page Input: ", input)
   }
+
+  get modifiedHeaders(){
+    return this.headers.map(header => {
+      const modHeader = {...header}
+      modHeader.text = header.label;
+      modHeader.value = header.field_id;
+      return modHeader;
+    });
+  }
   
   get itemsPerPageOptions() {
     return this.$props.footerProps["items-per-page-options"].map(item => ({label: `${item} rows`, value: item}))  
@@ -106,7 +115,7 @@ export default class CortxVDataTable extends Vue {
 
   get displayPropOfHeaders() {
     const displayProps = {};
-    this.headers.forEach(header => displayProps[header.value] = header.display);
+    this.headers.forEach(header => displayProps[header.field_id] = header.display);    
     return displayProps;
   }
 
@@ -129,47 +138,5 @@ export default class CortxVDataTable extends Vue {
 </script>
 
 <style>
-/*Table CSS*/
-.cortx-table {
-  margin-top: 15px;
-}
-.tableheader {
-  height: 32px !important;
-  min-width: 64px;
-  background-color: #e8e8e8;
-  left: 0.5px;
-  right: 0.5px;
-  top: 0%;
-  bottom: 0%;
-  border: 1px solid #ffffff;
-  border-radius: 7px 7px 0 0;
-  font-style: normal;
-  font-weight: bold !important;
-  font-size: 14px !important;
-  line-height: 20px;
-  padding-top: 5px !important;
-  display: table-cell;
-  align-items: center;
-  flex: none;
-  order: 0;
-  align-self: center;
-  margin: 2px 0px;
-  color: rgba(0, 0, 0, 0.87);
-}
-tbody tr {
-  background-color: #ffffff !important;
-  border-top: 0px solid #e8e8e8 !important;
-}
-tbody tr:hover {
-  background: linear-gradient(
-    270deg,
-    #fafafa 0%,
-    #fafafa 94.67%,
-    rgba(250, 250, 250, 0) 101.98%
-  ) !important;
-}
-
-.cortx-cursor-pointer {
-  cursor: pointer;
-}
+@import "./cortx-v-data-table.css"
 </style>
