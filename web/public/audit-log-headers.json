@@ -1,0 +1,76 @@
+{
+  "auditLogHeaders": [
+    {
+      "value": "timestamp",
+      "text": "Timestamp",
+      "display_id": 201,
+      "sortable": true,
+      "filterable": true,
+      "display": true
+    },
+    {
+      "value": "user",
+      "text": "User",
+      "display_id": 301,
+      "sortable": true,
+      "filterable": true,
+      "display": true
+    },
+    {
+      "value": "remote_ip",
+      "text": "Remote IP",
+      "display_id": 401,
+      "sortable": true,
+      "filterable": true,
+      "display": false
+    },
+    {
+      "value": "forwarded_for_ip",
+      "text": "Forwarded for IP",
+      "display_id": 501,
+      "sortable": true,
+      "filterable": true,
+      "display": true
+    },
+    {
+      "value": "method",
+      "text": "Method",
+      "display_id": 601,
+      "sortable": true,
+      "filterable": true,
+      "display": true
+    },
+    {
+      "value": "path",
+      "text": "Path",
+      "display_id": 701,
+      "sortable": true,
+      "filterable": true,
+      "display": true
+    },
+    {
+      "value": "user_agent",
+      "text": "User agent",
+      "display_id": 801,
+      "sortable": true,
+      "filterable": true,
+      "display": true
+    },
+    {
+      "value": "response_code",
+      "text": "Response code",
+      "display_id": 901,
+      "sortable": true,
+      "filterable": true,
+      "display": true
+    },
+    {
+      "value": "request_id",
+      "text": "Request ID",
+      "display_id": 1001,
+      "sortable": true,
+      "filterable": true,
+      "display": true
+    }
+  ]
+}

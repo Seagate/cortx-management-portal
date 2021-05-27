@@ -85,10 +85,10 @@ import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
 
 @Component(
   {
-  name: "CortxTable",
+  name: "cortx-v-data-table",
   components: { cortxDropdownView }
 })
-export default class CortxTable extends Vue {
+export default class CortxVDataTable extends Vue {
   @Prop({required: true}) public records: any;
   @Prop({required: true}) public headers: any;
   

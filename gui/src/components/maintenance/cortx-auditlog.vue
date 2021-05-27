@@ -75,7 +75,7 @@
         <span class="cortx-text-bold cortx-text-lg" id="s3auditlogtext">{{ $t("maintenance.logs") }}</span>
         <v-divider class="my-2"></v-divider>
         <template v-if="auditLog.logs.length > 0">
-          <CortxTable
+          <cortx-v-data-table
             :headers="auditLogTableHeaderList" 
             :records="auditLog.logs" 
             :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" 
@@ -102,12 +102,11 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import moment from "moment";
 import i18n from "./maintenance.json";
-import CortxTable from "../widgets/cortx-table.vue";
-import headerResponse from "./audit-log-headers.json";
+import CortxVDataTable from "../widgets/cortx-v-data-table.vue";
 
 @Component({
   name: "cortx-auditlog",
-  components: { CortxTable },
+  components: { CortxVDataTable },
   i18n: {
     messages: i18n
   }
@@ -177,7 +176,6 @@ export default class CortxAuditLog extends Vue {
       ).unix(),
       end_date: moment(moment().toDate()).unix(),
       offset: 1,
-      limit: 50
     };
 
     await this.getAuditLogs();
@@ -197,13 +195,15 @@ export default class CortxAuditLog extends Vue {
   }
 
   public async getAuditLogs() {
-    debugger;
     this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");
     const res = await Api.getAll(
       `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
       this.auditLogQueryParams
     );
-    this.auditLogTableHeaderList = headerResponse.auditLogHeaders;
+
+    //API call to get schema for the headers
+    const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/csm-headers`);
+    this.auditLogTableHeaderList = headerResponse.data;
     this.auditLog = res.data;
     this.isShowLogs = true;
     this.$store.dispatch("systemConfig/hideLoader");
