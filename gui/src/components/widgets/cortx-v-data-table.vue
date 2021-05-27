@@ -57,8 +57,24 @@
                     'tableheader',
                     header.sortable ? 'cortx-cursor-pointer' : ''
                   ]"
+                  @click="onSort(header)"
                 >
-                  <span>{{ header.text }}</span>
+                  <span>
+                    {{ header.text }} 
+                    <span>
+                      <img
+                        v-if="sortParams.sortby === header.value"
+                        id="alert-desc"
+                        :src="require('@/assets/widget/table-sort-desc.svg/')"
+                        class="d-inline-block"
+                        :class="sortParams.dir === 'asc' && 'sort-asc'"
+                        style="vertical-align: bottom; margin-left: -0.3em;"
+                        height="20"
+                        width="20"
+                      />
+                    </span>
+                </span>
+                  
                 </th>
               </template>
             </tr>
@@ -91,6 +107,8 @@ import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
 export default class CortxVDataTable extends Vue {
   @Prop({required: true}) public records: any;
   @Prop({required: true}) public headers: any;
+  @Prop({required: true}) public onSort: any;
+  @Prop({required: true}) public sortParams: any;
   
   public search: string = "";
   public hasSlot = !!this.$slots.default;

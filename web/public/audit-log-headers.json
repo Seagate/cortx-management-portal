@@ -1,72 +1,72 @@
 {
   "auditLogHeaders": [
     {
-      "value": "timestamp",
-      "text": "Timestamp",
+      "field_id": "timestamp",
+      "label": "Timestamp",
       "display_id": 201,
       "sortable": true,
       "filterable": true,
       "display": true
     },
     {
-      "value": "user",
-      "text": "User",
+      "field_id": "user",
+      "label": "User",
       "display_id": 301,
       "sortable": true,
       "filterable": true,
       "display": true
     },
     {
-      "value": "remote_ip",
-      "text": "Remote IP",
+      "field_id": "remote_ip",
+      "label": "Remote IP",
       "display_id": 401,
       "sortable": true,
       "filterable": true,
       "display": false
     },
     {
-      "value": "forwarded_for_ip",
-      "text": "Forwarded for IP",
+      "field_id": "forwarded_for_ip",
+      "label": "Forwarded for IP",
       "display_id": 501,
       "sortable": true,
       "filterable": true,
       "display": true
     },
     {
-      "value": "method",
-      "text": "Method",
+      "field_id": "method",
+      "label": "Method",
       "display_id": 601,
       "sortable": true,
       "filterable": true,
       "display": true
     },
     {
-      "value": "path",
-      "text": "Path",
+      "field_id": "path",
+      "label": "Path",
       "display_id": 701,
       "sortable": true,
       "filterable": true,
       "display": true
     },
     {
-      "value": "user_agent",
-      "text": "User agent",
+      "field_id": "user_agent",
+      "label": "User agent",
       "display_id": 801,
       "sortable": true,
       "filterable": true,
       "display": true
     },
     {
-      "value": "response_code",
-      "text": "Response code",
+      "field_id": "response_code",
+      "label": "Response code",
       "display_id": 901,
       "sortable": true,
       "filterable": true,
       "display": true
     },
     {
-      "value": "request_id",
-      "text": "Request ID",
+      "field_id": "request_id",
+      "label": "Request ID",
       "display_id": 1001,
       "sortable": true,
       "filterable": true,

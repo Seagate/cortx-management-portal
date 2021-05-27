@@ -78,6 +78,8 @@
           <cortx-v-data-table
             :headers="auditLogTableHeaderList" 
             :records="auditLog.logs" 
+            :onSort="onAuditLogSort" 
+            :sortParams="auditLogQueryParams"
             :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" 
             class="cortx-table"
             id="auditLog-datatable"

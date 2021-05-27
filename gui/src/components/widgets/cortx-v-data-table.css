@@ -41,3 +41,7 @@ tbody tr:hover {
 .cortx-cursor-pointer {
   cursor: pointer;
 }
+
+.sort-asc {
+  transform: rotate(180deg);
+}
