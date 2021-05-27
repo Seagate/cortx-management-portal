@@ -463,6 +463,9 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
+    if (to.path.includes("preboarding")) {
+      await store.dispatch("userLogin/getUnsupportedFeaturesAction")
+    }
     next(); // make sure to always call next()!
   }
 });

@@ -51,11 +51,7 @@ import { unsupportedFeatures } from "../../common/unsupported-feature";
 })
 export default class CortxWelcome extends Vue {
   public unsupportedFeatures = unsupportedFeatures;
-
-  private mounted() {
-    const getUnsupportedFeatures = this.$store.dispatch("userLogin/getUnsupportedFeaturesAction");
-    return getUnsupportedFeatures;
-  }
+  
 }
 </script>
 
