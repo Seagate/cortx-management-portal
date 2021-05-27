@@ -36,6 +36,29 @@
         }
       }
     },
+    "/unsupported_features": {
+      "get": {
+        "tags": ["Unsupported Features"],
+        "summary": "Gets all the unsupported features",
+        "responses": {
+          "200": {
+            "description": "OK: Unsupported features fetched successfully."
+          },
+          "400": {
+            "description": "Bad Request: Invalid request message received."
+          },
+          "499": {
+            "description": "Call Cancelled: Call cancelled by client."
+          },
+          "500": {
+            "description": "Internal Server Error: When requested resource is not available."
+          }
+        },
+        "content": {
+          "application/json": {}
+        }
+      }
+    },
     "/login": {
       "post": {
         "tags": ["User"],
