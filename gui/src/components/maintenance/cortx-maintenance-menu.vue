@@ -47,7 +47,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToFirmware",
       disabled: false,
       requiredAccess: "maintenance",
-      featureId: ""
+      featureId: "FW_Update"
     },
     {
       title: "Software update",
@@ -55,7 +55,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToSoftware",
       disabled: false,
       requiredAccess: "maintenance",
-      featureId: ""
+      featureId: "SW_Update"
     },
     {
       title: "Audit log",
@@ -63,7 +63,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToAuditLog",
       disabled: false,
       requiredAccess: "auditlog",
-      featureId: ""
+      featureId: "auditlog"
     },
     // commented as per bug EOS-13871
     // {
@@ -79,7 +79,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToAbout",
       disabled: false,
       requiredAccess: "",
-      featureId: ""
+      featureId: "about"
     }
   ];
   private goToSystemMaintenance() {
