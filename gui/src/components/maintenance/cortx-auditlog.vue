@@ -78,7 +78,8 @@
           <cortx-v-data-table
             :headers="auditLogTableHeaderList" 
             :records="auditLog.logs" 
-            :onSort="onAuditLogSort" 
+            :onSort="onAuditLogSort"
+            :onFilter="onAuditLogFilter" 
             :sortParams="auditLogQueryParams"
             :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" 
             class="cortx-table"
@@ -193,6 +194,30 @@ export default class CortxAuditLog extends Vue {
       }
 
       await this.getAuditLogs();
+    }
+  }
+
+  public async clearFilters() {
+    for (const header of this.auditLogTableHeaderList) {
+      delete this.auditLogQueryParams[header.field_id]
+    }
+  }
+
+  public async onAuditLogFilter(headerFields: string[], value: string) {
+    if(value.length > 0) {
+      this.clearFilters(); //This call is to clear any previously added filters
+
+      if(headerFields.length > 0) {
+        for (const field of headerFields) {
+          this.auditLogQueryParams[field] = value; //Adding only selected columns as filters
+        }
+      } else {
+        for (const header of this.auditLogTableHeaderList) {
+          this.auditLogQueryParams[header.field_id] = value; //Adding all column headers as filters
+        }
+      }
+
+       await this.getAuditLogs();
     }
   }
 

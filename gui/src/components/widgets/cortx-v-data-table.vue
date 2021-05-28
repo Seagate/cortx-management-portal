@@ -13,6 +13,7 @@
               <v-row class="ma-0">
                 <v-col sm="2" class="pl-0">
                   <v-text-field
+                    dense
                     outlined
                     hide-details
                     placeholder="Search"
@@ -20,6 +21,7 @@
                     color="csmprimary"
                     v-model="search"
                     append-icon="mdi-magnify"
+                    @keyup.enter="onFilter(filterFields, search)"
                   >
                   </v-text-field>
                 </v-col>
@@ -37,10 +39,12 @@
                    hide-details 
                    dense 
                    color="csmprimary"
-                   :items="['Remote IP', 'Path','Method', 'User Agent']" 
+                   :items="filterableProps" 
                    label="Filters" 
-                   class="d-inline" 
-                   ></v-select>
+                   class="d-inline"
+                   v-model="filterFields" 
+                   @blur="onFilter(filterFields, search)"
+                  ></v-select>
                 </v-col>
                   
               </v-row>
@@ -91,9 +95,11 @@
               </template>
             </tr>
           </template>
+
         </v-data-table>
     </div>
 </template>
+
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
@@ -108,10 +114,11 @@ export default class CortxVDataTable extends Vue {
   @Prop({required: true}) public records: any;
   @Prop({required: true}) public headers: any;
   @Prop({required: true}) public onSort: any;
+  @Prop({required: true}) public onFilter: any;
   @Prop({required: true}) public sortParams: any;
   
   public search: string = "";
-  public hasSlot = !!this.$slots.default;
+  public filterFields: string[] = [];
   public page: number = 1;
 
   public handleInput(input) {
@@ -135,6 +142,17 @@ export default class CortxVDataTable extends Vue {
     const displayProps = {};
     this.headers.forEach(header => displayProps[header.field_id] = header.display);    
     return displayProps;
+  }
+
+  get filterableProps() {
+    const filterableProps = [];
+    this.headers.forEach(header => header.filterable && filterableProps.push(
+      {
+        text: header.label,
+        value: header.field_id
+      }
+    ));
+    return filterableProps;
   }
 
   get computedProps() {
