@@ -147,7 +147,7 @@ export default class CortxVDataTable extends Vue {
   @Prop({required: true}) public onSort: any;
   @Prop({required: true}) public onFilter: any;
   @Prop({required: true}) public sortParams: any;
-  @Prop({required: true}) public rowsPerPage: Array<string | number>;
+  @Prop({required: true, default: [10, 20, 30, 50]}) public rowsPerPage: Array<string | number>;
   
   public search: string = "";
   public filterFields: string[] = [];
@@ -195,9 +195,6 @@ export default class CortxVDataTable extends Vue {
   get computedProps() {
     return {
       ...this.$props,
-      footerProps: this.$props.footerProps
-      ? this.$props.footerProps
-      : { "items-per-page-options": [50, 100, 150, 200] }
     };
   }
 
