@@ -45,3 +45,8 @@ tbody tr:hover {
 .sort-asc {
   transform: rotate(180deg);
 }
+
+.v-pagination__navigation .v-icon {
+  transform: scale(0.65);
+  color: #6ebe49;
+}

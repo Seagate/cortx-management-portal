@@ -81,7 +81,7 @@
             :onSort="onAuditLogSort"
             :onFilter="onAuditLogFilter" 
             :sortParams="auditLogQueryParams"
-            :footer-props="{'items-per-page-options': [10, 20, 30, 50]}" 
+            :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]" 
             class="cortx-table"
             id="auditLog-datatable"
             @update:items-per-page="getAuditLogs()"

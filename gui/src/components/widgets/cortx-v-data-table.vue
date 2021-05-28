@@ -5,18 +5,22 @@
           :v-on="listeners"
           :headers="modifiedHeaders"
           :items="records"
+          :page="page"
+          :items-per-page="itemsPerPage"
           calculate-widths
           :hide-default-header="true" 
+          :hide-default-footer="true" 
         >
           <template #top>
             <v-container class="ma-0 pl-0">
               <v-row class="ma-0">
                 <v-col sm="2" class="pl-0">
                   <v-text-field
-                    dense
+                    label="Search"
+                    placeholder="Hit enter to search"
                     outlined
+                    dense
                     hide-details
-                    placeholder="Search"
                     height="50px"
                     color="csmprimary"
                     v-model="search"
@@ -96,6 +100,33 @@
             </tr>
           </template>
 
+          <template v-slot:footer="{props}">
+            <v-container>
+              <v-row justify="end" align="center">
+                <v-col sm="4" class="text-right pa-0 pr-4">
+                    <v-pagination
+                      :value="page"
+                      color="csmprimary"
+                      class="my-1 font-weight-bold"
+                      total-visible="7"
+                      page.sync="3"
+                      :length="props.pagination.pageCount"
+                      next-icon="mdi-chevron-double-right"
+                      prev-icon="mdi-chevron-double-left"
+                      @input="handlePageInput"
+                    ></v-pagination>
+                </v-col>
+                  <cortx-dropdown
+                    title="Rows per page"
+                    width="175px"
+                    :options="itemsPerPageOptions"
+                    :menuOnTop="true"
+                    @update:selectedOption="handleItemsPerPage"
+                  ></cortx-dropdown>
+              </v-row>
+            </v-container>
+          </template>
+
         </v-data-table>
     </div>
 </template>
@@ -111,18 +142,24 @@ import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
   components: { cortxDropdownView }
 })
 export default class CortxVDataTable extends Vue {
-  @Prop({required: true}) public records: any;
-  @Prop({required: true}) public headers: any;
+  @Prop({required: true}) public records: any[];
+  @Prop({required: true}) public headers: any[];
   @Prop({required: true}) public onSort: any;
   @Prop({required: true}) public onFilter: any;
   @Prop({required: true}) public sortParams: any;
+  @Prop({required: true}) public rowsPerPage: Array<string | number>;
   
   public search: string = "";
   public filterFields: string[] = [];
   public page: number = 1;
+  public itemsPerPage: number = 10;
 
-  public handleInput(input) {
-    console.log("Page Input: ", input)
+  public handlePageInput(input) {
+    this.page = input;
+  }
+
+  public handleItemsPerPage(noOfPages) {
+    this.itemsPerPage = noOfPages.value
   }
 
   get modifiedHeaders(){
@@ -135,7 +172,7 @@ export default class CortxVDataTable extends Vue {
   }
   
   get itemsPerPageOptions() {
-    return this.$props.footerProps["items-per-page-options"].map(item => ({label: `${item} rows`, value: item}))  
+    return this.rowsPerPage.map(item => ({label: `${item} rows`, value: item}))  
   }
 
   get displayPropOfHeaders() {
