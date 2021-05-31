@@ -425,7 +425,10 @@ router.beforeEach(async (to, from, next) => {
       });
     } else {
       try {
-        await store.dispatch("userLogin/getUserPermissionsAction");
+        await Promise.all([
+          store.dispatch("userLogin/getUserPermissionsAction"),
+          store.dispatch("userLogin/getUnsupportedFeaturesAction")
+        ])
         const routerApp: any = router.app.$root;
         if (to.path === "/" && token) {
 
@@ -460,6 +463,9 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
+    if (to.path.includes("preboarding")) {
+      await store.dispatch("userLogin/getUnsupportedFeaturesAction")
+    }
     next(); // make sure to always call next()!
   }
 });

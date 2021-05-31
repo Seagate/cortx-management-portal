@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
+  <div v-feature="unsupportedFeatures.auditlog">
     <div id="auditlog" class="mb-4">
       <label
         id="auditlog-title"
@@ -161,6 +161,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import moment from "moment";
 import i18n from "./maintenance.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-auditlog",
@@ -169,6 +170,7 @@ import i18n from "./maintenance.json";
   }
 })
 export default class CortxAuditLog extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
   public component: string = "";
   public componentList: any[] = [
     {
