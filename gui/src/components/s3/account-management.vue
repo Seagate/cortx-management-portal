@@ -1045,13 +1045,34 @@ export default class CortxAccountManagement extends Vue {
     this.showResetPasswordDialog = !this.showResetPasswordDialog;
   }
 
-  private async deleteAccount() {
+    private async deleteAccount() {
+    const vueInstance: any = this;
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Deleting account " + this.accountToDelete
     );
     await Api.delete(apiRegister.s3_account, this.accountToDelete);
-    this.$store.dispatch("systemConfig/hideLoader");
+    if (
+      (!vueInstance.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) &&
+      (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete))
+    ) {
+      // S3 account user can delete her/his Account
+      console.log("Delete account.....")
+      this.logout()
+    } else if (vueInstance.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) {
+      // Admin can delete any user account..........
+      this.getAllAccounts();
+    } else {
+      console.log('Unauthorized user');
+    }
+  }
+
+  private logout() {
+    // Invalidate session from Server, remove localStorage token and re-route to login page
+    this.$store.dispatch("userLogin/logoutAction").finally(() => {
+      localStorage.removeItem(this.$data.constStr.access_token);
+    });
+    this.$store.commit("userLogin/setUserPermissions", {});
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
