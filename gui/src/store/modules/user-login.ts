@@ -35,6 +35,7 @@ Vue.use(Vuex);
 export default class UserLogin extends VuexModule {
   public user: any = {};
   public userPermissions: object = {};
+  public unsupportedFeatures: any = {};
 
   public queryParams: UserLoginQueryParam = {
     username: "",
@@ -49,6 +50,10 @@ export default class UserLogin extends VuexModule {
   public setUserPermissions(permissions: any) {
     this.userPermissions = permissions;
   }
+  @Mutation
+  public setUnsupportedFeatures(features: any) {
+    this.unsupportedFeatures = features;
+  }
 
   // Get user
   get getUser() {
@@ -57,6 +62,10 @@ export default class UserLogin extends VuexModule {
 
   get getUserPermissions() {
     return this.userPermissions;
+  }
+
+  get getUnsupportedFeatures() {
+    return this.unsupportedFeatures;
   }
 
   @Action({ rawError: true })
@@ -114,6 +123,30 @@ export default class UserLogin extends VuexModule {
         }
       } else {
         return true;
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.error("err logger: ", e);
+      throw new Error(e.message);
+    }
+  }
+
+  @Action({ rawError: true })
+  public async getUnsupportedFeaturesAction() {
+    try {
+      const data = this.context.getters["getUnsupportedFeatures"];
+      if (!data.unsupported_features) {
+        const features = await Api.getAll(apiRegister.unsupported_features);
+        if (features && features.data && features.data.unsupported_features) {
+          const featuresMap = features.data.unsupported_features.reduce((result: any, item: string) => {
+            result[item] = true;
+            return result;
+          }, {});
+          this.context.commit("setUnsupportedFeatures", featuresMap);
+          return featuresMap;
+        }
+      } else {
+        return data;
       }
     } catch (e) {
       // tslint:disable-next-line: no-console

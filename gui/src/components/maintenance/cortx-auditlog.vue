@@ -205,6 +205,7 @@ export default class CortxAuditLog extends Vue {
 
   public async onAuditLogFilter(headerFields: string[], value: string) {
     if(value.length > 0) {
+      console.log("inside on audit log filter")
       this.clearFilters(); //This call is to clear any previously added filters
 
       if(headerFields.length > 0) {
@@ -220,6 +221,8 @@ export default class CortxAuditLog extends Vue {
        await this.getAuditLogs();
     }
   }
+
+  
 
   public async getAuditLogs() {
     this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");

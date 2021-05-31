@@ -32,6 +32,7 @@ import firmware from "./firmware/routes";
 import ssl from "./ssl/routes";
 import software from "./software/routes";
 import about from "./about/routes";
+import unsupported_features from "./unsupported_features/routes";
 
 export default [
   ...loginRoutes,
@@ -51,5 +52,6 @@ export default [
   ...firmware,
   ...ssl,
   ...software,
-  ...about
+  ...about,
+  ...unsupported_features
 ];
