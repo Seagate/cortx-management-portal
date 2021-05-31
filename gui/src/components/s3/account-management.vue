@@ -16,30 +16,24 @@
 */
 <template>
   <div class="body-2">
-    <cortx-has-access
-      :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list"
-    >
-      <div
-        id="s3-configuration-title-container"
-        class="mt-2 s3-configuration-page-title"
-      >
-        <label id="s3-account-form-title" class="headline font-weight-bold">{{
+    <cortx-has-access :to="$cortxUserPermissions.sysconfig + $cortxUserPermissions.list">
+      <div id="s3-configuration-title-container" class="mt-2 s3-configuration-page-title">
+        <label id="s3-account-form-title" class="headline font-weight-bold">
+          {{
           $t("s3.account.configuration")
-        }}</label>
+          }}
+        </label>
         <div class="mt-1" style="color: #454545; font-size: 14px">
-          <label id="s3-account-form-text">
-            {{ $t("s3.account.header-text") }}
-          </label>
+          <label id="s3-account-form-text">{{ $t("s3.account.header-text") }}</label>
         </div>
       </div>
     </cortx-has-access>
-    <cortx-has-access
-      :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
-    >
+    <cortx-has-access :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list">
       <div class="mt-2 pl-2" v-if="!isS3UrlNone">
-        <label id="s3-account-manage-lbl" class="cortx-text-lg cortx-text-bold">
-          {{ $t("s3.account.url-label") }}
-        </label>
+        <label
+          id="s3-account-manage-lbl"
+          class="cortx-text-lg cortx-text-bold"
+        >{{ $t("s3.account.url-label") }}</label>
         <span v-for="(url, i) in s3Url" v-bind:key="url">
           <span :id="'s3-url-id-' + i" class="pl-2">{{ url }}</span>
           <span v-if="url" class="pr-5">
@@ -53,9 +47,11 @@
                   src="@/assets/actions/copy-text.svg"
                 />
               </template>
-              <span :id="'copy-tooltip-' + i">{{
+              <span :id="'copy-tooltip-' + i">
+                {{
                 $t("s3.account.copy-tooltip")
-              }}</span>
+                }}
+              </span>
             </v-tooltip>
           </span>
         </span>
@@ -63,9 +59,7 @@
     </cortx-has-access>
     <v-row>
       <v-col class="py-0 col-7">
-        <cortx-has-access
-          :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list"
-        >
+        <cortx-has-access :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.list">
           <v-data-table
             :headers="accountsTableHeaderList"
             :items="accountsList"
@@ -102,7 +96,7 @@
               <div class="wrapper-width">
                 <div v-if="isUpdatePasswordAllowed" class="cortx-float-l cortx-margin-r">
                   <v-tooltip right max-width="300">
-                    <template v-slot:activator="{ on }">                      
+                    <template v-slot:activator="{ on }">
                       <img
                         id="s3-edit-account"
                         v-on:click="onEditBtnClick(item)"
@@ -111,9 +105,7 @@
                         src="@/assets/actions/edit-green.svg"
                       />
                     </template>
-                    <span id="update-password-tooltip">
-                      {{ $t("s3.account.update-password") }}
-                    </span>
+                    <span id="update-password-tooltip">{{ $t("s3.account.update-password") }}</span>
                   </v-tooltip>
                 </div>
                 <div v-if="isResetPasswordAllowed" class="cortx-float-l cortx-margin-r">
@@ -127,9 +119,7 @@
                         src="@/assets/actions/edit-green.svg"
                       />
                     </template>
-                    <span id="reset-password-tooltip">
-                      {{ $t("s3.account.reset-password") }}
-                    </span>
+                    <span id="reset-password-tooltip">{{ $t("s3.account.reset-password") }}</span>
                   </v-tooltip>
                 </div>
                 <div v-if="isDeleteAccountAllowed" class="cortx-float-l">
@@ -143,9 +133,7 @@
                         src="@/assets/actions/delete-green.svg"
                       />
                     </template>
-                    <span id="reset-password-tooltip">
-                      {{ $t("s3.account.delete-account") }}
-                    </span>
+                    <span id="reset-password-tooltip">{{ $t("s3.account.delete-account") }}</span>
                   </v-tooltip>
                 </div>
               </div>
@@ -153,21 +141,12 @@
           </v-data-table>
         </cortx-has-access>
 
-        <cortx-has-access
-          :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list"
-        >
-          <cortx-access-key-management
-            :s3Url="s3Url.toString()"
-            :s3UrlNone="isS3UrlNone"
-          ></cortx-access-key-management>
+        <cortx-has-access :to="$cortxUserPermissions.s3iamusers + $cortxUserPermissions.list">
+          <cortx-access-key-management :s3Url="s3Url.toString()" :s3UrlNone="isS3UrlNone"></cortx-access-key-management>
         </cortx-has-access>
       </v-col>
       <v-col class="py-0 col-5">
-        <div
-          v-if="showCreateAccountForm"
-          class="pa-2"
-          id="s3-create-account-form"
-        >
+        <div v-if="showCreateAccountForm" class="pa-2" id="s3-create-account-form">
           <v-row>
             <v-col class="pl-4 col-6 pb-0">
               <div
@@ -177,11 +156,7 @@
                     $v.createAccountForm.account.account_name.$error
                 }"
               >
-                <label
-                  class="cortx-form-group-label"
-                  for="accountName"
-                  id="s3-lblaccountname"
-                >
+                <label class="cortx-form-group-label" for="accountName" id="s3-lblaccountname">
                   <cortx-info-tooltip
                     id="account-name-label"
                     label="Account name*"
@@ -203,9 +178,7 @@
                       $v.createAccountForm.account.account_name.$dirty &&
                       !$v.createAccountForm.account.account_name.required
                     "
-                  >
-                    {{ $t("s3.account.name-required") }}</label
-                  >
+                  >{{ $t("s3.account.name-required") }}</label>
                   <label
                     id="s3account-invalid"
                     v-else-if="
@@ -213,8 +186,7 @@
                       !$v.createAccountForm.account.account_name
                         .accountNameRegex
                     "
-                    >{{ $t("s3.account.invalid-account") }}</label
-                  >
+                  >{{ $t("s3.account.invalid-account") }}</label>
                 </div>
               </div>
             </v-col>
@@ -230,8 +202,7 @@
                   class="cortx-form-group-label"
                   for="accountEmail"
                   id="s3-lblemail"
-                  >{{ $t("s3.account.email-label") }}</label
-                >
+                >{{ $t("s3.account.email-label") }}</label>
                 <input
                   class="cortx-form__input_text"
                   type="text"
@@ -248,16 +219,14 @@
                       $v.createAccountForm.account.account_email.$dirty &&
                       !$v.createAccountForm.account.account_email.required
                     "
-                    >{{ $t("s3.account.email-required") }}</label
-                  >
+                  >{{ $t("s3.account.email-required") }}</label>
                   <label
                     id="s3-email-invalid"
                     v-else-if="
                       $v.createAccountForm.account.account_email.$dirty &&
                       !$v.createAccountForm.account.account_email.email
                     "
-                    >{{ $t("s3.account.invalid-email") }}</label
-                  >
+                  >{{ $t("s3.account.invalid-email") }}</label>
                 </div>
               </div>
             </v-col>
@@ -271,11 +240,7 @@
                     $v.createAccountForm.account.password.$error
                 }"
               >
-                <label
-                  class="cortx-form-group-label"
-                  for="accountPassword"
-                  id="s3-lblpassword"
-                >
+                <label class="cortx-form-group-label" for="accountPassword" id="s3-lblpassword">
                   <cortx-info-tooltip
                     id="aacount-password"
                     label="Password*"
@@ -297,16 +262,14 @@
                       $v.createAccountForm.account.password.$dirty &&
                       !$v.createAccountForm.account.password.required
                     "
-                    >Password is required.</label
-                  >
+                  >Password is required.</label>
                   <label
                     id="s3-password-invalid"
                     v-else-if="
                       $v.createAccountForm.account.password.$dirty &&
                       !$v.createAccountForm.account.password.passwordRegex
                     "
-                    >Invalid password.</label
-                  >
+                  >Invalid password.</label>
                 </div>
               </div>
             </v-col>
@@ -322,8 +285,7 @@
                   class="cortx-form-group-label"
                   for="confirmPassword"
                   id="s3-lblconfirmpassword"
-                  >Confirm password*</label
-                >
+                >Confirm password*</label>
                 <input
                   class="cortx-form__input_text"
                   type="password"
@@ -339,8 +301,7 @@
                     $v.createAccountForm.confirmPassword.$dirty &&
                     !$v.createAccountForm.confirmPassword.sameAsPassword
                   "
-                  >Passwords do not match</span
-                >
+                >Passwords do not match</span>
               </div>
             </v-col>
           </v-row>
@@ -352,17 +313,13 @@
                 class="cortx-btn-primary"
                 @click="createAccount()"
                 :disabled="$v.createAccountForm.$invalid"
-              >
-                {{ $t("s3.account.create-account-btn") }}
-              </button>
+              >{{ $t("s3.account.create-account-btn") }}</button>
               <button
                 id="s3-account-cancelbtn"
                 type="button"
                 class="cortx-btn-tertiary"
                 @click="closeCreateAccountForm()"
-              >
-                {{ $t("s3.account.cancel-btn") }}
-              </button>
+              >{{ $t("s3.account.cancel-btn") }}</button>
             </v-col>
           </v-row>
         </div>
@@ -380,10 +337,7 @@
                   for="accountPasswordEdit"
                   id="s3-editpasswordlbl"
                 >
-                  <cortx-info-tooltip
-                    label="Password*"
-                    :message="passwordTooltipMessage"
-                  />
+                  <cortx-info-tooltip label="Password*" :message="passwordTooltipMessage" />
                 </label>
                 <input
                   class="cortx-form__input_text"
@@ -400,16 +354,14 @@
                       $v.editAccountForm.password.$dirty &&
                       !$v.editAccountForm.password.required
                     "
-                    >Password is required.</label
-                  >
+                  >Password is required.</label>
                   <label
                     id="s3-editpassword-invalid"
                     v-else-if="
                       $v.editAccountForm.password.$dirty &&
                       !$v.editAccountForm.password.passwordRegex
                     "
-                    >Invalid password.</label
-                  >
+                  >Invalid password.</label>
                 </div>
               </div>
             </v-col>
@@ -425,8 +377,7 @@
                   class="cortx-form-group-label"
                   for="confirmPasswordEdit"
                   id="s3-editconfrimpassword"
-                  >Confirm password*</label
-                >
+                >Confirm password*</label>
                 <input
                   class="cortx-form__input_text"
                   type="password"
@@ -442,8 +393,7 @@
                     $v.editAccountForm.confirmPassword.$dirty &&
                     !$v.editAccountForm.confirmPassword.sameAsPassword
                   "
-                  >Passwords do not match</span
-                >
+                >Passwords do not match</span>
               </div>
             </v-col>
           </v-row>
@@ -455,32 +405,24 @@
                 class="cortx-btn-primary"
                 @click="editAccount()"
                 :disabled="$v.editAccountForm.$invalid"
-              >
-                {{ $t("s3.account.update-btn") }}
-              </button>
+              >{{ $t("s3.account.update-btn") }}</button>
               <button
                 type="button"
                 id="btncancelEditpass"
                 class="cortx-btn-tertiary"
                 @click="closeEditAccountForm()"
-              >
-                {{ $t("s3.account.cancel-btn") }}
-              </button>
+              >{{ $t("s3.account.cancel-btn") }}</button>
             </v-col>
           </v-row>
         </div>
-        <cortx-has-access
-          :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.create"
-        >
+        <cortx-has-access :to="$cortxUserPermissions.s3accounts + $cortxUserPermissions.create">
           <button
             id="s3-addnewuserbtn"
             type="button"
             class="mt-4 mb-2 cortx-btn-primary"
             v-if="!showCreateAccountForm"
             @click="openCreateAccountForm()"
-          >
-            {{ $t("s3.account.add-new-account") }}
-          </button>
+          >{{ $t("s3.account.add-new-account") }}</button>
         </cortx-has-access>
       </v-col>
     </v-row>
@@ -509,11 +451,7 @@
               'cortx-form-group--error': $v.resetAccountForm.password.$error
             }"
           >
-            <label
-              class="cortx-form-group-label"
-              for="user-password"
-              id="iam-password-label"
-            >
+            <label class="cortx-form-group-label" for="user-password" id="iam-password-label">
               <cortx-info-tooltip
                 :label="$t('common.new-password-label')"
                 :message="passwordTooltipMessage"
@@ -534,16 +472,14 @@
                   $v.resetAccountForm.password.$dirty &&
                   !$v.resetAccountForm.password.required
                 "
-                >{{ $t("common.password-required") }}</label
-              >
+              >{{ $t("common.password-required") }}</label>
               <label
                 id="iam-password-invalid-error"
                 v-else-if="
                   $v.resetAccountForm.password.$dirty &&
                   !$v.resetAccountForm.password.passwordRegex
                 "
-                >{{ $t("common.invalid-password") }}</label
-              >
+              >{{ $t("common.invalid-password") }}</label>
             </div>
           </div>
         </v-col>
@@ -559,8 +495,7 @@
               class="cortx-form-group-label"
               for="confirm-password"
               id="iam-confirmpass-label"
-              >{{ $t("common.confirm-password-label") }}</label
-            >
+            >{{ $t("common.confirm-password-label") }}</label>
             <input
               class="cortx-form__input_text"
               type="password"
@@ -576,8 +511,7 @@
                 $v.resetAccountForm.confirmPassword.$dirty &&
                 !$v.resetAccountForm.confirmPassword.sameAsPassword
               "
-              >{{ $t("common.password-not-match") }}</span
-            >
+            >{{ $t("common.password-not-match") }}</span>
           </div>
         </v-col>
         <v-col class="col-6 ml-7 pb-6 pt-0">
@@ -587,17 +521,13 @@
             class="cortx-btn-primary"
             @click="resetPassword()"
             :disabled="$v.resetAccountForm.$invalid"
-          >
-            {{ $t("s3.account.reset-btn") }}
-          </button>
+          >{{ $t("s3.account.reset-btn") }}</button>
           <button
             type="button"
             id="cancel-button"
             class="cortx-btn-tertiary"
             @click="closeResetPasswordForm()"
-          >
-            {{ $t("s3.account.cancel-btn") }}
-          </button>
+          >{{ $t("s3.account.cancel-btn") }}</button>
         </v-col>
       </v-card>
     </v-dialog>
@@ -620,15 +550,13 @@
         <v-divider />
 
         <div class="mt-2 pl-7" style="height: 30px">
-          <img
-            class="cortx-float-l mr-1"
-            :src="require('@/assets/actions/warning-orange.svg')"
-          />
+          <img class="cortx-float-l mr-1" :src="require('@/assets/actions/warning-orange.svg')" />
           <span
             id="s3-warning-text"
             class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
-            ><span>{{ $t("s3.account.save-info") }}</span></span
           >
+            <span>{{ $t("s3.account.save-info") }}</span>
+          </span>
         </div>
 
         <table class="mt-2 ml-7 cortx-text-md" id="s3-secretekey-data">
@@ -636,68 +564,46 @@
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-account-name-popup-label"
-            >
-              {{ $t("s3.account.account-name") }}
-            </td>
-            <td class="py-2" id="s3-account-name-popup-value">
-              {{ account.account_name }}
-            </td>
+            >{{ $t("s3.account.account-name") }}</td>
+            <td class="py-2" id="s3-account-name-popup-value">{{ account.account_name }}</td>
           </tr>
           <tr v-if="!isS3UrlNone">
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-access-key-popup-label"
-            >
-              {{ $t("s3.account.url-label") }}
-            </td>
+            >{{ $t("s3.account.url-label") }}</td>
             <td class="py-2">{{ s3Url[0] }}, {{ s3Url[1] }}</td>
           </tr>
           <tr>
-            <td class="py-2 cortx-text-bold credentials-item-label">
-              {{ $t("s3.account.access-key") }}
-            </td>
-            <td class="py-2" id="s3-access-key-popup-value">
-              {{ account.access_key }}
-            </td>
+            <td
+              class="py-2 cortx-text-bold credentials-item-label"
+            >{{ $t("s3.account.access-key") }}</td>
+            <td class="py-2" id="s3-access-key-popup-value">{{ account.access_key }}</td>
           </tr>
           <tr>
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-secret-key-popup-label"
-            >
-              {{ $t("s3.account.secret-key") }}
-            </td>
-            <td class="py-2" id="s3-secret-key-popup-value">
-              {{ account.secret_key }}
-            </td>
+            >{{ $t("s3.account.secret-key") }}</td>
+            <td class="py-2" id="s3-secret-key-popup-value">{{ account.secret_key }}</td>
           </tr>
           <tr>
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-account-id-popup-label"
-            >
-              {{ $t("s3.account.account_id") }}
-            </td>
-            <td class="py-2" id="s3-secret-key-popup-value">
-              {{ account.account_id }}
-            </td>
+            >{{ $t("s3.account.account_id") }}</td>
+            <td class="py-2" id="s3-secret-key-popup-value">{{ account.account_id }}</td>
           </tr>
           <tr>
             <td
               class="py-2 cortx-text-bold credentials-item-label"
               id="s3-canonical-id-popup-label"
-            >
-              {{ $t("s3.account.canonical_id") }}
-            </td>
-            <td class="py-2" id="s3-secret-key-popup-value">
-              {{ account.canonical_id }}
-            </td>
+            >{{ $t("s3.account.canonical_id") }}</td>
+            <td class="py-2" id="s3-secret-key-popup-value">{{ account.canonical_id }}</td>
           </tr>
         </table>
 
-        <div v-if="isS3UrlNone" class="pl-7">
-          {{ $t("s3.account.url-note") }}
-        </div>
+        <div v-if="isS3UrlNone" class="pl-7">{{ $t("s3.account.url-note") }}</div>
 
         <v-card-actions>
           <a
@@ -706,8 +612,7 @@
             :href="credentialsFileContent"
             download="credentials.csv"
             @click="downloadAndClose()"
-            >{{ $t("s3.account.download-as-csv") }}</a
-          >
+          >{{ $t("s3.account.download-as-csv") }}</a>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -729,7 +634,7 @@
       :message="successMessage"
       @closeDialog="closeSuccessDialog"
       confirmButtonText="Ok"
-      cancelButtonText=""
+      cancelButtonText
     ></cortx-confirmation-dialog>
   </div>
 </template>
@@ -749,7 +654,7 @@ import {
 } from "./../../common/regex-helpers";
 import i18n from "./s3.json";
 import CommonUtils from "../../common/common-utils";
-import { userPermissions } from "../../common/user-permissions-map"
+import { userPermissions } from "../../common/user-permissions-map";
 
 @Component({
   name: "cortx-account-management",
@@ -876,17 +781,31 @@ export default class CortxAccountManagement extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
-  public async checkPermissions() {    
+  public async checkPermissions() {
     const vueInstance: any = this;
-    if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
+    if (
+      vueInstance.$hasAccessToCsm(
+        userPermissions.s3accounts + userPermissions.delete
+      )
+    ) {
       this.isDeleteAccountAllowed = true;
     }
-    if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.list)) {
-      const cms_res = await Api.getAll(apiRegister.csm_user + "/" + this.loggedInUserName);
+    if (
+      vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.list)
+    ) {
+      const cms_res = await Api.getAll(
+        apiRegister.csm_user + "/" + this.loggedInUserName
+      );
       if (cms_res && cms_res.data) {
-        this.isResetPasswordAllowed = cms_res.data.roles.includes("admin") || cms_res.data.roles.includes("manage");
+        this.isResetPasswordAllowed =
+          cms_res.data.roles.includes("admin") ||
+          cms_res.data.roles.includes("manage");
       }
-    } else if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
+    } else if (
+      vueInstance.$hasAccessToCsm(
+        userPermissions.s3accounts + userPermissions.update
+      )
+    ) {
       this.isUpdatePasswordAllowed = true;
     }
   }
@@ -1046,12 +965,33 @@ export default class CortxAccountManagement extends Vue {
   }
 
   private async deleteAccount() {
+    const vueInstance: any = this;
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Deleting account " + this.accountToDelete
     );
     await Api.delete(apiRegister.s3_account, this.accountToDelete);
-    this.$store.dispatch("systemConfig/hideLoader");
+    if (
+      (!vueInstance.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) &&
+      (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete))
+    ) {
+      // S3 account user can delete her/his Account
+      console.log("Delete account.....")
+      this.logout()
+    } else if (vueInstance.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) {
+      // Admin can delete any user account..........
+      this.getAllAccounts();
+    } else {
+      console.log('Unauthorized user');
+    }
+  }
+
+  private logout() {
+    // Invalidate session from Server, remove localStorage token and re-route to login page
+    this.$store.dispatch("userLogin/logoutAction").finally(() => {
+      localStorage.removeItem(this.$data.constStr.access_token);
+    });
+    this.$store.commit("userLogin/setUserPermissions", {});
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
@@ -1123,6 +1063,6 @@ tbody tr:active {
   width: 70px;
 }
 .cortx-margin-r {
-  margin-right: 10px
+  margin-right: 10px;
 }
 </style>
