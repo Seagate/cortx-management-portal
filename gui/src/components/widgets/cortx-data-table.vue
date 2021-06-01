@@ -11,7 +11,7 @@
           :hide-default-header="true" 
           :hide-default-footer="true" 
         >
-          <template #top>
+          <template #top v-if="!hideFilter">
             <v-container class="ma-0 pl-0">
               <v-row class="ma-0">
                 <v-col sm="2" class="pl-0">
@@ -138,12 +138,13 @@ import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
 
 @Component(
   {
-  name: "cortx-v-data-table",
+  name: "cortx-data-table",
   components: { cortxDropdownView }
 })
-export default class CortxVDataTable extends Vue {
+export default class CortxDataTable extends Vue {
   @Prop({required: true}) public records: any[];
   @Prop({required: true}) public headers: any[];
+  @Prop({required: false, default: false}) public hideFilter: boolean;
   @Prop({required: true}) public onSort: any;
   @Prop({required: true}) public onFilter: any;
   @Prop({required: true}) public sortParams: any;
@@ -208,5 +209,5 @@ export default class CortxVDataTable extends Vue {
 </script>
 
 <style>
-@import "./cortx-v-data-table.css"
+@import "./cortx-data-table.css"
 </style>

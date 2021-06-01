@@ -75,7 +75,7 @@
         <span class="cortx-text-bold cortx-text-lg" id="s3auditlogtext">{{ $t("maintenance.logs") }}</span>
         <v-divider class="my-2"></v-divider>
         <template v-if="auditLog.logs.length > 0">
-          <cortx-v-data-table
+          <cortx-data-table
             :headers="auditLogTableHeaderList" 
             :records="auditLog.logs" 
             :onSort="onAuditLogSort"
@@ -105,7 +105,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import moment from "moment";
 import i18n from "./maintenance.json";
-import CortxVDataTable from "../widgets/cortx-v-data-table.vue";
+import CortxDataTable from "../widgets/cortx-data-table.vue";
 
 @Component({
   name: "cortx-auditlog",
