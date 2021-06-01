@@ -103,6 +103,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import moment from "moment";
 import i18n from "./maintenance.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDataTable from "../widgets/cortx-data-table.vue";
 
 @Component({
@@ -113,6 +114,7 @@ import CortxDataTable from "../widgets/cortx-data-table.vue";
   }
 })
 export default class CortxAuditLog extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
   public component: string = "";
   public componentList: any[] = [
     {

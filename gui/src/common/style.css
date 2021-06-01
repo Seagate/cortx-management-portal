@@ -517,6 +517,46 @@ input:checked + .cortx-switch:before {
 }
 /* Button primary (Dark background) style rules --- End */
 
+/*Table CSS*/
+.cortx-table {
+  margin-top: 15px;
+}
+.tableheader {
+  height: 32px !important;
+  min-width: 64px;
+  background-color: #e8e8e8;
+  left: 0.5px;
+  right: 0.5px;
+  top: 0%;
+  bottom: 0%;
+  border: 1px solid #ffffff;
+  border-radius: 7px 7px 0 0;
+  font-style: normal;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  line-height: 20px;
+  padding-top: 5px !important;
+  display: table-cell;
+  align-items: center;
+  flex: none;
+  order: 0;
+  align-self: center;
+  margin: 2px 0px;
+  color: rgba(0, 0, 0, 0.87);
+}
+tbody tr {
+  background-color: #ffffff !important;
+  border-top: 0px solid #e8e8e8 !important;
+}
+tbody tr:hover {
+  background: linear-gradient(
+    270deg,
+    #fafafa 0%,
+    #fafafa 94.67%,
+    rgba(250, 250, 250, 0) 101.98%
+  ) !important;
+}
+
 /* Status chips style rules --- Start */
 .cortx-status-chip {
   height: 16px;
@@ -694,8 +734,8 @@ input:checked + .cortx-switch:before {
 }
 
 .cortx-brand-logo:before {
-  content: '';
-  background-image: url('../assets/Cortx-logo-GRN.svg');
+  content: "";
+  background-image: url("../assets/Cortx-logo-GRN.svg");
   background-position: left center;
   width: 100%;
   height: 30px;
