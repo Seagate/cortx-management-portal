@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
+  <div v-feature="unsupportedFeatures.auditlog">
     <div id="auditlog" class="mb-4">
       <label
         id="auditlog-title"
@@ -82,8 +82,6 @@
             :onFilter="onAuditLogFilter" 
             :sortParams="auditLogQueryParams"
             :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]" 
-            class="cortx-table"
-            id="auditLog-datatable"
             @update:items-per-page="getAuditLogs()"
             @update:page="getAuditLogs()"
           />
@@ -205,7 +203,6 @@ export default class CortxAuditLog extends Vue {
 
   public async onAuditLogFilter(headerFields: string[], value: string) {
     if(value.length > 0) {
-      console.log("inside on audit log filter")
       this.clearFilters(); //This call is to clear any previously added filters
 
       if(headerFields.length > 0) {

@@ -7,6 +7,7 @@
           :items="records"
           :page="page"
           :items-per-page="itemsPerPage"
+          class="cortx-table"
           calculate-widths
           :hide-default-header="true" 
           :hide-default-footer="true" 
@@ -148,7 +149,7 @@ export default class CortxDataTable extends Vue {
   @Prop({required: true}) public onSort: any;
   @Prop({required: true}) public onFilter: any;
   @Prop({required: true}) public sortParams: any;
-  @Prop({required: true, default: [10, 20, 30, 50]}) public rowsPerPage: Array<string | number>;
+  @Prop({required: false, default: [10, 20, 30, 50]}) public rowsPerPage: Array<string | number>;
   
   public search: string = "";
   public filterFields: string[] = [];
