@@ -108,7 +108,7 @@ import CortxDataTable from "../widgets/cortx-data-table.vue";
 
 @Component({
   name: "cortx-auditlog",
-  components: { CortxVDataTable },
+  components: { CortxDataTable },
   i18n: {
     messages: i18n
   }
