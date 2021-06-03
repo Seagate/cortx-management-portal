@@ -18,6 +18,7 @@ import { Request, Response, request, response } from "express";
 import { downloadAuditlog, showAuditlog } from "./audit-controller";
 import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
+import fs from "fs";
 
 export default [
   {
@@ -41,6 +42,22 @@ export default [
       async (req: Request, res: Response) => {
         const result = await showAuditlog(req, res);
         res.status(res.statusCode).send(result);
+      }
+    ]
+  },
+  {
+    path: "/api/:version/auditlogs/csm-headers",
+    method: "get",
+    handler: [
+      checkApiVersion,
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        fs.readFile('./public/audit-log-headers.json', 'utf-8', (err, data) => {
+          if (err) throw err;
+        
+          let jsonRes = JSON.parse(data)
+          res.status(res.statusCode).send(jsonRes.auditLogHeaders);
+        })
       }
     ]
   }
