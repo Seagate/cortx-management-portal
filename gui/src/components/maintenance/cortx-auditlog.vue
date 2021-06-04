@@ -197,8 +197,9 @@ export default class CortxAuditLog extends Vue {
     }
   }
 
-  public async clearFilters() {
+  public clearFilters() {
     for (const header of this.auditLogTableHeaderList) {
+      //@ts-ignore
       delete this.auditLogQueryParams[header.field_id]
     }
   }
@@ -209,10 +210,12 @@ export default class CortxAuditLog extends Vue {
 
       if(headerFields.length > 0) {
         for (const field of headerFields) {
+          //@ts-ignore
           this.auditLogQueryParams[field] = value; //Adding only selected columns as filters
         }
       } else {
         for (const header of this.auditLogTableHeaderList) {
+          //@ts-ignore
           this.auditLogQueryParams[header.field_id] = value; //Adding all column headers as filters
         }
       }
