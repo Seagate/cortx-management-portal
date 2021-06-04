@@ -1057,7 +1057,7 @@ export default class CortxAccountManagement extends Vue {
       (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete))
     ) {
       // S3 account user can delete her/his Account
-      this.logout()
+      this.logout();
     } else if (vueInstance.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) {
       // Admin can delete any user account..........
       this.getAllAccounts();
