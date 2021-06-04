@@ -136,6 +136,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
+import { CortxDropdownOption } from "./dropdown/cortx-dropdown"
 
 @Component(
   {
@@ -154,13 +155,13 @@ export default class CortxDataTable extends Vue {
   public search: string = "";
   public filterFields: string[] = [];
   public page: number = 1;
-  public itemsPerPage: number = 10;
+  public itemsPerPage: any = 10;
 
-  public handlePageInput(input) {
+  public handlePageInput(input: number) {
     this.page = input;
   }
 
-  public handleItemsPerPage(noOfPages) {
+  public handleItemsPerPage(noOfPages: CortxDropdownOption) {
     this.itemsPerPage = noOfPages.value
   }
 
@@ -174,18 +175,18 @@ export default class CortxDataTable extends Vue {
   }
   
   get itemsPerPageOptions() {
-    return this.rowsPerPage.map(item => ({label: `${item} rows`, value: item}))  
+    return this.rowsPerPage.map((item: string | number) => ({label: `${item} rows`, value: item}))  
   }
 
   get displayPropOfHeaders() {
-    const displayProps = {};
-    this.headers.forEach(header => displayProps[header.field_id] = header.display);    
+    const displayProps: {[key: string]: boolean} = {};
+    this.headers.forEach((header: any) => displayProps[header.field_id] = header.display);    
     return displayProps;
   }
 
   get filterableProps() {
-    const filterableProps = [];
-    this.headers.forEach(header => header.filterable && filterableProps.push(
+    const filterableProps: any[] = [];
+    this.headers.forEach((header: any) => header.filterable && filterableProps.push(
       {
         text: header.label,
         value: header.field_id
