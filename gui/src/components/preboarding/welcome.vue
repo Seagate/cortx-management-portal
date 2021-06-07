@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-container class="pa-0 ma-0 col-12 black black-container-height">
+  <v-container class="pa-0 ma-0 col-12 black black-container-height" v-feature="unsupportedFeatures.welcome_page">
     <div class="cortx-header pl-10 py-3">
       <div class="cortx-brand-logo"></div>
     </div>
@@ -41,6 +41,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import i18n from "./preboarding.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-get-started",
@@ -48,7 +49,10 @@ import i18n from "./preboarding.json";
     messages: i18n
   }
 })
-export default class CortxWelcome extends Vue {}
+export default class CortxWelcome extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
+  
+}
 </script>
 
 <style lang="scss" scoped></style>

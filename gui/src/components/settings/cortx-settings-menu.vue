@@ -40,28 +40,32 @@ export default class CortxSettingsMenu extends Vue {
       actionClickFunction: "goToNotifications",
       disabled: false,
       requiredAccess: "sysconfig",
-      requiredSubAccess: "update"
+      requiredSubAccess: "update",
+      featureId: "notification"
     },
     {
       title: "DNS",
       actionName: "Manage",
       actionClickFunction: "goToDNS",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: "dns"
     },
     {
       title: "NTP",
       actionName: "Manage",
       actionClickFunction: "goToNTP",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: "ntp"
     },
     {
       title: "SSL Certificate",
       actionName: "Manage",
       actionClickFunction: "goToSSL",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: "ssl_upload"
     }
   ];
   private goToNotifications() {
