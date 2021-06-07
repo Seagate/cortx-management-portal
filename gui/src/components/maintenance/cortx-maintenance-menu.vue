@@ -38,28 +38,32 @@ export default class CortxMaintenanceMenu extends Vue {
       actionName: "Manage",
       actionClickFunction: "goToSystemMaintenance",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: "cluster_management"
     },
     {
       title: "Firmware update",
       actionName: "Manage",
       actionClickFunction: "goToFirmware",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: "FW_Update"
     },
     {
       title: "Software update",
       actionName: "Manage",
       actionClickFunction: "goToSoftware",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: "SW_Update"
     },
     {
       title: "Audit log",
       actionName: "View/Download",
       actionClickFunction: "goToAuditLog",
       disabled: false,
-      requiredAccess: "auditlog"
+      requiredAccess: "auditlog",
+      featureId: "auditlog"
     },
     // commented as per bug EOS-13871
     // {
@@ -74,7 +78,8 @@ export default class CortxMaintenanceMenu extends Vue {
       actionName: "View",
       actionClickFunction: "goToAbout",
       disabled: false,
-      requiredAccess: ""
+      requiredAccess: "",
+      featureId: "about"
     }
   ];
   private goToSystemMaintenance() {

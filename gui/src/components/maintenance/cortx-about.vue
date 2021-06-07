@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1">
+  <div class="cortx-p-1" v-feature="unsupportedFeatures.about">
     <div class="cortx-text-lg cortx-text-bold" id="lblAbout">
       {{ $t("aboutUs.title") }}
       <a href="https://github.com/Seagate" target="_blank">
@@ -222,6 +222,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import i18n from "./maintenance.json";
 import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   components: {
@@ -233,6 +234,7 @@ import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
   }
 })
 export default class Cortxaboutpage extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
   public tabsInfo: TabsInfo = {
     tabs: [
       {

@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-container class="pa-0 ma-0 col-12 black black-container-height">
+  <v-container class="pa-0 ma-0 col-12 black black-container-height" v-feature="unsupportedFeatures.licence_agreement">
     <div class="cortx-header pl-10 py-3">
       <div class="cortx-brand-logo"></div>
     </div>
@@ -44,6 +44,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import LicenseAgreement from "./license-agreement.vue";
 import i18n from "./preboarding.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature"
 
 @Component({
   name: "cortx-welcome",
@@ -53,13 +54,15 @@ import i18n from "./preboarding.json";
   }
 })
 export default class CortxLicense extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
+  
   private data() {
     return {
       showLicenseAgreement: false,
       getStarted: false
     };
   }
-
+  
   private licenseAcceptedOrClosed(status: boolean) {
     if (status) {
       this.gotToNextPage();

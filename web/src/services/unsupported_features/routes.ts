@@ -15,51 +15,30 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 import { Request, Response, request, response } from "express";
-import { downloadAuditlog, showAuditlog } from "./audit-controller";
-import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
+import { get_unsupported_features } from "./unsupported-features-controller";
+import { checkApiVersion, checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
-import fs from "fs";
+
+
+/**
+ * It has all the REST APIs to get the unsupported features. 
+ */
 
 export default [
   {
-    path: "/api/:version/auditlogs/download/:component",
+    path: "/api/:version/unsupported_features",
     method: "get",
     handler: [
       checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
-        const result = await downloadAuditlog(req, res);        
-        res.status(res.statusCode).send(result);
-      }
-    ]
-  },
-  {
-    path: "/api/:version/auditlogs/show/:component",
-    method: "get",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        const result = await showAuditlog(req, res);
-        res.status(res.statusCode).send(result);
-      }
-    ]
-  },
-  {
-    path: "/api/:version/auditlogs/csm-headers",
-    method: "get",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        fs.readFile('./public/audit-log-headers.json', 'utf-8', (err, data) => {
-          if (err) throw err;
-        
-          let jsonRes = JSON.parse(data)
-          res.status(res.statusCode).send(jsonRes.auditLogHeaders);
-        })
+        try {
+          const result = await get_unsupported_features(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
       }
     ]
   }
-
 ];
