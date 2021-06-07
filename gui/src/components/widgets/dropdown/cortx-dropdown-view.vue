@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-dropdown-container" tabindex="1" @blur="isMenuOpen = false" :style="{ width: width }">
+  <div :class="`cortx-dropdown-container ${menuOnTop ? 'menu-on-top' : ''}`" tabindex="1" @blur="isMenuOpen = false" :style="{ width: width }">
     <div :class="['cortx-dropdown-title', isMenuOpen ? 'cortx-dropdown-title-active' : '']" @click="isMenuOpen = !isMenuOpen">
       <span class="cortx-text-md cortx-float-l cortx-dropdown-title-text">{{ selectedOption && selectedOption.label ? selectedOption.label : title }}</span>
       <img v-if="isMenuOpen" class="cortx-float-r ml-2" :src="require('@/assets/caret-up.svg')" id="opendropdown" />
@@ -56,6 +56,9 @@ export default class CortxDropdown extends Vue {
 
   @Prop({ required: false, default: "325px" })
   public width: string;
+
+  @Prop({ required: false, default: false })
+  public menuOnTop: boolean;
 
   public isMenuOpen: boolean = false;
 
@@ -105,6 +108,14 @@ export default class CortxDropdown extends Vue {
   border-radius: 4px;
   overflow: auto;
   margin-top: -6px;
+}
+.menu-on-top img {
+  transform: rotate(180deg)
+}
+.menu-on-top .cortx-dropdown-menu{
+  margin-top: 0;
+  top: 0;
+  transform: translateY(-100%);
 }
 .cortx-dropdown-menu-item {
   width: 100%;
