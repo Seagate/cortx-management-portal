@@ -1,3 +1,19 @@
+/*
+* CORTX-CSM: CORTX Management web and CLI interface.
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing,
+* please email opensource@seagate.com or cortx-questions@seagate.com.
+*/
 <template>
     <div>
         <v-data-table
@@ -136,6 +152,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
+import { CortxDropdownOption } from "./dropdown/cortx-dropdown"
 
 @Component(
   {
@@ -154,13 +171,13 @@ export default class CortxDataTable extends Vue {
   public search: string = "";
   public filterFields: string[] = [];
   public page: number = 1;
-  public itemsPerPage: number = 10;
+  public itemsPerPage: any = 10;
 
-  public handlePageInput(input) {
+  public handlePageInput(input: number) {
     this.page = input;
   }
 
-  public handleItemsPerPage(noOfPages) {
+  public handleItemsPerPage(noOfPages: CortxDropdownOption) {
     this.itemsPerPage = noOfPages.value
   }
 
@@ -174,18 +191,18 @@ export default class CortxDataTable extends Vue {
   }
   
   get itemsPerPageOptions() {
-    return this.rowsPerPage.map(item => ({label: `${item} rows`, value: item}))  
+    return this.rowsPerPage.map((item: string | number) => ({label: `${item} rows`, value: item}))  
   }
 
   get displayPropOfHeaders() {
-    const displayProps = {};
-    this.headers.forEach(header => displayProps[header.field_id] = header.display);    
+    const displayProps: {[key: string]: boolean} = {};
+    this.headers.forEach((header: any) => displayProps[header.field_id] = header.display);    
     return displayProps;
   }
 
   get filterableProps() {
-    const filterableProps = [];
-    this.headers.forEach(header => header.filterable && filterableProps.push(
+    const filterableProps: any[] = [];
+    this.headers.forEach((header: any) => header.filterable && filterableProps.push(
       {
         text: header.label,
         value: header.field_id
