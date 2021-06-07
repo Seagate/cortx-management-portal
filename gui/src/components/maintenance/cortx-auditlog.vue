@@ -27,48 +27,38 @@
     </div>
     <v-divider class="my-4" />
 
-    <div class="col-4 py-0">
-      <div class="cortx-form-group">
-        <label
-          class="cortx-form-group-label"
-          for="cmdComponent"
-          id="lblComponent"
-        >{{ $t("maintenance.component") }}*</label>
-        <cortx-dropdown
-          id="auditlog-component"
-          @update:selectedOption="handleComponentDropdownSelect"
-          :options="componentList"
-          :title="component ? component : undefined"
-        ></cortx-dropdown>
+    <div class="auditlog-options col-5 py-0 d-flex">
+      <cortx-dropdown
+        id="auditlog-component"
+        width="220px"
+        @update:selectedOption="handleComponentDropdownSelect"
+        :options="componentList"
+        :title="component ? component : $t('maintenance.component')"
+      ></cortx-dropdown>
 
-        <label
-          class="cortx-form-group-label"
-          for="cmdTimeRange"
-          id="lblTimeRange"
-        >{{ $t("maintenance.timePeriod") }}*</label>
-        <cortx-dropdown
-          id="auditlog-timeperiod"
-          @update:selectedOption="handleTimerangeDropdownSelect"
-          :options="timerangeList"
-          :title="timerangeLabel ? timerangeLabel : undefined"
-        ></cortx-dropdown>
-      </div>
-      <div class="mt-8 nav-btn">
-        <button
-          type="button"
-          class="cortx-btn-primary mr-2"
-          @click="downloadAuditLogs()"
-          id="auditlog-downlodbtn"
-          :disabled="!component||!timerangeLabel"
-        >{{ $t("maintenance.download") }}</button>
-        <button
-          type="button"
-          class="cortx-btn-primary"
-          @click="showAuditLogs()"
-          id="auditlog-viewbtn"
-          :disabled="!component||!timerangeLabel"
-        >{{ $t("maintenance.view") }}</button>
-      </div>
+      <cortx-dropdown
+        id="auditlog-timeperiod"
+        width="220px"
+        @update:selectedOption="handleTimerangeDropdownSelect"
+        :options="timerangeList"
+        :title="timerangeLabel ? timerangeLabel : $t('maintenance.timePeriod')"
+      ></cortx-dropdown>
+
+      <button
+        type="button"
+        class="cortx-btn-primary"
+        @click="showAuditLogs()"
+        id="auditlog-viewbtn"
+        :disabled="!component||!timerangeLabel"
+      >{{ $t("maintenance.view") }}</button>
+
+      <button
+        type="button"
+        class="cortx-btn-primary"
+        @click="downloadAuditLogs()"
+        id="auditlog-downloadbtn"
+        :disabled="!component||!timerangeLabel"
+      >{{ $t("maintenance.download") }}</button>
     </div>
     <template>
       <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
@@ -287,4 +277,11 @@ export default class CortxAuditLog extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.auditlog-options > * {
+  margin-right: 12px;
+}
+#auditlog-viewbtn, #auditlog-downloadbtn {
+  margin-top: 2px
+} 
+</style>
