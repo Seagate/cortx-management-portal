@@ -724,7 +724,12 @@ tbody tr:hover {
   display: flex;
   flex-wrap: nowrap;
   background-color: #000000;
-  height: 50px;
+  height: 60px;
+}
+
+div.cortx-header.py-3 {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
 }
 
 .cortx-brand-logo {
@@ -738,10 +743,10 @@ tbody tr:hover {
   background-image: url('../assets/Cortx-logo-GRN.svg');
   background-position: left center;
   width: 100%;
-  height: 30px;
+  height: 28px;
   position: absolute;
   top: 0;
-  left: 20px;
+  left: 13px;
   background-repeat: no-repeat;
 }
 .copy-url {
