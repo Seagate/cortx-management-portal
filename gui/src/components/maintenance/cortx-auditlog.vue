@@ -70,79 +70,21 @@
         >{{ $t("maintenance.view") }}</button>
       </div>
     </div>
-    <template v-if="component === 'CSM'">
-      <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
-        <span class="cortx-text-bold cortx-text-lg" id="csmauditlogtext">{{ $t("maintenance.logs") }}</span>
-        <v-divider class="my-2"></v-divider>
-        <v-data-table
-          calculate-widths
-          :headers="auditLogTableHeaderList"
-          :items="auditLog.logs"
-          :items-per-page.sync="auditLogQueryParams.limit"
-          :footer-props="{
-            'items-per-page-options': [50, 100, 150, 200]
-          }"
-          :page.sync="auditLogQueryParams.offset"
-          :update:page="auditLogQueryParams.offset"
-          :server-items-length="auditLog.total_records"
-          class="cortx-table"
-          id="auditLog-datatable"
-          :hide-default-header="true"
-          @update:items-per-page="getAuditLogs()"
-          @update:page="getAuditLogs()"
-        >
-          <template v-slot:header="{}">
-            <tr>
-              <th
-                v-for="header in auditLogTableHeaderList"
-                :key="header.text"
-                :class="[
-                  'tableheader',
-                  header.sortable ? 'cortx-cursor-pointer' : ''
-                ]"
-                @click="onAuditLogSort(header)"
-              >
-                <span>{{ header.text }}</span>
-                <span v-if="header.value === auditLogQueryParams.sortby">
-                  <img
-                    id="audit-log-desc-icon"
-                    v-if="auditLogQueryParams.dir === 'desc'"
-                    :src="require('@/assets/widget/table-sort-desc.svg/')"
-                    class="d-inline-block"
-                    style="vertical-align: bottom; margin-left: -0.3em;"
-                    height="20"
-                    width="20"
-                  />
-                  <img
-                    id="audit-log-asc-icon"
-                    v-if="auditLogQueryParams.dir === 'asc'"
-                    :src="require('@/assets/widget/table-sort-asc.svg/')"
-                    class="d-inline-block"
-                    style="vertical-align: bottom; margin-left: -0.3em;"
-                    height="20"
-                    width="20"
-                  />
-                </span>
-              </th>
-            </tr>
-          </template>
-          <template v-slot:item.timestamp="props">
-            {{ props.item.timestamp | timeago }}
-          </template>
-        </v-data-table>
-      </div>
-    </template>
-    <template v-else-if="component === 'S3'">
+    <template>
       <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
         <span class="cortx-text-bold cortx-text-lg" id="s3auditlogtext">{{ $t("maintenance.logs") }}</span>
         <v-divider class="my-2"></v-divider>
         <template v-if="auditLog.logs.length > 0">
-          <span
-            class="mb-1 d-block"
-            v-for="(log, index) in auditLog.logs"
-            :key="index"
-            id="auditlog-data"
-          >{{ log }}</span>
+          <cortx-data-table
+            :headers="auditLogTableHeaderList" 
+            :records="auditLog.logs" 
+            :onSort="onAuditLogSort"
+            :onFilter="onAuditLogFilter" 
+            :sortParams="auditLogQueryParams"
+            :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]" 
+            @update:items-per-page="getAuditLogs()"
+            @update:page="getAuditLogs()"
+          />
         </template>
         <template v-else>
           <span
@@ -162,9 +104,11 @@ import apiRegister from "../../services/api-register";
 import moment from "moment";
 import i18n from "./maintenance.json";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
+import CortxDataTable from "../widgets/cortx-data-table.vue";
 
 @Component({
   name: "cortx-auditlog",
+  components: { CortxDataTable },
   i18n: {
     messages: i18n
   }
@@ -217,48 +161,8 @@ export default class CortxAuditLog extends Vue {
   public to: number = moment().unix();
   public isShowLogs: boolean = false;
   public auditLogQueryParams: AuditLogQueryParam = {} as AuditLogQueryParam;
-  public auditLogTableHeaderList: any[] = [
-    {
-      text: "Timestamp",
-      value: "timestamp",
-      sortable: true
-    },
-    {
-      text: "User",
-      value: "user",
-      sortable: false
-    },
-    {
-      text: "Remote IP",
-      value: "remote_ip",
-      sortable: false
-    },
-    {
-      text: "Forwarded For IP",
-      value: "forwarded_for_ip",
-      sortable: false
-    },
-    {
-      text: "Method",
-      value: "method",
-      sortable: false
-    },
-    {
-      text: "Path",
-      value: "path",
-      sortable: false
-    },
-    {
-      text: "User Agent",
-      value: "user_agent",
-      sortable: false
-    },
-    {
-      text: "Response Code",
-      value: "response_code",
-      sortable: false
-    }
-  ];
+  public auditLogTableHeaderList: any[]= [];
+  
   public auditLog: any = {
     logs: [],
     total_records: 1000
@@ -275,7 +179,6 @@ export default class CortxAuditLog extends Vue {
       ).unix(),
       end_date: moment(moment().toDate()).unix(),
       offset: 1,
-      limit: 50
     };
 
     await this.getAuditLogs();
@@ -294,12 +197,42 @@ export default class CortxAuditLog extends Vue {
     }
   }
 
+  public async clearFilters() {
+    for (const header of this.auditLogTableHeaderList) {
+      delete this.auditLogQueryParams[header.field_id]
+    }
+  }
+
+  public async onAuditLogFilter(headerFields: string[], value: string) {
+    if(value.length > 0) {
+      this.clearFilters(); //This call is to clear any previously added filters
+
+      if(headerFields.length > 0) {
+        for (const field of headerFields) {
+          this.auditLogQueryParams[field] = value; //Adding only selected columns as filters
+        }
+      } else {
+        for (const header of this.auditLogTableHeaderList) {
+          this.auditLogQueryParams[header.field_id] = value; //Adding all column headers as filters
+        }
+      }
+
+       await this.getAuditLogs();
+    }
+  }
+
+  
+
   public async getAuditLogs() {
     this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");
     const res = await Api.getAll(
       `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
       this.auditLogQueryParams
     );
+
+    //API call to get schema for the headers
+    const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/csm-headers`);
+    this.auditLogTableHeaderList = headerResponse.data;
     this.auditLog = res.data;
     this.isShowLogs = true;
     this.$store.dispatch("systemConfig/hideLoader");

@@ -35,7 +35,7 @@ import CortxProvisioning from "./components/provisioning/cortx-provisioning.vue"
 import CortxProvisioningMenu from "./components/provisioning/cortx-provisioning-menu.vue";
 import CortxSettings from "./components/settings/cortx-settings.vue";
 import CortxSettingsMenu from "./components/settings/cortx-settings-menu.vue";
-import CortxAuditLog from "./components/maintenance/auditlog.vue";
+import CortxAuditLog from "./components/maintenance/cortx-auditlog.vue";
 import CortxUnauthorizedAccess from "./components/security/403.vue";
 import CortxNotFound from "./components/security/404.vue";
 import CortxPerformanceLarge from "./components/performance/performance-large.vue";
