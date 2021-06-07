@@ -61,9 +61,7 @@
       >{{ $t("maintenance.download") }}</button>
     </div>
     <template>
-      <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
-        <span class="cortx-text-bold cortx-text-lg" id="s3auditlogtext">{{ $t("maintenance.logs") }}</span>
-        <v-divider class="my-2"></v-divider>
+      <div class="ma-3 mt-2" v-if="auditLog && isShowLogs">
         <template v-if="auditLog.logs.length > 0">
           <cortx-data-table
             :headers="auditLogTableHeaderList" 
@@ -78,7 +76,7 @@
         </template>
         <template v-else>
           <span
-            class="mb-1 d-block"
+            class="mb-1 d-block mt-4"
             id="auditlog-data"
           >No logs</span>
         </template>

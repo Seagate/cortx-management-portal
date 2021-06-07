@@ -15,20 +15,8 @@
           <template #top v-if="!hideFilter">
             <v-container class="ma-0 pl-0">
               <v-row class="ma-0">
-                <v-col sm="2" class="pl-0">
-                  <v-text-field
-                    label="Search"
-                    placeholder="Hit enter to search"
-                    outlined
-                    dense
-                    hide-details
-                    height="50px"
-                    color="csmprimary"
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    @keyup.enter="onFilter(filterFields, search)"
-                  >
-                  </v-text-field>
+                <v-col class="pl-0 flex-grow-0">
+                  <cortx-search placeHolder="Search" :modelValue.sync="search" :callBack="filterRecords"/>
                 </v-col>
 
                 <v-col sm="3" class="d-flex">
@@ -48,7 +36,7 @@
                    label="Filters" 
                    class="d-inline"
                    v-model="filterFields" 
-                   @blur="onFilter(filterFields, search)"
+                   @blur="filterRecords"
                   ></v-select>
                 </v-col>
                   
@@ -136,12 +124,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
-import { CortxDropdownOption } from "./dropdown/cortx-dropdown"
+import { CortxDropdownOption } from "./dropdown/cortx-dropdown";
+import CortxSearch from "./cortx-search.vue";
 
 @Component(
   {
   name: "cortx-data-table",
-  components: { cortxDropdownView }
+  components: { cortxDropdownView, CortxSearch }
 })
 export default class CortxDataTable extends Vue {
   @Prop({required: true}) public records: any[];
@@ -205,6 +194,10 @@ export default class CortxDataTable extends Vue {
     return {
       ...this.$listeners,
     };
+  }
+
+  public filterRecords() {
+    this.onFilter(this.filterFields, this.search);
   }
 }
 
