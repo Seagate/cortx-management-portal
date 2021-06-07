@@ -60,7 +60,6 @@
           >
             <img
               :src="require('@/assets/logout.svg/')"
-              v-on="on"
               id="logout-icon"
             />
           </div>
@@ -101,86 +100,153 @@
         </div>
       </div>
     </div>
-    <!-- <v-dialog
-      v-model="showResetPasswordDialog"
+    <v-dialog
+      v-model="showChangePasswordDialog"
       persistent
       max-width="500"
       id="change-password-form"
       >
       <v-card>
         <v-card-title class="title mt-6 ml-3">
-          <span>Change Password</span>
+          <span>{{ $t("common.change-password") }}</span>
           <img
             id="close-reset-password-dialog"
             class="cortx-modal-close"
             :src="require('@/assets/close-green.svg')"
-            @click="closeResetPasswordForm()"
+            @click="closeChangePasswordForm()"
           />
         </v-card-title>
-        <v-divider />
+        <v-divider />        
         <v-col class="col-6 ml-7 pb-0">
-          <div class="cortx-form-group">
+          <div
+            class="cortx-form-group">
+            <label
+              class="cortx-form-group-label"
+              for="password"
+              id="current-password"
+            >{{ $t("common.current-password-label") }}</label>
+            <input
+              class="cortx-form__input_text"
+              type="password"
+              name="current-password"
+              v-model.trim="changePasswordForm.currentPassword"
+              @input="$v.changePasswordForm.currentPassword.$touch"
+            />
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label
+                id="change-password-required-error"
+                v-if="
+                  $v.changePasswordForm.currentPassword.$dirty &&
+                  !$v.changePasswordForm.currentPassword.required
+                "
+                >{{ $t("common.password-required") }}</label
+              >
+            </div>
+          </div>
+        </v-col>
+        <v-col class="col-6 ml-7 pb-0 pt-0">
+          <div class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error': $v.changePasswordForm.password.$error
+            }"
+            >
             <label
               class="cortx-form-group-label"
               for="user-password"
-              id="iam-password-label"
-            >
-              New Password"</label
+              id="password-label"
+            >              
+              {{ $t("common.new-password-label") }}</label
             >
             <input
               class="cortx-form__input_text"
               type="password"
               id="user-password"
               name="user-password"
-              v-model.trim="resetAccountForm.password"
+              v-model.trim="changePasswordForm.password"
+              @input="$v.changePasswordForm.password.$touch"
             />
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label
+                id="change-password-required-error"
+                v-if="
+                  $v.changePasswordForm.password.$dirty &&
+                  !$v.changePasswordForm.password.required
+                "
+                >{{ $t("common.password-required") }}</label
+              >
+              <label
+                id="change-password-invalid-error"
+                v-else-if="
+                  $v.changePasswordForm.password.$dirty &&
+                  !$v.changePasswordForm.password.passwordRegex
+                "
+                >{{ $t("common.invalid-password") }}</label
+              >
+            </div>
           </div>
         </v-col>
         <v-col class="col-6 ml-7 pt-0">
-          <div class="cortx-form-group">
+          <div class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error':
+                $v.changePasswordForm.confirmPassword.$error
+            }"
+            >
             <label
               class="cortx-form-group-label"
               for="confirm-password"
-              id="iam-confirmpass-label"
-              >Confirm Password</label
+              id="change-confirmpass-label"
+              >{{ $t("common.confirm-password-label") }}</label
             >
             <input
               class="cortx-form__input_text"
               type="password"
               id="confirm-password"
               name="confirm-password"
-              v-model.trim="resetAccountForm.confirmPassword"
+              v-model.trim="changePasswordForm.confirmPassword"
+              @input="$v.changePasswordForm.confirmPassword.$touch"
             />
+            <span
+              id="change-confirmpass-notmatch-error"
+              class="cortx-form-group-label cortx-form-group-error-msg"
+              v-if="
+                $v.changePasswordForm.confirmPassword.$dirty &&
+                !$v.changePasswordForm.confirmPassword.sameAsPassword
+              "
+              >{{ $t("common.password-not-match") }}</span
+            >
           </div>
         </v-col>
         <v-col class="col-6 ml-7 pb-6 pt-0">
           <button
             type="button"
-            id="reset-password-button"
+            id="change-password-button"
             class="cortx-btn-primary"
-            @click="resetPassword()"
-          >
-            Change Password
-          </button>
+            @click="changePassword()"
+            :disabled="$v.changePasswordForm.$invalid"
+          >{{ $t("common.change-password") }}</button>
           <button
             type="button"
             id="cancel-button"
             class="cortx-btn-tertiary"
-            @click="closeResetPasswordForm()"
-          >
-            close
-          </button>
+            @click="closeChangePasswordForm()"
+          >{{ $t("common.cancel") }}</button>
         </v-col>
       </v-card>
-    </v-dialog> -->
+    </v-dialog>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { Validations } from "vuelidate-property-decorators";
+import { required, helpers, sameAs } from "vuelidate/lib/validators";
 import store from "../../store/store";
 import VueNativeSock from "vue-native-websocket";
 import i18n from "../../i18n";
+import { Api } from "../../services/api";
+import apiRegister from "../../services/api-register";
 import { userPermissions } from "../../common/user-permissions-map";
+import { passwordRegex } from "../../common/regex-helpers"
 
 @Component({
   name: "HeaderBar"
@@ -188,7 +254,23 @@ import { userPermissions } from "../../common/user-permissions-map";
 export default class HeaderBar extends Vue {
   public username: string = "";
   public isMenuOpen: Boolean = false;
-  public showResetPasswordDialog: Boolean = false;
+  public showChangePasswordDialog: Boolean = false;
+  public changePasswordForm = {
+    currentPassword: "",
+    password: "",
+    confirmPassword: ""
+  };
+
+  @Validations()
+  public validations = {
+    changePasswordForm: {
+      currentPassword: { required },
+      password: { required, passwordRegex },
+      confirmPassword: {
+        sameAsPassword: sameAs("password")
+      }
+    }
+  }
   public data() {
     return {
       constStr: require("./../../common/const-string.json")
@@ -231,9 +313,36 @@ export default class HeaderBar extends Vue {
     localStorage.removeItem(this.$data.constStr.username);
     this.$router.push("/login");
   }
+
   private openChangePassword() {
-    this.showResetPasswordDialog = true;
-    alert("Password changed");
+    this.showChangePasswordDialog = true;
+    this.isMenuOpen = false;
+  }
+
+  public async changePassword() {
+    const updateDetails = {
+      current_password: this.changePasswordForm.currentPassword,
+      password: this.changePasswordForm.password
+    };
+    this.$store.dispatch("systemConfig/showLoader", "Updating user details...");
+    const res = await Api.patch(
+      apiRegister.csm_user,
+      updateDetails,
+      this.username
+    );
+    this.closeChangePasswordForm();
+    this.$store.dispatch("systemConfig/hideLoader");
+  }
+
+  public closeChangePasswordForm() {
+    this.isMenuOpen = false;
+    this.changePasswordForm = {
+      currentPassword: "",
+      password: "",
+      confirmPassword: ""
+    };
+    this.showChangePasswordDialog = false;
+    this.$v.changePasswordForm.$reset();
   }
 }
 </script>
