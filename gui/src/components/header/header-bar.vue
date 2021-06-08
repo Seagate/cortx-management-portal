@@ -24,7 +24,7 @@
             :to="$cortxUserPermissions.alerts + $cortxUserPermissions.list"
           >
             <div
-              class="cortx-logout-icon-container pr-5"
+              class="cortx-logout-icon-container pr-9"
               @click="
                 $router.push({
                   name: 'alerts-large',
@@ -403,7 +403,7 @@ export default class HeaderBar extends Vue {
   flex-wrap: nowrap;
 }
 .cortx-logout-icon-container {
-  padding: 0 0.625em 1.125em 0.625em;
+  padding: 0 0 1.125em 0.625em;
   cursor: pointer;
 }
 </style>
