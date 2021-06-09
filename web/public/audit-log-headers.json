@@ -71,6 +71,24 @@
       "sortable": true,
       "filterable": true,
       "display": true
+    },
+    {
+      "field_id": "action_buttons",
+      "label": "Actions",
+      "display_id": 1001,
+      "sortable": false,
+      "filterable": false,
+      "actionDetails": [
+        {
+          "iconClass": "cortx-comment-icon",
+          "tooltip": "Add comments"
+        },
+        {
+          "iconClass": "cortx-acknowledge-icon",
+          "tooltip": "Acknowledge/Un-acknowledge alert"
+        }
+      ],
+      "display": true
     }
   ]
 }
