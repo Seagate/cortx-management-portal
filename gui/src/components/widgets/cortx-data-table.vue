@@ -14,7 +14,7 @@
         >
           <template #top v-if="!hideFilter">
             <v-container class="ma-0 pl-0">
-              <v-row class="ma-0">
+              <v-row class="ma-0 align-center">
                 <v-col class="pl-0 flex-grow-0">
                   <cortx-search placeHolder="Search" :modelValue.sync="search" :callBack="filterRecords"/>
                 </v-col>
@@ -86,6 +86,22 @@
                     {{ value }}
                   </td>
               </template>
+              <template v-if="actionHeaders.length">
+                <td  class="d-flex align-center">
+                  <v-tooltip left  v-for="(action, index) in actionHeaders" :key="index">
+                    <template v-slot:activator="{ on, attrs }">
+                      <div
+                        :class="`cortx-icon-btn ${action.iconClass}`"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="actionsCallback[index]($event, item)"
+                      >
+                      </div>
+                    </template>
+                    <span>{{action.tooltip}}</span>
+                  </v-tooltip>
+                </td>
+              </template>
             </tr>
           </template>
 
@@ -140,6 +156,7 @@ export default class CortxDataTable extends Vue {
   @Prop({required: true}) public onFilter: any;
   @Prop({required: true}) public sortParams: any;
   @Prop({required: false, default: [10, 20, 30, 50]}) public rowsPerPage: Array<string | number>;
+  @Prop({required: false}) public actionsCallback: any[];
   
   public search: string = "";
   public filterFields: string[] = [];
@@ -161,6 +178,12 @@ export default class CortxDataTable extends Vue {
       modHeader.value = header.field_id;
       return modHeader;
     });
+  }
+  
+  get actionHeaders() {
+      const actionHeader = this.headers.filter(header => header.field_id === "action_buttons");
+      const actionDetails = actionHeader[0] ? actionHeader[0].actionDetails : [];
+      return actionDetails
   }
   
   get itemsPerPageOptions() {
@@ -197,7 +220,7 @@ export default class CortxDataTable extends Vue {
   }
 
   public filterRecords() {
-    this.onFilter(this.filterFields, this.search);
+    if (this.search.length > 0) this.onFilter(this.filterFields, this.search);
   }
 }
 
