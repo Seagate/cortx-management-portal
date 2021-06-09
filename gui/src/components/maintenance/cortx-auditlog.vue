@@ -70,7 +70,6 @@
             :onFilter="onAuditLogFilter" 
             :sortParams="auditLogQueryParams"
             :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]" 
-            :actionsCallback="[commentCB, acknowledgeCB]"
             @update:items-per-page="getAuditLogs()"
             @update:page="getAuditLogs()"
           />
@@ -103,12 +102,6 @@ import CortxDataTable from "../widgets/cortx-data-table.vue";
   }
 })
 export default class CortxAuditLog extends Vue {
-  public commentCB(event:any , value:any) {
-    alert(`This is from comment and id is ${value.request_id}`)
-  }
-  public acknowledgeCB(event:any, value:any) {
-    alert(`This is from acknowledge and id is ${value.request_id}`)
-  }
   public unsupportedFeatures = unsupportedFeatures;
   public component: string = "";
   public componentList: any[] = [
