@@ -81,18 +81,17 @@
                 id="closedropdown"
               />
             </div>
-            <div class="cortx-dropdown-menu" v-show="isMenuOpen">
-              <div
-                class="cortx-dropdown-menu-item"
+            <div class="cortx-dropdown-menu" v-show="isMenuOpen" >
+              <div class="cortx-dropdown-menu-item" :disabled="isS3Account">
+                <button :disabled="isS3Account" 
+                class="cortx-text-md cortx-dropdown-menu-item-text"
                 @click="openChangePassword()"
-              >
-                <span class="cortx-text-md cortx-dropdown-menu-item-text"
-                  >Change Password</span
+                  > {{ $t("common.change-password") }}</button
                 >
               </div>
               <div class="cortx-dropdown-menu-item" @click="logout()">
                 <span class="cortx-text-md cortx-dropdown-menu-item-text"
-                  >Logout</span
+                  >{{ $t("common.logout") }}</span
                 >
               </div>
             </div>
@@ -217,14 +216,14 @@
             >
           </div>
         </v-col>
-        <v-col class="col-6 ml-7 pb-6 pt-0">
+        <v-col class="col-8 ml-7 pb-6 pt-0">
           <button
             type="button"
             id="change-password-button"
             class="cortx-btn-primary"
             @click="changePassword()"
             :disabled="$v.changePasswordForm.$invalid"
-          >{{ $t("common.change-password") }}</button>
+          >{{ $t("common.update-btn") }}</button>
           <button
             type="button"
             id="cancel-button"
@@ -253,8 +252,9 @@ import { passwordRegex } from "../../common/regex-helpers"
 })
 export default class HeaderBar extends Vue {
   public username: string = "";
-  public isMenuOpen: Boolean = false;
-  public showChangePasswordDialog: Boolean = false;
+  public isMenuOpen: boolean = false;
+  public showChangePasswordDialog: boolean = false;
+  public isS3Account: boolean = false;
   public changePasswordForm = {
     currentPassword: "",
     password: "",
@@ -290,7 +290,19 @@ export default class HeaderBar extends Vue {
       vueInstance.$hasAccessToCsm(userPermissions.alerts + userPermissions.list)
     ) {
       this.$store.dispatch("alertDataAction");
-    }
+    };
+    if (
+      !vueInstance.$hasAccessToCsm(
+        vueInstance.$cortxUserPermissions.stats +
+          vueInstance.$cortxUserPermissions.list
+      ) &&
+      vueInstance.$hasAccessToCsm(
+        vueInstance.$cortxUserPermissions.s3accounts +
+          vueInstance.$cortxUserPermissions.delete
+      )
+    ) {
+      this.isS3Account = true;
+    };
     const usernameStr = localStorage.getItem(this.$data.constStr.username);
     if (usernameStr) {
       this.username = usernameStr;
@@ -405,5 +417,9 @@ export default class HeaderBar extends Vue {
 .cortx-logout-icon-container {
   padding: 0 0 1.125em 0.625em;
   cursor: pointer;
+}
+.cortx-dropdown-menu-item button[disabled],
+.cortx-dropdown-menu-item[disabled] {
+  cursor: not-allowed;
 }
 </style>
