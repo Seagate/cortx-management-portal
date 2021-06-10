@@ -65,5 +65,6 @@ export default {
   get_health_components_endpt: (version :string) => `/api/${version}/system/health/components`,
   get_health_resources_endpt: (version :string) => `/api/${version}/system/health/resources`,
   get_system_status_endpt: (version :string) => `/api/${version}/system/status`,
-  get_appliance_info_endpt: (version :string) => `/api/${version}/appliance_info`
+  get_appliance_info_endpt: (version :string) => `/api/${version}/appliance_info`,
+  get_unsupported_features_endpt: (version :string) => `/api/${version}/unsupported_features`
 };
