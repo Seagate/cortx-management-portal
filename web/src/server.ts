@@ -65,7 +65,7 @@ if (process.env.SERVER_PROTOCOL == 'http') {
   server = https.createServer(options, router);
 }
 
-const NODE_PORT = Number(process.env.NODE_PORT) ? Number(process.env.NODE_PORT) : 80;
+const NODE_PORT = Number(process.env.NODE_PORT) ? Number(process.env.NODE_PORT) : 28100;
 const CSM_AGENT_PORT: number = Number(process.env.CSM_AGENT_PORT);
 const CSM_AGENT_HOST: string = process.env.CSM_AGENT_HOST || "";
 
