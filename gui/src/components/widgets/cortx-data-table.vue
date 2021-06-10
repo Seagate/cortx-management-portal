@@ -96,10 +96,15 @@
           <template v-slot:item="{item}">
             <tr>
               <template v-for="[key, value] in Object.entries(item)">
-                  <td
+                  <td 
                     v-if="displayPropOfHeaders[key]"
                   >
-                    {{ value }}
+                    <div v-if="valuePropOfHeaders[key]['type'] === 'text'">{{ value }}</div>
+                    <div
+                     v-if="valuePropOfHeaders[key]['type'] === 'image'" 
+                     :class="`image-data ${valuePropOfHeaders[key]['mapValueToClassName'][value]}`"
+                     :title="value"
+                    ></div>
                   </td>
               </template>
               <template v-if="actionHeaders.length">
@@ -110,7 +115,7 @@
                         :class="`cortx-icon-btn ${action.iconClass}`"
                         v-bind="attrs"
                         v-on="on"
-                        @click="actionsCallback[index]($event, item)"
+                        @click="actionsCallback[action.id]($event, item)"
                       >
                       </div>
                     </template>
@@ -210,6 +215,12 @@ export default class CortxDataTable extends Vue {
     const displayProps: {[key: string]: boolean} = {};
     this.headers.forEach((header: any) => displayProps[header.field_id] = header.display);    
     return displayProps;
+  }
+
+  get valuePropOfHeaders() {
+    const valueProps: {[key: string]: boolean} = {};
+    this.headers.forEach((header: any) => valueProps[header.field_id] = header.value);    
+    return valueProps;
   }
 
   get filterableProps() {
