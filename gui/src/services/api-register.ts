@@ -69,6 +69,7 @@ export default {
   health_components: `api/${version}/system/health/components`,
   system_status: `/api/${version}/system/status`,
   health_resources: `api/${version}/system/health/resources`,
+  health_cluster: `api/${version}/system/health/cluster`,
   appliance_info: `/api/${version}/appliance_info`,
   udx_saas: `/api/${version}/udx_saas`,
   ssl_details: `/api/${version}/tls/bundle/details`

@@ -23,6 +23,7 @@ import {
   getHealthSummary,
   getHealthView,
   getNodeHealth,
+  getClusterHealth,
   getHealthComponents,
   getHealthResources
 } from "./system-controller";
@@ -107,6 +108,22 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getNodeHealth(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },
+  {
+    path: "/api/:version/system/health/cluster",
+    method: "get",
+    handler: [
+      checkApiVersion,
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getClusterHealth(req, res);
           res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;
