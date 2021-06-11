@@ -35,6 +35,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDataTable from "../widgets/cortx-data-table.vue";
+import { healthTableHeaders } from "../../common/health-table-headers"
 
 @Component({
   name: "cortx-auditlog",
@@ -42,6 +43,7 @@ import CortxDataTable from "../widgets/cortx-data-table.vue";
 })
 export default class CortxHealthTabular extends Vue {
   public unsupportedFeatures = unsupportedFeatures;
+  public healthTableHeaders = healthTableHeaders;
   public healthQueryParams: any = {};
   public healthTableHeaderList: any[] = [];
   public clusterHealthData: any = {};
@@ -52,68 +54,21 @@ export default class CortxHealthTabular extends Vue {
 
   public async getHealthData() {
     this.healthQueryParams = {
-      response_format: 'table',
+      response_format: 'flattened',
       offset: 1,
-      limit: 100
+      limit: 0
     }
     this.$store.dispatch("systemConfig/showLoader", "Table in progress...");
-    const res = await Api.getAll(apiRegister.health_cluster,
-      this.healthQueryParams
-    );
-
-    this.healthTableHeaderList = [
-      {
-        "field_id": "resource",
-        "label": "Resource",
-        "display_id": 201,
-        "sortable": false,
-        "filterable": false,
-        "display": true,
-        "value": {
-          "type": "text"
-          }
-      },
-      {
-        "field_id": "id",
-        "label": "Resource ID",
-        "display_id": 201,
-        "sortable": false,
-        "filterable": false,
-        "display": true,
-        "value": {
-          "type": "text"
-          }
-      },
-      {
-        "field_id": "status",
-        "label": "Status",
-        "display_id": 201,
-        "sortable": false,
-        "filterable": false,
-        "display": true,
-        "value": {
-          "type": "image",
-          "mapValueToClassName": {
-              "online": "cortx-cluster-status cortx-status-online",
-              "offline": "cortx-cluster-status cortx-status-offline",
-              "degraded": "cortx-cluster-status cortx-status-degraded",
-              "unknown": "cortx-cluster-status cortx-status-unknown"
-            }
-        }
-      },
-      {
-        "field_id": "last_updated_time",
-        "label": "Last Updated",
-        "display_id": 201,
-        "sortable": false,
-        "filterable": false,
-        "display": true,
-        "value": {
-          "type": "text"
-          }
-      },
-    ];
-    this.clusterHealthData = res.data;
+    try {
+      const res = await Api.getAll(apiRegister.health_cluster,
+        this.healthQueryParams
+      );
+      this.clusterHealthData = res.data;
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log("err logger: ", e);
+    }
+    this.healthTableHeaderList = healthTableHeaders.healthTableHeaderList;
     this.$store.dispatch("systemConfig/hideLoader");
   }
 }
