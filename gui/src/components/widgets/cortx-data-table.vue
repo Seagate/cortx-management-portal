@@ -30,21 +30,9 @@
         >
           <template #top v-if="!hideFilter">
             <v-container class="ma-0 pl-0">
-              <v-row class="ma-0">
-                <v-col sm="2" class="pl-0">
-                  <v-text-field
-                    label="Search"
-                    placeholder="Hit enter to search"
-                    outlined
-                    dense
-                    hide-details
-                    height="50px"
-                    color="csmprimary"
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    @keyup.enter="onFilter(filterFields, search)"
-                  >
-                  </v-text-field>
+              <v-row class="ma-0 align-center">
+                <v-col class="pl-0 flex-grow-0">
+                  <cortx-search placeHolder="Search" :modelValue.sync="search" :callBack="filterRecords"/>
                 </v-col>
 
                 <v-col sm="3" class="d-flex">
@@ -64,7 +52,7 @@
                    label="Filters" 
                    class="d-inline"
                    v-model="filterFields" 
-                   @blur="onFilter(filterFields, search)"
+                   @blur="filterRecords"
                   ></v-select>
                 </v-col>
                   
@@ -108,11 +96,33 @@
           <template v-slot:item="{item}">
             <tr>
               <template v-for="[key, value] in Object.entries(item)">
-                  <td
+                  <td 
                     v-if="displayPropOfHeaders[key]"
                   >
-                    {{ value }}
+                    <div v-if="valuePropOfHeaders[key]['type'] === 'text'">{{ value }}</div>
+                    <div v-if="valuePropOfHeaders[key]['type'] === 'date'">{{ new Date(value * 1000) | formattedDate }}</div>
+                    <div
+                     v-if="valuePropOfHeaders[key]['type'] === 'image'" 
+                     :class="`image-data ${valuePropOfHeaders[key]['mapValueToClassName'][value]}`"
+                     :title="value"
+                    ></div>
                   </td>
+              </template>
+              <template v-if="actionHeaders.length">
+                <td  class="d-flex align-center">
+                  <v-tooltip left  v-for="(action, index) in actionHeaders" :key="index">
+                    <template v-slot:activator="{ on, attrs }">
+                      <div
+                        :class="`cortx-icon-btn ${action.iconClass}`"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="actionsCallback[action.id]($event, item)"
+                      >
+                      </div>
+                    </template>
+                    <span>{{action.tooltip}}</span>
+                  </v-tooltip>
+                </td>
               </template>
             </tr>
           </template>
@@ -150,23 +160,28 @@
 
 
 <script lang="ts">
+import * as moment from "moment";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
-import { CortxDropdownOption } from "./dropdown/cortx-dropdown"
+import { CortxDropdownOption } from "./dropdown/cortx-dropdown";
+import CortxSearch from "./cortx-search.vue";
 
-@Component(
-  {
+@Component({
   name: "cortx-data-table",
-  components: { cortxDropdownView }
+  components: { cortxDropdownView, CortxSearch },
+  filters: { 
+    formattedDate:(date: string) => moment.default(date).format("DD-MM-YYYY hh:mm A")
+  }
 })
 export default class CortxDataTable extends Vue {
   @Prop({required: true}) public records: any[];
   @Prop({required: true}) public headers: any[];
   @Prop({required: false, default: false}) public hideFilter: boolean;
-  @Prop({required: true}) public onSort: any;
-  @Prop({required: true}) public onFilter: any;
-  @Prop({required: true}) public sortParams: any;
+  @Prop({required: false}) public onSort: any;
+  @Prop({required: false}) public onFilter: any;
+  @Prop({required: false}) public sortParams: any;
   @Prop({required: false, default: [10, 20, 30, 50]}) public rowsPerPage: Array<string | number>;
+  @Prop({required: false}) public actionsCallback: any[];
   
   public search: string = "";
   public filterFields: string[] = [];
@@ -190,6 +205,12 @@ export default class CortxDataTable extends Vue {
     });
   }
   
+  get actionHeaders() {
+      const actionHeader = this.headers.filter(header => header.field_id === "action_buttons");
+      const actionDetails = actionHeader[0] ? actionHeader[0].actionDetails : [];
+      return actionDetails
+  }
+  
   get itemsPerPageOptions() {
     return this.rowsPerPage.map((item: string | number) => ({label: `${item} rows`, value: item}))  
   }
@@ -198,6 +219,12 @@ export default class CortxDataTable extends Vue {
     const displayProps: {[key: string]: boolean} = {};
     this.headers.forEach((header: any) => displayProps[header.field_id] = header.display);    
     return displayProps;
+  }
+
+  get valuePropOfHeaders() {
+    const valueProps: {[key: string]: boolean} = {};
+    this.headers.forEach((header: any) => valueProps[header.field_id] = header.value);    
+    return valueProps;
   }
 
   get filterableProps() {
@@ -221,6 +248,10 @@ export default class CortxDataTable extends Vue {
     return {
       ...this.$listeners,
     };
+  }
+
+  public filterRecords() {
+    if (this.search.length > 0) this.onFilter(this.filterFields, this.search);
   }
 }
 
