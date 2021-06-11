@@ -41,7 +41,7 @@ process.on("unhandledRejection", e => {
 const router = express();
 router.use('/public', express.static('public'));
 router.use(cors());
-router.use(
+router.use("/api/",
   rateLimit({
     windowMs: 1 * 1000, // 1 second
     max: 25, // limit 25 requests per second
