@@ -25,7 +25,8 @@
               : $cortxUserPermissions.list)
         "
       >
-        <v-tooltip right max-width="300">
+        <v-tooltip right max-width="300"
+          v-feature="navItem.featureId">
           <template v-slot:activator="{ on }">
             <router-link
               :to="navItem.path"
@@ -41,18 +42,6 @@
           </template>
           <span :id="navItem.title">{{ navItem.title }}</span>
         </v-tooltip>
-        <router-link
-          v-feature="navItem.featureId"
-          :to="navItem.path"
-          tag="div"
-          class="cortx-nav-item"
-          active-class="cortx-nav-item-active"
-          :key="navItem.title"
-        >
-          <img class="cortx-nav-item-icon-default" :src="navItem.iconDefault" />
-          <img class="cortx-nav-item-icon-active" :src="navItem.iconActive" />
-          <label :id="navItem.title">{{ navItem.title }}</label>
-        </router-link>
       </cortx-has-access>
     </div>
     <div class="cortx-nav-bottom" v-if="brandName">
