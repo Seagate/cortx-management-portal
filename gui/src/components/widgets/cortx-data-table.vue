@@ -95,33 +95,35 @@
 
           <template v-slot:item="{item}">
             <tr>
-              <template v-for="[key, value] in Object.entries(item)">
+              <template v-for="(value, key) in displayPropOfHeaders">
                   <td 
-                    v-if="displayPropOfHeaders[key]"
+                    v-if="value"
                   >
-                    <div v-if="valuePropOfHeaders[key]['type'] === 'text'">{{ value }}</div>
-                    <div v-if="valuePropOfHeaders[key]['type'] === 'date'">{{ new Date(value * 1000) | formattedDate }}</div>
+                    <div v-if="valuePropOfHeaders[key]['type'] === 'text'">{{ getTextForDataCell(item[key], key, item) }}</div>
+                    <div v-if="valuePropOfHeaders[key]['type'] === 'date'">{{ new Date(item[key] * 1000) | formattedDate }}</div>
                     <div
                      v-if="valuePropOfHeaders[key]['type'] === 'image'" 
-                     :class="`image-data ${valuePropOfHeaders[key]['mapValueToClassName'][value]}`"
-                     :title="value"
+                     :class="`image-data ${valuePropOfHeaders[key]['mapValueToClassName'][item[key]]}`"
+                     :title="item[key]"
                     ></div>
                   </td>
               </template>
               <template v-if="actionHeaders.length">
                 <td  class="d-flex align-center">
-                  <v-tooltip left  v-for="(action, index) in actionHeaders" :key="index">
-                    <template v-slot:activator="{ on, attrs }">
-                      <div
-                        :class="`cortx-icon-btn ${action.iconClass}`"
-                        v-bind="attrs"
-                        v-on="on"
-                        @click="actionsCallback[action.id]($event, item)"
-                      >
-                      </div>
-                    </template>
-                    <span>{{action.tooltip}}</span>
-                  </v-tooltip>
+                  <div v-for="(action, index) in actionHeaders" :key="index">
+                    <v-tooltip left v-if="action.condition ? action.condition(item) : true">
+                      <template v-slot:activator="{ on, attrs }">
+                        <div
+                          :class="`cortx-icon-btn ${action.iconClass}`"
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="actionsCallback[action.id]($event, item)"
+                        >
+                        </div>
+                      </template>
+                      <span>{{action.tooltip}}</span>
+                    </v-tooltip>
+                  </div>
                 </td>
               </template>
             </tr>
@@ -144,11 +146,11 @@
                     ></v-pagination>
                 </v-col>
                   <cortx-dropdown
-                    title="Rows per page"
                     width="175px"
+                    :title="itemsPerPage ? `${itemsPerPage} rows` : 'Rows per page'"
                     :options="itemsPerPageOptions"
                     :menuOnTop="true"
-                    @update:selectedOption="handleItemsPerPage"
+                    @update:selectedOption="handleItemsPerPage" 
                   ></cortx-dropdown>
               </v-row>
             </v-container>
@@ -179,8 +181,8 @@ export default class CortxDataTable extends Vue {
   @Prop({required: false, default: false}) public hideFilter: boolean;
   @Prop({required: false}) public onSort: any;
   @Prop({required: false}) public onFilter: any;
-  @Prop({required: false}) public sortParams: any;
-  @Prop({required: false, default: [10, 20, 30, 50]}) public rowsPerPage: Array<string | number>;
+  @Prop({required: false, default: () => ({})}) public sortParams: any;
+  @Prop({required: false, default: () => [10, 20, 30, 50]}) public rowsPerPage: Array<string | number>;
   @Prop({required: false}) public actionsCallback: any[];
   
   public search: string = "";
@@ -196,6 +198,17 @@ export default class CortxDataTable extends Vue {
     this.itemsPerPage = noOfPages.value
   }
 
+  public getTextForDataCell(value: any, key:any, item: any ) {
+    if (Array.isArray(value)) {
+      let text = "";
+      for (let i = 0; i<value.length; i++) {
+        text += i === 0 ? value[i] : `, ${value[i]}`;
+      }
+      return text;
+    }
+    return value;
+  }
+
   get modifiedHeaders(){
     return this.headers.map(header => {
       const modHeader = {...header}
@@ -206,7 +219,7 @@ export default class CortxDataTable extends Vue {
   }
   
   get actionHeaders() {
-      const actionHeader = this.headers.filter(header => header.field_id === "action_buttons");
+      const actionHeader = this.headers.filter(header => header.value.type === "buttons");
       const actionDetails = actionHeader[0] ? actionHeader[0].actionDetails : [];
       return actionDetails
   }
@@ -217,7 +230,11 @@ export default class CortxDataTable extends Vue {
 
   get displayPropOfHeaders() {
     const displayProps: {[key: string]: boolean} = {};
-    this.headers.forEach((header: any) => displayProps[header.field_id] = header.display);    
+    this.headers.forEach((header: any) => {
+      if (header.value.type !== "buttons") {
+        displayProps[header.field_id] = header.display
+      }
+    });    
     return displayProps;
   }
 
