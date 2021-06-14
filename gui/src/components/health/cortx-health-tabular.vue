@@ -19,6 +19,7 @@
           <cortx-data-table
             :headers="healthTableHeaderList" 
             :records="clusterHealthData.data"
+            :hideFilter="hideFilter"
             :onSort={}
             :onFilter={} 
             :sortParams={}
@@ -44,6 +45,7 @@ import { healthTableHeaders } from "../../common/health-table-headers"
 export default class CortxHealthTabular extends Vue {
   public unsupportedFeatures = unsupportedFeatures;
   public healthTableHeaders = healthTableHeaders;
+  public hideFilter: boolean = true;
   public healthQueryParams: any = {};
   public healthTableHeaderList: any[] = [];
   public clusterHealthData: any = {};
@@ -58,16 +60,11 @@ export default class CortxHealthTabular extends Vue {
       offset: 1,
       limit: 0
     }
-    this.$store.dispatch("systemConfig/showLoader", "Table in progress...");
-    try {
-      const res = await Api.getAll(apiRegister.health_cluster,
-        this.healthQueryParams
-      );
-      this.clusterHealthData = res.data;
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log("err logger: ", e);
-    }
+    this.$store.dispatch("systemConfig/showLoader", "Fetching health...");
+    const res = await Api.getAll(apiRegister.health_cluster,
+      this.healthQueryParams
+    );
+    this.clusterHealthData = res.data;
     this.healthTableHeaderList = healthTableHeaders.healthTableHeaderList;
     this.$store.dispatch("systemConfig/hideLoader");
   }

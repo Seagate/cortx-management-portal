@@ -116,7 +116,7 @@ export default [
     ]
   },
   {
-    path: "/api/:version/system/health/node",
+    path: "/api/:version/system/health/:resource",
     method: "get",
     handler: [
       checkApiVersion,

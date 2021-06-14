@@ -17,7 +17,6 @@
 <template>
   <div class="cortx-p-1">
     <cortx-tabs :tabsInfo="tabsInfo" />
-      <CortxHealthGraphical v-if="showGraphTab" />
       <CortxHealthTabular v-if="showTableTab" />
   </div>
 </template>
@@ -31,7 +30,6 @@ import CortxHealthGraphical from "./cortx-health-graphical.vue";
   name: "cortx-health",
   components: {
     CortxTabs,
-    CortxHealthGraphical,
     CortxHealthTabular
   }
 })
@@ -40,12 +38,6 @@ export default class CortxHealthNew extends Vue {
     tabs: [
       {
         id: 1,
-        label: "Graphical",
-        show: true,
-        requiredAccess: "health"
-      },
-      {
-        id: 2,
         label: "Tabular",
         show: true,
         requiredAccess: "health"
@@ -53,18 +45,12 @@ export default class CortxHealthNew extends Vue {
     ],
     selectedTab: 1
   };
-  private showGraphTab: boolean = true;
-  private showTableTab: boolean = false;
+  private showTableTab: boolean = true;
   
   @Watch("tabsInfo.selectedTab")
   public onPropertyChanged(value: number, oldValue: number) {
     switch (value) {
       case 1:
-        this.showGraphTab = true;
-        this.showTableTab = false;
-        break;
-      case 2:
-        this.showGraphTab = false;
         this.showTableTab = true;
         break;
     }
