@@ -78,7 +78,7 @@ export default class HeaderBar extends Vue {
     };
   }
   public mounted() {
-    const wsUrl = `wss://${window.location.hostname}:${process.env.VUE_APP_WS_PORT}/ws`;
+    const wsUrl = `wss://${window.location.hostname}:${window.location.port}/ws`;
     Vue.use(VueNativeSock, wsUrl, {
       store,
       format: "json",
