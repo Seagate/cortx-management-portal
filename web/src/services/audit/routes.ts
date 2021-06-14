@@ -52,7 +52,7 @@ export default [
       checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
-        fs.readFile('./public/audit-log-headers.json', 'utf-8', (err, data) => {
+        fs.readFile('./audit-log-headers.json', 'utf-8', (err, data) => {
           if (err) throw err;
         
           let jsonRes = JSON.parse(data)
