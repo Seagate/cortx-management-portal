@@ -45,9 +45,11 @@ applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);
 
 let server: any;
+let NODE_PORT:any;
 
 if (process.env.SERVER_PROTOCOL == 'http') {
   server = http.createServer(router);
+  NODE_PORT = Number(process.env.HTTP_NODE_PORT) ? Number(process.env.HTTP_NODE_PORT) : 80;
 } else {
   const options = {
     cert: fs.readFileSync(String(process.env.CERT_PATH), "utf-8"),
@@ -55,18 +57,28 @@ if (process.env.SERVER_PROTOCOL == 'http') {
   };
 
   server = https.createServer(options, router);
+  NODE_PORT = Number(process.env.HTTPS_NODE_PORT) ? Number(process.env.HTTPS_NODE_PORT) : 443;
 }
 
-const NODE_PORT = Number(process.env.NODE_PORT) ? Number(process.env.NODE_PORT) : 28100;
+const HOSTNAME = process.env.MANAGEMENT_IP && !process.env.MANAGEMENT_IP.startsWith("<") ? process.env.MANAGEMENT_IP : '';
 const CSM_AGENT_PORT: number = Number(process.env.CSM_AGENT_PORT);
 const CSM_AGENT_HOST: string = process.env.CSM_AGENT_HOST || "";
 
-server.listen(NODE_PORT, () => {
-  console.log("Server is running at " + process.env.SERVER_PROTOCOL + "://localhost:" + NODE_PORT);
-
-  // Server shoud send data over other socket
-  const socketServer = new SocketService(server);
-  socketServer.getConnection("ws://" + CSM_AGENT_HOST + ":" + CSM_AGENT_PORT + "/ws");
-
+if(HOSTNAME){
+  server.listen(NODE_PORT, HOSTNAME, () => {
+    console.log("Server is running at " + process.env.SERVER_PROTOCOL + "://" + HOSTNAME + ":" + NODE_PORT);
+  
+    // Server shoud send data over other socket
+    const socketServer = new SocketService(server);
+    socketServer.getConnection("ws://" + CSM_AGENT_HOST + ":" + CSM_AGENT_PORT + "/ws");
+  });
+} else {
+  NODE_PORT = Number(process.env.NODE_PORT) ? Number(process.env.NODE_PORT) : 28100;
+  server.listen(NODE_PORT, () => {
+    console.log("Server is running at " + process.env.SERVER_PROTOCOL + "://localhost:" + NODE_PORT);
+  
+    // Server shoud send data over other socket
+    const socketServer = new SocketService(server);
+    socketServer.getConnection("ws://" + CSM_AGENT_HOST + ":" + CSM_AGENT_PORT + "/ws");
+  });
 }
-);
