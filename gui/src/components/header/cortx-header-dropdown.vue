@@ -17,9 +17,11 @@
 <template>
   <div class="cortx-header-dropdown">
     <div @click="isMenuOpen = !isMenuOpen">
-    <label class="cortx-username-label  cortx-dropdown-container" id="header-username">{{
-        username
-    }}</label>
+      <label
+        class="cortx-username-label  cortx-dropdown-container"
+        id="header-username"
+        >{{ username }}</label
+      >
     </div>
     <div
       @click="isMenuOpen = !isMenuOpen"
@@ -27,10 +29,7 @@
       class="cortx-logout-icon-container cortx-dropdown-container"
       v-if="!isRouterPathOnboarding"
     >
-    <img
-        :src="require('@/assets/logout.svg/')"
-        id="logout-icon"
-    />
+      <img :src="require('@/assets/logout.svg/')" id="logout-icon" />
     </div>
     <div class="cortx-dropdown-container" @click="isMenuOpen = !isMenuOpen">
       <img
@@ -56,7 +55,7 @@
           {{ $t("common.change-password") }}
         </button>
       </div>
-      <div class="cortx-dropdown-menu-item" @click="logout()">
+      <div class="cortx-dropdown-menu-item" @click="logout()" id="logout-link">
         <span class="cortx-text-md cortx-dropdown-menu-item-text">{{
           $t("common.logout")
         }}</span>
@@ -249,7 +248,7 @@ export default class cortxHeaderDropdown extends Vue {
       label: "Logout",
       value: "logout"
     }
-  ]; 
+  ];
 
   @Validations()
   public validations = {
@@ -260,14 +259,14 @@ export default class cortxHeaderDropdown extends Vue {
         sameAsPassword: sameAs("password")
       }
     }
-  }
-  public mounted() {      
+  };
+  public mounted() {
     const vueInstance: any = this;
     if (
       vueInstance.$hasAccessToCsm(userPermissions.alerts + userPermissions.list)
     ) {
       this.$store.dispatch("alertDataAction");
-    };
+    }
     if (
       !vueInstance.$hasAccessToCsm(
         vueInstance.$cortxUserPermissions.stats +
@@ -279,15 +278,15 @@ export default class cortxHeaderDropdown extends Vue {
       )
     ) {
       this.isS3Account = true;
-    };
+    }
     const usernameStr = localStorage.getItem(this.$data.constStr.username);
     if (usernameStr) {
       this.username = usernameStr;
     }
   }
-  
+
   private handleComponentDropdownSelect(selected: any) {
-    if(selected.value == "logout") {
+    if (selected.value == "logout") {
       this.logout();
     } else {
       this.openChangePassword();
@@ -344,7 +343,6 @@ export default class cortxHeaderDropdown extends Vue {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .cortx-header-dropdown {
