@@ -222,6 +222,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import { passwordRegex } from "../../common/regex-helpers";
 import { userPermissions } from "../../common/user-permissions-map";
+import constStr from "./../../common/const-string.json";
 
 @Component({
   name: "cortx-header-dropdown"
@@ -233,6 +234,7 @@ export default class cortxHeaderDropdown extends Vue {
   public isS3Account: boolean = false;
   public showSuccessDialog: boolean = false;
   public successMessage: string = "";
+  public constStr = constStr;
   public changePasswordForm = {
     currentPassword: "",
     password: "",
@@ -258,11 +260,6 @@ export default class cortxHeaderDropdown extends Vue {
         sameAsPassword: sameAs("password")
       }
     }
-  }
-  public data() {
-    return {
-      constStr: require("./../../common/const-string.json")
-    };
   }
   public mounted() {      
     const vueInstance: any = this;
