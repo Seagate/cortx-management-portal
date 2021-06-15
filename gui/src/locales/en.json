@@ -283,7 +283,7 @@
         "dataNetworkSetting": "Data network settings",
         "dataNetworkSettingIpv4": "Data network settings: IPv4",
         "manualOption": "For Manual option, you must configure Virtual IP address and values for Node 0 and Node 1.",
-        "mandatoryField": "Fields marked with * are mandatory.",
+        "mandatoryField": "Fields marked * are mandatory & should be valid & existent.",
         "dataNetworkSettingIpv6": "Data network settings: IPv6",
         "youNeedToConfig": "You need to configure a single IP address for management of this system.",
         "node": "Node",
@@ -514,7 +514,7 @@
     "settings": {
         "dataNetworkIPv4": "Data network settings: IPv4",
         "forManualOption": "For Manual option, you must configure Virtual IP address and values for Node 0 and Node 1.",
-        "mandatoryField": "Fields marked with * are mandatory.",
+        "mandatoryField": "Fields marked * are mandatory & should be valid & existent.",
         "DNSResolverSettings": "DNS resolver settings",
         "managementSettingIPv4": "Management network settings: IPv4",
         "managementSettingIPv4Msg": "Configure the Virtual IP address for managing this system.",
