@@ -17,7 +17,7 @@
 <template>
   <div>
     <div v-for="item in menuItems" :key="item.id">
-      <div v-if="item.requiredAccess">
+      <div v-if="item.requiredAccess" v-feature="item.featureId">
         <cortx-has-access
           :to="
             $cortxUserPermissions[item.requiredAccess] +
@@ -44,7 +44,7 @@
           </div>
         </cortx-has-access>
       </div>
-      <div v-else>
+      <div v-else v-feature="item.featureId">
         <div class="cortx-menu-card-layout">
           <label id="menu-itemlbl"
             class="cortx-text-lg cortx-text-bold cortx-float-l cortx-menu-card-title"

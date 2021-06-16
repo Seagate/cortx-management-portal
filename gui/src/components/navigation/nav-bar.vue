@@ -26,6 +26,7 @@
         "
       >
         <router-link
+          v-feature="navItem.featureId"
           :to="navItem.path"
           tag="div"
           class="cortx-nav-item"
@@ -69,21 +70,24 @@ export default class CortxNavBar extends Vue {
       path: "/health",
       iconDefault: require("@/assets/navigation/health-grey.svg"),
       iconActive: require("@/assets/navigation/health-white.svg"),
-      requiredAccess: "sysconfig"
+      requiredAccess: "sysconfig",
+      featureId: "health"
     },
     {
       title: "Manage",
       path: "/manage",
       iconDefault: require("@/assets/navigation/manage-grey.svg"),
       iconActive: require("@/assets/navigation/manage-white.svg"),
-      requiredAccess: "s3accounts"
+      requiredAccess: "s3accounts",
+      featureId: "manage"
     },
     {
       title: "Lyve Pilot",
       path: "/ldp",
       iconDefault: require("@/assets/navigation/udx-grey.svg"),
       iconActive: require("@/assets/navigation/udx-white.svg"),
-      requiredAccess: "lyve_pilot"
+      requiredAccess: "lyve_pilot",
+      featureId: "lyve_pilot"
     },
     {
       title: "Settings",

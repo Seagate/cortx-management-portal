@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="pa-5">
+  <div class="pa-5" v-feature="unsupportedFeatures.health">
     <div class="cortx-text-lg cortx-text-bold pr-2">{{ $t("health.healthView") }}</div>
     <div>
       <div class="cortx-health-summary-container">
@@ -134,6 +134,8 @@ import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
 import { HealthSummary } from "../../models/system";
 import i18n from "../../i18n";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
+import alertStatus from "../../common/const-string.json";
 
 @Component({
   name: "cortx-health-view"
@@ -154,6 +156,8 @@ export default class CortxHealthView extends Vue {
   public healthComponentData = [];
   public itemsPerPage: number = 100;
   public currentPage: number = 1;
+  public unsupportedFeatures = unsupportedFeatures;
+  public alertStatus = alertStatus;
   public healthSummary: HealthSummary = {
     good: 0,
     fault: 0,
@@ -164,7 +168,6 @@ export default class CortxHealthView extends Vue {
   };
   public data() {
     return {
-      alertStatus: require("./../../common/const-string.json"),
       name: this.$route.query.name
     };
   }
