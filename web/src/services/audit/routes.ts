@@ -17,8 +17,7 @@
 import { Request, Response, request, response } from "express";
 import { downloadAuditlog, showAuditlog } from "./audit-controller";
 import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
-import HttpStatus from 'http-status-codes';
-import fs from "fs";
+import * as audit_log_headers from './audit-log-headers.json';
 
 export default [
   {
@@ -52,12 +51,7 @@ export default [
       checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
-        fs.readFile('./public/audit-log-headers.json', 'utf-8', (err, data) => {
-          if (err) throw err;
-        
-          let jsonRes = JSON.parse(data)
-          res.status(res.statusCode).send(jsonRes.auditLogHeaders);
-        })
+        res.status(res.statusCode).send(audit_log_headers.auditLogHeaders);
       }
     ]
   }
