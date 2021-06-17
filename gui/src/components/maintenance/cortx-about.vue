@@ -263,6 +263,8 @@ export default class Cortxaboutpage extends Vue {
   public showComponentTab: boolean = true;
   public showIssuerTab: boolean = false;
   public showSubjectTab: boolean = false;
+  public serialNumber: string = '';
+  public clusterId: string = '';
 
   @Watch("tabsInfo.selectedTab")
   public onPropertyChanged(value: number, oldValue: number) {
@@ -292,9 +294,7 @@ export default class Cortxaboutpage extends Vue {
         BUILD: "-" as string,
         RELEASE: null,
         COMPONENTS: []
-      },
-      serialNumber: "-" as string,
-      clusterId: "-" as string
+      }
     };
   }
 
@@ -313,9 +313,14 @@ export default class Cortxaboutpage extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
   public async getApplianceDetails() {
-    const res = await Api.getAll(apiRegister.appliance_info);
-    this.$data.serialNumber = res.data[0].serial_number;
-    this.$data.clusterId = res.data[0].cluster_id;
+    const unsupportedFeatures = this.$store.getters[
+      "userLogin/getUnsupportedFeatures"
+    ];
+    if (!(unsupportedFeatures && unsupportedFeatures['appliance_info'])) {
+      const res = await Api.getAll(apiRegister.appliance_info);
+      this.serialNumber = res.data[0].serial_number;
+      this.clusterId = res.data[0].cluster_id;
+    }
   }
   public async getSSLDetails() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching SSL details...");
