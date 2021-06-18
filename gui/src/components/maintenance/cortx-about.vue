@@ -301,6 +301,7 @@ export default class Cortxaboutpage extends Vue {
   public async mounted() {
     await Promise.all([
       this.getSSLDetails(),
+      // this.getApplianceDetails(),
       this.getVersion()
     ]);
   }
@@ -311,6 +312,11 @@ export default class Cortxaboutpage extends Vue {
     this.$data.versionDetails = res.data;
     this.$store.dispatch("systemConfig/hideLoader");
   }
+  /* public async getApplianceDetails() {
+    const res = await Api.getAll(apiRegister.appliance_info);
+    this.$data.serialNumber = res.data[0].serial_number;
+    this.$data.clusterId = res.data[0].cluster_id;
+  } */
   public async getSSLDetails() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching SSL details...");
     const res = await Api.getAll(apiRegister.ssl_details);
