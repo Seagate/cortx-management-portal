@@ -141,6 +141,7 @@
         "newpassword": "New password*",
         "confirm-password": "Confirm password",
         "roles": "Roles",
+        "admin": "Admin",
         "manage": "Manage",
         "monitor": "Monitor",
         "username-required": "Account name is required.",

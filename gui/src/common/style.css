@@ -660,6 +660,13 @@ tbody tr:hover {
   display: inline-block;
   cursor: pointer;
 }
+
+.cortx-delete-icon {
+  background-image: url("../assets/actions/delete-green.svg");
+}
+.cortx-edit-icon {
+  background-image: url("../assets/actions/edit-green.svg");
+}
 .cortx-comment-icon {
   background-image: url("../assets/comment-default.svg");
 }
