@@ -18,8 +18,6 @@ import { Request, Response, request, response } from "express";
 import { downloadAuditlog, showAuditlog } from "./audit-controller";
 import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import * as audit_log_headers from './audit-log-headers.json';
-import HttpStatus from 'http-status-codes';
-import fs from "fs";
 
 export default [
   {
