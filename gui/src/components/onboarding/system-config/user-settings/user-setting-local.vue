@@ -919,12 +919,9 @@ export default class CortxUserSettingLocal extends Vue {
     if (header.sortable) {
       if (this.csmUsersQueryParam.sortby && this.csmUsersQueryParam.sortby === header.value) {
         this.csmUsersQueryParam.dir = this.csmUsersQueryParam.dir === "asc" ? "desc" : "asc";
-        this.csmUsersQueryParam.sort_dir = this.csmUsersQueryParam.sort_dir === "asc" ? "desc" : "asc";
       } else {
         this.csmUsersQueryParam.sortby = header.value;
-        this.csmUsersQueryParam.sort_by = header.value;
         this.csmUsersQueryParam.dir = "asc";
-        this.csmUsersQueryParam.sort_dir = "asc";
       }
 
       await this.getUserDataLogs();
