@@ -15,15 +15,45 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <router-view class="cortx-p-1"></router-view>
+  <div class="cortx-p-1">
+    <cortx-tabs :tabsInfo="tabsInfo" />
+      <CortxHealthTabular v-if="showTableTab" />
+  </div>
 </template>
  <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-
+import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import CortxHealthTabular from "./cortx-health-tabular.vue";
 @Component({
-  name: "cortx-health"
+  name: "cortx-health",
+  components: {
+    CortxTabs,
+    CortxHealthTabular
+  }
 })
-export default class CortxHealth extends Vue {}
+export default class CortxHealth extends Vue {
+  public tabsInfo: TabsInfo = {
+    tabs: [
+      {
+        id: 1,
+        label: "Tabular",
+        show: true,
+        requiredAccess: "health"
+      }
+    ],
+    selectedTab: 1
+  };
+  private showTableTab: boolean = true;
+  
+  @Watch("tabsInfo.selectedTab")
+  public onPropertyChanged(value: number, oldValue: number) {
+    switch (value) {
+      case 1:
+        this.showTableTab = true;
+        break;
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 </style>
