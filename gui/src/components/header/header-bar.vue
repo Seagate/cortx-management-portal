@@ -15,46 +15,39 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-header-container">
-    <div class="cortx-header py-3">
-      <div class="cortx-brand-logo"></div>
-      <div class="cortx-header-right-aligned-items">
-        <cortx-has-access
-          :to="$cortxUserPermissions.alerts + $cortxUserPermissions.list"
-        >
-          <div
-            class="cortx-logout-icon-container"
-            @click="
-              $router.push({
-                name: 'alerts-large',
-                query: { tm: new Date().getTime() }
-              })
-            "
-            v-if="!isRouterPathOnboarding"
+  <div>
+    <div class="cortx-header-container">
+      <div class="cortx-header py-3">
+        <div class="cortx-brand-logo"></div>
+        <div class="cortx-header-right-aligned-items">
+          <cortx-has-access
+            :to="$cortxUserPermissions.alerts + $cortxUserPermissions.list"
           >
-            <div v-if="alertNotifications.alertCount > 0">
-              <img :src="require('@/assets/navigation/alerts-dot-white.svg')"  id="alert-dotwhite"/>
+            <div
+              class="cortx-logout-icon-container pr-9"
+              @click="
+                $router.push({
+                  name: 'alerts-large',
+                  query: { tm: new Date().getTime() }
+                })
+              "
+              v-if="!isRouterPathOnboarding"
+            >
+              <div v-if="alertNotifications.alertCount > 0">
+                <img
+                  :src="require('@/assets/navigation/alerts-dot-white.svg')"
+                  id="alert-dotwhite"
+                />
+              </div>
+              <div v-else>
+                <img
+                  :src="require('@/assets/navigation/alerts-white.svg')"
+                  id="alert-whiteicon"
+                />
+              </div>
             </div>
-            <div v-else>
-              <img :src="require('@/assets/navigation/alerts-white.svg')"  id="alert-whiteicon"/>
-            </div>
-          </div>
-        </cortx-has-access>
-        <div class="pr-2">
-          <label class="cortx-username-label" id="header-username">{{ username }}</label>
-        </div>
-        <div
-          id="logouticon"
-          class="cortx-logout-icon-container"
-          @click="logout()"
-          v-if="!isRouterPathOnboarding"
-        >
-          <v-tooltip left max-width="300">
-            <template v-slot:activator="{ on }">
-              <img :src="require('@/assets/logout.svg/')" v-on="on"  id="logout-icon"/>
-            </template>
-            <span id="logoutlbl">{{ $t("common.logout") }}</span>
-          </v-tooltip>
+          </cortx-has-access>
+          <cortx-header-dropdown></cortx-header-dropdown>
         </div>
       </div>
     </div>
@@ -65,18 +58,13 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import store from "../../store/store";
 import VueNativeSock from "vue-native-websocket";
 import i18n from "../../i18n";
-import { userPermissions } from "../../common/user-permissions-map"
+import cortxHeaderDropdown from "./cortx-header-dropdown.vue";
 
 @Component({
-  name: "HeaderBar"
+  name: "HeaderBar",
+  components: { cortxHeaderDropdown }
 })
 export default class HeaderBar extends Vue {
-  public username: string = "";
-  public data() {
-    return {
-      constStr: require("./../../common/const-string.json")
-    };
-  }
   public mounted() {
     const wsUrl = `wss://${window.location.hostname}:${process.env.VUE_APP_WS_PORT}/ws`;
     Vue.use(VueNativeSock, wsUrl, {
@@ -86,14 +74,6 @@ export default class HeaderBar extends Vue {
       reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
       reconnectionDelay: 3000 // (Number) how long to initially wait before attempting a new (1000) })
     });
-    const vueInstance: any = this;
-    if (vueInstance.$hasAccessToCsm(userPermissions.alerts + userPermissions.list)) {
-      this.$store.dispatch("alertDataAction");
-    }
-    const usernameStr = localStorage.getItem(this.$data.constStr.username);
-    if (usernameStr) {
-      this.username = usernameStr;
-    }
   }
 
   get isRouterPathOnboarding() {
@@ -102,15 +82,6 @@ export default class HeaderBar extends Vue {
 
   get alertNotifications() {
     return this.$store.state.alertNotification.socket;
-  }
-  private logout() {
-    // Invalidate session from Server, remove localStorage token and re-route to login page
-    this.$store.dispatch("userLogin/logoutAction").finally(() => {
-      localStorage.removeItem(this.$data.constStr.access_token);
-    });
-    this.$store.commit("userLogin/setUserPermissions", {});
-    localStorage.removeItem(this.$data.constStr.username);
-    this.$router.push("/login");
   }
 }
 </script>
@@ -123,26 +94,13 @@ export default class HeaderBar extends Vue {
   right: 0;
   z-index: 5;
 }
-.cortx-logo-separator {
-  margin: 1em 1.206em 1em 1.206em;
-  border: 1px solid #454545;
-}
-.cortx-username-label {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
-  color: #ffffff;
-  white-space: nowrap;
-}
 .cortx-header-right-aligned-items {
   margin-left: auto;
   display: flex;
   flex-wrap: nowrap;
 }
 .cortx-logout-icon-container {
-  padding: 0 1.5em 1.125em 1.5em;
+  padding: 0 0 1.125em 0.625em;
   cursor: pointer;
 }
 </style>
