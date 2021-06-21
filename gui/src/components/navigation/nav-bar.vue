@@ -25,18 +25,23 @@
               : $cortxUserPermissions.list)
         "
       >
-        <router-link
-          v-feature="navItem.featureId"
-          :to="navItem.path"
-          tag="div"
-          class="cortx-nav-item"
-          active-class="cortx-nav-item-active"
-          :key="navItem.title"
-        >
-          <img class="cortx-nav-item-icon-default" :src="navItem.iconDefault" />
-          <img class="cortx-nav-item-icon-active" :src="navItem.iconActive" />
-          <label :id="navItem.title">{{ navItem.title }}</label>
-        </router-link>
+        <v-tooltip right max-width="300"
+          v-feature="navItem.featureId">
+          <template v-slot:activator="{ on }">
+            <router-link
+              :to="navItem.path"
+              tag="div"
+              class="cortx-nav-item"
+              active-class="cortx-nav-item-active"
+              :key="navItem.title"
+            >
+              <img v-on="on" class="cortx-nav-item-icon-default" :src="navItem.iconDefault" />
+              <img v-on="on" class="cortx-nav-item-icon-active" :src="navItem.iconActive" />
+              <label v-on="on" :id="navItem.title">{{ navItem.title }}</label>
+            </router-link>
+          </template>
+          <span :id="navItem.title">{{ navItem.title }}</span>
+        </v-tooltip>
       </cortx-has-access>
     </div>
     <div class="cortx-nav-bottom" v-if="brandName">
@@ -131,11 +136,11 @@ export default class CortxNavBar extends Vue {
 <style lang="scss" scoped>
 .cortx-nav {
   position: fixed;
-  top: 50px;
+  top: 60px;
   left: 0;
   bottom: 0;
   z-index: 5;
-  width: 8.75em;
+  width: 11.25em;
   background: #000000;
 }
 .cortx-nav-item {
@@ -143,23 +148,25 @@ export default class CortxNavBar extends Vue {
   flex-wrap: nowrap;
   background-color: #000000;
   color: #757575;
-  height: 60px;
+  height: 50px;
   align-items: center;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
   line-height: 20px;
-  padding-left: 10px;
+  padding-left: 20px;
   padding-right: 10px;
+  border-left: 5px solid #000000;
   cursor: pointer;
 }
 .cortx-nav-item > label {
-  margin-left: 5px;
+  margin-left: 10px;
   cursor: pointer;
 }
 .cortx-nav-item-active {
-  background: #454545 !important;
+  background: #262626 !important;
   color: #ffffff !important;
+  border-left: 5px solid #6EBE49;
 }
 .cortx-nav-item-icon-default {
   display: block;
@@ -178,11 +185,13 @@ export default class CortxNavBar extends Vue {
   width: 100%;
   max-width: 100%;
   height: auto;
-  padding: 5px;
+  padding: 5px 20px 30px 20px;
 }
 .cortx-brand-text {
   color: #6ebe49;
   margin: auto 5px;
+  padding-left: 15px;
+  font-size: 18px;
 }
 .cortx-nav-bottom {
   position: absolute;

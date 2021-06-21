@@ -111,6 +111,7 @@
         "invalid-password": "Invalid password.",
         "new-password-label": "New passowrd*",
         "confirm-password-label": "Confirm password*",
+        "current-password-label": "Current password*",
         "password-not-match": "Passwords do not match",
         "confirm-dialog": {
             "title": "Confirmation"
@@ -128,7 +129,9 @@
         "email": "Email",
         "login": "Login",
         "logout": "Logout",
-        "continue": "Continue"
+        "continue": "Continue",
+        "change-password": "Change Password",
+        "password-update-message": "Password updated successfully"
     },
     "csmuser": {
         "user-setting-label": "User settings: Local",
