@@ -25,3 +25,12 @@ export interface AuditLogQueryParam {
     offset?: number;
     limit?: number;
 }
+
+export interface csmUserQueryParam {
+    sortby?: string;
+    dir?: string;
+    offset?: number;
+    limit?: number;
+    sort_by?: string;
+    sort_dir?: string;
+}

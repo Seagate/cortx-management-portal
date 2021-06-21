@@ -34,25 +34,20 @@
         <cortx-has-access
           :to="$cortxUserPermissions.users + $cortxUserPermissions.list"
         >
-          <template v-if="userData.length > 0">
-            <CortxDataTable
-              :headers="headersList"
-              :records="userData"
-              :onSort="onCsmUserSort"
-              :sortParams="csmUsersQueryParam"
-              :onFilter="onCsmLogFilter" 
-              :rowsPerPage="[5, 10, 20, 30, 50, 100, 150, 200]"
-              :actionsCallback="{
-              deleteUserAction : deleteUserActionCB,
-              editUserAction : editUserActionCB
-              }"
-              @update:items-per-page="getUserDataLogs()"
-              @update:page="getUserDataLogs()"
-            />
-          </template>
-          <template v-else>
-            <span class="mb-1 d-block" id="csm-user-data-log" >No logs available...</span>
-          </template> 
+          <CortxDataTable
+            :headers="headersList"
+            :records="userData"
+            :onSort="onCsmUserSort"
+            :sortParams="csmUsersQueryParam"
+            :onFilter="onCsmLogFilter" 
+            :rowsPerPage="[5, 10, 20, 30, 50, 100, 150, 200]"
+            :actionsCallback="{
+            deleteUserAction : deleteUserActionCB,
+            editUserAction : editUserActionCB
+            }"
+            @update:items-per-page="getUserDataLogs()"
+            @update:page="getUserDataLogs()"
+          />
         </cortx-has-access>  
       </v-col>  
       <v-col cols="2">
@@ -779,7 +774,7 @@ export default class CortxUserSettingLocal extends Vue {
         {
           "field_id": "email",
           "label": "Email",
-          "sortable": false,
+          "sortable": true,
           "filterable": false,
           "value": { "type": "text" },
           "display": true,
@@ -819,7 +814,7 @@ export default class CortxUserSettingLocal extends Vue {
         {
           "field_id": "username",
           "label": "Username",
-          "sortable": false,
+          "sortable": true,
           "filterable": false,
           "value": { "type": "text" },
           "display": true,
@@ -864,7 +859,7 @@ export default class CortxUserSettingLocal extends Vue {
     };
   }
   
-  public csmUsersQueryParam: csmUserQueryParam = {} as csmUserQueryParam;
+  public csmUsersQueryParam: csmUserQueryParam = {sortby: '', dir: ''} as csmUserQueryParam;
   public async mounted() {
     await this.getUserData();
   }
@@ -904,27 +899,32 @@ export default class CortxUserSettingLocal extends Vue {
    */
   public async getUserDataLogs() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
-    const res = await Api.getAll(apiRegister.csm_user);
+    try {
+      const res = await Api.getAll(apiRegister.csm_user, this.csmUsersQueryParam);
 
-    //API call to get schema for the headers
-    const headerResponse = await Api.getAll(`${apiRegister.csm_user}/role`);
-    this.$data.headersList = headerResponse.data;
-    if (res && res.data && res.data.users) {
-      this.$data.userData = res.data.users;
+      if (res && res.data && res.data.users) {
+        this.$data.userData = res.data.users;
+      }  
+    } catch (error) {
+      this.$data.userData = [];
     }
+    
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
   /**
-   * User Shorting
+   * User Sorting
    */
   public async onCsmUserSort(header: any) {
     if (header.sortable) {
       if (this.csmUsersQueryParam.sortby && this.csmUsersQueryParam.sortby === header.value) {
         this.csmUsersQueryParam.dir = this.csmUsersQueryParam.dir === "asc" ? "desc" : "asc";
+        this.csmUsersQueryParam.sort_dir = this.csmUsersQueryParam.sort_dir === "asc" ? "desc" : "asc";
       } else {
         this.csmUsersQueryParam.sortby = header.value;
+        this.csmUsersQueryParam.sort_by = header.value;
         this.csmUsersQueryParam.dir = "asc";
+        this.csmUsersQueryParam.sort_dir = "asc";
       }
 
       await this.getUserDataLogs();
@@ -937,6 +937,7 @@ export default class CortxUserSettingLocal extends Vue {
    */
   public async onCsmLogFilter(headerFields: string[], value: string) {
     if(value.length > 0) {
+      
       // this.clearFilters(); //This call is to clear any previously added filters
       
       if(headerFields.length > 0) {
