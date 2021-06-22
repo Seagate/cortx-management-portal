@@ -566,7 +566,8 @@ tbody tr:hover {
 .cortx-status-online {
   background: #6ebe49;
 }
-.cortx-status-offline {
+.cortx-status-offline,
+.cortx-status-failed {
   background: #dc1f2e;
 }
 .cortx-status-degraded {

@@ -50,6 +50,7 @@ export const healthTableHeaders = {
             "mapValueToClassName": {
                 "online": "cortx-cluster-status cortx-status-online",
                 "offline": "cortx-cluster-status cortx-status-offline",
+                "failed": "cortx-cluster-status cortx-status-failed",
                 "degraded": "cortx-cluster-status cortx-status-degraded",
                 "unknown": "cortx-cluster-status cortx-status-unknown"
               }
