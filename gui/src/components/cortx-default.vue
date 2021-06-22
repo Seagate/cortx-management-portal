@@ -54,9 +54,9 @@ export default class CortxDefault extends Vue {
 
 <style lang="scss" scoped>
 .header-margin {
-  margin-top: 3em;
+  margin-top: 3.75em;
 }
 .navbar-margin {
-  margin-left: 8.75em;
+  margin-left: 11.25em;
 }
 </style>
