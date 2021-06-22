@@ -815,7 +815,7 @@ export default class CortxUserSettingLocal extends Vue {
           "field_id": "username",
           "label": "Username",
           "sortable": true,
-          "filterable": false,
+          "filterable": true,
           "value": { "type": "text" },
           "display": true,
         },
@@ -859,7 +859,7 @@ export default class CortxUserSettingLocal extends Vue {
     };
   }
   
-  public csmUsersQueryParam: csmUserQueryParam = {sortby: '', dir: ''} as csmUserQueryParam;
+  public csmUsersQueryParam: csmUserQueryParam = {} as csmUserQueryParam;
   public async mounted() {
     await this.getUserData();
   }
@@ -875,22 +875,19 @@ export default class CortxUserSettingLocal extends Vue {
   }
   
   public editUserActionCB(event:any, data:any){
-    this.onEditBtnClick(data)
+    this.onEditBtnClick(data);
   }
   public editActionCondition(record: any) {
     const vueInstance: any = this;
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.update)) {
-      if(this.isLoggedInUserAdmin()){
-        return true;
-      }else if(this.isLoggedInUserManage()){
-        return true;
-      }else if(this.isLoggedInUserMonitor()) {
+      if(this.isLoggedInUserMonitor()) {
         const loggedInUser = this.$data.loggedInUserName;
         if(loggedInUser == record.username) {
           return true;
         }
         return false;
       }
+      return true;
     }
   }
 
@@ -933,6 +930,7 @@ export default class CortxUserSettingLocal extends Vue {
    * User filter data
    */
   public async onCsmLogFilter(headerFields: string[], value: string) {
+    debugger;
     if(value.length > 0) {
       
       // this.clearFilters(); //This call is to clear any previously added filters
@@ -1083,9 +1081,6 @@ export default class CortxUserSettingLocal extends Vue {
   private isAdminUser(item: any) {
     return item.role.includes("admin");
   }
-  private isManageUser(item: any) {
-    return item.role.includes("manage");
-  }
   private isMonitorUser(item: any) {
     return item.role.includes("monitor");
   }
@@ -1125,25 +1120,6 @@ export default class CortxUserSettingLocal extends Vue {
       isMonitor = this.isMonitorUser(data);
     }
     return isMonitor;
-  }
-
-  private isLoggedInUserManage() {
-    let isManage;
-    const data = this.$data.userData.find((element: any) => {
-      if (
-        this.strEqualityCaseInsensitive(
-          element.username,
-          this.$data.loggedInUserName
-        )
-      ) {
-        return true;
-      }
-    });
-    if (data) {
-      isManage = this.isManageUser(data);
-    }
-    
-    return isManage;
   }
 
   get isEditFormValid() {
