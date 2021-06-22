@@ -18,6 +18,7 @@ import { Request, Response, request, response } from "express";
 import { downloadAuditlog, showAuditlog } from "./audit-controller";
 import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import * as audit_log_headers from './audit-log-headers.json';
+import * as s3_audit_log_headers from './s3-audit-log-headers.json';
 
 export default [
   {
@@ -54,6 +55,16 @@ export default [
         res.status(res.statusCode).send(audit_log_headers.auditLogHeaders);
       }
     ]
+  },
+  {
+    path: "/api/:version/auditlogs/s3-headers",
+    method: "get",
+    handler: [
+      checkApiVersion,
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        res.status(res.statusCode).send(s3_audit_log_headers.auditLogHeaders);
+      }
+    ]
   }
-
 ];
