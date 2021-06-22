@@ -1,0 +1,103 @@
+{
+  "auditLogHeaders": [
+    {
+      "field_id": "timestamp",
+      "label": "Timestamp",
+      "display_id": 201,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "user",
+      "label": "User",
+      "display_id": 301,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "remote_ip",
+      "label": "Remote IP",
+      "display_id": 401,
+      "sortable": true,
+      "filterable": true,
+      "display": false,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "forwarded_for_ip",
+      "label": "Forwarded for IP",
+      "display_id": 501,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "method",
+      "label": "Method",
+      "display_id": 601,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "path",
+      "label": "Path",
+      "display_id": 701,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "user_agent",
+      "label": "User agent",
+      "display_id": 801,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "response_code",
+      "label": "Response code",
+      "display_id": 901,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "request_id",
+      "label": "Request ID",
+      "display_id": 1001,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    }
+  ]
+}
