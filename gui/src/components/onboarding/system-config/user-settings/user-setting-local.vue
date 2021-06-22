@@ -892,7 +892,7 @@ export default class CortxUserSettingLocal extends Vue {
   }
 
   /**
-   * Pagination
+   * Pagination implementation
    */
   public async getUserDataLogs() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
@@ -920,7 +920,6 @@ export default class CortxUserSettingLocal extends Vue {
         this.csmUsersQueryParam.sortby = header.value;
         this.csmUsersQueryParam.dir = "asc";
       }
-
       await this.getUserDataLogs();
     }
   }
