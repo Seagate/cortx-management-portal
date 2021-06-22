@@ -24,6 +24,7 @@ import middleware from "./middleware";
 import errorHandlers from "./middleware/error-handlers";
 import routes from "./services";
 import { SocketService } from "./services/websocket/socket-service";
+const rateLimit = require('express-rate-limit');
 
 require("dotenv").config({ path: __dirname + "/.env" });
 
@@ -40,6 +41,13 @@ process.on("unhandledRejection", e => {
 const router = express();
 router.use('/public', express.static('public'));
 router.use(cors());
+router.use("/api/",
+  rateLimit({
+    windowMs: 1 * 1000, // 1 second
+    max: 25, // limit 25 requests per second
+  })
+);
+
 applyMiddleware(middleware, router);
 applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);
