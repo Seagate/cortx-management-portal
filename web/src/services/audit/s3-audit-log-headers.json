@@ -1,0 +1,279 @@
+{
+  "auditLogHeaders": [
+    {
+      "field_id": "authentication_type",
+      "label": "Authentication Type",
+      "display_id": 1,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "bucket",
+      "label": "Bucket",
+      "display_id": 2,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "bucket_owner",
+      "label": "Bucket Owner",
+      "display_id": 3,
+      "sortable": true,
+      "filterable": true,
+      "display": false,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "bytes_received",
+      "label": "Bytes Received",
+      "display_id": 4,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "bytes_sent",
+      "label": "Bytes Sent",
+      "display_id": 5,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "cipher_suite",
+      "label": "Cipher Suite",
+      "display_id": 6,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "error_code",
+      "label": "Error Code",
+      "display_id": 7,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "host_header",
+      "label": "Host Header",
+      "display_id": 8,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "host_id",
+      "label": "Host Id",
+      "display_id": 9,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "http_status",
+      "label": "Http Status",
+      "display_id": 10,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "key",
+      "label": "Key",
+      "display_id": 11,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "object_size",
+      "label": "Object Size",
+      "display_id": 12,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "operation",
+      "label": "Operation",
+      "display_id": 13,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "referrer",
+      "label": "Referrer",
+      "display_id": 14,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "remote_ip",
+      "label": "Remote IP",
+      "display_id": 15,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "request_id",
+      "label": "Request ID",
+      "display_id": 16,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "request_uri",
+      "label": "Request URI",
+      "display_id": 17,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "requester",
+      "label": "Requester",
+      "display_id": 18,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "signature_version",
+      "label": "Signature Version",
+      "display_id": 19,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "time",
+      "label": "Time",
+      "display_id": 20,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "timestamp",
+      "label": "Timestamp",
+      "display_id": 21,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "total_time",
+      "label": "Total Time",
+      "display_id": 22,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "turn_around_time",
+      "label": "Turn Around Time",
+      "display_id": 23,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "user_agent",
+      "label": "User Agent",
+      "display_id": 24,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    },
+    {
+      "field_id": "version_id",
+      "label": "Version ID",
+      "display_id": 25,
+      "sortable": true,
+      "filterable": true,
+      "display": true,
+      "value": {
+        "type": "text"
+      }
+    }
+  ]
+}

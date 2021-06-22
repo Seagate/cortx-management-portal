@@ -28,6 +28,7 @@
     "cors": "2.8.5",
     "dotenv": "8.0.0",
     "express": "5.0.0-alpha.7",
+    "express-rate-limit": "5.2.6",
     "http-status-codes": "2.1.4",
     "memory-cache": "0.2.0",
     "multiparty": "4.2.1",
