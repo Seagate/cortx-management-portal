@@ -24,6 +24,7 @@
       "create-message": "Creating access key...",
       "delete-confirmation": "Are you sure you want to delete {key} access key?",
       "delete-message": "Deleting access key ",
+      "update-status": "Updating the status of ",
       "iam-table-title": "Access keys for user {userNameIAM}"
     },
     "download-csv-dialog": {
@@ -121,6 +122,7 @@
       "create-message": "Creating access key...",
       "delete-confirmation": "Are you sure you want to delete {key} access key?",
       "delete-message": "Deleting access key ",
+      "update-status": "Updating the status of ",
       "iam-table-title": "Access keys for user {userNameIAM}"
     },
     "download-csv-dialog": {
