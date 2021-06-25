@@ -26,7 +26,7 @@ export interface AuditLogQueryParam {
     limit?: number;
 }
 
-export interface csmUserQueryParam {
+export interface CsmUserQueryParam {
     sortby?: string;
     dir?: string;
     offset?: number;

@@ -387,7 +387,7 @@
                 <v-row>
                   <v-col cols="12">
                     <v-expansion-panels id="open-expansionbox">
-                    <v-expansion-panel >
+                    <v-expansion-panel @click="isPasswordPanelCollapse">
                       <v-expansion-panel-header class="pl-3" id="change-password-text"
                         >{{ $t("onBoarding.changePassword") }}</v-expansion-panel-header
                       >
@@ -416,6 +416,7 @@
                                 type="password"
                                 name="txtEditNewPassword"
                                 v-model.trim="selectedItem.password"
+                                @keyup="enableEditButton"
                                 @input="$v.selectedItem.password.$touch"
                                 id="txtLocalPass"
                               />
@@ -601,7 +602,7 @@
                         class="cortx-btn-primary"
                         @click="editUser(selectedItem)"
                         id="lblLocalApplyInterface"
-                        :disabled="!isEditFormValid"
+                        :disabled="!isEditFormValid  || passExpansionPanels"
                       >
                         {{ $t("csmuser.update") }}
                       </button>
@@ -685,7 +686,7 @@ import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
 import  CortxDataTable from "../../../widgets/cortx-data-table.vue";
 import { userPermissions } from "../../../../common/user-permissions-map";
-import { csmUserQueryParam } from '@/models/download';
+import { CsmUserQueryParam } from '@/models/download';
 @Component({
   name: "cortx-user-setting-local",
   i18n: {
@@ -733,6 +734,7 @@ export default class CortxUserSettingLocal extends Vue {
       sortColumnName: "", // Set sorting column name to none
       alertStatus: require("./../../../../common/const-string.json"),
       constStr: require("./../../../../common/const-string.json"),
+      passExpansionPanels: false,
       createAccount: {
         username: "",
         password: "",
@@ -859,21 +861,54 @@ export default class CortxUserSettingLocal extends Vue {
     };
   }
   
-  public csmUsersQueryParam: csmUserQueryParam = {} as csmUserQueryParam;
+  public csmUsersQueryParam: CsmUserQueryParam = {} as CsmUserQueryParam;
   public async mounted() {
     await this.getUserData();
   }
 
+  public isPasswordPanelCollapse() {
+    this.$data.passExpansionPanels = true;
+  }
+  public enableEditButton() {
+    this.$data.passExpansionPanels = false;
+  }
   public deleteUserActionCB(event:any, data:any){
     this.onDeleteConfirmation(data.id);
   }
   public deleteActionCondition(record: any) {
     const vueInstance: any = this;
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.delete)) {
+      if(this.numberOfAdminUser() == 1){
+        if(record.role == 'admin'){
+          return false;
+        }
+      }
+      if(this.isLoggedInUserManage()) {
+        const loggedInUser = this.$data.loggedInUserName;
+        if(loggedInUser == record.username) {
+          return true;
+        }
+        return false;
+      }
+      if(this.isLoggedInUserMonitor()) {
+        const loggedInUser = this.$data.loggedInUserName;
+        if(loggedInUser == record.username) {
+          return true;
+        }
+        return false;
+      }
       return true;
     }
   }
-  
+  private numberOfAdminUser() {
+    let adminUserCount:number = 0;
+    this.$data.userData.map(function (user: any) {
+      if (user.role == "admin") {
+        adminUserCount++;
+      }
+    });
+    return adminUserCount;
+  }
   public editUserActionCB(event:any, data:any){
     this.onEditBtnClick(data);
   }
@@ -882,7 +917,7 @@ export default class CortxUserSettingLocal extends Vue {
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.update)) {
       if(this.isLoggedInUserMonitor()) {
         const loggedInUser = this.$data.loggedInUserName;
-        if(loggedInUser == record.username) {
+        if(loggedInUser === record.username) {
           return true;
         }
         return false;
@@ -929,11 +964,7 @@ export default class CortxUserSettingLocal extends Vue {
    * User filter data
    */
   public async onCsmLogFilter(headerFields: string[], value: string) {
-    debugger;
     if(value.length > 0) {
-      
-      // this.clearFilters(); //This call is to clear any previously added filters
-      
       if(headerFields.length > 0) {
         for (const field of headerFields) {
           //@ts-ignore
@@ -947,12 +978,6 @@ export default class CortxUserSettingLocal extends Vue {
       }
 
        await this.getUserDataLogs();
-    }
-  }
-  public clearFilters() {
-    for (const header of this.$data.headersList) {
-      //@ts-ignore
-      delete this.csmUsersQueryParam[header.field_id]
     }
   }
 
@@ -1080,6 +1105,9 @@ export default class CortxUserSettingLocal extends Vue {
   private isAdminUser(item: any) {
     return item.role.includes("admin");
   }
+  private isManageUser(item: any) {
+    return item.role.includes("manage");
+  }
   private isMonitorUser(item: any) {
     return item.role.includes("monitor");
   }
@@ -1101,6 +1129,24 @@ export default class CortxUserSettingLocal extends Vue {
       isAdmin = this.isAdminUser(data);
     }
     return isAdmin;
+  }
+
+    private isLoggedInUserManage() {
+    let isManage;
+    const data = this.$data.userData.find((element: any) => {
+      if (
+        this.strEqualityCaseInsensitive(
+          element.username,
+          this.$data.loggedInUserName
+        )
+      ) {
+        return true;
+      }
+    });
+    if (data) {
+      isManage = this.isManageUser(data);
+    }
+    return isManage;
   }
 
   private isLoggedInUserMonitor() {
