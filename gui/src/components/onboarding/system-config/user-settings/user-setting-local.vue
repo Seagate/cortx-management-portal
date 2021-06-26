@@ -30,144 +30,27 @@
     </div>
     <v-divider class="mt-2" />
     <v-row>
-      <v-col class="py-0 col-xs-6 col-sm-7">
+      <v-col cols="10">
         <cortx-has-access
           :to="$cortxUserPermissions.users + $cortxUserPermissions.list"
         >
-          <v-data-table
-            id="localuser-tabledata"
-            :items="userData"
-            item-key="id"
-            class="cortx-table"
-            hide-default-header
-          >
-            <template v-slot:header="{}">
-              <tr>
-                <th
-                  v-for="header in userHeader"
-                  :key="header.text"
-                  class="tableheader"
-                >
-                  <span
-                    id="localuser-tableheading"
-                    class="headerText"
-                    :class="
-                      header.value === sortColumnName && isSortActive
-                        ? 'active'
-                        : ''
-                    "
-                    >{{ header.text }}</span
-                  >
-                  <span
-                    :class="
-                      header.value === sortColumnName && isSortActive
-                        ? 'active'
-                        : 'notActive'
-                    "
-                  >
-                    <img
-                      id="localuser-table-desc"
-                      v-if="
-                        header.sortable && header.sortDir === alertStatus.desc
-                      "
-                      :src="require('@/assets/widget/table-sort-desc.svg/')"
-                      class="d-inline-block"
-                      style="vertical-align: bottom; margin-left: -0.3em;"
-                      height="20"
-                      width="20"
-                    />
-                    <img
-                      id="localuser-table-asc"
-                      v-if="
-                        header.sortable && header.sortDir === alertStatus.asc
-                      "
-                      :src="require('@/assets/widget/table-sort-asc.svg/')"
-                      class="d-inline-block"
-                      style="vertical-align: bottom; margin-left: -0.3em;"
-                      height="20"
-                      width="20"
-                    />
-                  </span>
-                </th>
-              </tr>
-            </template>
-            <template v-slot:item="props">
-              <tr
-                :class="
-                  selectedRows.indexOf(props.item.id) > -1
-                    ? 'selected-row font-weight-small'
-                    : 'font-weight-small'
-                "
-                @click="toggleSelection(props.item.id)"
-              >
-                <td id="localuser-name">
-                  {{ props.item.username }}
-                </td>
-                <td id="localuser-email">
-                  {{ props.item.email }}
-                </td>
-                <td>
-                  <span v-for="(role, i) in props.item.roles" :key="role"
-                    >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span
-                  >
-                </td>
-                <td class="action-col-width">
-                  <span>
-                    <img
-                      v-if="
-                        isLoggedInUserAdmin() ||
-                          strEqualityCaseInsensitive(
-                            props.item.username,
-                            loggedInUserName
-                          )
-                      "
-                      class="ml-2 cortx-cursor-pointer"
-                       id="localuser-editicon"
-                      @click="onEditBtnClick(props)"
-                      title="Edit"
-                      src="./../../../../assets/actions/edit-green.svg"
-                    />
-                    <cortx-has-access
-                      :to="
-                        $cortxUserPermissions.users + $cortxUserPermissions.delete
-                      "
-                    >
-                      <img
-                        v-if="
-                          isLoggedInUserAdmin() &&
-                            !strEqualityCaseInsensitive(
-                              props.item.username,
-                              loggedInUserName
-                            )
-                        "
-                        class="ml-2 cortx-cursor-pointer"
-                        id="localuser-deleteicon"
-                        @click="onDeleteConfirmation(props.item.id)"
-                        title="Delete"
-                        src="./../../../../assets/actions/delete-green.svg"
-                      />
-                      <img
-                        id="localuser-deleteadmin"
-                        v-if="
-                          strEqualityCaseInsensitive(
-                            props.item.username,
-                            loggedInUserName
-                          ) && !isAdminUser(props.item)
-                        "
-                        class="mx-2 cortx-cursor-pointer"
-                        @click="onDeleteConfirmation(props.item.id)"
-                        title="Delete"
-                        src="./../../../../assets/actions/delete-green.svg"
-                      />
-                    </cortx-has-access>
-                  </span>
-                </td>
-              </tr>
-            </template>
-          </v-data-table>
-        </cortx-has-access>
-      </v-col>
-      <v-col class="py-0 col-xs-6 pr-0 col-sm-5">
+          <CortxDataTable
+            :headers="headersList"
+            :records="userData"
+            :onSort="onCsmUserSort"
+            :sortParams="csmUsersQueryParam"
+            :onFilter="onCsmLogFilter" 
+            :rowsPerPage="[5, 10, 20, 30, 50, 100, 150, 200]"
+            :actionsCallback="{
+            deleteUserAction : deleteUserActionCB,
+            editUserAction : editUserActionCB
+            }"
+            @update:items-per-page="getUserData()"
+            @update:page="getUserData()"
+          />
+        </cortx-has-access>  
+      </v-col>  
+      <v-col cols="2">
         <cortx-has-access
           :to="$cortxUserPermissions.users + $cortxUserPermissions.create"
         >
@@ -181,6 +64,12 @@
             {{ $t("csmuser.add-user-button") }}
           </button>
         </cortx-has-access>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12">
+        <!-- Create new user dialog box -->
         <div v-if="isUserCreate">
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
@@ -750,12 +639,15 @@ import {
 
 import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
-
+import  CortxDataTable from "../../../widgets/cortx-data-table.vue";
+import { userPermissions } from "../../../../common/user-permissions-map";
+import { CsmUserQueryParam } from '@/models/download';
 @Component({
   name: "cortx-user-setting-local",
   i18n: {
     messages: i18n
-  }
+  },
+  components: {CortxDataTable}
 })
 export default class CortxUserSettingLocal extends Vue {
   @Validations()
@@ -816,25 +708,93 @@ export default class CortxUserSettingLocal extends Vue {
       passwordTooltipMessage: this.$t("csmuser.passwordTooltipMessage"),
       currentPasswordTooltip: this.$t("csmuser.currentPasswordTooltipMsg"),
       selectedRows: [],
-      userHeader: [
+      headersList: [
         {
-          text: "Username",
-          value: "username",
-          sortable: false
+          "field_id": "alert_notification",
+          "label": "alert_notification",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
         },
         {
-          text: "Email",
-          value: "email",
-          sortable: false
+          "field_id": "created_time",
+          "label": "created_time",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
         },
         {
-          text: "Roles",
-          value: "roles",
-          sortable: false
+          "field_id": "email",
+          "label": "Email",
+          "sortable": true,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": true,
         },
         {
-          text: "Action",
-          value: "data-table-expand"
+          "field_id": "id",
+          "label": "id",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
+        },
+        {
+          "field_id": "role",
+          "label": "Role",
+          "sortable": true,
+          "filterable": true,
+          "value": { "type": "text" },
+          "display": true,
+        },
+        {
+          "field_id": "updated_time",
+          "label": "updated_time",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
+        },
+        {
+          "field_id": "user_type",
+          "label": "user_type",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
+        },
+        {
+          "field_id": "username",
+          "label": "Username",
+          "sortable": true,
+          "filterable": true,
+          "value": { "type": "text" },
+          "display": true,
+        },
+        {
+          "field_id": "action_buttons",
+          "label": "Actions",
+          "display_id": 1001,
+          "sortable": false,
+          "filterable": false,
+          "actionDetails": [
+            {
+              "id": "deleteUserAction",
+              "iconClass": "cortx-delete-icon",
+              "tooltip": "Delete user details",
+              "condition": this.deleteActionCondition
+            },
+            {
+              "id": "editUserAction",
+              "iconClass": "cortx-edit-icon",
+              "tooltip": "Edit user details",
+              "condition": this.editActionCondition
+            }
+          ],
+          "display": true,
+          "value": { "type": "buttons" }
         }
       ],
       userData: [],
@@ -852,17 +812,113 @@ export default class CortxUserSettingLocal extends Vue {
       successDialogText: ""
     };
   }
-
+  public csmUsersQueryParam: CsmUserQueryParam = {} as CsmUserQueryParam;
   public async mounted() {
     await this.getUserData();
   }
 
+  public isPasswordPanelCollapse() {
+    this.$data.passExpansionPanels = true;
+  }
+  public enableEditButton() {
+    this.$data.passExpansionPanels = false;
+  }
+  public deleteUserActionCB(event:any, data:any){
+    this.onDeleteConfirmation(data.id);
+  }
+  public deleteActionCondition(record: any) {
+    const vueInstance: any = this;
+    // let allowDeleteOption: boolean = false;
+    const loggedInUser = this.$data.loggedInUserName;
+    if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.delete)) {
+      if(this.numberOfAdminUser() == 1){
+        if(record.role === 'admin'){
+          return false;
+        }
+      }
+      if(this.loggedInUserType("manage")) {
+        if(loggedInUser == record.username) {
+          return true;
+        }
+        return false;
+      }
+      if(this.loggedInUserType("monitor")) {
+        if(loggedInUser == record.username) {
+          return true;
+        }
+        return false;
+      }
+      return true;
+    }
+  }
+  private numberOfAdminUser() {
+    let adminUserCount:number = 0;
+    this.$data.userData.map(function (user: any) {
+      if (user.role == "admin") {
+        adminUserCount++;
+      }
+    });
+    return adminUserCount;
+  }
+  public editUserActionCB(event:any, data:any){
+    this.onEditBtnClick(data);
+  }
+  public editActionCondition(record: any) {
+    const vueInstance: any = this;
+    if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.update)) {
+      if(this.loggedInUserType("monitor")) {
+        const loggedInUser = this.$data.loggedInUserName;
+        if(loggedInUser === record.username) {
+          return true;
+        }
+        return false;
+      }
+      return true;
+    }
+  }
+
   /**
-   * To get the user data list
+   * User Sorting
+   */
+  public async onCsmUserSort(header: any) {
+    if (header.sortable) {
+      if (this.csmUsersQueryParam.sortby && this.csmUsersQueryParam.sortby === header.value) {
+        this.csmUsersQueryParam.dir = this.csmUsersQueryParam.dir === "asc" ? "desc" : "asc";
+      } else {
+        this.csmUsersQueryParam.sortby = header.value;
+        this.csmUsersQueryParam.dir = "asc";
+      }
+      await this.getUserData();
+    }
+  }
+
+
+  /**
+   * User filter data
+   */
+  public async onCsmLogFilter(headerFields: string[], value: string) {
+    if(value.length > 0) {
+      if(headerFields.length > 0) {
+        for (const field of headerFields) {
+          //@ts-ignore
+          this.csmUsersQueryParam[field] = value; //Adding only selected columns as filters
+        }
+      } else {
+        for (const header of this.$data.headersList) {
+          //@ts-ignore
+          this.csmUsersQueryParam[header.field_id] = value; //Adding all column headers as filters
+        }
+      }
+       await this.getUserData();
+    }
+  }
+
+  /**
+   * To get user list
    */
   private async getUserData() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
-    const res = await Api.getAll(apiRegister.csm_user);
+    const res = await Api.getAll(apiRegister.csm_user, this.csmUsersQueryParam);
     if (res && res.data && res.data.users) {
       this.$data.userData = res.data.users;
     }
@@ -884,13 +940,12 @@ export default class CortxUserSettingLocal extends Vue {
       username: this.$data.createAccount.username,
       password: this.$data.createAccount.password,
       interfaces: this.$data.checkedInterfaces,
-      roles: [this.$data.checkedRoles],
+      role: this.$data.checkedRoles,
       temperature: this.$data.temperature,
       language: this.$data.language,
       timeout: 1,
       email: this.$data.createAccount.email
     };
-
     this.$store.dispatch("systemConfig/showLoader", "Creating user...");
     await Api.post(apiRegister.csm_user, queryParams);
     this.$data.isUserCreate = !this.$data.isUserCreate;
@@ -907,18 +962,13 @@ export default class CortxUserSettingLocal extends Vue {
   private onEditBtnClick(props: any) {
     this.$data.isUserCreate = false;
     this.$data.selectedItem = {
-      ...props.item,
-      role: this.isAdminUser(props.item)
-        ? props.item.roles[1]
-        : props.item.roles[0]
+      ...props
     };
     this.$data.isUserEdit =
-      this.$data.selectedRows.indexOf(props.item.id) > -1 ? false : true;
+      this.$data.selectedRows.indexOf(props.id) > -1 ? false : true;
   }
 
   private async editUser(selectedItem: any) {
-    selectedItem.roles = [selectedItem.role];
-    delete selectedItem.role;
     if (
       this.isAdminUser(selectedItem) ||
       this.strEqualityCaseInsensitive(
@@ -926,7 +976,7 @@ export default class CortxUserSettingLocal extends Vue {
         this.$data.loggedInUserName
       )
     ) {
-      delete selectedItem.roles;
+      delete selectedItem.role;
       delete selectedItem.confirmPassword;
     }
     const { username, ...editData } = selectedItem;
@@ -985,11 +1035,11 @@ export default class CortxUserSettingLocal extends Vue {
   }
 
   private isAdminUser(item: any) {
-    return item.roles.includes("admin");
+    return item.role.includes("admin");
   }
 
-  private isLoggedInUserAdmin() {
-    let isAdmin;
+  private loggedInUserType(userType: string) {
+    let loggedInUser;
     const data = this.$data.userData.find((element: any) => {
       if (
         this.strEqualityCaseInsensitive(
@@ -1002,9 +1052,9 @@ export default class CortxUserSettingLocal extends Vue {
     });
 
     if (data) {
-      isAdmin = this.isAdminUser(data);
+      loggedInUser = data.role.includes(userType);
     }
-    return isAdmin;
+    return loggedInUser;
   }
 
   get isEditFormValid() {
