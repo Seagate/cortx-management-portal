@@ -30,13 +30,13 @@
     </div>
     <v-divider class="mt-2" />
     <v-row>
-      <v-col cols="10">
+      <v-col class="py-0 col-xs-6 col-sm-7">
         <cortx-has-access
           :to="$cortxUserPermissions.users + $cortxUserPermissions.list"
         >
           <CortxDataTable
             :headers="headersList"
-            :records="userData"
+            :records="userData.users"
             :onSort="onCsmUserSort"
             :sortParams="csmUsersQueryParam"
             :onFilter="onCsmLogFilter" 
@@ -48,9 +48,9 @@
             @update:items-per-page="getUserData()"
             @update:page="getUserData()"
           />
-        </cortx-has-access>  
-      </v-col>  
-      <v-col cols="2">
+        </cortx-has-access>
+      </v-col>
+      <v-col class="py-0 col-xs-6 pr-0 col-sm-5">
         <cortx-has-access
           :to="$cortxUserPermissions.users + $cortxUserPermissions.create"
         >
@@ -64,12 +64,6 @@
             {{ $t("csmuser.add-user-button") }}
           </button>
         </cortx-has-access>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col cols="12">
-        <!-- Create new user dialog box -->
         <div v-if="isUserCreate">
           <v-row>
             <v-col class="pl-5 pb-0 col-6">
@@ -642,6 +636,7 @@ import apiRegister from "./../../../../services/api-register";
 import  CortxDataTable from "../../../widgets/cortx-data-table.vue";
 import { userPermissions } from "../../../../common/user-permissions-map";
 import { CsmUserQueryParam } from '@/models/download';
+import { ROLES } from "@/common/consts";
 @Component({
   name: "cortx-user-setting-local",
   i18n: {
@@ -650,6 +645,9 @@ import { CsmUserQueryParam } from '@/models/download';
   components: {CortxDataTable}
 })
 export default class CortxUserSettingLocal extends Vue {
+  public ROLES: any = ROLES;
+  public loggedInUserDetails: any = {};
+
   @Validations()
   public validations = {
     createAccount: {
@@ -797,7 +795,10 @@ export default class CortxUserSettingLocal extends Vue {
           "value": { "type": "buttons" }
         }
       ],
-      userData: [],
+      userData: {
+        users: [],
+        users_count_by_role: {}
+      },
       selectedItemToDelete: "",
       showConfirmationDialog: false,
       confirmationDialogMessage: this.$t("csmuser.user-delete-confirm-msg"),
@@ -815,6 +816,7 @@ export default class CortxUserSettingLocal extends Vue {
   public csmUsersQueryParam: CsmUserQueryParam = {} as CsmUserQueryParam;
   public async mounted() {
     await this.getUserData();
+    this.loggedInUserDetails = this.getLoggedInUserDetails();
   }
 
   public isPasswordPanelCollapse() {
@@ -830,48 +832,53 @@ export default class CortxUserSettingLocal extends Vue {
     const vueInstance: any = this;
     let allowDeleteOption: boolean = false;
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.delete)) {
-      const data = this.loggedInUserDetails();
-      const loggedInUser = this.$data.loggedInUserName;
-      if(data.role === 'admin'){
-        if(this.numberOfAdminUser() == 1){
-          if(record.role === 'admin'){
-            allowDeleteOption = false;
-          }else{
+      switch (this.loggedInUserDetails.role) {
+        case this.ROLES.ADMIN:
+          allowDeleteOption = this.$data.userData.users_count_by_role.admin === 1
+                                ? false
+                                : true;
+          break;
+
+        case this.ROLES.MANAGE:
+        case this.ROLES.MONITOR:
+          if(this.loggedInUserDetails.username === record.username) {
             allowDeleteOption = true;
           }
-        }
-      }else{
-        if(loggedInUser === record.username){
-          allowDeleteOption = true;
-        }
+          break;
       }
     }
+
     return allowDeleteOption;
   }
-  private numberOfAdminUser() {
-    let adminUserCount:number = 0;
-    this.$data.userData.map(function (user: any) {
-      if (user.role == "admin") {
-        adminUserCount++;
-      }
-    });
-    return adminUserCount;
-  }
+
   public editUserActionCB(event:any, data:any){
     this.onEditBtnClick(data);
   }
   public editActionCondition(record: any) {
     const vueInstance: any = this;
+    let allowEditOption: boolean = false;
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.update)) {
-      if(this.loggedInUserType("monitor")) {
-        const loggedInUser = this.$data.loggedInUserName;
-        if(loggedInUser === record.username) {
-          return true;
-        }
-        return false;
+      switch (this.loggedInUserDetails.role) {
+        case this.ROLES.ADMIN:
+          allowEditOption = true;
+          break;
+
+        case this.ROLES.MANAGE:
+          if((this.loggedInUserDetails.username === record.username)
+            || (record.role === this.ROLES.MONITOR)) {
+            allowEditOption = true;
+          }
+          break;
+
+        case this.ROLES.MONITOR:
+          if(this.loggedInUserDetails.username === record.username) {
+            allowEditOption = true;
+          }
+          break;
       }
-      return true;
     }
+
+    return allowEditOption;
   }
 
   /**
@@ -917,10 +924,38 @@ export default class CortxUserSettingLocal extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
     const res = await Api.getAll(apiRegister.csm_user, this.csmUsersQueryParam);
     if (res && res.data && res.data.users) {
-      this.$data.userData = res.data.users;
+      this.$data.userData.users = res.data.users;
+      this.$data.userData.users_count_by_role = this.getUserCountByRole();
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
+
+  private getUserCountByRole() {
+    const userCount: any = {
+      admin: 0,
+      manage: 0,
+      monitor: 0
+    };
+
+    for (const user of this.$data.userData.users) {
+      switch (user.role) {
+        case this.ROLES.ADMIN:
+          userCount.admin++;
+          break;
+
+        case this.ROLES.MANAGE:
+          userCount.manage++;
+          break;
+
+        case this.ROLES.MONITOR:
+          userCount.monitor++;
+          break;
+      }
+    }
+
+    return userCount;
+  } 
+
   /**
    * To create csm user
    */
@@ -1035,9 +1070,25 @@ export default class CortxUserSettingLocal extends Vue {
     return item.role.includes("admin");
   }
 
+  private getLoggedInUserDetails() {
+    const loggedInUser = this.$data.userData.users.find((element: any) => {
+      if (
+        this.strEqualityCaseInsensitive(
+          element.username,
+          this.$data.loggedInUserName
+        )
+      ) {
+        return true;
+      }
+    });
+
+    return loggedInUser;
+  }
+
   private loggedInUserType(userType: string) {
+    // console.log(this.$data.userData);
     let loggedInUser;
-    const data = this.$data.userData.find((element: any) => {
+    const data = this.$data.userData.users.find((element: any) => {
       if (
         this.strEqualityCaseInsensitive(
           element.username,
@@ -1052,23 +1103,6 @@ export default class CortxUserSettingLocal extends Vue {
       loggedInUser = data.role.includes(userType);
     }
     return loggedInUser;
-  }
-
-  public loggedInUserDetails() {
-    const data = this.$data.userData.find((element: any) => {
-      if (
-        this.strEqualityCaseInsensitive(
-          element.username,
-          this.$data.loggedInUserName
-        )
-      ) {
-        return true;
-      }
-    });
-
-    if (data) {
-      return data;
-    }
   }
 
   get isEditFormValid() {
