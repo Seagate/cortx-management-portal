@@ -834,9 +834,13 @@ export default class CortxUserSettingLocal extends Vue {
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.delete)) {
       switch (this.loggedInUserDetails.role) {
         case this.ROLES.ADMIN:
-          allowDeleteOption = this.$data.userData.users_count_by_role.admin === 1
-                                ? false
-                                : true;
+          if(record.role === this.ROLES.ADMIN) {
+            allowDeleteOption = this.$data.userData.users_count_by_role.admin === 1
+                                  ? false
+                                  : true;
+          } else {
+            allowDeleteOption = true;
+          }
           break;
 
         case this.ROLES.MANAGE:
