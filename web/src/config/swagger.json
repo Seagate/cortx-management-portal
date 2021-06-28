@@ -59,53 +59,6 @@
         }
       }
     },
-    "/preboarding/user": {
-      "post": {
-        "tags": ["Admin User"],
-        "summary": "Register and create profile for CSM admin user",
-        "responses": {
-          "200": {
-            "description": "OK: Admin user create successfully."
-          },
-          "400": {
-            "description": "Bad Request: Request body is missing or Username or password is missing"
-          },
-          "422": {
-            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-          },
-          "499": {
-            "description": "Call Cancelled: Call cancelled by client."
-          },
-          "500": {
-            "description": "Internal Server Error: When requested resource is not available."
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "User",
-            "in": "body",
-            "description": "CSM User request",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "username": {
-                  "type": "string",
-                  "example": "admin"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "admin"
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
     "/login": {
       "post": {
         "tags": ["User"],
@@ -575,8 +528,8 @@
         ]
       },
       "post": {
-        "tags": ["CSM User"],
-        "summary": "Create new CSM user: CSM user having permission manage can create new CSM user",
+        "tags": ["Admin user", "CSM User"],
+        "summary": "Create new CSM user: CSM user having permission admin or manage can create new CSM user",
         "responses": {
           "201": {
             "description": "User has been created"
@@ -630,8 +583,9 @@
                     "example": "user@test.com"
                   },
                   "roles": {
-                    "type": "array",
-                    "example": ["manage"]
+                    "type": "string",
+                    "enum": ["admin", "manage", "monitor"],
+                    "example": "manage"
                   }
                 }
               }
