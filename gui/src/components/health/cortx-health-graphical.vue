@@ -31,7 +31,7 @@ import * as moment from "moment";
 @Component({
   name: "cortx-health-graphical"
 })
-export default class CortxHealthGraphical1 extends Vue {
+export default class CortxHealthGraphical extends Vue {
   public healthQueryParams: any = {};
   public clusterHealthData: any = {};
 

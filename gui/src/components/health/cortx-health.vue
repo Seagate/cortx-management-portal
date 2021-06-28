@@ -35,7 +35,7 @@ import CortxHealthGraphical from "./cortx-health-graphical.vue";
     CortxHealthTabular
   }
 })
-export default class CortxHealthNew extends Vue {
+export default class CortxHealth extends Vue {
   public tabsInfo: TabsInfo = {
     tabs: [
       {
