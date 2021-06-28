@@ -726,6 +726,12 @@ tbody tr:hover {
 .cortx-resolved-filled-icon:active {
   background-image: url("../assets/resolved-filled-pressed.svg");
 }
+.cortx-delete-icon {
+  background-image: url("../assets/actions/delete-green.svg");
+}
+.cortx-edit-icon {
+  background-image: url("../assets/actions/edit-green.svg");
+}
 .cortx-brand-label {
   color: #6ebe49;
   font-size: 28px;
