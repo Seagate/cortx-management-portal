@@ -607,7 +607,7 @@
                         class="cortx-btn-primary"
                         @click="editUser(selectedItem)"
                         id="lblLocalApplyInterface"
-                        :disabled="!isEditFormValid  || passwordExpansionPanel"
+                        :disabled="!isEditFormValid  || isPasswordFieldOpen"
                       >
                         {{ $t("csmuser.update") }}
                       </button>
@@ -742,7 +742,7 @@ export default class CortxUserSettingLocal extends Vue {
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
       alertStatus: require("./../../../../common/const-string.json"),
-      passwordExpansionPanel: false,
+      isPasswordFieldOpen: false,
       createAccount: {
         username: "",
         password: "",
@@ -878,10 +878,10 @@ export default class CortxUserSettingLocal extends Vue {
   }
 
   public isPasswordPanelCollapse() {
-    this.$data.passExpansionPanels = true;
+    this.$data.isPasswordFieldOpen = true;
   }
   public enableEditButton() {
-    this.$data.passExpansionPanels = false;
+    this.$data.isPasswordFieldOpen = false;
   }
   public deleteUserActionCB(event:any, data:any){
     this.onDeleteConfirmation(data.id);
