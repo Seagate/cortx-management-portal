@@ -21,8 +21,8 @@
         <template v-slot:activator="{ on, attrs }">
             <div
              class="toggle-container" 
-             :class="{active: toggleValue}" 
-             @click="toggleCallback(!toggleValue)" 
+             :class="{active: value}" 
+             @click="callback ? callback(!value) : $emit('input', !value)" 
              v-bind="attrs"
              v-on="on"
             >
@@ -44,10 +44,10 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
   name: "cortx-toggle-slider",
 })
 export default class CortxToggleSlider extends Vue {
-  @Prop({ required: true }) private toggleValue: boolean;
+  @Prop({ required: true }) private value: boolean;
   @Prop({ required: false }) private label: boolean;
   @Prop({ required: false, default: "" }) private tooltip: boolean;
-  @Prop({ required: true }) private toggleCallback: boolean;
+  @Prop({ required: false }) private callback: boolean;
 }
 
 </script>
