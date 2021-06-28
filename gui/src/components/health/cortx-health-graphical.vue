@@ -44,7 +44,7 @@ export default class CortxHealthGraphical extends Vue {
       depth: 0
     };
     this.$store.dispatch("systemConfig/showLoader", "Fetching health...");
-    const res = await Api.getAll(apiRegister.health_graph,
+    const res = await Api.getAll(apiRegister.health_cluster,
       this.healthQueryParams
     );
     this.clusterHealthData = res.data;
