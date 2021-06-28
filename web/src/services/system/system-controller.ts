@@ -48,6 +48,10 @@ export const getNodeHealth = async (req: Request, res: Response)=> {
     return healthSummaryData;
 }
 
+export const getClusterHealth = async (req: Request, res: Response)=> {
+  let healthClusterData = await Api.getAll(apiRegister.get_health_cluster_endpt(req.params.version, req.params.resource), req, res);
+  return healthClusterData;
+}
 
 /**
  * This is responsible to fetching node status.
