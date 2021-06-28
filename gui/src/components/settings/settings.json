@@ -3,7 +3,7 @@
         "settings": {
             "dataNetworkIPv4": "Data network settings: IPv4",
             "forManualOption": "For Manual option, you must configure Virtual IP address and values for Node 0 and Node 1.",
-            "mandatoryField": "Fields marked with * are mandatory. and its working",
+            "mandatoryField": "Fields marked with * are mandatory.",
             "DNSResolverSettings": "DNS resolver settings",
             "managementSettingIPv4": "Management network settings: IPv4",
             "managementSettingIPv4Msg": "Configure the Virtual IP address for managing this system.",

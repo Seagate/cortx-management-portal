@@ -557,6 +557,27 @@ tbody tr:hover {
   ) !important;
 }
 
+/* Health cluster Status style rules --- Start */
+.cortx-cluster-status {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+.cortx-status-online {
+  background: #6ebe49;
+}
+.cortx-status-offline,
+.cortx-status-failed {
+  background: #dc1f2e;
+}
+.cortx-status-degraded {
+  background: #f7a528;
+}
+.cortx-status-unknown {
+  background: #9e9e9e;
+}
+/* Health cluster Status style rules --- End */
+
 /* Status chips style rules --- Start */
 .cortx-status-chip {
   height: 16px;
@@ -704,6 +725,12 @@ tbody tr:hover {
 }
 .cortx-resolved-filled-icon:active {
   background-image: url("../assets/resolved-filled-pressed.svg");
+}
+.cortx-delete-icon {
+  background-image: url("../assets/actions/delete-green.svg");
+}
+.cortx-edit-icon {
+  background-image: url("../assets/actions/edit-green.svg");
 }
 .cortx-brand-label {
   color: #6ebe49;
