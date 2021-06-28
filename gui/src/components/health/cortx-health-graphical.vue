@@ -115,9 +115,9 @@ export default class CortxHealthGraphical extends Vue {
     }
     function update(source) {
       // Assigns the x and y position for the nodes
-      var treeData = treemap(root);
+      let treeData = treemap(root);
       // Compute the new tree layout.
-      var nodes = treeData.descendants(),
+      let nodes = treeData.descendants(),
         links = treeData.descendants().slice(1);
       // Normalize for fixed-depth.
       nodes.forEach(function(d: any) {
@@ -126,11 +126,11 @@ export default class CortxHealthGraphical extends Vue {
       // ****************** Nodes section ***************************
       // Update the nodes...
       let i = 0;
-      var node = svg.selectAll("g.node").data(nodes, function(d: any) {
+      let node = svg.selectAll("g.node").data(nodes, function(d: any) {
         return d.id || (d.id = ++i);
       });
       // Enter any new modes at the parent's previous position.
-      var nodeEnter = node
+      let nodeEnter = node
         .enter()
         .append("g")
         .attr("class", "node")
@@ -442,7 +442,7 @@ export default class CortxHealthGraphical extends Vue {
         .style("cursor", "pointer")
         .on("click", click);
       // UPDATE
-      var nodeUpdate = nodeEnter.merge(node);
+      let nodeUpdate = nodeEnter.merge(node);
       // Transition to the proper position for the node
       nodeUpdate
         .transition()
@@ -451,7 +451,7 @@ export default class CortxHealthGraphical extends Vue {
           return "translate(" + d.y + "," + d.x + ")";
         });
       // Remove any exiting nodes
-      var nodeExit = node
+      let nodeExit = node
         .exit()
         .transition()
         .duration(duration)
@@ -468,16 +468,16 @@ export default class CortxHealthGraphical extends Vue {
       nodeExit.select("text");
       // ****************** links section ***************************
       // Update the links...
-      var link = svg.selectAll("path.link").data(links, function(d: any) {
+      let link = svg.selectAll("path.link").data(links, function(d: any) {
         return d.id;
       });
       // Enter any new links at the parent's previous position.
-      var linkEnter = link
+      let linkEnter = link
         .enter()
         .insert("path", "g")
         .attr("class", "link")
         .attr("d", function(d: any) {
-          var o = { x: source.x0, y: source.y0 };
+          let o = { x: source.x0, y: source.y0 };
           return diagonal(o, o);
         })
         .style("fill", "none")
@@ -485,7 +485,7 @@ export default class CortxHealthGraphical extends Vue {
         .style("stroke-width", "1px")
         .style("stroke-dasharray", "2 2");
       // UPDATE
-      var linkUpdate = linkEnter.merge(link);
+      let linkUpdate = linkEnter.merge(link);
       // Transition back to the parent element position
       linkUpdate
         .transition()
@@ -494,12 +494,12 @@ export default class CortxHealthGraphical extends Vue {
           return diagonal(d, d.parent);
         });
       // Remove any exiting links
-      var linkExit = link
+      let linkExit = link
         .exit()
         .transition()
         .duration(duration)
         .attr("d", function(d: any) {
-          var o = { x: source.x, y: source.y };
+          let o = { x: source.x, y: source.y };
           return diagonal(o, o);
         })
         .remove();
