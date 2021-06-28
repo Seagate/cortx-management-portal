@@ -64,7 +64,6 @@
             {{ $t("csmuser.add-user-button") }}
           </button>
         </cortx-has-access>
-<<<<<<< HEAD
       </v-col>
     </v-row>
         <v-row>
@@ -107,39 +106,6 @@
                         <label
                           id="localusername-required"
                           v-if="
-=======
-        <div v-if="isUserCreate">
-          <v-row>
-            <v-col class="pl-5 pb-0 col-6">
-              <div
-                class="cortx-form-group-custom"
-                :class="{
-                  'cortx-form-group--error': $v.createAccount.username.$error
-                }"
-              >
-                <label
-                  class="cortx-form-group-label"
-                  for="Username"
-                  id="lblusername"
-                >
-                  <cortx-info-tooltip
-                    label="Username*"
-                    :message="usernameTooltipMessage"
-                  />
-                </label>
-                <input
-                  class="cortx-form__input_text"
-                  type="text"
-                  name="txtCreateUsername"
-                  v-model.trim="createAccount.username"
-                  id="txtLocalHostname"
-                  @input="$v.createAccount.username.$touch"
-                />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="localusername-required"
-                    v-if="
->>>>>>> 89500b001105471bd7b71875f355843be9c8f138
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.required
                     "
