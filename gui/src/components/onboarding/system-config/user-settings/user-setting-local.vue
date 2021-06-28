@@ -1085,26 +1085,6 @@ export default class CortxUserSettingLocal extends Vue {
     return loggedInUser;
   }
 
-  private loggedInUserType(userType: string) {
-    // console.log(this.$data.userData);
-    let loggedInUser;
-    const data = this.$data.userData.users.find((element: any) => {
-      if (
-        this.strEqualityCaseInsensitive(
-          element.username,
-          this.$data.loggedInUserName
-        )
-      ) {
-        return true;
-      }
-    });
-
-    if (data) {
-      loggedInUser = data.role.includes(userType);
-    }
-    return loggedInUser;
-  }
-
   get isEditFormValid() {
     return !this.$v.selectedItem.$invalid;
   }
