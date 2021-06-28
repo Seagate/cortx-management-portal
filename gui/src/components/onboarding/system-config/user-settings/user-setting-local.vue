@@ -1022,12 +1022,10 @@ export default class CortxUserSettingLocal extends Vue {
    * To create csm user
    */
   private onAddNewUser() {
-    debugger;
     if (this.$data.isUserCreate) {
       this.clearCreateAccountForm();
     }
     this.$data.isUserCreate = !this.$data.isUserCreate;
-    console.log('print');
     return this.$data.isUserCreate;
 
   }
