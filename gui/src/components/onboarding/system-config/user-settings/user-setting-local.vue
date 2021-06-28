@@ -878,28 +878,25 @@ export default class CortxUserSettingLocal extends Vue {
   }
   public deleteActionCondition(record: any) {
     const vueInstance: any = this;
-    // let allowDeleteOption: boolean = false;
-    const loggedInUser = this.$data.loggedInUserName;
+    let allowDeleteOption: boolean = false;
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.delete)) {
-      if(this.numberOfAdminUser() == 1){
-        if(record.role === 'admin'){
-          return false;
+      const data = this.loggedInUserDetails();
+      const loggedInUser = this.$data.loggedInUserName;
+      if(data.role === 'admin'){
+        if(this.numberOfAdminUser() == 1){
+          if(record.role === 'admin'){
+            allowDeleteOption = false;
+          }else{
+            allowDeleteOption = true;
+          }
+        }
+      }else{
+        if(loggedInUser === record.username){
+          allowDeleteOption = true;
         }
       }
-      if(this.loggedInUserType("manage")) {
-        if(loggedInUser == record.username) {
-          return true;
-        }
-        return false;
-      }
-      if(this.loggedInUserType("monitor")) {
-        if(loggedInUser == record.username) {
-          return true;
-        }
-        return false;
-      }
-      return true;
     }
+    return allowDeleteOption;
   }
   private numberOfAdminUser() {
     let adminUserCount:number = 0;
@@ -1105,6 +1102,23 @@ export default class CortxUserSettingLocal extends Vue {
       loggedInUser = data.role.includes(userType);
     }
     return loggedInUser;
+  }
+
+  public loggedInUserDetails() {
+    const data = this.$data.userData.find((element: any) => {
+      if (
+        this.strEqualityCaseInsensitive(
+          element.username,
+          this.$data.loggedInUserName
+        )
+      ) {
+        return true;
+      }
+    });
+
+    if (data) {
+      return data;
+    }
   }
 
   get isEditFormValid() {
