@@ -30,7 +30,7 @@
     </div>
     <v-divider class="mt-2" />
     <v-row>
-      <v-col class="py-0 col-xs-6 col-sm-7">
+      <v-col cols="10">
         <cortx-has-access
           :to="$cortxUserPermissions.users + $cortxUserPermissions.list"
         >
@@ -50,7 +50,7 @@
           />
         </cortx-has-access>
       </v-col>
-      <v-col class="py-0 col-xs-6 pr-0 col-sm-5">
+      <v-col cols="2">
         <cortx-has-access
           :to="$cortxUserPermissions.users + $cortxUserPermissions.create"
         >
@@ -66,7 +66,7 @@
         </cortx-has-access>
       </v-col>
     </v-row>
-        <v-row>
+    <v-row>
       <v-col cols="12">
         <!-- Create new user dialog box -->
         <v-dialog
@@ -241,7 +241,7 @@
                   <v-col cols="12">
                     <label class="mr-3">{{ $t("csmuser.roles") }}</label>
 
-                    <label class="cortx-rdb-container ml-4" id="localuser-adminlbl" v-if="loggedInUserType('admin')">
+                    <label class="cortx-rdb-container ml-4" id="localuser-adminlbl" v-if="loggedInUserDetails.role === ROLES.ADMIN">
                       {{ $t("csmuser.admin") }}
                       <input
                         type="radio"
@@ -535,10 +535,10 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" v-if="!loggedInUserType('monitor')">
+                  
+                  <v-col cols="12">
                     <label class="mr-3">{{ $t("csmuser.roles") }}</label>
-
-                    <label class="cortx-rdb-container ml-4" v-if="loggedInUserType('admin')">
+                    <label class="cortx-rdb-container ml-4" v-if="loggedInUserDetails.role === ROLES.ADMIN">
                       {{ $t("csmuser.admin") }}
                       <input
                         type="radio"
@@ -937,6 +937,25 @@ export default class CortxUserSettingLocal extends Vue {
     return allowEditOption;
   }
 
+    private loggedInUserType(userType: string) {
+    let loggedInUser;
+    const data = this.$data.userData.find((element: any) => {
+      if (
+        this.strEqualityCaseInsensitive(
+          element.username,
+          this.$data.loggedInUserName
+        )
+      ) {
+        return true;
+      }
+    });
+
+    if (data) {
+      loggedInUser = data.role.includes(userType);
+    }
+    return loggedInUser;
+  }
+
   /**
    * User Sorting
    */
@@ -1016,11 +1035,14 @@ export default class CortxUserSettingLocal extends Vue {
    * To create csm user
    */
   private onAddNewUser() {
+    debugger;
     if (this.$data.isUserCreate) {
       this.clearCreateAccountForm();
     }
     this.$data.isUserCreate = !this.$data.isUserCreate;
+    console.log('print');
     return this.$data.isUserCreate;
+
   }
 
   private async createUser() {
