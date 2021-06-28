@@ -29,8 +29,25 @@
       {{ $t("csmuser.note-label") }}
     </div>
     <v-divider class="mt-2" />
+    <v-row class="pa-0 ma-0">
+      <v-col cols="12" class="pa-0 ma-0">
+        <cortx-has-access
+          :to="$cortxUserPermissions.users + $cortxUserPermissions.create"
+        >
+          <button
+            v-if="!isUserCreate && !isUserEdit"
+            type="button"
+            class="mt-4 cortx-btn-primary"
+            @click="onAddNewUser()"
+            id="btnLocalAddNewUser"
+          >
+            {{ $t("csmuser.add-user-button") }}
+          </button>
+        </cortx-has-access>
+      </v-col>
+    </v-row>
     <v-row>
-      <v-col cols="10">
+      <v-col cols="12">
         <cortx-has-access
           :to="$cortxUserPermissions.users + $cortxUserPermissions.list"
         >
@@ -48,21 +65,6 @@
             @update:items-per-page="getUserData()"
             @update:page="getUserData()"
           />
-        </cortx-has-access>
-      </v-col>
-      <v-col cols="2">
-        <cortx-has-access
-          :to="$cortxUserPermissions.users + $cortxUserPermissions.create"
-        >
-          <button
-            v-if="!isUserCreate && !isUserEdit"
-            type="button"
-            class="mt-4 cortx-btn-primary"
-            @click="onAddNewUser()"
-            id="btnLocalAddNewUser"
-          >
-            {{ $t("csmuser.add-user-button") }}
-          </button>
         </cortx-has-access>
       </v-col>
     </v-row>
@@ -876,10 +878,10 @@ export default class CortxUserSettingLocal extends Vue {
   }
 
   public isPasswordPanelCollapse() {
-    this.$data.passwordExpansionPanel = true;
+    this.$data.passExpansionPanels = true;
   }
   public enableEditButton() {
-    this.$data.passwordExpansionPanel = false;
+    this.$data.passExpansionPanels = false;
   }
   public deleteUserActionCB(event:any, data:any){
     this.onDeleteConfirmation(data.id);
@@ -890,9 +892,13 @@ export default class CortxUserSettingLocal extends Vue {
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.delete)) {
       switch (this.loggedInUserDetails.role) {
         case this.ROLES.ADMIN:
-          allowDeleteOption = this.$data.userData.users_count_by_role.admin === 1
-                                ? false
-                                : true;
+          if(record.role === this.ROLES.ADMIN) {
+            allowDeleteOption = this.$data.userData.users_count_by_role.admin === 1
+                                  ? false
+                                  : true;
+          } else {
+            allowDeleteOption = true;
+          }
           break;
 
         case this.ROLES.MANAGE:
@@ -935,25 +941,6 @@ export default class CortxUserSettingLocal extends Vue {
     }
 
     return allowEditOption;
-  }
-
-    private loggedInUserType(userType: string) {
-    let loggedInUser;
-    const data = this.$data.userData.find((element: any) => {
-      if (
-        this.strEqualityCaseInsensitive(
-          element.username,
-          this.$data.loggedInUserName
-        )
-      ) {
-        return true;
-      }
-    });
-
-    if (data) {
-      loggedInUser = data.role.includes(userType);
-    }
-    return loggedInUser;
   }
 
   /**
