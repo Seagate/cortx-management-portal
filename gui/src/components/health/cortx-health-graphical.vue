@@ -152,6 +152,9 @@ export default class CortxHealthGraphical extends Vue {
             case "offline" :
               color = "#dc1f2e";
               break;
+            case "failed" :
+              color = "#dc1f2e";
+              break;
             case "degraded" :
               color = "#f7a528";
               break;
@@ -166,7 +169,7 @@ export default class CortxHealthGraphical extends Vue {
         .append("rect")
         .attr("width", function(d: any) {
           let width;
-          if (d.data.status == "online" || d.data.status == "offline") {
+          if (d.data.status == "online" || d.data.status == "offline" || d.data.status == "failed" ) {
             width = "70px";
           } else if (
             d.data.status == "unknown" ||
@@ -189,6 +192,9 @@ export default class CortxHealthGraphical extends Vue {
             case "offline" :
               color = "#dc1f2e";
               break;
+            case "failed" :
+              color = "#dc1f2e";
+              break;
             case "degraded" :
               color = "#f7a528";
               break;
@@ -203,7 +209,7 @@ export default class CortxHealthGraphical extends Vue {
         .attr("dy", "24px")
         .attr("x", function(d: any) {
           let xValue;
-          if (d.data.status == "online" || d.data.status == "offline") {
+          if (d.data.status == "online" || d.data.status == "offline" || d.data.status == "failed") {
             xValue = d.children || d._children ? "68px" : "24px";
           } else if (
             d.data.status == "unknown" ||
@@ -317,6 +323,9 @@ export default class CortxHealthGraphical extends Vue {
             case "offline" :
               color = "#dc1f2e";
               break;
+            case "failed" :
+              color = "#dc1f2e";
+              break;
             case "degraded" :
               color = "#f7a528";
               break;
@@ -339,6 +348,9 @@ export default class CortxHealthGraphical extends Vue {
               imageLink = require("@/assets/green-icon.svg/");
               break;
             case "offline" :
+              imageLink = require("@/assets/red-icon.svg/");
+              break;
+            case "failed" :
               imageLink = require("@/assets/red-icon.svg/");
               break;
             case "degraded" :
