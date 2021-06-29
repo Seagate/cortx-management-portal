@@ -101,7 +101,7 @@
                         type="text"
                         name="txtCreateUsername"
                         v-model.trim="createAccount.username"
-                        id="txtLocalHostname"
+                        id="txtUsername"
                         @input="$v.createAccount.username.$touch"
                       />
                       <div class="cortx-form-group-label cortx-form-group-error-msg">
