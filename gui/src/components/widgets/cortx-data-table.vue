@@ -70,7 +70,7 @@
                     'tableheader',
                     header.sortable ? 'cortx-cursor-pointer' : ''
                   ]"
-                  @click="onSort(header)"
+                  @click="header.sortable ? onSort(header) : null"
                 >
                   <span>
                     {{ header.text }} 

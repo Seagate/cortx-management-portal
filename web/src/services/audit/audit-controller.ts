@@ -36,4 +36,11 @@ export const showAuditlog = async (req: Request, res: Response) => {
   return auditlog;
 };
 
-
+export const getAuditLogSchema = async (req: Request, res: Response) => {
+  let url = apiRegister.get_auditlogs_endpt(req.params.version);
+  if (req.params.component) {
+    url += "/schema_info/" + req.params.component;
+  }
+  let auditlog = Api.getAll(url, req, res);
+  return auditlog;
+};

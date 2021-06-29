@@ -197,53 +197,48 @@ export default class CortxAuditLog extends Vue {
     }
   }
 
-  public clearFilters() {
-    for (const header of this.auditLogTableHeaderList) {
-      //@ts-ignore
-      delete this.auditLogQueryParams[header.field_id]
-    }
-  }
-
   public async onAuditLogFilter(headerFields: string[], value: string) {
-    if(value.length > 0) {
-      this.clearFilters(); //This call is to clear any previously added filters
+      try {
+        this.auditLogQueryParams["filter"] = "";
+        let headers = [];
 
-      if(headerFields.length > 0) {
-        for (const field of headerFields) {
-          //@ts-ignore
-          this.auditLogQueryParams[field] = value; //Adding only selected columns as filters
+        if(headerFields.length > 0) {
+          headers = headerFields; //Adding only selected columns as filters
+        } else {
+          headers = this.auditLogTableHeaderList; //Adding all column headers as filters
         }
-      } else {
-        for (const header of this.auditLogTableHeaderList) {
+
+        for (let i = 0;i < headers.length;i++) {
           //@ts-ignore
-          this.auditLogQueryParams[header.field_id] = value; //Adding all column headers as filters
+          this.auditLogQueryParams["filter"] += `${i > 0 ? " OR " : ""}${headers[i]}=${value}`;
         }
+        this.auditLogQueryParams["filter"] = `{${this.auditLogQueryParams["filter"]}}`;
+
+        await this.getAuditLogs();
+      } catch (error) {
+        console.log(error) 
       }
-
-       await this.getAuditLogs();
-    }
   }
 
   
 
   public async getAuditLogs() {
-    this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");
-    const res = await Api.getAll(
-      `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
-      this.auditLogQueryParams
-    );
-    this.auditLog = res.data;
-
-    //API call to get schema for the headers
-    if (this.component === "CSM"){ 
-      const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/csm-headers`);
+    try {
+      this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");
+      const res = await Api.getAll(
+        `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
+        this.auditLogQueryParams
+      );
+      this.auditLog = res.data;
+  
+      //API call to get schema for the headers
+      const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${this.auditLogQueryParams.component.toLowerCase()}`);
       this.auditLogTableHeaderList = headerResponse.data;
-    } else if (this.component === "S3") {
-      const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/s3-headers`);
-      this.auditLogTableHeaderList = headerResponse.data;
+  
+      this.isShowLogs = true;
+    } catch (error) {
+      console.log(error);
     }
-
-    this.isShowLogs = true;
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
