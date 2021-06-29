@@ -15,9 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
-    <div id="treeContainer"></div>
-  </div>
+  <div id="treeContainer"></div>
 </template>
 <script lang="ts">
 import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
@@ -25,28 +23,24 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import * as d3 from "d3";
-// import { tree } from "vued3tree";
 import * as moment from "moment";
 
 @Component({
   name: "cortx-health-graphical"
 })
 export default class CortxHealthGraphical extends Vue {
-  public healthQueryParams: any = {};
   public clusterHealthData: any = {};
 
-  public mounted() {
-    this.getHealthData();
+  public async mounted() {
+    await this.getHealthData();
   }
 
   public async getHealthData() {
-    this.healthQueryParams = {
+    const healthQueryParams = {
       depth: 0
     };
     this.$store.dispatch("systemConfig/showLoader", "Fetching health...");
-    const res = await Api.getAll(apiRegister.health_cluster,
-      this.healthQueryParams
-    );
+    const res = await Api.getAll(apiRegister.health_cluster, healthQueryParams);
     this.clusterHealthData = res.data;
 
     function traverse(obj) {
@@ -89,9 +83,8 @@ export default class CortxHealthGraphical extends Vue {
       .attr("height", height + margin.top + margin.bottom)
       .style("overflow", "auto")
       .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    const i = 0,
-      duration = 750;
+      .attr("transform", `translate( ${margin.left} , ${margin.top} )`);
+    const duration = 750;
     // declares a tree layout and assigns the size
     const treemap = d3.tree().size([height, width]);
     // Assigns parent, children, height, depth
@@ -135,7 +128,7 @@ export default class CortxHealthGraphical extends Vue {
         .append("g")
         .attr("class", "node")
         .attr("transform", function(d: any) {
-          return "translate(" + source.y0 + "," + source.x0 + ")";
+          return `translate( ${source.y0} , ${source.x0} )`;
         });
       nodeEnter
         .append("rect")
@@ -143,33 +136,17 @@ export default class CortxHealthGraphical extends Vue {
         .attr("height", "100")
         .attr("rx", 5)
         .style("fill", "#fff")
-        .style("stroke", function(d: any) {
-          let color;
-          switch(d.data.status) {
-            case "online" :
-              color = "#6ebe49";
-              break;
-            case "offline" :
-              color = "#dc1f2e";
-              break;
-            case "failed" :
-              color = "#dc1f2e";
-              break;
-            case "degraded" :
-              color = "#f7a528";
-              break;
-            case "unknown" :
-              color = "#9e9e9e";
-              break;
-          }
-          return color;
-        })
+        .style("stroke", color)
         .style("stroke-width", 1);
       nodeEnter
         .append("rect")
         .attr("width", function(d: any) {
           let width;
-          if (d.data.status == "online" || d.data.status == "offline" || d.data.status == "failed" ) {
+          if (
+            d.data.status == "online" ||
+            d.data.status == "offline" ||
+            d.data.status == "failed"
+          ) {
             width = "70px";
           } else if (
             d.data.status == "unknown" ||
@@ -183,33 +160,17 @@ export default class CortxHealthGraphical extends Vue {
         .attr("rx", 10)
         .attr("x", 10)
         .attr("y", 7)
-        .style("fill", function(d: any) {
-          let color;
-          switch(d.data.status) {
-            case "online" :
-              color = "#6ebe49";
-              break;
-            case "offline" :
-              color = "#dc1f2e";
-              break;
-            case "failed" :
-              color = "#dc1f2e";
-              break;
-            case "degraded" :
-              color = "#f7a528";
-              break;
-            case "unknown" :
-              color = "#9e9e9e";
-              break;
-          }
-          return color;
-        });
+        .style("fill", color);
       nodeEnter
         .append("text")
         .attr("dy", "24px")
         .attr("x", function(d: any) {
           let xValue;
-          if (d.data.status == "online" || d.data.status == "offline" || d.data.status == "failed") {
+          if (
+            d.data.status == "online" ||
+            d.data.status == "offline" ||
+            d.data.status == "failed"
+          ) {
             xValue = d.children || d._children ? "68px" : "24px";
           } else if (
             d.data.status == "unknown" ||
@@ -233,20 +194,20 @@ export default class CortxHealthGraphical extends Vue {
         .attr("x", "10px")
         .attr("y", "60px")
         .attr("id", function(d: any) {
-          return "nodeInfoTextID" + d.id + d.depth;
+          return `nodeInfoTextID${d.id}${d.depth}`;
         })
         .style("visibility", "hidden")
         .append("tspan")
         .style("font-size", "10px")
         .text(function(d: any) {
-          return "Name: " + d.data.resource;
+          return `Name: ${d.data.resource}`;
         })
         .append("tspan")
         .style("font-size", "10px")
         .attr("x", "10px")
         .attr("dy", "15px")
         .text(function(d: any) {
-          return "ID: " + d.data.id;
+          return `ID: ${d.data.id}`;
         })
         .append("tspan")
         .attr("x", "10px")
@@ -255,7 +216,7 @@ export default class CortxHealthGraphical extends Vue {
         .text(function(d: any) {
           let time = new Date(d.data.last_updated_time * 1000);
           time = moment.default(time).format("DD-MM-YYYY hh:mm A");
-          return "Time: " + time;
+          return `Time: ${time}`;
         });
       nodeEnter
         .append("image")
@@ -267,39 +228,26 @@ export default class CortxHealthGraphical extends Vue {
         .attr("height", "20px")
         .style("cursor", "pointer")
         .on("click", function(d: any) {
-          if (
-            window.getComputedStyle(
-              document.getElementById("nodeInfoTextID" + d.id + d.depth)
-            ).visibility === "hidden"
-          ) {
-            document
-              .getElementById("nodeInfoTextID" + d.id + d.depth)
-              .setAttribute("style", "visibility: visible");
-            document
-              .getElementById("noneImage" + d.id + d.depth)
-              .setAttribute("style", "visibility: hidden");
-            document
-              .getElementById("nodetextId" + d.id + d.depth)
-              .setAttribute("style", "visibility: hidden");
-            document
-              .getElementById("nodetextId1" + d.id + d.depth)
-              .setAttribute("style", "visibility: hidden");
+          const nodeInfoText = document.getElementById(`nodeInfoTextID${d.id}${d.depth}`),
+            noneImage = document.getElementById(`noneImage${d.id}${d.depth}`),
+            nodetextId = document.getElementById(`nodetextId${d.id}${d.depth}`),
+            nodetextId1 = document.getElementById(`nodetextId1${d.id}${d.depth}`);
+          if (window.getComputedStyle(nodeInfoText).visibility === "hidden") {
+            nodeInfoText.setAttribute("style", "visibility: visible");
+            noneImage.setAttribute("style", "visibility: hidden");
+            nodetextId.setAttribute("style", "visibility: hidden");
+            nodetextId1.setAttribute("style", "visibility: hidden");
           } else {
-            document
-              .getElementById("nodeInfoTextID" + d.id + d.depth)
-              .setAttribute("style", "visibility: hidden");
-            document
-              .getElementById("noneImage" + d.id + d.depth)
-              .setAttribute("style", "visibility: visible");
-            document
-              .getElementById("nodetextId" + d.id + d.depth)
-              .setAttribute(
-                "style",
-                "font-size: 14px; font-weight: bold; text-transform: capitalize;"
-              );
-            document
-              .getElementById("nodetextId1" + d.id + d.depth)
-              .setAttribute("style", "visibility: visible; font-size: 12px");
+            nodeInfoText.setAttribute("style", "visibility: hidden");
+            noneImage.setAttribute("style", "visibility: visible");
+            nodetextId.setAttribute(
+              "style",
+              "font-size: 14px; font-weight: bold; text-transform: capitalize;"
+            );
+            nodetextId1.setAttribute(
+              "style",
+              "visibility: visible; font-size: 12px"
+            );
           }
         });
       nodeEnter
@@ -314,54 +262,14 @@ export default class CortxHealthGraphical extends Vue {
         })
         .attr("y2", "40px")
         .attr("y1", "40px")
-        .attr("stroke", function(d: any) {
-          let color;
-          switch(d.data.status) {
-            case "online" :
-              color = "#6ebe49";
-              break;
-            case "offline" :
-              color = "#dc1f2e";
-              break;
-            case "failed" :
-              color = "#dc1f2e";
-              break;
-            case "degraded" :
-              color = "#f7a528";
-              break;
-            case "unknown" :
-              color = "#9e9e9e";
-              break;
-          }
-          return color;
-        });
+        .attr("stroke", color);
       nodeEnter
         .append("image")
         .attr("class", "node")
         .attr("id", function(d: any) {
-          return "noneImage" + d.id + d.depth;
+          return `noneImage${d.id}${d.depth}`;
         })
-        .attr("xlink:href", function(d: any) {
-          let imageLink;
-          switch(d.data.status) {
-            case "online" :
-              imageLink = require("@/assets/green-icon.svg/");
-              break;
-            case "offline" :
-              imageLink = require("@/assets/red-icon.svg/");
-              break;
-            case "failed" :
-              imageLink = require("@/assets/red-icon.svg/");
-              break;
-            case "degraded" :
-              imageLink = require("@/assets/yellow-icon.svg/");
-              break;
-            case "unknown" :
-              imageLink = require("@/assets/grey-icon.svg/");
-              break;
-          }
-          return imageLink;
-        })
+        .attr("xlink:href", imageLink)
         .attr("x", "10px")
         .attr("y", "55px")
         .attr("width", "30px")
@@ -369,7 +277,7 @@ export default class CortxHealthGraphical extends Vue {
       nodeEnter
         .append("text")
         .attr("id", function(d: any) {
-          return "nodetextId" + d.id + d.depth;
+          return `nodetextId${d.id}${d.depth}`;
         })
         .attr("dy", "70px")
         .attr("x", function(d: any) {
@@ -384,7 +292,7 @@ export default class CortxHealthGraphical extends Vue {
       nodeEnter
         .append("text")
         .attr("id", function(d: any) {
-          return "nodetextId1" + d.id + d.depth;
+          return `nodetextId1${d.id}${d.depth}`;
         })
         .attr("dy", "90px")
         .attr("x", function(d: any) {
@@ -393,7 +301,7 @@ export default class CortxHealthGraphical extends Vue {
         .style("font-size", "12px")
         .text(function(d: any) {
           if (d.data.id.length > 5) {
-            return d.data.id.substring(0, 5) + "...";
+            return `${d.data.id.substring(0, 5)}...`;
           } else {
             return d.data.id;
           }
@@ -448,7 +356,7 @@ export default class CortxHealthGraphical extends Vue {
         .transition()
         .duration(duration)
         .attr("transform", function(d: any) {
-          return "translate(" + d.y + "," + d.x + ")";
+          return `translate(${d.y} , ${d.x})`;
         });
       // Remove any exiting nodes
       let nodeExit = node
@@ -456,11 +364,12 @@ export default class CortxHealthGraphical extends Vue {
         .transition()
         .duration(duration)
         .attr("transform", function(d: any) {
-          return "translate(" + source.y + "," + source.x + ")";
+          return `translate(${source.y} , ${source.x})`;
         })
         .remove();
       // On exit reduce the node circles size to 0
-      nodeExit.select("rect")
+      nodeExit
+        .select("rect")
         .attr("width", "140")
         .attr("height", "100")
         .attr("stroke-width", 1);
@@ -511,8 +420,7 @@ export default class CortxHealthGraphical extends Vue {
       });
       // Creates a curved (diagonal) path from parent to the child nodes
       function diagonal(s: any, d: any) {
-        let path;
-        path = `M ${s.y} ${s.x + 40}
+        const path = `M ${s.y} ${s.x + 40}
                 L ${d.y + 165} ${d.x + 40}`;
         return path;
       }
@@ -526,6 +434,50 @@ export default class CortxHealthGraphical extends Vue {
           d._children = null;
         }
         update(d);
+      }
+
+      function color(d: any) {
+        let color;
+        switch (d.data.status) {
+          case "online":
+            color = "#6ebe49";
+            break;
+          case "offline":
+            color = "#dc1f2e";
+            break;
+          case "failed":
+            color = "#dc1f2e";
+            break;
+          case "degraded":
+            color = "#f7a528";
+            break;
+          case "unknown":
+            color = "#9e9e9e";
+            break;
+        }
+        return color;
+      }
+      
+      function imageLink(d: any) {
+        let imageLink;
+        switch (d.data.status) {
+          case "online":
+            imageLink = require("@/assets/green-icon.svg/");
+            break;
+          case "offline":
+            imageLink = require("@/assets/red-icon.svg/");
+            break;
+          case "failed":
+            imageLink = require("@/assets/red-icon.svg/");
+            break;
+          case "degraded":
+            imageLink = require("@/assets/yellow-icon.svg/");
+            break;
+          case "unknown":
+            imageLink = require("@/assets/grey-icon.svg/");
+            break;
+        }
+        return imageLink;
       }
     }
   }
