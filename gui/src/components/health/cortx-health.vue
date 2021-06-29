@@ -17,17 +17,21 @@
 <template>
   <div class="cortx-p-1">
     <cortx-tabs :tabsInfo="tabsInfo" />
+      <CortxHealthGraphical v-if="showGraphTab" />
       <CortxHealthTabular v-if="showTableTab" />
   </div>
 </template>
- <script lang="ts">
+<script lang="ts">
 import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import CortxHealthTabular from "./cortx-health-tabular.vue";
+import CortxHealthGraphical from "./cortx-health-graphical.vue";
+
 @Component({
   name: "cortx-health",
   components: {
     CortxTabs,
+    CortxHealthGraphical,
     CortxHealthTabular
   }
 })
@@ -36,6 +40,12 @@ export default class CortxHealth extends Vue {
     tabs: [
       {
         id: 1,
+        label: "Graphical",
+        show: true,
+        requiredAccess: "health"
+      },
+      {
+        id: 2,
         label: "Tabular",
         show: true,
         requiredAccess: "health"
@@ -43,12 +53,18 @@ export default class CortxHealth extends Vue {
     ],
     selectedTab: 1
   };
-  private showTableTab: boolean = true;
+  private showGraphTab: boolean = true;
+  private showTableTab: boolean = false;
   
   @Watch("tabsInfo.selectedTab")
   public onPropertyChanged(value: number, oldValue: number) {
     switch (value) {
       case 1:
+        this.showGraphTab = true;
+        this.showTableTab = false;
+        break;
+      case 2:
+        this.showGraphTab = false;
         this.showTableTab = true;
         break;
     }
