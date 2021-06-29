@@ -42,29 +42,7 @@ export default class CortxHealthGraphical extends Vue {
     this.$store.dispatch("systemConfig/showLoader", "Fetching health...");
     const res = await Api.getAll(apiRegister.health_cluster, healthQueryParams);
     this.clusterHealthData = res.data;
-
-    function traverse(obj) {
-      if (obj.sub_resources && obj.sub_resources.length > 0) {
-        rename(obj);
-        if (obj.children.length > 0) {
-          for (let i = 0; i < obj.children.length; i++) {
-            traverse(obj.children[i]);
-          }
-        }
-      } else {
-        rename(obj);
-      }
-    }
-
-    function rename(obj) {
-      obj.children = obj.sub_resources;
-      delete obj.sub_resources;
-    }
-
-    traverse(this.clusterHealthData.data[0]);
-
     this.$store.dispatch("systemConfig/hideLoader");
-
     this.plotTree();
   }
 
@@ -88,8 +66,8 @@ export default class CortxHealthGraphical extends Vue {
     // declares a tree layout and assigns the size
     const treemap = d3.tree().size([height, width]);
     // Assigns parent, children, height, depth
-    const root = d3.hierarchy(this.clusterHealthData.data[0], function(d: any) {
-      return d.children;
+    const root: any = d3.hierarchy(this.clusterHealthData.data[0], function(d: any) {
+      return d.sub_resources;
     });
     root.x0 = 0;
     root.y0 = 0;
@@ -106,11 +84,11 @@ export default class CortxHealthGraphical extends Vue {
         d.children.forEach(collapse);
       }
     }
-    function update(source) {
+    function update(source: any) {
       // Assigns the x and y position for the nodes
-      let treeData = treemap(root);
+      const treeData = treemap(root);
       // Compute the new tree layout.
-      let nodes = treeData.descendants(),
+      const nodes = treeData.descendants(),
         links = treeData.descendants().slice(1);
       // Normalize for fixed-depth.
       nodes.forEach(function(d: any) {
@@ -119,11 +97,11 @@ export default class CortxHealthGraphical extends Vue {
       // ****************** Nodes section ***************************
       // Update the nodes...
       let i = 0;
-      let node = svg.selectAll("g.node").data(nodes, function(d: any) {
+      const node: any = svg.selectAll("g.node").data(nodes, function(d: any) {
         return d.id || (d.id = ++i);
       });
       // Enter any new modes at the parent's previous position.
-      let nodeEnter = node
+      const nodeEnter = node
         .enter()
         .append("g")
         .attr("class", "node")
@@ -141,7 +119,7 @@ export default class CortxHealthGraphical extends Vue {
       nodeEnter
         .append("rect")
         .attr("width", function(d: any) {
-          let width;
+          let width = "70px";
           if (
             d.data.status == "online" ||
             d.data.status == "offline" ||
@@ -165,7 +143,7 @@ export default class CortxHealthGraphical extends Vue {
         .append("text")
         .attr("dy", "24px")
         .attr("x", function(d: any) {
-          let xValue;
+          let xValue = "68px";
           if (
             d.data.status == "online" ||
             d.data.status == "offline" ||
@@ -214,8 +192,8 @@ export default class CortxHealthGraphical extends Vue {
         .attr("dy", "15px")
         .style("font-size", "10px")
         .text(function(d: any) {
-          let time = new Date(d.data.last_updated_time * 1000);
-          time = moment.default(time).format("DD-MM-YYYY hh:mm A");
+          const newDate = new Date(d.data.last_updated_time * 1000);
+          const time = moment.default(newDate).format("DD-MM-YYYY hh:mm A");
           return `Time: ${time}`;
         });
       nodeEnter
@@ -232,19 +210,19 @@ export default class CortxHealthGraphical extends Vue {
             noneImage = document.getElementById(`noneImage${d.id}${d.depth}`),
             nodetextId = document.getElementById(`nodetextId${d.id}${d.depth}`),
             nodetextId1 = document.getElementById(`nodetextId1${d.id}${d.depth}`);
-          if (window.getComputedStyle(nodeInfoText).visibility === "hidden") {
-            nodeInfoText.setAttribute("style", "visibility: visible");
-            noneImage.setAttribute("style", "visibility: hidden");
-            nodetextId.setAttribute("style", "visibility: hidden");
-            nodetextId1.setAttribute("style", "visibility: hidden");
+          if (window.getComputedStyle(nodeInfoText!).visibility === "hidden") {
+            nodeInfoText!.setAttribute("style", "visibility: visible");
+            noneImage!.setAttribute("style", "visibility: hidden");
+            nodetextId!.setAttribute("style", "visibility: hidden");
+            nodetextId1!.setAttribute("style", "visibility: hidden");
           } else {
-            nodeInfoText.setAttribute("style", "visibility: hidden");
-            noneImage.setAttribute("style", "visibility: visible");
-            nodetextId.setAttribute(
+            nodeInfoText!.setAttribute("style", "visibility: hidden");
+            noneImage!.setAttribute("style", "visibility: visible");
+            nodetextId!.setAttribute(
               "style",
               "font-size: 14px; font-weight: bold; text-transform: capitalize;"
             );
-            nodetextId1.setAttribute(
+            nodetextId1!.setAttribute(
               "style",
               "visibility: visible; font-size: 12px"
             );
@@ -254,7 +232,7 @@ export default class CortxHealthGraphical extends Vue {
         .append("line")
         .attr("x1", "0px")
         .attr("x2", function(d: any) {
-          if (d.data.children && d.data.children.length) {
+          if (d.data.sub_resources && d.data.sub_resources.length) {
             return 145;
           } else {
             return 140;
@@ -310,7 +288,7 @@ export default class CortxHealthGraphical extends Vue {
         .append("circle")
         .attr("class", "node")
         .attr("r", function(d: any) {
-          if (d.data.children && d.data.children.length) {
+          if (d.data.sub_resources && d.data.sub_resources.length) {
             return "10";
           } else {
             return "0";
@@ -328,8 +306,8 @@ export default class CortxHealthGraphical extends Vue {
         .attr("dy", "45px")
         .attr("x", function(d: any) {
           if (
-            d.data.children &&
-            d.data.children.length &&
+            d.data.sub_resources &&
+            d.data.sub_resources.length &&
             d.children &&
             d.children.length
           ) {
@@ -341,7 +319,7 @@ export default class CortxHealthGraphical extends Vue {
         .text(function(d: any) {
           if (d.children) {
             return "-";
-          } else if (!d.children && d.data.children && d.data.children.length) {
+          } else if (!d.children && d.data.sub_resources && d.data.sub_resources.length) {
             return "+";
           } else {
             return " ";
@@ -350,7 +328,7 @@ export default class CortxHealthGraphical extends Vue {
         .style("cursor", "pointer")
         .on("click", click);
       // UPDATE
-      let nodeUpdate = nodeEnter.merge(node);
+      const nodeUpdate: any = nodeEnter.merge(node);
       // Transition to the proper position for the node
       nodeUpdate
         .transition()
@@ -359,7 +337,7 @@ export default class CortxHealthGraphical extends Vue {
           return `translate(${d.y} , ${d.x})`;
         });
       // Remove any exiting nodes
-      let nodeExit = node
+      const nodeExit = node
         .exit()
         .transition()
         .duration(duration)
@@ -377,16 +355,16 @@ export default class CortxHealthGraphical extends Vue {
       nodeExit.select("text");
       // ****************** links section ***************************
       // Update the links...
-      let link = svg.selectAll("path.link").data(links, function(d: any) {
+      const link: any = svg.selectAll("path.link").data(links, function(d: any) {
         return d.id;
       });
       // Enter any new links at the parent's previous position.
-      let linkEnter = link
+      const linkEnter = link
         .enter()
         .insert("path", "g")
         .attr("class", "link")
         .attr("d", function(d: any) {
-          let o = { x: source.x0, y: source.y0 };
+          const o = { x: source.x0, y: source.y0 };
           return diagonal(o, o);
         })
         .style("fill", "none")
@@ -394,7 +372,7 @@ export default class CortxHealthGraphical extends Vue {
         .style("stroke-width", "1px")
         .style("stroke-dasharray", "2 2");
       // UPDATE
-      let linkUpdate = linkEnter.merge(link);
+      const linkUpdate: any = linkEnter.merge(link);
       // Transition back to the parent element position
       linkUpdate
         .transition()
@@ -403,12 +381,12 @@ export default class CortxHealthGraphical extends Vue {
           return diagonal(d, d.parent);
         });
       // Remove any exiting links
-      let linkExit = link
+      const linkExit = link
         .exit()
         .transition()
         .duration(duration)
         .attr("d", function(d: any) {
-          let o = { x: source.x, y: source.y };
+          const o = { x: source.x, y: source.y };
           return diagonal(o, o);
         })
         .remove();
@@ -437,7 +415,7 @@ export default class CortxHealthGraphical extends Vue {
       }
 
       function color(d: any) {
-        let color;
+        let color = "";
         switch (d.data.status) {
           case "online":
             color = "#6ebe49";
@@ -457,9 +435,9 @@ export default class CortxHealthGraphical extends Vue {
         }
         return color;
       }
-      
+
       function imageLink(d: any) {
-        let imageLink;
+        let imageLink = "";
         switch (d.data.status) {
           case "online":
             imageLink = require("@/assets/green-icon.svg/");
