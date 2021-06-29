@@ -537,62 +537,45 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  
                   <v-col cols="12">
-                    <label class="mr-3">{{ $t("csmuser.roles") }}</label>
-                    <label class="cortx-rdb-container ml-4" v-if="loggedInUserDetails.role === ROLES.ADMIN">
-                      {{ $t("csmuser.admin") }}
-                      <input
-                        type="radio"
-                        v-model="selectedItem.role"
-                        name="rbtEditAdminInterface"
-                        value="admin"
-                        id="chkLocalAdminInterface"
-                        :disabled="
-                          isAdminUser(selectedItem) ||
-                            strEqualityCaseInsensitive(
-                              selectedItem.username,
-                              loggedInUserName
-                            )"
-                        />
-                      <span class="cortx-rdb-tick" id="lblLocalAdminInterface"></span>
-                    </label>
+                    <div v-if="loggedInUserDetails.role === ROLES.ADMIN || loggedInUserDetails.role === ROLES.MANAGE">
+                      <label class="mr-3">{{ $t("csmuser.roles") }}</label>
+                      <label class="cortx-rdb-container ml-4" v-if="loggedInUserDetails.role === ROLES.ADMIN">
+                        {{ $t("csmuser.admin") }}
+                        <input
+                          type="radio"
+                          v-model="selectedItem.role"
+                          name="rbtEditAdminInterface"
+                          value="admin"
+                          id="chkLocalAdminInterface"
+                          />
+                        <span class="cortx-rdb-tick" id="lblLocalAdminInterface"></span>
+                      </label>
 
-                    <label class="cortx-rdb-container ml-4">
-                      {{ $t("csmuser.manage") }}
-                      <input
-                        type="radio"
-                        v-model="selectedItem.role"
-                        name="rbtEditManageInterface"
-                        value="manage"
-                        id="chkLocalManageInterface"
-                        :disabled="
-                          isAdminUser(selectedItem) ||
-                            strEqualityCaseInsensitive(
-                              selectedItem.username,
-                              loggedInUserName
-                            )"
-                        />
-                      <span class="cortx-rdb-tick" id="lblLocalManageInterface"></span>
-                    </label>
+                      <label class="cortx-rdb-container ml-4">
+                        {{ $t("csmuser.manage") }}
+                        <input
+                          type="radio"
+                          v-model="selectedItem.role"
+                          name="rbtEditManageInterface"
+                          value="manage"
+                          id="chkLocalManageInterface"
+                          />
+                        <span class="cortx-rdb-tick" id="lblLocalManageInterface"></span>
+                      </label>
 
-                    <label class="cortx-rdb-container ml-4">
-                      {{ $t("csmuser.monitor") }}
-                      <input
-                        type="radio"
-                        v-model="selectedItem.role"
-                        name="rbtEditMonitorInterface"
-                        value="monitor"
-                        id="chkLocalMonitorInterface"
-                        :disabled="
-                          isAdminUser(selectedItem) ||
-                            strEqualityCaseInsensitive(
-                              selectedItem.username,
-                              loggedInUserName
-                            )"
-                      />
-                      <span class="cortx-rdb-tick" id="lblLocalMonitorInterface"></span>
-                    </label>
+                      <label class="cortx-rdb-container ml-4">
+                        {{ $t("csmuser.monitor") }}
+                        <input
+                          type="radio"
+                          v-model="selectedItem.role"
+                          name="rbtEditMonitorInterface"
+                          value="monitor"
+                          id="chkLocalMonitorInterface"
+                        />
+                        <span class="cortx-rdb-tick" id="lblLocalMonitorInterface"></span>
+                      </label>
+                    </div>
                   </v-col>
                 </v-row>
               </v-container>
