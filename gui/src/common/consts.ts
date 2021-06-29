@@ -14,18 +14,9 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export interface UserDetailsObject {
-    total_records: number;
-    userData: [];
-}
-export interface UserDetails {
-    username: string;
-    password: any;
-    interfaces: any;
-    role: any;
-    temperature: string;
-    language: string;
-    timeout: number;
-    email?: string;
-    alert_notification?: boolean;
-}
+export const ROLES = {
+    ADMIN: "admin",
+    MANAGE: "manage",
+    MONITOR: "monitor"
+};
+  
