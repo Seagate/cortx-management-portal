@@ -314,8 +314,8 @@ export default class Cortxaboutpage extends Vue {
   }
   /* public async getApplianceDetails() {
     const res = await Api.getAll(apiRegister.appliance_info);
-    this.$data.serialNumber = res.data[0].serial_number;
-    this.$data.clusterId = res.data[0].cluster_id;
+    this.$data.serialNumber = res.data.appliance_info[0].serial_number;
+    this.$data.clusterId = res.data.appliance_info[0].cluster_id;
   } */
   public async getSSLDetails() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching SSL details...");
