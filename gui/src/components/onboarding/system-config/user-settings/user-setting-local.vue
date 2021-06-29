@@ -29,145 +29,8 @@
       {{ $t("csmuser.note-label") }}
     </div>
     <v-divider class="mt-2" />
-    <v-row>
-      <v-col class="py-0 col-xs-6 col-sm-7">
-        <cortx-has-access
-          :to="$cortxUserPermissions.users + $cortxUserPermissions.list"
-        >
-          <v-data-table
-            id="localuser-tabledata"
-            :items="userData"
-            item-key="id"
-            class="cortx-table"
-            hide-default-header
-          >
-            <template v-slot:header="{}">
-              <tr>
-                <th
-                  v-for="header in userHeader"
-                  :key="header.text"
-                  class="tableheader"
-                >
-                  <span
-                    id="localuser-tableheading"
-                    class="headerText"
-                    :class="
-                      header.value === sortColumnName && isSortActive
-                        ? 'active'
-                        : ''
-                    "
-                    >{{ header.text }}</span
-                  >
-                  <span
-                    :class="
-                      header.value === sortColumnName && isSortActive
-                        ? 'active'
-                        : 'notActive'
-                    "
-                  >
-                    <img
-                      id="localuser-table-desc"
-                      v-if="
-                        header.sortable && header.sortDir === alertStatus.desc
-                      "
-                      :src="require('@/assets/widget/table-sort-desc.svg/')"
-                      class="d-inline-block"
-                      style="vertical-align: bottom; margin-left: -0.3em;"
-                      height="20"
-                      width="20"
-                    />
-                    <img
-                      id="localuser-table-asc"
-                      v-if="
-                        header.sortable && header.sortDir === alertStatus.asc
-                      "
-                      :src="require('@/assets/widget/table-sort-asc.svg/')"
-                      class="d-inline-block"
-                      style="vertical-align: bottom; margin-left: -0.3em;"
-                      height="20"
-                      width="20"
-                    />
-                  </span>
-                </th>
-              </tr>
-            </template>
-            <template v-slot:item="props">
-              <tr
-                :class="
-                  selectedRows.indexOf(props.item.id) > -1
-                    ? 'selected-row font-weight-small'
-                    : 'font-weight-small'
-                "
-                @click="toggleSelection(props.item.id)"
-              >
-                <td id="localuser-name">
-                  {{ props.item.username }}
-                </td>
-                <td id="localuser-email">
-                  {{ props.item.email }}
-                </td>
-                <td>
-                  <span v-for="(role, i) in props.item.roles" :key="role"
-                    >{{ i == 0 ? "" : ", " }}{{ role | capitalize }}</span
-                  >
-                </td>
-                <td class="action-col-width">
-                  <span>
-                    <img
-                      v-if="
-                        isLoggedInUserAdmin() ||
-                          strEqualityCaseInsensitive(
-                            props.item.username,
-                            loggedInUserName
-                          )
-                      "
-                      class="ml-2 cortx-cursor-pointer"
-                       id="localuser-editicon"
-                      @click="onEditBtnClick(props)"
-                      title="Edit"
-                      src="./../../../../assets/actions/edit-green.svg"
-                    />
-                    <cortx-has-access
-                      :to="
-                        $cortxUserPermissions.users + $cortxUserPermissions.delete
-                      "
-                    >
-                      <img
-                        v-if="
-                          isLoggedInUserAdmin() &&
-                            !strEqualityCaseInsensitive(
-                              props.item.username,
-                              loggedInUserName
-                            )
-                        "
-                        class="ml-2 cortx-cursor-pointer"
-                        id="localuser-deleteicon"
-                        @click="onDeleteConfirmation(props.item.id)"
-                        title="Delete"
-                        src="./../../../../assets/actions/delete-green.svg"
-                      />
-                      <img
-                        id="localuser-deleteadmin"
-                        v-if="
-                          strEqualityCaseInsensitive(
-                            props.item.username,
-                            loggedInUserName
-                          ) && !isAdminUser(props.item)
-                        "
-                        class="mx-2 cortx-cursor-pointer"
-                        @click="onDeleteConfirmation(props.item.id)"
-                        title="Delete"
-                        src="./../../../../assets/actions/delete-green.svg"
-                      />
-                    </cortx-has-access>
-                  </span>
-                </td>
-              </tr>
-            </template>
-          </v-data-table>
-        </cortx-has-access>
-      </v-col>
-      <v-col class="py-0 col-xs-6 pr-0 col-sm-5">
+    <v-row class="pa-0 ma-0">
+      <v-col cols="12" class="pa-0 ma-0">
         <cortx-has-access
           :to="$cortxUserPermissions.users + $cortxUserPermissions.create"
         >
@@ -181,511 +44,570 @@
             {{ $t("csmuser.add-user-button") }}
           </button>
         </cortx-has-access>
-        <div v-if="isUserCreate">
-          <v-row>
-            <v-col class="pl-5 pb-0 col-6">
-              <div
-                class="cortx-form-group-custom"
-                :class="{
-                  'cortx-form-group--error': $v.createAccount.username.$error
-                }"
-              >
-                <label
-                  class="cortx-form-group-label"
-                  for="Username"
-                  id="lblusername"
-                >
-                  <cortx-info-tooltip
-                    label="Username*"
-                    :message="usernameTooltipMessage"
-                  />
-                </label>
-                <input
-                  class="cortx-form__input_text"
-                  type="text"
-                  name="txtCreateUsername"
-                  v-model.trim="createAccount.username"
-                  id="txtLocalHostname"
-                  @input="$v.createAccount.username.$touch"
-                />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="localusername-required"
-                    v-if="
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <cortx-has-access
+          :to="$cortxUserPermissions.users + $cortxUserPermissions.list"
+        >
+          <CortxDataTable
+            :headers="headersList"
+            :records="userData.users"
+            :onSort="onCsmUserSort"
+            :sortParams="csmUsersQueryParam"
+            :onFilter="onCsmLogFilter" 
+            :rowsPerPage="[5, 10, 20, 30, 50, 100, 150, 200]"
+            :actionsCallback="{
+            deleteUserAction : deleteUserActionCB,
+            editUserAction : editUserActionCB
+            }"
+            @update:items-per-page="getUserData()"
+            @update:page="getUserData()"
+          />
+        </cortx-has-access>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <!-- Create new user dialog box -->
+        <v-dialog
+          v-model="isUserCreate"
+          v-if="isUserCreate"
+          persistent
+          max-width="590"
+          id="add-new-user-dialog"
+        >
+          <v-card>
+            <v-card-title>
+              <span>Add New User</span>
+            </v-card-title>
+            <v-divider />
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <div
+                      class="cortx-form-group-custom"
+                      :class="{
+                    'cortx-form-group--error': $v.createAccount.username.$error
+                  }"
+                    >
+                      <label class="cortx-form-group-label" for="Username" id="lblusername">
+                        <cortx-info-tooltip label="Username*" :message="usernameTooltipMessage" />
+                      </label>
+                      <input
+                        class="cortx-form__input_text"
+                        type="text"
+                        name="txtCreateUsername"
+                        v-model.trim="createAccount.username"
+                        id="txtUsername"
+                        @input="$v.createAccount.username.$touch"
+                      />
+                      <div class="cortx-form-group-label cortx-form-group-error-msg">
+                        <label
+                          id="localusername-required"
+                          v-if="
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.required
                     "
-                    >{{ $t("csmuser.username-required") }}</label
-                  >
-                  <label
-                    id="localuser-invalid"
-                    v-else-if="
+                        >{{ $t("csmuser.username-required") }}</label>
+                        <label
+                          id="localuser-invalid"
+                          v-else-if="
                       $v.createAccount.username.$dirty &&
                         !$v.createAccount.username.accountNameRegex
                     "
-                    >{{ $t("csmuser.username-invalid") }}</label
-                  >
-                </div>
-              </div>
-            </v-col>
-            <v-col class="pl-5 pb-0 col-6">
-              <div
-                class="cortx-form-group-custom"
-                :class="{
+                        >{{ $t("csmuser.username-invalid") }}</label>
+                      </div>
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <div
+                      class="cortx-form-group-custom"
+                      :class="{
                   'cortx-form-group--error': $v.createAccount.email.$error
-                }"
-              >
-                <label
-                  class="cortx-form-group-label"
-                  for="Email"
-                  id="localuseremaillbl"
-                  >{{ $t("csmuser.email") }}</label
-                >
-                <input
-                  class="cortx-form__input_text"
-                  type="email"
-                  name="email"
-                  v-model.trim="createAccount.email"
-                  id="useremail"
-                  @input="$v.createAccount.email.$touch"
-                  placeholder="example@email.com"
-                />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="localuser-email-required"
-                    v-if="
+                  }"
+                    >
+                      <label
+                        class="cortx-form-group-label"
+                        for="Email"
+                        id="localuseremaillbl"
+                      >{{ $t("csmuser.email") }}</label>
+                      <input
+                        class="cortx-form__input_text"
+                        type="email"
+                        name="email"
+                        v-model.trim="createAccount.email"
+                        id="useremail"
+                        @input="$v.createAccount.email.$touch"
+                        placeholder="example@email.com"
+                      />
+                      <div class="cortx-form-group-label cortx-form-group-error-msg">
+                        <label
+                          id="localuser-email-required"
+                          v-if="
                       $v.createAccount.email.$dirty &&
                         !$v.createAccount.email.required
                     "
-                    >{{ $t("csmuser.email-required") }}</label
-                  >
-                  <label
-                    id="localuser-email-invalid"
-                    v-else-if="
+                        >{{ $t("csmuser.email-required") }}</label>
+                        <label
+                          id="localuser-email-invalid"
+                          v-else-if="
                       $v.createAccount.email.$dirty &&
                         !$v.createAccount.email.email
                     "
-                    >{{ $t("csmuser.email-invalid") }}</label
-                  >
-                </div>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="pl-5 col-6">
-              <div
-                class="cortx-form-group-custom"
-                :class="{
+                        >{{ $t("csmuser.email-invalid") }}</label>
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <div
+                      class="cortx-form-group-custom"
+                      :class="{
                   'cortx-form-group--error': $v.createAccount.password.$error
-                }"
-              >
-                <label
-                  class="cortx-form-group-label"
-                  for="password"
-                  id="localuser-passwordlbl"
-                >
-                  <cortx-info-tooltip
-                    :label="$t('csmuser.password')"
-                    :message="passwordTooltipMessage"
-                  />
-                </label>
-                <input
-                  class="cortx-form__input_text"
-                  type="password"
-                  name="txtCreatePassword"
-                  v-model.trim="createAccount.password"
-                  @input="$v.createAccount.password.$touch"
-                  id="txtLocalPass"
-                />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="localuser-password-required"
-                    v-if="
+                  }"
+                    >
+                      <label
+                        class="cortx-form-group-label"
+                        for="password"
+                        id="localuser-passwordlbl"
+                      >
+                        <cortx-info-tooltip
+                          :label="$t('csmuser.password')"
+                          :message="passwordTooltipMessage"
+                        />
+                      </label>
+                      <input
+                        class="cortx-form__input_text"
+                        type="password"
+                        name="txtCreatePassword"
+                        v-model.trim="createAccount.password"
+                        @input="$v.createAccount.password.$touch"
+                        id="txtLocalPass"
+                      />
+                      <div class="cortx-form-group-label cortx-form-group-error-msg">
+                        <label
+                          id="localuser-password-required"
+                          v-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.required
                     "
-                    >{{ $t("csmuser.password-required") }}</label
-                  >
-                  <label
-                    id="localuser-password-invalid"
-                    v-else-if="
+                        >{{ $t("csmuser.password-required") }}</label>
+                        <label
+                          id="localuser-password-invalid"
+                          v-else-if="
                       $v.createAccount.password.$dirty &&
                         !$v.createAccount.password.passwordRegex
                     "
-                    >{{ $t("csmuser.password-invalid") }}</label
-                  >
-                </div>
-              </div>
-            </v-col>
-            <v-col class="pl-5 col-6">
-              <div
-                class="cortx-form-group-custom"
-                :class="{
+                        >{{ $t("csmuser.password-invalid") }}</label>
+                      </div>
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <div
+                      class="cortx-form-group-custom"
+                      :class="{
                   'cortx-form-group--error':
                     $v.createAccount.confirmPassword.$error
-                }"
-              >
-                <label
-                  class="cortx-form-group-label"
-                  for="password"
-                  id="localuser-confirmpasslbl"
-                  >{{ $t("csmuser.confirm-password") }}*</label
-                >
-                <input
-                  class="cortx-form__input_text"
-                  type="password"
-                  name="txtCreateConfirmPassword"
-                  v-model="createAccount.confirmPassword"
-                  id="txtLocalConfirmPass"
-                  @input="$v.createAccount.confirmPassword.$touch"
-                />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="localuser-confirmpassword-notmatch"
-                    v-if="
+                  }"
+                    >
+                      <label
+                        class="cortx-form-group-label"
+                        for="password"
+                        id="localuser-confirmpasslbl"
+                      >{{ $t("csmuser.confirm-password") }}*</label>
+                      <input
+                        class="cortx-form__input_text"
+                        type="password"
+                        name="txtCreateConfirmPassword"
+                        v-model="createAccount.confirmPassword"
+                        id="txtLocalConfirmPass"
+                        @input="$v.createAccount.confirmPassword.$touch"
+                      />
+                      <div class="cortx-form-group-label cortx-form-group-error-msg">
+                        <label
+                          id="localuser-confirmpassword-notmatch"
+                          v-if="
                       $v.createAccount.confirmPassword.$dirty &&
                         !$v.createAccount.confirmPassword.sameAsPassword
                     "
-                    >{{ $t("csmuser.confirm-password-invalid") }}</label
-                  >
-                </div>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row class="ml-3">
-            <div>{{ $t("csmuser.roles") }}</div>
-            <v-col class="pt-0 col-2">
-              <label class="cortx-rdb-container" id="localuser-managelbl">
-                {{ $t("csmuser.manage") }}
-                <input
-                  type="radio"
-                  v-model="checkedRoles"
-                  name="rbtCreateManage"
-                  value="manage"
-                  id="chkLocalManage"
-                />
-                <span class="cortx-rdb-tick" id="lblLocalManage"></span>
-              </label>
-            </v-col>
-            <v-col class="pt-0 ml-3 col-3">
-              <label class="cortx-rdb-container" id="localuser-monitorlbl">
-                {{ $t("csmuser.monitor") }}
-                <input
-                  type="radio"
-                  v-model="checkedRoles"
-                  name="rbtCreateMonitor"
-                  value="monitor"
-                  id="chkLocalMonitor"
-                />
-                <span class="cortx-rdb-tick" id="lblLocalMonitor"></span>
-              </label>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="ml-3">
-              <button
-                v-if="isUserCreate"
-                type="button"
-                class="cortx-btn-primary"
-                @click="createUser()"
-                id="btnLocalCreateUser"
-                :disabled="$v.createAccount.$invalid || !checkedRoles"
-              >
-                {{ $t("csmuser.create-user") }}
-              </button>
-              <button
-                v-if="isUserCreate"
-                type="button"
-                class="cortx-btn-tertiary"
-                @click="onAddNewUser()"
-                id="lblLocalCancel"
-              >
-                {{ $t("csmuser.cancel-user") }}
-              </button>
-            </v-col>
-          </v-row>
-        </div>
+                        >{{ $t("csmuser.confirm-password-invalid") }}</label>
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <label class="mr-3">{{ $t("csmuser.roles") }}</label>
 
-        <div v-if="isUserEdit">
-          <v-row>
-            <v-col class="pl-5 pb-0 col-6">
-              <label
-                class="cortx-form-group-label"
-                for="Email"
-                id="localuser-editusernamelbl"
-              >
-                {{ $t("csmuser.username") }}</label
-              >
-              <input
-                class="cortx-form__input_text"
-                type="text"
-                name="text"
-                v-model.trim="selectedItem.username"
-                id="editUsername"
-                disabled
-              />
-            </v-col>
-            <v-col class="pl-5 pb-0 col-6">
-              <div
-                class="cortx-form-group-custom"
-                :class="{
-                  'cortx-form-group--error': $v.selectedItem.email.$error
-                }"
-              >
-                <label
-                  class="cortx-form-group-label"
-                  for="Email"
-                  id="localuser-editemaillbl"
-                  >{{ $t("csmuser.email") }}</label
-                >
-                <input
-                  class="cortx-form__input_text"
-                  type="email"
-                  name="email"
-                  v-model.trim="selectedItem.email"
-                  id="email"
-                  @input="$v.selectedItem.email.$touch"
-                  placeholder="example@email.com"
-                />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="localuser-editmail-required"
-                    v-if="
-                      $v.selectedItem.email.$dirty &&
-                        !$v.selectedItem.email.required
-                    "
-                    >{{ $t("csmuser.email-required") }}</label
-                  >
-                  <label
-                    id="localuser-editemail-invalid"
-                    v-else-if="
-                      $v.selectedItem.email.$dirty &&
-                        !$v.selectedItem.email.email
-                    "
-                    >{{ $t("csmuser.email-invalid") }}</label
-                  >
-                </div>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-expansion-panels class="ml-5 mr-4 mt-3" id="open-expansionbox">
-              <v-expansion-panel >
-                <v-expansion-panel-header class="pl-3" id="change-password-text"
-                  >{{ $t("onBoarding.changePassword") }}</v-expansion-panel-header
-                >
-                <v-expansion-panel-content>
-                  <v-row>
-                    <v-col class="pb-0 col-6">
-                      <div
-                        class="cortx-form-group-custom"
-                        :class="{
-                          'cortx-form-group--error':
-                            $v.selectedItem.password.$error
-                        }"
+                    <label class="cortx-rdb-container ml-4" id="localuser-adminlbl" v-if="loggedInUserDetails.role === ROLES.ADMIN">
+                      {{ $t("csmuser.admin") }}
+                      <input
+                        type="radio"
+                        v-model="checkedRoles"
+                        name="rbtCreateAdmin"
+                        value="admin"
+                        id="chkLocalAdmin"
+                      />
+                      <span class="cortx-rdb-tick" id="lblLocalAdmin"></span>
+                    </label>
+
+                    <label class="cortx-rdb-container ml-4" id="localuser-managelbl">
+                      {{ $t("csmuser.manage") }}
+                      <input
+                        type="radio"
+                        v-model="checkedRoles"
+                        name="rbtCreateManage"
+                        value="manage"
+                        id="chkLocalManage"
+                      />
+                      <span class="cortx-rdb-tick" id="lblLocalManage"></span>
+                    </label>
+
+                    <label class="cortx-rdb-container ml-4" id="localuser-monitorlbl">
+                      {{ $t("csmuser.monitor") }}
+                      <input
+                        type="radio"
+                        v-model="checkedRoles"
+                        name="rbtCreateMonitor"
+                        value="monitor"
+                        id="chkLocalMonitor"
+                      />
+                      <span class="cortx-rdb-tick" id="lblLocalMonitor"></span>
+                    </label>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-divider />
+            <v-card-actions>
+              <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <button
+                    v-if="isUserCreate"
+                    type="button"
+                    class="cortx-btn-primary"
+                    @click="createUser()"
+                    id="btnLocalCreateUser"
+                    :disabled="$v.createAccount.$invalid || !checkedRoles"
+                  >{{ $t("csmuser.create-user") }}</button>
+                  <button
+                    v-if="isUserCreate"
+                    type="button"
+                    class="cortx-btn-tertiary"
+                    @click="onAddNewUser()"
+                    id="lblLocalCancel"
+                  >{{ $t("csmuser.cancel-user") }}</button>
+                </v-col>
+              </v-row>
+              </v-container>
+            </v-card-actions>
+          </v-card>
+        </v-dialog> 
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12">
+        <!-- Edit user dialog box -->
+        <v-dialog
+          v-model="isUserEdit"
+          v-if="isUserEdit"
+          persistent
+          max-width="590"
+          id="user-edit-dialog"
+        >
+          <v-card>
+            <v-card-title>
+              <span>Edit user account</span>
+            </v-card-title>
+            <v-divider />
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <label
+                      class="cortx-form-group-label"
+                      for="Email"
+                      id="localuser-editusernamelbl"
+                    >
+                      {{ $t("csmuser.username") }}</label
+                    >
+                    <input
+                      class="cortx-form__input_text"
+                      type="text"
+                      name="text"
+                      v-model.trim="selectedItem.username"
+                      id="editUsername"
+                      disabled
+                    />
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <div
+                      class="cortx-form-group-custom"
+                      :class="{
+                        'cortx-form-group--error': $v.selectedItem.email.$error
+                      }"
+                    >
+                      <label
+                        class="cortx-form-group-label"
+                        for="Email"
+                        id="localuser-editemaillbl"
+                        >{{ $t("csmuser.email") }}</label
                       >
+                      <input
+                        class="cortx-form__input_text"
+                        type="email"
+                        name="email"
+                        v-model.trim="selectedItem.email"
+                        id="email"
+                        @input="$v.selectedItem.email.$touch"
+                        placeholder="example@email.com"
+                      />
+                      <div class="cortx-form-group-label cortx-form-group-error-msg">
                         <label
-                          class="cortx-form-group-label"
-                          for="password"
-                          id="localuser-editpasslbl"
+                          id="localuser-editmail-required"
+                          v-if="
+                            $v.selectedItem.email.$dirty &&
+                              !$v.selectedItem.email.required
+                          "
+                          >{{ $t("csmuser.email-required") }}</label
                         >
-                          <cortx-info-tooltip
-                            label="New password"
-                            :message="passwordTooltipMessage"
+                        <label
+                          id="localuser-editemail-invalid"
+                          v-else-if="
+                            $v.selectedItem.email.$dirty &&
+                              !$v.selectedItem.email.email
+                          "
+                          >{{ $t("csmuser.email-invalid") }}</label
+                        >
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <v-expansion-panels id="open-expansionbox">
+                    <v-expansion-panel @click="isPasswordPanelCollapse">
+                      <v-expansion-panel-header class="pl-3" id="change-password-text"
+                        >{{ $t("onBoarding.changePassword") }}</v-expansion-panel-header
+                      >
+                      <v-expansion-panel-content>
+                        <v-row>
+                          <v-col class="pb-0 col-6">
+                            <div
+                              class="cortx-form-group-custom"
+                              :class="{
+                                'cortx-form-group--error':
+                                  $v.selectedItem.password.$error
+                              }"
+                            >
+                              <label
+                                class="cortx-form-group-label"
+                                for="password"
+                                id="localuser-editpasslbl"
+                              >
+                                <cortx-info-tooltip
+                                  label="New password"
+                                  :message="passwordTooltipMessage"
+                                />
+                              </label>
+                              <input
+                                class="cortx-form__input_text"
+                                type="password"
+                                name="txtEditNewPassword"
+                                v-model.trim="selectedItem.password"
+                                @keyup="enableEditButton"
+                                @input="$v.selectedItem.password.$touch"
+                                id="txtLocalPass"
+                              />
+                              <div
+                                class="cortx-form-group-label cortx-form-group-error-msg"
+                              >
+                                <label
+                                  id="localuser-editpass-required"
+                                  v-if="
+                                    $v.selectedItem.password.$dirty &&
+                                      !$v.selectedItem.password.passwordRegex
+                                  "
+                                  >{{ $t("csmuser.password-invalid") }}</label
+                                >
+                              </div>
+                            </div>
+                          </v-col>
+                          <v-col class="pb-0 col-6">
+                            <div
+                              class="cortx-form-group-custom"
+                              :class="{
+                                'cortx-form-group--error':
+                                  $v.selectedItem.confirmPassword.$error
+                              }"
+                            >
+                              <label
+                                class="cortx-form-group-label"
+                                for="password"
+                                id="localuser-editconfirmpasslbl"
+                                >{{ $t("csmuser.confirm-password") }}</label
+                              >
+                              <input
+                                class="cortx-form__input_text"
+                                type="password"
+                                name="txtEditConfirmPassword"
+                                v-model="selectedItem.confirmPassword"
+                                id="txtLocalConfirmNewPass"
+                                @input="$v.selectedItem.confirmPassword.$touch"
+                              />
+                              <div
+                                class="cortx-form-group-label cortx-form-group-error-msg"
+                              >
+                                <label
+                                  id="localuser-editconfirmpass-notmatch"
+                                  v-if="
+                                    $v.selectedItem.confirmPassword.$dirty &&
+                                      !$v.selectedItem.confirmPassword.sameAsPassword
+                                  "
+                                  >{{ $t("csmuser.confirm-password-invalid") }}</label
+                                >
+                              </div>
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <div
+                      class="cortx-form-group-custom"
+                      v-if="
+                        isAdminUser(selectedItem) ||
+                          strEqualityCaseInsensitive(
+                            selectedItem.username,
+                            loggedInUserName
+                          )
+                      "
+                      :class="{
+                        'cortx-form-group--error':
+                          $v.selectedItem.current_password.$error
+                      }"
+                    >
+                      <label
+                        class="cortx-form-group-label"
+                        for="password"
+                        id="localuser-oldpasswordlbl"
+                      >
+                        <cortx-info-tooltip
+                          label="Current password*"
+                          :message="currentPasswordTooltip"
+                        />
+                      </label>
+                      <input
+                        class="cortx-form__input_text"
+                        type="password"
+                        name="txtEditOldPassword"
+                        v-model.trim="selectedItem.current_password"
+                        @input="$v.selectedItem.current_password.$touch"
+                        id="txtLocalOldPass"
+                      />
+                      <div class="cortx-form-group-label cortx-form-group-error-msg">
+                        <label
+                          id="localuser-oldpass-required"
+                          v-if="
+                            $v.selectedItem.current_password.$dirty &&
+                              !$v.selectedItem.current_password.required
+                          "
+                          >{{ $t("csmuser.current-pass-required") }}</label
+                        >
+                        <label
+                          id="localuser-oldpass-invalid"
+                          v-else-if="
+                            $v.selectedItem.current_password.$dirty &&
+                              !$v.selectedItem.current_password.passwordRegex
+                          "
+                          >{{ $t("csmuser.current-password-invalid") }}</label
+                        >
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <div v-if="loggedInUserDetails.role === ROLES.ADMIN || loggedInUserDetails.role === ROLES.MANAGE">
+                      <label class="mr-3">{{ $t("csmuser.roles") }}</label>
+                      <label class="cortx-rdb-container ml-4" v-if="loggedInUserDetails.role === ROLES.ADMIN">
+                        {{ $t("csmuser.admin") }}
+                        <input
+                          type="radio"
+                          v-model="selectedItem.role"
+                          name="rbtEditAdminInterface"
+                          value="admin"
+                          id="chkLocalAdminInterface"
                           />
-                        </label>
+                        <span class="cortx-rdb-tick" id="lblLocalAdminInterface"></span>
+                      </label>
+
+                      <label class="cortx-rdb-container ml-4">
+                        {{ $t("csmuser.manage") }}
                         <input
-                          class="cortx-form__input_text"
-                          type="password"
-                          name="txtEditNewPassword"
-                          v-model.trim="selectedItem.password"
-                          @input="$v.selectedItem.password.$touch"
-                          id="txtLocalPass"
+                          type="radio"
+                          v-model="selectedItem.role"
+                          name="rbtEditManageInterface"
+                          value="manage"
+                          id="chkLocalManageInterface"
+                          />
+                        <span class="cortx-rdb-tick" id="lblLocalManageInterface"></span>
+                      </label>
+
+                      <label class="cortx-rdb-container ml-4">
+                        {{ $t("csmuser.monitor") }}
+                        <input
+                          type="radio"
+                          v-model="selectedItem.role"
+                          name="rbtEditMonitorInterface"
+                          value="monitor"
+                          id="chkLocalMonitorInterface"
                         />
-                        <div
-                          class="cortx-form-group-label cortx-form-group-error-msg"
-                        >
-                          <label
-                            id="localuser-editpass-required"
-                            v-if="
-                              $v.selectedItem.password.$dirty &&
-                                !$v.selectedItem.password.passwordRegex
-                            "
-                            >{{ $t("csmuser.password-invalid") }}</label
-                          >
-                        </div>
-                      </div>
-                    </v-col>
-                    <v-col class="pb-0 col-6">
-                      <div
-                        class="cortx-form-group-custom"
-                        :class="{
-                          'cortx-form-group--error':
-                            $v.selectedItem.confirmPassword.$error
-                        }"
+                        <span class="cortx-rdb-tick" id="lblLocalMonitorInterface"></span>
+                      </label>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-divider />
+            <v-card-actions>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <button
+                        type="button"
+                        class="cortx-btn-primary"
+                        @click="editUser(selectedItem)"
+                        id="lblLocalApplyInterface"
+                        :disabled="!isEditFormValid  || isPasswordFieldOpen"
                       >
-                        <label
-                          class="cortx-form-group-label"
-                          for="password"
-                          id="localuser-editconfirmpasslbl"
-                          >{{ $t("csmuser.confirm-password") }}</label
-                        >
-                        <input
-                          class="cortx-form__input_text"
-                          type="password"
-                          name="txtEditConfirmPassword"
-                          v-model="selectedItem.confirmPassword"
-                          id="txtLocalConfirmNewPass"
-                          @input="$v.selectedItem.confirmPassword.$touch"
-                        />
-                        <div
-                          class="cortx-form-group-label cortx-form-group-error-msg"
-                        >
-                          <label
-                            id="localuser-editconfirmpass-notmatch"
-                            v-if="
-                              $v.selectedItem.confirmPassword.$dirty &&
-                                !$v.selectedItem.confirmPassword.sameAsPassword
-                            "
-                            >{{ $t("csmuser.confirm-password-invalid") }}</label
-                          >
-                        </div>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </v-row>
-          <v-row>
-            <v-col class="pl-5 pb-0 col-6 mt-2">
-              <div
-                class="cortx-form-group-custom"
-                v-if="
-                  isAdminUser(selectedItem) ||
-                    strEqualityCaseInsensitive(
-                      selectedItem.username,
-                      loggedInUserName
-                    )
-                "
-                :class="{
-                  'cortx-form-group--error':
-                    $v.selectedItem.current_password.$error
-                }"
-              >
-                <label
-                  class="cortx-form-group-label"
-                  for="password"
-                  id="localuser-oldpasswordlbl"
-                >
-                  <cortx-info-tooltip
-                    label="Current password*"
-                    :message="currentPasswordTooltip"
-                  />
-                </label>
-                <input
-                  class="cortx-form__input_text"
-                  type="password"
-                  name="txtEditOldPassword"
-                  v-model.trim="selectedItem.current_password"
-                  @input="$v.selectedItem.current_password.$touch"
-                  id="txtLocalOldPass"
-                />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="localuser-oldpass-required"
-                    v-if="
-                      $v.selectedItem.current_password.$dirty &&
-                        !$v.selectedItem.current_password.required
-                    "
-                    >{{ $t("csmuser.current-pass-required") }}</label
-                  >
-                  <label
-                    id="localuser-oldpass-invalid"
-                    v-else-if="
-                      $v.selectedItem.current_password.$dirty &&
-                        !$v.selectedItem.current_password.passwordRegex
-                    "
-                    >{{ $t("csmuser.current-password-invalid") }}</label
-                  >
-                </div>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row
-            class="ml-3 mt-1"
-            v-if="
-              !isAdminUser(selectedItem) ||
-                !strEqualityCaseInsensitive(
-                  selectedItem.username,
-                  loggedInUserName
-                )
-            "
-          >
-            <div>{{ $t("csmuser.roles") }}</div>
-            <v-col class="pt-0 col-2">
-              <label class="cortx-rdb-container">
-                {{ $t("csmuser.manage") }}
-                <input
-                  type="radio"
-                  v-model="selectedItem.role"
-                  name="rbtEditManageInterface"
-                  value="manage"
-                  id="chkLocalManageInterface"
-                  :disabled="
-                    isAdminUser(selectedItem) ||
-                      strEqualityCaseInsensitive(
-                        selectedItem.username,
-                        loggedInUserName
-                      )
-                  "
-                />
-                <span class="cortx-rdb-tick" id="lblLocalManageInterface"></span>
-              </label>
-            </v-col>
-            <v-col class="pt-0 ml-3 col-3">
-              <label class="cortx-rdb-container">
-                {{ $t("csmuser.monitor") }}
-                <input
-                  type="radio"
-                  v-model="selectedItem.role"
-                  name="rbtEditMonitorInterface"
-                  value="monitor"
-                  id="chkLocalMonitorInterface"
-                  :disabled="
-                    isAdminUser(selectedItem) ||
-                      strEqualityCaseInsensitive(
-                        selectedItem.username,
-                        loggedInUserName
-                      )
-                  "
-                />
-                <span class="cortx-rdb-tick" id="lblLocalMonitorInterface"></span>
-              </label>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="ml-3">
-              <button
-                type="button"
-                class="cortx-btn-primary"
-                @click="editUser(selectedItem)"
-                id="lblLocalApplyInterface"
-                :disabled="!isEditFormValid"
-              >
-                {{ $t("csmuser.update") }}
-              </button>
-              <button
-                type="button"
-                class="cortx-btn-tertiary"
-                @click="closeEditUserForm()"
-                id="lblLocalCanacelInterface"
-              >
-                {{ $t("csmuser.cancel-user") }}
-              </button>
-            </v-col>
-          </v-row>
-        </div>
+                        {{ $t("csmuser.update") }}
+                      </button>
+                      <button
+                        type="button"
+                        class="cortx-btn-tertiary"
+                        @click="closeEditUserForm()"
+                        id="lblLocalCanacelInterface"
+                      >
+                        {{ $t("csmuser.cancel-user") }}
+                      </button>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-actions>
+          </v-card>    
+        </v-dialog>
       </v-col>
     </v-row>
     <cortx-confirmation-dialog
@@ -750,14 +672,21 @@ import {
 
 import { Api } from "./../../../../services/api";
 import apiRegister from "./../../../../services/api-register";
-
+import  CortxDataTable from "../../../widgets/cortx-data-table.vue";
+import { userPermissions } from "../../../../common/user-permissions-map";
+import { CsmUserQueryParam } from '@/models/download';
+import { ROLES } from "@/common/consts";
 @Component({
   name: "cortx-user-setting-local",
   i18n: {
     messages: i18n
-  }
+  },
+  components: {CortxDataTable}
 })
 export default class CortxUserSettingLocal extends Vue {
+  public ROLES: any = ROLES;
+  public loggedInUserDetails: any = {};
+
   @Validations()
   public validations = {
     createAccount: {
@@ -796,6 +725,7 @@ export default class CortxUserSettingLocal extends Vue {
       isSortActive: false, // Set table column sorting flag to default inactive
       sortColumnName: "", // Set sorting column name to none
       alertStatus: require("./../../../../common/const-string.json"),
+      isPasswordFieldOpen: false,
       createAccount: {
         username: "",
         password: "",
@@ -807,6 +737,7 @@ export default class CortxUserSettingLocal extends Vue {
       api: "",
       manage: "",
       monitor: "",
+      admin: "",
       temperature: "",
       language: "",
       timeout: "",
@@ -816,28 +747,99 @@ export default class CortxUserSettingLocal extends Vue {
       passwordTooltipMessage: this.$t("csmuser.passwordTooltipMessage"),
       currentPasswordTooltip: this.$t("csmuser.currentPasswordTooltipMsg"),
       selectedRows: [],
-      userHeader: [
+      headersList: [
         {
-          text: "Username",
-          value: "username",
-          sortable: false
+          "field_id": "alert_notification",
+          "label": "alert_notification",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
         },
         {
-          text: "Email",
-          value: "email",
-          sortable: false
+          "field_id": "created_time",
+          "label": "created_time",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
         },
         {
-          text: "Roles",
-          value: "roles",
-          sortable: false
+          "field_id": "email",
+          "label": "Email",
+          "sortable": true,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": true,
         },
         {
-          text: "Action",
-          value: "data-table-expand"
+          "field_id": "id",
+          "label": "id",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
+        },
+        {
+          "field_id": "role",
+          "label": "Role",
+          "sortable": true,
+          "filterable": true,
+          "value": { "type": "text" },
+          "display": true,
+        },
+        {
+          "field_id": "updated_time",
+          "label": "updated_time",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
+        },
+        {
+          "field_id": "user_type",
+          "label": "user_type",
+          "sortable": false,
+          "filterable": false,
+          "value": { "type": "text" },
+          "display": false,
+        },
+        {
+          "field_id": "username",
+          "label": "Username",
+          "sortable": true,
+          "filterable": true,
+          "value": { "type": "text" },
+          "display": true,
+        },
+        {
+          "field_id": "action_buttons",
+          "label": "Actions",
+          "display_id": 1001,
+          "sortable": false,
+          "filterable": false,
+          "actionDetails": [
+            {
+              "id": "deleteUserAction",
+              "iconClass": "cortx-delete-icon",
+              "tooltip": "Delete user details",
+              "condition": this.deleteActionCondition
+            },
+            {
+              "id": "editUserAction",
+              "iconClass": "cortx-edit-icon",
+              "tooltip": "Edit user details",
+              "condition": this.editActionCondition
+            }
+          ],
+          "display": true,
+          "value": { "type": "buttons" }
         }
       ],
-      userData: [],
+      userData: {
+        users: [],
+        users_count_by_role: {}
+      },
       selectedItemToDelete: "",
       showConfirmationDialog: false,
       confirmationDialogMessage: this.$t("csmuser.user-delete-confirm-msg"),
@@ -852,22 +854,153 @@ export default class CortxUserSettingLocal extends Vue {
       successDialogText: ""
     };
   }
-
+  public csmUsersQueryParam: CsmUserQueryParam = {} as CsmUserQueryParam;
   public async mounted() {
     await this.getUserData();
+    this.loggedInUserDetails = this.getLoggedInUserDetails();
+  }
+
+  public isPasswordPanelCollapse() {
+    this.$data.isPasswordFieldOpen = true;
+  }
+  public enableEditButton() {
+    this.$data.isPasswordFieldOpen = false;
+  }
+  public deleteUserActionCB(event:any, data:any){
+    this.onDeleteConfirmation(data.id);
+  }
+  public deleteActionCondition(record: any) {
+    const vueInstance: any = this;
+    let allowDeleteOption: boolean = false;
+    if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.delete)) {
+      switch (this.loggedInUserDetails.role) {
+        case this.ROLES.ADMIN:
+          if(record.role === this.ROLES.ADMIN) {
+            allowDeleteOption = this.$data.userData.users_count_by_role.admin === 1
+                                  ? false
+                                  : true;
+          } else {
+            allowDeleteOption = true;
+          }
+          break;
+
+        case this.ROLES.MANAGE:
+        case this.ROLES.MONITOR:
+          if(this.loggedInUserDetails.username === record.username) {
+            allowDeleteOption = true;
+          }
+          break;
+      }
+    }
+
+    return allowDeleteOption;
+  }
+
+  public editUserActionCB(event:any, data:any){
+    this.onEditBtnClick(data);
+  }
+  public editActionCondition(record: any) {
+    const vueInstance: any = this;
+    let allowEditOption: boolean = false;
+    if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.update)) {
+      switch (this.loggedInUserDetails.role) {
+        case this.ROLES.ADMIN:
+          allowEditOption = true;
+          break;
+
+        case this.ROLES.MANAGE:
+          if((this.loggedInUserDetails.username === record.username)
+            || (record.role === this.ROLES.MONITOR)) {
+            allowEditOption = true;
+          }
+          break;
+
+        case this.ROLES.MONITOR:
+          if(this.loggedInUserDetails.username === record.username) {
+            allowEditOption = true;
+          }
+          break;
+      }
+    }
+
+    return allowEditOption;
   }
 
   /**
-   * To get the user data list
+   * User Sorting
+   */
+  public async onCsmUserSort(header: any) {
+    if (header.sortable) {
+      if (this.csmUsersQueryParam.sortby && this.csmUsersQueryParam.sortby === header.value) {
+        this.csmUsersQueryParam.dir = this.csmUsersQueryParam.dir === "asc" ? "desc" : "asc";
+      } else {
+        this.csmUsersQueryParam.sortby = header.value;
+        this.csmUsersQueryParam.dir = "asc";
+      }
+      await this.getUserData();
+    }
+  }
+
+
+  /**
+   * User filter data
+   */
+  public async onCsmLogFilter(headerFields: string[], value: string) {
+    if(value.length > 0) {
+      if(headerFields.length > 0) {
+        for (const field of headerFields) {
+          //@ts-ignore
+          this.csmUsersQueryParam[field] = value; //Adding only selected columns as filters
+        }
+      } else {
+        for (const header of this.$data.headersList) {
+          //@ts-ignore
+          this.csmUsersQueryParam[header.field_id] = value; //Adding all column headers as filters
+        }
+      }
+       await this.getUserData();
+    }
+  }
+
+  /**
+   * To get user list
    */
   private async getUserData() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching users...");
-    const res = await Api.getAll(apiRegister.csm_user);
+    const res = await Api.getAll(apiRegister.csm_user, this.csmUsersQueryParam);
     if (res && res.data && res.data.users) {
-      this.$data.userData = res.data.users;
+      this.$data.userData.users = res.data.users;
+      this.$data.userData.users_count_by_role = this.getUserCountByRole();
     }
     this.$store.dispatch("systemConfig/hideLoader");
   }
+
+  private getUserCountByRole() {
+    const userCount: any = {
+      admin: 0,
+      manage: 0,
+      monitor: 0
+    };
+
+    for (const user of this.$data.userData.users) {
+      switch (user.role) {
+        case this.ROLES.ADMIN:
+          userCount.admin++;
+          break;
+
+        case this.ROLES.MANAGE:
+          userCount.manage++;
+          break;
+
+        case this.ROLES.MONITOR:
+          userCount.monitor++;
+          break;
+      }
+    }
+
+    return userCount;
+  } 
+
   /**
    * To create csm user
    */
@@ -877,6 +1010,7 @@ export default class CortxUserSettingLocal extends Vue {
     }
     this.$data.isUserCreate = !this.$data.isUserCreate;
     return this.$data.isUserCreate;
+
   }
 
   private async createUser() {
@@ -884,13 +1018,12 @@ export default class CortxUserSettingLocal extends Vue {
       username: this.$data.createAccount.username,
       password: this.$data.createAccount.password,
       interfaces: this.$data.checkedInterfaces,
-      roles: [this.$data.checkedRoles],
+      role: this.$data.checkedRoles,
       temperature: this.$data.temperature,
       language: this.$data.language,
       timeout: 1,
       email: this.$data.createAccount.email
     };
-
     this.$store.dispatch("systemConfig/showLoader", "Creating user...");
     await Api.post(apiRegister.csm_user, queryParams);
     this.$data.isUserCreate = !this.$data.isUserCreate;
@@ -907,18 +1040,13 @@ export default class CortxUserSettingLocal extends Vue {
   private onEditBtnClick(props: any) {
     this.$data.isUserCreate = false;
     this.$data.selectedItem = {
-      ...props.item,
-      role: this.isAdminUser(props.item)
-        ? props.item.roles[1]
-        : props.item.roles[0]
+      ...props
     };
     this.$data.isUserEdit =
-      this.$data.selectedRows.indexOf(props.item.id) > -1 ? false : true;
+      this.$data.selectedRows.indexOf(props.id) > -1 ? false : true;
   }
 
   private async editUser(selectedItem: any) {
-    selectedItem.roles = [selectedItem.role];
-    delete selectedItem.role;
     if (
       this.isAdminUser(selectedItem) ||
       this.strEqualityCaseInsensitive(
@@ -926,7 +1054,7 @@ export default class CortxUserSettingLocal extends Vue {
         this.$data.loggedInUserName
       )
     ) {
-      delete selectedItem.roles;
+      delete selectedItem.role;
       delete selectedItem.confirmPassword;
     }
     const { username, ...editData } = selectedItem;
@@ -985,12 +1113,11 @@ export default class CortxUserSettingLocal extends Vue {
   }
 
   private isAdminUser(item: any) {
-    return item.roles.includes("admin");
+    return item.role.includes("admin");
   }
 
-  private isLoggedInUserAdmin() {
-    let isAdmin;
-    const data = this.$data.userData.find((element: any) => {
+  private getLoggedInUserDetails() {
+    const loggedInUser = this.$data.userData.users.find((element: any) => {
       if (
         this.strEqualityCaseInsensitive(
           element.username,
@@ -1001,10 +1128,7 @@ export default class CortxUserSettingLocal extends Vue {
       }
     });
 
-    if (data) {
-      isAdmin = this.isAdminUser(data);
-    }
-    return isAdmin;
+    return loggedInUser;
   }
 
   get isEditFormValid() {
