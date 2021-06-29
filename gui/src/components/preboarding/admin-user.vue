@@ -359,7 +359,8 @@ export default class CortxAdminUser extends Vue {
       username: this.$data.createAccount.username,
       password: this.$data.createAccount.password,
       email: this.$data.createAccount.email,
-      alert_notification: this.$data.createAccount.alert_notification
+      alert_notification: this.$data.createAccount.alert_notification,
+      role: 'admin'
     };
     this.$data.isValidResponse = true;
     this.$data.createUserInProgress = true;
@@ -367,7 +368,7 @@ export default class CortxAdminUser extends Vue {
 
     this.$store.dispatch("systemConfig/showLoader", "Creating admin user...");
     try {
-      const res = await Api.post(apiRegister.create_user, queryParams, {
+      const res = await Api.post(apiRegister.csm_user, queryParams, {
         timeout: 60000
       });
       if (res) {
