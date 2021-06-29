@@ -15,14 +15,14 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="toggle-wrapper">
+  <div class="toggle-wrapper" :class="{disabled: disabled}">
     <span class="label" v-if="label">{{label}}</span>
     <v-tooltip right :disabled="!tooltip">
         <template v-slot:activator="{ on, attrs }">
             <div
              class="toggle-container" 
              :class="{active: value}" 
-             @click="callback ? callback(!value) : $emit('input', !value)" 
+             @click="$emit('change', !value)" 
              v-bind="attrs"
              v-on="on"
             >
@@ -42,12 +42,16 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 @Component({
   name: "cortx-toggle-slider",
+  model: {
+      prop: "value",
+      event: "change"
+  }
 })
 export default class CortxToggleSlider extends Vue {
   @Prop({ required: true }) private value: boolean;
-  @Prop({ required: false }) private label: boolean;
-  @Prop({ required: false, default: "" }) private tooltip: boolean;
-  @Prop({ required: false }) private callback: boolean;
+  @Prop({ required: false }) private disabled: boolean;
+  @Prop({ required: false }) private label: string;
+  @Prop({ required: false, default: "" }) private tooltip: string;
 }
 
 </script>
@@ -56,6 +60,10 @@ export default class CortxToggleSlider extends Vue {
 .toggle-wrapper {
     display: flex;
     align-items: center;
+}
+.toggle-wrapper.disabled {
+    opacity: 0.5;
+    pointer-events: none;
 }
 .toggle-wrapper .label {
     margin-right: 5px;

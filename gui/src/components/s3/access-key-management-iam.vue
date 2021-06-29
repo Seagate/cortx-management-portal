@@ -70,7 +70,7 @@
             <td>
               <cortx-toggle-slider
                :value="item.status === 'Active'"
-               :callback="(keyStatus) => keyStatusToggle(keyStatus,item.access_key_id)"/>
+               @change="(keyStatus) => keyStatusToggle(keyStatus,item.access_key_id)"/>
             </td>
             <td>
               <cortx-has-access
