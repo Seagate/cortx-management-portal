@@ -231,8 +231,13 @@ export default class CortxAuditLog extends Vue {
       this.auditLog = res.data;
   
       //API call to get schema for the headers
-      const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${this.auditLogQueryParams.component.toLowerCase()}`);
-      this.auditLogTableHeaderList = headerResponse.data;
+      if(this.auditLogQueryParams.component === "CSM") {
+        const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/csm-headers`);
+        this.auditLogTableHeaderList = headerResponse.data;
+      } else if (this.auditLogQueryParams.component === "S3") {
+        const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/s3-headers`);
+        this.auditLogTableHeaderList = headerResponse.data;
+      }
   
       this.isShowLogs = true;
     } catch (error) {

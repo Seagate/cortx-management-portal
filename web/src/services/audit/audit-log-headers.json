@@ -15,7 +15,7 @@
       "field_id": "user",
       "label": "User",
       "display_id": 301,
-      "sortable": true,
+      "sortable": false,
       "filterable": true,
       "display": true,
       "value": {
@@ -26,7 +26,7 @@
       "field_id": "remote_ip",
       "label": "Remote IP",
       "display_id": 401,
-      "sortable": true,
+      "sortable": false,
       "filterable": true,
       "display": false,
       "value": {
@@ -37,7 +37,7 @@
       "field_id": "forwarded_for_ip",
       "label": "Forwarded for IP",
       "display_id": 501,
-      "sortable": true,
+      "sortable": false,
       "filterable": true,
       "display": true,
       "value": {
@@ -48,7 +48,7 @@
       "field_id": "method",
       "label": "Method",
       "display_id": 601,
-      "sortable": true,
+      "sortable": false,
       "filterable": true,
       "display": true,
       "value": {
@@ -59,7 +59,7 @@
       "field_id": "path",
       "label": "Path",
       "display_id": 701,
-      "sortable": true,
+      "sortable": false,
       "filterable": true,
       "display": true,
       "value": {
@@ -70,7 +70,7 @@
       "field_id": "user_agent",
       "label": "User agent",
       "display_id": 801,
-      "sortable": true,
+      "sortable": false,
       "filterable": true,
       "display": true,
       "value": {
@@ -92,7 +92,7 @@
       "field_id": "request_id",
       "label": "Request ID",
       "display_id": 1001,
-      "sortable": true,
+      "sortable": false,
       "filterable": true,
       "display": true,
       "value": {
