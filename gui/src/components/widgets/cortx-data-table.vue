@@ -99,9 +99,9 @@
                   <td 
                     v-if="value"
                   >
-                    <div v-if="valuePropOfHeaders[key]['type'] === 'date'">{{ new Date(item[key] * 1000) | formattedDate }}</div>
+                    <div v-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'date'">{{ new Date(item[key] * 1000) | formattedDate }}</div>
                     <div
-                     v-else-if="valuePropOfHeaders[key]['type'] === 'image'" 
+                     v-else-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'image'" 
                      :class="`image-data ${valuePropOfHeaders[key]['mapValueToClassName'][item[key]]}`"
                      :title="item[key]"
                     ></div>
@@ -219,7 +219,7 @@ export default class CortxDataTable extends Vue {
   }
   
   get actionHeaders() {
-      const actionHeader = this.headers.filter(header => header.value.type === "buttons");
+      const actionHeader = this.headers.filter(header => (header.value && header.value.type) === "buttons");
       const actionDetails = actionHeader[0] ? actionHeader[0].actionDetails : [];
       return actionDetails
   }
@@ -231,7 +231,7 @@ export default class CortxDataTable extends Vue {
   get displayPropOfHeaders() {
     const displayProps: {[key: string]: boolean} = {};
     this.headers.forEach((header: any) => {
-      if (header.value.type !== "buttons") {
+      if ((header.value && header.value.type) !== "buttons") {
         displayProps[header.field_id] = header.display
       }
     });    
