@@ -24,6 +24,7 @@
       "create-message": "Creating access key...",
       "delete-confirmation": "Are you sure you want to delete {key} access key?",
       "delete-message": "Deleting access key ",
+      "update-status": "Updating the status of ",
       "iam-table-title": "Access keys for user {userNameIAM}"
     },
     "download-csv-dialog": {
@@ -54,6 +55,7 @@
       "download-as-csv": "Download and close",
       "ok": "Ok",
       "loading-list": "Fetching all S3 accounts...",
+      "loading-checking-permissions": "Checking permissions...",
       "loading-create": "Creating account...",
       "loading-update": "Updating account...",
       "account-table": "Account name,Account Url,Access key,Secret key\n",
@@ -121,6 +123,7 @@
       "create-message": "Creating access key...",
       "delete-confirmation": "Are you sure you want to delete {key} access key?",
       "delete-message": "Deleting access key ",
+      "update-status": "Updating the status of ",
       "iam-table-title": "Access keys for user {userNameIAM}"
     },
     "download-csv-dialog": {
@@ -151,6 +154,7 @@
       "download-as-csv": "Download and close",
       "ok": "Ok",
       "loading-list": "Fetching all S3 accounts...",
+      "loading-checking-permissions": "Checking permissions...",
       "loading-create": "Creating account...",
       "loading-update": "Updating account...",
       "account-table": "Account name,Account Url,Access key,Secret key\n",

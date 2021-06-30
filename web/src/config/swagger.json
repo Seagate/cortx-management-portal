@@ -59,53 +59,6 @@
         }
       }
     },
-    "/preboarding/user": {
-      "post": {
-        "tags": ["Admin User"],
-        "summary": "Register and create profile for CSM admin user",
-        "responses": {
-          "200": {
-            "description": "OK: Admin user create successfully."
-          },
-          "400": {
-            "description": "Bad Request: Request body is missing or Username or password is missing"
-          },
-          "422": {
-            "description": "Unprocessable Entity: server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions."
-          },
-          "499": {
-            "description": "Call Cancelled: Call cancelled by client."
-          },
-          "500": {
-            "description": "Internal Server Error: When requested resource is not available."
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "User",
-            "in": "body",
-            "description": "CSM User request",
-            "schema": {
-              "type": "object",
-              "required": false,
-              "properties": {
-                "username": {
-                  "type": "string",
-                  "example": "admin"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "admin"
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
     "/login": {
       "post": {
         "tags": ["User"],
@@ -575,8 +528,8 @@
         ]
       },
       "post": {
-        "tags": ["CSM User"],
-        "summary": "Create new CSM user: CSM user having permission manage can create new CSM user",
+        "tags": ["Admin user", "CSM User"],
+        "summary": "Create new CSM user: CSM user having permission admin or manage can create new CSM user",
         "responses": {
           "201": {
             "description": "User has been created"
@@ -630,8 +583,9 @@
                     "example": "user@test.com"
                   },
                   "roles": {
-                    "type": "array",
-                    "example": ["manage"]
+                    "type": "string",
+                    "enum": ["admin", "manage", "monitor"],
+                    "example": "manage"
                   }
                 }
               }
@@ -1554,7 +1508,7 @@
     },
     "/s3/access_keys?user_name={user_name}": {
       "get": {
-        "tags": ["Iam User Access Key"],
+        "tags": ["IAM User Access Key"],
         "summary": "Get IAM user access keys:  Accessible to S3 account only",
         "responses": {
           "200": {
@@ -1674,6 +1628,58 @@
             "name": "user_name",
             "in": "query",
             "description": "Specifies the IAM user name",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ]
+      }
+    },
+    "/s3/access_keys/{access_key}?user_name={user_name}&status={status}": {
+      "patch": {
+        "tags": ["IAM User Access Key"],
+        "summary": "Update the status of IAM user access key: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "Ok: IAM user access key's status has been updated successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "access_key",
+            "in": "path",
+            "description": "Specifies the S3 account access key",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "user_name",
+            "in": "query",
+            "description": "Specifies the IAM user name",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Specifies the IAM user access key's status",
             "required": true,
             "schema": { "type": "string" }
           },

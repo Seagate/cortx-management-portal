@@ -146,6 +146,7 @@
         "roles": "Roles",
         "manage": "Manage",
         "monitor": "Monitor",
+        "admin": "Admin",
         "username-required": "Account name is required.",
         "username-invalid": "Invalid username.",
         "password-required": "Password is required.",

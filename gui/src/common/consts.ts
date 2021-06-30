@@ -14,21 +14,9 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-// Interface for Audit Log Query Param
-export interface AuditLogQueryParam {
-    component: string;
-    timerange: string;
-    start_date: number;
-    end_date: number;
-    sortby?: string;
-    dir?: string;
-    offset?: number;
-    limit?: number;
-    filter?: string;
-}
-export interface CsmUserQueryParam {
-    sortby?: string;
-    dir?: string;
-    offset?: number;
-    limit?: number;
-}
+export const ROLES = {
+    ADMIN: "admin",
+    MANAGE: "manage",
+    MONITOR: "monitor"
+};
+  
