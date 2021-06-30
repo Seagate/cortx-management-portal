@@ -99,13 +99,13 @@
                   <td 
                     v-if="value"
                   >
-                    <div v-if="valuePropOfHeaders[key]['type'] === 'text'">{{ getTextForDataCell(item[key], key, item) }}</div>
                     <div v-if="valuePropOfHeaders[key]['type'] === 'date'">{{ new Date(item[key] * 1000) | formattedDate }}</div>
                     <div
-                     v-if="valuePropOfHeaders[key]['type'] === 'image'" 
+                     v-else-if="valuePropOfHeaders[key]['type'] === 'image'" 
                      :class="`image-data ${valuePropOfHeaders[key]['mapValueToClassName'][item[key]]}`"
                      :title="item[key]"
                     ></div>
+                    <div v-else>{{ getTextForDataCell(item[key]) }}</div>
                   </td>
               </template>
               <template v-if="actionHeaders.length">
@@ -198,7 +198,7 @@ export default class CortxDataTable extends Vue {
     this.itemsPerPage = noOfPages.value
   }
 
-  public getTextForDataCell(value: any, key:any, item: any ) {
+  public getTextForDataCell(value: any) {
     if (Array.isArray(value)) {
       let text = "";
       for (let i = 0; i<value.length; i++) {
