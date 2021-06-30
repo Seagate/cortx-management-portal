@@ -209,7 +209,6 @@ export default class CortxAuditLog extends Vue {
         }
 
         for (let i = 0;i < headers.length;i++) {
-          //@ts-ignore
           this.auditLogQueryParams["filter"] += `${i > 0 ? " OR " : ""}${headers[i]}=${value}`;
         }
         this.auditLogQueryParams["filter"] = `{${this.auditLogQueryParams["filter"]}}`;

@@ -24,4 +24,5 @@ export interface AuditLogQueryParam {
     dir?: string;
     offset?: number;
     limit?: number;
+    filter?: string;
 }
