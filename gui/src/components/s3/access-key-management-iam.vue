@@ -68,6 +68,11 @@
               {{ SECRET_KEY_PLACEHOLDER }}
             </td>
             <td>
+              <cortx-toggle-slider
+               :value="item.status === 'Active'"
+               @change="(keyStatus) => keyStatusToggle(keyStatus,item.access_key_id)"/>
+            </td>
+            <td>
               <cortx-has-access
                 class="mx-2"
                 :to="
@@ -112,6 +117,7 @@ import { AccessKey } from "../../models/s3";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import CortxDownloadCsvDialog from "./download-csv-dialog.vue";
+import CortxToggleSlider from "../widgets/cortx-toggle-slider.vue";
 import i18n from "./s3.json";
 
 @Component({
@@ -119,7 +125,7 @@ import i18n from "./s3.json";
   i18n: {
     messages: i18n
   },
-  components: { CortxDownloadCsvDialog }
+  components: { CortxDownloadCsvDialog, CortxToggleSlider }
 })
 export default class CortxAccessKeyManagementIAM extends Vue {
   private showConfirmDeleteDialog: boolean;
@@ -156,6 +162,11 @@ export default class CortxAccessKeyManagementIAM extends Vue {
       {
         text: this.$t("s3.access-key.table-headers.secret_key"),
         value: "secret_key",
+        sortable: false
+      },
+      {
+        text: "Key Status",
+        value: "key_status",
         sortable: false
       },
       { text: this.$t("common.action"), value: "data-table-expand" }
@@ -244,6 +255,21 @@ export default class CortxAccessKeyManagementIAM extends Vue {
     });
     this.accountToDelete = "";
     this.confirmDeleteDialogMessage = "";
+    this.$store.dispatch("systemConfig/hideLoader");
+    await this.getAllAccessKeys();
+  }
+
+  public async keyStatusToggle(keyStatus: boolean, accessKey: string) {
+    if (!this.userNameIAM) {
+      return;
+    }
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      this.$t("s3.access-key.update-status") + accessKey
+    );
+    await Api.patch(apiRegister.s3_access_keys, {}, accessKey, {
+      params: { user_name: this.userNameIAM, status: keyStatus ? "Active" : "Inactive" }, 
+    });
     this.$store.dispatch("systemConfig/hideLoader");
     await this.getAllAccessKeys();
   }

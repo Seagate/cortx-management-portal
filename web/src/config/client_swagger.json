@@ -1167,7 +1167,7 @@
     },
     "/s3/access_keys?user_name={user_name}": {
       "get": {
-        "tags": ["Iam User Access Key"],
+        "tags": ["IAM User Access Key"],
         "summary": "Get IAM user access keys:  Accessible to S3 account only",
         "responses": {
           "200": {
@@ -1287,6 +1287,58 @@
             "name": "user_name",
             "in": "query",
             "description": "Specifies the IAM user name",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ]
+      }
+    },
+    "/s3/access_keys/{access_key}?user_name={user_name}&status={status}": {
+      "patch": {
+        "tags": ["IAM User Access Key"],
+        "summary": "Update the status of IAM user access key: Accessible to S3 account only",
+        "responses": {
+          "200": {
+            "description": "Ok: IAM user access key's status has been updated successfully."
+          },
+          "400": {
+            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
+          },
+          "401": {
+            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
+          },
+          "404": {
+            "description": "No Data Found: A specified resource could not be found."
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "access_key",
+            "in": "path",
+            "description": "Specifies the S3 account access key",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "user_name",
+            "in": "query",
+            "description": "Specifies the IAM user name",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Specifies the IAM user access key's status",
             "required": true,
             "schema": { "type": "string" }
           },

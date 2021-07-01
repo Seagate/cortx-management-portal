@@ -750,6 +750,7 @@ import {
 import i18n from "./s3.json";
 import CommonUtils from "../../common/common-utils";
 import { userPermissions } from "../../common/user-permissions-map"
+import { ROLES } from "@/common/consts";
 
 @Component({
   name: "cortx-account-management",
@@ -759,6 +760,7 @@ import { userPermissions } from "../../common/user-permissions-map"
   components: { CortxAccessKeyManagement }
 })
 export default class CortxAccountManagement extends Vue {
+  public ROLES: any = ROLES;
   public createAccountForm = {
     account: {} as Account,
     confirmPassword: ""
@@ -876,7 +878,11 @@ export default class CortxAccountManagement extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
-  public async checkPermissions() {    
+  public async checkPermissions() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      this.$t("s3.account.loading-checking-permissions")
+    );
     const vueInstance: any = this;
     if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
       this.isDeleteAccountAllowed = true;
@@ -884,11 +890,13 @@ export default class CortxAccountManagement extends Vue {
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.list)) {
       const cms_res = await Api.getAll(apiRegister.csm_user + "/" + this.loggedInUserName);
       if (cms_res && cms_res.data) {
-        this.isResetPasswordAllowed = cms_res.data.roles.includes("admin") || cms_res.data.roles.includes("manage");
+        this.isResetPasswordAllowed = cms_res.data.role === this.ROLES.ADMIN
+                                        || cms_res.data.role === this.ROLES.MANAGE;
       }
     } else if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
       this.isUpdatePasswordAllowed = true;
     }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 
   public async createAccount() {
@@ -914,7 +922,7 @@ export default class CortxAccountManagement extends Vue {
 
   public getCredentialsFileContent(): string {
     return (
-      "Account name,S3 URL,Access key,Secret key\n" +
+      "Account name,S3 URL,Access key,Secret key,Account id,Canonical id\n" +
       this.account.account_name +
       "," +
       `${this.s3Url[0]} ${this.s3Url[1]}` +
