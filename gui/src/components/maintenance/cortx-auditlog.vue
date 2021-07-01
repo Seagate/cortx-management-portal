@@ -27,33 +27,24 @@
     </div>
     <v-divider class="my-4" />
 
-    <div class="col-4 py-0">
-      <div class="cortx-form-group">
-        <label
-          class="cortx-form-group-label"
-          for="cmdComponent"
-          id="lblComponent"
-        >{{ $t("maintenance.component") }}*</label>
+    <div class="py-0 d-flex align-center audit-options">
         <cortx-dropdown
           id="auditlog-component"
+          width="200px"
           @update:selectedOption="handleComponentDropdownSelect"
           :options="componentList"
-          :title="component ? component : undefined"
+          :title="component ? component : $t('maintenance.component')"
         ></cortx-dropdown>
 
-        <label
-          class="cortx-form-group-label"
-          for="cmdTimeRange"
-          id="lblTimeRange"
-        >{{ $t("maintenance.timePeriod") }}*</label>
         <cortx-dropdown
           id="auditlog-timeperiod"
+          width="200px"
           @update:selectedOption="handleTimerangeDropdownSelect"
           :options="timerangeList"
-          :title="timerangeLabel ? timerangeLabel : undefined"
+          :title="timerangeLabel ? timerangeLabel : $t('maintenance.timePeriod')"
         ></cortx-dropdown>
-      </div>
-      <div class="mt-8 nav-btn">
+      
+      <div class="nav-btn">
         <button
           type="button"
           class="cortx-btn-primary mr-2"
@@ -71,9 +62,7 @@
       </div>
     </div>
     <template>
-      <div class="ma-3 mt-5" v-if="auditLog && isShowLogs">
-        <span class="cortx-text-bold cortx-text-lg" id="s3auditlogtext">{{ $t("maintenance.logs") }}</span>
-        <v-divider class="my-2"></v-divider>
+      <div class="mr-3 mb-3" v-if="auditLog && isShowLogs">
         <template v-if="auditLog.logs.length > 0">
           <cortx-data-table
             :headers="auditLogTableHeaderList" 
@@ -87,8 +76,9 @@
           />
         </template>
         <template v-else>
+          <v-divider class="mt-3"></v-divider>
           <span
-            class="mb-1 d-block"
+            class="my-2 d-block"
             id="auditlog-data"
           >No logs</span>
         </template>
@@ -97,7 +87,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import { AuditLogQueryParam } from "../../models/download";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
@@ -168,6 +158,12 @@ export default class CortxAuditLog extends Vue {
     total_records: 1000
   };
 
+  @Watch("component")
+  public async fetchHeadersSchema(value: string) {
+    const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${this.auditLogQueryParams.component.toLowerCase()}`);
+    this.auditLogTableHeaderList = headerResponse.data;
+  }
+
   public async showAuditLogs() {
     this.auditLogQueryParams = {
       component: this.component,
@@ -222,22 +218,14 @@ export default class CortxAuditLog extends Vue {
   
 
   public async getAuditLogs() {
-    try {
-      this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");
-      const res = await Api.getAll(
-        `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
-        this.auditLogQueryParams
-      );
-      this.auditLog = res.data;
-  
-      //API call to get schema for the headers
-      const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${this.auditLogQueryParams.component.toLowerCase()}`);
-      this.auditLogTableHeaderList = headerResponse.data;
-  
-      this.isShowLogs = true;
-    } catch (error) {
-      console.log(error);
-    }
+    this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");
+    const res = await Api.getAll(
+      `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
+      this.auditLogQueryParams
+    );
+    this.auditLog = res.data;  
+    this.isShowLogs = true;
+    
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
@@ -287,4 +275,11 @@ export default class CortxAuditLog extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.audit-options > *{
+  margin-right: 10px;
+}
+.nav-btn {
+  margin-top: 4px;
+}
+</style>

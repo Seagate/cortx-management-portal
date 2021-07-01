@@ -29,7 +29,7 @@
           :hide-default-footer="true" 
         >
           <template #top v-if="!hideFilter">
-            <v-container class="ma-0 pl-0">
+            <v-container class="ma-0 pl-0 pt-0">
               <v-row class="ma-0 align-center">
                 <v-col class="pl-0 flex-grow-0">
                   <cortx-search placeHolder="Search" :modelValue.sync="search" :callBack="filterRecords"/>
@@ -99,7 +99,7 @@
                   <td 
                     v-if="value"
                   >
-                    <div v-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'date'">{{ new Date(item[key] * 1000) | formattedDate }}</div>
+                    <div v-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'date'">{{ item[key] | formattedDate }}</div>
                     <div
                      v-else-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'image'" 
                      :class="`image-data ${valuePropOfHeaders[key]['mapValueToClassName'][item[key]]}`"
@@ -132,7 +132,7 @@
           <template v-slot:footer="{props}">
             <v-container>
               <v-row justify="end" align="center">
-                <v-col sm="4" class="text-right pa-0 pr-4">
+                <v-col class="text-right pa-0 pr-4">
                     <v-pagination
                       :value="page"
                       color="csmprimary"
@@ -172,7 +172,10 @@ import CortxSearch from "./cortx-search.vue";
   name: "cortx-data-table",
   components: { cortxDropdownView, CortxSearch },
   filters: { 
-    formattedDate:(date: string) => moment.default(date).format("DD-MM-YYYY hh:mm A")
+    formattedDate:(date: string | number) => {
+      if(isNaN(+date)) return moment.default(date).format("DD-MM-YYYY hh:mm A");
+      return moment.default(+date * 1000).format("DD-MM-YYYY hh:mm A")
+    }
   }
 })
 export default class CortxDataTable extends Vue {
