@@ -52,3 +52,18 @@ export const deleteAccessKey = async (req: Request, res: Response) => {
   );
   return accessKey;
 };
+
+/**
+ * This method updates the status of the S3 Access Key.
+ * @param req
+ * @param res
+ */
+export const updateAccessKeyStatus = async (req: Request, res: Response) => {
+  let accessKey = Api.patch(
+    req.url,
+    req,
+    res,
+    ""
+  );
+  return accessKey;
+};
