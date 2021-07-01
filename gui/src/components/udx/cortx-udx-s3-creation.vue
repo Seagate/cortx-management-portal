@@ -432,7 +432,7 @@ export default class CortxS3Account extends Vue {
 
   public getCredentialsFileContent(): string {
     return (
-      "Account name,S3 URL,Access key,Secret key\n" +
+      "Account name,S3 URL,Access key,Secret key,Account id,Canonical id\n" +
       this.account.account_name +
       "," +
       `${this.s3UrlInfo.s3Url[0]} ${this.s3UrlInfo.s3Url[1]}` +
