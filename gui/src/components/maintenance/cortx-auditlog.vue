@@ -160,7 +160,7 @@ export default class CortxAuditLog extends Vue {
 
   @Watch("component")
   public async fetchHeadersSchema(value: string) {
-    const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${this.auditLogQueryParams.component.toLowerCase()}`);
+    const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${value.toLowerCase()}`);
     this.auditLogTableHeaderList = headerResponse.data;
   }
 
