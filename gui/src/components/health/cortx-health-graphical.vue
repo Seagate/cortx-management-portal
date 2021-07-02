@@ -50,7 +50,7 @@ export default class CortxHealthGraphical extends Vue {
     // Set the dimensions and margins of the diagram
     const margin = { top: 20, right: 90, bottom: 30, left: 90 };
     const width = 1000 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
+    const height = 600 - margin.top - margin.bottom;
     // append the svg object to the body of the page
     // appends a 'group' element to 'svg'
     // moves the 'group' element to the top left margin
@@ -111,7 +111,7 @@ export default class CortxHealthGraphical extends Vue {
       nodeEnter
         .append("rect")
         .attr("width", "140")
-        .attr("height", "100")
+        .attr("height", "120")
         .attr("rx", 5)
         .style("fill", "#fff")
         .style("stroke", color)
@@ -184,6 +184,11 @@ export default class CortxHealthGraphical extends Vue {
         .style("font-size", "10px")
         .attr("x", "10px")
         .attr("dy", "15px")
+        .attr("class", function (d: any) {
+          if (d.data.id.length > 20) {
+            return "id-text"
+          }
+        })
         .text(function(d: any) {
           return `ID: ${d.data.id}`;
         })
@@ -402,6 +407,18 @@ export default class CortxHealthGraphical extends Vue {
                 L ${d.y + 165} ${d.x + 40}`;
         return path;
       }
+      // wrap text if so long
+      d3.selectAll('.id-text').call(wrap);
+      function wrap(text: any) {
+        if(text.text().length > 20) {
+          const idLine = text.text().slice(0, 20);
+          const idLineNew = text.text().slice(20, text.text().indexOf("Time"));
+          const time = text.text().slice(text.text().indexOf("Time"), text.text().length);
+          text.text(idLine)
+          .append("tspan").attr("x", text.attr("x")).attr("dy", text.attr("y") + 15).text(idLineNew)
+          .append("tspan").attr("x", text.attr("x")).attr("dy", text.attr("y") + 15).text(time);
+        }     
+      }
       // Toggle children on click.
       function click(d: any) {
         if (d.children) {
@@ -413,7 +430,7 @@ export default class CortxHealthGraphical extends Vue {
         }
         update(d);
       }
-
+      // Return color value based on status
       function color(d: any) {
         let color = "";
         switch (d.data.status) {
@@ -435,7 +452,7 @@ export default class CortxHealthGraphical extends Vue {
         }
         return color;
       }
-
+      // return image link based on status
       function imageLink(d: any) {
         let imageLink = "";
         switch (d.data.status) {
