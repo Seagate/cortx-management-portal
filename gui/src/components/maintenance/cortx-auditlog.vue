@@ -174,6 +174,8 @@ export default class CortxAuditLog extends Vue {
           .toDate()
       ).unix(),
       end_date: moment(moment().toDate()).unix(),
+      sortby: "timestamp",
+      dir: "asc",
       offset: 1,
     };
 
