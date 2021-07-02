@@ -9,10 +9,10 @@
 table > tr {
   border-bottom: 1px solid #dfe0eb !important;
 }
-.tableheader {
+.table-header {
   height: 32px !important;
   min-width: 64px;
-  background-color: #fcfcfd !important;
+  background-color: #fcfcfd;
   left: 0.5px;
   right: 0.5px;
   top: 0%;
@@ -22,7 +22,7 @@ table > tr {
   font-weight: bold !important;
   font-size: 14px !important;
   line-height: 20px;
-  padding-top: 5px !important;
+  padding: 12px !important;
   display: table-cell;
   align-items: center;
   flex: none;
@@ -43,17 +43,22 @@ tbody tr:hover {
     rgba(250, 250, 250, 0) 101.98%
   ) !important;
 }
+td.data-cell {
+  padding: 12px;
+  max-width: 200px;
+}
+.sort-icon {
+  margin-left: 5px;
+}
+.sort-icon.sort-asc path:first-child {
+  fill: #000;
+}
+.sort-icon.sort-desc path:last-child {
+  fill: #000;
+}
 
 .cortx-cursor-pointer {
   cursor: pointer;
-}
-
-.sort-asc {
-  transform: rotate(180deg);
-}
-
-.image-data {
-  margin: auto;
 }
 
 .v-pagination__navigation,

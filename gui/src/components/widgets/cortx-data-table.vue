@@ -67,27 +67,27 @@
                   v-if="header.display"
                   :key="header.text"
                   :class="[
-                    'tableheader',
+                    'table-header',
                     header.sortable ? 'cortx-cursor-pointer' : ''
                   ]"
                   @click="header.sortable ? onSort(header) : null"
                 >
                   <span>
                     {{ header.text }} 
-                    <span>
-                      <img
-                        v-if="sortParams.sortby === header.value"
-                        id="alert-desc"
-                        :src="require('@/assets/widget/table-sort-desc.svg/')"
-                        class="d-inline-block"
-                        :class="sortParams.dir === 'asc' && 'sort-asc'"
-                        style="vertical-align: bottom; margin-left: -0.3em;"
-                        height="20"
-                        width="20"
-                      />
+                    <span
+                     v-if="header.sortable"
+                     class="sort-icon"
+                     :class="{
+                      'sort-asc': sortParams.sortby === header.value && sortParams.dir === 'asc',
+                      'sort-desc': sortParams.sortby === header.value && sortParams.dir === 'desc'
+                     }"
+                    >
+                      <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.42432 0L7.48247 5.25H1.36616L4.42432 0Z" fill="#9E9E9E"/>
+                        <path d="M4.42432 13L7.48247 7.75H1.36616L4.42432 13Z" fill="#9E9E9E"/>
+                      </svg>
                     </span>
-                </span>
-                  
+                  </span>
                 </th>
               </template>
             </tr>
@@ -98,11 +98,12 @@
               <template v-for="(value, key) in displayPropOfHeaders">
                   <td 
                     v-if="value"
+                    class="data-cell"
                   >
                     <div v-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'date'">{{ item[key] | formattedDate }}</div>
                     <div
                      v-else-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'image'" 
-                     :class="`image-data ${valuePropOfHeaders[key]['mapValueToClassName'][item[key]]}`"
+                     :class="`${valuePropOfHeaders[key]['mapValueToClassName'][item[key]]}`"
                      :title="item[key]"
                     ></div>
                     <div v-else>{{ getTextForDataCell(item[key]) }}</div>
@@ -277,6 +278,6 @@ export default class CortxDataTable extends Vue {
 
 </script>
 
-<style>
-@import "./cortx-data-table.css"
+<style scoped>
+@import "./cortx-data-table.css";
 </style>

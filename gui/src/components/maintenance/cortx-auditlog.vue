@@ -47,18 +47,18 @@
       <div class="nav-btn">
         <button
           type="button"
-          class="cortx-btn-primary mr-2"
-          @click="downloadAuditLogs()"
-          id="auditlog-downlodbtn"
-          :disabled="!component||!timerangeLabel"
-        >{{ $t("maintenance.download") }}</button>
-        <button
-          type="button"
-          class="cortx-btn-primary"
+          class="cortx-btn-primary mr-3"
           @click="showAuditLogs()"
           id="auditlog-viewbtn"
           :disabled="!component||!timerangeLabel"
         >{{ $t("maintenance.view") }}</button>
+        <button
+          type="button"
+          class="cortx-btn-primary"
+          @click="downloadAuditLogs()"
+          id="auditlog-downlodbtn"
+          :disabled="!component||!timerangeLabel"
+        >{{ $t("maintenance.download") }}</button>
       </div>
     </div>
     <template>
@@ -277,7 +277,7 @@ export default class CortxAuditLog extends Vue {
 </script>
 <style lang="scss" scoped>
 .audit-options > *{
-  margin-right: 10px;
+  margin-right: 12px;
 }
 .nav-btn {
   margin-top: 4px;
