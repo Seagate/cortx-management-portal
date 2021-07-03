@@ -735,7 +735,7 @@ export default class CortxUserSettingLocal extends Vue {
       temperature: "",
       language: "",
       timeout: "",
-      checkedRoles: "manage",
+      checkedRoles: "",
       checkedInterfaces: [],
       usernameTooltipMessage: this.$t("csmuser.usernameTooltipMessage"),
       passwordTooltipMessage: this.$t("csmuser.passwordTooltipMessage"),
@@ -1018,9 +1018,9 @@ export default class CortxUserSettingLocal extends Vue {
       timeout: 1,
       email: this.$data.createAccount.email
     };
+    this.$data.isUserCreate = !this.$data.isUserCreate;
     this.$store.dispatch("systemConfig/showLoader", "Creating user...");
     await Api.post(apiRegister.csm_user, queryParams);
-    this.$data.isUserCreate = !this.$data.isUserCreate;
     this.clearCreateAccountForm();
     this.$data.showUserSuccessDialog = true;
     this.$data.successDialogText = `${queryParams.username}
@@ -1090,7 +1090,7 @@ export default class CortxUserSettingLocal extends Vue {
 
   private clearCreateAccountForm() {
     this.$data.createAccount = {};
-    this.$data.checkedRoles = "manage";
+    this.$data.checkedRoles = "";
     this.$v.createAccount.$reset();
   }
 
