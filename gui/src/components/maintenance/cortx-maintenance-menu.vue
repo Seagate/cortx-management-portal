@@ -47,7 +47,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToFirmware",
       disabled: false,
       requiredAccess: "maintenance",
-      featureId: "FW_Update"
+      featureId: "fw_update"
     },
     {
       title: "Software update",
@@ -55,7 +55,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToSoftware",
       disabled: false,
       requiredAccess: "maintenance",
-      featureId: "SW_Update"
+      featureId: "sw_update"
     },
     {
       title: "Audit log",
