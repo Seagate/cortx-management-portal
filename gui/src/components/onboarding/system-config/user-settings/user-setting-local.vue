@@ -1041,13 +1041,7 @@ export default class CortxUserSettingLocal extends Vue {
   }
 
   private async editUser(selectedItem: any) {
-    if (
-      this.isAdminUser(selectedItem) ||
-      this.strEqualityCaseInsensitive(
-        selectedItem.id,
-        this.$data.loggedInUserName
-      )
-    ) {
+    if (this.loggedInUserDetails.username === selectedItem.username) {
       delete selectedItem.role;
       delete selectedItem.confirmPassword;
     }
