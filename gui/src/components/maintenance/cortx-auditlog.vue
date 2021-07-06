@@ -174,17 +174,8 @@ export default class CortxAuditLog extends Vue {
 
   @Watch("component")
   public async fetchHeadersSchema(value: string) {
-    //API call to get schema for the headers
-      if(value === "CSM") {
-        const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/csm-headers`);
-        this.auditLogTableHeaderList = headerResponse.data;
-      } else if (value === "S3") {
-        const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/s3-headers`);
-        this.auditLogTableHeaderList = headerResponse.data;
-      }
-
-    // const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${value.toLowerCase()}`);
-    // this.auditLogTableHeaderList = headerResponse.data;
+    const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${value.toLowerCase()}`);
+    this.auditLogTableHeaderList = headerResponse.data;
   }
 
   get disableCTA() {
