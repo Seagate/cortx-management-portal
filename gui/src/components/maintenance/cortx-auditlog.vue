@@ -85,11 +85,11 @@
             :headers="auditLogTableHeaderList" 
             :records="auditLog.logs" 
             :onSort="onAuditLogSort"
-            :onFilter="onAuditLogFilter" 
             :sortParams="auditLogQueryParams"
-            :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]" 
-            @update:items-per-page="getAuditLogs()"
-            @update:page="getAuditLogs()"
+            :onFilter="onAuditLogFilter" 
+            :rowsPerPage="rowsPerPage" 
+            :onPaginate="onAuditLogPaginate" 
+            :totalRecords="auditLog.total_records"
           />
         </template>
         <template v-else>
@@ -141,6 +141,7 @@ export default class CortxAuditLog extends Vue {
       endDate: 0
   }
   public isShowLogs: boolean = false;
+  public rowsPerPage: number[] = [10, 20, 30, 50, 100, 150, 200];
   public auditLogQueryParams: AuditLogQueryParam = {} as AuditLogQueryParam;
   public auditLogTableHeaderList: any[]= [];
   
@@ -177,6 +178,7 @@ export default class CortxAuditLog extends Vue {
       sortby: "timestamp",
       dir: "asc",
       offset: 1,
+      limit: this.rowsPerPage[0],
     };
 
     await this.getAuditLogs();
@@ -193,6 +195,13 @@ export default class CortxAuditLog extends Vue {
 
       await this.getAuditLogs();
     }
+  }
+
+  public async onAuditLogPaginate(page: number, noOfRecords: number) {
+    this.auditLogQueryParams.offset = page;
+    this.auditLogQueryParams.limit = noOfRecords;
+
+    await this.getAuditLogs();
   }
 
   public async onAuditLogFilter(headerFields: string[], value: string) {

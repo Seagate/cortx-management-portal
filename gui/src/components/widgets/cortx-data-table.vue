@@ -140,10 +140,12 @@
                       class="my-1 font-weight-bold"
                       total-visible="7"
                       page.sync="3"
-                      :length="props.pagination.pageCount"
+                      :length="pageCount ? pageCount: props.pagination.pageCount"
                       next-icon="mdi-chevron-double-right"
                       prev-icon="mdi-chevron-double-left"
                       @input="handlePageInput"
+                      @next="handlePageInput"
+                      @previous="handlePageInput"
                     ></v-pagination>
                 </v-col>
                   <cortx-dropdown
@@ -185,21 +187,26 @@ export default class CortxDataTable extends Vue {
   @Prop({required: false, default: false}) public hideFilter: boolean;
   @Prop({required: false}) public onSort: any;
   @Prop({required: false}) public onFilter: any;
+  @Prop({required: false}) public onPaginate: any;
   @Prop({required: false, default: () => ({})}) public sortParams: any;
   @Prop({required: false, default: () => [10, 20, 30, 50]}) public rowsPerPage: Array<string | number>;
   @Prop({required: false}) public actionsCallback: any[];
+  @Prop({required: false}) public totalRecords: number;
   
   public search: string = "";
   public filterFields: string[] = [];
   public page: number = 1;
   public itemsPerPage: any = 10;
 
-  public handlePageInput(input: number) {
-    this.page = input;
+  public async handlePageInput(input: number) {
+    if (input) this.page = input;
+    if (this.onPaginate && this.totalRecords) await this.onPaginate(this.page, this.itemsPerPage);
   }
 
-  public handleItemsPerPage(noOfPages: CortxDropdownOption) {
-    this.itemsPerPage = noOfPages.value
+  public async handleItemsPerPage(noOfPages: CortxDropdownOption) {
+    this.itemsPerPage = noOfPages.value;
+    this.page = 1;
+    if (this.onPaginate && this.totalRecords) await this.onPaginate(this.page, this.itemsPerPage);
   }
 
   public getTextForDataCell(value: any) {
@@ -211,6 +218,13 @@ export default class CortxDataTable extends Vue {
       return text;
     }
     return value;
+  }
+
+  get pageCount() {
+    if (this.onPaginate && this.totalRecords) {
+      return Math.ceil(this.totalRecords / this.itemsPerPage);
+    }
+    return 0
   }
 
   get modifiedHeaders(){
