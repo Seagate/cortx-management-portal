@@ -28,33 +28,38 @@
     <v-divider class="my-4" />
 
     <div class="py-0 d-flex align-center audit-options">
-        <cortx-dropdown
-          id="auditlog-component"
-          width="200px"
-          @update:selectedOption="handleComponentDropdownSelect"
-          :options="componentList"
-          :title="component ? component : $t('maintenance.component')"
-        ></cortx-dropdown>
+      <cortx-dropdown
+        id="auditlog-component"
+        width="200px"
+        @update:selectedOption="handleComponentDropdownSelect"
+        :options="componentList"
+        :title="component ? component : $t('maintenance.component')"
+      ></cortx-dropdown>
 
-        <div id="auditlog-timeperiod-wrapper">
+      <v-menu
+        offset-y
+        :close-on-content-click="false"
+        nudge-bottom="5"
+      >
+        <template v-slot:activator="{ on, attrs }">
           <div
-           id="auditlog-timeperiod"
-           :class="{'invalid-range': dates.length === 1}"
-           @click.stop="showDatePicker = !showDatePicker"
+          id="auditlog-timeperiod"
+          v-bind="attrs"
+          v-on="on"
+          :class="{'invalid-range': dates.length === 1}"
           >
             {{dates.length > 0 ? dates.join(' ~ ') : "Time period"}}
-            <img class="dropdown-icon" :class="{active: showDatePicker}" :src="require('@/assets/caret-down.svg')"/>
+            <img class="dropdown-icon" :src="require('@/assets/caret-down.svg')"/>
           </div>
+        </template>
 
-          <div id="date-picker-wrapper" v-if="showDatePicker">
-            <v-date-picker
-             v-model="dates" 
-             :range="true" 
-             color="#6ebe49"
-             :max="new Date().toISOString().slice(0,10)"
-            ></v-date-picker>
-          </div>
-        </div>
+        <v-date-picker
+        v-model="dates" 
+        :range="true" 
+        color="#6ebe49"
+        :max="new Date().toISOString().slice(0,10)"
+        ></v-date-picker>
+      </v-menu>
       
       <div class="nav-btn">
         <button
@@ -135,14 +140,6 @@ export default class CortxAuditLog extends Vue {
       startDate: 0,
       endDate: 0
   }
-
-  public closeIfClickedOutside(event: any) {
-      if (!document.getElementById('date-picker-wrapper')!.contains(event.target)) {
-          this.showDatePicker = false;
-
-          document.removeEventListener('click', this.closeIfClickedOutside);
-      }
-  }
   public isShowLogs: boolean = false;
   public auditLogQueryParams: AuditLogQueryParam = {} as AuditLogQueryParam;
   public auditLogTableHeaderList: any[]= [];
@@ -151,13 +148,6 @@ export default class CortxAuditLog extends Vue {
     logs: [],
     total_records: 1000
   };
-
-  @Watch("showDatePicker")
-  public watchClick(value: boolean) {
-    if (value) {
-      document.addEventListener('click', this.closeIfClickedOutside);
-    }
-  }
 
   @Watch("dates") 
   public async printDates() {
@@ -281,20 +271,11 @@ export default class CortxAuditLog extends Vue {
 .audit-options > *{
   margin-right: 12px;
 }
-#date-picker-wrapper {
-  position: absolute;
-  top: 110%;
-  left: 0;
-  z-index: 10;
-}
 #auditlog-timeperiod.invalid-range {
   border-color: red;
 }
 .nav-btn {
   margin-top: 4px;
-}
-#auditlog-timeperiod-wrapper {
-  position: relative;
 }
 #auditlog-timeperiod {
   height: 45px;
