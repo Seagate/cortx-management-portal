@@ -133,7 +133,7 @@
           <template v-slot:footer="{props}">
             <v-container>
               <v-row justify="end" align="center">
-                <v-col class="text-right pa-0 pr-4">
+                <v-col class="text-right pa-0 pr-4 flex-grow-0">
                     <v-pagination
                       :value="page"
                       color="csmprimary"

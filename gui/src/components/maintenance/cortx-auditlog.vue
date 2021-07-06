@@ -36,13 +36,25 @@
           :title="component ? component : $t('maintenance.component')"
         ></cortx-dropdown>
 
-        <cortx-dropdown
-          id="auditlog-timeperiod"
-          width="200px"
-          @update:selectedOption="handleTimerangeDropdownSelect"
-          :options="timerangeList"
-          :title="timerangeLabel ? timerangeLabel : $t('maintenance.timePeriod')"
-        ></cortx-dropdown>
+        <div id="auditlog-timeperiod-wrapper">
+          <div
+           id="auditlog-timeperiod"
+           :class="{'invalid-range': dates.length === 1}"
+           @click.stop="showDatePicker = !showDatePicker"
+          >
+            {{dates.length > 0 ? dates.join(' ~ ') : "Time period"}}
+            <img class="dropdown-icon" :class="{active: showDatePicker}" :src="require('@/assets/caret-down.svg')"/>
+          </div>
+
+          <div id="date-picker-wrapper" v-if="showDatePicker">
+            <v-date-picker
+             v-model="dates" 
+             :range="true" 
+             color="#6ebe49"
+             :max="new Date().toISOString().slice(0,10)"
+            ></v-date-picker>
+          </div>
+        </div>
       
       <div class="nav-btn">
         <button
@@ -50,14 +62,14 @@
           class="cortx-btn-primary mr-3"
           @click="showAuditLogs()"
           id="auditlog-viewbtn"
-          :disabled="!component||!timerangeLabel"
+          :disabled="disableCTA"
         >{{ $t("maintenance.view") }}</button>
         <button
           type="button"
           class="cortx-btn-primary"
           @click="downloadAuditLogs()"
           id="auditlog-downlodbtn"
-          :disabled="!component||!timerangeLabel"
+          :disabled="disableCTA"
         >{{ $t("maintenance.download") }}</button>
       </div>
     </div>
@@ -105,6 +117,8 @@ import CortxDataTable from "../widgets/cortx-data-table.vue";
 })
 export default class CortxAuditLog extends Vue {
   public unsupportedFeatures = unsupportedFeatures;
+  public dates: string[] = [];
+  public showDatePicker: boolean = false;
   public component: string = "";
   public componentList: any[] = [
     {
@@ -116,39 +130,19 @@ export default class CortxAuditLog extends Vue {
       value: "S3"
     }
   ];
-  public timerange: string = "1";
-  public timerangeLabel: string = "";
-  public timerangeList: any[] = [
-    {
-      label: "One day",
-      value: "1"
-    },
-    {
-      label: "Two days",
-      value: "2"
-    },
-    {
-      label: "Three days",
-      value: "3"
-    },
-    {
-      label: "Four days",
-      value: "4"
-    },
-    {
-      label: "Five days",
-      value: "5"
-    },
-    {
-      label: "Six days",
-      value: "6"
-    },
-    {
-      label: "Seven days",
-      value: "7"
-    }
-  ];
-  public to: number = moment().unix();
+  
+  public dateRange = {
+      startDate: 0,
+      endDate: 0
+  }
+
+  public closeIfClickedOutside(event: any) {
+      if (!document.getElementById('date-picker-wrapper')!.contains(event.target)) {
+          this.showDatePicker = false;
+
+          document.removeEventListener('click', this.closeIfClickedOutside);
+      }
+  }
   public isShowLogs: boolean = false;
   public auditLogQueryParams: AuditLogQueryParam = {} as AuditLogQueryParam;
   public auditLogTableHeaderList: any[]= [];
@@ -158,22 +152,54 @@ export default class CortxAuditLog extends Vue {
     total_records: 1000
   };
 
+  @Watch("showDatePicker")
+  public watchClick(value: boolean) {
+    if (value) {
+      document.addEventListener('click', this.closeIfClickedOutside);
+    }
+  }
+
+  @Watch("dates") 
+  public async printDates() {
+    if(this.dates.length === 2) {
+      if (this.dates[0] > this.dates[1]) {
+        this.dateRange.startDate = moment(moment(this.dates[1]).toDate()).unix();
+        this.dateRange.endDate = moment(moment(this.dates[0]).toDate()).unix() + 86399;
+        } else {
+          this.dateRange.startDate = moment(moment(this.dates[0]).toDate()).unix();
+          this.dateRange.endDate = moment(moment(this.dates[1]).toDate()).unix() + 86399;
+      }
+    }
+  }
+
   @Watch("component")
   public async fetchHeadersSchema(value: string) {
-    const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${value.toLowerCase()}`);
-    this.auditLogTableHeaderList = headerResponse.data;
+    //API call to get schema for the headers
+      if(value === "CSM") {
+        const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/csm-headers`);
+        this.auditLogTableHeaderList = headerResponse.data;
+      } else if (value === "S3") {
+        const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/s3-headers`);
+        this.auditLogTableHeaderList = headerResponse.data;
+      }
+
+    // const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${value.toLowerCase()}`);
+    // this.auditLogTableHeaderList = headerResponse.data;
+  }
+
+  get disableCTA() {
+    let result = false;
+    if (this.dates.length !== 2 || !this.component) {
+      result = true;
+    }
+    return result;
   }
 
   public async showAuditLogs() {
     this.auditLogQueryParams = {
       component: this.component,
-      timerange: this.timerange,
-      start_date: moment(
-        moment()
-          .subtract(this.timerange, "days")
-          .toDate()
-      ).unix(),
-      end_date: moment(moment().toDate()).unix(),
+      start_date: this.dateRange.startDate,
+      end_date: this.dateRange.endDate,
       sortby: "timestamp",
       dir: "asc",
       offset: 1,
@@ -239,13 +265,8 @@ export default class CortxAuditLog extends Vue {
     this.$store
       .dispatch("download/downloadLogs", {
         component: this.component,
-        timerange: this.timerange,
-        start_date: moment(
-          moment()
-            .subtract(this.timerange, "days")
-            .toDate()
-        ).unix(),
-        end_date: moment(moment().toDate()).unix()
+        start_date: this.dateRange.startDate,
+        end_date: this.dateRange.endDate,
       })
       .then(response => {
         const url = window.URL.createObjectURL(
@@ -268,10 +289,7 @@ export default class CortxAuditLog extends Vue {
         this.$store.dispatch("systemConfig/hideLoader");
       });
   }
-  private handleTimerangeDropdownSelect(selected: any) {
-    this.timerange = selected.value;
-    this.timerangeLabel = selected.label;
-  }
+  
   private handleComponentDropdownSelect(selected: any) {
     this.component = selected.value;
   }
@@ -281,7 +299,34 @@ export default class CortxAuditLog extends Vue {
 .audit-options > *{
   margin-right: 12px;
 }
+#date-picker-wrapper {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  z-index: 10;
+}
+#auditlog-timeperiod.invalid-range {
+  border-color: red;
+}
 .nav-btn {
   margin-top: 4px;
+}
+#auditlog-timeperiod-wrapper {
+  position: relative;
+}
+#auditlog-timeperiod {
+  height: 45px;
+  min-width: 200px;
+  border: 1px solid #b7b7b7;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding: 0.5em 0.625em 0.375em 1em;
+}
+.dropdown-icon.active {
+  transform: rotate(180deg)
 }
 </style>

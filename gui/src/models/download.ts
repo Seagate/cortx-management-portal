@@ -17,7 +17,6 @@
 // Interface for Audit Log Query Param
 export interface AuditLogQueryParam {
     component: string;
-    timerange: string;
     start_date: number;
     end_date: number;
     sortby?: string;
