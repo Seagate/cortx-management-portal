@@ -271,8 +271,8 @@ export default class CortxDataTable extends Vue {
     };
   }
 
-  public filterRecords() {
-    if (this.search.length > 0) this.onFilter(this.filterFields, this.search);
+  public async filterRecords() {
+    if (this.search.length > 0) await this.onFilter(this.filterFields, this.search);
   }
 }
 

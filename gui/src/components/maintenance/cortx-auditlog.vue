@@ -172,18 +172,11 @@ export default class CortxAuditLog extends Vue {
     }
   }
 
-  @Watch("component")
-  public async fetchHeadersSchema(value: string) {
-    const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${value.toLowerCase()}`);
-    this.auditLogTableHeaderList = headerResponse.data;
-  }
-
   get disableCTA() {
-    let result = false;
     if (this.dates.length !== 2 || !this.component) {
-      result = true;
+      return true;
     }
-    return result;
+    return false;
   }
 
   public async showAuditLogs() {
@@ -213,7 +206,6 @@ export default class CortxAuditLog extends Vue {
   }
 
   public async onAuditLogFilter(headerFields: string[], value: string) {
-      try {
         this.auditLogQueryParams["filter"] = "";
         let headers = [];
 
@@ -229,9 +221,6 @@ export default class CortxAuditLog extends Vue {
         this.auditLogQueryParams["filter"] = `{${this.auditLogQueryParams["filter"]}}`;
 
         await this.getAuditLogs();
-      } catch (error) {
-        console.log(error) 
-      }
   }
 
   
@@ -281,8 +270,10 @@ export default class CortxAuditLog extends Vue {
       });
   }
   
-  private handleComponentDropdownSelect(selected: any) {
+  private async handleComponentDropdownSelect(selected: any) {
     this.component = selected.value;
+    const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${this.component.toLowerCase()}`);
+    this.auditLogTableHeaderList = headerResponse.data;
   }
 }
 </script>
