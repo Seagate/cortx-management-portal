@@ -1050,7 +1050,7 @@ export default class CortxAccountManagement extends Vue {
     if (this.$v.resetAccountForm) {
       this.$v.resetAccountForm.$reset();
     }
-    this.showResetPasswordDialog = !this.showResetPasswordDialog;
+    this.showResetPasswordDialog = false;
   }
 
   private async deleteAccount() {

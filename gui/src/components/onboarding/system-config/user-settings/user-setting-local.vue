@@ -1063,7 +1063,7 @@ export default class CortxUserSettingLocal extends Vue {
 
   private closeEditUserForm() {
     this.$data.selectedRows = [];
-    this.$data.isUserEdit = !this.$data.isUserEdit;
+    this.$data.isUserEdit = false;
     this.$v.selectedItem.$reset();
   }
 
