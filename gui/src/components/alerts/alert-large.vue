@@ -101,7 +101,7 @@
             <div>
               <span>{{ $t("alerts.resourceType") }}: {{ props.item.module_name }}</span><br />
               <span>{{ $t("alerts.resourceId") }}: {{ props.item.resource_id }} | {{ $t("alerts.state") }}: {{ props.item.state }}</span><br />
-              <span>{{ $t("alerts.host_name") }}: {{ props.item.hostname }}</span>
+              <span v-if="props.item.hostname">{{ $t("alerts.host_name") }}: {{ props.item.hostname }}</span>
             </div>
             <div>
               <span v-if="props.item.module_type === 'logical_volume'"
@@ -138,7 +138,7 @@
                 >{{ $t("alerts.serialNumber") }}: {{ props.item.serial_number }}</span
               >
               <div>
-              <span v-if="props.item.module_type === 'iem'"
+              <span v-if="props.item.module_type === 'iem' || props.item.module_type.includes('node:iem')"
                 >{{ $t("alerts.source") }}: {{ props.item.source  }} | {{ $t("alerts.component") }}: {{ props.item.component }} | {{ $t("alerts.module") }}: {{ props.item.module }} </span
               ></div>
             </div>
