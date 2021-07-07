@@ -14,11 +14,20 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export const ROLES = {
-    ADMIN: "admin",
-    MANAGE: "manage",
-    MONITOR: "monitor"
-};
-export const ACCESS_TOKEN = "access-token";
-export const USERNAME = "username";
-  
+// mixin.js
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class LogoutMixin extends Vue {
+
+    public async logout() {
+        // Invalidate session from Server, remove localStorage token and re-route to login page
+        this.$store.dispatch(
+          "systemConfig/showLoader",
+          this.$t("common.logout_message")
+        );
+        await this.$store.dispatch("userLogin/logoutAction");
+        this.$store.dispatch("systemConfig/hideLoader");
+        this.$router.push("/login");
+      }
+}
