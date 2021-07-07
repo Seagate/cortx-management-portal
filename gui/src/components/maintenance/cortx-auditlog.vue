@@ -94,10 +94,9 @@
         </template>
         <template v-else>
           <v-divider class="mt-3"></v-divider>
-          <span
-            class="my-2 d-block"
-            id="auditlog-data"
-          >No logs</span>
+          <div
+            class="no-data-text"
+          >No data found!</div>
         </template>
       </div>
     </template>
@@ -211,7 +210,7 @@ export default class CortxAuditLog extends Vue {
         if(headerFields.length > 0) {
           headers = headerFields; //Adding only selected columns as filters
         } else {
-          headers = this.auditLogTableHeaderList; //Adding all column headers as filters
+          headers = this.auditLogTableHeaderList.filter(header => header.filterable).map(header => header.field_id); //Adding all column headers that are filterable as filters
         }
 
         for (let i = 0;i < headers.length;i++) {
@@ -300,5 +299,14 @@ export default class CortxAuditLog extends Vue {
 }
 .dropdown-icon.active {
   transform: rotate(180deg)
+}
+.no-data-text {
+  width: 500px;
+  margin: 100px auto;
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #DC1F2E;
+  border-radius: 4px;
+  background-color: #FDF4F5;
 }
 </style>

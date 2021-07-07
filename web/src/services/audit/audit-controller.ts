@@ -32,7 +32,7 @@ export const showAuditlog = async (req: Request, res: Response) => {
   if (req.params.component) {
     url += `/show/${req.params.component}`;
   }
-  let auditlog = Api.getAll(url, req, res);
+  let auditlog = await Api.getAll(url, req, res);
   return auditlog;
 };
 
@@ -41,6 +41,6 @@ export const getAuditLogSchema = async (req: Request, res: Response) => {
   if (req.params.component) {
     url += `/schema_info/${req.params.component}`;
   } 
-  let auditlog = Api.getAll(url, req, res);
+  let auditlog = await Api.getAll(url, req, res);
   return auditlog;
 };
