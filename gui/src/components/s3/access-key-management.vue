@@ -148,7 +148,7 @@ export default class CortxAccessKeyManagement extends Vue {
         sortable: false
       },
       {
-        text: this.$t("s3.access-key.table-headers.access_key"),
+        text: this.$t("s3.access-key.table-headers.secret_key"),
         value: "secret_key",
         sortable: false
       },
