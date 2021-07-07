@@ -1047,7 +1047,7 @@ export default class CortxAccountManagement extends Mixins(LogoutMixin) {
     if (this.$v.resetAccountForm) {
       this.$v.resetAccountForm.$reset();
     }
-    this.showResetPasswordDialog = !this.showResetPasswordDialog;
+    this.showResetPasswordDialog = false;
   }
 
   private async deleteAccount() {
