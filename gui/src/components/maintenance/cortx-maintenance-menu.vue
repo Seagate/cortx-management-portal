@@ -25,6 +25,8 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import CortxMenuList from "../widgets/cortx-menu-list.vue";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
+
 @Component({
   name: "cortx-maintenance-menu",
   components: {
@@ -39,7 +41,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToSystemMaintenance",
       disabled: false,
       requiredAccess: "maintenance",
-      featureId: "cluster_management"
+      featureId: unsupportedFeatures.cluster_management
     },
     {
       title: "Firmware update",
@@ -47,7 +49,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToFirmware",
       disabled: false,
       requiredAccess: "maintenance",
-      featureId: "FW_Update"
+      featureId: unsupportedFeatures.fw_update
     },
     {
       title: "Software update",
@@ -55,7 +57,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToSoftware",
       disabled: false,
       requiredAccess: "maintenance",
-      featureId: "SW_Update"
+      featureId: unsupportedFeatures.sw_update
     },
     {
       title: "Audit log",
@@ -63,7 +65,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToAuditLog",
       disabled: false,
       requiredAccess: "auditlog",
-      featureId: "auditlog"
+      featureId: unsupportedFeatures.auditlog
     },
     // commented as per bug EOS-13871
     // {
@@ -79,7 +81,7 @@ export default class CortxMaintenanceMenu extends Vue {
       actionClickFunction: "goToAbout",
       disabled: false,
       requiredAccess: "",
-      featureId: "about"
+      featureId: unsupportedFeatures.about
     }
   ];
   private goToSystemMaintenance() {
