@@ -29,7 +29,7 @@
           :hide-default-footer="true" 
         >
           <template #top v-if="!hideFilter">
-            <v-container class="ma-0 pl-0">
+            <v-container class="ma-0 pl-0 pt-0">
               <v-row class="ma-0 align-center">
                 <v-col class="pl-0 flex-grow-0">
                   <cortx-search placeHolder="Search" :modelValue.sync="search" :callBack="filterRecords"/>
@@ -67,27 +67,27 @@
                   v-if="header.display"
                   :key="header.text"
                   :class="[
-                    'tableheader',
+                    'table-header',
                     header.sortable ? 'cortx-cursor-pointer' : ''
                   ]"
-                  @click="onSort(header)"
+                  @click="header.sortable ? onSort(header) : null"
                 >
                   <span>
                     {{ header.text }} 
-                    <span>
-                      <img
-                        v-if="sortParams.sortby === header.value"
-                        id="alert-desc"
-                        :src="require('@/assets/widget/table-sort-desc.svg/')"
-                        class="d-inline-block"
-                        :class="sortParams.dir === 'asc' && 'sort-asc'"
-                        style="vertical-align: bottom; margin-left: -0.3em;"
-                        height="20"
-                        width="20"
-                      />
+                    <span
+                     v-if="header.sortable"
+                     class="sort-icon"
+                     :class="{
+                      'sort-asc': sortParams.sortby === header.value && sortParams.dir === 'asc',
+                      'sort-desc': sortParams.sortby === header.value && sortParams.dir === 'desc'
+                     }"
+                    >
+                      <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.42432 0L7.48247 5.25H1.36616L4.42432 0Z" fill="#9E9E9E"/>
+                        <path d="M4.42432 13L7.48247 7.75H1.36616L4.42432 13Z" fill="#9E9E9E"/>
+                      </svg>
                     </span>
-                </span>
-                  
+                  </span>
                 </th>
               </template>
             </tr>
@@ -98,14 +98,15 @@
               <template v-for="(value, key) in displayPropOfHeaders">
                   <td 
                     v-if="value"
+                    class="data-cell"
                   >
-                    <div v-if="valuePropOfHeaders[key]['type'] === 'text'">{{ getTextForDataCell(item[key], key, item) }}</div>
-                    <div v-if="valuePropOfHeaders[key]['type'] === 'date'">{{ new Date(item[key] * 1000) | formattedDate }}</div>
+                    <div v-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'date'">{{ item[key] | formattedDate }}</div>
                     <div
-                     v-if="valuePropOfHeaders[key]['type'] === 'image'" 
-                     :class="`image-data ${valuePropOfHeaders[key]['mapValueToClassName'][item[key]]}`"
+                     v-else-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'image'" 
+                     :class="`${valuePropOfHeaders[key]['mapValueToClassName'][item[key]]}`"
                      :title="item[key]"
                     ></div>
+                    <div v-else>{{ getTextForDataCell(item[key]) }}</div>
                   </td>
               </template>
               <template v-if="actionHeaders.length">
@@ -132,17 +133,19 @@
           <template v-slot:footer="{props}">
             <v-container>
               <v-row justify="end" align="center">
-                <v-col sm="4" class="text-right pa-0 pr-4">
+                <v-col class="text-right pa-0 pr-4 flex-grow-0">
                     <v-pagination
                       :value="page"
                       color="csmprimary"
                       class="my-1 font-weight-bold"
                       total-visible="7"
                       page.sync="3"
-                      :length="props.pagination.pageCount"
+                      :length="pageCount ? pageCount: props.pagination.pageCount"
                       next-icon="mdi-chevron-double-right"
                       prev-icon="mdi-chevron-double-left"
                       @input="handlePageInput"
+                      @next="handlePageInput"
+                      @previous="handlePageInput"
                     ></v-pagination>
                 </v-col>
                   <cortx-dropdown
@@ -172,7 +175,10 @@ import CortxSearch from "./cortx-search.vue";
   name: "cortx-data-table",
   components: { cortxDropdownView, CortxSearch },
   filters: { 
-    formattedDate:(date: string) => moment.default(date).format("DD-MM-YYYY hh:mm A")
+    formattedDate:(date: string | number) => {
+      if(isNaN(+date)) return moment.default(date).format("DD-MM-YYYY hh:mm A");
+      return moment.default(+date * 1000).format("DD-MM-YYYY hh:mm A")
+    }
   }
 })
 export default class CortxDataTable extends Vue {
@@ -181,24 +187,29 @@ export default class CortxDataTable extends Vue {
   @Prop({required: false, default: false}) public hideFilter: boolean;
   @Prop({required: false}) public onSort: any;
   @Prop({required: false}) public onFilter: any;
+  @Prop({required: false}) public onPaginate: any;
   @Prop({required: false, default: () => ({})}) public sortParams: any;
   @Prop({required: false, default: () => [10, 20, 30, 50]}) public rowsPerPage: Array<string | number>;
   @Prop({required: false}) public actionsCallback: any[];
+  @Prop({required: false}) public totalRecords: number;
   
   public search: string = "";
   public filterFields: string[] = [];
   public page: number = 1;
   public itemsPerPage: any = 10;
 
-  public handlePageInput(input: number) {
-    this.page = input;
+  public async handlePageInput(input: number) {
+    if (input) this.page = input;
+    if (this.onPaginate && this.totalRecords) await this.onPaginate(this.page, this.itemsPerPage);
   }
 
-  public handleItemsPerPage(noOfPages: CortxDropdownOption) {
-    this.itemsPerPage = noOfPages.value
+  public async handleItemsPerPage(noOfPages: CortxDropdownOption) {
+    this.itemsPerPage = noOfPages.value;
+    this.page = 1;
+    if (this.onPaginate && this.totalRecords) await this.onPaginate(this.page, this.itemsPerPage);
   }
 
-  public getTextForDataCell(value: any, key:any, item: any ) {
+  public getTextForDataCell(value: any) {
     if (Array.isArray(value)) {
       let text = "";
       for (let i = 0; i<value.length; i++) {
@@ -207,6 +218,13 @@ export default class CortxDataTable extends Vue {
       return text;
     }
     return value;
+  }
+
+  get pageCount() {
+    if (this.onPaginate && this.totalRecords) {
+      return Math.ceil(this.totalRecords / this.itemsPerPage);
+    }
+    return 0
   }
 
   get modifiedHeaders(){
@@ -219,7 +237,7 @@ export default class CortxDataTable extends Vue {
   }
   
   get actionHeaders() {
-      const actionHeader = this.headers.filter(header => header.value.type === "buttons");
+      const actionHeader = this.headers.filter(header => (header.value && header.value.type) === "buttons");
       const actionDetails = actionHeader[0] ? actionHeader[0].actionDetails : [];
       return actionDetails
   }
@@ -231,7 +249,7 @@ export default class CortxDataTable extends Vue {
   get displayPropOfHeaders() {
     const displayProps: {[key: string]: boolean} = {};
     this.headers.forEach((header: any) => {
-      if (header.value.type !== "buttons") {
+      if ((header.value && header.value.type) !== "buttons") {
         displayProps[header.field_id] = header.display
       }
     });    
@@ -267,13 +285,13 @@ export default class CortxDataTable extends Vue {
     };
   }
 
-  public filterRecords() {
-    if (this.search.length > 0) this.onFilter(this.filterFields, this.search);
+  public async filterRecords() {
+    if (this.search.length > 0) await this.onFilter(this.filterFields, this.search);
   }
 }
 
 </script>
 
-<style>
-@import "./cortx-data-table.css"
+<style scoped>
+@import "./cortx-data-table.css";
 </style>
