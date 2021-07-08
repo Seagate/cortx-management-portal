@@ -14,25 +14,20 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export const unsupportedFeatures = {
-    welcome_page: "welcome_page",
-    licence_agreement: "licence_agreement",
-    admin_user: "admin_user",
-    alerts: "alerts",
-    lyve_pilot: "lyve_pilot",
-    capacity: "capacity",
-    performance: "performance",
-    health: "health",
-    manage: "manage",
-    notification: "notification",
-    dns: "dns",
-    ntp: "ntp",
-    ssl_upload: "ssl_upload",
-    cluster_management: "cluster_management",
-    fw_update: "fw_update",
-    sw_update: "sw_update",
-    auditlog: "auditlog",
-    about: "about",
-    hctl_node: "hctl_node"
-  };
-  
+// mixin.js
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class LogoutMixin extends Vue {
+
+    public async logout() {
+        // Invalidate session from Server, remove localStorage token and re-route to login page
+        this.$store.dispatch(
+          "systemConfig/showLoader",
+          this.$t("common.logout_message")
+        );
+        await this.$store.dispatch("userLogin/logoutAction");
+        this.$store.dispatch("systemConfig/hideLoader");
+        this.$router.push("/login");
+      }
+}
