@@ -16,7 +16,7 @@
 */
 
 <template>
-  <div v-feature="unsupportedFeatures.FW_Update">
+  <div v-feature="unsupportedFeatures.fw_update">
     <div class="cortx-text-lg cortx-text-bold" id="lblUpdateFirmware">
       {{ $t("onBoarding.updateFirmware") }}
     </div>
