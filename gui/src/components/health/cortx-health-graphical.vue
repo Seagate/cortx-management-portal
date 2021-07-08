@@ -66,7 +66,9 @@ export default class CortxHealthGraphical extends Vue {
     // declares a tree layout and assigns the size
     const treemap = d3.tree().size([height, width]);
     // Assigns parent, children, height, depth
-    const root: any = d3.hierarchy(this.clusterHealthData.data[0], function(d: any) {
+    const root: any = d3.hierarchy(this.clusterHealthData.data[0], function(
+      d: any
+    ) {
       return d.sub_resources;
     });
     root.x0 = 0;
@@ -184,9 +186,9 @@ export default class CortxHealthGraphical extends Vue {
         .style("font-size", "10px")
         .attr("x", "10px")
         .attr("dy", "15px")
-        .attr("class", function (d: any) {
+        .attr("class", function(d: any) {
           if (d.data.id.length > 20) {
-            return "id-text"
+            return "id-text";
           }
         })
         .text(function(d: any) {
@@ -211,10 +213,14 @@ export default class CortxHealthGraphical extends Vue {
         .attr("height", "20px")
         .style("cursor", "pointer")
         .on("click", function(d: any) {
-          const nodeInfoText = document.getElementById(`nodeInfoTextID${d.id}${d.depth}`),
+          const nodeInfoText = document.getElementById(
+              `nodeInfoTextID${d.id}${d.depth}`
+            ),
             noneImage = document.getElementById(`noneImage${d.id}${d.depth}`),
             nodetextId = document.getElementById(`nodetextId${d.id}${d.depth}`),
-            nodetextId1 = document.getElementById(`nodetextId1${d.id}${d.depth}`);
+            nodetextId1 = document.getElementById(
+              `nodetextId1${d.id}${d.depth}`
+            );
           if (window.getComputedStyle(nodeInfoText!).visibility === "hidden") {
             nodeInfoText!.setAttribute("style", "visibility: visible");
             noneImage!.setAttribute("style", "visibility: hidden");
@@ -308,26 +314,16 @@ export default class CortxHealthGraphical extends Vue {
         .on("click", click);
       nodeEnter
         .append("text")
+        .attr("class", "node-text")
         .attr("dy", "45px")
         .attr("x", function(d: any) {
-          if (
-            d.data.sub_resources &&
-            d.data.sub_resources.length &&
-            d.children &&
-            d.children.length
-          ) {
-            return "152.5";
-          } else {
-            return "150";
-          }
+          return d._children ? "150" : "152.5";
         })
         .text(function(d: any) {
-          if (d.children) {
-            return "-";
-          } else if (!d.children && d.data.sub_resources && d.data.sub_resources.length) {
-            return "+";
+          if (d.data.sub_resources && d.data.sub_resources.length) {
+            return d._children ? "+" : "-";
           } else {
-            return " ";
+            return "";
           }
         })
         .style("cursor", "pointer")
@@ -357,12 +353,25 @@ export default class CortxHealthGraphical extends Vue {
         .attr("height", "100")
         .attr("stroke-width", 1);
 
-      nodeExit.select("text");
+      node
+        .select("text.node-text")
+        .attr("x", function(d: any) {
+          return d._children ? "150" : "152.5";
+        })
+        .text(function(d: any) {
+          if (d.data.sub_resources && d.data.sub_resources.length) {
+            return d._children ? "+" : "-";
+          } else {
+            return "";
+          }
+        });
       // ****************** links section ***************************
       // Update the links...
-      const link: any = svg.selectAll("path.link").data(links, function(d: any) {
-        return d.id;
-      });
+      const link: any = svg
+        .selectAll("path.link")
+        .data(links, function(d: any) {
+          return d.id;
+        });
       // Enter any new links at the parent's previous position.
       const linkEnter = link
         .enter()
@@ -408,16 +417,25 @@ export default class CortxHealthGraphical extends Vue {
         return path;
       }
       // wrap text if so long
-      d3.selectAll('.id-text').call(wrap);
+      d3.selectAll(".id-text").call(wrap);
       function wrap(text: any) {
-        if(text.text().length > 20) {
+        if (text.text().length > 20) {
           const idLine = text.text().slice(0, 20);
           const idLineNew = text.text().slice(20, text.text().indexOf("Time"));
-          const time = text.text().slice(text.text().indexOf("Time"), text.text().length);
-          text.text(idLine)
-          .append("tspan").attr("x", text.attr("x")).attr("dy", text.attr("y") + 15).text(idLineNew)
-          .append("tspan").attr("x", text.attr("x")).attr("dy", text.attr("y") + 15).text(time);
-        }     
+          const time = text
+            .text()
+            .slice(text.text().indexOf("Time"), text.text().length);
+          text
+            .text(idLine)
+            .append("tspan")
+            .attr("x", text.attr("x"))
+            .attr("dy", text.attr("y") + 15)
+            .text(idLineNew)
+            .append("tspan")
+            .attr("x", text.attr("x"))
+            .attr("dy", text.attr("y") + 15)
+            .text(time);
+        }
       }
       // Toggle children on click.
       function click(d: any) {
