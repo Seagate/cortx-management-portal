@@ -948,8 +948,10 @@ export default class CortxUserSettingLocal extends Vue {
         }
       } else {
         for (const header of this.$data.headersList) {
-          //@ts-ignore
+          if(header.filterable) {
+            //@ts-ignore
           this.csmUsersQueryParam[header.field_id] = value; //Adding all column headers as filters
+          }
         }
       }
        await this.getUserData();
