@@ -582,7 +582,7 @@
                     "type": "string",
                     "example": "user@test.com"
                   },
-                  "roles": {
+                  "role": {
                     "type": "string",
                     "enum": ["admin", "manage", "monitor"],
                     "example": "manage"
@@ -686,9 +686,10 @@
                 "type": "object",
                 "required": false,
                 "properties": {
-                  "roles": {
-                    "type": "array",
-                    "example": []
+                  "role": {
+                    "type": "string",
+                    "enum": ["admin", "manage", "monitor"],
+                    "example": "manage"
                   },
                   "email": {
                     "type": "string",
