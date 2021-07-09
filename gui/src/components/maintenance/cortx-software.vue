@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div v-feature="unsupportedFeatures.SW_Update">
+  <div v-feature="unsupportedFeatures.sw_update">
     <div class="cortx-text-lg cortx-text-bold" id="lblUpdateHotfix">
       {{ $t("maintenance.updateSoftware") }}
     </div>

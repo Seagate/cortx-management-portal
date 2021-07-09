@@ -26,7 +26,7 @@ import {
   MutationAction
 } from "vuex-module-decorators";
 import { UserLoginQueryParam } from "./../../models/user-login";
-// import { userPermissions } from "./../../models/user-permissions";
+import { ACCESS_TOKEN, USERNAME } from "./../../common/consts";
 Vue.use(Vuex);
 
 @Module({
@@ -100,14 +100,15 @@ export default class UserLogin extends VuexModule {
   @Action
   public async logoutAction() {
     try {
-      const res = await Api.post(apiRegister.logout, {});
-      if (res && res.status) {
-        return res.status;
-      }
+      await Api.post(apiRegister.logout, {});
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.log("err logger: ", e);
     }
+    this.context.commit("setUserPermissions", {});
+    this.context.commit("setUnsupportedFeatures", {});
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(USERNAME);
   }
   @Action({ rawError: true })
   public async getUserPermissionsAction() {
@@ -133,26 +134,18 @@ export default class UserLogin extends VuexModule {
 
   @Action({ rawError: true })
   public async getUnsupportedFeaturesAction() {
-    try {
-      const data = this.context.getters["getUnsupportedFeatures"];
-      if (!data.unsupported_features) {
-        const features = await Api.getAll(apiRegister.unsupported_features);
-        if (features && features.data && features.data.unsupported_features) {
-          const featuresMap = features.data.unsupported_features.reduce((result: any, item: string) => {
-            result[item] = true;
-            return result;
-          }, {});
-          this.context.commit("setUnsupportedFeatures", featuresMap);
-          return featuresMap;
-        }
-      } else {
-        return data;
+    if (this.unsupportedFeatures && !Object.entries(this.unsupportedFeatures).length) {
+      const features = await Api.getAll(apiRegister.unsupported_features);
+      if (features && features.data && features.data.unsupported_features) {
+        const featuresMap = features.data.unsupported_features.reduce((result: any, item: string) => {
+          result[item] = true;
+          return result;
+        }, {});
+        this.context.commit("setUnsupportedFeatures", featuresMap);
       }
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.error("err logger: ", e);
-      throw new Error(e.message);
     }
+
+    return this.unsupportedFeatures;
   }
 
   @Action
