@@ -111,6 +111,7 @@ import moment from "moment";
 import i18n from "./maintenance.json";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDataTable from "../widgets/cortx-data-table.vue";
+import { errorHandler } from "../../common/error-handler";
 
 @Component({
   name: "cortx-auditlog",
@@ -193,7 +194,7 @@ export default class CortxAuditLog extends Vue {
       }
 
       await this.getAuditLogs();
-    }
+    } 
   }
 
   public async onAuditLogPaginate(page: number, noOfRecords: number) {
@@ -203,15 +204,22 @@ export default class CortxAuditLog extends Vue {
     await this.getAuditLogs();
   }
 
+  public getFilterableHeaders() {
+    return this.auditLogTableHeaderList.filter(header => header.filterable).map(header => header.field_id);
+  }
+
   public async onAuditLogFilter(headerFields: string[], value: string) {
-        this.auditLogQueryParams["filter"] = "";
         let headers = [];
 
         if(headerFields.length > 0) {
           headers = headerFields; //Adding only selected columns as filters
+        } else if (this.getFilterableHeaders().length > 0) {
+          headers = this.getFilterableHeaders(); //Adding all column headers that are filterable as filters
         } else {
-          headers = this.auditLogTableHeaderList.filter(header => header.filterable).map(header => header.field_id); //Adding all column headers that are filterable as filters
+          return;
         }
+
+        this.auditLogQueryParams["filter"] = "";
 
         for (let i = 0;i < headers.length;i++) {
           this.auditLogQueryParams["filter"] += `${i > 0 ? " OR " : ""}${headers[i]}=${value}`;
@@ -225,12 +233,16 @@ export default class CortxAuditLog extends Vue {
 
   public async getAuditLogs() {
     this.$store.dispatch("systemConfig/showLoader", "Logs in progress...");
-    const res = await Api.getAll(
-      `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
-      this.auditLogQueryParams
-    );
-    this.auditLog = res.data;  
-    this.isShowLogs = true;
+    try {
+      const res = await Api.getAll(
+        `${apiRegister.auditlogs}/show/${this.auditLogQueryParams.component.toLowerCase()}`,
+        this.auditLogQueryParams
+      );
+      this.auditLog = res.data;  
+      this.isShowLogs = true;
+    } catch (error) {
+      errorHandler(error);
+    }
     
     this.$store.dispatch("systemConfig/hideLoader");
   }
@@ -269,7 +281,8 @@ export default class CortxAuditLog extends Vue {
   }
   
   private async handleComponentDropdownSelect(selected: any) {
-    this.component = selected.value;
+    this.isShowLogs = false;
+    this.component = selected.value; 
     const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${this.component.toLowerCase()}`);
     this.auditLogTableHeaderList = headerResponse.data;
   }
