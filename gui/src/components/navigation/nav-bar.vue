@@ -56,6 +56,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import i18n from "../../i18n";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-nav-bar"
@@ -76,7 +77,7 @@ export default class CortxNavBar extends Vue {
       iconDefault: require("@/assets/navigation/health-grey.svg"),
       iconActive: require("@/assets/navigation/health-white.svg"),
       requiredAccess: "sysconfig",
-      featureId: "health"
+      featureId: unsupportedFeatures.health
     },
     {
       title: "Manage",
@@ -84,7 +85,7 @@ export default class CortxNavBar extends Vue {
       iconDefault: require("@/assets/navigation/manage-grey.svg"),
       iconActive: require("@/assets/navigation/manage-white.svg"),
       requiredAccess: "s3accounts",
-      featureId: "manage"
+      featureId: unsupportedFeatures.manage
     },
     {
       title: "Lyve Pilot",
@@ -92,7 +93,7 @@ export default class CortxNavBar extends Vue {
       iconDefault: require("@/assets/navigation/udx-grey.svg"),
       iconActive: require("@/assets/navigation/udx-white.svg"),
       requiredAccess: "lyve_pilot",
-      featureId: "lyve_pilot"
+      featureId: unsupportedFeatures.lyve_pilot
     },
     {
       title: "Settings",
