@@ -111,7 +111,7 @@ import moment from "moment";
 import i18n from "./maintenance.json";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDataTable from "../widgets/cortx-data-table.vue";
-import { errorHandler } from "../../common/error-handler"
+import { errorHandler } from "../../common/error-handler";
 
 @Component({
   name: "cortx-auditlog",
