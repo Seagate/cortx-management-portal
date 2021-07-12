@@ -948,8 +948,10 @@ export default class CortxUserSettingLocal extends Vue {
         }
       } else {
         for (const header of this.$data.headersList) {
-          //@ts-ignore
+          if(header.filterable) {
+            //@ts-ignore
           this.csmUsersQueryParam[header.field_id] = value; //Adding all column headers as filters
+          }
         }
       }
        await this.getUserData();
@@ -1063,7 +1065,7 @@ export default class CortxUserSettingLocal extends Vue {
 
   private closeEditUserForm() {
     this.$data.selectedRows = [];
-    this.$data.isUserEdit = !this.$data.isUserEdit;
+    this.$data.isUserEdit = false;
     this.$v.selectedItem.$reset();
   }
 

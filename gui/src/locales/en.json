@@ -131,7 +131,8 @@
         "logout": "Logout",
         "continue": "Continue",
         "change-password": "Change Password",
-        "password-update-message": "Password updated successfully"
+        "password-update-message": "Password updated successfully",
+        "logout_message": "Logging out..."
     },
     "csmuser": {
         "user-setting-label": "User settings: Local",

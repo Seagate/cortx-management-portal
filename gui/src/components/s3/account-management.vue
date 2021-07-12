@@ -734,7 +734,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import { Account } from "../../models/s3";
@@ -751,6 +751,7 @@ import i18n from "./s3.json";
 import CommonUtils from "../../common/common-utils";
 import { userPermissions } from "../../common/user-permissions-map"
 import { ROLES } from "@/common/consts";
+import LogoutMixin from "./../../mixins/logout";
 
 @Component({
   name: "cortx-account-management",
@@ -759,7 +760,7 @@ import { ROLES } from "@/common/consts";
   },
   components: { CortxAccessKeyManagement }
 })
-export default class CortxAccountManagement extends Vue {
+export default class CortxAccountManagement extends Mixins(LogoutMixin) {
   public ROLES: any = ROLES;
   public createAccountForm = {
     account: {} as Account,
@@ -856,11 +857,7 @@ export default class CortxAccountManagement extends Vue {
       }
     ];
   }
-  public data() {
-    return {
-      constStr: require("./../../common/const-string.json")
-    };
-  }
+
   public async mounted() {
     await this.checkPermissions();
     await this.getAllAccounts();
@@ -1050,7 +1047,7 @@ export default class CortxAccountManagement extends Vue {
     if (this.$v.resetAccountForm) {
       this.$v.resetAccountForm.$reset();
     }
-    this.showResetPasswordDialog = !this.showResetPasswordDialog;
+    this.showResetPasswordDialog = false;
   }
 
   private async deleteAccount() {
@@ -1070,17 +1067,6 @@ export default class CortxAccountManagement extends Vue {
       // Admin can delete any user account..........
       this.getAllAccounts();
     }
-  }
-
-  // TODO: In the commonUtils file, this code should be refactor. 
-  private logout() {
-    // Invalidate session from Server, remove localStorage token and re-route to login page
-    this.$store.dispatch("userLogin/logoutAction").finally(() => {
-      localStorage.removeItem(this.$data.constStr.access_token);
-    });
-    this.$store.commit("userLogin/setUserPermissions", {});
-    localStorage.removeItem(this.$data.constStr.username);
-    this.$router.push("/login");
   }
 
   private async copyS3Url(url: string) {
