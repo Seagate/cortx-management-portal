@@ -205,7 +205,7 @@ export default class CortxAuditLog extends Vue {
   }
 
   public getFilterableHeaders() {
-    return this.auditLogTableHeaderList.filter(header => header.filterable).map(header => header.field_id)
+    return this.auditLogTableHeaderList.filter(header => header.filterable).map(header => header.field_id);
   }
 
   public async onAuditLogFilter(headerFields: string[], value: string) {
@@ -216,7 +216,7 @@ export default class CortxAuditLog extends Vue {
         } else if (this.getFilterableHeaders().length > 0) {
           headers = this.getFilterableHeaders(); //Adding all column headers that are filterable as filters
         } else {
-          return
+          return;
         }
 
         this.auditLogQueryParams["filter"] = "";
