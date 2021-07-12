@@ -40,10 +40,10 @@
       </div>
       <div class="cortx-text-md cortx-text-bold">
         <div>
-          <label v-if="alertExtendedInfo.cluster_id">{{ $t("alerts.cluster") }} {{ `${alertExtendedInfo.cluster_id} | ` }}</label>
-          <label>{{ $t("alerts.site") }} {{ `${alertExtendedInfo.site_id} | ` }}</label>
-          <label>{{ $t("alerts.rack") }} {{ `${alertExtendedInfo.rack_id} | ` }}</label>
-          <label>{{ $t("alerts.host_name") }}: {{ alert.hostname}}</label>
+          <label v-if="alertExtendedInfo.cluster_id">{{ `${ $t("alerts.cluster") } ${alertExtendedInfo.cluster_id} | ` }}</label>
+          <label>{{ `${ $t("alerts.site") } ${alertExtendedInfo.site_id} | ` }}</label>
+          <label>{{ `${ $t("alerts.rack") } ${alertExtendedInfo.rack_id}` }}</label>
+          <label v-if="alert.hostname">{{ ` | ${ $t("alerts.host_name") }: ${alert.hostname}` }}</label>
         </div>
         <div>
           <label>{{ $t("alerts.resourceType") }}: {{ alertExtendedInfo.resource_type }}</label>

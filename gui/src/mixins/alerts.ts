@@ -119,7 +119,7 @@ export default class AlertsMixin extends Vue {
   public getAlertSeverityStyleClass(severity: string) {
     let severityStyleClass = "";
 
-    switch (severity) {
+    switch (severity.toLowerCase()) {
       case "critical":
       case "error":
       case "alert":
