@@ -98,7 +98,7 @@
             <td>
               <div
                 style="margin: auto;"
-                :title="props.item.severity"
+                :title="props.item.severity | lowercase"
                 :class="getAlertSeverityStyleClass(props.item.severity)"
               ></div>
             </td>

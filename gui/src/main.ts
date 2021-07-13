@@ -44,6 +44,11 @@ Vue.filter("capitalize", (value: any) => {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
 });
+Vue.filter("lowercase", (value: any) => {
+  if (value) {
+    return value.toLowerCase();
+  }
+});
 
 Vue.prototype.$hasAccessToCsm = function(role: string) {
   if (!role) {

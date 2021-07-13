@@ -76,7 +76,7 @@
           <td>
             <div
               style="margin: auto;"
-              :title="props.item.severity"
+              :title="props.item.severity | lowercase"
               :class="getAlertSeverityStyleClass(props.item.severity)"
             ></div>
           </td>
@@ -194,7 +194,7 @@ export default class CortxAlertOccurrences extends Vue {
   public getAlertSeverityStyleClass(severity: string) {
     let severityStyleClass = "";
 
-    switch (severity) {
+    switch (severity.toLowerCase()) {
       case "critical":
       case "error":
       case "alert":
