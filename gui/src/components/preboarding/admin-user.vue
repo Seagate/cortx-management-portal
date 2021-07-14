@@ -378,7 +378,7 @@ export default class CortxAdminUser extends Vue {
       }
     } catch (error) {
       this.$data.isValidResponse = false;
-      this.$data.invalidMessage = error.data.message_text;
+      this.$data.invalidMessage = error.data.message;
     } finally {
       this.$data.createUserInProgress = false;
       this.$store.dispatch("systemConfig/hideLoader");
