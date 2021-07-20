@@ -39,15 +39,6 @@ export const logout = async (req: Request, res: Response) => {
 };
 
 /**
- * This method creates the new admin user.
- * @param req 
- * @param res 
- */
-export const saveUser = async (req: Request, res: Response) => {
-  let adminUser = Api.post(apiRegister.get_admin_user_create_endpt(req.params.version), req, res);
-  return adminUser;
-};
-/**
  * added license key 
  */
 export const license = async (req: Request, res: Response) => {
