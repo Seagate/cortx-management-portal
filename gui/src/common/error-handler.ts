@@ -16,7 +16,7 @@
 */
 import store from "../store/store";
 
-export function errorHandler(err: any, vm?: any, info?: any) {
+export function errorHandler(err: any, vm: any, info: any) {
   store.dispatch("systemConfig/hideLoader");
   if (err.error) {
     store.commit("messageDialog/show", {
