@@ -80,20 +80,6 @@
             }
         ]
     },
-    "/api/v1/preboarding/user": {
-        "POST": [
-            {
-                "paramname": "username",
-                "datatype": "string",
-                "required": true
-            },
-            {
-                "paramname": "password",
-                "datatype": "string",
-                "required": true
-            }
-        ]
-    },
     "/api/v1/login": {
         "POST": [
             {
