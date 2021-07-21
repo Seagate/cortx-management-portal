@@ -70,7 +70,7 @@
                     'table-header',
                     header.sortable ? 'cortx-cursor-pointer' : ''
                   ]"
-                  @click="header.sortable ? onSort(header) : null"
+                  @click="header.sortable ? handleSorting(header) : null"
                 >
                   <span>
                     {{ header.text }} 
@@ -207,6 +207,10 @@ export default class CortxDataTable extends Vue {
     this.itemsPerPage = noOfPages.value;
     this.page = 1;
     if (this.onPaginate && this.totalRecords) await this.onPaginate(this.page, this.itemsPerPage);
+  }
+
+  public async handleSorting(header: string) {
+    await this.onSort(header);
   }
 
   public getTextForDataCell(value: any) {
