@@ -92,7 +92,7 @@ export default class HeaderBar extends Vue {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 5;
+  z-index: 15;
 }
 .cortx-header-right-aligned-items {
   margin-left: auto;
