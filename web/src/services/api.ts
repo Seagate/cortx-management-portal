@@ -349,7 +349,7 @@ export abstract class Api {
             'x-forwarded-proto': req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : "",
             'x-forwarded-for': client_ip            
         };
-        logger.info("Set headers:----->>> " + headers)
+        logger.info("Set headers:----->>> " + JSON.stringify(headers))
         return headers;        
     }
     private static handleFileResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
