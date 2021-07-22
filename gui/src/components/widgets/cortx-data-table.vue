@@ -37,10 +37,12 @@
 
                 <v-col sm="3" class="d-flex">
                   <v-icon
+                    v-if="filterFields.length > 0"
                     color="csmprimary"
                     class="mr-2"
+                    @click="removeFilters()"
                   >
-                    mdi-filter
+                    mdi-filter-remove
                   </v-icon>
                   <v-select
                    multiple 
@@ -52,7 +54,7 @@
                    label="Filters" 
                    class="d-inline"
                    v-model="filterFields" 
-                   @blur="filterRecords"
+                   @blur="search && filterRecords()"
                   ></v-select>
                 </v-col>
                   
@@ -130,7 +132,7 @@
             </tr>
           </template>
 
-          <template v-slot:footer="{props}">
+          <template v-slot:footer="{props}" v-if="records.length > 0">
             <v-container>
               <v-row justify="end" align="center">
                 <v-col class="text-right pa-0 pr-4 flex-grow-0">
@@ -166,7 +168,7 @@
 
 <script lang="ts">
 import * as moment from "moment";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
 import { CortxDropdownOption } from "./dropdown/cortx-dropdown";
 import CortxSearch from "./cortx-search.vue";
@@ -268,7 +270,7 @@ export default class CortxDataTable extends Vue {
 
   get filterableProps() {
     const filterableProps: any[] = [];
-    this.headers.forEach((header: any) => header.filterable && filterableProps.push(
+    this.headers.forEach((header: any) => header.display && header.filterable && filterableProps.push(
       {
         text: header.label,
         value: header.field_id
@@ -289,8 +291,30 @@ export default class CortxDataTable extends Vue {
     };
   }
 
+  public debounce(func: any, timeout = 1000) {
+    let timer: ReturnType<typeof setTimeout>;
+    return (...args: any[]) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+  }
+
   public async filterRecords() {
-    if (this.search.length > 0) await this.onFilter(this.filterFields, this.search);
+      await this.onFilter(this.filterFields, this.search);
+  }
+
+  public debouncedFilterCallback = this.debounce(this.filterRecords);
+
+  @Watch("search")
+  public makeDebouncedFilterCall() {
+    this.debouncedFilterCallback();
+  }
+
+  public async removeFilters() {
+    this.filterFields = [];
+    if (this.search) {
+      await this.onFilter(this.filterFields, this.search);
+    }
   }
 }
 

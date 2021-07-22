@@ -80,7 +80,6 @@
     </div>
     <template>
       <div class="mr-3 mb-3" v-if="auditLog && isShowLogs">
-        <template v-if="auditLog.logs.length > 0">
           <cortx-data-table
             :headers="auditLogTableHeaderList" 
             :records="auditLog.logs" 
@@ -91,13 +90,6 @@
             :onPaginate="onAuditLogPaginate" 
             :totalRecords="auditLog.total_records"
           />
-        </template>
-        <template v-else>
-          <v-divider class="mt-3"></v-divider>
-          <div
-            class="no-data-text"
-          >No data found!</div>
-        </template>
       </div>
     </template>
   </div>
@@ -208,23 +200,24 @@ export default class CortxAuditLog extends Vue {
     return this.auditLogTableHeaderList.filter(header => header.filterable).map(header => header.field_id);
   }
 
-  public async onAuditLogFilter(headerFields: string[], value: string) {
-        let headers = [];
+  public setFilterParams(headers: string[], value: string) {
+    this.auditLogQueryParams["filter"] = "";
+    for (let i = 0;i < headers.length;i++) {
+      this.auditLogQueryParams["filter"] += `${i > 0 ? " OR " : ""}${headers[i]}=${value}`;
+    }
+    this.auditLogQueryParams["filter"] = `{${this.auditLogQueryParams["filter"]}}`;
+  }
 
-        if(headerFields.length > 0) {
-          headers = headerFields; //Adding only selected columns as filters
-        } else if (this.getFilterableHeaders().length > 0) {
-          headers = this.getFilterableHeaders(); //Adding all column headers that are filterable as filters
-        } else {
-          return;
+  public async onAuditLogFilter(headerFields: string[], value: string, clearFilters?: boolean) {
+        delete this.auditLogQueryParams.filter;
+
+        if(value) {
+          if(headerFields.length > 0) {
+            this.setFilterParams(headerFields, value); //Adding only selected columns as filters
+          } else if (this.getFilterableHeaders().length > 0) {
+            this.setFilterParams(this.getFilterableHeaders(), value); //Adding all column headers that are filterable as filters
+          } 
         }
-
-        this.auditLogQueryParams["filter"] = "";
-
-        for (let i = 0;i < headers.length;i++) {
-          this.auditLogQueryParams["filter"] += `${i > 0 ? " OR " : ""}${headers[i]}=${value}`;
-        }
-        this.auditLogQueryParams["filter"] = `{${this.auditLogQueryParams["filter"]}}`;
 
         await this.getAuditLogs();
   }
@@ -282,7 +275,7 @@ export default class CortxAuditLog extends Vue {
   
   private async handleComponentDropdownSelect(selected: any) {
     this.isShowLogs = false;
-    this.component = selected.value; 
+    this.component = selected.value;
     const headerResponse = await Api.getAll(`${apiRegister.auditlogs}/schema_info/${this.component.toLowerCase()}`);
     this.auditLogTableHeaderList = headerResponse.data;
   }
@@ -312,14 +305,5 @@ export default class CortxAuditLog extends Vue {
 }
 .dropdown-icon.active {
   transform: rotate(180deg)
-}
-.no-data-text {
-  width: 500px;
-  margin: 100px auto;
-  padding: 15px;
-  text-align: center;
-  border: 1px solid #DC1F2E;
-  border-radius: 4px;
-  background-color: #FDF4F5;
 }
 </style>
