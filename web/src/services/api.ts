@@ -340,16 +340,23 @@ export abstract class Api {
     private static setHeaders(req: Request) {
         const requestData = req.body ? JSON.stringify(req.body) : "";
         const client_ip = Api.getClientIP(req);
+        var contentLength = 0;
+        try {
+            if(Object.keys(JSON.parse(requestData)).length > 0)
+                contentLength = requestData.length
+        } catch(e){
+            logger.error("Error during parsing request body " + requestData + " error:" + e);
+        }
+        
         var headers = {
             'Content-Type': 'application/json',
-            'Content-Length': !requestData || requestData.length === 0  ? null : requestData.length,
+            'Content-Length': contentLength,
             'authorization': req.headers.authorization ? req.headers.authorization : "",
             'user-agent': req.headers['user-agent'] ? req.headers['user-agent'] : "",
             'x-forwarded-host':  req.headers['host'] ? req.headers['host'] : "",
             'x-forwarded-proto': req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : "",
             'x-forwarded-for': client_ip            
         };
-        logger.info("Set headers:----->>> " + JSON.stringify(headers))
         return headers;        
     }
     private static handleFileResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
