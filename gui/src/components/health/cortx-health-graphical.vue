@@ -206,8 +206,107 @@ export default class CortxHealthGraphical extends Vue {
       nodeEnter
         .append("image")
         .attr("class", "node")
+        .attr("id", function(d: any) {
+          return `stop${d.id}${d.depth}`;
+        })
+        .attr("xlink:href", function(d: any) {
+          if (d.data.resource === "cluster" || d.data.resource === "node") {
+            return require("@/assets/action-icon.svg/");
+          } else {
+            return "";  
+          }
+        })
+        .attr("x", "125px")
+        .attr("y", "10px")
+        .attr("width", "10px")
+        .attr("height", "20px")
+        .style("cursor", "pointer")
+        .on("click", function(d: any) {
+          const startCluster = document.getElementById(`start${d.id}${d.depth}`),
+                stopCluster = document.getElementById(`stop${d.id}${d.depth}`);
+            stopCluster!.setAttribute("style", "visibility: hidden");
+            startCluster!.setAttribute("style", "visibility: visible; cursor: pointer");
+            svg.selectAll(`.action-${d.id}${d.depth}`).remove();
+          });
+      nodeEnter
+        .append("image")
+        .attr("class", "node")
+        .attr("id", function(d: any) {
+          return `start${d.id}${d.depth}`;
+        })
+        .attr("xlink:href", function(d: any) {
+          if (d.data.resource === "cluster" || d.data.resource === "node") {
+            return require("@/assets/action-icon.svg/");
+          } else {
+            return "";  
+          }
+        })
+        .attr("x", "125px")
+        .attr("y", "10px")
+        .attr("width", "10px")
+        .attr("height", "20px")
+        .style("cursor", "pointer")
+        .on("click", function(d: any) {
+          const graphNode = d;
+          const startCluster = document.getElementById(`start${d.id}${d.depth}`),
+                stopCluster = document.getElementById(`stop${d.id}${d.depth}`);
+            stopCluster!.setAttribute("style", "visibility: visible; cursor: pointer");
+            startCluster!.setAttribute("style", "visibility: hidden");
+          var foWidth = 138;
+          var foHeight = 70;
+          var fo = svg.append('foreignObject')
+                        .attr('x', d.y + 1)
+                        .attr('y', d.x + 41)
+                        .attr('width', foWidth)
+                        .attr("height", foHeight)
+                        .attr('class', `action-${d.id}${d.depth}`)
+                        .style("background-color", "#fff")
+                        .style("font-size", "13px");
+          var div = fo.append('xhtml:div')
+              .append('div')
+              .attr('class', 'tooltip'); 
+          div.append('p')
+              .style("margin", 0)
+              .style("padding", "10px")
+              .style("cursor", () => {
+                if (graphNode.data.status == "online") {
+                  return 'not-allowed';
+                } else if (graphNode.data.status == "offline") {
+                  return 'pointer';
+                } else {
+                  return '';
+                }
+              })
+              .on("click", () => {
+                if (graphNode.data.status == "offline") {
+                  updateCluster(graphNode);
+                }
+              })
+              .html('Start Cluster');
+          div.append('p')
+              .style("margin", 0)
+              .style("padding", "0 10px")
+              .style("cursor", () => {
+                if (graphNode.data.status == "online") {
+                  return 'pointer';
+                } else if (graphNode.data.status == "offline") {
+                  return 'not-allowed';
+                } else {
+                  return '';
+                }
+              })
+              .on("click", () => {
+                if (graphNode.data.status == "online") {
+                  updateCluster(graphNode);
+                }
+              })
+              .html('Stop Cluster');
+        });
+      nodeEnter
+        .append("image")
+        .attr("class", "node")
         .attr("xlink:href", require("@/assets/info-icon.svg/"))
-        .attr("x", "115px")
+        .attr("x", "105px")
         .attr("y", "10px")
         .attr("width", "20px")
         .attr("height", "20px")
@@ -492,6 +591,23 @@ export default class CortxHealthGraphical extends Vue {
         }
         return imageLink;
       }
+      function updateCluster(d: any) {
+        if (d.data.status === "online") {
+          stopCluster(d);
+        } else if (d.data.status === "offline") {
+          startCluster(d);
+        } else {
+        }
+      }
+      function stopCluster(d: any) {
+        console.log(d.data.status);
+        // Check Cluster Call
+        // Stop Cluster Call
+      }
+      function startCluster(d: any) {
+        console.log(d.data.status);
+        // Start power on = true
+      }
     }
   }
 }
@@ -500,10 +616,5 @@ export default class CortxHealthGraphical extends Vue {
 #treeContainer {
   width: 100%;
   overflow: auto;
-}
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 2px;
 }
 </style>
