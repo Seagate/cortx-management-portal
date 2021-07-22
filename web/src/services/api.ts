@@ -342,7 +342,7 @@ export abstract class Api {
         const client_ip = Api.getClientIP(req);
         var headers = {
             'Content-Type': 'application/json',
-            'Content-Length': requestData.length,
+            'Content-Length': requestData ? requestData.length : null,
             'authorization': req.headers.authorization ? req.headers.authorization : "",
             'user-agent': req.headers['user-agent'] ? req.headers['user-agent'] : "",
             'x-forwarded-host':  req.headers['host'] ? req.headers['host'] : "",
