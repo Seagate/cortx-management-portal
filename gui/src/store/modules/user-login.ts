@@ -89,7 +89,7 @@ export default class UserLogin extends VuexModule {
     try {
       const res = await Api.post(apiRegister.login, queryParams);
       if (res && res.headers) {
-        return res.headers;
+        return res;
       }
     } catch (e) {
       // tslint:disable-next-line: no-console

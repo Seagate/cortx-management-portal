@@ -86,13 +86,133 @@
         </form>
       </div>
     </v-container>
+    
+    <v-dialog
+      v-model="showResetPasswordDialog"
+      persistent
+      max-width="500"
+      id="reset-password-form"
+      >
+      <v-card>
+        <v-card-title class="title mt-6 ml-3">
+          <span>{{ $t("login.reset-password") }}</span>
+        </v-card-title>
+        <v-divider />
+        <v-col class="col-6 ml-7 pb-0">
+          <div
+            class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error': $v.resetAccountForm.password.$error
+            }"
+          >
+            <label
+              class="cortx-form-group-label"
+              for="user-password"
+              id="new-password-label"
+            >
+              <cortx-info-tooltip
+                :label="$t('common.new-password-label')"
+                :message="passwordTooltipMessage"
+              />
+            </label>
+            <input
+              class="cortx-form__input_text"
+              type="password"
+              id="user-password"
+              name="user-password"
+              v-model.trim="resetAccountForm.password"
+              @input="$v.resetAccountForm.password.$touch"
+            />
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label
+                id="new-password-required-error"
+                v-if="
+                  $v.resetAccountForm.password.$dirty &&
+                  !$v.resetAccountForm.password.required
+                "
+                >{{ $t("common.password-required") }}</label
+              >
+              <label
+                id="new-password-invalid-error"
+                v-else-if="
+                  $v.resetAccountForm.password.$dirty &&
+                  !$v.resetAccountForm.password.passwordRegex
+                "
+                >{{ $t("common.invalid-password") }}</label
+              >
+            </div>
+          </div>
+        </v-col>
+        <v-col class="col-6 ml-7 pt-0">
+          <div
+            class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error':
+                $v.resetAccountForm.confirmPassword.$error
+            }"
+          >
+            <label
+              class="cortx-form-group-label"
+              for="confirm-password"
+              id="confirm-password-label"
+              >{{ $t("common.confirm-password-label") }}</label
+            >
+            <input
+              class="cortx-form__input_text"
+              type="password"
+              id="confirm-password"
+              name="confirm-password"
+              v-model.trim="resetAccountForm.confirmPassword"
+              @input="$v.resetAccountForm.confirmPassword.$touch"
+            />
+            <span
+              id="confirm-password-notmatch-error"
+              class="cortx-form-group-label cortx-form-group-error-msg"
+              v-if="
+                $v.resetAccountForm.confirmPassword.$dirty &&
+                !$v.resetAccountForm.confirmPassword.sameAsPassword
+              "
+              >{{ $t("common.password-not-match") }}</span
+            >
+          </div>
+        </v-col>
+        <v-col class="col-6 ml-7 pb-6 pt-0">
+          <button
+            type="button"
+            id="reset-password-button"
+            class="cortx-btn-primary"
+            @click="resetPassword()"
+            :disabled="$v.resetAccountForm.$invalid"
+          >
+            {{ $t("login.reset-btn") }}
+          </button>
+        </v-col>
+      </v-card>
+    </v-dialog>
+      
+    <cortx-confirmation-dialog
+      id="success-dialog"
+      :show="showSuccessDialog"
+      title="Success"
+      :message="successMessage"
+      @closeDialog="closeSuccessDialog"
+      confirmButtonText="Ok"
+      cancelButtonText=""
+    ></cortx-confirmation-dialog>
   </v-container>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
-import { required } from "vuelidate/lib/validators";
+import { required, sameAs } from "vuelidate/lib/validators";
 import { UserLoginQueryParam } from "./../../models/user-login";
+import {
+  accountNameRegex,
+  passwordRegex,
+  passwordTooltipMessage
+} from "./../../common/regex-helpers";
+import { Api } from "../../services/api";
+import apiRegister from "../../services/api-register";
 import i18n from "./preboarding.json";
 
 @Component({
@@ -105,13 +225,28 @@ export default class CortxLogin extends Vue {
   public loginForm: UserLoginQueryParam = {
     username: "",
     password: ""
+  };  
+  public resetAccountForm = {
+    password: "",
+    confirmPassword: ""
   };
+  public showResetPasswordDialog: boolean = false;
+  private passwordTooltipMessage = passwordTooltipMessage;
+  private showSuccessDialog: boolean = false;
+  private successMessage: string = "";
+  public ifResetPassword: boolean = true;
 
   @Validations()
   public validations = {
     loginForm: {
       username: { required },
       password: { required }
+    },
+    resetAccountForm: {
+      password: { required, passwordRegex },
+      confirmPassword: {
+        sameAsPassword: sameAs("password")
+      }
     }
   };
 
@@ -159,16 +294,17 @@ export default class CortxLogin extends Vue {
     this.$store
       .dispatch("userLogin/loginAction", this.loginForm)
       .then((res: any) => {
-        if (res.authorization) {
+        if (res.headers.authorization) {
           const user: any = {
             username: this.loginForm.username
           };
           this.$store.commit("userLogin/setUser", user);
           localStorage.setItem(
             this.$data.constStr.access_token,
-            res.authorization
+            res.headers.authorization
           );
           localStorage.setItem(this.$data.constStr.username, user.username);
+          this.ifResetPassword = res.data.reset_password;
           return Promise.all([
             this.$store.dispatch("userLogin/getUserPermissionsAction"),
             this.$store.dispatch("userLogin/getUnsupportedFeaturesAction")
@@ -179,7 +315,11 @@ export default class CortxLogin extends Vue {
       })
       .then((res: any[]) => {
         if (res && res.length) {
-          this.navigate();
+          if (this.ifResetPassword === false) {
+            this.showResetPasswordDialog = true;
+          } else {
+            this.navigate();
+          }
         } else {
           throw new Error(this.$data.loginFailed);
         }
@@ -198,6 +338,46 @@ export default class CortxLogin extends Vue {
       this.$router.push("/onboarding");
     }
   }
+
+  private resetPassword() {
+    const updateDetails = {
+      confirmPassword: this.resetAccountForm.confirmPassword,
+      password: this.resetAccountForm.password,
+      reset_password: true
+    };
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      this.$t("login.loading-reset")
+    );
+    const res = Api.patch(
+      apiRegister.csm_user,
+      updateDetails,
+      this.loginForm.username
+    );
+    this.closeResetPasswordForm();
+    this.$store.dispatch("systemConfig/hideLoader");
+    this.successMessage = `${this.$t("login.password-reset-message")} ${
+      this.loginForm.username
+    }`;
+    this.showSuccessDialog = true;
+  }
+
+  public closeResetPasswordForm() {
+    this.resetAccountForm = {
+      password: "",
+      confirmPassword: ""
+    };
+    if (this.$v.resetAccountForm) {
+      this.$v.resetAccountForm.$reset();
+    }
+    this.showResetPasswordDialog = false;
+  }
+
+  public async closeSuccessDialog() {
+    this.showSuccessDialog = false;
+    this.navigate();
+  }
+
 }
 </script>
 
