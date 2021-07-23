@@ -68,21 +68,6 @@ export default class UserLogin extends VuexModule {
     return this.unsupportedFeatures;
   }
 
-  @Action({ rawError: true })
-  public async createUserAction(queryParams: object) {
-    queryParams = queryParams ? queryParams : this.queryParams;
-    try {
-      const res = await Api.post(apiRegister.create_user, queryParams);
-      return res;
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.error("err logger: ", e);
-      if (e && e.data && e.data.message_text) {
-        throw new Error(e.data.message_text);
-      }
-    }
-  }
-
   @Action
   public async loginAction(queryParams: object) {
     queryParams = queryParams ? queryParams : this.queryParams;

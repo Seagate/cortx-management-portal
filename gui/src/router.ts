@@ -83,12 +83,6 @@ const router = new Router({
           meta: { requiresAuth: false }
         },
         {
-          path: "adminuser",
-          name: "adminuser",
-          component: CortxAdminUser,
-          meta: { requiresAuth: false }
-        },
-        {
           path: "login",
           name: "preboarding-login",
           component: CortxLogin,
