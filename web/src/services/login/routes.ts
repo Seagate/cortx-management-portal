@@ -27,9 +27,7 @@ export default [
       checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
-        const result = await getAdminUser(req, res).then((response: any) =>{
-          console.log(response.headers);
-        });;
+        const result = await getAdminUser(req, res);
         res.status(res.statusCode).send(result);
       }
     ]
