@@ -101,6 +101,7 @@
                   <td 
                     v-if="value"
                     class="data-cell"
+                    :key="key"
                   >
                     <div v-if="(valuePropOfHeaders[key] && valuePropOfHeaders[key]['type']) === 'date'">{{ item[key] | formattedDate }}</div>
                     <div
@@ -301,6 +302,7 @@ export default class CortxDataTable extends Vue {
 
   public async filterRecords() {
       await this.onFilter(this.filterFields, this.search);
+      await this.handlePageInput(1);
   }
 
   public debouncedFilterCallback = this.debounce(this.filterRecords);
