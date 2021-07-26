@@ -48,7 +48,7 @@
           v-on="on"
           :class="{'invalid-range': dates.length === 1}"
           >
-            {{dates.length > 0 ? dates.join(' ~ ') : "Time period"}}
+            {{timePeriod}}
             <img class="dropdown-icon" :src="require('@/assets/caret-down.svg')"/>
           </div>
         </template>
@@ -153,6 +153,18 @@ export default class CortxAuditLog extends Vue {
           this.dateRange.endDate = moment(moment(this.dates[1]).toDate()).unix() + 86399;
       }
     }
+  }
+
+  get timePeriod() {
+    let timePeriod = "";
+    if (this.dates.length === 1) {
+      timePeriod = this.dates[0]
+    } else if (this.dates.length === 2) {
+      timePeriod = this.dates[0] > this.dates[1] ? this.dates.reverse().join(" ~ ") : this.dates.join(" ~ ");
+    } else {
+      timePeriod = "Time Period"
+    }
+    return timePeriod
   }
 
   get disableCTA() {
