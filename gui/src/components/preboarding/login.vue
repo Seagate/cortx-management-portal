@@ -95,7 +95,7 @@
       >
       <v-card>
         <v-card-title class="title mt-6 ml-3">
-          <span>{{ $t("login.reset-password") }}</span>
+          <span>{{ $t("login.change-password") }}</span>
         </v-card-title>
         <v-divider />
         <v-col class="col-6 ml-7 pb-0">
@@ -235,6 +235,7 @@ export default class CortxLogin extends Vue {
   private showSuccessDialog: boolean = false;
   private successMessage: string = "";
   public ifResetPassword: boolean = true;
+  public authToken: any;
 
   @Validations()
   public validations = {
@@ -276,59 +277,59 @@ export default class CortxLogin extends Vue {
       this.navigate();
     }
   }
-  private handleEnterEvent() {
+  private async handleEnterEvent() {
     if (
       this.$v.loginForm &&
       !this.$v.loginForm.$invalid &&
       !this.$data.loginInProgress
     ) {
-      this.gotToNextPage();
+      await this.gotToNextPage();
     }
   }
 
-  private gotToNextPage() {
+  private async gotToNextPage() {
     // Hide login err message
     this.$data.isValidLogin = true;
     this.$data.loginInProgress = true;
+    try {
+      const loginResp: any = await this.$store.dispatch("userLogin/loginAction", this.loginForm);
+      if (loginResp.headers.authorization) {
+        this.ifResetPassword = false;
+        // loginResp.data.reset_password;
+        if (!this.ifResetPassword) {
+          this.authToken = loginResp.headers.authorization;
+          this.showResetPasswordDialog = true;
+        } else {
+          await this.setUserAuthDetails(loginResp.headers.authorization);
+        }
+      } else {
+        throw new Error(this.$data.loginFailed);
+      }
+    } catch(e) {
+      this.$data.isValidLogin = false;
+      this.$data.loginInProgress = false;
+    }
+  }
 
-    this.$store
-      .dispatch("userLogin/loginAction", this.loginForm)
-      .then((res: any) => {
-        if (res.headers.authorization) {
-          const user: any = {
-            username: this.loginForm.username
-          };
-          this.$store.commit("userLogin/setUser", user);
-          localStorage.setItem(
-            this.$data.constStr.access_token,
-            res.headers.authorization
-          );
-          localStorage.setItem(this.$data.constStr.username, user.username);
-          this.ifResetPassword = res.data.reset_password;
-          return Promise.all([
-            this.$store.dispatch("userLogin/getUserPermissionsAction"),
-            this.$store.dispatch("userLogin/getUnsupportedFeaturesAction")
-          ]);
-        } else {
-          throw new Error(this.$data.loginFailed);
-        }
-      })
-      .then((res: any[]) => {
-        if (res && res.length) {
-          if (this.ifResetPassword === false) {
-            this.showResetPasswordDialog = true;
-          } else {
-            this.navigate();
-          }
-        } else {
-          throw new Error(this.$data.loginFailed);
-        }
-      })
-      .catch(() => {
-        // Show error message on screen
-        this.$data.isValidLogin = false;
-        this.$data.loginInProgress = false;
-      });
+  private async setUserAuthDetails(authToken: any) {
+    const user: any = {
+      username: this.loginForm.username
+    };
+    this.$store.commit("userLogin/setUser", user);
+    localStorage.setItem(
+      this.$data.constStr.access_token,
+      authToken
+    );
+    localStorage.setItem(this.$data.constStr.username, user.username);
+    const permissionsAndUnSuppFeaturesResp: any[] = await Promise.all([
+      this.$store.dispatch("userLogin/getUserPermissionsAction"),
+      this.$store.dispatch("userLogin/getUnsupportedFeaturesAction")
+    ]);
+    if (permissionsAndUnSuppFeaturesResp && permissionsAndUnSuppFeaturesResp.length) {
+      this.navigate();
+    } else {
+      throw new Error(this.$data.loginFailed);
+    }
   }
 
   private navigate() {
@@ -339,7 +340,7 @@ export default class CortxLogin extends Vue {
     }
   }
 
-  private resetPassword() {
+  private async resetPassword() {
     const updateDetails = {
       confirmPassword: this.resetAccountForm.confirmPassword,
       password: this.resetAccountForm.password,
@@ -349,17 +350,22 @@ export default class CortxLogin extends Vue {
       "systemConfig/showLoader",
       this.$t("login.loading-reset")
     );
-    const res = Api.patch(
+    const res: any = await Api.patch(
       apiRegister.csm_user,
       updateDetails,
-      this.loginForm.username
+      this.loginForm.username,
+      {
+        headers: {
+          auth_token: this.authToken
+        }
+      }
     );
     this.closeResetPasswordForm();
-    this.$store.dispatch("systemConfig/hideLoader");
     this.successMessage = `${this.$t("login.password-reset-message")} ${
       this.loginForm.username
     }`;
     this.showSuccessDialog = true;
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 
   public closeResetPasswordForm() {
@@ -375,6 +381,7 @@ export default class CortxLogin extends Vue {
 
   public async closeSuccessDialog() {
     this.showSuccessDialog = false;
+    await this.setUserAuthDetails(this.authToken);
     this.navigate();
   }
 
