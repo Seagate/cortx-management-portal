@@ -340,7 +340,7 @@ export abstract class Api {
     private static setHeaders(req: Request) {
         const requestData = req.body ? JSON.stringify(req.body) : "";
         const client_ip = Api.getClientIP(req);
-        var contentLength = 0;
+        let contentLength = 0;
         try {
             if(Object.keys(JSON.parse(requestData)).length > 0)
                 contentLength = requestData.length
