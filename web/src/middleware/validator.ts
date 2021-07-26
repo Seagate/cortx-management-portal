@@ -18,7 +18,7 @@ import { Request, Response, NextFunction } from "express";
 import { HTTP400Error } from "../utils/http-errors";
 import * as getparams from './../api-mandatory-params.json';
 import * as sortValidators from './sort-validator';
-import url from "url";
+import logger from './../config/winston';
 
 let objectValue = JSON.parse(JSON.stringify(getparams));
 let count = Object.keys(objectValue).length;
@@ -279,6 +279,10 @@ let validateParams = (requiredParams: any, params: any, req: Request, res: Respo
 }
 
 export const checkApiVersion = (req: Request, res: Response, next: NextFunction): void => {
+  logger.info("");
+  logger.info("Request URL: " + req.url + " Time in second:--> " + (Date.now()/1000));
+  logger.info("");
+
   // Since version changes do not occur often switch case statement is used here. This can be changed to a list when there are many api versions
   switch (req.params.version) {
     case "v1":
