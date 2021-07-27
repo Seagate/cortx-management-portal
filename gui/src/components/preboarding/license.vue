@@ -72,7 +72,7 @@ export default class CortxLicense extends Vue {
   }
 
   private gotToNextPage() {
-    this.$router.push("adminuser");
+    this.$router.push("login");
   }
 }
 </script>
