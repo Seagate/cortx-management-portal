@@ -157,14 +157,20 @@ export default class CortxAuditLog extends Vue {
 
   get timePeriod() {
     let timePeriod = "";
-    if (this.dates.length === 1) {
-      timePeriod = this.dates[0]
-    } else if (this.dates.length === 2) {
-      timePeriod = this.dates[0] > this.dates[1] ? this.dates.reverse().join(" ~ ") : this.dates.join(" ~ ");
-    } else {
-      timePeriod = "Time Period"
+    switch (this.dates.length) {
+      case 1:
+        timePeriod = this.dates[0];
+        break;
+
+      case 2:
+        timePeriod = this.dates[0] > this.dates[1] ? this.dates.reverse().join(" ~ ") : this.dates.join(" ~ ");
+        break;
+    
+      default:
+        timePeriod = "Time Period";
+        break;
     }
-    return timePeriod
+    return timePeriod;
   }
 
   get disableCTA() {
