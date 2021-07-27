@@ -46,6 +46,7 @@ tbody tr:hover {
 td.data-cell {
   padding: 12px;
   max-width: 200px;
+  word-break: break-word;
 }
 .sort-icon {
   margin-left: 5px;
