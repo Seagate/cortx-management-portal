@@ -294,8 +294,7 @@ export default class CortxLogin extends Vue {
     try {
       const loginResp: any = await this.$store.dispatch("userLogin/loginAction", this.loginForm);
       if (loginResp.headers.authorization) {
-        this.ifResetPassword = false;
-        // loginResp.data.reset_password;
+        this.ifResetPassword = loginResp.data.reset_password;
         if (!this.ifResetPassword) {
           this.authToken = loginResp.headers.authorization;
           this.showResetPasswordDialog = true;
