@@ -9,7 +9,11 @@
         "password-placeholder": "Password",
         "user-name-required": "Username is required.",
         "password-required": "Password is required.",
-        "login-failed": "Login failed !"
+        "login-failed": "Login failed !",
+        "change-password": "Change Password",
+        "loading-reset": "Resetting password...",
+        "password-reset-message": "Password updated successfully for ",
+        "reset-btn": "Reset"
     },
     "s3": {
         "s3ConfigSummary": "S3 configuration-summary",
