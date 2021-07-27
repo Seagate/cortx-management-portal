@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 import { Request, Response, request, response } from "express";
-import { saveUser, logout, getAdminUser, license } from "./login-controller";
+import { logout, getAdminUser, license } from "./login-controller";
 import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
@@ -43,18 +43,6 @@ export default [
       async (req: Request, res: Response) => {
         const result = await logout(req, res);
         res.status(res.statusCode).send(result);
-      }
-    ]
-  },
-  {
-    path: "/api/:version/preboarding/user",
-    method: "post",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        const result = await saveUser(req, res);
-        res.status(res.statusCode).send();
       }
     ]
   },
