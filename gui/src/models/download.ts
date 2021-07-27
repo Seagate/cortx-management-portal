@@ -26,6 +26,7 @@ export interface AuditLogQueryParam {
     filter?: string;
 }
 export interface CsmUserQueryParam {
+    [prop: string]: any;
     sortby?: string;
     dir?: string;
     offset?: number;
