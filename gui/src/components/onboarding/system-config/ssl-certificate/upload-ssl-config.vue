@@ -16,7 +16,7 @@
 */
 <template>
   <v-container class="mt-0 ml-0">
-    <div class="pl-4 body-2">
+    <div class="pl-4 body-2" v-if="isSSLUploadSupported">
       <div
         class="mt-3 pa-3 pb-0 cortx-last-ssl-info-container cortx-text-md"
         v-if="lastSSLStatus.status"
@@ -84,6 +84,11 @@
         </v-row>
       </div>
     </div>
+    <div style="margin-top: 20px;" v-else>
+      <label class="cortx-text-lg cortx-text-bold cortx-text-alert">
+        {{ $t("onBoarding.msgFeatureNotSupported") }}
+      </label>
+    </div>
     <span class="d-none">{{ isValidForm }}</span>
   </v-container>
 </template>
@@ -106,6 +111,7 @@ import {
   requiredIf
 } from "vuelidate/lib/validators";
 import i18n from "../../onboarding.json";
+import { unsupportedFeatures } from "../../../../common/unsupported-feature";
 
 @Component({
   name: "upload-ssl-config",
@@ -117,12 +123,17 @@ import i18n from "../../onboarding.json";
   }
 })
 export default class CortxUploadSSLConfig extends Vue {
+  public isSSLUploadSupported: boolean = false;
   @Validations()
   private validations = {
     file: { required }
   };
-  private mounted() {
-    this.getCertificateStatus();
+  private async mounted() {
+    const vueInstance: any = this;
+    if (!vueInstance.$getFeatureList()[unsupportedFeatures.ssl_upload]) {
+      this.isSSLUploadSupported = true;
+      await this.getCertificateStatus();
+    }
     // WizardHook: Open a listener for onNext event
     // So when wizard footer clicks on the Next Button this component can perform its own workflow
     EVENT_BUS.$on("emitOnNext", (res: any) => {
