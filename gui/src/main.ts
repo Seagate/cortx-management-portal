@@ -28,6 +28,7 @@ import { userPermissions as userPermissionsMap } from "./common/user-permissions
 import CortxInfoTooltip from "./components/widgets/cortx-info-tooltip.vue";
 import CortxConfirmationDialog from "./components/widgets/cortx-confirmation-dialog.vue";
 import CortxDropdown from "./components/widgets/dropdown/cortx-dropdown-view.vue";
+import CortxResetPasswrod from "./components/widgets/cortx-reset-password.vue";
 import i18n from "./i18n";
 
 Vue.use(Vuelidate);
@@ -87,6 +88,7 @@ Vue.component("cortx-has-access", CortxHasAccess);
 Vue.component("cortx-info-tooltip", CortxInfoTooltip);
 Vue.component("cortx-confirmation-dialog", CortxConfirmationDialog);
 Vue.component("cortx-dropdown", CortxDropdown);
+Vue.component("cortx-reset-password", CortxResetPasswrod);
 
 Vue.prototype.$cortxUserPermissions = userPermissionsMap;
 
