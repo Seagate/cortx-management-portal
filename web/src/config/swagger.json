@@ -826,7 +826,7 @@
     "/s3_accounts/{s3_account_id}": {
       "patch": {
         "tags": ["S3"],
-        "summary": "Update S3 account password: Accessible to S3 account only",
+        "summary": "Update S3 account password: Accessible to Admin, Manage and S3 account.",
         "responses": {
           "200": {
             "description": "OK: S3 Account updated successfully"
@@ -893,7 +893,7 @@
       },
       "delete": {
         "tags": ["S3"],
-        "summary": "Delete S3 Account: Accessible to S3 account and admin users only",
+        "summary": "Delete S3 Account: Accessible to Admin, Manage and S3 account.",
         "responses": {
           "200": {
             "description": "Ok: S3 account deleted successfully."
