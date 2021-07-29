@@ -184,7 +184,37 @@
         },
         "content": {
           "application/json": {}
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "sortby",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The field_id of the column that you wish to sort.",
+            "example": "email"
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "This value denotes the direction of sorting.",
+            "example": "asc"
+          },
+          {
+            "in": "query",
+            "name": "Filter field_id and search phrase",
+            "schema": {
+              "type": "object"
+            },
+            "description": "Field_id of the column as key and the search phrase as value can be mentioned.",
+            "example": "{\n  \"role\": \"admin\"\n}"
           }
+        ]
       },
       "post": {
         "tags": ["CSM User"],
