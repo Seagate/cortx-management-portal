@@ -520,10 +520,32 @@
         },
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
+            "in": "query",
+            "name": "sortby",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The field_id of the column that you wish to sort.",
+            "example": "email"
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "This value denotes the direction of sorting.",
+            "example": "asc"
+          },
+          {
+            "in": "query",
+            "name": "Filter field_id and search phrase",
+            "schema": {
+              "type": "object"
+            },
+            "description": "Field_id of the column as key and the search phrase as value can be mentioned.",
+            "example": "{\n  \"role\": \"admin\"\n}"
           }
         ]
       },
@@ -2649,7 +2671,7 @@
             "in": "path",
             "description": "Specifies the component (csm or s3)",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": { "type": "string", "enum": ["csm", "s3"] }
           },
           {
             "name": "start_date",
@@ -2666,10 +2688,32 @@
             "schema": { "type": "integer" }
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
+            "in": "query",
+            "name": "sortby",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The field_id of the column that you wish to sort.",
+            "example": "timestamp"
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "This value denotes the direction of sorting.",
+            "example": "asc"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Value is a string containing field_id and search phrase enclosed within curly braces.",
+            "example": "{response_code=200}"
           }
         ]
       }
@@ -2710,7 +2754,7 @@
             "in": "path",
             "description": "Specifies the component (csm or s3)",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": { "type": "string", "enum": ["csm", "s3"] }
           },
           {
             "name": "start_date",
@@ -2727,10 +2771,32 @@
             "schema": { "type": "integer" }
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
+            "in": "query",
+            "name": "sortby",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The field_id of the column that you wish to sort.",
+            "example": "timestamp"
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "This value denotes the direction of sorting.",
+            "example": "asc"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Value is a string containing field_id and search phrase enclosed within curly braces.",
+            "example": "{response_code=200}"
           }
         ]
       }
