@@ -2375,7 +2375,7 @@
             "in": "path",
             "description": "Specifies the component (csm or s3)",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": { "type": "string", "enum": ["csm", "s3"] }
           },
           {
             "name": "start_date",
@@ -2390,6 +2390,34 @@
             "description": "epoch time",
             "required": true,
             "schema": { "type": "integer" }
+          },
+          {
+            "in": "query",
+            "name": "sortby",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The field_id of the column that you wish to sort.",
+            "example": "timestamp"
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "This value denotes the direction of sorting.",
+            "example": "asc"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Value is a string containing field_id and search phrase enclosed within curly braces.",
+            "example": "{response_code=200}"
           }
         ]
       }
@@ -2430,7 +2458,7 @@
             "in": "path",
             "description": "Specifies the component (csm or s3)",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": { "type": "string", "enum": ["csm", "s3"] }
           },
           {
             "name": "start_date",
@@ -2445,6 +2473,34 @@
             "description": "epoch time",
             "required": true,
             "schema": { "type": "integer" }
+          },
+          {
+            "in": "query",
+            "name": "sortby",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The field_id of the column that you wish to sort.",
+            "example": "timestamp"
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "This value denotes the direction of sorting.",
+            "example": "asc"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Value is a string containing field_id and search phrase enclosed within curly braces.",
+            "example": "{response_code=200}"
           }
         ]
       }
