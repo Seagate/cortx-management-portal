@@ -936,27 +936,38 @@ export default class CortxUserSettingLocal extends Vue {
   }
 
 
+  public getFilterableHeaderFields(): string[] {
+    return this.$data.headersList
+      .filter((header: any) => header.filterable)
+      .map((header: any) => header.field_id);
+  }
+
+  public async clearFilters() {
+    for (const field of this.getFilterableHeaderFields()) {
+      delete this.csmUsersQueryParam[field];
+    }
+  }
+
   /**
    * User filter data
    */
   public async onCsmLogFilter(headerFields: string[], value: string) {
-    if(value.length > 0) {
-      if(headerFields.length > 0) {
+    this.clearFilters();
+
+    if (value) {
+      if (headerFields.length > 0) {
         for (const field of headerFields) {
-          //@ts-ignore
           this.csmUsersQueryParam[field] = value; //Adding only selected columns as filters
         }
-      } else {
-        for (const header of this.$data.headersList) {
-          if(header.filterable) {
-            //@ts-ignore
-          this.csmUsersQueryParam[header.field_id] = value; //Adding all column headers as filters
+      } else if (this.getFilterableHeaderFields().length > 0) {
+        for (const field of this.getFilterableHeaderFields()) {
+          this.csmUsersQueryParam[field] = value; //Adding all filterable column headers as filters
           }
         }
       }
+
        await this.getUserData();
     }
-  }
 
   /**
    * To get user list
