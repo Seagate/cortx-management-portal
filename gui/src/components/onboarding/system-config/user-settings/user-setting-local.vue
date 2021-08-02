@@ -1078,6 +1078,7 @@ export default class CortxUserSettingLocal extends Vue {
     this.$data.selectedRows = [];
     this.$data.isUserEdit = false;
     this.$v.selectedItem.$reset();
+    this.$data.isPasswordFieldOpen = false;
   }
 
   /**
