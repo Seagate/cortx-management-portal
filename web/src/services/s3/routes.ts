@@ -42,23 +42,6 @@ export default [
     ]
   },
   {
-    path: "/api/:version/s3_accounts/:name",
-    method: "get",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          console.log(req.params.name);
-          const result = await getAllAccounts(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      }
-    ]
-  },
-  {
     path: "/api/:version/s3_accounts",
     method: "post",
     handler: [
