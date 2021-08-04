@@ -542,6 +542,7 @@
                           name="rbtEditAdminInterface"
                           value="admin"
                           id="chkLocalAdminInterface"
+                          :disabled="(loggedInUserDetails.id === selectedItem.id && loggedInUserDetails.role === ROLES.ADMIN )"
                           />
                         <span class="cortx-rdb-tick" id="lblLocalAdminInterface"></span>
                       </label>
@@ -554,6 +555,7 @@
                           name="rbtEditManageInterface"
                           value="manage"
                           id="chkLocalManageInterface"
+                          :disabled="(loggedInUserDetails.id === selectedItem.id && loggedInUserDetails.role === ROLES.ADMIN ) "
                           />
                         <span class="cortx-rdb-tick" id="lblLocalManageInterface"></span>
                       </label>
@@ -566,6 +568,7 @@
                           name="rbtEditMonitorInterface"
                           value="monitor"
                           id="chkLocalMonitorInterface"
+                          :disabled="(loggedInUserDetails.id === selectedItem.id && loggedInUserDetails.role === ROLES.ADMIN )"
                         />
                         <span class="cortx-rdb-tick" id="lblLocalMonitorInterface"></span>
                       </label>
@@ -1078,6 +1081,7 @@ export default class CortxUserSettingLocal extends Vue {
     this.$data.selectedRows = [];
     this.$data.isUserEdit = false;
     this.$v.selectedItem.$reset();
+    this.$data.isPasswordFieldOpen = false;
   }
 
   /**
@@ -1128,7 +1132,6 @@ export default class CortxUserSettingLocal extends Vue {
         return true;
       }
     });
-
     return loggedInUser;
   }
 

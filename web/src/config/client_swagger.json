@@ -1,5 +1,18 @@
 {
   "openapi": "3.0.0",
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
   "info": {
     "version": "2.0.0",
     "title": "CSM"
@@ -17,6 +30,7 @@
       "get": {
         "tags": ["About"],
         "summary": "Gets product version and its components",
+        "security": [],
         "responses": {
           "200": {
             "description": "OK: Product version and components fetched successfully."
@@ -40,6 +54,7 @@
       "get": {
         "tags": ["Unsupported Features"],
         "summary": "Gets all the unsupported features",
+        "security": [],
         "responses": {
           "200": {
             "description": "OK: Unsupported features fetched successfully."
@@ -63,6 +78,7 @@
       "post": {
         "tags": ["User"],
         "summary": "This API allow login to Admin user, CSM user and S3 User",
+        "security": [],
         "responses": {
           "200": {
             "description": "OK: User logged in successfully."
@@ -139,15 +155,7 @@
         },
         "content": {
           "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       }
     },
     "/csm/users": {
@@ -179,10 +187,32 @@
         },
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
+            "in": "query",
+            "name": "sortby",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The field_id of the column that you wish to sort.",
+            "example": "email"
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "This value denotes the direction of sorting.",
+            "example": "asc"
+          },
+          {
+            "in": "query",
+            "name": "Filter field_id and search phrase",
+            "schema": {
+              "type": "object"
+            },
+            "description": "Field_id of the column as key and the search phrase as value can be mentioned.",
+            "example": "{\n  \"role\": \"admin\"\n}"
           }
         ]
       },
@@ -212,14 +242,6 @@
         "content": {
           "application/json": {}
         },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
         "requestBody": {
           "description": "Create new user request",
           "required": true,
@@ -289,12 +311,6 @@
             "description": "Specifies the user id",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       },
@@ -327,12 +343,6 @@
             "name": "user_id",
             "in": "path",
             "description": "Specifies the user id",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
@@ -394,12 +404,6 @@
             "description": "Specifies the user id",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       }
@@ -428,15 +432,7 @@
           "500": {
             "description": "Internal Server Error: When requested resource is not available."
           }
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       }
     },
     "/s3_accounts": {
@@ -465,15 +461,7 @@
         },
         "content": {
           "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       },
       "post": {
         "tags": ["S3"],
@@ -507,14 +495,6 @@
         "content": {
           "application/json": {}
         },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
         "requestBody": {
           "description": "Create new S3 Account request",
           "required": true,
@@ -546,7 +526,7 @@
     "/s3_accounts/{s3_account_id}": {
       "patch": {
         "tags": ["S3"],
-        "summary": "Update S3 account password: Accessible to S3 account only",
+        "summary": "Update S3 account password: Accessible to Admin, Manage and S3 account.",
         "responses": {
           "200": {
             "description": "OK: S3 Account updated successfully"
@@ -586,12 +566,6 @@
             "description": "Specifies the S3 Account Id",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ],
         "requestBody": {
@@ -619,7 +593,7 @@
       },
       "delete": {
         "tags": ["S3"],
-        "summary": "Delete S3 Account: Accessible to S3 account only",
+        "summary": "Delete S3 Account: Accessible to Admin, Manage and S3 account.",
         "responses": {
           "200": {
             "description": "Ok: S3 account deleted successfully."
@@ -642,12 +616,6 @@
             "name": "s3_account_id",
             "in": "path",
             "description": "Specifies the S3 Account id",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
@@ -680,15 +648,7 @@
         },
         "content": {
           "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       },
       "post": {
         "tags": ["S3 Access Key"],
@@ -715,15 +675,7 @@
         },
         "content": {
           "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       }
     },
     "/s3/access_keys/{access_key}": {
@@ -752,12 +704,6 @@
             "name": "access_key",
             "in": "path",
             "description": "Specifies the S3 account access key",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
@@ -790,15 +736,7 @@
         },
         "content": {
           "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       },
       "post": {
         "tags": ["S3"],
@@ -829,14 +767,6 @@
         "content": {
           "application/json": {}
         },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
         "requestBody": {
           "description": "bucket name",
           "content": {
@@ -885,12 +815,6 @@
             "description": "Specifies the bucket name",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       },
@@ -927,12 +851,6 @@
             "description": "Specifies the Bucket name",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       },
@@ -957,12 +875,6 @@
           "application/json": {}
         },
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          },
           {
             "name": "bucket_name",
             "in": "path",
@@ -1017,12 +929,6 @@
             "description": "Specifies the bucket name",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       }
@@ -1050,15 +956,7 @@
         },
         "content": {
           "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       },
       "post": {
         "tags": ["S3"],
@@ -1092,14 +990,6 @@
         "content": {
           "application/json": {}
         },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
         "requestBody": {
           "description": "Create new user request",
           "required": true,
@@ -1155,12 +1045,6 @@
             "description": "Specifies the IAM user name",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       }
@@ -1197,12 +1081,6 @@
             "name": "user_name",
             "in": "query",
             "description": "Specifies the IAM user name",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
@@ -1244,12 +1122,6 @@
             "description": "Specifies the IAM user name",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       }
@@ -1287,12 +1159,6 @@
             "name": "user_name",
             "in": "query",
             "description": "Specifies the IAM user name",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
@@ -1341,12 +1207,6 @@
             "description": "Specifies the IAM user access key's status",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       }
@@ -1379,12 +1239,6 @@
           "application/json": {}
         },
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          },
           {
             "name": "sortby",
             "in": "query",
@@ -1499,14 +1353,6 @@
         "content": {
           "application/json": {}
         },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
         "requestBody": {
           "description": "Alert Id",
           "required": true,
@@ -1559,12 +1405,6 @@
             "description": "Specifies the alert id",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       },
@@ -1602,12 +1442,6 @@
             "name": "alert_id",
             "in": "path",
             "description": "Specifies the alert id",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
@@ -1661,12 +1495,6 @@
           "application/json": {}
         },
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          },
           {
             "name": "sortby",
             "in": "query",
@@ -1766,12 +1594,6 @@
             "description": "Specifies the alert id",
             "required": true,
             "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       }
@@ -1808,12 +1630,6 @@
             "name": "alert_uuid",
             "in": "path",
             "description": "Specifies the alert uuid",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
@@ -1853,12 +1669,6 @@
             "name": "alert_uuid",
             "in": "path",
             "description": "Specifies the alert id",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "required": true,
             "schema": { "type": "string" }
           }
@@ -1906,15 +1716,7 @@
         },
         "content": {
           "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       }
     },
     "/system/health/node": {
@@ -1943,15 +1745,7 @@
         },
         "content": {
           "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       }
     },
     "/system/health/components": {
@@ -1987,12 +1781,6 @@
             "in": "query",
             "description": "Specifies the node id",
             "required": false,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
             "schema": { "type": "string" }
           }
         ]
@@ -2039,12 +1827,6 @@
             "description": "Specifies the severity",
             "required": false,
             "enum": ["ok", "critical", "warning"],
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
             "schema": { "type": "string" }
           }
         ]
@@ -2131,12 +1913,6 @@
             "required": false,
             "schema": { "type": "string" },
             "default": "gui"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
         ]
       }
@@ -2167,15 +1943,7 @@
         },
         "content": {
           "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ]
       }
     },
     "/auditlogs/show/{component}": {
@@ -2214,7 +1982,7 @@
             "in": "path",
             "description": "Specifies the component (csm or s3)",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": { "type": "string", "enum": ["csm", "s3"] }
           },
           {
             "name": "start_date",
@@ -2231,10 +1999,32 @@
             "schema": { "type": "integer" }
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
+            "in": "query",
+            "name": "sortby",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The field_id of the column that you wish to sort.",
+            "example": "timestamp"
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "This value denotes the direction of sorting.",
+            "example": "asc"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Value is a string containing field_id and search phrase enclosed within curly braces.",
+            "example": "{response_code=200}"
           }
         ]
       }
@@ -2278,7 +2068,7 @@
             "in": "path",
             "description": "Specifies the component (csm or s3)",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": { "type": "string", "enum": ["csm", "s3"] }
           },
           {
             "name": "start_date",
@@ -2295,10 +2085,32 @@
             "schema": { "type": "integer" }
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
+            "in": "query",
+            "name": "sortby",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The field_id of the column that you wish to sort.",
+            "example": "timestamp"
+          },
+          {
+            "in": "query",
+            "name": "dir",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "description": "This value denotes the direction of sorting.",
+            "example": "asc"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Value is a string containing field_id and search phrase enclosed within curly braces.",
+            "example": "{response_code=200}"
           }
         ]
       }
