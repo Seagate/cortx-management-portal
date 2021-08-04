@@ -1129,7 +1129,6 @@ export default class CortxUserSettingLocal extends Vue {
         return true;
       }
     });
-
     return loggedInUser;
   }
 
