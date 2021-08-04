@@ -1993,32 +1993,6 @@
         }
       }
     },
-    "/system/health/summary": {
-      "get": {
-        "tags": ["Health"],
-        "summary": "Get Health Summary of the system: Accessible to CSM users having monitor and manage permissions",
-        "responses": {
-          "200": {
-            "description": "OK: Health Summary of the system fetched successfully."
-          },
-          "400": {
-            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
-          },
-          "401": {
-            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
-          },
-          "499": {
-            "description": "Call Cancelled: Call cancelled by client."
-          },
-          "500": {
-            "description": "Internal Server Error: When requested resource is not available."
-          }
-        },
-        "content": {
-          "application/json": {}
-          }
-      }
-    },
     "/system/health/node": {
       "get": {
         "tags": ["Health"],
