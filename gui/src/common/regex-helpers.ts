@@ -36,6 +36,7 @@ export const bucketNameRegex = helpers.regex(
   "bucketNameRegex",
   /^[a-z0-9][a-z0-9-.]{2,54}[a-z0-9]$/
 );
+
 export const bucketNameTooltipMessage = i18n.t("regex-validation.bucket-input-tooltip");
 
 export const passwordRegex = helpers.regex(
