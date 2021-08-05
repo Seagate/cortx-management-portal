@@ -51,8 +51,8 @@ PRODUCT=<PRODUCT>
 
 # Move binary file
 [ -d "${CSM_DIR}/web/csm/lib" ] && {
-    ln -sf $CSM_DIR/web/csm/lib/csm_setup /usr/bin/csm_web_setup
-    ln -sf $CSM_DIR/web/csm/lib/csm_setup $CSM_DIR/csm/bin/csm_web_setup    
+    ln -sf $CSM_DIR/web/csm/lib/csm_web_setup /usr/bin/csm_web_setup
+    ln -sf $CSM_DIR/web/csm/lib/csm_web_setup $CSM_DIR/web/csm/bin/csm_web_setup    
 }
 exit 0
 
