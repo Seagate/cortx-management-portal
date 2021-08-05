@@ -24,7 +24,7 @@ import pathlib
 
 
 class Cmd:
-    
+
     """ Setup Command """
     _index = "setup"
 

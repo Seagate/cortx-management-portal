@@ -87,7 +87,7 @@ class CSMWeb:
         return 0
 
     def test(self, plan):
-        """ Perform configuration testing. Raises exception on error """, ..)
+        """ Perform configuration testing. Raises exception on error """
         return 0
 
     def cleanup(self):
