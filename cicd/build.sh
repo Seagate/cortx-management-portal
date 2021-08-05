@@ -130,9 +130,6 @@ COPY_END_TIME=$(date +%s)
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     WEB_BUILD_START_TIME=$(date +%s)
 
-    mkdir -p "$DIST/csm/bin" "$DIST/csm/lib"
-    cp -f "$BASE_DIR/web/conf/csm_web_setup.py" "$DIST/csm/lib/csm_web_setup"
-    
     # Copy frontend files
     GUI_DIR=$DIST/csm_gui
     mkdir -p $GUI_DIR/gui/ $GUI_DIR/conf/service/
@@ -141,6 +138,10 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     cp -R $BASE_DIR/gui/.env $GUI_DIR/gui/.env
     echo "Running Web Build"
     cd $GUI_DIR/web/
+
+    mkdir -p "$GUI_DIR/web/csm/bin" "$GUI_DIR/web/csm/lib"
+    cp -f "$BASE_DIR/web/conf/csm_web_setup.py" "$GUI_DIR/web/csm/lib/csm_web_setup"
+
     npm install --production
     npm run build-ts
 
