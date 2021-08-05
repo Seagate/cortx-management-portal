@@ -139,8 +139,9 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     echo "Running Web Build"
     cd $GUI_DIR/web/
 
-    mkdir -p "$GUI_DIR/web/csm/bin" "$GUI_DIR/web/csm/lib"
-    cp -f "$BASE_DIR/web/conf/csm_web_setup.py" "$GUI_DIR/web/csm/lib/csm_web_setup"
+    mkdir -p "$GUI_DIR/web/bin" "$GUI_DIR/web/lib"
+    cp -f "$BASE_DIR/web/conf/csm_web_setup.py" "$GUI_DIR/web/lib/csm_web_setup"
+    chmod +x "$GUI_DIR/web/lib/"*
 
     npm install --production
     npm run build-ts
