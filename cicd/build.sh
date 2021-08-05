@@ -130,6 +130,9 @@ COPY_END_TIME=$(date +%s)
 if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     WEB_BUILD_START_TIME=$(date +%s)
 
+    mkdir -p "$DIST/csm/bin" "$DIST/csm/lib"
+    cp -f "$BASE_DIR/web/conf/csm_web_setup.py" "$DIST/csm/lib/csm_web_setup"
+    
     # Copy frontend files
     GUI_DIR=$DIST/csm_gui
     mkdir -p $GUI_DIR/gui/ $GUI_DIR/conf/service/
@@ -141,9 +144,6 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     npm install --production
     npm run build-ts
 
-    mkdir -p "$DIST/csm/bin" "$DIST/csm/lib"
-    cp -f "$BASE_DIR/web/conf/csm_web_setup.py" "$DIST/csm/lib/csm_web_setup"
-    
     #Delete src folder from web
     echo " Deleting web src and gui directory--" ${DIST}/csm/web/src
     cp -R  $GUI_DIR/web/.env $GUI_DIR/web/web-dist
