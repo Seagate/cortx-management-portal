@@ -42,13 +42,14 @@ class CSMWeb:
     ENV_INDEX = "env_index"
     CSM_WEB_DIST_ENV_FILE_PATH  = "/opt/seagate/cortx/csm/web/web-dist/.env"
     
-    def __init__(self, conf_url):
+    def __init__(self, conf_url, **kwargs):
         Conf.init()
         Conf.load(CSMWeb.CONSUMER_INDEX, conf_url)
         Conf.load(self.ENV_INDEX, f"properties://{self.CSM_WEB_DIST_ENV_FILE_PATH }")
         Log.init(service_name = "csm_web_setup", log_path = "/tmp",
                 level="INFO")
         self.conf_url = conf_url
+        self.pre_factory = kwargs.get("pre_factory")
                        
     def post_install(self):
         """ Performs post install operations for CSM Web as well as cortxcli. Raises exception on error """

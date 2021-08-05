@@ -75,6 +75,9 @@ class Cmd:
 
         parser1 = parser.add_parser(cls.name, help='setup %s' % name)
         parser1.add_argument('--config', help='Conf Store URL', type=str)
+        if name == 'CleanupCmd':
+            parser1.add_argument('--pre-factory', help='Perform pre-factory cleanup', \
+                dest='pre_factory', action='store_true')
         cls._add_extended_args(parser1)
         parser1.add_argument('args', nargs='*', default=[], help='args')
         parser1.set_defaults(command=cls)
@@ -173,7 +176,7 @@ class CleanupCmd(Cmd):
 
     def __init__(self, args):
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config)
+        self.csm_web = CSMWeb(args.config, pre_factory=args.pre_factory)
 
     def process(self):
         # TODO: Add actions here
