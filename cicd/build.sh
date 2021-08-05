@@ -141,6 +141,9 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     npm install --production
     npm run build-ts
 
+    mkdir -p "$DIST/csm/bin" "$DIST/csm/lib"
+    cp -f "$BASE_DIR/web/conf/csm_web_setup.py" "$DIST/csm/lib/csm_web_setup"
+    
     #Delete src folder from web
     echo " Deleting web src and gui directory--" ${DIST}/csm/web/src
     cp -R  $GUI_DIR/web/.env $GUI_DIR/web/web-dist
