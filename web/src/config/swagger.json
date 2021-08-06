@@ -1993,74 +1993,7 @@
         }
       }
     },
-    "/system/health/node": {
-      "get": {
-        "tags": ["Health"],
-        "summary": "Get Health of nodes: Accessible to CSM users having monitor and manage permissions",
-        "responses": {
-          "200": {
-            "description": "OK: Health of the nodes fetched successfully."
-          },
-          "400": {
-            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
-          },
-          "401": {
-            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
-          },
-          "403": {
-            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-          },
-          "499": {
-            "description": "Call Cancelled: Call cancelled by client."
-          },
-          "500": {
-            "description": "Internal Server Error: When requested resource is not available."
-          }
-        },
-        "content": {
-          "application/json": {}
-          }
-      }
-    },
-    "/system/health/components": {
-      "get": {
-        "tags": ["Health"],
-        "summary": "Get components of nodes and their health: Accessible to CSM users having monitor and manage permissions",
-        "responses": {
-          "200": {
-            "description": "OK: Health of the nodes fetched successfully."
-          },
-          "400": {
-            "description": "Bad Request: when an invalid response message is received for any of the cli commands."
-          },
-          "401": {
-            "description": "Unauthorized: Token has not found or invalid format or session is invalid"
-          },
-          "403": {
-            "description": "Forbidden: This error is raised for all cases when user don't have permissions"
-          },
-          "499": {
-            "description": "Call Cancelled: Call cancelled by client."
-          },
-          "500": {
-            "description": "Internal Server Error: When requested resource is not available."
-          }
-        },
-        "content": {
-          "application/json": {}
-        },
-        "parameters": [
-          {
-            "name": "node_id",
-            "in": "query",
-            "description": "Specifies the node id",
-            "required": false,
-            "schema": { "type": "string" }
-          }
-        ]
-      }
-    },
-    "/system/health/resources": {
+    "/system/health/{resource}": {
       "get": {
         "tags": ["Health"],
         "summary": "Get Health of resources with severity: Accessible to CSM users having monitor and manage permissions",
@@ -2089,19 +2022,26 @@
         },
         "parameters": [
           {
-            "name": "component_id",
+            "name": "resource",
+            "in": "path",
+            "description": "Specifies the resource type.",
+            "required": true,
+            "schema": { "type": "string", "enum": ["cluster", "site", "rack", "node"] }
+          },
+          {
+            "name": "resource_id",
             "in": "query",
-            "description": "Specifies the node id",
-            "required": false,
+            "description": "Specifies the resource id",
+            "required": true,
             "schema": { "type": "string" }
           },
           {
-            "name": "severity",
+            "name": "depth",
             "in": "query",
-            "description": "Specifies the node id",
-            "required": false,
-            "enum": ["ok", "critical", "warning"],
-            "schema": { "type": "string" }
+            "description": "Number of levels in the hierarchy of resources of which health has to be returned. Value 0 will return entire health under the resource. Value 1 will return the health of the resource.",
+            "required": true,
+            "schema": { "type": "number", "enum": [0, 1] },
+            "example": 1
           }
         ]
       }
