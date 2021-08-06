@@ -24,7 +24,9 @@ import pathlib
 
 
 class Cmd:
-    """ Setup Command """
+    """
+    Setup Command
+    """
     _index = "setup"
 
     def __init__(self, args: dict):
