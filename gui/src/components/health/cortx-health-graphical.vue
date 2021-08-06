@@ -371,8 +371,9 @@ export default class CortxHealthGraphical extends Vue {
   public showActions(d: any) {
     this.hideInfo(d);
     const addLinks: any = {
-      cluster: ['start', 'stop'],
-      node: ['start', 'stop', 'poweroff', 'poweroff with storage']
+      cluster: [{action:'start', title:'Start Cluster', icon:require('@/assets/start-node.svg/'), isEnabled: false}, {action:'stop', title:'Stop Cluster', icon:require('@/assets/stop-node.svg/'), isEnabled: false}],
+      node: [{action:'start', title:'Start Node', icon:require('@/assets/start-node.svg/'), isEnabled: false}, {action:'stop', title:'Stop Node', icon:require('@/assets/stop-node.svg/'), isEnabled: true},
+      {action:'poweroff', title:'Poweroff', icon:require('@/assets/poweroff.svg/'), isEnabled: true}, {action:'power and storage off', title:'Power And Storage Off', icon:require('@/assets/power-storageoff.svg/'), isEnabled: true}]
     }
     const graphNode = d;
     const showActionIcon = document.getElementById(`show${d.id}${d.depth}`),
@@ -402,18 +403,35 @@ export default class CortxHealthGraphical extends Vue {
       .append("div")
       .attr("class", "actions");
 
-    addLinks[d.data.resource].forEach((val: string) => {
+    addLinks[d.data.resource].forEach((val: any) => {
       const currentAction =  val;
-      div
+      let p = div
         .append("p")
         .style("margin", 0)
         .style("padding", "5px 10px")
         .style("font-size", "12px")
-        .text(`${val} ${d.data.resource}`)
-        .style("cursor", "pointer")
-        .style("text-transform", "capitalize")
+        .style("line-height", "20px")
+        
+      p
+        .append("img")
+        .attr("xlink:href", `${currentAction.icon}`)        
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("x", d.y + 5)
+        .attr("y", d.x  + 40)
+        .style("float", "left");
+      p
+        .append("span")
+        .text(`${val.title}`)
+        .style("display", "inline-block")
+        .style("margin-left", "10px")
+        .style("cursor", () => {return currentAction.isEnabled? "pointer" : "not-allowed"})
+        .on("mouseover", () => {p.style("background-color", "#f5f5f5")})
+        .on("mouseout", () => {p.style("background-color", "#fff")})
         .on("click", () => {
-          this.updateAction(graphNode, currentAction);
+          if (currentAction.isEnabled) {
+            this.updateAction(graphNode, currentAction.action);
+          }
         });
     })
   }
@@ -551,7 +569,7 @@ export default class CortxHealthGraphical extends Vue {
                         "force": false
                       }
                     }
-    if(this.currentAction === "poweroff with storage") {
+    if(this.currentAction === "power and storage off") {
       reqBody.operation = "poweroff";
       reqBody.arguments.storageoff = true;
     }
