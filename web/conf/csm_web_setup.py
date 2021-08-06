@@ -24,12 +24,15 @@ import pathlib
 
 
 class Cmd:
-
-    """ Setup Command """
+    """
+    Setup Command
+    """
     _index = "setup"
 
     def __init__(self, args: dict):
-        """ Initializing Cmd """
+        """
+        Initializing Cmd
+        """
         self._url = args.config
         self._args = args.args
 
@@ -43,7 +46,9 @@ class Cmd:
 
     @staticmethod
     def usage(prog: str):
-        """ Print usage instructions """
+        """
+        Print usage instructions
+        """
         sys.stderr.write(
             f"usage: {prog} [-h] <cmd> --config <url> <args>...\n"
             f"where:\n"
@@ -52,7 +57,9 @@ class Cmd:
 
     @staticmethod
     def get_command(desc: str, argv: dict):
-        """ Return the Command after parsing the command line. """
+        """
+        Return the Command after parsing the command line
+        """
         parser = argparse.ArgumentParser(desc)
 
         subparsers = parser.add_subparsers()
@@ -66,25 +73,27 @@ class Cmd:
 
     @staticmethod
     def _add_extended_args(parser):
-        """ Override this method to add extended args """
+        """
+        Override this method to add extended args
+        """
         return 0
 
     @staticmethod
     def add_args(parser: str, cls: str, name: str):
-        """ Add Command args for parsing """
+        """
+        Add Command args for parsing
+        """
         parser1 = parser.add_parser(cls.name, help='setup %s' % name)
         parser1.add_argument('--config', help='Conf Store URL', type=str)
-        if name == 'CleanupCmd':
-            parser1.add_argument('--pre-factory', help='Perform pre-factory cleanup', \
-                dest='pre_factory', action='store_true')
         cls._add_extended_args(parser1)
         parser1.add_argument('args', nargs='*', default=[], help='args')
         parser1.set_defaults(command=cls)
 
 
 class PostInstallCmd(Cmd):
-
-    """ PostInstall Setup Cmd """
+    """
+    PostInstall Setup Cmd
+    """
     name = "post_install"
 
     def __init__(self, args: dict):
@@ -98,12 +107,15 @@ class PostInstallCmd(Cmd):
 
 
 class PrepareCmd(Cmd):
-
-    """ Prepare Setup Cmd """
+    """
+    Prepare Setup Cmd
+    """
     name = "prepare"
 
     def __init__(self, args: dict):
-        """ Initializing PrepareCmd """
+        """
+        Initializing PrepareCmd
+        """
         super().__init__(args)
         self.csm_web = CSMWeb(args.config)
 
@@ -114,12 +126,15 @@ class PrepareCmd(Cmd):
 
 
 class ConfigCmd(Cmd):
-
-    """ Setup Config Cmd """
+    """
+    Setup Config Cmd
+    """
     name = "config"
 
     def __init__(self, args):
-        """ Initializing ConfigCmd """
+        """
+        Initializing ConfigCmd
+        """
         super().__init__(args)
         self.csm_web = CSMWeb(args.config)
 
@@ -130,12 +145,15 @@ class ConfigCmd(Cmd):
 
 
 class InitCmd(Cmd):
-
-    """ Init Setup Cmd """
+    """
+    Init Setup Cmd
+    """
     name = "init"
 
     def __init__(self, args):
-        """ Initializing InitCmd """
+        """
+        Initializing InitCmd
+        """
         super().__init__(args)
         self.csm_web = CSMWeb(args.config)
 
@@ -146,8 +164,9 @@ class InitCmd(Cmd):
 
 
 class TestCmd(Cmd):
-
-    """ Test Setup Cmd """
+    """
+    Test Setup Cmd
+    """
     name = "test"
 
     @staticmethod
@@ -166,8 +185,9 @@ class TestCmd(Cmd):
 
 
 class ResetCmd(Cmd):
-
-    """ Reset Setup Cmd """
+    """
+    Reset Setup Cmd
+    """
     name = "reset"
 
     def __init__(self, args):
@@ -180,21 +200,28 @@ class ResetCmd(Cmd):
         return rc
 
 class CleanupCmd(Cmd):
-
-    """ Reset Setup Cmd """
+    """
+    cleanup Setup Cmd
+    """
     name = "cleanup"
 
     def __init__(self, args):
         super().__init__(args)
         self.csm_web = CSMWeb(args.config, pre_factory=args.pre_factory)
 
+    @staticmethod
+    def _add_extended_args(parser):
+        parser.add_argument('--pre-factory', help='Perform pre-factory cleanup', \
+                dest='pre_factory', action='store_true')
+
     def process(self):
         # TODO: Add actions here
         rc = self.csm_web.cleanup()
         return rc
 class PreUpgradeCmd(Cmd):
-
-    """ Reset Setup Cmd """
+    """
+    Pre upgrade Setup Cmd
+    """
     name = "pre_upgrade"
 
     def __init__(self, args):
@@ -207,8 +234,7 @@ class PreUpgradeCmd(Cmd):
         return rc
 
 class PostUpgradeCmd(Cmd):
-
-    """ Reset Setup Cmd """
+    """ Post upgrade Setup Cmd """
     name = "post_upgrade"
 
     def __init__(self, args):
