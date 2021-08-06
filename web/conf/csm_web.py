@@ -20,8 +20,9 @@ from cortx.utils.conf_store import Conf
 
 
 class CSMWebSetupError(Exception):
-
-    """ Generic Exception with error code and output """
+    """ 
+    Generic Exception with error code and output
+    """
     def __init__(self, rc, message, *args):
         """Initializing CSMWebSetupError"""
         self._rc = rc
