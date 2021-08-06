@@ -24,6 +24,8 @@ import {
   getHealthView,
   getNodeHealth,
   getClusterHealth,
+  getClusterStatus,
+  getClusterOperation,
   getHealthComponents,
   getHealthResources
 } from "./system-controller";
@@ -140,6 +142,38 @@ export default [
       async (req: Request, res: Response) => {
         try {
           const result = await getClusterHealth(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },  
+  {
+    path: "/api/:version/system/management/cluster_status/:node_id",
+    method: "get",
+    handler: [
+      checkApiVersion,
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getClusterStatus(req, res);
+          res.status(res.statusCode).send(result);
+        } catch (err) {
+          throw err;
+        }
+      }
+    ]
+  },  
+  {
+    path: "/api/:version/system/management/:resource",
+    method: "post",
+    handler: [
+      checkApiVersion,
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        try {
+          const result = await getClusterOperation(req, res);
           res.status(res.statusCode).send(result);
         } catch (err) {
           throw err;

@@ -64,6 +64,8 @@ export default {
   get_product_version_endpt: (version :string) => `/api/${version}/product_version`,
   get_health_components_endpt: (version :string) => `/api/${version}/system/health/components`,
   get_health_resources_endpt: (version :string) => `/api/${version}/system/health/resources`,
+  get_cluster_status_endpt: (version :string, node_id: string) => `/api/${version}/system/management/cluster_status/${node_id}`,
+  get_cluster_operation_endpt: (version :string, resource: string) => `/api/${version}/system/management/${resource}`,
   get_health_cluster_endpt: (version :string, resource: string) => `/api/${version}/system/health/${resource}`,
   get_system_status_endpt: (version :string) => `/api/${version}/system/status`,
   get_appliance_info_endpt: (version :string) => `/api/${version}/appliance_info`,
