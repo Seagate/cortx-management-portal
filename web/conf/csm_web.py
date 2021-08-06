@@ -94,7 +94,7 @@ class CSMWeb:
         """
         Log.info("Executing init")
         return 0
-    
+
     def reset(self):
         """
         Performs Configuraiton reset.
