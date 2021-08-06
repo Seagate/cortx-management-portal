@@ -29,7 +29,7 @@ class Cmd:
     _index = "setup"
 
     def __init__(self, args: dict):
-        """Initializing Cmd"""
+        """ Initializing Cmd """
         self._url = args.config
         self._args = args.args
 
@@ -83,11 +83,12 @@ class Cmd:
 
 
 class PostInstallCmd(Cmd):
-    
+
     """ PostInstall Setup Cmd """
     name = "post_install"
 
     def __init__(self, args: dict):
+        """ Initializing PostInstallCmd """
         super().__init__(args)
         self.csm_web = CSMWeb(args.config)
 
@@ -97,11 +98,12 @@ class PostInstallCmd(Cmd):
 
 
 class PrepareCmd(Cmd):
-    
+
     """ Prepare Setup Cmd """
     name = "prepare"
 
     def __init__(self, args: dict):
+        """ Initializing PrepareCmd """
         super().__init__(args)
         self.csm_web = CSMWeb(args.config)
 
@@ -112,11 +114,12 @@ class PrepareCmd(Cmd):
 
 
 class ConfigCmd(Cmd):
-    
+
     """ Setup Config Cmd """
     name = "config"
 
     def __init__(self, args):
+        """ Initializing ConfigCmd """
         super().__init__(args)
         self.csm_web = CSMWeb(args.config)
 
@@ -127,11 +130,12 @@ class ConfigCmd(Cmd):
 
 
 class InitCmd(Cmd):
-    
+
     """ Init Setup Cmd """
     name = "init"
 
     def __init__(self, args):
+        """ Initializing InitCmd """
         super().__init__(args)
         self.csm_web = CSMWeb(args.config)
 
@@ -142,6 +146,7 @@ class InitCmd(Cmd):
 
 
 class TestCmd(Cmd):
+
     """ Test Setup Cmd """
     name = "test"
 
@@ -161,6 +166,7 @@ class TestCmd(Cmd):
 
 
 class ResetCmd(Cmd):
+
     """ Reset Setup Cmd """
     name = "reset"
 
@@ -174,6 +180,7 @@ class ResetCmd(Cmd):
         return rc
 
 class CleanupCmd(Cmd):
+
     """ Reset Setup Cmd """
     name = "cleanup"
 
@@ -186,6 +193,7 @@ class CleanupCmd(Cmd):
         rc = self.csm_web.cleanup()
         return rc
 class PreUpgradeCmd(Cmd):
+
     """ Reset Setup Cmd """
     name = "pre_upgrade"
 
@@ -199,6 +207,7 @@ class PreUpgradeCmd(Cmd):
         return rc
 
 class PostUpgradeCmd(Cmd):
+
     """ Reset Setup Cmd """
     name = "post_upgrade"
 
