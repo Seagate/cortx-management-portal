@@ -76,9 +76,12 @@ class CSMWeb:
         Conf.load(self.ENV_INDEX, f"properties://{self.CSM_WEB_DIST_ENV_FILE_PATH }")
         Log.init(service_name = "csm_web_setup", log_path = "/tmp",
                 level="INFO")
+        self.machine_id = CSMWeb._get_machine_id()
+        self.server_node_info = f"server_node>{self.machine_id}"
         self.conf_url = conf_url
         self.pre_factory = kwargs.get("pre_factory")
         self.conf_store_keys = {}
+        self._is_env_dev = False
 
     def post_install(self):
         """
@@ -168,6 +171,18 @@ class CSMWeb:
         """
         Log.info("Executing cleanup")
         return 0
+    
+    @staticmethod
+    def _get_machine_id():
+        """
+        Obtains current minion id. If it cannot be obtained, returns default node #1 id.
+        """
+        Log.info("Fetching Machine Id.")
+        cmd = "cat /etc/machine-id"
+        machine_id, _err, _returncode = CSMWeb._run_cmd(cmd)
+        if _returncode != 0:
+            raise CSMWebSetupError(rc=_returncode,message='Unable to obtain current machine id.')
+        return machine_id.replace("\n", "")
 
     def _prepare_and_validate_confstore_keys(self, phase: str):
         """ Perform validtions. Raises exceptions if validation fails """
