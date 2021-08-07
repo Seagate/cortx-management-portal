@@ -14,6 +14,7 @@
 # For any questions about this software or licensing,
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 
+import crypt
 import os
 import pwd
 import traceback
@@ -103,6 +104,13 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing prepare")
+        if os.environ.get("CLI_SETUP") == "true":
+            CSMWeb._run_cmd(f"cli_setup prepare --config {self.conf_url}")
+        self._prepare_and_validate_confstore_keys("prepare")
+        self._set_deployment_mode()
+        self._set_service_user()
+        self._set_password_to_csm_user()
+        Log.info("Prepare complete")
         return 0
 
     def config(self):
@@ -315,3 +323,23 @@ class CSMWeb:
                 Log.error(f"Decryption for CSM Failed. {error}")
                 raise CipherInvalidToken(f"Decryption for CSM Failed. {error}")
         return csm_user_pass
+
+    def _set_deployment_mode(self):
+        """ Setting deployment mode """
+        Log.info("Setting deployment mode")
+        if Conf.get(self.CONSUMER_INDEX, "DEPLOYMENT>mode") == 'dev':
+            Log.info("Running Csm Setup for Dev Mode.")
+            self._is_env_dev = True        
+
+    def _set_password_to_csm_user(self):
+        """Setting up password to service user"""
+        Log.info("Setting up password to service user")
+        if not self._is_user_exist():
+            raise CSMWebSetupError(f"{self._user} not created on system.")
+        Log.info("Fetch decrypted password.")
+        _password = self._fetch_csm_user_password(decrypt=True)
+        if not _password:
+            Log.error("Service User Password Not Available.")
+            raise CSMWebSetupError("Service Usergi Password Not Available.")
+        _password = crypt.crypt(_password, "22")
+        self._run_cmd(f"usermod -p {_password} {self._user}")
