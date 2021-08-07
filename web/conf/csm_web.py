@@ -192,6 +192,18 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing cleanup")
+        if os.environ.get("CLI_SETUP") == "true":
+            if self.pre_factory:
+                CSMWeb._run_cmd(f"cli_setup cleanup --config {self.conf_url} --pre-factory")
+            else:
+                CSMWeb._run_cmd(f"cli_setup reset --config {self.conf_url}")
+        self._files_cleanup()
+        self._web_env_file_cleanup()
+        if self.pre_factory:
+            self._set_service_user()
+            self._replace_csm_service_file()
+            self._service_user_cleanup()
+        Log.info("Cleanup complete")
         return 0
     
     @staticmethod
@@ -535,6 +547,34 @@ class CSMWeb:
     
     def _directory_cleanup(self):
         Log.info("Deleting files and folders")
-        _path = Conf.get(self.ENV_INDEX,"FILE_UPLOAD_FOLDER").replace("\"", "")
-        Log.info(f"Deleting path :{_path}")
-        self._run_cmd(f"rm -rf {_path}")
+        file_cache_path = Conf.get(self.ENV_INDEX,"FILE_UPLOAD_FOLDER").replace("\"", "")
+        Log.info(f"Deleting path :{file_cache_path}")
+        self._run_cmd(f"rm -rf {file_cache_path}")
+
+    def _files_cleanup(self):
+        Log.info("Cleaning of log files")
+        log_file_path = Conf.get(self.ENV_INDEX,"LOG_FILE_PATH").replace("\"", "")
+        self._run_cmd(f"rm -rf {log_file_path}")
+    
+    def _web_env_file_cleanup(self):
+        Log.info(f"Replacing {self.CSM_WEB_DIST_ENV_FILE_PATH}​​​​​​​​_tmpl " \
+                                            f"{self.CSM_WEB_DIST_ENV_FILE_PATH}​​​​​​​​")
+        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH}​​​​​​​​_tmpl " \
+                                            f"{self.CSM_WEB_DIST_ENV_FILE_PATH}​​​​​​​​")
+
+    def _replace_csm_service_file(self):
+        '''
+        Service file cleanup
+        '''
+        Log.info(f"Replacing service file.")
+        self._run_cmd(f"cp -f {self.CSM_WEB_SERVICE_TMPL} /etc/systemd/system/") 
+
+    def _service_user_cleanup(self):
+        '''
+        Remove service user if system deployed in dev mode.
+        '''
+        Log.info(f"Deleting service user")
+        if Conf.get(self.CONSUMER_INDEX, "DEPLOYMENT>mode") == 'dev' and \
+                    self._is_user_exist():
+            Log.info(f"Removing Service user: {self._user}")
+            self._run_cmd(f"userdel -f {self._user}")
