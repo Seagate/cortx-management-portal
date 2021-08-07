@@ -136,6 +136,14 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing init")
+        if os.environ.get("CLI_SETUP") == "true":
+            CSMWeb._run_cmd(f"cli_setup init --config {self.conf_url}")
+        self._prepare_and_validate_confstore_keys("init")
+        self._set_service_user()
+        self._configure_ssl_permissions()
+        self._config_user_permission()
+        self._run_cmd("systemctl daemon-reload")
+        Log.info("Init Complete")
         return 0
 
     def reset(self):
@@ -388,6 +396,19 @@ class CSMWeb:
         
         Log.info(f"Fetch {key}: {value}")
         return value
+    
+    def _fetch_ssl_path(self):
+        cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
+        ssl_path_key = f"cluster>{cluster_id}>network>management>ssl_path"
+        ssl_path = None
+        try:
+            self._validate_conf_store_keys(self.CONSUMER_INDEX,[ssl_path_key])
+            ssl_path = Conf.get(self.CONSUMER_INDEX, ssl_path_key)
+        except VError as ve:
+            print("SSL path does not exist.")
+            Log.error(f"SSL path does not exist: {ve}")
+        Log.info(f"Fetch SSL Path: {ssl_path}")
+        return ssl_path
 
     def _configure_csm_web_keys(self):
         self._run_cmd(f"cp {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
@@ -425,3 +446,54 @@ class CSMWeb:
         data.append(f"CSM_AGENT_PORT={agent_port}")
         data.append(f"CSM_AGENT_PROTOCOL={agent_protocol}")
         file_data.dump(("\n").join(data))
+
+    def _configure_ssl_permissions(self):
+        """
+        Congigure SSL and set permissions
+        """
+        Log.info("Congigure SSL and set permissions")
+        ssl_path = self._fetch_ssl_path()
+        self._run_cmd(f"cp {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
+        file_data = Text(self.CSM_WEB_DIST_ENV_FILE_PATH)
+        data = file_data.load().split("\n")            
+        if not ssl_path:
+            print("Setting protocol to http")
+            for ele in data:
+                if "SERVER_PROTOCOL" in ele:
+                    data.remove(ele)
+            data.append(f"SERVER_PROTOCOL=http")
+        else:
+            if os.path.exists(ssl_path):
+                for ele in data:
+                    if "CERT_PATH" in ele:
+                        data.remove(ele)
+                    if "PRV_KEY_PATH" in ele:
+                        data.remove(ele)
+                data.append(f"CERT_PATH={ssl_path}")
+                data.append(f"PRV_KEY_PATH={ssl_path}")
+                #set permissions
+                self._run_cmd(f"setfacl -m u:{self._user}:rwx {ssl_path}")                
+            else:
+                raise CSMWebSetupError(rc=-1, message="SSL file does not exist")
+        file_data.dump(("\n").join(data))
+
+    def _get_log_file_path(self):
+        """
+        Get log file path from .env
+        """
+        Log.info("Allow permission for csm resources")
+        log_file_path = Conf.get(self.ENV_INDEX,"LOG_FILE_PATH").replace("\"", "")
+        log_file_dir = os.path.dirname(log_file_path)
+        return log_file_dir
+
+    def _config_user_permission(self):
+        """
+        Allow permission for csm resources
+        """
+        Log.info("Allow permission for csm resources")
+        log_path = self._get_log_file_path()
+        tmp_file_cache_dir = Conf.get(self.ENV_INDEX,"FILE_UPLOAD_FOLDER").replace("\"", "")
+        os.makedirs(tmp_file_cache_dir, exist_ok=True)
+        os.makedirs(log_path, exist_ok=True)
+        self._run_cmd(f"setfacl -R -m u:{self._user}:rwx {log_path}")
+        self._run_cmd(f"setfacl -R -m u:{self._user}:rwx {tmp_file_cache_dir}")
