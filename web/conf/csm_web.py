@@ -28,10 +28,10 @@ from cortx.utils.validator.v_pkg import PkgV
 from cortx.utils.validator.v_confkeys import ConfKeysV
 from cortx.utils.security.cipher import Cipher, CipherInvalidToken
 from cortx.utils.service.service_handler import Service
-#from csm.web.conf.payload import Text
-#from csm.web.conf.process import SimpleProcess
-from payload import Text
-from process import SimpleProcess
+from csm.web.conf.payload import Text
+from csm.web.conf.process import SimpleProcess
+#from payload import Text
+#from process import SimpleProcess
 
 
 class CSMWebSetupError(Exception):
