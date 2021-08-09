@@ -140,6 +140,7 @@ class CSMWeb:
         if os.environ.get("CLI_SETUP") == "true":
             CSMWeb._run_cmd(f"cli_setup init --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("init")
+        self._get_cluster_id()
         self._set_service_user()
         self._configure_ssl_permissions()
         self._config_user_permission()
@@ -404,8 +405,7 @@ class CSMWeb:
         return value
     
     def _fetch_ssl_path(self):
-        cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
-        ssl_path_key = f"cluster>{cluster_id}>network>management>ssl_path"
+        ssl_path_key = f"cluster>{self._cluster_id}>network>management>ssl_path"
         ssl_path = None
         try:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[ssl_path_key])
