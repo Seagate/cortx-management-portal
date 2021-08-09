@@ -41,7 +41,9 @@
       :show="showSuccessDialog"
       title="Success"
       :message="successMessage"
-      severity="success"
+      severity="info"
+      :confirmButtonText="Ok"
+      cancelButtonText= ""
       @closeDialog="closeSuccessDialog"
       id="success-conirmationbox"
     ></cortx-confirmation-dialog>
@@ -125,6 +127,17 @@ export default class CortxHealthGraphical extends Vue {
     const nodes = treeData.descendants(),
       links = treeData.descendants().slice(1);
     nodes.forEach((d: any) => {
+      if(d.parent != null) {
+        for(var i = 0; i < d.parent.children.length; i++) {
+            if(d.parent.children[i].data.id == d.data.id) {
+                d.downset = i;
+            }
+        }
+        d.parentDownset = d.parent.downset;
+      }
+      if(d.downset == null){ d.downset = 0; }
+      if(d.parentDownset == null){ d.parentDownset = 0; }
+      d.x = (d.downset * 140) + (d.parentDownset * 40) + 20;
       d.y = d.depth * 300;
     });
     let i = 0;
@@ -257,7 +270,7 @@ export default class CortxHealthGraphical extends Vue {
                 style="float: left;width: 35px;height: 35px; margin-right: 10px;"/>
               <p style="float: left; margin: 0; font-size: 14px; font-weight: bold;" >
                 <span style="display: block;">${d.data.resource}</span>
-                <span>${d.data.id}</span>
+                <span>${this.showResourceID(d)}</span>
               </p>
             </div>`
       });
@@ -465,6 +478,7 @@ export default class CortxHealthGraphical extends Vue {
     }
     let foWidth = 188;
     let foHeight = Object.keys(infoData).length * 30;
+    if(infoData.id.length > 20) { foHeight = foHeight + 15; }
     let fo = this.svg
       .append("foreignObject")
       .attr("x", d.y)
@@ -506,7 +520,8 @@ export default class CortxHealthGraphical extends Vue {
     this.svg.selectAll(`.info-${d.id}${d.depth}`).remove();
   }
 
-  public updateAction(d: any, currentAction: string) {
+  public updateAction(d: any, currentAction: string) {    
+    this.svg.selectAll(`.action-${d.id}${d.depth}`).remove();
     this.currentAction = currentAction;
     this.showConfirmationDialog = true;
     this.currentNode = d;
@@ -524,7 +539,7 @@ export default class CortxHealthGraphical extends Vue {
 
   public closeWarningDialog(confirmation: boolean) {
     if (confirmation) {
-      this.requestForUpdate(this.currentNode);
+      this.requestForUpdate(this.currentNode, true);
     } else {
       this.showWarningDialog = false;
     }
@@ -543,17 +558,17 @@ export default class CortxHealthGraphical extends Vue {
     );
     this.warningMessage = "";
     const res: any = await Api.getAll(apiRegister.cluster_status + "/" + d.data.id);
-    if (res.data.status == "WARNING") {
+    if (res.data.status == "warning") {
       this.showWarningDialog = true;
       this.warningMessage = res.data.message;
-    } else if (res.data.status == "OK") {
-      this.requestForUpdate(d);
+    } else if (res.data.status == "ok") {
+      this.requestForUpdate(d, false);
     }
     this.$store.dispatch("systemConfig/hideLoader");
 
   }
 
-  public async requestForUpdate(d: any) {
+  public async requestForUpdate(d: any, force: boolean) {
     this.showWarningDialog = false;
     this.warningMessage = "";
     this.$store.dispatch(
@@ -561,12 +576,11 @@ export default class CortxHealthGraphical extends Vue {
       `Updating ${d.data.resource} status....`
     );
     this.warningMessage = "";
-    const reqBody = {
+    const reqBody: any = {
                       "operation": this.currentAction,
                       "arguments": {
                         "resource_id": d.data.id,
-                        "storageoff": false,
-                        "force": false
+                        "force": force
                       }
                     }
     if(this.currentAction === "power and storage off") {
@@ -577,7 +591,7 @@ export default class CortxHealthGraphical extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
     if(res) {
       this.showSuccessDialog = true;
-      this.successMessage = res.message;
+      this.successMessage = res.data.message;
     }
   }
 
@@ -635,6 +649,14 @@ export default class CortxHealthGraphical extends Vue {
         break;
     }
     return imageLink;
+  }
+
+  public showResourceID(d: any) {
+    if (d.data.id.length > 15) {
+      return `${d.data.id.substring(0, 15)}....`;
+    } else {
+      return `${d.data.id}`;
+    }
   }
 
 }
