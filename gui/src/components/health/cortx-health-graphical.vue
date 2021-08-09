@@ -98,8 +98,8 @@ export default class CortxHealthGraphical extends Vue {
       .select("#treeContainer")
       .append("svg")
       .attr("width", this.width - this.margin.left - this.margin.right)
-      .attr("height", this.height - this.margin.top - this.margin.bottom)
-      .style("overflow-y", "auto")
+      .attr("height", this.height - this.margin.top)
+      .style("overflow", "scroll")
       .append("g")
       .attr("transform", `translate( 0, 0 )`);
     this.treemap = d3.tree().size([this.height, this.width]);
@@ -126,19 +126,15 @@ export default class CortxHealthGraphical extends Vue {
     const treeData = this.treemap(this.root);
     const nodes = treeData.descendants(),
       links = treeData.descendants().slice(1);
-    nodes.forEach((d: any) => {
-      if(d.parent != null) {
-        for(var i = 0; i < d.parent.children.length; i++) {
-            if(d.parent.children[i].data.id == d.data.id) {
-                d.downset = i;
-            }
-        }
-        d.parentDownset = d.parent.downset;
+    let nodeMap: any = {};
+    nodes.forEach(function(d: any) { 
+      if (!nodeMap[d.depth] || d.x < nodeMap[d.depth]){
+        nodeMap[d.depth] = d.x;
       }
-      if(d.downset == null){ d.downset = 0; }
-      if(d.parentDownset == null){ d.parentDownset = 0; }
-      d.x = (d.downset * 140) + (d.parentDownset * 40) + 20;
+    });
+    nodes.forEach(function(d: any) { 
       d.y = d.depth * 300;
+      d.x -= nodeMap[d.depth] - 40;
     });
     let i = 0;
     
