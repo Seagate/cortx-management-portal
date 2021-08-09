@@ -52,7 +52,7 @@ class Cmd:
         sys.stderr.write(
             f"usage: {prog} [-h] <cmd> --config <url> <args>...\n"
             f"where:\n"
-            f"cmd   post_install, prepare, config, init, reset, test, pre_upgrade, post_upgrade\n"
+            f"cmd   post_install, prepare, config, init, reset, cleanup, test, pre_upgrade, post_upgrade\n"
             f"url   Config URL\n")
 
     @staticmethod
@@ -83,11 +83,11 @@ class Cmd:
         """
         Add Command args for parsing
         """
-        parser1 = parser.add_parser(cls.name, help='setup %s' % name)
-        parser1.add_argument('--config', help='Conf Store URL', type=str)
-        cls._add_extended_args(parser1)
-        parser1.add_argument('args', nargs='*', default=[], help='args')
-        parser1.set_defaults(command=cls)
+        sub_parser = parser.add_parser(cls.name, help='setup %s' % name)
+        sub_parser.add_argument('--config', help='Conf Store URL', type=str)
+        cls._add_extended_args(sub_parser)
+        sub_parser.add_argument('args', nargs='*', default=[], help='args')
+        sub_parser.set_defaults(command=cls)
 
 
 class PostInstallCmd(Cmd):
@@ -256,7 +256,7 @@ def main(argv: dict):
         rc = command.process()
         if rc != 0:
             raise ValueError(f"Failed to run {argv[1]}")
-        print(":PASS")
+        sys.stdout.write(":PASS")
         return 0
     except CSMWebSetupError as e:
         sys.stderr.write("%s\n" % str(e))
@@ -271,8 +271,8 @@ def main(argv: dict):
 if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname(pathlib.Path(__file__)), '..', '..', '..', '..'))
     sys.path.append(os.path.join(os.path.dirname(pathlib.Path(os.path.realpath(__file__))), '..', '..', '..'))
-    from csm_web import CSMWeb
-    from csm_web import CSMWebSetupError
-    #from csm.web.conf.csm_web import CSMWeb
-    #from csm.web.conf.csm_web import CSMWebSetupError
+    #from csm_web import CSMWeb
+    #from csm_web import CSMWebSetupError
+    from csm.web.conf.csm_web import CSMWeb
+    from csm.web.conf.csm_web import CSMWebSetupError
     sys.exit(main(sys.argv))
