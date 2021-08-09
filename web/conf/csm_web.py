@@ -41,15 +41,14 @@ class CSMWebSetupError(Exception):
         Initializing CSMWebSetupError
         """
         self._rc = rc
-        self._desc = message % (args)
+        self._desc = message
 
     def __str__(self):
         """
         Return error in String
         """
         if self._rc == 0: return self._desc
-        return "error(%d): %s\n\n%s" %(self._rc, self._desc,
-            traceback.format_exc())
+        return f"error({self._rc}): {self._desc}\n\n {traceback.format_exc()}"
 
     @property
     def rc(self):
@@ -74,7 +73,7 @@ class CSMWeb:
         Conf.init()
         Conf.load(CSMWeb.CONSUMER_INDEX, conf_url)
         Conf.load(self.ENV_INDEX, f"properties://{self.CSM_WEB_DIST_ENV_FILE_PATH }")
-        Log.init(service_name = "csm_web_setup", log_path = "/tmp",
+        Log.init(service_name = "csm_web_setup", log_path = "/tmp/csm/setup_logs",
                 level="INFO")
         self.machine_id = CSMWeb._get_machine_id()
         self.server_node_info = f"server_node>{self.machine_id}"
