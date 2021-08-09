@@ -18,36 +18,6 @@ import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response } from "express";
 
-
-export const getHealthSummary = async (req: Request, res: Response)=> {
-        let healthSummaryData = await Api.getAll(
-          apiRegister.get_health_summary_endpt(req.params.version),
-          req,
-          res
-    );
-return healthSummaryData;
-}
-
-export const getHealthView = async (req: Request, res: Response)=> {
-    let healthSummaryData = await Api.getAll(apiRegister.get_health_view_endpt(req.params.version), req, res);
-    return healthSummaryData;
-}
-
-export const getHealthComponents = async (req: Request, res: Response)=> {
-  let healthSummaryData = await Api.getAll(apiRegister.get_health_components_endpt(req.params.version), req, res);
-  return healthSummaryData;
-}
-
-export const getHealthResources = async (req: Request, res: Response)=> {
-  const healthResourcesData = await Api.getAll(apiRegister.get_health_resources_endpt(req.params.version), req, res);
-  return healthResourcesData;
-}
-
-export const getNodeHealth = async (req: Request, res: Response)=> {
-    let healthSummaryData = await Api.getAll(apiRegister.get_node_health_endpt(req.params.version), req, res);
-    return healthSummaryData;
-}
-
 export const getClusterHealth = async (req: Request, res: Response)=> {
   let healthClusterData = await Api.getAll(apiRegister.get_health_cluster_endpt(req.params.version, req.params.resource), req, res);
   return healthClusterData;
