@@ -340,9 +340,17 @@ export abstract class Api {
     private static setHeaders(req: Request) {
         const requestData = req.body ? JSON.stringify(req.body) : "";
         const client_ip = Api.getClientIP(req);
+        let contentLength = 0;
+        try {
+            if(Object.keys(JSON.parse(requestData)).length > 0)
+                contentLength = requestData.length
+        } catch(e){
+            logger.error("Error during parsing request body " + requestData + " error:" + e);
+        }
+        
         var headers = {
             'Content-Type': 'application/json',
-            'Content-Length': requestData.length,
+            'Content-Length': contentLength,
             'authorization': req.headers.authorization ? req.headers.authorization : "",
             'user-agent': req.headers['user-agent'] ? req.headers['user-agent'] : "",
             'x-forwarded-host':  req.headers['host'] ? req.headers['host'] : "",
