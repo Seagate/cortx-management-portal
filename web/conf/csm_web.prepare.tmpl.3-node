@@ -1,0 +1,68 @@
+{
+  "cortx": {
+    "software": {
+      "csm": {
+        "user": "cortxub",
+        "secret": "TMPL_CSM_SECRET_KEY"
+      },
+      "openldap": {
+        "sgiam": {
+          "user": "sgiamadmin",
+          "secret": "TMPL_SGIAM_SECRET_KEY"
+        }
+      }
+    }
+  },
+  "server_node": {
+    "TMPL_MACHINE_ID_1": {
+      "type": "VM",
+      "hostname": "TMPL_SERVER_HOSTNAME_1",
+      "cluster_id": "TMPL_CLUSTER_ID",
+      "storage": {
+        "enclosure_id": "TMPL_ENCLOSURE_ID_1"
+      },
+      "network": {
+        "data": {
+          "private_fqdn": "127.0.0.1",
+        }
+      }
+    },
+    "TMPL_MACHINE_ID_2": {
+      "type": "VM",
+      "hostname": "TMPL_SERVER_HOSTNAME_2",
+      "cluster_id": "TMPL_CLUSTER_ID",
+      "storage": {
+        "enclosure_id": "TMPL_ENCLOSURE_ID_2"
+      },
+      "network": {
+        "data": {
+          "private_fqdn": "127.0.0.1",
+        }
+      }
+    },
+    "TMPL_MACHINE_ID_3": {
+      "type": "VM",
+      "hostname": "TMPL_SERVER_HOSTNAME_3",
+      "cluster_id": "TMPL_CLUSTER_ID",
+      "storage": {
+        "enclosure_id": "TMPL_ENCLOSURE_ID_3"
+      },
+      "network": {
+        "data": {
+          "private_fqdn": "127.0.0.1",
+        }
+      }
+    }
+  },
+  "storage_enclosure": {
+    "TMPL_ENCLOSURE_ID_1": {
+      "type": "virtual"
+    },
+    "TMPL_ENCLOSURE_ID_2": {
+      "type": "virtual"
+    },
+    "TMPL_ENCLOSURE_ID_3": {
+      "type": "virtual"
+    }
+  }
+}

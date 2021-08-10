@@ -14,6 +14,7 @@
 # For any questions about this software or licensing,
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 
+import crypt
 import os
 import pwd
 import traceback
@@ -74,10 +75,13 @@ class CSMWeb:
         Conf.load(self.ENV_INDEX, f"properties://{self.CSM_WEB_DIST_ENV_FILE_PATH }")
         Log.init(service_name = "csm_web_setup", log_path = "/tmp/csm/setup_logs",
                 level="INFO")
+        self.machine_id = CSMWeb._get_machine_id()
+        self.server_node_info = f"server_node>{self.machine_id}"
         self.conf_url = conf_url
         self.pre_factory = kwargs.get("pre_factory")
         self.conf_store_keys = {}
-
+        self._is_env_dev = False
+        
     def post_install(self):
         """
         Performs post install operations for CSM Web as well as cortxcli.
@@ -102,6 +106,13 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing prepare")
+        if os.environ.get("CLI_SETUP") == "true":
+            CSMWeb._run_cmd(f"cli_setup prepare --config {self.conf_url}")
+        self._prepare_and_validate_confstore_keys("prepare")
+        self._set_deployment_mode()
+        self._set_service_user()
+        self._set_password_to_csm_user()
+        Log.info("Prepare complete")
         return 0
 
     def config(self):
@@ -159,6 +170,18 @@ class CSMWeb:
         """
         Log.info("Executing cleanup")
         return 0
+    
+    @staticmethod
+    def _get_machine_id():
+        """
+        Obtains current minion id. If it cannot be obtained, returns default node #1 id.
+        """
+        Log.info("Fetching Machine Id.")
+        cmd = "cat /etc/machine-id"
+        machine_id, _err, _returncode = CSMWeb._run_cmd(cmd)
+        if _returncode != 0:
+            raise CSMWebSetupError(rc=_returncode,message='Unable to obtain current machine id.')
+        return machine_id.replace("\n", "")
 
     def _prepare_and_validate_confstore_keys(self, phase: str):
         """Perform validtions. Raises exceptions if validation fails"""
@@ -315,3 +338,23 @@ class CSMWeb:
                 Log.error(f"Decryption for CSM Failed. {error}")
                 raise CipherInvalidToken(f"Decryption for CSM Failed. {error}")
         return csm_user_pass
+
+    def _set_deployment_mode(self):
+        """Setting deployment mode."""
+        Log.info("Setting deployment mode")
+        if Conf.get(self.CONSUMER_INDEX, "DEPLOYMENT>mode") == 'dev':
+            Log.info("Running Csm Setup for Dev Mode.")
+            self._is_env_dev = True
+
+    def _set_password_to_csm_user(self):
+        """Setting up password to service user"""
+        Log.info("Setting up password to service user")
+        if not self._is_user_exist():
+            raise CSMWebSetupError(rc=-1, message=f"{self._user} not created on system.")
+        Log.info("Fetch decrypted password.")
+        _password = self._fetch_csm_user_password(decrypt=True)
+        if not _password:
+            Log.error(rc=-1, message="Service User Password Not Available.")
+            raise CSMWebSetupError("Service Usergi Password Not Available.")
+        _password = crypt.crypt(_password, "22")
+        self._run_cmd(f"usermod -p {_password} {self._user}")
