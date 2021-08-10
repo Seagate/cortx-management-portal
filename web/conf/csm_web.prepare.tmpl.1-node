@@ -1,0 +1,36 @@
+{
+  "cortx": {
+    "software": {
+      "csm": {
+        "user": "cortxub",
+        "secret": "TMPL_CSM_SECRET_KEY"
+      },
+      "openldap": {
+        "sgiam": {
+          "user": "sgiamadmin",
+          "secret": "TMPL_SGIAM_SECRET_KEY"
+        }
+      }
+    }
+  },
+  "server_node": {
+    "TMPL_MACHINE_ID": {
+      "type": "VM",
+      "hostname": "TMPL_SERVER_HOSTNAME",
+      "cluster_id": "TMPL_CLUSTER_ID",
+      "storage": {
+        "enclosure_id": "TMPL_ENCLOSURE_ID"
+      },
+      "network": {
+        "data": {
+          "private_fqdn": "127.0.0.1",
+        }
+      }
+    }
+  },
+  "storage_enclosure": {
+    "TMPL_ENCLOSURE_ID": {
+      "type": "virtual"
+    }
+  }
+}
