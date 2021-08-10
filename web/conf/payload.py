@@ -74,7 +74,7 @@ class Dict(Doc):
 class Text(Doc):
     """Represents a TEXT doc."""
     def __init__(self, file_path):
-        """Initializing Text"""
+        """Initializing Text."""
         Doc.__init__(self, file_path)
 
     def _load(self):

@@ -37,7 +37,7 @@ class SimpleProcess(Process):
         self.universal_newlines=None
 
     def run(self, **args):
-        """This will can run simple process."""
+        """Simple process will be run."""
         for key, value in args.items():
             setattr(self, key, value)
 
