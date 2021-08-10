@@ -243,6 +243,10 @@ class CSMWeb:
                 "csm_user_key": "cortx>software>csm>user",
                 "cluster_id":f"{self.server_node_info}>cluster_id"
                 })
+        if phase == "cleanup":
+            self.conf_store_keys.update({
+                "csm_user_key": "cortx>software>csm>user"                
+                })
         elif phase == "post_upgrade":
             self.conf_store_keys.update({
                 "csm_user_key": "cortx>software>csm>user",
@@ -260,6 +264,7 @@ class CSMWeb:
             keylist = list(self.conf_store_keys.values())
         if not isinstance(keylist, list):
             raise CSMWebSetupError(rc=-1, message="Keylist should be kind of list")
+        Log.info(f"Required conf store keys: {keylist}")
         ConfKeysV().validate("exists", index, keylist)
     
     def _validate_nodejs_installed(self):
