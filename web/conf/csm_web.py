@@ -402,7 +402,7 @@ class CSMWeb:
         virtual_host = self._fetch_management_ip()
         https_port = self._fetch_key_value("https_port", 443)
         http_port = self._fetch_key_value("http_port", 80)
-        server_protocol = self._fetch_key_value("protocol", "https")
+        server_protocol = self._fetch_key_value("web_protocol", "https")
         agent_host = self._fetch_key_value("agent_host", "localhost")
         agent_port = self._fetch_key_value("agent_port", "28101")
         agent_protocol = self._fetch_key_value("agent_protocol", "http")
