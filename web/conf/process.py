@@ -28,6 +28,7 @@ class Process:
 class SimpleProcess(Process):
     """Execute process and provide output."""
     def __init__(self, cmd):
+        """Initializing SimpleProcess."""
         super(SimpleProcess, self).__init__(cmd)
         self.shell=False
         self.cwd=None
@@ -36,7 +37,7 @@ class SimpleProcess(Process):
         self.universal_newlines=None
 
     def run(self, **args):
-        """ This will can run simple process """
+        """This will can run simple process."""
         for key, value in args.items():
             setattr(self, key, value)
 
