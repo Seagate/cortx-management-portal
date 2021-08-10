@@ -13,7 +13,7 @@
         "change-password": "Change Password",
         "loading-reset": "Resetting password...",
         "password-reset-message": "Password updated successfully for ",
-        "reset-btn": "Reset"
+        "reset-btn": "Update"
     },
     "s3": {
         "s3ConfigSummary": "S3 configuration-summary",
