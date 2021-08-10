@@ -15,20 +15,21 @@
 
 import os
 import json
-from typing import List
 
 
 class Doc:
     _type = dict
 
     def __init__(self, source):
+        """Initializing Doc"""
         self._source = source
 
     def __str__(self):
+        """Returning source in String format"""
         return str(self._source)
 
     def load(self):
-        ''' Loads data from file of given format '''
+        '''Loads data from file of given format'''
         if not os.path.exists(self._source):
             return {}
         try:
@@ -37,15 +38,14 @@ class Doc:
             raise Exception('Unable to read file %s. %s' % (self._source, e))
 
     def dump(self, data):
-        ''' Dump the anifest file to desired file or to the source '''
+        '''Dump the anifest file to desired file or to the source'''
         dir_path = os.path.dirname(self._source)
         if len(dir_path) > 0 and not os.path.exists(dir_path):
             os.makedirs(dir_path)
         self._dump(data)
 
 class Json(Doc):
-    ''' Represents a JSON doc '''
-
+    '''Represents a JSON doc'''
     def __init__(self, file_path):
         Doc.__init__(self, file_path)
 
@@ -60,8 +60,8 @@ class Json(Doc):
 
 class Dict(Doc):
     '''Represents Dictionary Without file'''
-
     def __init__(self, data={}):
+        """initializing Dict"""
         Doc.__init__(self, data)
 
     def load(self):
@@ -71,7 +71,6 @@ class Dict(Doc):
         self._source = data
 
 class Text(Doc):
-
     '''Represents a TEXT doc'''
     def __init__(self, file_path):
         Doc.__init__(self, file_path)

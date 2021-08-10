@@ -63,7 +63,7 @@ class CSMWeb:
     CSM_WEB_DIST_ENV_FILE_PATH  = "/opt/seagate/cortx/csm/web/web-dist/.env"
     NODE_JS_PATH = '/opt/nodejs/node-v12.13.0-linux-x64/bin/node'
     CSM_WEB_SERVICE = "/etc/systemd/system/csm_web.service"
-    CSM_WEB_SERVICE_TMPL = "/opt/seagate/cortx/csm/conf/service/csm_web.service"    
+    CSM_WEB_SERVICE_TMPL = "/opt/seagate/cortx/csm/conf/service/csm_web.service"
 
     def __init__(self, conf_url, **kwargs):
         """
@@ -161,7 +161,7 @@ class CSMWeb:
         return 0
 
     def _prepare_and_validate_confstore_keys(self, phase: str):
-        """ Perform validtions. Raises exceptions if validation fails """
+        """Perform validtions. Raises exceptions if validation fails"""
         if phase == "post_install":
             self.conf_store_keys.update({
                 "csm_user_key": "cortx>software>csm>user"
@@ -200,7 +200,7 @@ class CSMWeb:
         if not isinstance(keylist, list):
             raise CSMWebSetupError(rc=-1, message="Keylist should be kind of list")
         ConfKeysV().validate("exists", index, keylist)
-    
+
     def _validate_nodejs_installed(self):
         Log.info("Validating NodeJS 12.13.0")
         PathV().validate('exists', [f"file://{self.NODE_JS_PATH}"])
@@ -209,7 +209,7 @@ class CSMWeb:
         Log.info("Validating third party rpms")
         try:
             PkgV().validate("rpms", ["cortx-cli"])
-            os.environ["CLI_SETUP"] = "true"            
+            os.environ["CLI_SETUP"] = "true"
         except VError as ve:
             os.environ["CLI_SETUP"] = "false"
             Log.error(f"cortx-cli package is not installed: {ve}")
@@ -250,6 +250,7 @@ class CSMWeb:
             self._gid = u.pw_gid
             return True
         except KeyError as err:
+            Log.error(f"Error occurred while checking user {err}")
             return False
 
     def _configure_service_user(self):
@@ -260,7 +261,7 @@ class CSMWeb:
         Log.info(f"Update file for <USER>:{self._user}")
         service_file_data = Text(self.CSM_WEB_SERVICE).load()
         if not service_file_data:
-            Log.warn(f"File {self.CSM_WEB_SERVICE} not updated.")            
+            Log.warn(f"File {self.CSM_WEB_SERVICE} not updated.")
         data = service_file_data.replace('<USER>', self._user)
         Text(self.CSM_WEB_SERVICE).dump(data)
 
@@ -299,7 +300,7 @@ class CSMWeb:
             try:
                 cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
                 password_decryption_key = self.conf_store_keys["secret_key"].split('>')[0]
-                cipher_key = Cipher.generate_key(cluster_id, password_decryption_key)                
+                cipher_key = Cipher.generate_key(cluster_id, password_decryption_key)
             except KvError as error:
                 Log.error(f"Failed to Fetch Cluster Id. {error}")
                 return None
