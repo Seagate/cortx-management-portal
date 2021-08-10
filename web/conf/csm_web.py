@@ -29,10 +29,8 @@ from cortx.utils.validator.v_pkg import PkgV
 from cortx.utils.validator.v_confkeys import ConfKeysV
 from cortx.utils.security.cipher import Cipher, CipherInvalidToken
 from cortx.utils.service.service_handler import Service
-from csm.web.conf.payload import Text
-from csm.web.conf.process import SimpleProcess
-#from payload import Text
-#from process import SimpleProcess
+from cortx.utils.schema.payload import Text
+from cortx.utils.process import SimpleProcess
 
 
 class CSMWebSetupError(Exception):
@@ -94,7 +92,7 @@ class CSMWeb:
         self._validate_nodejs_installed()
         self._validate_cortxcli()
         if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup post_install --config {self.conf_url}")
+            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup post_install --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("post_install")
         self._set_service_user()
         self._config_user()
@@ -110,7 +108,7 @@ class CSMWeb:
         """
         Log.info("Executing prepare")
         if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup prepare --config {self.conf_url}")
+            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup prepare --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("prepare")
         self._get_cluster_id()
         self._set_deployment_mode()
@@ -126,7 +124,7 @@ class CSMWeb:
         """
         Log.info("Executing config")
         if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup config --config {self.conf_url}")
+            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup config --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("config")
         self._get_cluster_id()
         self._set_deployment_mode()
@@ -141,7 +139,7 @@ class CSMWeb:
         """
         Log.info("Executing init")
         if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup init --config {self.conf_url}")
+            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup init --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("init")
         self._get_cluster_id()
         self._set_service_user()
@@ -158,7 +156,7 @@ class CSMWeb:
         """
         Log.info("Executing reset")
         if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup reset --config {self.conf_url}")
+            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup reset --config {self.conf_url}")
         self._disable_and_stop_service()
         self._reset_logs()
         self._directory_cleanup()
@@ -197,9 +195,9 @@ class CSMWeb:
         Log.info("Executing cleanup")
         if os.environ.get("CLI_SETUP") == "true":
             if self.pre_factory:
-                CSMWeb._run_cmd(f"cli_setup cleanup --config {self.conf_url} --pre-factory")
+                CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup cleanup --config {self.conf_url} --pre-factory")
             else:
-                CSMWeb._run_cmd(f"cli_setup reset --config {self.conf_url}")
+                CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup cleanup --config {self.conf_url}")
         self._files_cleanup()
         self._web_env_file_cleanup()
         if self.pre_factory:
