@@ -27,6 +27,7 @@ import {
 } from "vuex-module-decorators";
 import { UserLoginQueryParam } from "./../../models/user-login";
 import { ACCESS_TOKEN, USERNAME } from "./../../common/consts";
+import constStr from "./../../common/const-string.json";
 Vue.use(Vuex);
 
 @Module({
@@ -36,6 +37,8 @@ export default class UserLogin extends VuexModule {
   public user: any = {};
   public userPermissions: object = {};
   public unsupportedFeatures: any = {};
+  public isUserAuthorized: boolean =  false;
+  public constStr: any = constStr;
 
   public queryParams: UserLoginQueryParam = {
     username: "",
@@ -45,6 +48,10 @@ export default class UserLogin extends VuexModule {
   @Mutation
   public setUser(user: any) {
     this.user = user;
+  }
+  @Mutation
+  public setIsAuthorized(isUserAuthorized: boolean) {
+    this.isUserAuthorized = isUserAuthorized;
   }
   @Mutation
   public setUserPermissions(permissions: any) {
@@ -58,6 +65,10 @@ export default class UserLogin extends VuexModule {
   // Get user
   get getUser() {
     return this.user;
+  }
+
+  get getIsAuthorized() {
+    return this.isUserAuthorized;
   }
 
   get getUserPermissions() {
@@ -74,6 +85,8 @@ export default class UserLogin extends VuexModule {
     try {
       const res = await Api.post(apiRegister.login, queryParams);
       if (res && res.headers) {
+        localStorage.setItem(this.constStr.access_token, res.headers.authorization);
+        this.context.commit("setIsAuthorized", res.data.reset_password);
         return res;
       }
     } catch (e) {

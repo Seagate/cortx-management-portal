@@ -120,7 +120,7 @@
 </template>
 <script lang="ts">
 
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, sameAs } from "vuelidate/lib/validators";
 import {
@@ -138,23 +138,17 @@ import i18n from "../preboarding/preboarding.json";
   }
 })
 export default class CortxResetPasswrod extends Vue {    
-  public resetAccountForm = {
+  public resetAccountForm: any = {
     password: "",
     confirmPassword: ""
   };  
-  private passwordTooltipMessage = passwordTooltipMessage;
-  
-  @Prop({ default: "" })
-  public authToken: string;
-
-  @Prop({ default: "" })
-  public username: string;
+  private passwordTooltipMessage: any = passwordTooltipMessage;
 
   @Prop({ default: false})
   public showResetPasswordDialog: boolean
 
   @Validations()
-  public validations = {
+  public validations: any = {
     resetAccountForm: {
       password: { required, passwordRegex },
       confirmPassword: {
@@ -164,7 +158,8 @@ export default class CortxResetPasswrod extends Vue {
   };
 
   private async resetPassword() {
-    const updateDetails = {
+    const username: any = localStorage.getItem("username");
+    const updatePassword: any = {
       confirmPassword: this.resetAccountForm.confirmPassword,
       password: this.resetAccountForm.password,
       reset_password: true
@@ -175,13 +170,8 @@ export default class CortxResetPasswrod extends Vue {
     );
     const res: any = await Api.patch(
       apiRegister.csm_user,
-      updateDetails,
-      this.username,
-      {
-        headers: {
-          auth_token: this.authToken
-        }
-      }
+      updatePassword,
+      username
     );
     this.closeResetPasswordForm();
     this.$store.dispatch("systemConfig/hideLoader");
@@ -196,7 +186,7 @@ export default class CortxResetPasswrod extends Vue {
     if (this.$v.resetAccountForm) {
       this.$v.resetAccountForm.$reset();
     }
-    this.$emit("closeResetPass");
+    this.$emit("complete");
   }
 
 }

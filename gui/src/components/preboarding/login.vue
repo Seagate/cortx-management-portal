@@ -88,11 +88,8 @@
     </v-container>
 
     <cortx-reset-password
-      v-if="showResetPasswordDialog"
       :showResetPasswordDialog="showResetPasswordDialog"
-      :authToken="authToken"
-      :username="loginForm.username"
-      @closeResetPass="closeResetPassword"
+      @complete="onResetPasswordCompletion"
     ></cortx-reset-password>
 
     <cortx-confirmation-dialog
@@ -125,10 +122,9 @@ export default class CortxLogin extends Vue {
     password: ""
   };  
   public showResetPasswordDialog: boolean = false;
-  public ifResetPassword: boolean = true;
+  public isUserAuthorized: any =  false;
   private showSuccessDialog: boolean = false;
   private successMessage: string = "";
-  public authToken: any;
 
   @Validations()
   public validations = {
@@ -161,6 +157,11 @@ export default class CortxLogin extends Vue {
     this.$store.commit("userLogin/setUserPermissions", {});
     const token = localStorage.getItem(this.$data.constStr.access_token);
     if (token) {
+      this.isUserAuthorized =  this.$store.getters["userLogin/getIsAuthorized"];
+      if (this.isUserAuthorized === false) {
+        localStorage.removeItem(this.$data.constStr.username);
+        localStorage.removeItem(this.$data.constStr.access_token);
+      }
       this.navigate();
     }
   }
@@ -181,12 +182,13 @@ export default class CortxLogin extends Vue {
     try {
       const loginResp: any = await this.$store.dispatch("userLogin/loginAction", this.loginForm);
       if (loginResp.headers.authorization) {
-        this.ifResetPassword = loginResp.data.reset_password;
-        if (!this.ifResetPassword) {
-          this.authToken = loginResp.headers.authorization;
+        this.$store.commit("userLogin/setUser", loginResp.data);
+        localStorage.setItem(this.$data.constStr.username, this.loginForm.username);
+        this.isUserAuthorized =  this.$store.getters["userLogin/getIsAuthorized"];
+        if(this.isUserAuthorized === false) {
           this.showResetPasswordDialog = true;
         } else {
-          await this.setUserAuthDetails(loginResp.headers.authorization);
+          this.getPermissionsAndUnsupportedFeatures()
         }
       } else {
         throw new Error(this.$data.loginFailed);
@@ -197,16 +199,7 @@ export default class CortxLogin extends Vue {
     }
   }
 
-  private async setUserAuthDetails(authToken: any) {
-    const user: any = {
-      username: this.loginForm.username
-    };
-    this.$store.commit("userLogin/setUser", user);
-    localStorage.setItem(
-      this.$data.constStr.access_token,
-      authToken
-    );
-    localStorage.setItem(this.$data.constStr.username, user.username);
+  private async getPermissionsAndUnsupportedFeatures() {    
     const permissionsAndUnSuppFeaturesResp: any[] = await Promise.all([
       this.$store.dispatch("userLogin/getUserPermissionsAction"),
       this.$store.dispatch("userLogin/getUnsupportedFeaturesAction")
@@ -226,7 +219,7 @@ export default class CortxLogin extends Vue {
     }
   }
 
-  public async closeResetPassword() {
+  public onResetPasswordCompletion() {
     this.showResetPasswordDialog = false;
     this.successMessage = `${this.$t("login.password-reset-message")} ${
       this.loginForm.username
@@ -236,7 +229,8 @@ export default class CortxLogin extends Vue {
 
   public async closeSuccessDialog() {
     this.showSuccessDialog = false;
-    await this.setUserAuthDetails(this.authToken);
+    await this.getPermissionsAndUnsupportedFeatures();
+    this.$store.commit("userLogin/setIsAuthorized", true);
     this.navigate();
   }
 
