@@ -510,7 +510,7 @@ class CSMWeb:
                 time.sleep(2**count)
             if service_obj.get_state().state == 'active':
                 Log.error(f"{self.CSM_WEB_SERVICE} still active")
-                raise CSMWebSetupError(f"{self.CSM_WEB_SERVICE} still active")
+                raise CSMWebSetupError(rc=-1, message=f"{self.CSM_WEB_SERVICE} still active")
         except Exception as e:
             Log.warn(f"{self.CSM_WEB_SERVICE} not available: {e}")
 
