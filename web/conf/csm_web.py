@@ -63,8 +63,8 @@ class CSMWeb:
     CSM_WEB_DIST_ENV_FILE_PATH  = "/opt/seagate/cortx/csm/web/web-dist/.env"
     NODE_JS_PATH = '/opt/nodejs/node-v12.13.0-linux-x64/bin/node'
     CSM_WEB_SERVICE = "/etc/systemd/system/csm_web.service"
-    CSM_WEB_SERVICE_TMPL = "/opt/seagate/cortx/csm/conf/service/csm_web.service"
-    
+    CSM_WEB_SERVICE_TMPL = "/opt/seagate/cortx/csm/conf/service/csm_web.service"    
+
     def __init__(self, conf_url, **kwargs):
         """
         Initializing CSMWeb
