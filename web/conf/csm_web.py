@@ -547,17 +547,17 @@ class CSMWeb:
                                             f"{self.CSM_WEB_DIST_ENV_FILE_PATH}​​​​​​​​")
 
     def _replace_csm_service_file(self):
-        '''
+        """
         Service file cleanup
-        '''
-        Log.info(f"Replacing service file.")
+        """
+        Log.info("Replacing service file.")
         self._run_cmd(f"cp -f {self.CSM_WEB_SERVICE_TMPL} /etc/systemd/system/")
 
     def _service_user_cleanup(self):
-        '''
+        """
         Remove service user if system deployed in dev mode.
-        '''
-        Log.info(f"Deleting service user")
+        """
+        Log.info("Deleting service user")
         if Conf.get(self.CONSUMER_INDEX, "DEPLOYMENT>mode") == 'dev' and \
                     self._is_user_exist():
             Log.info(f"Removing Service user: {self._user}")
