@@ -230,7 +230,7 @@ class CSMWeb:
             keylist = list(self.conf_store_keys.values())
         if not isinstance(keylist, list):
             raise CSMWebSetupError(rc=-1, message="Keylist should be kind of list")
-        ConfKeysV().validate("exists", index, keylist)    
+        ConfKeysV().validate("exists", index, keylist)
 
     def _validate_nodejs_installed(self):
         Log.info("Validating NodeJS 12.13.0")
@@ -362,7 +362,7 @@ class CSMWeb:
             self._is_env_dev = True
 
     def _set_password_to_csm_user(self):
-        """Setting up password to service user"""
+        """Setting up password to service user."""
         Log.info("Setting up password to service user")
         if not self._is_user_exist():
             raise CSMWebSetupError(rc=-1, message=f"{self._user} not created on system.")
@@ -391,7 +391,7 @@ class CSMWeb:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[key])
             value = Conf.get(self.CONSUMER_INDEX, key)
         except VError as ve:
-            Log.error("Protocol key does not exist. Set default port as protocol {ve}")
+            Log.error(f"Protocol key does not exist. Set default port as protocol {ve}")
         
         Log.info(f"Fetch {key}: {value}")
         return value
