@@ -420,7 +420,7 @@ class CSMWeb:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[key])
             value = Conf.get(self.CONSUMER_INDEX, key)
         except VError as ve:
-            Log.error("Protocol key does not exist. Set default port as protocol {ve}")
+            Log.error(f"{key} does not exist. Set default value as {default_value}: {ve}")
         
         Log.info(f"Fetch {key}: {value}")
         return value
