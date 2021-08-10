@@ -443,6 +443,7 @@ class CSMWeb:
 
     def _configure_csm_web_keys(self):
         Log.info("Configuring CSM Web keys")
+        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         virtual_host = self._fetch_management_ip()
         https_port = self._fetch_key_value("https_port", 443)
         http_port = self._fetch_key_value("http_port", 80)

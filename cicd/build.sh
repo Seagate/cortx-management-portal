@@ -149,7 +149,6 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     #Delete src folder from web
     echo " Deleting web src and gui directory--" ${DIST}/csm/web/src
     cp -R  $GUI_DIR/web/.env $GUI_DIR/web/web-dist
-    cp -R  $GUI_DIR/web/.env $GUI_DIR/web/web-dist/.env_tmpl
     rm -rf $GUI_DIR/web/src
     WEB_BUILD_END_TIME=$(date +%s)
 
