@@ -68,7 +68,7 @@ class CSMWeb:
     NODE_JS_PATH = '/opt/nodejs/node-v12.13.0-linux-x64/bin/node'
     CSM_WEB_SERVICE = "/etc/systemd/system/csm_web.service"
     CSM_WEB_SERVICE_TMPL = "/opt/seagate/cortx/csm/conf/service/csm_web.service"
-    
+
     def __init__(self, conf_url, **kwargs):
         """
         Initializing CSMWeb
@@ -210,7 +210,7 @@ class CSMWeb:
         return machine_id.replace("\n", "")
 
     def _prepare_and_validate_confstore_keys(self, phase: str):
-        """ Perform validtions. Raises exceptions if validation fails """
+        """Perform validtions. Raises exceptions if validation fails"""
         if phase == "post_install":
             self.conf_store_keys.update({
                 "csm_user_key": "cortx>software>csm>user"
@@ -249,7 +249,7 @@ class CSMWeb:
         if not isinstance(keylist, list):
             raise CSMWebSetupError(rc=-1, message="Keylist should be kind of list")
         ConfKeysV().validate("exists", index, keylist)
-    
+
     def _validate_nodejs_installed(self):
         Log.info("Validating NodeJS 12.13.0")
         PathV().validate('exists', [f"file://{self.NODE_JS_PATH}"])
@@ -258,7 +258,7 @@ class CSMWeb:
         Log.info("Validating third party rpms")
         try:
             PkgV().validate("rpms", ["cortx-cli"])
-            os.environ["CLI_SETUP"] = "true"            
+            os.environ["CLI_SETUP"] = "true"
         except VError as ve:
             os.environ["CLI_SETUP"] = "false"
             Log.error(f"cortx-cli package is not installed: {ve}")
@@ -270,7 +270,7 @@ class CSMWeb:
         """
         Log.info("Setting service user")
         self._user = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["csm_user_key"])
-        
+
     def _get_cluster_id(self):
         """
         This Method will get the cluster ID and set to self._cluster_id
@@ -307,6 +307,7 @@ class CSMWeb:
             self._gid = u.pw_gid
             return True
         except KeyError as err:
+            Log.error(f"Error occurred while checking user {err}")
             return False
 
     def _configure_service_user(self):
@@ -317,7 +318,7 @@ class CSMWeb:
         Log.info(f"Update file for <USER>:{self._user}")
         service_file_data = Text(self.CSM_WEB_SERVICE).load()
         if not service_file_data:
-            Log.warn(f"File {self.CSM_WEB_SERVICE} not updated.")            
+            Log.warn(f"File {self.CSM_WEB_SERVICE} not updated.")
         data = service_file_data.replace('<USER>', self._user)
         Text(self.CSM_WEB_SERVICE).dump(data)
 
@@ -355,7 +356,7 @@ class CSMWeb:
             Log.info("Decrypting CSM Password.")
             try:
                 password_decryption_key = self.conf_store_keys["secret_key"].split('>')[0]
-                cipher_key = Cipher.generate_key(self._cluster_id, password_decryption_key)                
+                cipher_key = Cipher.generate_key(self._cluster_id, password_decryption_key)
             except KvError as error:
                 Log.error(f"Failed to Fetch Cluster Id. {error}")
                 return None
@@ -372,14 +373,14 @@ class CSMWeb:
         return csm_user_pass
 
     def _set_deployment_mode(self):
-        """ Setting deployment mode """
+        """Setting deployment mode."""
         Log.info("Setting deployment mode")
         if Conf.get(self.CONSUMER_INDEX, "DEPLOYMENT>mode") == 'dev':
             Log.info("Running Csm Setup for Dev Mode.")
-            self._is_env_dev = True        
+            self._is_env_dev = True
 
     def _set_password_to_csm_user(self):
-        """Setting up password to service user"""
+        """Setting up password to service user."""
         Log.info("Setting up password to service user")
         if not self._is_user_exist():
             raise CSMWebSetupError(rc=-1, message=f"{self._user} not created on system.")
@@ -408,7 +409,7 @@ class CSMWeb:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[key])
             value = Conf.get(self.CONSUMER_INDEX, key)
         except VError as ve:
-            Log.error("Protocol key does not exist. Set default port as protocol {ve}")
+            Log.error(f"Protocol key does not exist. Set default port as protocol {ve}")
         
         Log.info(f"Fetch {key}: {value}")
         return value
@@ -420,18 +421,18 @@ class CSMWeb:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[ssl_path_key])
             ssl_path = Conf.get(self.CONSUMER_INDEX, ssl_path_key)
         except VError as ve:
-            print("SSL path does not exist.")
+            sys.stdout.write("SSL path does not exist.")
             Log.error(f"SSL path does not exist: {ve}")
         Log.info(f"Fetch SSL Path: {ssl_path}")
         return ssl_path
 
     def _configure_csm_web_keys(self):
-        self._run_cmd(f"cp {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
+        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         Log.info("Configuring CSM Web keys")
         virtual_host = self._fetch_management_ip()
         https_port = self._fetch_key_value("https_port", 443)
         http_port = self._fetch_key_value("http_port", 80)
-        server_protocol = self._fetch_key_value("protocol", "https")
+        server_protocol = self._fetch_key_value("web_protocol", "https")
         agent_host = self._fetch_key_value("agent_host", "localhost")
         agent_port = self._fetch_key_value("agent_port", "28101")
         agent_protocol = self._fetch_key_value("agent_protocol", "http")
@@ -451,7 +452,7 @@ class CSMWeb:
         """
         Log.info("Congigure SSL and set permissions")
         ssl_path = self._fetch_ssl_path()
-        self._run_cmd(f"cp {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
+        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         if not ssl_path:
             sys.stdout.write("Setting protocol to http")
             Conf.set(self.ENV_INDEX, "SERVER_PROTOCOL", "http")
