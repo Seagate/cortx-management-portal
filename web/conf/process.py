@@ -19,14 +19,14 @@ import subprocess
 
 class Process:
     def __init__(self, cmd):
+        """Initializing Process."""
         self._cmd = cmd
-        pass
 
-    def run(self):
+    def run(self, **args):
         pass
 
 class SimpleProcess(Process):
-    ''' Execute process and provide output '''
+    """Execute process and provide output."""
     def __init__(self, cmd):
         super(SimpleProcess, self).__init__(cmd)
         self.shell=False
@@ -36,7 +36,7 @@ class SimpleProcess(Process):
         self.universal_newlines=None
 
     def run(self, **args):
-        ''' This will can run simple process '''
+        """ This will can run simple process """
         for key, value in args.items():
             setattr(self, key, value)
 

@@ -21,15 +21,15 @@ class Doc:
     _type = dict
 
     def __init__(self, source):
-        """Initializing Doc"""
+        """Initializing Doc."""
         self._source = source
 
     def __str__(self):
-        """Returning source in String format"""
+        """Returning source in String format."""
         return str(self._source)
 
     def load(self):
-        '''Loads data from file of given format'''
+        """Loads data from file of given format."""
         if not os.path.exists(self._source):
             return {}
         try:
@@ -38,15 +38,16 @@ class Doc:
             raise Exception('Unable to read file %s. %s' % (self._source, e))
 
     def dump(self, data):
-        '''Dump the anifest file to desired file or to the source'''
+        """Dump the anifest file to desired file or to the source."""
         dir_path = os.path.dirname(self._source)
         if len(dir_path) > 0 and not os.path.exists(dir_path):
             os.makedirs(dir_path)
         self._dump(data)
 
 class Json(Doc):
-    '''Represents a JSON doc'''
+    """Represents a JSON doc."""
     def __init__(self, file_path):
+        """Initializing Json."""
         Doc.__init__(self, file_path)
 
     def _load(self):
@@ -59,9 +60,9 @@ class Json(Doc):
 
 
 class Dict(Doc):
-    '''Represents Dictionary Without file'''
+    """Represents Dictionary Without file."""
     def __init__(self, data={}):
-        """initializing Dict"""
+        """initializing Dict."""
         Doc.__init__(self, data)
 
     def load(self):
@@ -71,21 +72,22 @@ class Dict(Doc):
         self._source = data
 
 class Text(Doc):
-    '''Represents a TEXT doc'''
+    """Represents a TEXT doc."""
     def __init__(self, file_path):
         Doc.__init__(self, file_path)
 
     def _load(self):
-        '''Loads data from text file'''
+        """Loads data from text file."""
         with open(self._source, 'r') as f:
             return f.read()
 
     def _dump(self, data):
-        '''Dump the data to desired file or to the source'''
+        """Dump the data to desired file or to the source."""
         with open(self._source, 'w') as f:
             f.write(data)
 
 class JsonMessage(Json):
+    """Represents JsonMessage."""
     def __init__(self, json_str):
         """
         Represents the Json Without FIle
@@ -110,9 +112,9 @@ class JsonMessage(Json):
         return self._source
 
 class Payload:
-    ''' implements a Payload in specified format. '''
-
+    """implements a Payload in specified format."""
     def __init__(self, doc):
+        """Initalizing Payload."""
         self._dirty = False
         self._doc = doc
         self.load()
@@ -124,12 +126,12 @@ class Payload:
         return self._data
 
     def dump(self):
-        ''' Dump the anifest file to desired file or to the source '''
+        """ Dump the anifest file to desired file or to the source """
         self._doc.dump(self._data)
         self._dirty = False
 
     def _get(self, key, data):
-        ''' Obtain value for the given key '''
+        """ Obtain value for the given key """
         k = key.split('.', 1)
         if k[0] not in data.keys(): return None
         return self._get(k[1], data[k[0]]) if len(k) > 1 else data[k[0]]
@@ -149,7 +151,7 @@ class Payload:
         self._set(k[1], val, data[k[0]])
 
     def set(self, key, val):
-        ''' Sets the value into the DB for the given key '''
+        """Sets the value into the DB for the given key."""
         self._set(key, val, self._data)
         self._dirty = True
 
@@ -166,18 +168,18 @@ class Payload:
         self._dirty = dirty
         return value
 
-    def convert(self, map, payload):
+    def convert(self, map_dict, payload):
         """
         Converts 1 Schema to 2nd Schema depending on mapping dictionary.
-        :param map: mapping dictionary :type:Dict
+        :param map_dict: mapping dictionary :type:Dict
         :param payload: Payload Class Object with desired Source.
         :return: :type: Dict
-        Mapping file example - 
+        Mapping file example -
         key <input schema> : value <output schema>
         """
-        for key in map.keys():
+        for key in map_dict.keys():
             val = self.get(key)
-            payload.set(map[key], val)
+            payload.set(map_dict[key], val)
         return payload
 
     def data(self):
