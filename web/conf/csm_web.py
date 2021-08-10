@@ -196,7 +196,7 @@ class CSMWeb:
         """
         Log.info("Executing cleanup")
         return 0
-    
+
     @staticmethod
     def _get_machine_id():
         """
@@ -401,7 +401,7 @@ class CSMWeb:
             raise CSMWebSetupError(rc=-1, message="Management IP is not provided.")
         Log.info(f"Fetch Virtual host: {virtual_host}")
         return virtual_host
-    
+
     def _fetch_key_value(self, key: str, default_value: any):
         key = f"cluster>{self._cluster_id}>network>management>{key}"
         value = default_value
@@ -410,10 +410,10 @@ class CSMWeb:
             value = Conf.get(self.CONSUMER_INDEX, key)
         except VError as ve:
             Log.error(f"Protocol key does not exist. Set default port as protocol {ve}")
-        
+
         Log.info(f"Fetch {key}: {value}")
         return value
-    
+
     def _fetch_ssl_path(self):
         ssl_path_key = f"cluster>{self._cluster_id}>network>management>ssl_path"
         ssl_path = None
@@ -459,9 +459,9 @@ class CSMWeb:
         else:
             if os.path.exists(ssl_path):
                 Conf.set(self.ENV_INDEX, "CERT_PATH", ssl_path)
-                Conf.set(self.ENV_INDEX, "PRV_KEY_PATH", ssl_path)                
+                Conf.set(self.ENV_INDEX, "PRV_KEY_PATH", ssl_path)
                 #set permissions
-                self._run_cmd(f"setfacl -m u:{self._user}:rwx {ssl_path}")                
+                self._run_cmd(f"setfacl -m u:{self._user}:rwx {ssl_path}")
             else:
                 raise CSMWebSetupError(rc=-1, message="SSL file does not exist")
         Conf.save(self.ENV_INDEX)
@@ -491,7 +491,7 @@ class CSMWeb:
             Log.info("Reseting log files")
             log_file_path = Conf.get(self.ENV_INDEX,"LOG_FILE_PATH").replace("\"", "")
             self._run_cmd(f"truncate -s 0 {log_file_path}")
-    
+
     def _disable_and_stop_service(self):
         Log.info("Disabling and stopping the service")
         try:
@@ -513,7 +513,7 @@ class CSMWeb:
                 raise CSMWebSetupError(f"{self.CSM_WEB_SERVICE} still active")
         except Exception as e:
             Log.warn(f"{self.CSM_WEB_SERVICE} not available: {e}")
-    
+
     def _directory_cleanup(self):
         Log.info("Deleting files and folders")
         _path = Conf.get(self.ENV_INDEX,"FILE_UPLOAD_FOLDER").replace("\"", "")
