@@ -81,7 +81,7 @@ class CSMWeb:
         self.pre_factory = kwargs.get("pre_factory")
         self.conf_store_keys = {}
         self._is_env_dev = False
-        
+
     def post_install(self):
         """
         Performs post install operations for CSM Web as well as cortxcli.
@@ -109,6 +109,7 @@ class CSMWeb:
         if os.environ.get("CLI_SETUP") == "true":
             CSMWeb._run_cmd(f"cli_setup prepare --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("prepare")
+        self._get_cluster_id()
         self._set_deployment_mode()
         self._set_service_user()
         self._set_password_to_csm_user()
@@ -121,6 +122,13 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing config")
+        if os.environ.get("CLI_SETUP") == "true":
+            CSMWeb._run_cmd(f"cli_setup config --config {self.conf_url}")
+        self._prepare_and_validate_confstore_keys("config")
+        self._get_cluster_id()
+        self._set_deployment_mode()
+        self._configure_csm_web_keys()
+        Log.info("Config complete")
         return 0
 
     def init(self):
@@ -245,6 +253,14 @@ class CSMWeb:
         Log.info("Setting service user")
         self._user = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["csm_user_key"])
 
+    def _get_cluster_id(self):
+        """
+        This Method will get the cluster ID and set to self._cluster_id
+        :return:
+        """
+        Log.info("Setting cluster_id")
+        self._cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
+
     def _config_user(self):
         """
         Check user already exist and create if not exist
@@ -321,9 +337,8 @@ class CSMWeb:
         if decrypt and csm_user_pass:
             Log.info("Decrypting CSM Password.")
             try:
-                cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
                 password_decryption_key = self.conf_store_keys["secret_key"].split('>')[0]
-                cipher_key = Cipher.generate_key(cluster_id, password_decryption_key)
+                cipher_key = Cipher.generate_key(self._cluster_id, password_decryption_key)
             except KvError as error:
                 Log.error(f"Failed to Fetch Cluster Id. {error}")
                 return None
@@ -347,14 +362,56 @@ class CSMWeb:
             self._is_env_dev = True
 
     def _set_password_to_csm_user(self):
-        """Setting up password to service user"""
+        """Setting up password to service user."""
         Log.info("Setting up password to service user")
         if not self._is_user_exist():
             raise CSMWebSetupError(rc=-1, message=f"{self._user} not created on system.")
         Log.info("Fetch decrypted password.")
         _password = self._fetch_csm_user_password(decrypt=True)
         if not _password:
-            Log.error(rc=-1, message="Service User Password Not Available.")
-            raise CSMWebSetupError("Service Usergi Password Not Available.")
+            Log.error("Service User Password Not Available.")
+            raise CSMWebSetupError(rc=-1, message="Service Usergi Password Not Available.")
         _password = crypt.crypt(_password, "22")
         self._run_cmd(f"usermod -p {_password} {self._user}")
+
+    def _fetch_management_ip(self):
+        virtual_host_key = f"cluster>{self._cluster_id}>network>management>virtual_host"
+        self._validate_conf_store_keys(self.CONSUMER_INDEX,[virtual_host_key])
+        virtual_host = Conf.get(self.CONSUMER_INDEX, virtual_host_key)
+        if not virtual_host and not self._is_env_dev:
+            Log.error("Management IP is not provided hence raising error.")
+            raise CSMWebSetupError(rc=-1, message="Management IP is not provided.")
+        Log.info(f"Fetch Virtual host: {virtual_host}")
+        return virtual_host
+    
+    def _fetch_key_value(self, key: str, default_value: any):
+        key = f"cluster>{self._cluster_id}>network>management>{key}"
+        value = default_value
+        try:
+            self._validate_conf_store_keys(self.CONSUMER_INDEX,[key])
+            value = Conf.get(self.CONSUMER_INDEX, key)
+        except VError as ve:
+            Log.error(f"Protocol key does not exist. Set default port as protocol {ve}")
+        
+        Log.info(f"Fetch {key}: {value}")
+        return value
+
+    def _configure_csm_web_keys(self):
+        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
+        Log.info("Configuring CSM Web keys")
+        virtual_host = self._fetch_management_ip()
+        https_port = self._fetch_key_value("https_port", 443)
+        http_port = self._fetch_key_value("http_port", 80)
+        server_protocol = self._fetch_key_value("web_protocol", "https")
+        agent_host = self._fetch_key_value("agent_host", "localhost")
+        agent_port = self._fetch_key_value("agent_port", "28101")
+        agent_protocol = self._fetch_key_value("agent_protocol", "http")
+        Log.info(f"Set MANAGEMENT_IP:{virtual_host} and Port: {https_port} to csm web config")
+        Conf.set(self.ENV_INDEX, "MANAGEMENT_IP", virtual_host)
+        Conf.set(self.ENV_INDEX, "HTTPS_NODE_PORT", https_port)
+        Conf.set(self.ENV_INDEX, "HTTP_NODE_PORT", http_port)
+        Conf.set(self.ENV_INDEX, "SERVER_PROTOCOL", server_protocol)
+        Conf.set(self.ENV_INDEX, "CSM_AGENT_HOST", agent_host)
+        Conf.set(self.ENV_INDEX, "CSM_AGENT_PORT", agent_port)
+        Conf.set(self.ENV_INDEX, "CSM_AGENT_PROTOCOL", agent_protocol)
+        Conf.save(self.ENV_INDEX)
