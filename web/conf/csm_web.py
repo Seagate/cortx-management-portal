@@ -488,9 +488,9 @@ class CSMWeb:
         self._run_cmd(f"setfacl -R -m u:{self._user}:rwx {tmp_file_cache_dir}")
 
     def _reset_logs(self):
-            Log.info("Reseting log files")
-            log_file_path = Conf.get(self.ENV_INDEX,"LOG_FILE_PATH").replace("\"", "")
-            self._run_cmd(f"truncate -s 0 {log_file_path}")
+        Log.info("Reseting log files")
+        log_file_path = Conf.get(self.ENV_INDEX,"LOG_FILE_PATH").replace("\"", "")
+        self._run_cmd(f"truncate -s 0 {log_file_path}")
 
     def _disable_and_stop_service(self):
         Log.info("Disabling and stopping the service")
