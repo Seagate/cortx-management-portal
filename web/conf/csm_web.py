@@ -413,7 +413,7 @@ class CSMWeb:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[ssl_path_key])
             ssl_path = Conf.get(self.CONSUMER_INDEX, ssl_path_key)
         except VError as ve:
-            print("SSL path does not exist.")
+            sys.stdout.write("SSL path does not exist.")
             Log.error(f"SSL path does not exist: {ve}")
         Log.info(f"Fetch SSL Path: {ssl_path}")
         return ssl_path
