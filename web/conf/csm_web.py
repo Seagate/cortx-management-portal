@@ -65,7 +65,7 @@ class CSMWeb:
     NODE_JS_PATH = '/opt/nodejs/node-v12.13.0-linux-x64/bin/node'
     CSM_WEB_SERVICE = "/etc/systemd/system/csm_web.service"
     CSM_WEB_SERVICE_TMPL = "/opt/seagate/cortx/csm/conf/service/csm_web.service"
-    
+
     def __init__(self, conf_url, **kwargs):
         """
         Initializing CSMWeb
@@ -222,7 +222,7 @@ class CSMWeb:
             keylist = list(self.conf_store_keys.values())
         if not isinstance(keylist, list):
             raise CSMWebSetupError(rc=-1, message="Keylist should be kind of list")
-        ConfKeysV().validate("exists", index, keylist)    
+        ConfKeysV().validate("exists", index, keylist)
 
     def _validate_nodejs_installed(self):
         Log.info("Validating NodeJS 12.13.0")
@@ -232,7 +232,7 @@ class CSMWeb:
         Log.info("Validating third party rpms")
         try:
             PkgV().validate("rpms", ["cortx-cli"])
-            os.environ["CLI_SETUP"] = "true" 
+            os.environ["CLI_SETUP"] = "true"
         except VError as ve:
             os.environ["CLI_SETUP"] = "false"
             Log.error(f"cortx-cli package is not installed: {ve}")
@@ -340,21 +340,21 @@ class CSMWeb:
         return csm_user_pass
 
     def _set_deployment_mode(self):
-        """ Setting deployment mode """
+        """Setting deployment mode."""
         Log.info("Setting deployment mode")
         if Conf.get(self.CONSUMER_INDEX, "DEPLOYMENT>mode") == 'dev':
             Log.info("Running Csm Setup for Dev Mode.")
-            self._is_env_dev = True        
+            self._is_env_dev = True
 
     def _set_password_to_csm_user(self):
         """Setting up password to service user"""
         Log.info("Setting up password to service user")
         if not self._is_user_exist():
-            raise CSMWebSetupError(f"{self._user} not created on system.")
+            raise CSMWebSetupError(rc=-1, message=f"{self._user} not created on system.")
         Log.info("Fetch decrypted password.")
         _password = self._fetch_csm_user_password(decrypt=True)
         if not _password:
-            Log.error("Service User Password Not Available.")
+            Log.error(rc=-1, message="Service User Password Not Available.")
             raise CSMWebSetupError("Service Usergi Password Not Available.")
         _password = crypt.crypt(_password, "22")
         self._run_cmd(f"usermod -p {_password} {self._user}")
