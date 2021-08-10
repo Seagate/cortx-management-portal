@@ -17,6 +17,7 @@
 import crypt
 import os
 import pwd
+import sys
 import time
 import traceback
 from cortx.utils.log import Log
@@ -43,15 +44,14 @@ class CSMWebSetupError(Exception):
         Initializing CSMWebSetupError
         """
         self._rc = rc
-        self._desc = message % (args)
+        self._desc = message
 
     def __str__(self):
         """
         Return error in String
         """
         if self._rc == 0: return self._desc
-        return "error(%d): %s\n\n%s" %(self._rc, self._desc,
-            traceback.format_exc())
+        return f"error({self._rc}): {self._desc}\n\n {traceback.format_exc()}"
 
     @property
     def rc(self):
@@ -76,7 +76,7 @@ class CSMWeb:
         Conf.init()
         Conf.load(CSMWeb.CONSUMER_INDEX, conf_url)
         Conf.load(self.ENV_INDEX, f"properties://{self.CSM_WEB_DIST_ENV_FILE_PATH }")
-        Log.init(service_name = "csm_web_setup", log_path = "/tmp",
+        Log.init(service_name = "csm_web_setup", log_path = "/tmp/csm/setup_logs",
                 level="INFO")
         self.machine_id = CSMWeb._get_machine_id()
         self.server_node_info = f"server_node>{self.machine_id}"
@@ -112,6 +112,7 @@ class CSMWeb:
         if os.environ.get("CLI_SETUP") == "true":
             CSMWeb._run_cmd(f"cli_setup prepare --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("prepare")
+        self._get_cluster_id()
         self._set_deployment_mode()
         self._set_service_user()
         self._set_password_to_csm_user()
@@ -127,6 +128,7 @@ class CSMWeb:
         if os.environ.get("CLI_SETUP") == "true":
             CSMWeb._run_cmd(f"cli_setup config --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("config")
+        self._get_cluster_id()
         self._set_deployment_mode()
         self._configure_csm_web_keys()
         Log.info("Config complete")
@@ -141,6 +143,7 @@ class CSMWeb:
         if os.environ.get("CLI_SETUP") == "true":
             CSMWeb._run_cmd(f"cli_setup init --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("init")
+        self._get_cluster_id()
         self._set_service_user()
         self._configure_ssl_permissions()
         self._config_user_permission()
@@ -279,6 +282,14 @@ class CSMWeb:
         """
         Log.info("Setting service user")
         self._user = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["csm_user_key"])
+        
+    def _get_cluster_id(self):
+        """
+        This Method will get the cluster ID and set to self._cluster_id
+        :return:
+        """
+        Log.info("Setting cluster_id")
+        self._cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
 
     def _config_user(self):
         """
@@ -355,9 +366,8 @@ class CSMWeb:
         if decrypt and csm_user_pass:
             Log.info("Decrypting CSM Password.")
             try:
-                cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
                 password_decryption_key = self.conf_store_keys["secret_key"].split('>')[0]
-                cipher_key = Cipher.generate_key(cluster_id, password_decryption_key)                
+                cipher_key = Cipher.generate_key(self._cluster_id, password_decryption_key)                
             except KvError as error:
                 Log.error(f"Failed to Fetch Cluster Id. {error}")
                 return None
@@ -384,18 +394,17 @@ class CSMWeb:
         """Setting up password to service user"""
         Log.info("Setting up password to service user")
         if not self._is_user_exist():
-            raise CSMWebSetupError(f"{self._user} not created on system.")
+            raise CSMWebSetupError(rc=-1, message=f"{self._user} not created on system.")
         Log.info("Fetch decrypted password.")
         _password = self._fetch_csm_user_password(decrypt=True)
         if not _password:
             Log.error("Service User Password Not Available.")
-            raise CSMWebSetupError("Service Usergi Password Not Available.")
+            raise CSMWebSetupError(rc=-1, message="Service Usergi Password Not Available.")
         _password = crypt.crypt(_password, "22")
         self._run_cmd(f"usermod -p {_password} {self._user}")
 
     def _fetch_management_ip(self):
-        cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
-        virtual_host_key = f"cluster>{cluster_id}>network>management>virtual_host"
+        virtual_host_key = f"cluster>{self._cluster_id}>network>management>virtual_host"
         self._validate_conf_store_keys(self.CONSUMER_INDEX,[virtual_host_key])
         virtual_host = Conf.get(self.CONSUMER_INDEX, virtual_host_key)
         if not virtual_host and not self._is_env_dev:
@@ -405,8 +414,7 @@ class CSMWeb:
         return virtual_host
     
     def _fetch_key_value(self, key: str, default_value: any):
-        cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
-        key = f"cluster>{cluster_id}>network>management>{key}"
+        key = f"cluster>{self._cluster_id}>network>management>{key}"
         value = default_value
         try:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[key])
@@ -418,8 +426,7 @@ class CSMWeb:
         return value
     
     def _fetch_ssl_path(self):
-        cluster_id = Conf.get(self.CONSUMER_INDEX, self.conf_store_keys["cluster_id"])
-        ssl_path_key = f"cluster>{cluster_id}>network>management>ssl_path"
+        ssl_path_key = f"cluster>{self._cluster_id}>network>management>ssl_path"
         ssl_path = None
         try:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[ssl_path_key])
@@ -441,31 +448,14 @@ class CSMWeb:
         agent_port = self._fetch_key_value("agent_port", "28101")
         agent_protocol = self._fetch_key_value("agent_protocol", "http")
         Log.info(f"Set MANAGEMENT_IP:{virtual_host} and Port: {https_port} to csm web config")
-        file_data = Text(self.CSM_WEB_DIST_ENV_FILE_PATH)
-        data = file_data.load().split("\n")
-        for ele in data:
-            if "MANAGEMENT_IP" in ele:
-                data.remove(ele)
-            if "HTTPS_NODE_PORT" in ele:
-                data.remove(ele)
-            if "HTTP_NODE_PORT" in ele:
-                data.remove(ele)
-            if "SERVER_PROTOCOL" in ele:
-                data.remove(ele)
-            if "CSM_AGENT_HOST" in ele:
-                data.remove(ele)
-            if "CSM_AGENT_PORT" in ele:
-                data.remove(ele)
-            if "CSM_AGENT_PROTOCOL" in ele:
-                data.remove(ele)
-        data.append(f"MANAGEMENT_IP={virtual_host}")
-        data.append(f"HTTPS_NODE_PORT={https_port}")
-        data.append(f"HTTP_NODE_PORT={http_port}")
-        data.append(f"SERVER_PROTOCOL={server_protocol}")
-        data.append(f"CSM_AGENT_HOST={agent_host}")
-        data.append(f"CSM_AGENT_PORT={agent_port}")
-        data.append(f"CSM_AGENT_PROTOCOL={agent_protocol}")
-        file_data.dump(("\n").join(data))
+        Conf.set(self.ENV_INDEX, "MANAGEMENT_IP", virtual_host)
+        Conf.set(self.ENV_INDEX, "HTTPS_NODE_PORT", https_port)
+        Conf.set(self.ENV_INDEX, "HTTP_NODE_PORT", http_port)
+        Conf.set(self.ENV_INDEX, "SERVER_PROTOCOL", server_protocol)
+        Conf.set(self.ENV_INDEX, "CSM_AGENT_HOST", agent_host)
+        Conf.set(self.ENV_INDEX, "CSM_AGENT_PORT", agent_port)
+        Conf.set(self.ENV_INDEX, "CSM_AGENT_PROTOCOL", agent_protocol)
+        Conf.save(self.ENV_INDEX)
 
     def _configure_ssl_permissions(self):
         """
@@ -474,28 +464,18 @@ class CSMWeb:
         Log.info("Congigure SSL and set permissions")
         ssl_path = self._fetch_ssl_path()
         self._run_cmd(f"cp {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
-        file_data = Text(self.CSM_WEB_DIST_ENV_FILE_PATH)
-        data = file_data.load().split("\n")            
         if not ssl_path:
-            print("Setting protocol to http")
-            for ele in data:
-                if "SERVER_PROTOCOL" in ele:
-                    data.remove(ele)
-            data.append(f"SERVER_PROTOCOL=http")
+            sys.stdout.write("Setting protocol to http")
+            Conf.set(self.ENV_INDEX, "SERVER_PROTOCOL", "http")
         else:
             if os.path.exists(ssl_path):
-                for ele in data:
-                    if "CERT_PATH" in ele:
-                        data.remove(ele)
-                    if "PRV_KEY_PATH" in ele:
-                        data.remove(ele)
-                data.append(f"CERT_PATH={ssl_path}")
-                data.append(f"PRV_KEY_PATH={ssl_path}")
+                Conf.set(self.ENV_INDEX, "CERT_PATH", ssl_path)
+                Conf.set(self.ENV_INDEX, "PRV_KEY_PATH", ssl_path)                
                 #set permissions
                 self._run_cmd(f"setfacl -m u:{self._user}:rwx {ssl_path}")                
             else:
                 raise CSMWebSetupError(rc=-1, message="SSL file does not exist")
-        file_data.dump(("\n").join(data))
+        Conf.save(self.ENV_INDEX)
 
     def _get_log_file_path(self):
         """
