@@ -18,6 +18,7 @@ import crypt
 import os
 import pwd
 import sys
+import time
 import traceback
 from cortx.utils.log import Log
 from cortx.utils.conf_store import Conf
@@ -27,6 +28,7 @@ from cortx.utils.validator.error import VError
 from cortx.utils.validator.v_pkg import PkgV
 from cortx.utils.validator.v_confkeys import ConfKeysV
 from cortx.utils.security.cipher import Cipher, CipherInvalidToken
+from cortx.utils.service.service_handler import Service
 from csm.web.conf.payload import Text
 from csm.web.conf.process import SimpleProcess
 #from payload import Text
@@ -155,6 +157,12 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing reset")
+        if os.environ.get("CLI_SETUP") == "true":
+            CSMWeb._run_cmd(f"cli_setup reset --config {self.conf_url}")
+        self._disable_and_stop_service()
+        self._reset_logs()
+        self._directory_cleanup()
+        Log.info("Reset complete")
         return 0
 
     def pre_upgrade(self):
@@ -188,7 +196,7 @@ class CSMWeb:
         """
         Log.info("Executing cleanup")
         return 0
-    
+
     @staticmethod
     def _get_machine_id():
         """
@@ -393,7 +401,7 @@ class CSMWeb:
             raise CSMWebSetupError(rc=-1, message="Management IP is not provided.")
         Log.info(f"Fetch Virtual host: {virtual_host}")
         return virtual_host
-    
+
     def _fetch_key_value(self, key: str, default_value: any):
         key = f"cluster>{self._cluster_id}>network>management>{key}"
         value = default_value
@@ -402,10 +410,10 @@ class CSMWeb:
             value = Conf.get(self.CONSUMER_INDEX, key)
         except VError as ve:
             Log.error(f"Protocol key does not exist. Set default port as protocol {ve}")
-        
+
         Log.info(f"Fetch {key}: {value}")
         return value
-    
+
     def _fetch_ssl_path(self):
         ssl_path_key = f"cluster>{self._cluster_id}>network>management>ssl_path"
         ssl_path = None
@@ -451,9 +459,9 @@ class CSMWeb:
         else:
             if os.path.exists(ssl_path):
                 Conf.set(self.ENV_INDEX, "CERT_PATH", ssl_path)
-                Conf.set(self.ENV_INDEX, "PRV_KEY_PATH", ssl_path)                
+                Conf.set(self.ENV_INDEX, "PRV_KEY_PATH", ssl_path)
                 #set permissions
-                self._run_cmd(f"setfacl -m u:{self._user}:rwx {ssl_path}")                
+                self._run_cmd(f"setfacl -m u:{self._user}:rwx {ssl_path}")
             else:
                 raise CSMWebSetupError(rc=-1, message="SSL file does not exist")
         Conf.save(self.ENV_INDEX)
@@ -478,3 +486,36 @@ class CSMWeb:
         os.makedirs(log_path, exist_ok=True)
         self._run_cmd(f"setfacl -R -m u:{self._user}:rwx {log_path}")
         self._run_cmd(f"setfacl -R -m u:{self._user}:rwx {tmp_file_cache_dir}")
+
+    def _reset_logs(self):
+        Log.info("Reseting log files")
+        log_file_path = Conf.get(self.ENV_INDEX,"LOG_FILE_PATH").replace("\"", "")
+        self._run_cmd(f"truncate -s 0 {log_file_path}")
+
+    def _disable_and_stop_service(self):
+        Log.info("Disabling and stopping the service")
+        try:
+            service_obj = Service(self.CSM_WEB_SERVICE)
+            if service_obj.is_enabled():
+                Log.info(f"Disabling {self.CSM_WEB_SERVICE}")
+                service_obj.disable()
+            if service_obj.get_state().state == 'active':
+                Log.info(f"Stopping {self.CSM_WEB_SERVICE}")
+                service_obj.stop()
+
+            Log.info(f"Checking if {self.CSM_WEB_SERVICE} stopped.")
+            for count in range(0, 10):
+                if not service_obj.get_state().state == 'active':
+                    break
+                time.sleep(2**count)
+            if service_obj.get_state().state == 'active':
+                Log.error(f"{self.CSM_WEB_SERVICE} still active")
+                raise CSMWebSetupError(rc=-1, message=f"{self.CSM_WEB_SERVICE} still active")
+        except Exception as e:
+            Log.warn(f"{self.CSM_WEB_SERVICE} not available: {e}")
+
+    def _directory_cleanup(self):
+        Log.info("Deleting files and folders")
+        _path = Conf.get(self.ENV_INDEX,"FILE_UPLOAD_FOLDER").replace("\"", "")
+        Log.info(f"Deleting path :{_path}")
+        self._run_cmd(f"rm -rf {_path}")
