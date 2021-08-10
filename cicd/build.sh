@@ -42,7 +42,7 @@ Options:
     -k : Provide key for encryption of code
     -p : Provide product name default cortx
     -n : Provide Brand name default cortx
-    -l : Provide path to copy resources (e.g /root/) default path is null 
+    -l : Provide path to copy resources (e.g /root/) default path is null
     -c : Build rpm for [all|backend|frontend]
     -t : Build rpm with test plan
     -d : Build dev env
@@ -149,6 +149,7 @@ if [ "$COMPONENT" == "all" ] || [ "$COMPONENT" == "frontend" ]; then
     #Delete src folder from web
     echo " Deleting web src and gui directory--" ${DIST}/csm/web/src
     cp -R  $GUI_DIR/web/.env $GUI_DIR/web/web-dist
+    cp -R  $GUI_DIR/web/.env $GUI_DIR/web/web-dist/.env_tmpl
     rm -rf $GUI_DIR/web/src
     WEB_BUILD_END_TIME=$(date +%s)
 

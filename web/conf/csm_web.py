@@ -444,7 +444,6 @@ class CSMWeb:
         return ssl_path
 
     def _configure_csm_web_keys(self):
-        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         Log.info("Configuring CSM Web keys")
         virtual_host = self._fetch_management_ip()
         https_port = self._fetch_key_value("https_port", 443)
@@ -469,7 +468,6 @@ class CSMWeb:
         """
         Log.info("Congigure SSL and set permissions")
         ssl_path = self._fetch_ssl_path()
-        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         if not ssl_path:
             sys.stdout.write("Setting protocol to http")
             Conf.set(self.ENV_INDEX, "SERVER_PROTOCOL", "http")
