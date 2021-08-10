@@ -1,0 +1,9 @@
+{
+  "cortx": {
+    "software": {
+      "csm": {
+        "user": "cortxub"
+      }
+    }
+  }
+}

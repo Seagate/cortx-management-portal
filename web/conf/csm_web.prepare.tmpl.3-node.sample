@@ -1,0 +1,68 @@
+{
+  "cortx": {
+    "software": {
+      "csm": {
+        "user": "cortxub",
+        "secret": "gAAAAABgZF7KOL5wqOwt_VpJ0B0tXHlsbfARqKldkiVtOeGpEjBq_Ws38qHHAo27zCPIKGSaXqSAgGXTzFJMZRTrXWWn6Pivsg=="
+      },
+      "openldap": {
+        "sgiam": {
+          "user": "sgiamadmin",
+          "secret": "gAAAAABgZF7KOL5wqOwt_VpJ0B0tXHlsbfARqKldkiVtOeGpEjBq_Ws38qHHAo27zCPIKGSaXqSAgGXTzFJMZRTrXWWn6Pivsg=="
+        }
+      }
+    }
+  },
+  "server_node": {
+    "bdf68ed0efc148ce8d20c580aef3cc64": {
+      "type": "VM",
+      "hostname": "ssc-vm-2623.colo.seagate.com",
+      "cluster_id": "bae4b468-565d-49df-9495-a43a5d89babc",
+      "storage": {
+        "enclosure_id": "encbdf68ed0efc148ce8d20c580aef3cc64"
+      },
+      "network": {
+        "data": {
+          "private_fqdn": "127.0.0.1",
+        }
+      }
+    },
+    "c148ce8d580ad0efef3cc6bdf68e420c": {
+      "type": "VM",
+      "hostname": "ssc-vm-2624.colo.seagate.com",
+      "cluster_id": "bae4b468-565d-49df-9495-a43a5d89babc",
+      "storage": {
+        "enclosure_id": "encc148ce8d580ad0efef3cc6bdf68e420c"
+      },
+      "network": {
+        "data": {
+          "private_fqdn": "127.0.0.1",
+        }
+      }
+    },
+    "80aef3cc6420cbdf68ed0efc148ce8d5": {
+      "type": "VM",
+      "hostname": "ssc-vm-2625.colo.seagate.com",
+      "cluster_id": "bae4b468-565d-49df-9495-a43a5d89babc",
+      "storage": {
+        "enclosure_id": "enc80aef3cc6420cbdf68ed0efc148ce8d5"
+      },
+      "network": {
+        "data": {
+          "private_fqdn": "127.0.0.1",
+        }
+      }
+    }
+  },
+  "storage_enclosure": {
+    "encbdf68ed0efc148ce8d20c580aef3cc64": {
+      "type": "virtual"
+    },
+    "encc148ce8d580ad0efef3cc6bdf68e420c": {
+      "type": "virtual"
+    },
+    "enc80aef3cc6420cbdf68ed0efc148ce8d5": {
+      "type": "virtual"
+    }
+  }
+}

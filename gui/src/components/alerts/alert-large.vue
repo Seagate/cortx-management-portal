@@ -119,18 +119,18 @@
               <span v-else-if="props.item.module_type === 'current'"
                 >{{ $t("alerts.sensorName") }}: {{ props.item.name }}</span
               >
-              <span v-else-if="props.item.module_name === 'enclosure:fru:psu'"
+              <span v-else-if="props.item.module_name === 'enclosure:hw:psu'"
                 >{{ $t("alerts.location") }}: {{ props.item.location }}</span
               >
               <span
                 v-else-if="
-                  props.item.module_name === 'enclosure:fru:fan' ||
-                    props.item.module_type === 'enclosure:fru:sideplane'
+                  props.item.module_name === 'enclosure:hw:fan' ||
+                    props.item.module_type === 'enclosure:hw:sideplane'
                 "
                 >{{ $t("common.name") }}: {{ props.item.name }} | {{ $t("alerts.location") }}:
                 {{ props.item.location }}</span
               >
-              <span v-else-if="props.item.module_name === 'enclosure:fru:disk'"
+              <span v-else-if="props.item.module_name === 'enclosure:hw:disk'"
                 >{{ $t("alerts.serialNumber") }}: {{ props.item.serial_number }} | {{ $t("alerts.size") }}:
                 {{ props.item.volume_size }}</span
               >
