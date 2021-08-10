@@ -62,14 +62,14 @@
             {{ alert.volume_total_size }}
           </span>
           <span v-else-if="alert.module_type === 'current'">{{ $t("alerts.sensorName") }}: {{ alert.name }}</span>
-          <span v-else-if="alert.module_name === 'enclosure:fru:psu'">{{ $t("alerts.location") }}: {{ alert.location }}</span>
+          <span v-else-if="alert.module_name === 'enclosure:hw:psu'">{{ $t("alerts.location") }}: {{ alert.location }}</span>
           <span
             v-else-if="
-              alert.module_name === 'enclosure:fru:fan' ||
-                alert.module_name === 'enclosure:fru:sideplane'
+              alert.module_name === 'enclosure:hw:fan' ||
+                alert.module_name === 'enclosure:hw:sideplane'
             "
           >{{ $t("common.name") }}: {{ alert.name }} | {{ $t("alerts.location") }}: {{ alert.location }}</span>
-          <span v-else-if="alert.module_name === 'enclosure:fru:disk'">
+          <span v-else-if="alert.module_name === 'enclosure:hw:disk'">
             {{ $t("alerts.serialNumber") }}: {{ alert.serial_number }} | {{ $t("alerts.size") }}:
             {{ alert.volume_size }}
           </span>
