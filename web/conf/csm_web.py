@@ -444,7 +444,7 @@ class CSMWeb:
         """
         Log.info("Congigure SSL and set permissions")
         ssl_path = self._fetch_ssl_path()
-        self._run_cmd(f"cp {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
+        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         if not ssl_path:
             sys.stdout.write("Setting protocol to http")
             Conf.set(self.ENV_INDEX, "SERVER_PROTOCOL", "http")
