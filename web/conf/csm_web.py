@@ -406,28 +406,11 @@ class CSMWeb:
         agent_port = self._fetch_key_value("agent_port", "28101")
         agent_protocol = self._fetch_key_value("agent_protocol", "http")
         Log.info(f"Set MANAGEMENT_IP:{virtual_host} and Port: {https_port} to csm web config")
-        file_data = Text(self.CSM_WEB_DIST_ENV_FILE_PATH)
-        data = file_data.load().split("\n")
-        for ele in data:
-            if "MANAGEMENT_IP" in ele:
-                data.remove(ele)
-            if "HTTPS_NODE_PORT" in ele:
-                data.remove(ele)
-            if "HTTP_NODE_PORT" in ele:
-                data.remove(ele)
-            if "SERVER_PROTOCOL" in ele:
-                data.remove(ele)
-            if "CSM_AGENT_HOST" in ele:
-                data.remove(ele)
-            if "CSM_AGENT_PORT" in ele:
-                data.remove(ele)
-            if "CSM_AGENT_PROTOCOL" in ele:
-                data.remove(ele)
-        data.append(f"MANAGEMENT_IP={virtual_host}")
-        data.append(f"HTTPS_NODE_PORT={https_port}")
-        data.append(f"HTTP_NODE_PORT={http_port}")
-        data.append(f"SERVER_PROTOCOL={server_protocol}")
-        data.append(f"CSM_AGENT_HOST={agent_host}")
-        data.append(f"CSM_AGENT_PORT={agent_port}")
-        data.append(f"CSM_AGENT_PROTOCOL={agent_protocol}")
-        file_data.dump(("\n").join(data))
+        Conf.set(self.ENV_INDEX, "MANAGEMENT_IP", virtual_host)
+        Conf.set(self.ENV_INDEX, "HTTPS_NODE_PORT", https_port)
+        Conf.set(self.ENV_INDEX, "HTTP_NODE_PORT", http_port)
+        Conf.set(self.ENV_INDEX, "SERVER_PROTOCOL", server_protocol)
+        Conf.set(self.ENV_INDEX, "CSM_AGENT_HOST", agent_host)
+        Conf.set(self.ENV_INDEX, "CSM_AGENT_PORT", agent_port)
+        Conf.set(self.ENV_INDEX, "CSM_AGENT_PROTOCOL", agent_protocol)
+        Conf.save(self.ENV_INDEX)
