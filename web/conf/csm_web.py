@@ -155,6 +155,7 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing reset")
+        self._prepare_and_validate_confstore_keys("reset")
         self._disable_and_stop_service()
         self._reset_logs()
         self._directory_cleanup()
@@ -191,6 +192,7 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing cleanup")
+        self._prepare_and_validate_confstore_keys("cleanup")
         self._files_cleanup()
         self._web_env_file_cleanup()
         if self.pre_factory:
@@ -524,10 +526,10 @@ class CSMWeb:
         self._run_cmd(f"rm -rf {log_file_path}")
 
     def _web_env_file_cleanup(self):
-        Log.info(f"Replacing {self.CSM_WEB_DIST_ENV_FILE_PATH}​​​​​​​​_tmpl " \
-                                            f"{self.CSM_WEB_DIST_ENV_FILE_PATH}​​​​​​​​")
-        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH}​​​​​​​​_tmpl " \
-                                            f"{self.CSM_WEB_DIST_ENV_FILE_PATH}​​​​​​​​")
+        Log.info(f"Replacing {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl " \
+                                            f"{self.CSM_WEB_DIST_ENV_FILE_PATH}")
+        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl " \
+                                            f"{self.CSM_WEB_DIST_ENV_FILE_PATH}")
 
     def _replace_csm_service_file(self):
         """
