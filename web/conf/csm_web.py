@@ -89,7 +89,7 @@ class CSMWeb:
                 f"--config {self.conf_url} {self.pre_factory}")
             Log.info(f"cli setup for {command_name} complete")
         except VError as ve:
-            Log.error(f"cortx-cli package is not installed: {ve}")
+            Log.warn(f"cortx-cli package is not installed: {ve}")
 
 
     def post_install(self):
