@@ -85,7 +85,7 @@ class CSMWeb:
         Log.info("Checking cortxcli rpm and running cli setup if present")
         try:
             PkgV().validate("rpms", ["cortx-cli"])
-            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup {command_name}" \
+            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup {command_name} " \
                 f"--config {self.conf_url} {self.pre_factory}")
             Log.info(f"cli setup for {command_name} complete")
         except VError as ve:
