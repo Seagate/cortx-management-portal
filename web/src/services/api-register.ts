@@ -62,5 +62,7 @@ export default {
   get_health_cluster_endpt: (version :string, resource: string) => `/api/${version}/system/health/${resource}`,
   get_system_status_endpt: (version :string) => `/api/${version}/system/status`,
   get_appliance_info_endpt: (version :string) => `/api/${version}/appliance_info`,
-  get_unsupported_features_endpt: (version :string) => `/api/${version}/unsupported_features`
+  get_unsupported_features_endpt: (version :string) => `/api/${version}/unsupported_features`,
+  get_manage_resources_endpt: (version :string, resource: string) => `/api/${version}/system/management/${resource}`,
+  get_cluster_status_endpt: (version :string, node_id: string) => `/api/${version}/system/management/cluster_status/${node_id}`
 };
