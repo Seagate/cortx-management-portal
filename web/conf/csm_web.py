@@ -67,7 +67,7 @@ class CSMWeb:
     CSM_WEB_SERVICE = "/etc/systemd/system/csm_web.service"
     CSM_WEB_SERVICE_TMPL = "/opt/seagate/cortx/csm/conf/service/csm_web.service"
 
-    def __init__(self, conf_url, **kwargs):
+    def __init__(self, conf_url, command_name, **kwargs):
         """
         Initializing CSMWeb
         """
@@ -79,9 +79,18 @@ class CSMWeb:
         self.machine_id = CSMWeb._get_machine_id()
         self.server_node_info = f"server_node>{self.machine_id}"
         self.conf_url = conf_url
-        self.pre_factory = kwargs.get("pre_factory")
+        self.pre_factory = "--pre-factory" if kwargs.get("pre_factory") else ""
         self.conf_store_keys = {}
         self._is_env_dev = False
+        Log.info("Checking cortxcli rpm and running cli setup if present")
+        try:
+            PkgV().validate("rpms", ["cortx-cli"])
+            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup {command_name}" \
+                f"--config {self.conf_url} {self.pre_factory}")
+            Log.info(f"cli setup for {command_name} complete")
+        except VError as ve:
+            Log.error(f"cortx-cli package is not installed: {ve}")
+
 
     def post_install(self):
         """
@@ -90,9 +99,6 @@ class CSMWeb:
         """
         Log.info("Executing post install")
         self._validate_nodejs_installed()
-        self._validate_cortxcli()
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup post_install --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("post_install")
         self._set_service_user()
         self._config_user()
@@ -107,8 +113,6 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing prepare")
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup prepare --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("prepare")
         self._get_cluster_id()
         self._set_deployment_mode()
@@ -123,8 +127,6 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing config")
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup config --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("config")
         self._get_cluster_id()
         self._set_deployment_mode()
@@ -138,8 +140,6 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing init")
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup init --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("init")
         self._get_cluster_id()
         self._set_service_user()
@@ -155,8 +155,6 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing reset")
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup reset --config {self.conf_url}")
         self._disable_and_stop_service()
         self._reset_logs()
         self._directory_cleanup()
@@ -193,11 +191,6 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing cleanup")
-        if os.environ.get("CLI_SETUP") == "true":
-            if self.pre_factory:
-                CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup cleanup --config {self.conf_url} --pre-factory")
-            else:
-                CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup cleanup --config {self.conf_url}")
         self._files_cleanup()
         self._web_env_file_cleanup()
         if self.pre_factory:
@@ -268,15 +261,6 @@ class CSMWeb:
     def _validate_nodejs_installed(self):
         Log.info("Validating NodeJS 12.13.0")
         PathV().validate('exists', [f"file://{self.NODE_JS_PATH}"])
-
-    def _validate_cortxcli(self):
-        Log.info("Validating third party rpms")
-        try:
-            PkgV().validate("rpms", ["cortx-cli"])
-            os.environ["CLI_SETUP"] = "true"
-        except VError as ve:
-            os.environ["CLI_SETUP"] = "false"
-            Log.error(f"cortx-cli package is not installed: {ve}")
 
     def _set_service_user(self):
         """

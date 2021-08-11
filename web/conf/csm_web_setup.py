@@ -101,7 +101,7 @@ class PostInstallCmd(Cmd):
         Initializing PostInstallCmd
         """
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config)
+        self.csm_web = CSMWeb(args.config, command_name=self.name)
 
     def process(self):
         rc = self.csm_web.post_install()
@@ -119,7 +119,7 @@ class PrepareCmd(Cmd):
         Initializing PrepareCmd
         """
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config)
+        self.csm_web = CSMWeb(args.config, command_name=self.name)
 
     def process(self):
         # TODO: Add actions here
@@ -138,7 +138,7 @@ class ConfigCmd(Cmd):
         Initializing ConfigCmd
         """
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config)
+        self.csm_web = CSMWeb(args.config, command_name=self.name)
 
     def process(self):
         # TODO: Add actions here
@@ -157,7 +157,7 @@ class InitCmd(Cmd):
         Initializing InitCmd
         """
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config)
+        self.csm_web = CSMWeb(args.config, command_name=self.name)
 
     def process(self):
         # TODO: Add actions here
@@ -177,7 +177,7 @@ class TestCmd(Cmd):
 
     def __init__(self, args):
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config)
+        self.csm_web = CSMWeb(args.config, command_name=self.name)
         self.test_plan = args.plan
 
     def process(self):
@@ -194,7 +194,7 @@ class ResetCmd(Cmd):
 
     def __init__(self, args):
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config)
+        self.csm_web = CSMWeb(args.config, command_name=self.name)
 
     def process(self):
         # TODO: Add actions here
@@ -209,7 +209,7 @@ class CleanupCmd(Cmd):
 
     def __init__(self, args):
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config, pre_factory=args.pre_factory)
+        self.csm_web = CSMWeb(args.config, command_name=self.name, pre_factory=args.pre_factory)
 
     @staticmethod
     def _add_extended_args(parser):
@@ -228,7 +228,7 @@ class PreUpgradeCmd(Cmd):
 
     def __init__(self, args):
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config)
+        self.csm_web = CSMWeb(args.config, command_name=self.name)
 
     def process(self):
         # TODO: Add actions here
@@ -243,7 +243,7 @@ class PostUpgradeCmd(Cmd):
 
     def __init__(self, args):
         super().__init__(args)
-        self.csm_web = CSMWeb(args.config)
+        self.csm_web = CSMWeb(args.config, command_name=self.name)
 
     def process(self):
         rc = self.csm_web.post_upgrade()
