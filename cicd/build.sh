@@ -42,7 +42,7 @@ Options:
     -k : Provide key for encryption of code
     -p : Provide product name default cortx
     -n : Provide Brand name default cortx
-    -l : Provide path to copy resources (e.g /root/) default path is null 
+    -l : Provide path to copy resources (e.g /root/) default path is null
     -c : Build rpm for [all|backend|frontend]
     -t : Build rpm with test plan
     -d : Build dev env

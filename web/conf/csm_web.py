@@ -29,10 +29,8 @@ from cortx.utils.validator.v_pkg import PkgV
 from cortx.utils.validator.v_confkeys import ConfKeysV
 from cortx.utils.security.cipher import Cipher, CipherInvalidToken
 from cortx.utils.service.service_handler import Service
-from csm.web.conf.payload import Text
-from csm.web.conf.process import SimpleProcess
-#from payload import Text
-#from process import SimpleProcess
+from cortx.utils.schema.payload import Text
+from cortx.utils.process import SimpleProcess
 
 
 class CSMWebSetupError(Exception):
@@ -69,7 +67,7 @@ class CSMWeb:
     CSM_WEB_SERVICE = "/etc/systemd/system/csm_web.service"
     CSM_WEB_SERVICE_TMPL = "/opt/seagate/cortx/csm/conf/service/csm_web.service"
 
-    def __init__(self, conf_url, **kwargs):
+    def __init__(self, conf_url, command_name, **kwargs):
         """
         Initializing CSMWeb
         """
@@ -81,9 +79,18 @@ class CSMWeb:
         self.machine_id = CSMWeb._get_machine_id()
         self.server_node_info = f"server_node>{self.machine_id}"
         self.conf_url = conf_url
-        self.pre_factory = kwargs.get("pre_factory")
+        self.pre_factory = "--pre-factory" if kwargs.get("pre_factory") else ""
         self.conf_store_keys = {}
         self._is_env_dev = False
+        Log.info("Checking cortxcli rpm and running cli setup if present")
+        try:
+            PkgV().validate("rpms", ["cortx-cli"])
+            CSMWeb._run_cmd(f"/opt/seagate/cortx/cli/bin/cli_setup {command_name} " \
+                f"--config {self.conf_url} {self.pre_factory}")
+            Log.info(f"cli setup for {command_name} complete")
+        except VError as ve:
+            Log.error(f"cortx-cli package is not installed: {ve}")
+
 
     def post_install(self):
         """
@@ -92,9 +99,6 @@ class CSMWeb:
         """
         Log.info("Executing post install")
         self._validate_nodejs_installed()
-        self._validate_cortxcli()
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup post_install --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("post_install")
         self._set_service_user()
         self._config_user()
@@ -109,8 +113,6 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing prepare")
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup prepare --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("prepare")
         self._get_cluster_id()
         self._set_deployment_mode()
@@ -125,8 +127,6 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing config")
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup config --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("config")
         self._get_cluster_id()
         self._set_deployment_mode()
@@ -140,8 +140,6 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing init")
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup init --config {self.conf_url}")
         self._prepare_and_validate_confstore_keys("init")
         self._get_cluster_id()
         self._set_service_user()
@@ -157,8 +155,7 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing reset")
-        if os.environ.get("CLI_SETUP") == "true":
-            CSMWeb._run_cmd(f"cli_setup reset --config {self.conf_url}")
+        self._prepare_and_validate_confstore_keys("reset")
         self._disable_and_stop_service()
         self._reset_logs()
         self._directory_cleanup()
@@ -195,6 +192,14 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing cleanup")
+        self._prepare_and_validate_confstore_keys("cleanup")
+        self._files_cleanup()
+        self._web_env_file_cleanup()
+        if self.pre_factory:
+            self._set_service_user()
+            self._replace_csm_service_file()
+            self._service_user_cleanup()
+        Log.info("Cleanup complete")
         return 0
 
     @staticmethod
@@ -231,6 +236,10 @@ class CSMWeb:
                 "csm_user_key": "cortx>software>csm>user",
                 "cluster_id":f"{self.server_node_info}>cluster_id"
                 })
+        if phase == "cleanup":
+            self.conf_store_keys.update({
+                "csm_user_key": "cortx>software>csm>user"
+                })
         elif phase == "post_upgrade":
             self.conf_store_keys.update({
                 "csm_user_key": "cortx>software>csm>user",
@@ -248,20 +257,12 @@ class CSMWeb:
             keylist = list(self.conf_store_keys.values())
         if not isinstance(keylist, list):
             raise CSMWebSetupError(rc=-1, message="Keylist should be kind of list")
+        Log.info(f"Required conf store keys: {keylist}")
         ConfKeysV().validate("exists", index, keylist)
 
     def _validate_nodejs_installed(self):
         Log.info("Validating NodeJS 12.13.0")
         PathV().validate('exists', [f"file://{self.NODE_JS_PATH}"])
-
-    def _validate_cortxcli(self):
-        Log.info("Validating third party rpms")
-        try:
-            PkgV().validate("rpms", ["cortx-cli"])
-            os.environ["CLI_SETUP"] = "true"
-        except VError as ve:
-            os.environ["CLI_SETUP"] = "false"
-            Log.error(f"cortx-cli package is not installed: {ve}")
 
     def _set_service_user(self):
         """
@@ -409,7 +410,7 @@ class CSMWeb:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[key])
             value = Conf.get(self.CONSUMER_INDEX, key)
         except VError as ve:
-            Log.error(f"Protocol key does not exist. Set default port as protocol {ve}")
+            Log.error(f"{key} does not exist. Set default value as {default_value}: {ve}")
 
         Log.info(f"Fetch {key}: {value}")
         return value
@@ -427,8 +428,8 @@ class CSMWeb:
         return ssl_path
 
     def _configure_csm_web_keys(self):
-        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         Log.info("Configuring CSM Web keys")
+        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         virtual_host = self._fetch_management_ip()
         https_port = self._fetch_key_value("https_port", 443)
         http_port = self._fetch_key_value("http_port", 80)
@@ -452,7 +453,6 @@ class CSMWeb:
         """
         Log.info("Congigure SSL and set permissions")
         ssl_path = self._fetch_ssl_path()
-        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         if not ssl_path:
             sys.stdout.write("Setting protocol to http")
             Conf.set(self.ENV_INDEX, "SERVER_PROTOCOL", "http")
@@ -516,6 +516,34 @@ class CSMWeb:
 
     def _directory_cleanup(self):
         Log.info("Deleting files and folders")
-        _path = Conf.get(self.ENV_INDEX,"FILE_UPLOAD_FOLDER").replace("\"", "")
-        Log.info(f"Deleting path :{_path}")
-        self._run_cmd(f"rm -rf {_path}")
+        file_cache_path = Conf.get(self.ENV_INDEX,"FILE_UPLOAD_FOLDER").replace("\"", "")
+        Log.info(f"Deleting path :{file_cache_path}")
+        self._run_cmd(f"rm -rf {file_cache_path}")
+
+    def _files_cleanup(self):
+        Log.info("Cleaning of log files")
+        log_file_path = Conf.get(self.ENV_INDEX,"LOG_FILE_PATH").replace("\"", "")
+        self._run_cmd(f"rm -rf {log_file_path}")
+
+    def _web_env_file_cleanup(self):
+        Log.info(f"Replacing {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl " \
+                                            f"{self.CSM_WEB_DIST_ENV_FILE_PATH}")
+        self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl " \
+                                            f"{self.CSM_WEB_DIST_ENV_FILE_PATH}")
+
+    def _replace_csm_service_file(self):
+        """
+        Service file cleanup
+        """
+        Log.info("Replacing service file.")
+        self._run_cmd(f"cp -f {self.CSM_WEB_SERVICE_TMPL} /etc/systemd/system/")
+
+    def _service_user_cleanup(self):
+        """
+        Remove service user if system deployed in dev mode.
+        """
+        Log.info("Deleting service user")
+        if Conf.get(self.CONSUMER_INDEX, "DEPLOYMENT>mode") == 'dev' and \
+                    self._is_user_exist():
+            Log.info(f"Removing Service user: {self._user}")
+            self._run_cmd(f"userdel -f {self._user}")
