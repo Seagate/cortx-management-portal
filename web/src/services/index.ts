@@ -33,6 +33,7 @@ import ssl from "./ssl/routes";
 import software from "./software/routes";
 import about from "./about/routes";
 import unsupported_features from "./unsupported_features/routes";
+import clusterManagementRoutes from "./cluster_management/routes";
 
 export default [
   ...loginRoutes,
@@ -53,5 +54,6 @@ export default [
   ...ssl,
   ...software,
   ...about,
-  ...unsupported_features
+  ...unsupported_features,
+  ...clusterManagementRoutes
 ];

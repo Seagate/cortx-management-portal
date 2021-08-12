@@ -72,5 +72,7 @@ export default {
   health_cluster: `api/${version}/system/health/cluster`,
   appliance_info: `/api/${version}/appliance_info`,
   udx_saas: `/api/${version}/udx_saas`,
-  ssl_details: `/api/${version}/tls/bundle/details`
+  ssl_details: `/api/${version}/tls/bundle/details`,
+  manage_resource: `/api/${version}/system/management`,
+  cluster_status: `/api/${version}/system/management/cluster_status`
 };
