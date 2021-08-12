@@ -590,10 +590,16 @@ tbody tr:hover {
 .cortx-chip-ok {
   background: #6ebe49;
 }
+.cortx-chip-success {
+  background: #6ebe49;
+}
 .cortx-chip-warning {
   background: #f7a528;
 }
 .cortx-chip-alert {
+  background: #dc1f2e;
+}
+.cortx-chip-critical {
   background: #dc1f2e;
 }
 .cortx-chip-others {
@@ -793,3 +799,136 @@ div.cortx-header.py-3 {
   background-color: #6ebe49 !important;
   border-color: #6ebe49 !important;
 }
+
+/* Button primary (White background) style rules --- Start */
+.cortx-btn-one {
+  box-sizing: border-box;
+  border-radius: 4px;
+  height: 40px;
+  min-width: 64px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #ffffff;
+}
+.cortx-btn-one:focus {
+  outline: 0;
+}
+.cortx-btn-one:disabled {
+  background: #b7b7b7;
+}
+.cortx-btn-one-information {
+  background: #00a1dd;
+}
+.cortx-btn-one-information:hover {
+  background: #00B2FF;
+}
+.cortx-btn-one-information:active {
+  background: #0078D6;
+}
+.cortx-btn-one-success {
+  background: #6ebe49;
+}
+.cortx-btn-one-success:hover {
+  background: #8acb6b;
+}
+.cortx-btn-one-success:active {
+  background: #4b813d;
+}
+.cortx-btn-one-warning {
+  background: #f7a528;
+}
+.cortx-btn-one-warning:hover {
+  background: #FFB744;
+}
+.cortx-btn-one-warning:active {
+  background: #D98A13;
+}
+.cortx-btn-one-critical {
+  background: #dc1f2e;
+}
+.cortx-btn-one-critical:hover {
+  background: #EA3947;
+}
+.cortx-btn-one-critical:active {
+  background: #AF131F;
+}
+/* Button primary (White background) style rules --- End */
+
+/* Button secondary (White background) style rules --- Start */
+.cortx-btn-two {
+  background: #ffffff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  height: 40px;
+  min-width: 64px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #000000;
+  border: 1px solid #000000;
+}
+.cortx-btn-two:focus {
+  outline: 0;
+}
+.cortx-btn-two:disabled {
+  color: #b7b7b7;
+  border: 1px solid #b7b7b7;
+}
+.cortx-btn-two-information {
+  color: #00a1dd;
+  border: 1px solid #00a1dd;
+}
+.cortx-btn-two-information:hover {
+  color: #00B2FF;
+  border: 1px solid #00B2FF;
+}
+.cortx-btn-two-information:active {
+  color: #0078D6;
+  border: 1px solid #0078D6;
+}
+.cortx-btn-two-success {
+  color: #6ebe49;
+  border: 1px solid #6ebe49;
+}
+.cortx-btn-two-success:hover {
+  color: #8acb6b;
+  border: 1px solid #8acb6b;
+}
+.cortx-btn-two-success:active {
+  color: #4b813d;
+  border: 1px solid #4b813d;
+}
+.cortx-btn-two-warning {
+  color: #f7a528;
+  border: 1px solid #f7a528;
+}
+.cortx-btn-two-warning:hover {
+  color: #FFB744;
+  border: 1px solid #FFB744;
+}
+.cortx-btn-two-warning:active {
+  color: #D98A13;
+  border: 1px solid #D98A13;
+}
+.cortx-btn-two-critical {
+  color: #dc1f2e;
+  border: 1px solid #dc1f2e;
+}
+.cortx-btn-two-critical:hover {
+  color: #EA3947;
+  border: 1px solid #EA3947;
+}
+.cortx-btn-two-critical:active {
+  color: #AF131F;
+  border: 1px solid #AF131F;
+}
+/* Button secondary (White background) style rules --- End */
