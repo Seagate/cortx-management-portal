@@ -283,7 +283,7 @@ export abstract class Api {
             logger.info('headers:--------> ' + JSON.stringify(req.headers))
             var headers = Api.setHeaders(req);
 
-            const requestData = req && req.body ? JSON.stringify(req.body) : "";
+            const requestData = req && Object.keys(req.body).length > 0 ? JSON.stringify(req.body) : "";
             const options = {
                 method: "DELETE",
                 headers: headers
