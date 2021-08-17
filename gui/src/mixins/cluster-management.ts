@@ -77,6 +77,7 @@ export default class ClusterManagementMixin extends Vue {
     public async requestOperationOnNode(resource: any, action: string) {
         switch (action) {
             case "start":
+                await this.requestStartOperationOnNode(resource);
                 break;
             case "stop":
                 await this.requestStopOperationOnNode(resource, false);
@@ -90,10 +91,22 @@ export default class ClusterManagementMixin extends Vue {
         }
     }
 
+    public async requestStartOperationOnNode(resource: any) {
+        const requestObj: any = {
+            operation: "start",
+            arguments: {
+                resource_id: resource.id
+            }
+        };
+        const loaderMsg: string = `Starting node ${resource.id}.`;
+        this.buildOperationRequestObj("node", loaderMsg, requestObj);
+        const promptMsg: string = `Are you sure you want to start node ${resource.id}?`;
+        this.showPromptDialog("Confirmation", promptMsg);
+    }
+
     public async requestStopOperationOnNode(resource: any, isPoweroff: boolean, isStorageOff?: boolean) {
         const clusterStatus: any = await this.getNodeStopClusterStatus(resource.id);
         let warnMsgPrefix: string = "Stopping";
-        let operation: string = "stop";
         const requestObj: any = {
             operation: "stop",
             arguments: {
@@ -103,16 +116,15 @@ export default class ClusterManagementMixin extends Vue {
         };
         if (isPoweroff) {
             warnMsgPrefix = "Powering off";
-            operation = "poweroff";
-            requestObj.poweroff = true;
+            requestObj.operation = "poweroff";
             if (isStorageOff) {
-                requestObj.storageoff = true;
+                requestObj.arguments.storageoff = true;
             }
         }
         const loaderMsg: string = `${warnMsgPrefix} node ${resource.id}.`;
         this.buildOperationRequestObj("node", loaderMsg, requestObj);
         if (clusterStatus.status === "ok") {
-            const promptMsg: string = `Are you sure you want to ${operation} node ${resource.id}?`;
+            const promptMsg: string = `Are you sure you want to ${requestObj.operation} node ${resource.id}?`;
             this.showPromptDialog("Confirmation", promptMsg);
         } else {
             const warnMsg: string = `
