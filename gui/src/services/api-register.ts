@@ -20,7 +20,6 @@ export default {
   all_alerts: `/api/${version}/alerts`,
   alerts_history: `/api/${version}/alerts_history`,
   systemconfig: `api/${version}/systemconfig`,
-  create_user: `api/${version}/preboarding/user`,
   login: `api/${version}/login`,
   csm_user: `api/${version}/csm/users`,
   logout: `/api/${version}/logout`,
