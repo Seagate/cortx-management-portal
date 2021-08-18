@@ -115,7 +115,7 @@
               <template v-if="actionHeaders.length">
                 <td  class="d-flex align-center">
                   <div v-for="(action, index) in actionHeaders" :key="index">
-                    <v-tooltip left v-if="action.condition ? action.condition(item) : true">
+                    <v-tooltip left v-if="action.condition ? action.condition(item) : true" :disabled="!action.tooltip">
                       <template v-slot:activator="{ on, attrs }">
                         <div
                           :class="`cortx-icon-btn ${action.iconClass}`"
@@ -128,6 +128,10 @@
                       <span>{{action.tooltip}}</span>
                     </v-tooltip>
                   </div>
+                   
+                  <template v-if="actionGroup.length">
+                    <CortxOptions :menuOptions="actionGroup" :actionsCallback="actionsCallback" :recordInfo="item"/>
+                  </template>
                 </td>
               </template>
             </tr>
@@ -173,10 +177,11 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import cortxDropdownView from "./dropdown/cortx-dropdown-view.vue";
 import { CortxDropdownOption } from "./dropdown/cortx-dropdown";
 import CortxSearch from "./cortx-search.vue";
+import CortxOptions from "./cortx-options.vue";
 
 @Component({
   name: "cortx-data-table",
-  components: { cortxDropdownView, CortxSearch },
+  components: { cortxDropdownView, CortxSearch, CortxOptions },
   filters: { 
     formattedDate:(date: string | number) => {
       if(isNaN(+date)) return moment.default(date).format("DD-MM-YYYY hh:mm A");
@@ -247,6 +252,12 @@ export default class CortxDataTable extends Vue {
       const actionHeader = this.headers.filter(header => (header.value && header.value.type) === "buttons");
       const actionDetails = actionHeader[0] ? actionHeader[0].actionDetails : [];
       return actionDetails
+  }
+
+  get actionGroup() {
+    const actionHeader = this.headers.filter(header => (header.value && header.value.type) === "buttons");
+      const actionGroup = actionHeader[0] ? actionHeader[0].actionGroup : [];
+      return actionGroup
   }
   
   get itemsPerPageOptions() {

@@ -30,6 +30,7 @@ table > tr {
   align-self: center;
   margin: 2px 0px;
   color: rgba(0, 0, 0, 0.87);
+  text-align: left;
 }
 tbody tr {
   background-color: #ffffff !important;

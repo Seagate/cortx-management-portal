@@ -67,5 +67,43 @@ export const healthTableHeaders = {
             "type": "date"
             }
         },
+        {
+          "field_id": "action_buttons",
+          "label": "Actions",
+          "display_id": 1001,
+          "sortable": false,
+          "filterable": false,
+          "actionDetails": [
+            {
+              "id": "getMoreInfoAction",
+              "iconClass": "cortx-zoom-icon",
+              "tooltip": "Show more details",
+            }
+          ],
+          "actionGroup": [
+            {
+              "id": "startNodeAction",
+              "iconClass": "cortx-start-node-icon",
+              "label": "Start Node"
+            },
+            {
+              "id": "stopNodeAction",
+              "iconClass": "cortx-stop-node-icon",
+              "label": "Stop Node"
+            },
+            {
+              "id": "powerOffAction",
+              "iconClass": "cortx-power-off-node-icon",
+              "label": "Power off"
+            },
+            {
+              "id": "powerAndStorageOffAction",
+              "iconClass": "cortx-power-storage-off-node-icon",
+              "label": "Power and Storage off"
+            },
+          ],
+          "display": true,
+          "value": { "type": "buttons" }
+        }
     ]
 }
