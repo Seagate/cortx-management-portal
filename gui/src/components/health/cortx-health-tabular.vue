@@ -24,6 +24,13 @@
             :onFilter={} 
             :sortParams={}
             :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]" 
+            :actionsCallback="{
+              getMoreInfoAction: showMoreDetails,
+              startNodeAction : startNode,
+              stopNodeAction : stopNode,
+              powerOffAction : powerOffNode,
+              powerAndStorageOffAction : powerAndStorageOff
+            }"
             @update:items-per-page="getHealthData()"
             @update:page="getHealthData()"
           />
@@ -64,6 +71,22 @@ export default class CortxHealthTabular extends Vue {
     this.clusterHealthData = res.data;
     this.healthTableHeaderList = healthTableHeaders.healthTableHeaderList;
     this.$store.dispatch("systemConfig/hideLoader");
+  }
+
+  public async showMoreDetails() {
+    alert("This is for show more details of node")
+  }
+  public async startNode() {
+    alert("This is for start node")
+  }
+  public async stopNode() {
+    alert("This is for stop node")
+  }
+  public async powerOffNode() {
+    alert("This is for power off node")
+  }
+  public async powerAndStorageOff() {
+    alert("This is for power and storage off")
   }
 }
 </script>
