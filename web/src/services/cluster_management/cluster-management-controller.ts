@@ -14,12 +14,25 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export const ROLES = {
-    ADMIN: "admin",
-    MANAGE: "manage",
-    MONITOR: "monitor"
+import { Api } from "./../api";
+import apiRegister from "./../api-register";
+import { Request, Response } from "express";
+
+/**
+ * This is responsible for managing resources in cluster.
+ * @param req
+ * @param res
+ */
+export const manageResource = async (req: Request, res: Response) => {
+    return await Api.post(apiRegister.get_manage_resources_endpt(req.params.version, req.params.resource), req, res);
 };
-export const ACCESS_TOKEN = "access-token";
-export const USERNAME = "username";
-export const WINDOW_RESIZED = "WINDOW_RESIZED";
-  
+
+/**
+ * This is responsible to fetching cluster status
+ * due node stop or poweroff.
+ * @param req
+ * @param res
+ */
+export const getNodeStopClusterStatus = async (req: Request, res: Response) => {
+    return await Api.getAll(apiRegister.get_cluster_status_endpt(req.params.version, req.params.node_id), req, res);
+};
