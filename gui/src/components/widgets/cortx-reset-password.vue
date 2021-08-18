@@ -160,7 +160,6 @@ export default class CortxResetPasswrod extends Vue {
   private async resetPassword() {
     const username: any = localStorage.getItem("username");
     const updatePassword: any = {
-      confirmPassword: this.resetAccountForm.confirmPassword,
       password: this.resetAccountForm.password,
       reset_password: true
     };
