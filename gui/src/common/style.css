@@ -687,6 +687,12 @@ tbody tr:hover {
   display: inline-block;
   cursor: pointer;
 }
+.cortx-menu-icon {
+  height: 33px;
+  width: 33px;
+  display: inline-block;
+  cursor: pointer;
+}
 .cortx-comment-icon {
   background-image: url("../assets/comment-default.svg");
 }
@@ -737,6 +743,24 @@ tbody tr:hover {
 }
 .cortx-edit-icon {
   background-image: url("../assets/actions/edit-green.svg");
+}
+.cortx-zoom-icon {
+  background-image: url("../assets/zoom-in.svg");
+}
+.cortx-option-icon {
+  background-image: url("../assets/actions/cortx-options-icon.svg");
+}
+.cortx-start-node-icon {
+  background-image: url("../assets/actions/start-node.svg");
+}
+.cortx-stop-node-icon {
+  background-image: url("../assets/actions/stop-node.svg");
+}
+.cortx-power-off-node-icon {
+  background-image: url("../assets/actions/power-off-node.svg");
+}
+.cortx-power-storage-off-node-icon {
+  background-image: url("../assets/actions/power-storage-off-node.svg");
 }
 .cortx-brand-label {
   color: #6ebe49;
