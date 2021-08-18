@@ -29,7 +29,7 @@
         <template v-for="option in menuOptions">
           <li
             class="menu-item"
-            @click="actionsCallback[option.id]($event, recordInfo)"
+            @click="actionsCallback[option.id](recordInfo)"
             :key="option.id"
           >
             <span class="cortx-menu-icon" :class="option.iconClass"></span
@@ -56,9 +56,6 @@ export default class CortxOptions extends Vue {
   @Prop({ required: true }) public actionsCallback: any;
   @Prop({ required: true }) public recordInfo: any;
   public showMenu: boolean = false;
-  public clickHandler(id: string) {
-    this.actionsCallback[id];
-  }
 }
 </script>
 
