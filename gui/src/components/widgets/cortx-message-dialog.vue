@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-overlay color="rgba(0, 0, 0, 0.75)" :value="$store.state.messageDialog.showDialog" id="show-msg-diagogbox" :z-index="999">
+  <v-overlay color="rgba(0, 0, 0, 0.75)" :value="$store.state.messageDialog.showDialog" id="show-msg-diagogbox"  :z-index="999">
     <div class="cortx-msg-dialog-container">
       <div id="msg-dialog-header"
         class="cortx-msg-dialog-header"
