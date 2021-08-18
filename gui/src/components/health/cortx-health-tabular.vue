@@ -24,13 +24,7 @@
             :onFilter={} 
             :sortParams={}
             :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]" 
-            :actionsCallback="{
-              getMoreInfoAction: showMoreDetails,
-              startNodeAction : startNode,
-              stopNodeAction : stopNode,
-              powerOffAction : powerOffNode,
-              powerAndStorageOffAction : powerAndStorageOff
-            }"
+            :actionsCallback="actionsCallback"
             @update:items-per-page="getHealthData()"
             @update:page="getHealthData()"
           />
@@ -38,6 +32,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import ClusterManagementMixin from "../../mixins/cluster-management";
 import { AuditLogQueryParam } from "../../models/download";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
@@ -48,7 +43,7 @@ import { healthTableHeaders } from "../../common/health-table-headers"
   name: "cortx-auditlog",
   components: { CortxDataTable }
 })
-export default class CortxHealthTabular extends Vue {
+export default class CortxHealthTabular extends Mixins(ClusterManagementMixin) {
   public unsupportedFeatures = unsupportedFeatures;
   public healthTableHeaders = healthTableHeaders;
   public hideFilter: boolean = true;
@@ -73,20 +68,18 @@ export default class CortxHealthTabular extends Vue {
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
+  get actionsCallback() {
+    return {
+      getMoreInfoAction: this.showMoreDetails,
+      startNodeAction : (resource: any) => this.performAction(resource, "start"),
+      stopNodeAction : (resource: any) => this.performAction(resource, "stop"),
+      powerOffAction : (resource: any) => this.performAction(resource, "poweroff"),
+      powerAndStorageOffAction : (resource: any) => this.performAction(resource, "powerandstorageoff")
+    }
+  }
+
   public async showMoreDetails() {
     alert("This is for show more details of node")
-  }
-  public async startNode() {
-    alert("This is for start node")
-  }
-  public async stopNode() {
-    alert("This is for stop node")
-  }
-  public async powerOffNode() {
-    alert("This is for power off node")
-  }
-  public async powerAndStorageOff() {
-    alert("This is for power and storage off")
   }
 }
 </script>
