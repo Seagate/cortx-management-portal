@@ -129,8 +129,8 @@
                     </v-tooltip>
                   </div>
                    
-                  <template v-if="actionGroup.length">
-                    <CortxOptions :menuOptions="actionGroup" :actionsCallback="actionsCallback" :recordInfo="item"/>
+                  <template v-if="actionGroup.actions.length && actionGroup.condition(item)">
+                    <CortxOptions :menuOptions="actionGroup.actions" :actionsCallback="actionsCallback" :recordInfo="item"/>
                   </template>
                 </td>
               </template>
@@ -249,15 +249,16 @@ export default class CortxDataTable extends Vue {
   }
   
   get actionHeaders() {
-      const actionHeader = this.headers.filter(header => (header.value && header.value.type) === "buttons");
-      const actionDetails = actionHeader[0] ? actionHeader[0].actionDetails : [];
-      return actionDetails
+    const actionHeader = this.headers.filter(header => (header.value && header.value.type) === "buttons");
+    const actionDetails = actionHeader[0] ? actionHeader[0].actionDetails : [];
+    return actionDetails
   }
 
   get actionGroup() {
     const actionHeader = this.headers.filter(header => (header.value && header.value.type) === "buttons");
-      const actionGroup = actionHeader[0] ? actionHeader[0].actionGroup : [];
-      return actionGroup
+    const actions = actionHeader[0] ? actionHeader[0].actionGroup.actions : [];
+    const condition = actionHeader[0] ? actionHeader[0].actionGroup.condition : null;
+    return { actions, condition }
   }
   
   get itemsPerPageOptions() {

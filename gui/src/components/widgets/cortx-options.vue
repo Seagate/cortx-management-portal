@@ -29,7 +29,7 @@
         <template v-for="option in menuOptions">
           <li
             class="menu-item"
-            :class="{disabled: option.condition && option.condition(option.status)}"
+            :class="{disabled: option.condition && option.condition(option)}"
             @click="actionsCallback[option.id](recordInfo)"
             :key="option.id"
           >
