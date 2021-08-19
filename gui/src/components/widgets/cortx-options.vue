@@ -29,6 +29,7 @@
         <template v-for="option in menuOptions">
           <li
             class="menu-item"
+            :class="{disabled: option.condition && option.condition(option.status)}"
             @click="actionsCallback[option.id](recordInfo)"
             :key="option.id"
           >
@@ -80,6 +81,10 @@ export default class CortxOptions extends Vue {
   padding: 10px 15px;
   cursor: pointer;
   display: flex;
+}
+.menu-item.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 .menu-item:hover {
   background-color: #f4f4f4;

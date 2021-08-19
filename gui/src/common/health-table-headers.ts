@@ -14,6 +14,16 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
+
+const startNodeCondition = (status: string) => {
+  debugger;
+  return status !== "online"
+}
+
+const stopNodeCondition = (status: string) => {
+  return status === "online"
+}
+
 export const healthTableHeaders = {
     healthTableHeaderList: [
         {
@@ -84,12 +94,14 @@ export const healthTableHeaders = {
             {
               "id": "startNodeAction",
               "iconClass": "cortx-start-node-icon",
-              "label": "Start Node"
+              "label": "Start Node",
+              "condition": startNodeCondition
             },
             {
               "id": "stopNodeAction",
               "iconClass": "cortx-stop-node-icon",
-              "label": "Stop Node"
+              "label": "Stop Node",
+              "condition": stopNodeCondition
             },
             {
               "id": "powerOffAction",
