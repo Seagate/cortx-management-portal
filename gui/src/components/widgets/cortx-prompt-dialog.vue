@@ -24,12 +24,12 @@
       </div>
       <div class="cortx-msg-dialog-body">
         <div class="cortx-msg-dialog-message" id="dialog-message">
-          <label id="dialog-message-label" class="cortx-text-lg cortx-text-bold">{{ messageLocal }}</label>
+          <label id="prompt-dialog-message-label" class="cortx-text-lg cortx-text-bold">{{ messageLocal }}</label>
         </div>
       </div>
       <div class="px-6 pt-3 pb-4">
-        <button type="button" class="cortx-btn-one cortx-btn-one-success" @click="closeDialog('yes')">{{ yesBtnTitle }}</button>
-        <button type="button" class="ml-4 cortx-btn-two" @click="closeDialog('no')">{{ noBtnTitle }}</button>
+        <button type="button" id="prompt-dialog-btn-yes" class="cortx-btn-one cortx-btn-one-success" @click="closeDialog('yes')">{{ yesBtnTitle }}</button>
+        <button type="button" id="prompt-dialog-btn-yes" class="ml-4 cortx-btn-two" @click="closeDialog('no')">{{ noBtnTitle }}</button>
       </div>
     </div>
   </v-overlay>

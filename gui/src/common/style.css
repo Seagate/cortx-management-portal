@@ -747,21 +747,77 @@ tbody tr:hover {
 .cortx-zoom-icon {
   background-image: url("../assets/zoom-in.svg");
 }
+
+/* Health related icons */
 .cortx-option-icon {
-  background-image: url("../assets/actions/cortx-options-icon.svg");
+  background-image: url("../assets/health/actions_menu_icon.svg");
 }
-.cortx-start-node-icon {
-  background-image: url("../assets/actions/start-node.svg");
+/* Below icons are for 'online' status */
+.cortx-start-node-icon-online {
+  background-image: url("../assets/health/node/online/operations/start.svg");
 }
-.cortx-stop-node-icon {
-  background-image: url("../assets/actions/stop-node.svg");
+.cortx-stop-node-icon-online {
+  background-image: url("../assets/health/node/online/operations/stop.svg");
 }
-.cortx-power-off-node-icon {
-  background-image: url("../assets/actions/power-off-node.svg");
+.cortx-power-off-node-icon-online {
+  background-image: url("../assets/health/node/online/operations/poweroff.svg");
 }
-.cortx-power-storage-off-node-icon {
-  background-image: url("../assets/actions/power-storage-off-node.svg");
+.cortx-power-storage-off-node-icon-online {
+  background-image: url("../assets/health/node/online/operations/powerandstorageoff.svg");
 }
+/* Below icons are for 'offline' status */
+.cortx-start-node-icon-offline {
+  background-image: url("../assets/health/node/offline/operations/start.svg");
+}
+.cortx-stop-node-icon-offline {
+  background-image: url("../assets/health/node/offline/operations/stop.svg");
+}
+.cortx-power-off-node-icon-offline {
+  background-image: url("../assets/health/node/offline/operations/poweroff.svg");
+}
+.cortx-power-storage-off-node-icon-offline {
+  background-image: url("../assets/health/node/offline/operations/powerandstorageoff.svg");
+}
+/* Below icons are for 'unknown' status */
+.cortx-start-node-icon-unknown {
+  background-image: url("../assets/health/node/unknown/operations/start.svg");
+}
+.cortx-stop-node-icon-unknown {
+  background-image: url("../assets/health/node/unknown/operations/stop.svg");
+}
+.cortx-power-off-node-icon-unknown {
+  background-image: url("../assets/health/node/unknown/operations/poweroff.svg");
+}
+.cortx-power-storage-off-node-icon-unknown {
+  background-image: url("../assets/health/node/unknown/operations/powerandstorageoff.svg");
+}
+/* Below icons are for 'failed' status */
+.cortx-start-node-icon-failed {
+  background-image: url("../assets/health/node/failed/operations/start.svg");
+}
+.cortx-stop-node-icon-failed {
+  background-image: url("../assets/health/node/failed/operations/stop.svg");
+}
+.cortx-power-off-node-icon-failed {
+  background-image: url("../assets/health/node/failed/operations/poweroff.svg");
+}
+.cortx-power-storage-off-node-icon-failed {
+  background-image: url("../assets/health/node/failed/operations/powerandstorageoff.svg");
+}
+/* Below icons are for 'degraded' status */
+.cortx-start-node-icon-degraded {
+  background-image: url("../assets/health/node/degraded/operations/start.svg");
+}
+.cortx-stop-node-icon-degraded {
+  background-image: url("../assets/health/node/degraded/operations/stop.svg");
+}
+.cortx-power-off-node-icon-degraded {
+  background-image: url("../assets/health/node/degraded/operations/poweroff.svg");
+}
+.cortx-power-storage-off-node-icon-degraded {
+  background-image: url("../assets/health/node/degraded/operations/powerandstorageoff.svg");
+}
+
 .cortx-brand-label {
   color: #6ebe49;
   font-size: 28px;

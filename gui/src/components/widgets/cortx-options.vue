@@ -33,7 +33,7 @@
             @click="actionsCallback[option.id](recordInfo)"
             :key="option.id"
           >
-            <span class="cortx-menu-icon" :class="option.iconClass"></span
+            <span class="cortx-menu-icon" :class="[typeof option.iconClass === 'function' ? option.iconClass(recordInfo) : option.iconClass]"></span
             ><span class="label">{{ option.label }}</span>
           </li>
         </template>

@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="px-6 pt-3 pb-4">
-        <button type="button" :class="okBtnClasses" @click="closeDialog()">{{ okBtnTitle }}</button>
+        <button type="button" id="info-dialog-btn-ok" :class="okBtnClasses" @click="closeDialog()">{{ okBtnTitle }}</button>
       </div>
     </div>
     <span style="display: none;">{{ typeLocal }}</span>

@@ -27,6 +27,10 @@ const stopNodeCondition = (resoureDetails: IResource) => {
   return resoureDetails.status === "online";
 };
 
+const getClassName = (resoureDetails: IResource, staticClass: string) => {
+  return `${staticClass}-${resoureDetails.status}`
+}
+
 export const healthTableHeaders = {
   healthTableHeaderList: [
     {
@@ -98,25 +102,25 @@ export const healthTableHeaders = {
         actions: [
           {
             id: "startNodeAction",
-            iconClass: "cortx-start-node-icon",
+            iconClass: (resource: IResource) => getClassName(resource, "cortx-start-node-icon"),
             label: "Start Node",
             condition: startNodeCondition
           },
           {
             id: "stopNodeAction",
-            iconClass: "cortx-stop-node-icon",
+            iconClass: (resource: IResource) => getClassName(resource, "cortx-stop-node-icon"),
             label: "Stop Node",
             condition: stopNodeCondition
           },
           {
             id: "powerOffAction",
-            iconClass: "cortx-power-off-node-icon",
+            iconClass: (resource: IResource) => getClassName(resource, "cortx-power-off-node-icon"),
             label: "Power off",
             condition: stopNodeCondition
           },
           {
             id: "powerAndStorageOffAction",
-            iconClass: "cortx-power-storage-off-node-icon",
+            iconClass: (resource: IResource) => getClassName(resource, "cortx-power-storage-off-node-icon"),
             label: "Power and Storage off",
             condition: stopNodeCondition
           }
