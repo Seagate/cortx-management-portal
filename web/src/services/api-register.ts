@@ -22,7 +22,6 @@ export default {
   get_stats_endpt: (version :string) => `/api/${version}/stats`,
   get_csm_user_endpt: (version :string) => `/api/${version}/csm/users`,
   get_admin_user_endpt: (version :string) => `/api/${version}/login`,
-  get_admin_user_create_endpt: (version :string) => `/api/${version}/preboarding/user`,
   get_admin_user_logout_endpt: (version :string) => `/api/${version}/logout`,
   get_udx_register_device_endpt: (version :string) => `/usl/${version}/registerDevice`,
   get_udx_registration_token_endpt: (version :string) => `/usl/${version}/registrationToken`,
