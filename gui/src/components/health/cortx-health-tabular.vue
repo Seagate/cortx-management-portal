@@ -17,6 +17,7 @@
 <template>
   <div v-feature="unsupportedFeatures.health">
     <cortx-data-table
+      id="health-details-table"
       :headers="healthTableHeaderList" 
       :records="clusterHealthData.data"
       :hideFilter="hideFilter"
