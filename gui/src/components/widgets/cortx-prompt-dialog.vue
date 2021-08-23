@@ -29,7 +29,7 @@
       </div>
       <div class="px-6 pt-3 pb-4">
         <button type="button" id="prompt-dialog-btn-yes" class="cortx-btn-one cortx-btn-one-success" @click="closeDialog('yes')">{{ yesBtnTitle }}</button>
-        <button type="button" id="prompt-dialog-btn-yes" class="ml-4 cortx-btn-two" @click="closeDialog('no')">{{ noBtnTitle }}</button>
+        <button type="button" id="prompt-dialog-btn-no" class="ml-4 cortx-btn-two" @click="closeDialog('no')">{{ noBtnTitle }}</button>
       </div>
     </div>
   </v-overlay>
