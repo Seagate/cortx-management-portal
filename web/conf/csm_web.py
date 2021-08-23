@@ -31,6 +31,8 @@ from cortx.utils.security.cipher import Cipher, CipherInvalidToken
 from cortx.utils.service.service_handler import Service
 from cortx.utils.schema.payload import Text
 from cortx.utils.process import SimpleProcess
+from importlib import import_module
+from argparse import Namespace
 
 
 class CSMWebSetupError(Exception):
@@ -184,6 +186,9 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing test")
+        self._validate_csm_gui_test_rpm()
+        self._execute_test_plans(plan)
+        Log.info("Test complete")
         return 0
 
     def cleanup(self):
@@ -247,7 +252,12 @@ class CSMWeb:
                 "data_public_fqdn":f"{self.server_node_info}>network>data>public_fqdn",
                 "cluster_id":f"{self.server_node_info}>cluster_id",
             })
-
+        elif phase == "test":
+            self.conf_store_keys.update({
+                "admin_user":"test>csm>admin_user",
+                "admin_pass":"test>csm>admin_password",
+                "web_url":"test>csm>web_url"
+            })
         self._validate_conf_store_keys(CSMWeb.CONSUMER_INDEX)
         return 0
 
@@ -547,3 +557,35 @@ class CSMWeb:
                     self._is_user_exist():
             Log.info(f"Removing Service user: {self._user}")
             self._run_cmd(f"userdel -f {self._user}")
+
+    def _validate_csm_gui_test_rpm(self):
+        try:
+            Log.info("Validating cortx-csm_test rpm")
+            PkgV().validate("rpms", ["cortx-csm_test"])
+        except VError as ve:
+            Log.error(f"Failed at package Validation: {ve}")
+            raise CSMWebSetupError(rc=-1, message=f"Failed at package Validation: {ve}")
+
+    def _execute_test_plans(self, command):
+        test_plan = command.options.get("plan", "")
+        Log.info(f"Executing test plan: {test_plan}")
+        self._prepare_and_validate_confstore_keys()
+        import_obj = import_module("csm.csm_test.csm_test")
+        csm_gui_test = import_obj.CsmGuiTest('/tmp/csm_gui_test.log')
+        args = Namespace(browser='chrome',
+                        csm_pass=Conf.get(self.CONSUMER_INDEX, self.conf_store_keys.get("admin_pass")),
+                        csm_url=Conf.get(self.CONSUMER_INDEX, self.conf_store_keys.get("web_url")),
+                        csm_user=Conf.get(self.CONSUMER_INDEX, self.conf_store_keys.get("admin_user")),
+                        headless='True',
+                        test_tags=test_plan)
+        Log.info(f"CSM Gui Test Arguments: {args}")
+        test_status, test_output, test_log, test_report =  csm_gui_test.run_cmd_test(args)
+        msg = (f"test_status:{test_status} \n "
+                f"test_output:{test_output} \n "
+                f"test_log:{test_log} \n "
+                f"test_report:{test_report} \n "
+                f"csm_gui_test.log: /tmp/csm_gui_test.log \n ")
+        if test_status == "FAIL":
+            Log.error(msg)
+            raise CSMWebSetupError(rc=-1, message=f"CSM Test Failed \n {msg}")
+        Log.info(msg)
