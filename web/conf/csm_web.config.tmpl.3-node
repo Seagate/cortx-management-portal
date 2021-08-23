@@ -3,7 +3,12 @@
     "software": {
       "csm": {
         "user": "cortxub",
-        "secret": "TMPL_CSM_SECRET_KEY"
+        "secret": "TMPL_CSM_SECRET_KEY",
+        "web_protocol": "https",
+        "web_port": "443",
+        "agent_host": "127.0.0.1",
+        "agent_port": "28101",
+        "agent_protocol": "http"
       },
       "openldap": {
         "sgiam": {
@@ -23,7 +28,7 @@
       },
       "network": {
         "data": {
-          "private_fqdn": "127.0.0.1",
+          "private_fqdn": "127.0.0.1"
         }
       }
     },
@@ -36,7 +41,7 @@
       },
       "network": {
         "data": {
-          "private_fqdn": "127.0.0.1",
+          "private_fqdn": "127.0.0.1"
         }
       }
     },
@@ -49,7 +54,7 @@
       },
       "network": {
         "data": {
-          "private_fqdn": "127.0.0.1",
+          "private_fqdn": "127.0.0.1"
         }
       }
     }
@@ -69,13 +74,7 @@
     "TMPL_CLUSTER_ID": {
       "network": {
         "management": {
-            "virtual_host": "127.0.0.1",
-            "agent_host":"127.0.0.1",
-            "agent_port":"28101",
-            "agent_protocol":"http",
-            "web_protocol": "https",
-            "https_port": "443",
-            "http_port": "80"
+          "virtual_host": "127.0.0.1"
         }
       }
     }
