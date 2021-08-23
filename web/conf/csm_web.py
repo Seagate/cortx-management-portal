@@ -186,6 +186,7 @@ class CSMWeb:
         Raises exception on error
         """
         Log.info("Executing test")
+        self._prepare_and_validate_confstore_keys("test")
         self._validate_csm_gui_test_rpm()
         self._execute_test_plans(plan)
         Log.info("Test complete")
@@ -569,7 +570,6 @@ class CSMWeb:
     def _execute_test_plans(self, command):
         test_plan = command.options.get("plan", "")
         Log.info(f"Executing test plan: {test_plan}")
-        self._prepare_and_validate_confstore_keys()
         import_obj = import_module("csm.csm_test.csm_test")
         csm_gui_test = import_obj.CsmGuiTest('/tmp/csm_gui_test.log')
         args = Namespace(browser='chrome',
