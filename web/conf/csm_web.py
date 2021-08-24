@@ -414,7 +414,6 @@ class CSMWeb:
         return virtual_host
 
     def _fetch_key_value(self, key: str, default_value: any):
-        key = f"cluster>{self._cluster_id}>network>management>{key}"
         value = default_value
         try:
             self._validate_conf_store_keys(self.CONSUMER_INDEX,[key])
@@ -425,28 +424,16 @@ class CSMWeb:
         Log.info(f"Fetch {key}: {value}")
         return value
 
-    def _fetch_ssl_path(self):
-        ssl_path_key = f"cluster>{self._cluster_id}>network>management>ssl_path"
-        ssl_path = None
-        try:
-            self._validate_conf_store_keys(self.CONSUMER_INDEX,[ssl_path_key])
-            ssl_path = Conf.get(self.CONSUMER_INDEX, ssl_path_key)
-        except VError as ve:
-            sys.stdout.write("SSL path does not exist.")
-            Log.error(f"SSL path does not exist: {ve}")
-        Log.info(f"Fetch SSL Path: {ssl_path}")
-        return ssl_path
-
     def _configure_csm_web_keys(self):
         Log.info("Configuring CSM Web keys")
         self._run_cmd(f"cp -f {self.CSM_WEB_DIST_ENV_FILE_PATH} {self.CSM_WEB_DIST_ENV_FILE_PATH}_tmpl")
         virtual_host = self._fetch_management_ip()
-        https_port = self._fetch_key_value("https_port", 443)
-        http_port = self._fetch_key_value("http_port", 80)
-        server_protocol = self._fetch_key_value("web_protocol", "https")
-        agent_host = self._fetch_key_value("agent_host", "localhost")
-        agent_port = self._fetch_key_value("agent_port", "28101")
-        agent_protocol = self._fetch_key_value("agent_protocol", "http")
+        server_protocol = self._fetch_key_value("cortx>software>csm>web_protocol", "https")
+        https_port = self._fetch_key_value("cortx>software>csm>web_port", 443)
+        http_port = self._fetch_key_value("cortx>software>csm>web_port", 80)
+        agent_host = self._fetch_key_value("cortx>software>csm>agent_host", "localhost")
+        agent_port = self._fetch_key_value("cortx>software>csm>agent_port", "28101")
+        agent_protocol = self._fetch_key_value("cortx>software>csm>agent_protocol", "http")
         Log.info(f"Set MANAGEMENT_IP:{virtual_host} and Port: {https_port} to csm web config")
         Conf.set(self.ENV_INDEX, "MANAGEMENT_IP", virtual_host)
         Conf.set(self.ENV_INDEX, "HTTPS_NODE_PORT", https_port)
@@ -462,18 +449,14 @@ class CSMWeb:
         Congigure SSL and set permissions
         """
         Log.info("Congigure SSL and set permissions")
-        ssl_path = self._fetch_ssl_path()
-        if not ssl_path:
-            sys.stdout.write("Setting protocol to http")
-            Conf.set(self.ENV_INDEX, "SERVER_PROTOCOL", "http")
+        ssl_path = self._fetch_key_value("cortx>software>security>web_ssl_path", "/etc/ssl/stx/stx.pem")
+        if os.path.exists(ssl_path):
+            Conf.set(self.ENV_INDEX, "CERT_PATH", ssl_path)
+            Conf.set(self.ENV_INDEX, "PRV_KEY_PATH", ssl_path)
+            #set permissions
+            self._run_cmd(f"setfacl -m u:{self._user}:rwx {ssl_path}")
         else:
-            if os.path.exists(ssl_path):
-                Conf.set(self.ENV_INDEX, "CERT_PATH", ssl_path)
-                Conf.set(self.ENV_INDEX, "PRV_KEY_PATH", ssl_path)
-                #set permissions
-                self._run_cmd(f"setfacl -m u:{self._user}:rwx {ssl_path}")
-            else:
-                raise CSMWebSetupError(rc=-1, message="SSL file does not exist")
+            raise CSMWebSetupError(rc=-1, message="SSL file does not exist")
         Conf.save(self.ENV_INDEX)
 
     def _get_log_file_path(self):

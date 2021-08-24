@@ -3,13 +3,21 @@
     "software": {
       "csm": {
         "user": "cortxub",
-        "secret": "gAAAAABgZF7KOL5wqOwt_VpJ0B0tXHlsbfARqKldkiVtOeGpEjBq_Ws38qHHAo27zCPIKGSaXqSAgGXTzFJMZRTrXWWn6Pivsg=="
+        "secret": "gAAAAABgZF7KOL5wqOwt_VpJ0B0tXHlsbfARqKldkiVtOeGpEjBq_Ws38qHHAo27zCPIKGSaXqSAgGXTzFJMZRTrXWWn6Pivsg==",
+        "web_protocol": "https",
+        "web_port": "443",
+        "agent_host": "127.0.0.1",
+        "agent_port": "28101",
+        "agent_protocol": "http"
       },
       "openldap": {
         "sgiam": {
           "user": "sgiamadmin",
           "secret": "gAAAAABgZF7KOL5wqOwt_VpJ0B0tXHlsbfARqKldkiVtOeGpEjBq_Ws38qHHAo27zCPIKGSaXqSAgGXTzFJMZRTrXWWn6Pivsg=="
         }
+      },
+      "security": {
+        "web_ssl_path": "/etc/ssl/stx/stx.pem"
       }
     }
   },
@@ -23,7 +31,7 @@
       },
       "network": {
         "data": {
-          "private_fqdn": "127.0.0.1",
+          "private_fqdn": "127.0.0.1"
         }
       }
     }
@@ -32,14 +40,7 @@
     "bae4b468-565d-49df-9495-a43a5d89babc": {
       "network": {
         "management": {
-            "virtual_host": "127.0.0.1",
-            "agent_host":"127.0.0.1",
-            "agent_port":"28101",
-            "agent_protocol":"http",
-            "web_protocol": "https",
-            "https_port": "443",
-            "http_port": "80",
-            "ssl_path": "/etc/ssl/stx/stx.pem"
+          "virtual_host": "127.0.0.1"
         }
       }
     }
