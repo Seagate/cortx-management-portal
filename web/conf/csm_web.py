@@ -187,6 +187,7 @@ class CSMWeb:
         """
         Log.info("Executing test")
         self._prepare_and_validate_confstore_keys("test")
+        self._get_cluster_id()
         self._validate_csm_gui_test_rpm()
         self._execute_test_plans(plan)
         Log.info("Test complete")
@@ -255,9 +256,7 @@ class CSMWeb:
             })
         elif phase == "test":
             self.conf_store_keys.update({
-                "admin_user":"test>csm>admin_user",
-                "admin_pass":"test>csm>admin_password",
-                "web_url":"test>csm>web_url"
+                "cluster_id":f"{self.server_node_info}>cluster_id",
             })
         self._validate_conf_store_keys(CSMWeb.CONSUMER_INDEX)
         return 0
@@ -567,15 +566,21 @@ class CSMWeb:
             Log.error(f"Failed at package Validation: {ve}")
             raise CSMWebSetupError(rc=-1, message=f"Failed at package Validation: {ve}")
 
-    def _execute_test_plans(self, command):
-        test_plan = command.options.get("plan", "")
+    def _execute_test_plans(self, test_plan):
         Log.info(f"Executing test plan: {test_plan}")
         import_obj = import_module("csm.csm_test.csm_test")
         csm_gui_test = import_obj.CsmGuiTest('/tmp/csm_gui_test.log')
+        virtual_host = self._fetch_management_ip()
+        server_protocol = self._fetch_key_value("web_protocol", "https")
+        port = self._fetch_key_value("https_port", 443)
+        http_port = self._fetch_key_value("http_port", 80)
+        if server_protocol is not "https":
+            port = http_port
+        csm_web_url = f"{server_protocol}://{virtual_host}:{port}"
         args = Namespace(browser='chrome',
-                        csm_pass=Conf.get(self.CONSUMER_INDEX, self.conf_store_keys.get("admin_pass")),
-                        csm_url=Conf.get(self.CONSUMER_INDEX, self.conf_store_keys.get("web_url")),
-                        csm_user=Conf.get(self.CONSUMER_INDEX, self.conf_store_keys.get("admin_user")),
+                        csm_url=csm_web_url,
+                        csm_pass="",
+                        csm_user="",
                         headless='True',
                         test_tags=test_plan)
         Log.info(f"CSM Gui Test Arguments: {args}")
