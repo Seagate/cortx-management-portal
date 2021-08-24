@@ -17,7 +17,6 @@
 import crypt
 import os
 import pwd
-import sys
 import time
 import traceback
 from cortx.utils.log import Log
