@@ -42,8 +42,6 @@ CSM_DIR=<CSM_PATH>
 CFG_DIR=$CSM_DIR/conf
 PRODUCT=<PRODUCT>
 [ -d "${CSM_DIR}/gui" ] && {
-    cp -f $CFG_DIR/service/csm_web.service /etc/systemd/system/csm_web.service
-
     ENV=$CSM_DIR/web/web-dist/.env
     sed -i "s|CSM_UI_PATH=\"/\"|CSM_UI_PATH=\"${CSM_DIR}/gui/ui-dist\"|g" $ENV
     sed -i "s/NODE_ENV=\"development\"/NODE_ENV=\"production\"/g" $ENV
@@ -52,14 +50,18 @@ exit 0
 
 %preun
 [ $1 -eq 1 ] && exit 0
-systemctl disable csm_web
-systemctl stop csm_web
+[ -f /etc/systemd/system/csm_web.service ] && {
+    systemctl disable csm_web
+    systemctl stop csm_web
+}
 
 %postun
 [ $1 -eq 1 ] && exit 0
 rm -f /usr/bin/csm_web 2> /dev/null;
-rm -rf /etc/systemd/system/csm_web.service 2> /dev/null;
-systemctl daemon-reload
+[ -f /etc/systemd/system/csm_web.service ] && {
+    rm -rf /etc/systemd/system/csm_web.service 2> /dev/null;
+    systemctl daemon-reload
+}
 exit 0
 
 %clean
