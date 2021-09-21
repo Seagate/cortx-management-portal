@@ -28,6 +28,7 @@ import firmware from "./modules/firmware";
 import download from "./modules/download";
 import maintenance from "./modules/maintenance";
 import sslupload from "./modules/ssl-upload";
+import dimensions from "./modules/dimensions";
 
 Vue.use(Vuex);
 
@@ -43,6 +44,7 @@ export default new Vuex.Store({
         firmware,
         download,
         maintenance,
-        sslupload
+        sslupload,
+        dimensions
     }
 });
