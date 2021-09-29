@@ -256,8 +256,8 @@ export default class CortxDataTable extends Vue {
 
   get actionGroup() {
     const actionHeader = this.headers.filter(header => (header.value && header.value.type) === "buttons");
-    const actions = actionHeader[0] ? actionHeader[0].actionGroup.actions : [];
-    const condition = actionHeader[0] ? actionHeader[0].actionGroup.condition : null;
+    const actions = (actionHeader[0] && actionHeader[0].actionGroup) ? actionHeader[0].actionGroup.actions : [];
+    const condition = (actionHeader[0] && actionHeader[0].actionGroup) ? actionHeader[0].actionGroup.condition : null;
     return { actions, condition }
   }
   
