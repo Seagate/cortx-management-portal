@@ -1,9 +1,9 @@
 {
   "scanSettings": {
-    "configMode": "LOCAL",
+    "configMode": "AUTO",
     "configExternalURL": "",
     "projectToken": "",
-    "baseBranches": ["main","stable"]
+    "baseBranches": ["main"]
   },
   "checkRunSettings": {
     "vulnerableCheckRunConclusionLevel": "failure",
