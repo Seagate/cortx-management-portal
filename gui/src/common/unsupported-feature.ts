@@ -29,8 +29,8 @@ export const unsupportedFeatures = {
     ntp: "ntp",
     ssl_upload: "ssl_upload",
     cluster_management: "cluster_management",
-    FW_Update: "FW_Update",
-    SW_Update: "SW_Update",
+    fw_update: "fw_update",
+    sw_update: "sw_update",
     auditlog: "auditlog",
     about: "about",
     hctl_node: "hctl_node"

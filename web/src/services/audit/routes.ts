@@ -15,10 +15,8 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 import { Request, Response, request, response } from "express";
-import { downloadAuditlog, showAuditlog } from "./audit-controller";
+import { downloadAuditlog, showAuditlog, getAuditLogSchema } from "./audit-controller";
 import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
-import * as audit_log_headers from './audit-log-headers.json';
-import * as s3_audit_log_headers from './s3-audit-log-headers.json';
 
 export default [
   {
@@ -46,24 +44,14 @@ export default [
     ]
   },
   {
-    path: "/api/:version/auditlogs/csm-headers",
+    path: "/api/:version/auditlogs/schema_info/:component",
     method: "get",
     handler: [
       checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
-        res.status(res.statusCode).send(audit_log_headers.auditLogHeaders);
-      }
-    ]
-  },
-  {
-    path: "/api/:version/auditlogs/s3-headers",
-    method: "get",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        res.status(res.statusCode).send(s3_audit_log_headers.auditLogHeaders);
+        const result = await getAuditLogSchema(req, res);
+        res.status(res.statusCode).send(result);
       }
     ]
   }

@@ -19,4 +19,7 @@ export const ROLES = {
     MANAGE: "manage",
     MONITOR: "monitor"
 };
+export const ACCESS_TOKEN = "access-token";
+export const USERNAME = "username";
+export const WINDOW_RESIZED = "WINDOW_RESIZED";
   

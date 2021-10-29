@@ -29,7 +29,6 @@ Vue.use(Vuex);
 export default class Download extends VuexModule {
     public queryParams: AuditLogQueryParam = {
         component: "CSM",
-        timerange: "1d",
         start_date: 0,
         end_date: 0
     };

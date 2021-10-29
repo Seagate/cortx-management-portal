@@ -213,27 +213,26 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs } from "vuelidate/lib/validators";
-import store from "../../store/store";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import { passwordRegex } from "../../common/regex-helpers";
 import { userPermissions } from "../../common/user-permissions-map";
-import constStr from "./../../common/const-string.json";
+import { USERNAME } from "./../../common/consts";
+import LogoutMixin from "./../../mixins/logout";
 
 @Component({
   name: "cortx-header-dropdown"
 })
-export default class cortxHeaderDropdown extends Vue {
+export default class cortxHeaderDropdown extends Mixins(LogoutMixin) {
   public username: string = "";
   public isMenuOpen: boolean = false;
   public showChangePasswordDialog: boolean = false;
   public isS3Account: boolean = false;
   public showSuccessDialog: boolean = false;
   public successMessage: string = "";
-  public constStr = constStr;
   public changePasswordForm = {
     currentPassword: "",
     password: "",
@@ -279,7 +278,7 @@ export default class cortxHeaderDropdown extends Vue {
     ) {
       this.isS3Account = true;
     }
-    const usernameStr = localStorage.getItem(this.$data.constStr.username);
+    const usernameStr = localStorage.getItem(USERNAME);
     if (usernameStr) {
       this.username = usernameStr;
     }
@@ -294,15 +293,6 @@ export default class cortxHeaderDropdown extends Vue {
   }
   get isRouterPathOnboarding() {
     return this.$route.name === "onboarding";
-  }
-  private logout() {
-    // Invalidate session from Server, remove localStorage token and re-route to login page
-    this.$store.dispatch("userLogin/logoutAction").finally(() => {
-      localStorage.removeItem(this.$data.constStr.access_token);
-    });
-    this.$store.commit("userLogin/setUserPermissions", {});
-    localStorage.removeItem(this.$data.constStr.username);
-    this.$router.push("/login");
   }
 
   private openChangePassword() {
