@@ -239,7 +239,7 @@ export default class CortxLineChart extends Vue {
     if (document.hidden) {
       this.ispollThroughPut = false;
     } else {
-      this.initThrouthputStats(1800);
+      this.initThrouthputStats(this.prefetch?this.prefetch:1800);
     }
   }
   // Component Lifecycle distroyed event: stoping polling process.
