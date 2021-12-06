@@ -26,7 +26,7 @@
     <v-row>
       <v-col md="3" lg="3" xl="3" class="pt-0" v-feature="unsupportedFeatures.capacity">
         <v-card class="pa-2" height="100%">
-          <cortx-capacity-guage />
+          <cortx-dashboard-capacity-gauge />
         </v-card>
       </v-col>
       <v-col md="9" lg="9" xl="9" sm="12" class="pt-0 pl-0" v-feature="unsupportedFeatures.alerts">
@@ -52,7 +52,7 @@
 <script lang="ts">
 import { Component, Vue, Ref } from "vue-property-decorator";
 import CortxStatsMedium from "./stats/stats-medium.vue";
-import CortxCapacityGuage from "./capacity-gauge.vue";
+import CortxDashboardCapacityGauge from "./cortx-dashboard-capacity-gauge.vue";
 import { EVENT_BUS } from "../../main";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDashboardAlertCard from "./cortx-dashboard-alert-card.vue";
@@ -62,7 +62,7 @@ import CortxDashboardClusterHealthCard from "./cortx-dashboard-cluster-health-ca
   name: "cortx-dashboard",
   components: {
     cortxStatsMedium: CortxStatsMedium,
-    cortxCapacityGuage: CortxCapacityGuage,
+    cortxDashboardCapacityGauge: CortxDashboardCapacityGauge,
     cortxDashboardAlertCard :CortxDashboardAlertCard,
     cortxDashboardClusterHealthCard :CortxDashboardClusterHealthCard
 
