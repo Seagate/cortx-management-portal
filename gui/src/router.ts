@@ -16,7 +16,7 @@
 */
 import Vue from "vue";
 import Router from "vue-router";
-import Dashboard from "./components/dashboard/dashboard.vue";
+import CortxDashboard from "./components/dashboard/cortx-dashboard.vue";
 import CortxAlertLarge from "./components/alerts/alert-large.vue";
 import CortxAlertHistory from "./components/alerts/alert-history-details.vue";
 import CortxAlertDetails from "./components/alerts/alert-details.vue";
@@ -110,7 +110,7 @@ const router = new Router({
         {
           path: "dashboard",
           name: "dashboard",
-          component: Dashboard,
+          component: CortxDashboard,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.alerts + userPermissions.list
