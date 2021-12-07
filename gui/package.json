@@ -31,7 +31,7 @@
     "vuex-module-decorators": "1.0.1"
   },
   "devDependencies": {
-    "@mdi/font": "5.9.55",
+    "@mdi/font": "^6.5.95",
     "@types/webpack": "4.41.26",
     "@vue/cli-plugin-babel": "~4.5.15",
     "@vue/cli-plugin-typescript": "~4.5.15",
