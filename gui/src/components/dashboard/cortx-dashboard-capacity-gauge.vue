@@ -56,12 +56,12 @@ import i18n from "./dashboard.json";
 import * as c3 from "c3";
 
 @Component({
-  name: "cortx-capacity-gauge",
+  name: "cortx-dashboard-capacity-gauge",
   i18n: {
     messages: i18n
   }
 })
-export default class CortxCapacityGauge extends Vue {
+export default class CortxDashboardCapacityGauge extends Vue {
   public usedLegendClass = "capacity-used-green";
   public chartDataVal: number;
   public created() {
