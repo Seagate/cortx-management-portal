@@ -21,4 +21,5 @@ export const ROLES = {
 };
 export const ACCESS_TOKEN = "access-token";
 export const USERNAME = "username";
+export const WINDOW_RESIZED = "WINDOW_RESIZED";
   

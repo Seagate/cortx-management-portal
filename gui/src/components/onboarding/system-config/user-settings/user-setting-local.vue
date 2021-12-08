@@ -389,6 +389,55 @@
                     </div>
                   </v-col>
                 </v-row>
+                <v-row v-if="selectedItem.username === loggedInUserDetails.username">
+                  <v-col cols="12">
+                    <div
+                      class="cortx-form-group-custom"
+                      :class="{
+                        'cortx-form-group--error':
+                          $v.selectedItem.current_password.$error
+                      }"
+                    >
+                      <label
+                        class="cortx-form-group-label"
+                        for="password"
+                        id="localuser-oldpasswordlbl"
+                      >
+                        <cortx-info-tooltip
+                          class="cuttenr-password-tooltip"
+                          label="Current password*"
+                          :message="currentPasswordTooltip"
+                        />
+                      </label>
+                      <input
+                        class="cortx-form__input_text"
+                        type="password"
+                        name="txtEditOldPassword"
+                        v-model.trim="selectedItem.current_password"
+                        @input="$v.selectedItem.current_password.$touch"
+                        id="txtLocalOldPass"
+                      />
+                      <div class="cortx-form-group-label cortx-form-group-error-msg">
+                        <label
+                          id="localuser-oldpass-required"
+                          v-if="
+                            $v.selectedItem.current_password.$dirty &&
+                              !$v.selectedItem.current_password.required
+                          "
+                          >{{ $t("csmuser.current-pass-required") }}</label
+                        >
+                        <label
+                          id="localuser-oldpass-invalid"
+                          v-else-if="
+                            $v.selectedItem.current_password.$dirty &&
+                              !$v.selectedItem.current_password.passwordRegex
+                          "
+                          >{{ $t("csmuser.current-password-invalid") }}</label
+                        >
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
                 <v-row>
                   <v-col cols="12">
                     <v-expansion-panels id="open-expansionbox">
@@ -397,55 +446,6 @@
                         >{{ $t("onBoarding.changePassword") }}</v-expansion-panel-header
                       >
                       <v-expansion-panel-content>
-                        <v-row v-if="selectedItem.username === loggedInUserDetails.username">
-                          <v-col cols="12">
-                            <div
-                              class="cortx-form-group-custom"
-                              :class="{
-                                'cortx-form-group--error':
-                                  $v.selectedItem.current_password.$error
-                              }"
-                            >
-                              <label
-                                class="cortx-form-group-label"
-                                for="password"
-                                id="localuser-oldpasswordlbl"
-                              >
-                                <cortx-info-tooltip
-                                  class="cuttenr-password-tooltip"
-                                  label="Current password*"
-                                  :message="currentPasswordTooltip"
-                                />
-                              </label>
-                              <input
-                                class="cortx-form__input_text"
-                                type="password"
-                                name="txtEditOldPassword"
-                                v-model.trim="selectedItem.current_password"
-                                @input="$v.selectedItem.current_password.$touch"
-                                id="txtLocalOldPass"
-                              />
-                              <div class="cortx-form-group-label cortx-form-group-error-msg">
-                                <label
-                                  id="localuser-oldpass-required"
-                                  v-if="
-                                    $v.selectedItem.current_password.$dirty &&
-                                      !$v.selectedItem.current_password.required
-                                  "
-                                  >{{ $t("csmuser.current-pass-required") }}</label
-                                >
-                                <label
-                                  id="localuser-oldpass-invalid"
-                                  v-else-if="
-                                    $v.selectedItem.current_password.$dirty &&
-                                      !$v.selectedItem.current_password.passwordRegex
-                                  "
-                                  >{{ $t("csmuser.current-password-invalid") }}</label
-                                >
-                              </div>
-                            </div>
-                          </v-col>
-                        </v-row>
                         <v-row>
                           <v-col class="pb-0 col-6">
                             <div
@@ -542,6 +542,7 @@
                           name="rbtEditAdminInterface"
                           value="admin"
                           id="chkLocalAdminInterface"
+                          :disabled="(loggedInUserDetails.id === selectedItem.id && loggedInUserDetails.role === ROLES.ADMIN )"
                           />
                         <span class="cortx-rdb-tick" id="lblLocalAdminInterface"></span>
                       </label>
@@ -554,6 +555,7 @@
                           name="rbtEditManageInterface"
                           value="manage"
                           id="chkLocalManageInterface"
+                          :disabled="(loggedInUserDetails.id === selectedItem.id && loggedInUserDetails.role === ROLES.ADMIN ) "
                           />
                         <span class="cortx-rdb-tick" id="lblLocalManageInterface"></span>
                       </label>
@@ -566,6 +568,7 @@
                           name="rbtEditMonitorInterface"
                           value="monitor"
                           id="chkLocalMonitorInterface"
+                          :disabled="(loggedInUserDetails.id === selectedItem.id && loggedInUserDetails.role === ROLES.ADMIN )"
                         />
                         <span class="cortx-rdb-tick" id="lblLocalMonitorInterface"></span>
                       </label>
@@ -936,27 +939,38 @@ export default class CortxUserSettingLocal extends Vue {
   }
 
 
+  public getFilterableHeaderFields(): string[] {
+    return this.$data.headersList
+      .filter((header: any) => header.filterable)
+      .map((header: any) => header.field_id);
+  }
+
+  public async clearFilters() {
+    for (const field of this.getFilterableHeaderFields()) {
+      delete this.csmUsersQueryParam[field];
+    }
+  }
+
   /**
    * User filter data
    */
   public async onCsmLogFilter(headerFields: string[], value: string) {
-    if(value.length > 0) {
-      if(headerFields.length > 0) {
+    this.clearFilters();
+
+    if (value) {
+      if (headerFields.length > 0) {
         for (const field of headerFields) {
-          //@ts-ignore
           this.csmUsersQueryParam[field] = value; //Adding only selected columns as filters
         }
-      } else {
-        for (const header of this.$data.headersList) {
-          if(header.filterable) {
-            //@ts-ignore
-          this.csmUsersQueryParam[header.field_id] = value; //Adding all column headers as filters
+      } else if (this.getFilterableHeaderFields().length > 0) {
+        for (const field of this.getFilterableHeaderFields()) {
+          this.csmUsersQueryParam[field] = value; //Adding all filterable column headers as filters
           }
         }
       }
+
        await this.getUserData();
     }
-  }
 
   /**
    * To get user list
@@ -1067,6 +1081,7 @@ export default class CortxUserSettingLocal extends Vue {
     this.$data.selectedRows = [];
     this.$data.isUserEdit = false;
     this.$v.selectedItem.$reset();
+    this.$data.isPasswordFieldOpen = false;
   }
 
   /**
@@ -1117,7 +1132,6 @@ export default class CortxUserSettingLocal extends Vue {
         return true;
       }
     });
-
     return loggedInUser;
   }
 
