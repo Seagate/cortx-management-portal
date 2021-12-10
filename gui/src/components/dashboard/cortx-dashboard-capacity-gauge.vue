@@ -1,15 +1,19 @@
-/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
-Seagate Technology LLC and/or its Affiliates * This program is free software:
-you can redistribute it and/or modify * it under the terms of the GNU Affero
-General Public License as published * by the Free Software Foundation, either
-version 3 of the License, or * (at your option) any later version. * This
-program is distributed in the hope that it will be useful, * but WITHOUT ANY
-WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
-A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
-details. * You should have received a copy of the GNU Affero General Public
-License * along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing, * please email
-opensource@seagate.com or cortx-questions@seagate.com. */
+/*
+* CORTX-CSM: CORTX Management web and CLI interface.
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing,
+* please email opensource@seagate.com or cortx-questions@seagate.com.
+*/
 <template>
   <div id="capacityContainer">
     <div>
@@ -18,69 +22,32 @@ opensource@seagate.com or cortx-questions@seagate.com. */
       </div>
     </div>
 
-    <div class="capacity-info-wrapper d-flex flex-column">
+    <div class="d-flex flex-column">
       <div class="cortx-capacity-container" id="gauge_capacity"></div>
-      <div class="legends-and-value mt-3">
+      <div class="legends-and-value ml-7">
         <div class="used-section">
           <div class="d-flex">
-            <div class="capacity-badge capacity-green mt-1"></div>
-            <div class="content-section ml-1">
+            <div :class="usedLegendClass"></div>
+            <div class="content-section">
               <span class="legend-name">{{ $t("dashboard.used") }}</span>
-              <div class="storage-stats">
-                <span>25TB</span>
-                <span class="text-separtor mx-1">|</span>
-                <span>80%</span>
-              </div>
+              <span>{{ capacityChartVal(capacityDetails.used) }}</span>
             </div>
           </div>
         </div>
         <div class="available-section">
           <div class="d-flex">
             <div class="capacity-badge capacity-available"></div>
-            <div class="content-section ml-1">
+            <div class="content-section">
               <span class="legend-name">{{ $t("dashboard.available") }}</span>
-              <div class="storage-stats">
-                <span>25TB</span>
-                <span class="text-separtor">|</span>
-                <span>80%</span>
-              </div>
+              <span>{{ capacityChartVal(capacityDetails.avail) }}</span>
             </div>
           </div>
         </div>
+        <div class="total-section">
+          Total - {{ capacityChartVal(capacityDetails.size) }}
+        </div>
       </div>
     </div>
-
-    <!-- <table class="mt-3" id="capacity-table">
-      <tr id="capacity-used">
-        <td class="width-25">
-          <div v-bind:class="usedLegendClass"></div>
-        </td>
-        <td class="width-110" id="capacity-used-text">
-          {{ $t("dashboard.used") }}
-        </td>
-        <td>{{ capacityChartVal(capacityDetails.used) }}</td>
-      </tr>
-      <tr id="capacity-available">
-        <td>
-          <div class="capacity-badge capacity-available"></div>
-        </td>
-        <td id="capacity-available-text">{{ $t("dashboard.available") }}</td>
-        <td>{{ capacityChartVal(capacityDetails.avail) }}</td>
-      </tr>
-    </table> -->
-
-    <!-- <div class="mt-2 mb-2 cortx-capacity-separator"></div> -->
-    <!-- <table class="mt-3" id="capacity-total-table">
-      <tr id="capacity-total">
-        <td class="width-25">
-          <div></div>
-        </td>
-        <td class="width-110" id="capacity-total-text">
-          {{ $t("dashboard.total") }}
-        </td>
-        <td>{{ capacityChartVal(capacityDetails.size) }}</td>
-      </tr>
-    </table> -->
   </div>
 </template>
 <script lang="ts">
@@ -163,9 +130,21 @@ export default class CortxDashboardCapacityGauge extends Vue {
 <style lang="scss" scoped>
 @import "./../../../node_modules/c3/c3.min.css";
 
+.legends-and-value > div {
+  margin-top: 15px;
+}
+
+.content-section {
+  margin-left: 8px;
+  width: min(200px, 75%);
+  display: flex;
+  justify-content: space-between;
+}
+
 .capacity-badge {
   height: 14px;
   width: 14px;
+  margin-top: 5px;
   border-radius: 50%;
 }
 .capacity-green {
@@ -192,12 +171,7 @@ export default class CortxDashboardCapacityGauge extends Vue {
 }
 @media screen and (min-height: 600px) {
   .cortx-capacity-container {
-    height: 110px;
-  }
-}
-@media screen and (min-height: 900px) {
-  .cortx-capacity-container {
-    height: 180px;
+    height: 50%;
   }
 }
 </style>
