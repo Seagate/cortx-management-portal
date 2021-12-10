@@ -53,14 +53,10 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
-import i18n from "./dashboard.json";
 import * as c3 from "c3";
 
 @Component({
-  name: "cortx-dashboard-capacity-gauge",
-  i18n: {
-    messages: i18n
-  }
+  name: "cortx-dashboard-capacity-gauge"
 })
 export default class CortxDashboardCapacityGauge extends Vue {
   public usedLegendClass = "capacity-badge";
