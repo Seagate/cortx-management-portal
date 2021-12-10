@@ -38,7 +38,7 @@ import CortxSettingsMenu from "./components/settings/cortx-settings-menu.vue";
 import CortxAuditLog from "./components/maintenance/cortx-auditlog.vue";
 import CortxUnauthorizedAccess from "./components/security/403.vue";
 import CortxNotFound from "./components/security/404.vue";
-import CortxPerformanceLarge from "./components/performance/performance-large.vue";
+import CortxPerformance from "./components/performance/cortx-performance.vue";
 import { userPermissions } from "./common/user-permissions-map";
 import CortxMaintenance from "./components/maintenance/cortx-maintenance.vue";
 import CortxMaintenanceMenu from "./components/maintenance/cortx-maintenance-menu.vue";
@@ -127,8 +127,8 @@ const router = new Router({
         },
         {
           path: "performance",
-          name: "performance-large",
-          component: CortxPerformanceLarge,
+          name: "cortx-performance",
+          component: CortxPerformance,
           meta: {
             requiresAuth: true,
             requiredAccess: userPermissions.alerts + userPermissions.list

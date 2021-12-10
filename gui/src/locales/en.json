@@ -407,7 +407,14 @@
     },
     "performance": {
         "performance": "Performance",
-        "addGraph": "Add Graph"
+        "addGraph": "Add Graph",
+        "1By2Hrs": "1/2 Hrs",
+        "1Hrs": "1 Hrs",
+        "2Hrs": "2 Hrs",
+        "6Hrs": "6 Hrs",
+        "12Hrs": "12 Hrs",
+        "1Day": "1 Day",
+        "unableToFetch": "Unable To Fetch Performance Data"
     },
     "admin": {
         "headerText": "Admin user configuration",

@@ -16,33 +16,25 @@
 */
  <template>
   <div class="pa-5">
-    <div class="cortx-text-lg cortx-text-bold" id="performance-text">
-      {{ $t("performance.performance") }}
-    </div>
+    <div
+      class="cortx-text-lg cortx-text-bold"
+      id="performance-text"
+    >{{ $t("performance.performance") }}</div>
     <button
       id="peformance-addgraphbtn"
       :disabled="chartList.length >= 3"
       type="button"
       @click="addChart()"
       class="mt-3 mb-2 cortx-btn-primary"
-    >
-      {{ $t("performance.addGraph") }}
-    </button>
+    >{{ $t("performance.addGraph") }}</button>
 
     <div :key="chartId" v-for="chartId in chartList">
-      <v-row
-        id="performance-remove-chart"
-        class="cortx-cursor-pointer"
-        @click="removeChart(chartId)"
-        v-if="chartList.length > 1"
-      >
-        <img
-          class="cortx-modal-close"
-          :src="require('@/assets/close-green.svg')"
-        />
-      </v-row>
       <v-row class="cortx-graph">
-        <cortx-line-chart :chartId="chartId" />
+        <cortx-performance-chart
+          :chartId="chartId"
+          :chartCount="chartCount"
+          @remove-chart="removeChart"
+        />
       </v-row>
     </div>
     <div id="lastItem"></div>
@@ -52,17 +44,18 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxLineChart from "../widgets/line-chart.vue";
 import i18n from "./performance.json";
+import CortxPerformanceChart from "./cortx-performance-chart.vue";
 
 @Component({
-  name: "cortx-performance-large",
+  name: "cortx-performance",
   components: {
-    cortxLineChart: CortxLineChart
+    cortxPerformanceChart: CortxPerformanceChart
   },
   i18n: {
     messages: i18n
   }
 })
-export default class CortxPerformanceLarge extends Vue {
+export default class CortxPerformance extends Vue {
   private chartCount: number = 1;
   private chartList: string[] = ["chart1"];
   public addChart() {

@@ -19,7 +19,7 @@
     <v-row v-feature="unsupportedFeatures.performance">
       <v-col class="pt-0">
         <v-card class="pa-2">
-          <cortx-stats-medium />
+          <cortx-performance-chart chartId="line_chart" onDashboard="true" />
         </v-card>
       </v-col>
     </v-row>
@@ -51,21 +51,20 @@
 
 <script lang="ts">
 import { Component, Vue, Ref } from "vue-property-decorator";
-import CortxStatsMedium from "./stats/stats-medium.vue";
-import CortxDashboardCapacityGauge from "./cortx-dashboard-capacity-gauge.vue";
 import { EVENT_BUS } from "../../main";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
+import CortxDashboardCapacityGauge from "./cortx-dashboard-capacity-gauge.vue";
 import CortxDashboardAlertCard from "./cortx-dashboard-alert-card.vue";
 import CortxDashboardClusterHealthCard from "./cortx-dashboard-cluster-health-card.vue";
+import CortxPerformanceChart from "../performance/cortx-performance-chart.vue";
 
 @Component({
   name: "cortx-dashboard",
   components: {
-    cortxStatsMedium: CortxStatsMedium,
     cortxDashboardCapacityGauge: CortxDashboardCapacityGauge,
-    cortxDashboardAlertCard :CortxDashboardAlertCard,
-    cortxDashboardClusterHealthCard :CortxDashboardClusterHealthCard
-
+    cortxDashboardAlertCard: CortxDashboardAlertCard,
+    cortxDashboardClusterHealthCard: CortxDashboardClusterHealthCard,
+    CortxPerformanceChart: CortxPerformanceChart
   }
 })
 export default class CortxDashboard extends Vue {
@@ -82,6 +81,10 @@ export default class CortxDashboard extends Vue {
     window.addEventListener("resize", this.resizeComponents);
   }
 
+  public beforeMount() {
+    this.calculateComponentsHeight();
+  }
+
   public mounted() {
     /**
      * If Capacity feature is hidden, alerts table should take full width as performance graph
@@ -91,10 +94,6 @@ export default class CortxDashboard extends Vue {
     } else {
       this.alertSectionColNumber = 8;
     }
-  }
-
-  public beforeMount() {
-    this.calculateComponentsHeight();
   }
 
   public destroyed() {
