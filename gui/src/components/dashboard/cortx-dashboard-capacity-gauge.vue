@@ -53,7 +53,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
-const i18n = require("./dashboard.json");
+import i18n from "./dashboard.json";
 import * as c3 from "c3";
 
 @Component({
@@ -73,7 +73,7 @@ export default class CortxDashboardCapacityGauge extends Vue {
         if (capacityC3Data) {
           this.chartDataVal = capacityC3Data[0][1] ? capacityC3Data[0][1] : 0;
           if (this.chartDataVal < 50) {
-            this.usedLegendClass += ` capacity-green`;
+            this.usedLegendClass += " capacity-green";
           }
           if (this.chartDataVal >= 50) {
             this.usedLegendClass += " capacity-orange";
