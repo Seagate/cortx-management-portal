@@ -18,11 +18,12 @@
   <div>
     <div class="cortx-header-container">
       <div class="cortx-header py-3">
+        <v-btn class="ml-3 pb-2" text icon color="white" @click.stop="$emit('menu-click')">
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
         <div class="cortx-brand-logo"></div>
         <div class="cortx-header-right-aligned-items">
-          <cortx-has-access
-            :to="$cortxUserPermissions.alerts + $cortxUserPermissions.list"
-          >
+          <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.list">
             <div
               class="cortx-logout-icon-container pr-9"
               @click="
@@ -34,16 +35,10 @@
               v-if="!isRouterPathOnboarding"
             >
               <div v-if="alertNotifications.alertCount > 0">
-                <img
-                  :src="require('@/assets/navigation/alerts-dot-white.svg')"
-                  id="alert-dotwhite"
-                />
+                <img :src="require('@/assets/navigation/alerts-dot-white.svg')" id="alert-dotwhite" />
               </div>
               <div v-else>
-                <img
-                  :src="require('@/assets/navigation/alerts-white.svg')"
-                  id="alert-whiteicon"
-                />
+                <img :src="require('@/assets/navigation/alerts-white.svg')" id="alert-whiteicon" />
               </div>
             </div>
           </cortx-has-access>
@@ -57,7 +52,6 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import store from "../../store/store";
 import VueNativeSock from "vue-native-websocket";
-import i18n from "../../i18n";
 import cortxHeaderDropdown from "./cortx-header-dropdown.vue";
 
 @Component({

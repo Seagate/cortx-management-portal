@@ -16,12 +16,14 @@
 */
 <template>
   <div>
-    <header-bar />
-    <div class="header-margin" v-if="isRouterPathOnboading">
+    <header-bar  @menu-click="drawer = !drawer" />
+    <div class="header-margin" 
+      v-if="isRouterPathOnboading"
+    >
       <router-view></router-view>
     </div>
     <div v-else>
-      <cortx-nav-bar />
+    <cortx-navigation-drawer :drawer="drawer"/>
       <div class="header-margin navbar-margin">
         <router-view></router-view>
       </div>
@@ -36,16 +38,18 @@ import HeaderBar from "./header/header-bar.vue";
 import CortxNavBar from "./navigation/nav-bar.vue";
 import { SystemConfigObject } from "../models/system-configuration";
 import CortxMessageDialog from "./widgets/cortx-message-dialog.vue";
-
+import CortxNavigationDrawer from './cortx-navigation-drawer.vue';
 @Component({
   name: "Default",
   components: {
     HeaderBar,
     CortxNavBar,
-    CortxMessageDialog
+    CortxMessageDialog,
+    CortxNavigationDrawer
   }
 })
 export default class CortxDefault extends Vue {
+  drawer:boolean = true;
 
   public mounted() {
     const dimensions = this.calculateDimensions();
@@ -93,6 +97,6 @@ export default class CortxDefault extends Vue {
   margin-top: 3.75em;
 }
 .navbar-margin {
-  margin-left: 11.25em;
+  margin-left: 3.75em;
 }
 </style>
