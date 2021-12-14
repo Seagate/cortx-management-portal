@@ -14,31 +14,16 @@ opensource@seagate.com or cortx-questions@seagate.com. */
   <div class="alert-widget-container">
     <p class="cortx-text-lg cortx-text-bold">Alerts</p>
     <div class="alert-cards-container">
-      <cortx-dashboard-info-card
-        iconClass="fatal-alert"
-        title="05"
-        description="Fatal"
-      />
-      <cortx-dashboard-info-card
-        iconClass="fatal-alert"
-        title="05"
-        description="Critical"
-      />
-      <cortx-dashboard-info-card
-        iconClass="error-alert"
-        title="05"
-        description="Error"
-      />
-      <cortx-dashboard-info-card
-        iconClass="warning-alert"
-        title="05"
-        description="Warning"
-      />
-      <cortx-dashboard-info-card
-        iconClass="informational-alert"
-        title="05"
-        description="Informational"
-      />
+      <template v-for="(cardDetail, index) in alertCardDetails">
+        <cortx-dashboard-info-card
+          :title="cardDetail.title"
+          :description="cardDetail.description"
+          :iconClass="cardDetail.iconClass"
+          :navPath="cardDetail.navPath"
+          :callBack="infoCardCallBack"
+          :key="index"
+        />
+      </template>
     </div>
   </div>
 </template>
@@ -50,7 +35,44 @@ import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
   name: "cortx-dashboard-alert-card",
   components: { CortxDashboardInfoCard }
 })
-export default class CortxDashboardAlertCard extends Vue {}
+export default class CortxDashboardAlertCard extends Vue {
+  public alertCardDetails = [
+    {
+      title: "05",
+      description: "Fatal",
+      iconClass: "fatal-alert",
+      navPath: "/alerts"
+    },
+    {
+      title: "05",
+      description: "Critical",
+      iconClass: "fatal-alert",
+      navPath: "/alerts"
+    },
+    {
+      title: "05",
+      description: "Error",
+      iconClass: "error-alert",
+      navPath: "/alerts"
+    },
+    {
+      title: "05",
+      description: "Warning",
+      iconClass: "warning-alert",
+      navPath: "/alerts"
+    },
+    {
+      title: "05",
+      description: "Informational",
+      iconClass: "informational-alert",
+      navPath: "/alerts"
+    }
+  ];
+
+  infoCardCallBack(routePath: string) {
+    this.$router.push(routePath);
+  }
+}
 </script>
 <style lang="scss" scoped>
 .alert-cards-container {

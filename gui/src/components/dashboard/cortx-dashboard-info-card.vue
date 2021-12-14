@@ -11,7 +11,7 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 * For any questions about this software or licensing, * please email
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
-  <div class="info-card-container">
+  <div class="info-card-container" @click="callBack(navPath)">
     <div class="dashboard-card-icon" :class="iconClass"></div>
     <div class="card-info">
       <span class="title">{{ title }}</span>
@@ -31,6 +31,8 @@ export default class CortxDashboardInfoCard extends Vue {
   @Prop({ required: true }) public iconClass: string;
   @Prop({ required: true }) public title: string;
   @Prop({ required: true }) public description: string;
+  @Prop({ required: true }) public navPath: string;
+  @Prop({ required: true }) public callBack: Function;
 }
 </script>
 
@@ -41,6 +43,13 @@ export default class CortxDashboardInfoCard extends Vue {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: none;
+  transition: box-shadow 200ms ease-in-out;
+}
+.info-card-container:hover {
+  box-shadow: 0px 6px 15px #e5e5e5;
 }
 .card-info {
   display: flex;

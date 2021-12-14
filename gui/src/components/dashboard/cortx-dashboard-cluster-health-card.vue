@@ -14,31 +14,16 @@ opensource@seagate.com or cortx-questions@seagate.com. */
   <div class="health-widget-container">
     <p class="cortx-text-lg cortx-text-bold">Health</p>
     <div class="node-health-cards-container">
-      <cortx-dashboard-info-card
-        iconClass="cluster-health-warning"
-        title="mycluster"
-        description="Cluster"
-      />
-      <cortx-dashboard-info-card
-        iconClass="online-nodes"
-        title="05"
-        description="Online Nodes"
-      />
-      <cortx-dashboard-info-card
-        iconClass="failed-nodes"
-        title="05"
-        description="Offline Nodes"
-      />
-      <cortx-dashboard-info-card
-        iconClass="failed-nodes"
-        title="05"
-        description="Failed Nodes"
-      />
-      <cortx-dashboard-info-card
-        iconClass="degraded-nodes"
-        title="05"
-        description="Degraded Nodes"
-      />
+      <template v-for="(cardDetail, index) in healthCardDetails">
+        <cortx-dashboard-info-card
+          :title="cardDetail.title"
+          :description="cardDetail.description"
+          :iconClass="cardDetail.iconClass"
+          :navPath="cardDetail.navPath"
+          :callBack="infoCardCallBack"
+          :key="index"
+        />
+      </template>
     </div>
   </div>
 </template>
@@ -50,7 +35,44 @@ import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
   name: "cortx-dashboard-cluster-health-card",
   components: { CortxDashboardInfoCard }
 })
-export default class CortxDashboardClusterHealthCard extends Vue {}
+export default class CortxDashboardClusterHealthCard extends Vue {
+  public healthCardDetails = [
+    {
+      title: "mycluster",
+      description: "Cluster",
+      iconClass: "cluster-health-warning",
+      navPath: "/health"
+    },
+    {
+      title: "05",
+      description: "Online Nodes",
+      iconClass: "online-nodes",
+      navPath: "/health"
+    },
+    {
+      title: "05",
+      description: "Offline Nodes",
+      iconClass: "failed-nodes",
+      navPath: "/health"
+    },
+    {
+      title: "05",
+      description: "Failed Nodes",
+      iconClass: "failed-nodes",
+      navPath: "/health"
+    },
+    {
+      title: "05",
+      description: "Degraded Nodes",
+      iconClass: "degraded-nodes",
+      navPath: "/health"
+    }
+  ];
+
+  infoCardCallBack(routePath: string) {
+    this.$router.push(routePath);
+  }
+}
 </script>
 <style lang="scss" scoped>
 .node-health-cards-container {
