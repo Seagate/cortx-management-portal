@@ -42,7 +42,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import CortxLineChart from "../widgets/line-chart.vue";
 import CortxPerformanceChart from "./cortx-performance-chart.vue";
 
 @Component({
