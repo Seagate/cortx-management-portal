@@ -17,12 +17,9 @@
 <template>
   <div>
     <header-bar />
-    <div class="header-margin" v-if="isRouterPathOnboading">
-      <router-view></router-view>
-    </div>
-    <div v-else>
-      <cortx-nav-bar />
-      <div class="header-margin navbar-margin">
+    <div>
+      <cortx-nav-bar v-if="!isRouterPathOnboading" />
+      <div class="header-margin" :class="{'navbar-margin':!isRouterPathOnboading}">
         <router-view></router-view>
       </div>
     </div>

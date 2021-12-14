@@ -15,47 +15,53 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1">
-    <v-row v-feature="unsupportedFeatures.performance"
-      :style="{'min-height':chartRowHeightPx, 'border-bottom': '2px solid rgba(0, 0, 0, 0.12)'}"
-    >
-      <v-col class="pt-0 pb-0" md="12" style="height: 100%;">
-        <cortx-stats-medium />
+  <div class="dashboard-container pa-4">
+    <v-row v-feature="unsupportedFeatures.performance">
+      <v-col>
+        <v-card class="pa-2">
+          <cortx-stats-medium />
+        </v-card>
       </v-col>
     </v-row>
-    <v-row :style="{'min-height':alertTblRowHeightPx}">
-      <v-col ref="capacity_col" v-feature="unsupportedFeatures.capacity"
-        class="pt-2 pb-0 pr-0"
-        md="4"
-        :style="{'min-height':alertTblRowHeightPx, 'border-right': '2px solid rgba(0, 0, 0, 0.12)'}"
+    <v-row class="bottom-row">
+      <v-card
+        class="capacity-card pa-3"
+        height="100%"
+        v-feature="unsupportedFeatures.capacity"
       >
-        <cortx-capacity-guage />
-      </v-col>
-      <v-col v-feature="unsupportedFeatures.alerts"
-        class="pt-2 pb-0" :md="alertSectionColNumber" style="height: 100%;">
-        <cortx-alert-medium :parentHeight="alertTblRowHeight" />
-      </v-col>
+        <cortx-dashboard-capacity-gauge />
+      </v-card>
+
+      <v-card class="health-card pa-3" height="100%">
+        <cortx-dashboard-cluster-health-card />
+      </v-card>
+
+      <v-card class="alerts-card pa-3" height="100%">
+        <cortx-dashboard-alert-card />
+      </v-card>
     </v-row>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Ref } from "vue-property-decorator";
-import CortxAlertMedium from "./../alerts/alert-medium.vue";
 import CortxStatsMedium from "./stats/stats-medium.vue";
-import CortxCapacityGuage from "./capacity-gauge.vue";
+import CortxDashboardCapacityGauge from "./cortx-dashboard-capacity-gauge.vue";
 import { EVENT_BUS } from "../../main";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
+import CortxDashboardAlertCard from "./cortx-dashboard-alert-card.vue";
+import CortxDashboardClusterHealthCard from "./cortx-dashboard-cluster-health-card.vue";
 
 @Component({
   name: "cortx-dashboard",
   components: {
-    cortxAlertMedium: CortxAlertMedium,
     cortxStatsMedium: CortxStatsMedium,
-    cortxCapacityGuage: CortxCapacityGuage
+    cortxDashboardCapacityGauge: CortxDashboardCapacityGauge,
+    cortxDashboardAlertCard: CortxDashboardAlertCard,
+    cortxDashboardClusterHealthCard: CortxDashboardClusterHealthCard
   }
 })
-export default class Dashboard extends Vue {
+export default class CortxDashboard extends Vue {
   public alertTblRowHeight: number = 0;
   public alertTblRowHeightPx: string = "";
   public chartRowHeightPx: string = "";
@@ -71,7 +77,7 @@ export default class Dashboard extends Vue {
 
   public mounted() {
     /**
-     * If Capacity feature is hidden, alerts table should take full width as performance graph 
+     * If Capacity feature is hidden, alerts table should take full width as performance graph
      */
     if (this.capacityColRef && this.capacityColRef.hidden) {
       this.alertSectionColNumber = 12;
@@ -114,4 +120,30 @@ export default class Dashboard extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+.dashboard-container {
+  background-color: #f7f7f7;
+  height: calc(100vh - 60px);
+  overflow: auto;
+}
+
+.bottom-row {
+  height: min(50%, 400px);
+  padding: 12px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+}
+
+.capacity-card {
+  flex-grow: 1;
+  width: 25%;
+}
+.health-card {
+  flex-grow: 1;
+  width: 37.5%;
+}
+.alerts-card {
+  flex-grow: 1;
+  width: 37.5%;
+}
 </style>
