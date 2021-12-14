@@ -50,7 +50,6 @@ opensource@seagate.com or cortx-questions@seagate.com. */
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
 import * as c3 from "c3";
-
 @Component({
   name: "cortx-dashboard-capacity-gauge"
 })
@@ -101,11 +100,9 @@ export default class CortxDashboardCapacityGauge extends Vue {
         });
       });
   }
-
   get capacityDetails() {
     return this.$store.getters["performanceStats/getCapacity"];
   }
-
   public capacityChartVal(chartVal: number) {
     let chartValWithUnit = "";
     const unitList = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
@@ -122,18 +119,15 @@ export default class CortxDashboardCapacityGauge extends Vue {
 </script>
 <style lang="scss" scoped>
 @import "./../../../node_modules/c3/c3.min.css";
-
 .legends-and-value > div {
   margin-top: 15px;
 }
-
 .content-section {
   margin-left: 8px;
   width: min(200px, 75%);
   display: flex;
   justify-content: space-between;
 }
-
 .capacity-badge {
   height: 14px;
   width: 14px;

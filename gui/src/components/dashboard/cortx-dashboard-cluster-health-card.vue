@@ -30,7 +30,6 @@ opensource@seagate.com or cortx-questions@seagate.com. */
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
-
 @Component({
   name: "cortx-dashboard-cluster-health-card",
   components: { CortxDashboardInfoCard }
@@ -68,7 +67,6 @@ export default class CortxDashboardClusterHealthCard extends Vue {
       navPath: "/health"
     }
   ];
-
   infoCardCallBack(routePath: string) {
     this.$router.push(routePath);
   }

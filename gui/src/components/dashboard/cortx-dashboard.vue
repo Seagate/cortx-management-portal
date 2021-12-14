@@ -48,7 +48,6 @@ import { EVENT_BUS } from "../../main";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDashboardAlertCard from "./cortx-dashboard-alert-card.vue";
 import CortxDashboardClusterHealthCard from "./cortx-dashboard-cluster-health-card.vue";
-
 @Component({
   name: "cortx-dashboard",
   components: {
@@ -64,14 +63,11 @@ export default class CortxDashboard extends Vue {
   public chartRowHeightPx: string = "";
   public alertSectionColNumber: number = 8;
   public unsupportedFeatures = unsupportedFeatures;
-
   @Ref("capacity_col")
   public capacityColRef: any;
-
   public created() {
     window.addEventListener("resize", this.resizeComponents);
   }
-
   public mounted() {
     /**
      * If Capacity feature is hidden, alerts table should take full width as performance graph
@@ -82,20 +78,16 @@ export default class CortxDashboard extends Vue {
       this.alertSectionColNumber = 8;
     }
   }
-
   public beforeMount() {
     this.calculateComponentsHeight();
   }
-
   public destroyed() {
     window.removeEventListener("resize", this.resizeComponents);
   }
-
   public resizeComponents() {
     this.calculateComponentsHeight();
     EVENT_BUS.$emit("windowResized", this.alertTblRowHeight);
   }
-
   public calculateComponentsHeight() {
     /**
      * Need to subtract header height(50px) and container padding(30px)
@@ -127,7 +119,6 @@ export default class CortxDashboard extends Vue {
   margin: 0 auto;
   overflow: auto;
 }
-
 .bottom-row {
   min-height: min(50%, 400px);
   padding: 12px;
@@ -135,7 +126,6 @@ export default class CortxDashboard extends Vue {
   flex-wrap: nowrap;
   gap: 20px;
 }
-
 .capacity-card {
   flex-grow: 1;
   width: 25%;
