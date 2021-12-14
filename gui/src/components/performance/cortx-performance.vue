@@ -43,16 +43,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import CortxLineChart from "../widgets/line-chart.vue";
-import i18n from "./performance.json";
 import CortxPerformanceChart from "./cortx-performance-chart.vue";
 
 @Component({
   name: "cortx-performance",
   components: {
     cortxPerformanceChart: CortxPerformanceChart
-  },
-  i18n: {
-    messages: i18n
   }
 })
 export default class CortxPerformance extends Vue {
