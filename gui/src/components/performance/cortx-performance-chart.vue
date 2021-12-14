@@ -35,7 +35,7 @@
           id="matrixone"
           v-if="!onDashboard"
           :items="getMatric1"
-          v-on:change="matricDurationChange()"
+          @change="matricDurationChange()"
           v-model="metric1"
           label="Metric 1"
         ></v-select>
@@ -46,7 +46,7 @@
           id="matrixtwo"
           v-if="!onDashboard"
           :items="getMetric2"
-          v-on:change="matricDurationChange()"
+          @change="matricDurationChange()"
           v-model="metric2"
           label="Metric 2"
         ></v-select>
@@ -56,7 +56,7 @@
           outlined
           id="duration"
           :items="durations"
-          v-on:change="matricDurationChange(prefetch)"
+          @change="matricDurationChange(prefetch)"
           v-model="prefetch"
           label="Duration"
         ></v-select>
@@ -197,7 +197,7 @@ export default class CortxPerformanceChart extends Vue {
     if (document.hidden) {
       this.ispollThroughPut = false;
     } else {
-      this.initThrouthputStats(1800);
+      this.initThrouthputStats(this.prefetch ? this.prefetch : 1800);
     }
   }
 
@@ -357,9 +357,6 @@ export default class CortxPerformanceChart extends Vue {
       this.isError = true;
     }
   }
-  // removeChart(chartId:string) {
-  //   console.log(chartId);
-  // }
 }
 </script>
 <style lang="scss" scoped>
