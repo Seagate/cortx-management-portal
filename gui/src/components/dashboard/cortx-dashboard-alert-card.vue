@@ -28,46 +28,74 @@ opensource@seagate.com or cortx-questions@seagate.com. */
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Mixins } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
+import AlertsMixin from "../../mixins/alerts";
 
 @Component({
   name: "cortx-dashboard-alert-card",
   components: { CortxDashboardInfoCard }
 })
-export default class CortxDashboardAlertCard extends Vue {
-  public alertCardDetails = [
-    {
-      title: "05",
-      description: "Fatal",
-      iconClass: "fatal-alert",
-      navPath: "/alerts"
-    },
-    {
-      title: "05",
-      description: "Critical",
-      iconClass: "fatal-alert",
-      navPath: "/alerts"
-    },
-    {
-      title: "05",
-      description: "Error",
-      iconClass: "error-alert",
-      navPath: "/alerts"
-    },
-    {
-      title: "05",
-      description: "Warning",
-      iconClass: "warning-alert",
-      navPath: "/alerts"
-    },
-    {
-      title: "05",
-      description: "Informational",
-      iconClass: "informational-alert",
-      navPath: "/alerts"
-    }
-  ];
+export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
+  public fatalCount = 0;
+  public criticalCount = 0;
+  public errorCount = 0;
+  public warningCount = 0;
+  public informationalCount = 0;
+
+  public async mounted() {
+    await this.onSortPaginate();
+    this.fatalCount = this.alertObject.alerts.filter(
+      alert => alert.severity === "alert"
+    ).length;
+    this.criticalCount = this.alertObject.alerts.filter(
+      alert => alert.severity === "critical"
+    ).length;
+    this.errorCount = this.alertObject.alerts.filter(
+      alert => alert.severity === "error"
+    ).length;
+    this.warningCount = this.alertObject.alerts.filter(
+      alert => alert.severity === "warning"
+    ).length;
+    this.informationalCount = this.alertObject.alerts.filter(
+      alert => alert.severity === "informational"
+    ).length;
+  }
+
+  get alertCardDetails() {
+    return [
+      {
+        title: this.fatalCount,
+        description: "Fatal",
+        iconClass: "fatal-alert",
+        navPath: "/alerts"
+      },
+      {
+        title: this.criticalCount,
+        description: "Critical",
+        iconClass: "fatal-alert",
+        navPath: "/alerts"
+      },
+      {
+        title: this.errorCount,
+        description: "Error",
+        iconClass: "error-alert",
+        navPath: "/alerts"
+      },
+      {
+        title: this.warningCount,
+        description: "Warning",
+        iconClass: "warning-alert",
+        navPath: "/alerts"
+      },
+      {
+        title: this.informationalCount,
+        description: "Informational",
+        iconClass: "informational-alert",
+        navPath: "/alerts"
+      }
+    ];
+  }
 
   infoCardCallBack(routePath: string) {
     this.$router.push(routePath);
@@ -86,5 +114,8 @@ export default class CortxDashboardAlertCard extends Vue {
 }
 .alert-cards-container > *:last-child {
   width: 100%;
+}
+.alert-cards-container > *:not(:last-child) {
+  justify-content: flex-start;
 }
 </style>

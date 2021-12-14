@@ -87,4 +87,7 @@ export default class CortxDashboardClusterHealthCard extends Vue {
 .node-health-cards-container > *:first-child {
   width: 100%;
 }
+.node-health-cards-container > *:not(:first-child) {
+  justify-content: flex-start;
+}
 </style>
