@@ -17,52 +17,49 @@
 <template>
   <div id="capacityContainer">
     <div>
-      <div class="cortx-text-lg cortx-text-bold" id="capacity-title">{{ $t("dashboard.capacity") }}</div>
+      <div class="cortx-text-lg cortx-text-bold" id="capacity-title">
+        {{ $t("dashboard.capacity") }}
+      </div>
     </div>
-    <div class="cortx-capacity-container" id="gauge_capacity"></div>
-    <table class="mt-3" id="capacity-table">
-      <tr id="capacity-used">
-        <td class="width-25">
-          <div v-bind:class="usedLegendClass"></div>
-        </td>
-        <td class="width-110" id="capacity-used-text">{{ $t("dashboard.used") }}</td>
-        <td>{{ capacityChartVal(capacityDetails.used) }}</td>
-      </tr>
-      <tr id="capacity-available">
-        <td>
-          <div class="capacity-available-badge"></div>
-        </td>
-        <td id="capacity-available-text">{{ $t("dashboard.available") }}</td>
-        <td>{{ capacityChartVal(capacityDetails.avail) }}</td>
-      </tr>
-    </table>
 
-    <div class="mt-2 mb-2 cortx-capacity-separator"></div>
-    <table class="mt-3" id="capacity-total-table">
-      <tr id="capacity-total">
-        <td class="width-25">
-          <div></div>
-        </td>
-        <td class="width-110" id="capacity-total-text">{{ $t("dashboard.total") }}</td>
-        <td>{{ capacityChartVal(capacityDetails.size) }}</td>
-      </tr>
-    </table>
+    <div class="d-flex flex-column">
+      <div class="cortx-capacity-container" id="gauge_capacity"></div>
+      <div class="legends-and-value ml-7">
+        <div class="used-section">
+          <div class="d-flex">
+            <div :class="usedLegendClass"></div>
+            <div class="content-section">
+              <span class="legend-name">{{ $t("dashboard.used") }}</span>
+              <span>{{ capacityChartVal(capacityDetails.used) }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="available-section">
+          <div class="d-flex">
+            <div class="capacity-badge capacity-available"></div>
+            <div class="content-section">
+              <span class="legend-name">{{ $t("dashboard.available") }}</span>
+              <span>{{ capacityChartVal(capacityDetails.avail) }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="total-section">
+          Total - {{ capacityChartVal(capacityDetails.size) }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
-import i18n from "./dashboard.json";
 import * as c3 from "c3";
 
 @Component({
-  name: "cortx-dashboard-capacity-gauge",
-  i18n: {
-    messages: i18n
-  }
+  name: "cortx-dashboard-capacity-gauge"
 })
 export default class CortxDashboardCapacityGauge extends Vue {
-  public usedLegendClass = "capacity-used-green";
+  public usedLegendClass = "capacity-badge";
   public chartDataVal: number;
   public created() {
     const demoData = [["x", 0]];
@@ -72,13 +69,13 @@ export default class CortxDashboardCapacityGauge extends Vue {
         if (capacityC3Data) {
           this.chartDataVal = capacityC3Data[0][1] ? capacityC3Data[0][1] : 0;
           if (this.chartDataVal < 50) {
-            this.usedLegendClass = "capacity-used-green";
+            this.usedLegendClass += " capacity-green";
           }
           if (this.chartDataVal >= 50) {
-            this.usedLegendClass = "capacity-used-orange";
+            this.usedLegendClass += " capacity-orange";
           }
           if (this.chartDataVal >= 90) {
-            this.usedLegendClass = "capacity-used-red";
+            this.usedLegendClass += " capacity-red";
           }
         }
         const chart = c3.generate({
@@ -129,24 +126,33 @@ export default class CortxDashboardCapacityGauge extends Vue {
 <style lang="scss" scoped>
 @import "./../../../node_modules/c3/c3.min.css";
 
-.capacity-used-green {
-  height: 13px;
-  width: 13px;
+.legends-and-value > div {
+  margin-top: 15px;
+}
+
+.content-section {
+  margin-left: 8px;
+  width: min(200px, 75%);
+  display: flex;
+  justify-content: space-between;
+}
+
+.capacity-badge {
+  height: 14px;
+  width: 14px;
+  margin-top: 5px;
+  border-radius: 50%;
+}
+.capacity-green {
   background: rgb(110, 190, 73);
 }
-.capacity-used-orange {
-  height: 13px;
-  width: 13px;
+.capacity-orange {
   background-color: #f7a528;
 }
-.capacity-used-red {
-  height: 13px;
-  width: 13px;
+.capacity-red {
   background-color: #dc1f2e;
 }
-.capacity-available-badge {
-  height: 13px;
-  width: 13px;
+.capacity-available {
   background: rgb(158, 158, 158);
 }
 .cortx-capacity-separator {
@@ -161,12 +167,7 @@ export default class CortxDashboardCapacityGauge extends Vue {
 }
 @media screen and (min-height: 600px) {
   .cortx-capacity-container {
-    height: 110px;
-  }
-}
-@media screen and (min-height: 900px) {
-  .cortx-capacity-container {
-    height: 180px;
+    height: 50%;
   }
 }
 </style>

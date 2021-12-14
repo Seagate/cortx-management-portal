@@ -20,12 +20,7 @@ import {
   startNode,
   stopNode,
   shutdownNode,
-  getHealthSummary,
-  getHealthView,
-  getNodeHealth,
   getClusterHealth,
-  getHealthComponents,
-  getHealthResources
 } from "./system-controller";
 import { checkApiVersion, checkRequiredParams } from "./../../middleware/validator";
 import HttpStatus from "http-status-codes";
@@ -35,86 +30,6 @@ import HttpStatus from "http-status-codes";
  */
 
 export default [
-  {
-    path: "/api/:version/system/health/summary",
-    method: "get",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await getHealthSummary(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      }
-    ]
-  },
-  {
-    path: "/api/:version/system/health/view",
-    method: "get",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await getHealthView(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      }
-    ]
-  },
-  {
-    path: "/api/:version/system/health/components",
-    method: "get",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await getHealthComponents(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      },
-    ],
-  },
-  {
-    path: "/api/:version/system/health/resources",
-    method: "get",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await getHealthResources(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      },
-    ],
-  },
-  {
-    path: "/api/:version/system/health/node",
-    method: "get",
-    handler: [
-      checkApiVersion,
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          const result = await getNodeHealth(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      }
-    ]
-  },
   {
     path: "/api/:version/maintenance/cluster/node_status",
     method: "get",

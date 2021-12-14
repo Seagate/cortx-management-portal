@@ -20,7 +20,6 @@ export default {
   all_alerts: `/api/${version}/alerts`,
   alerts_history: `/api/${version}/alerts_history`,
   systemconfig: `api/${version}/systemconfig`,
-  create_user: `api/${version}/preboarding/user`,
   login: `api/${version}/login`,
   csm_user: `api/${version}/csm/users`,
   logout: `/api/${version}/logout`,
@@ -72,5 +71,7 @@ export default {
   health_cluster: `api/${version}/system/health/cluster`,
   appliance_info: `/api/${version}/appliance_info`,
   udx_saas: `/api/${version}/udx_saas`,
-  ssl_details: `/api/${version}/tls/bundle/details`
+  ssl_details: `/api/${version}/tls/bundle/details`,
+  manage_resource: `/api/${version}/system/management`,
+  cluster_status: `/api/${version}/system/management/cluster_status`
 };
