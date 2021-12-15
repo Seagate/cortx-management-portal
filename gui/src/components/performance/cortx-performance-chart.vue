@@ -25,11 +25,11 @@
       </div>
     </div>
 
-    <v-row justify="end" class="pt-3">
-      <v-col class="pt-0 pb-0 height-5" cols="5" v-if="onDashboard">
-        <h2 class="pl-5 pt-4">{{ $t("performance.performance") }}</h2>
-      </v-col>
-      <v-col class="pt-0 pb-0 height-5" cols="2">
+    <v-row class="pt-3">
+      <div class="py-0 pl-8 height-5 width-50">
+        <h2 class="pt-4" v-if="onDashboard">{{ $t("performance.performance") }}</h2>
+      </div>
+      <div class="py-0 pl-2 height-5 width-15">
         <v-select
           outlined
           id="matrixone"
@@ -39,8 +39,8 @@
           v-model="metric1"
           label="Metric 1"
         ></v-select>
-      </v-col>
-      <v-col class="pt-0 pb-0 height-5" cols="2">
+      </div>
+      <div class="py-0 pl-2 height-5 width-15">
         <v-select
           outlined
           id="matrixtwo"
@@ -50,8 +50,8 @@
           v-model="metric2"
           label="Metric 2"
         ></v-select>
-      </v-col>
-      <v-col class="pt-0 pb-0 height-5" cols="2">
+      </div>
+      <div class="py-0 pl-2 height-5 width-15">
         <v-select
           outlined
           id="duration"
@@ -60,8 +60,8 @@
           v-model="prefetch"
           label="Duration"
         ></v-select>
-      </v-col>
-      <v-col class="pt-0 pb-0 pr-5 text-align-center height-5" cols="1">
+      </div>
+      <div class="py-0 pl-2 pr-5 text-align-center height-5 width-5">
         <div v-if="onDashboard" class="pt-4">
           <img
             id="stats-medium-zoomicon"
@@ -77,7 +77,7 @@
             :src="require('@/assets/close-green.svg')"
           />
         </div>
-      </v-col>
+      </div>
     </v-row>
     <div class="cortx-chart-container" :id="chartId">
       <div v-if="isError" class="no-stats-data">
@@ -430,5 +430,14 @@ export default class CortxPerformanceChart extends Vue {
 }
 .width-100 {
   width: 100%;
+}
+.width-5 {
+  width: 5%;
+}
+.width-15 {
+  width: 15%;
+}
+.width-50 {
+  width: 50%;
 }
 </style>
