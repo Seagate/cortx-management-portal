@@ -18,7 +18,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
         <cortx-dashboard-info-card
           :title="cardDetail.title"
           :description="cardDetail.description"
-          :iconClass="cardDetail.iconClass"
+          :imgUrl="cardDetail.imgUrl"
           :navPath="cardDetail.navPath"
           :callBack="infoCardCallBack"
           :key="index"
@@ -67,31 +67,31 @@ export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
       {
         title: this.fatalCount,
         description: "Fatal",
-        iconClass: "fatal-alert",
+        imgUrl: "dashboard/alert/fatal-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.criticalCount,
         description: "Critical",
-        iconClass: "fatal-alert",
+        imgUrl: "dashboard/alert/fatal-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.errorCount,
         description: "Error",
-        iconClass: "error-alert",
+        imgUrl: "dashboard/alert/error-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.warningCount,
         description: "Warning",
-        iconClass: "warning-alert",
+        imgUrl: "dashboard/alert/warning-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.informationalCount,
         description: "Informational",
-        iconClass: "informational-alert",
+        imgUrl: "dashboard/alert/informational-alert.svg",
         navPath: "/alerts"
       }
     ];

@@ -18,9 +18,9 @@ opensource@seagate.com or cortx-questions@seagate.com. */
         <cortx-dashboard-info-card
           :title="cardDetail.title"
           :description="cardDetail.description"
-          :iconClass="cardDetail.iconClass"
           :navPath="cardDetail.navPath"
           :callBack="infoCardCallBack"
+          :imgUrl="cardDetail.imgUrl"
           :key="index"
         />
       </template>
@@ -30,6 +30,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
+
 @Component({
   name: "cortx-dashboard-cluster-health-card",
   components: { CortxDashboardInfoCard }
@@ -39,31 +40,31 @@ export default class CortxDashboardClusterHealthCard extends Vue {
     {
       title: "mycluster",
       description: "Cluster",
-      iconClass: "cluster-health-warning",
+      imgUrl: "dashboard/health/cluster-health-warning.svg",
       navPath: "/health"
     },
     {
       title: "05",
       description: "Online Nodes",
-      iconClass: "online-nodes",
+      imgUrl: "dashboard/health/online-nodes.svg",
       navPath: "/health"
     },
     {
       title: "05",
       description: "Offline Nodes",
-      iconClass: "failed-nodes",
+      imgUrl: "dashboard/health/failed-nodes.svg",
       navPath: "/health"
     },
     {
       title: "05",
       description: "Failed Nodes",
-      iconClass: "failed-nodes",
+      imgUrl: "dashboard/health/failed-nodes.svg",
       navPath: "/health"
     },
     {
       title: "05",
       description: "Degraded Nodes",
-      iconClass: "degraded-nodes",
+      imgUrl: "dashboard/health/degraded-nodes.svg",
       navPath: "/health"
     }
   ];
