@@ -116,7 +116,7 @@ export default class CortxDashboard extends Vue {
   background-color: transparent;
   height: calc(100vh - 60px);
   max-width: 1260px;
-  margin: 0 auto;
+  // margin: 0 auto;
   overflow: auto;
 }
 .bottom-row {
