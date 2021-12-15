@@ -1,19 +1,19 @@
 /*
-* CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-* You should have received a copy of the GNU Affero General Public License
-* along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing,
-* please email opensource@seagate.com or cortx-questions@seagate.com.
-*/
+ * CORTX-CSM: CORTX Management web and CLI interface.
+ * Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * For any questions about this software or licensing,
+ * please email opensource@seagate.com or cortx-questions@seagate.com.
+ */
 import Vue from "vue";
 import Router from "vue-router";
 import CortxDashboard from "./components/dashboard/cortx-dashboard.vue";
@@ -155,9 +155,9 @@ const router = new Router({
               path: "",
               name: "provisioning-menu",
               component: CortxProvisioningMenu,
-              meta: { requiresAuth: true,
-                requiredAccess:
-                  userPermissions.users + userPermissions.list
+              meta: {
+                requiresAuth: true,
+                requiredAccess: userPermissions.users + userPermissions.list
               }
             },
             {
@@ -408,7 +408,7 @@ const router = new Router({
 
 // This code executes before any route happens
 router.beforeEach(async (to, from, next) => {
-  if (to.meta.requiresAuth) {
+  if (to.meta?.requiresAuth) {
     // This route requires auth, check if logged in
     // if not, redirect to login page.
     const conststr = require("./common/const-string.json");
@@ -422,26 +422,31 @@ router.beforeEach(async (to, from, next) => {
         await Promise.all([
           store.dispatch("userLogin/getUserPermissionsAction"),
           store.dispatch("userLogin/getUnsupportedFeaturesAction")
-        ])
+        ]);
         const routerApp: any = router.app.$root;
         if (to.path === "/" && token) {
-
-          if (routerApp.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) {
+          if (
+            routerApp.$hasAccessToCsm(
+              userPermissions.stats + userPermissions.list
+            )
+          ) {
             next({ path: "dashboard" });
           }
-          if (!routerApp.$hasAccessToCsm(userPermissions.stats + userPermissions.list) &&
-            routerApp.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
+          if (
+            !routerApp.$hasAccessToCsm(
+              userPermissions.stats + userPermissions.list
+            ) &&
+            routerApp.$hasAccessToCsm(
+              userPermissions.s3accounts + userPermissions.update
+            )
+          ) {
             next({ path: "/manage/s3" });
           }
         }
 
-
-
-
-
         if (
-          to.meta.requiredAccess &&
-          !routerApp.$hasAccessToCsm(to.meta.requiredAccess)
+          to.meta?.requiredAccess &&
+          !routerApp.$hasAccessToCsm(to.meta?.requiredAccess)
         ) {
           // Redirect to Access Denied page
           next({
@@ -458,7 +463,7 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     if (to.path.includes("preboarding")) {
-      await store.dispatch("userLogin/getUnsupportedFeaturesAction")
+      await store.dispatch("userLogin/getUnsupportedFeaturesAction");
     }
     next(); // make sure to always call next()!
   }
