@@ -16,13 +16,22 @@
 */
 <template>
   <div>
-    <v-navigation-drawer :mini-variant.sync="drawer" permanent fixed dark color="#000000" mini-variant-width="60px" class="nav-style">
-      <v-list nav >
+    <v-navigation-drawer
+      :mini-variant="syncedName"
+      permanent
+      fixed
+      dark
+      color="#000000"
+      mini-variant-width="60px"
+      class="nav-style"
+    >
+      <v-list nav dense>
         <v-list-item
+          link
           v-for="navItem in navItems"
           :key="navItem.title"
+          :class="{'cortx-nav-item-active':$route.path.includes(navItem.path)}"
           @click="navigate(navItem.path)"
-          link
         >
           <v-list-item-icon>
             <img :src="navItem.iconActive" />
@@ -43,7 +52,7 @@
 
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
 import { unsupportedFeatures } from "../common/unsupported-feature";
 import router from "../router";
 
@@ -52,18 +61,18 @@ import router from "../router";
   components: {}
 })
 export default class CortxNavigationDrawer extends Vue {
-  @Prop() drawer: boolean;
-  
+  @PropSync("drawer", { type: Boolean }) syncedName!: boolean;
+  activeRoute: string = "";
   navItems = [
     {
-      title: "dashboard",
+      title: "Dashboard",
       path: "/dashboard",
       iconDefault: require("@/assets/navigation/dashboard-grey.svg"),
       iconActive: require("@/assets/navigation/dashboard-white.svg"),
       requiredAccess: "alerts"
     },
     {
-      title: "health",
+      title: "Health",
       path: "/health",
       iconDefault: require("@/assets/navigation/health-grey.svg"),
       iconActive: require("@/assets/navigation/health-white.svg"),
@@ -71,7 +80,7 @@ export default class CortxNavigationDrawer extends Vue {
       featureId: unsupportedFeatures.health
     },
     {
-      title: "manage",
+      title: "Manage",
       path: "/manage",
       iconDefault: require("@/assets/navigation/manage-grey.svg"),
       iconActive: require("@/assets/navigation/manage-white.svg"),
@@ -79,7 +88,7 @@ export default class CortxNavigationDrawer extends Vue {
       featureId: unsupportedFeatures.manage
     },
     {
-      title: "lyvePilot",
+      title: "Lyve Pilot",
       path: "/ldp",
       iconDefault: require("@/assets/navigation/udx-grey.svg"),
       iconActive: require("@/assets/navigation/udx-white.svg"),
@@ -87,14 +96,14 @@ export default class CortxNavigationDrawer extends Vue {
       featureId: unsupportedFeatures.lyve_pilot
     },
     {
-      title: "settings",
+      title: "Settings",
       path: "/settings",
       iconDefault: require("@/assets/navigation/settings-grey.svg"),
       iconActive: require("@/assets/navigation/settings-white.svg"),
       requiredAccess: "maintenance"
     },
     {
-      title: "maintenance",
+      title: "Maintenance",
       path: "/maintenance",
       iconDefault: require("@/assets/navigation/maintenance-grey.svg"),
       iconActive: require("@/assets/navigation/maintenance-white.svg"),
@@ -104,6 +113,7 @@ export default class CortxNavigationDrawer extends Vue {
 
   navigate(path) {
     router.push(path);
+    this.syncedName = true;
   }
 }
 </script>
@@ -116,7 +126,7 @@ export default class CortxNavigationDrawer extends Vue {
 .nav-brand {
   position: fixed;
   bottom: 4em;
-  .nav-logo{
+  .nav-logo {
     height: 27px;
   }
   .logo-title {
@@ -126,5 +136,10 @@ export default class CortxNavigationDrawer extends Vue {
 }
 .font-inherit {
   font-size: inherit;
+}
+.cortx-nav-item-active {
+  background: #262626 !important;
+  color: #ffffff !important;
+  border-bottom: 3px solid #6ebe49;
 }
 </style>

@@ -18,10 +18,10 @@
   <div>
     <div class="cortx-header-container">
       <div class="cortx-header py-3">
-        <v-btn class="ml-3 pb-2" text icon color="white" @click.stop="$emit('menu-click')">
+        <v-btn class="ml-3 pb-2" text icon color="#000000" @click.stop="$emit('menu-click')">
           <v-icon>mdi-menu</v-icon>
         </v-btn>
-        <div class="cortx-brand-logo"></div>
+        <div class="cortx-brand-logo ml-5"></div>
         <div class="cortx-header-right-aligned-items">
           <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.list">
             <div
@@ -35,10 +35,10 @@
               v-if="!isRouterPathOnboarding"
             >
               <div v-if="alertNotifications.alertCount > 0">
-                <img :src="require('@/assets/navigation/alerts-dot-white.svg')" id="alert-dotwhite" />
+                <img :src="require('@/assets/navigation/alerts-dot-grey.svg')" id="alert-dotwhite" />
               </div>
               <div v-else>
-                <img :src="require('@/assets/navigation/alerts-white.svg')" id="alert-whiteicon" />
+                <img :src="require('@/assets/navigation/alerts-grey.svg')" id="alert-whiteicon" />
               </div>
             </div>
           </cortx-has-access>
@@ -50,15 +50,15 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import store from "../../store/store";
+import store from "../store/store";
 import VueNativeSock from "vue-native-websocket";
-import cortxHeaderDropdown from "./cortx-header-dropdown.vue";
+import CortxHeaderDropdown from "./cortx-header-dropdown.vue";
 
 @Component({
-  name: "HeaderBar",
-  components: { cortxHeaderDropdown }
+  name: "cortx-header",
+  components: { cortxHeaderDropdown:CortxHeaderDropdown }
 })
-export default class HeaderBar extends Vue {
+export default class CortxHeader extends Vue {
   public mounted() {
     const wsUrl = `wss://${window.location.hostname}:${window.location.port}/ws`;
     Vue.use(VueNativeSock, wsUrl, {
@@ -87,6 +87,7 @@ export default class HeaderBar extends Vue {
   left: 0;
   right: 0;
   z-index: 15;
+  
 }
 .cortx-header-right-aligned-items {
   margin-left: auto;

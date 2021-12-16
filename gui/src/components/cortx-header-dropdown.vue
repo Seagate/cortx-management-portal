@@ -18,10 +18,9 @@
   <div class="cortx-header-dropdown">
     <div @click="isMenuOpen = !isMenuOpen">
       <label
-        class="cortx-username-label  cortx-dropdown-container"
+        class="cortx-username-label cortx-dropdown-container"
         id="header-username"
-        >{{ username }}</label
-      >
+      >{{ username }}</label>
     </div>
     <div
       @click="isMenuOpen = !isMenuOpen"
@@ -29,7 +28,7 @@
       class="cortx-logout-icon-container cortx-dropdown-container"
       v-if="!isRouterPathOnboarding"
     >
-      <img :src="require('@/assets/logout.svg/')" id="logout-icon" />
+      <img :src="require('@/assets/profile-logout.svg')" id="logout-icon" />
     </div>
     <div class="cortx-dropdown-container" @click="isMenuOpen = !isMenuOpen">
       <img
@@ -51,14 +50,14 @@
           :disabled="isS3Account"
           class="cortx-text-md cortx-dropdown-menu-item-text"
           @click="openChangePassword()"
-        >
-          {{ $t("common.change-password") }}
-        </button>
+        >{{ $t("common.change-password") }}</button>
       </div>
       <div class="cortx-dropdown-menu-item" @click="logout()" id="logout-link">
-        <span class="cortx-text-md cortx-dropdown-menu-item-text">{{
+        <span class="cortx-text-md cortx-dropdown-menu-item-text">
+          {{
           $t("common.logout")
-        }}</span>
+          }}
+        </span>
       </div>
     </div>
     <v-dialog
@@ -84,8 +83,7 @@
               class="cortx-form-group-label"
               for="password"
               id="current-password"
-              >{{ $t("common.current-password-label") }}</label
-            >
+            >{{ $t("common.current-password-label") }}</label>
             <input
               class="cortx-form__input_text"
               type="password"
@@ -100,8 +98,7 @@
                   $v.changePasswordForm.currentPassword.$dirty &&
                     !$v.changePasswordForm.currentPassword.required
                 "
-                >{{ $t("common.password-required") }}</label
-              >
+              >{{ $t("common.password-required") }}</label>
             </div>
           </div>
         </v-col>
@@ -116,9 +113,7 @@
               class="cortx-form-group-label"
               for="user-password"
               id="password-label"
-            >
-              {{ $t("common.new-password-label") }}</label
-            >
+            >{{ $t("common.new-password-label") }}</label>
             <input
               class="cortx-form__input_text"
               type="password"
@@ -134,16 +129,14 @@
                   $v.changePasswordForm.password.$dirty &&
                     !$v.changePasswordForm.password.required
                 "
-                >{{ $t("common.password-required") }}</label
-              >
+              >{{ $t("common.password-required") }}</label>
               <label
                 id="change-password-invalid-error"
                 v-else-if="
                   $v.changePasswordForm.password.$dirty &&
                     !$v.changePasswordForm.password.passwordRegex
                 "
-                >{{ $t("common.invalid-password") }}</label
-              >
+              >{{ $t("common.invalid-password") }}</label>
             </div>
           </div>
         </v-col>
@@ -159,8 +152,7 @@
               class="cortx-form-group-label"
               for="confirm-password"
               id="change-confirmpass-label"
-              >{{ $t("common.confirm-password-label") }}</label
-            >
+            >{{ $t("common.confirm-password-label") }}</label>
             <input
               class="cortx-form__input_text"
               type="password"
@@ -176,8 +168,7 @@
                 $v.changePasswordForm.confirmPassword.$dirty &&
                   !$v.changePasswordForm.confirmPassword.sameAsPassword
               "
-              >{{ $t("common.password-not-match") }}</span
-            >
+            >{{ $t("common.password-not-match") }}</span>
           </div>
         </v-col>
         <v-col class="col-8 ml-7 pb-6 pt-0">
@@ -187,17 +178,13 @@
             class="cortx-btn-primary"
             @click="changePassword()"
             :disabled="$v.changePasswordForm.$invalid"
-          >
-            {{ $t("common.update-btn") }}
-          </button>
+          >{{ $t("common.update-btn") }}</button>
           <button
             type="button"
             id="cancel-button"
             class="cortx-btn-tertiary"
             @click="closeChangePasswordForm()"
-          >
-            {{ $t("common.cancel") }}
-          </button>
+          >{{ $t("common.cancel") }}</button>
         </v-col>
       </v-card>
     </v-dialog>
@@ -208,7 +195,7 @@
       :message="successMessage"
       @closeDialog="closeSuccessDialog"
       confirmButtonText="Ok"
-      cancelButtonText=""
+      cancelButtonText
     ></cortx-confirmation-dialog>
   </div>
 </template>
@@ -216,17 +203,17 @@
 import { Component, Mixins } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs } from "vuelidate/lib/validators";
-import { Api } from "../../services/api";
-import apiRegister from "../../services/api-register";
-import { passwordRegex } from "../../common/regex-helpers";
-import { userPermissions } from "../../common/user-permissions-map";
-import { USERNAME } from "./../../common/consts";
-import LogoutMixin from "./../../mixins/logout";
+import { Api } from "../services/api";
+import apiRegister from "../services/api-register";
+import { passwordRegex } from "../common/regex-helpers";
+import { userPermissions } from "../common/user-permissions-map";
+import { USERNAME } from "../common/consts";
+import LogoutMixin from "../mixins/logout";
 
 @Component({
   name: "cortx-header-dropdown"
 })
-export default class cortxHeaderDropdown extends Mixins(LogoutMixin) {
+export default class CortxHeaderDropdown extends Mixins(LogoutMixin) {
   public username: string = "";
   public isMenuOpen: boolean = false;
   public showChangePasswordDialog: boolean = false;
@@ -373,7 +360,7 @@ export default class cortxHeaderDropdown extends Mixins(LogoutMixin) {
   font-size: 14px;
   line-height: 20px;
   text-align: center;
-  color: #ffffff;
+  color: #000000;
   white-space: nowrap;
 }
 .cortx-logout-icon-container {
