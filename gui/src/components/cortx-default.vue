@@ -17,11 +17,8 @@
 <template>
   <div>
     <cortx-header @menu-click="drawer = !drawer" />
-    <div class="header-margin" v-if="isRouterPathOnboading">
-      <router-view></router-view>
-    </div>
-    <div v-else>
-      <cortx-navigation-drawer :drawer.sync="drawer" />
+    <div>
+      <cortx-navigation-drawer v-if="!isRouterPathOnboading" :drawer.sync="drawer" />
       <div class="header-margin navbar-margin">
         <router-view></router-view>
       </div>
@@ -39,9 +36,9 @@ import CortxNavigationDrawer from "./cortx-navigation-drawer.vue";
 @Component({
   name: "Default",
   components: {
-    cortxHeader:CortxHeader,
-    cortxMessageDialog:CortxMessageDialog,
-    cortxNavigationDrawer:CortxNavigationDrawer
+    cortxHeader: CortxHeader,
+    cortxMessageDialog: CortxMessageDialog,
+    cortxNavigationDrawer: CortxNavigationDrawer
   }
 })
 export default class CortxDefault extends Vue {

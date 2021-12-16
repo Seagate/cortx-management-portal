@@ -15,33 +15,17 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div id="statsContainer">
-    <div style="height: 30px;">
-      <div class="cortx-text-lg cortx-text-bold cortx-float-l" id="stats-performance">{{ $t("dashboard.performance") }}</div>
-      <img
-        id="stats-medium-zoomicon"
-        :src="require('@/assets/zoom-in.svg')"
-        @click="$router.push('/performance')"
-        class="cortx-float-r cortx-cursor-pointer"
-      />
-    </div>
-    <cortx-line-chart chartId="line_chart" />
+  <div>
+    Dashboard alert
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import CortxLineChart from "./../../widgets/line-chart.vue";
-import i18n from "../dashboard.json";
 
 @Component({
-  name: "cortx-stats-medium",
-  components: {
-    cortxLineChart: CortxLineChart
-  },
-  i18n: {
-    messages: i18n
-  }
+  name: "cortx-dashboard-alert-card",
+  components: {}
 })
-export default class CortxStatsMedium extends Vue {}
+export default class CortxDashboardAlertCard extends Vue {}
 </script>
 <style lang="scss" scoped></style>

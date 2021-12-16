@@ -14,8 +14,18 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-module.exports = {
-  presets: [
-    '@vue/cli-plugin-babel/preset'
-  ]
-}
+<template>
+  <div>
+    Dashboard Health
+  </div>
+</template>
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+@Component({
+  name: "cortx-dashboard-cluster-health-card",
+  components: {}
+})
+export default class CortxDashboardClusterHealthCard extends Vue {}
+</script>
+<style lang="scss" scoped></style>

@@ -15,85 +15,73 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
-    <div
-      class="loader-container"
-      v-if="showComponentLoader && $route.name !== 'dashboard'"
-    >
+  <div class="width-100">
+    <div class="loader-container" v-if="showComponentLoader && $route.name !== 'dashboard'">
       <div class="loader-message">
         <label>{{ message }}</label>
       </div>
       <div class="loader-body">
-        <v-progress-linear
-          indeterminate
-          color="csmprimary"
-          background-color="csmdisabled"
-        ></v-progress-linear>
+        <v-progress-linear indeterminate color="csmprimary" background-color="csmdisabled"></v-progress-linear>
       </div>
     </div>
 
-    <v-row>
-      <v-col class="pt-0 pb-0" cols="2">
+    <v-row class="pt-3">
+      <div class="py-0 pl-8 height-5 width-50">
+        <h2 class="pt-4" v-if="onDashboard">{{ $t("performance.performance") }}</h2>
+      </div>
+      <div class="py-0 pl-2 height-5 width-15">
         <v-select
+          outlined
           id="matrixone"
-          class="ml-3"
-          v-model="metric1"
-          v-on:change="metric1Change"
+          v-if="!onDashboard"
           :items="getMatric1"
+          @change="matricDurationChange()"
+          v-model="metric1"
           label="Metric 1"
         ></v-select>
-      </v-col>
-      <v-col class="pt-0 pb-0" cols="2">
+      </div>
+      <div class="py-0 pl-2 height-5 width-15">
         <v-select
+          outlined
           id="matrixtwo"
+          v-if="!onDashboard"
           :items="getMetric2"
-          v-on:change="metric2Change"
+          @change="matricDurationChange()"
           v-model="metric2"
           label="Metric 2"
         ></v-select>
-      </v-col>
-      <v-col class="pt-0 pb-0" cols="8">
-        <v-tabs
-          color="csmprimary"
-          class="mb-4"
-          style="border-bottom: 1px solid lightgrey;"
-        >
-          <v-tab @click="tabChange(1800)" id="1/2hrstab">
-            <label class="tab-label" id="1/2hrstablbl">{{
-              $t("widget.1By2Hrs")
-            }}</label>
-          </v-tab>
-          <v-tab @click="tabChange(3600)" id="onehrstab">
-            <label class="tab-label" id="onehrstablbl">{{
-              $t("widget.1Hrs")
-            }}</label>
-          </v-tab>
-          <v-tab @click="tabChange(7200)" id="twohrstab">
-            <label class="tab-label" id="twohrstablbl">{{
-              $t("widget.2Hrs")
-            }}</label>
-          </v-tab>
-          <v-tab @click="tabChange(21600)" id="sixhrstab">
-            <label class="tab-label" id="sixhrstablbl">{{
-              $t("widget.6Hrs")
-            }}</label>
-          </v-tab>
-          <v-tab @click="tabChange(43200)" id="twelvehrstab">
-            <label class="tab-label" id="twelvehrstablbl">{{
-              $t("widget.12Hrs")
-            }}</label>
-          </v-tab>
-          <v-tab @click="tabChange(86400)" id="onedaytab">
-            <label class="tab-label" id="onedaytablbl">{{
-              $t("widget.1Day")
-            }}</label>
-          </v-tab>
-        </v-tabs>
-      </v-col>
+      </div>
+      <div class="py-0 pl-2 height-5 width-15">
+        <v-select
+          outlined
+          id="duration"
+          :items="durations"
+          @change="matricDurationChange(prefetch)"
+          v-model="prefetch"
+          label="Duration"
+        ></v-select>
+      </div>
+      <div class="py-0 pl-2 pr-5 text-align-center height-5 width-5">
+        <div v-if="onDashboard" class="pt-4">
+          <img
+            id="stats-medium-zoomicon"
+            :src="require('@/assets/zoom-in.svg')"
+            @click="$router.push('/performance')"
+            class="cortx-cursor-pointer"
+          />
+        </div>
+        <div v-if="!onDashboard && chartCount>1" class="pt-4">
+          <img
+            class="cortx-modal-close cortx-cursor-pointer"
+            @click="$emit('remove-chart',chartId)"
+            :src="require('@/assets/close-green.svg')"
+          />
+        </div>
+      </div>
     </v-row>
     <div class="cortx-chart-container" :id="chartId">
       <div v-if="isError" class="no-stats-data">
-        <div id="permancedatalbl">{{ $t("widget.unableToFetch") }}</div>
+        <div id="permancedatalbl">{{ $t("performance.unableToFetch") }}</div>
       </div>
     </div>
   </div>
@@ -104,7 +92,6 @@ import * as c3 from "c3";
 import { PerformanceStatsQueryParams } from "./../../models/performance-stats";
 import StatsUtility from "../../common/stats-utility";
 import * as d3 from "d3";
-import i18n from "./widgets.json";
 
 export interface StatsQueryParams {
   from: number;
@@ -116,14 +103,12 @@ export interface StatsQueryParams {
 }
 
 @Component({
-  name: "cortx-line-chart",
-  i18n: {
-    messages: i18n
-  }
+  name: "cortx-performance-chart"
 })
-export default class CortxLineChart extends Vue {
-  @Prop({ required: true })
-  public chartId: string;
+export default class CortxPerformanceChart extends Vue {
+  @Prop({ required: true }) chartId: string;
+  @Prop({ required: false }) onDashboard: boolean;
+  @Prop({ required: false }) chartCount: number;
   private chart: any;
   private throughputPoll: any;
   private ispollThroughPut: boolean = true;
@@ -136,10 +121,10 @@ export default class CortxLineChart extends Vue {
   private toTimeSec: number;
   private message: string = "Loading....";
   private isError: boolean = false;
-
+  // public
   // items: are the metric parameters to be popullated on the dropdown of the performance stats
   // TODO: Get this list from the api and remove this hard coaded value.
-  public data() {
+  data() {
     return {
       items: [
         { value: "", text: "-- No Metric --" },
@@ -158,71 +143,33 @@ export default class CortxLineChart extends Vue {
         { value: "iops_write_object", text: "iops_write_object" },
         { value: "iops_read_bucket", text: "iops_read_bucket" },
         { value: "iops_write_bucket", text: "iops_write_bucket" }
+      ],
+      durations: [
+        { value: 1800, text: "1/2Hrs" },
+        { value: 3600, text: "1Hrs" },
+        { value: 7200, text: "2Hrs" },
+        { value: 21600, text: "6Hrs" },
+        { value: 43200, text: "12Hrs" },
+        { value: 86400, text: "1Day" }
       ]
     };
   }
 
-  public getPollingInterval(prefetchDurInSec: number): number {
-    switch (prefetchDurInSec) {
-      case 1800:
-        return 10000;
-      case 3600:
-        return 20000;
-      case 7200:
-        return 40000;
-      case 21600:
-        return 120000;
-      case 43200:
-        return 240000;
-      case 86400:
-        return 480000;
-      default:
-        return 10000;
-    }
+  get getMatric1(): any[] {
+    return this.$data.items.filter(
+      ele => ele.value !== this.metric2 || ele.value == ""
+    );
   }
 
-  // public getter for Metric1 dropdown list
-  public get getMatric1(): any[] {
-    const tempMetricList = [];
-    for (const metric of this.$data.items) {
-      if (metric.value !== this.metric2 || metric.text === "-- No Metric --") {
-        tempMetricList.push(metric);
-      }
-    }
-    return tempMetricList;
-  }
-
-  // public getter for Metric2 dropdown list
-  public get getMetric2(): any[] {
-    const tempMetricList = [];
-    for (const metric of this.$data.items) {
-      if (metric.value !== this.metric1 || metric.text === "-- No Metric --") {
-        tempMetricList.push(metric);
-      }
-    }
-    return tempMetricList;
-  }
-  // Function for handlling Metric1 dropdown change
-  public metric1Change() {
-    // set this parameter to true to show the component based loader
-    // on dropdown change of metric1
-    this.showComponentLoader = true;
-    this.message = "Loading....";
-    this.initThrouthputStats(this.prefetch);
-  }
-
-  // Function for handling Metric2 dropdown change
-  public metric2Change() {
-    // set this parameter to true to show the component based loader on dropdown
-    // change of metric2 dropdown.
-    this.showComponentLoader = true;
-    this.message = "Loading....";
-    this.initThrouthputStats(this.prefetch);
+  get getMetric2(): any[] {
+    return this.$data.items.filter(
+      ele => ele.value !== this.metric1 || ele.value == ""
+    );
   }
 
   // Function to handle tab change event.
-  public tabChange(prefetchSec: number) {
-    this.prefetch = prefetchSec;
+  matricDurationChange(prefetchSec?: number) {
+    if (prefetchSec) this.prefetch = prefetchSec;
     // set this parameter to true to show component based loader
     // on tab change
     this.showComponentLoader = true;
@@ -231,21 +178,27 @@ export default class CortxLineChart extends Vue {
   }
 
   // Component Lifecycle created event : prefetching past half an hour of data by default.
-  public created() {
+  created() {
     this.initThrouthputStats(1800);
     document.addEventListener("visibilitychange", this.onBrowerTabChange);
   }
-  public onBrowerTabChange() {
+
+  // Component Lifecycle distroyed event: stoping polling process.
+  destroyed() {
+    this.ispollThroughPut = false;
+    document.removeEventListener("visibilitychange", this.onBrowerTabChange);
+  }
+
+  getPollingInterval(prefetchDurInSec: number): number {
+    return prefetchDurInSec ? (10000 * prefetchDurInSec) / 1800 : 10000;
+  }
+
+  onBrowerTabChange() {
     if (document.hidden) {
       this.ispollThroughPut = false;
     } else {
-      this.initThrouthputStats(this.prefetch?this.prefetch:1800);
+      this.initThrouthputStats(this.prefetch ? this.prefetch : 1800);
     }
-  }
-  // Component Lifecycle distroyed event: stoping polling process.
-  public destroyed() {
-    this.ispollThroughPut = false;
-    document.removeEventListener("visibilitychange", this.onBrowerTabChange);
   }
 
   // Common method prefetch data and initialize polling\
@@ -291,7 +244,7 @@ export default class CortxLineChart extends Vue {
                 // bindto: "#line_chart",
                 bindto: "#" + this.chartId,
                 size: {
-                  height: window.innerHeight < 900 ? 190 : 320
+                  height: window.innerHeight < 900 ? 230 : 320
                 },
                 data: {
                   x: "x",
@@ -303,7 +256,12 @@ export default class CortxLineChart extends Vue {
                   pattern: ["#1f77b4", "#FF0000"]
                 },
                 legend: {
-                  position: "bottom"
+                  position: "bottom",
+                  inset: {
+                    anchor: "bottom-right",
+                    y: -20,
+                    step: 1
+                  }
                 },
                 interaction: {
                   enabled: true
@@ -447,7 +405,7 @@ export default class CortxLineChart extends Vue {
 }
 @media screen and (min-height: 600px) {
   .cortx-chart-container {
-    height: 190px;
+    height: 230px;
   }
   .loader-container {
     left: 25rem;
@@ -462,5 +420,24 @@ export default class CortxLineChart extends Vue {
     left: 42rem;
     top: 13rem;
   }
+}
+
+.height-5 {
+  height: 5rem;
+}
+.text-align-center {
+  text-align: center;
+}
+.width-100 {
+  width: 100%;
+}
+.width-5 {
+  width: 5%;
+}
+.width-15 {
+  width: 15%;
+}
+.width-50 {
+  width: 50%;
 }
 </style>

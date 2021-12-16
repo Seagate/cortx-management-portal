@@ -26,13 +26,13 @@ axios.interceptors.request.use(
   config => {
     const constStr = require("../common/const-string.json");
 
-    if (config.headers.auth_token) {
+    if (config.headers?.auth_token) {
       config.headers.Authorization = config.headers.auth_token;
       delete config.headers.auth_token;
     } else {
       const token = localStorage.getItem(constStr.access_token);
       if (token) {
-        config.headers.Authorization = token;
+        config.headers!.Authorization = token;
       }
     }
 
@@ -55,7 +55,11 @@ axios.interceptors.response.use(
   },
   error => {
     // Handle Unauthorised response. Re-route to login page if unauthorised response received.
-    if (error.response && error.response.status === 401 && !error.request.responseURL.includes("api/v2/login")) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !error.request.responseURL.includes("api/v2/login")
+    ) {
       const constStr = require("../common/const-string.json");
       localStorage.removeItem(constStr.access_token);
       localStorage.removeItem(constStr.username);
@@ -82,7 +86,10 @@ export abstract class Api {
       });
   }
 
-  public static async getAllWithConfig(url: string, config: object): Promise<ApiResponse> {
+  public static async getAllWithConfig(
+    url: string,
+    config: object
+  ): Promise<ApiResponse> {
     return await axios
       .get(url, config)
       .then(response => {
@@ -94,7 +101,11 @@ export abstract class Api {
       });
   }
 
-  public static async postAllWithConfig(url: string, config: object, payload: object): Promise<ApiResponse> {
+  public static async postAllWithConfig(
+    url: string,
+    config: object,
+    payload: object
+  ): Promise<ApiResponse> {
     return await axios
       .post(url, payload, config)
       .then(response => {
@@ -221,7 +232,9 @@ export abstract class Api {
       apiResponse.statusText = error.response.statusText;
     } else {
       apiResponse.status = 499;
-      apiResponse.statusText = error.message ? error.message : "Request cancelled";
+      apiResponse.statusText = error.message
+        ? error.message
+        : "Request cancelled";
     }
     return apiResponse;
   }
