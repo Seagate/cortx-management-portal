@@ -23,10 +23,6 @@
         </v-btn>
         <div class="cortx-brand-logo ml-5"></div>
         <div class="cortx-header-right-aligned-items">
-          <div> Help </div>
-          <div class="pr-8">
-            <img :src="require('@/assets/help-green.svg')" id="header-help" />
-          </div>
           <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.list">
             <div
               class="cortx-logout-icon-container pr-8"
