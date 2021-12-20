@@ -34,9 +34,14 @@
           @click="navigate(navItem.path)"
         >
           <v-list-item-icon>
-            <img :src="navItem.iconActive" />
+            <img
+              :src="require(`@/assets/navigation/${$route.path.includes(navItem.path) ? navItem.iconActive : navItem.iconDefault}`)"
+            />
           </v-list-item-icon>
-          <v-list-item-title :id="navItem.title">{{ navItem.title }}</v-list-item-title>
+          <v-list-item-title
+            :id="navItem.title"
+            :class="{'font-grey':!$route.path.includes(navItem.path)}"
+          >{{$t('navigation.'+ navItem.title) }}</v-list-item-title>
         </v-list-item>
 
         <v-list-item class="nav-brand">
@@ -65,53 +70,53 @@ export default class CortxNavigationDrawer extends Vue {
   activeRoute: string = "";
   navItems = [
     {
-      title: "Dashboard",
+      title: "dashboard",
       path: "/dashboard",
-      iconDefault: require("@/assets/navigation/dashboard-grey.svg"),
-      iconActive: require("@/assets/navigation/dashboard-white.svg"),
+      iconDefault: "dashboard-grey.svg",
+      iconActive: "dashboard-white.svg",
       requiredAccess: "alerts"
     },
     {
-      title: "Health",
+      title: "health",
       path: "/health",
-      iconDefault: require("@/assets/navigation/health-grey.svg"),
-      iconActive: require("@/assets/navigation/health-white.svg"),
+      iconDefault: "health-grey.svg",
+      iconActive: "health-white.svg",
       requiredAccess: "sysconfig",
       featureId: unsupportedFeatures.health
     },
     {
-      title: "Manage",
+      title: "manage",
       path: "/manage",
-      iconDefault: require("@/assets/navigation/manage-grey.svg"),
-      iconActive: require("@/assets/navigation/manage-white.svg"),
+      iconDefault: "manage-grey.svg",
+      iconActive: "manage-white.svg",
       requiredAccess: "s3accounts",
       featureId: unsupportedFeatures.manage
     },
     {
-      title: "Lyve Pilot",
+      title: "lyvePilot",
       path: "/ldp",
-      iconDefault: require("@/assets/navigation/udx-grey.svg"),
-      iconActive: require("@/assets/navigation/udx-white.svg"),
+      iconDefault: "udx-grey.svg",
+      iconActive: "udx-white.svg",
       requiredAccess: "lyve_pilot",
       featureId: unsupportedFeatures.lyve_pilot
     },
     {
-      title: "Settings",
+      title: "settings",
       path: "/settings",
-      iconDefault: require("@/assets/navigation/settings-grey.svg"),
-      iconActive: require("@/assets/navigation/settings-white.svg"),
+      iconDefault: "settings-grey.svg",
+      iconActive: "settings-white.svg",
       requiredAccess: "maintenance"
     },
     {
-      title: "Maintenance",
+      title: "maintenance",
       path: "/maintenance",
-      iconDefault: require("@/assets/navigation/maintenance-grey.svg"),
-      iconActive: require("@/assets/navigation/maintenance-white.svg"),
+      iconDefault: "maintenance-grey.svg",
+      iconActive: "maintenance-white.svg",
       requiredAccess: "sysconfig"
     }
   ];
 
-  navigate(path) {
+  navigate(path: string) {
     router.push(path);
     this.syncedName = true;
   }
@@ -121,7 +126,6 @@ export default class CortxNavigationDrawer extends Vue {
 <style lang="scss" scoped>
 .nav-style {
   margin-top: 3.75em;
-  // width: 60px;
 }
 .nav-brand {
   position: fixed;
@@ -141,5 +145,8 @@ export default class CortxNavigationDrawer extends Vue {
   background: #262626 !important;
   color: #ffffff !important;
   border-bottom: 3px solid #6ebe49;
+}
+.font-grey {
+  color: #9e9e9e;
 }
 </style>

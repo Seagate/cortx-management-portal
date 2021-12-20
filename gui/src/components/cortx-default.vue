@@ -23,7 +23,7 @@
         <router-view></router-view>
       </div>
     </div>
-    <CortxMessageDialog />
+    <cortx-message-dialog />
   </div>
 </template>
 

@@ -23,9 +23,13 @@
         </v-btn>
         <div class="cortx-brand-logo ml-5"></div>
         <div class="cortx-header-right-aligned-items">
+          <div> Help </div>
+          <div class="pr-8">
+            <img :src="require('@/assets/help-green.svg')" id="header-help" />
+          </div>
           <cortx-has-access :to="$cortxUserPermissions.alerts + $cortxUserPermissions.list">
             <div
-              class="cortx-logout-icon-container pr-9"
+              class="cortx-logout-icon-container pr-8"
               @click="
                 $router.push({
                   name: 'alerts-large',
@@ -35,10 +39,10 @@
               v-if="!isRouterPathOnboarding"
             >
               <div v-if="alertNotifications.alertCount > 0">
-                <img :src="require('@/assets/navigation/alerts-dot-grey.svg')" id="alert-dotwhite" />
+                <img :src="require('@/assets/navigation/alert-dot-green.svg')" id="alert-dotgreen" />
               </div>
               <div v-else>
-                <img :src="require('@/assets/navigation/alerts-grey.svg')" id="alert-whiteicon" />
+                <img :src="require('@/assets/navigation/alert-green.svg')" id="alert-greenicon" />
               </div>
             </div>
           </cortx-has-access>

@@ -24,11 +24,7 @@
       </v-col>
     </v-row>
     <v-row class="bottom-row">
-      <v-card
-        class="capacity-card pa-3"
-        height="100%"
-        v-feature="unsupportedFeatures.capacity"
-      >
+      <v-card class="capacity-card pa-3" height="100%" v-feature="unsupportedFeatures.capacity">
         <cortx-dashboard-capacity-gauge />
       </v-card>
 
@@ -45,7 +41,6 @@
 
 <script lang="ts">
 import { Component, Vue, Ref } from "vue-property-decorator";
-import { EVENT_BUS } from "../../main";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDashboardCapacityGauge from "./cortx-dashboard-capacity-gauge.vue";
 import CortxDashboardAlertCard from "./cortx-dashboard-alert-card.vue";
@@ -62,10 +57,7 @@ import CortxPerformanceChart from "../performance/cortx-performance-chart.vue";
   }
 })
 export default class CortxDashboard extends Vue {
-  public alertTblRowHeight: number = 0;
-  public alertTblRowHeightPx: string = "";
   public chartRowHeightPx: string = "";
-  public alertSectionColNumber: number = 8;
   public unsupportedFeatures = unsupportedFeatures;
 
   @Ref("capacity_col")
@@ -79,24 +71,12 @@ export default class CortxDashboard extends Vue {
     this.calculateComponentsHeight();
   }
 
-  public mounted() {
-    /**
-     * If Capacity feature is hidden, alerts table should take full width as performance graph
-     */
-    if (this.capacityColRef && this.capacityColRef.hidden) {
-      this.alertSectionColNumber = 12;
-    } else {
-      this.alertSectionColNumber = 8;
-    }
-  }
-
   public destroyed() {
     window.removeEventListener("resize", this.resizeComponents);
   }
 
   public resizeComponents() {
     this.calculateComponentsHeight();
-    EVENT_BUS.$emit("windowResized", this.alertTblRowHeight);
   }
 
   public calculateComponentsHeight() {
@@ -114,8 +94,6 @@ export default class CortxDashboard extends Vue {
     } else {
       this.chartRowHeightPx = calcHeight + "px";
     }
-    this.alertTblRowHeight = calcHeight;
-    this.alertTblRowHeightPx = this.alertTblRowHeight + "px";
   }
 }
 </script>
