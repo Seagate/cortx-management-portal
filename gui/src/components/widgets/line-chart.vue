@@ -146,7 +146,7 @@ export default class CortxLineChart extends Vue {
         { value: "throughput_read", text: "throughput_read" },
         { value: "throughput_write", text: "throughput_write" },
         { value: "throughput_total", text: "throughput_total" },
-        { value: "latency_average", text: "average_latency" },
+        { value: "latency_average", text: "latency_average" },
         { value: "latency_create_object", text: "latency_create_object" },
         { value: "latency_delete_object", text: "latency_delete_object" },
         { value: "latency_write_object", text: "latency_write_object" },
