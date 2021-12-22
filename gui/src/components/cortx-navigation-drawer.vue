@@ -142,8 +142,8 @@ export default class CortxNavigationDrawer extends Vue {
   font-size: inherit;
 }
 .cortx-nav-item-active {
-  background: #262626 !important;
-  color: #ffffff !important;
+  background: #262626;
+  color: #ffffff;
   border-bottom: 3px solid #6ebe49;
 }
 .font-grey {
