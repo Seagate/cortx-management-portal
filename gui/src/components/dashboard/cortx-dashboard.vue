@@ -1,45 +1,42 @@
-/*
-* CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-* You should have received a copy of the GNU Affero General Public License
-* along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing,
-* please email opensource@seagate.com or cortx-questions@seagate.com.
-*/
+/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
+Seagate Technology LLC and/or its Affiliates * This program is free software:
+you can redistribute it and/or modify * it under the terms of the GNU Affero
+General Public License as published * by the Free Software Foundation, either
+version 3 of the License, or * (at your option) any later version. * This
+program is distributed in the hope that it will be useful, * but WITHOUT ANY
+WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
+details. * You should have received a copy of the GNU Affero General Public
+License * along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing, * please email
+opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
-  <div class="dashboard-container pa-4">
-    <v-row v-feature="unsupportedFeatures.performance">
-      <v-col>
-        <v-card class="pa-2">
-          <cortx-performance-chart chartId="line_chart" onDashboard="true" />
+  <div class="dashboard-wrapper">
+    <div class="dashboard-container pa-4">
+      <v-row v-feature="unsupportedFeatures.performance">
+        <v-col>
+          <v-card class="pa-2">
+            <cortx-performance-chart chartId="line_chart" onDashboard="true" />
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row class="bottom-row">
+        <v-card
+          class="capacity-card pa-3"
+          v-feature="unsupportedFeatures.capacity"
+        >
+          <cortx-dashboard-capacity-gauge />
         </v-card>
-      </v-col>
-    </v-row>
-    <v-row class="bottom-row">
-      <v-card
-        class="capacity-card pa-3"
-        height="100%"
-        v-feature="unsupportedFeatures.capacity"
-      >
-        <cortx-dashboard-capacity-gauge />
-      </v-card>
 
-      <v-card class="health-card pa-3" height="100%">
-        <cortx-dashboard-cluster-health-card />
-      </v-card>
+        <v-card class="health-card pa-3">
+          <cortx-dashboard-cluster-health-card />
+        </v-card>
 
-      <v-card class="alerts-card pa-3" height="100%">
-        <cortx-dashboard-alert-card />
-      </v-card>
-    </v-row>
+        <v-card class="alerts-card pa-3">
+          <cortx-dashboard-alert-card />
+        </v-card>
+      </v-row>
+    </div>
   </div>
 </template>
 
@@ -67,10 +64,8 @@ export default class CortxDashboard extends Vue {
   public chartRowHeightPx: string = "";
   public alertSectionColNumber: number = 8;
   public unsupportedFeatures = unsupportedFeatures;
-
   @Ref("capacity_col")
   public capacityColRef: any;
-
   public created() {
     window.addEventListener("resize", this.resizeComponents);
   }
@@ -89,16 +84,13 @@ export default class CortxDashboard extends Vue {
       this.alertSectionColNumber = 8;
     }
   }
-
   public destroyed() {
     window.removeEventListener("resize", this.resizeComponents);
   }
-
   public resizeComponents() {
     this.calculateComponentsHeight();
     EVENT_BUS.$emit("windowResized", this.alertTblRowHeight);
   }
-
   public calculateComponentsHeight() {
     /**
      * Need to subtract header height(50px) and container padding(30px)
@@ -120,20 +112,23 @@ export default class CortxDashboard extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.dashboard-container {
+.dashboard-wrapper {
   background-color: #f7f7f7;
+}
+.dashboard-container {
+  background-color: transparent;
   height: calc(100vh - 60px);
+  max-width: 1260px;
+  // margin: 0 auto;
   overflow: auto;
 }
-
 .bottom-row {
-  height: min(50%, 400px);
+  min-height: min(50%, 400px);
   padding: 12px;
   display: flex;
   flex-wrap: nowrap;
   gap: 20px;
 }
-
 .capacity-card {
   flex-grow: 1;
   width: 25%;
