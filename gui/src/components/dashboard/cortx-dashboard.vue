@@ -15,27 +15,29 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="dashboard-container pa-4">
-    <v-row v-feature="unsupportedFeatures.performance">
-      <v-col>
-        <v-card class="pa-2">
-          <cortx-performance-chart chartId="line_chart" onDashboard="true" />
+  <div class="dashboard-wrapper">
+    <div class="dashboard-container pa-4">
+      <v-row v-feature="unsupportedFeatures.performance">
+        <v-col>
+          <v-card class="pa-2">
+            <cortx-performance-chart chartId="line_chart" onDashboard="true" />
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row class="bottom-row">
+        <v-card class="capacity-card pa-3" v-feature="unsupportedFeatures.capacity">
+          <cortx-dashboard-capacity-gauge />
         </v-card>
-      </v-col>
-    </v-row>
-    <v-row class="bottom-row">
-      <v-card class="capacity-card pa-3" height="100%" v-feature="unsupportedFeatures.capacity">
-        <cortx-dashboard-capacity-gauge />
-      </v-card>
 
-      <v-card class="health-card pa-3" height="100%">
-        <cortx-dashboard-cluster-health-card />
-      </v-card>
+        <v-card class="health-card pa-3">
+          <cortx-dashboard-cluster-health-card />
+        </v-card>
 
-      <v-card class="alerts-card pa-3" height="100%">
-        <cortx-dashboard-alert-card />
-      </v-card>
-    </v-row>
+        <v-card class="alerts-card pa-3">
+          <cortx-dashboard-alert-card />
+        </v-card>
+      </v-row>
+    </div>
   </div>
 </template>
 
@@ -59,10 +61,7 @@ import CortxPerformanceChart from "../performance/cortx-performance-chart.vue";
 export default class CortxDashboard extends Vue {
   public chartRowHeightPx: string = "";
   public unsupportedFeatures = unsupportedFeatures;
-
   @Ref("capacity_col")
-  public capacityColRef: any;
-
   public created() {
     window.addEventListener("resize", this.resizeComponents);
   }
@@ -74,11 +73,9 @@ export default class CortxDashboard extends Vue {
   public destroyed() {
     window.removeEventListener("resize", this.resizeComponents);
   }
-
   public resizeComponents() {
     this.calculateComponentsHeight();
   }
-
   public calculateComponentsHeight() {
     /**
      * Need to subtract header height(50px) and container padding(30px)
@@ -98,20 +95,23 @@ export default class CortxDashboard extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.dashboard-container {
+.dashboard-wrapper {
   background-color: #f7f7f7;
+}
+.dashboard-container {
+  background-color: transparent;
   height: calc(100vh - 60px);
+  max-width: 1260px;
+  // margin: 0 auto;
   overflow: auto;
 }
-
 .bottom-row {
-  height: min(50%, 400px);
+  min-height: min(50%, 400px);
   padding: 12px;
   display: flex;
   flex-wrap: nowrap;
   gap: 20px;
 }
-
 .capacity-card {
   flex-grow: 1;
   width: 25%;
