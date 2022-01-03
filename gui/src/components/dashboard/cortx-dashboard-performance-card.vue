@@ -11,18 +11,10 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 * For any questions about this software or licensing, * please email
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
-  <div class="health-widget-container">
-    <p class="cortx-text-lg cortx-text-bold">Cluster Health</p>
-    <cortx-dashboard-info-card
-      title="mycluster"
-      description="Cluster"
-      navPath="/health"
-      :callBack="infoCardCallBack"
-      imgUrl="dashboard/health/cluster-health-warning.svg"
-    />
-    <p class="cortx-text-lg cortx-text-bold">Nodes</p>
-    <div class="node-health-cards-container">
-      <template v-for="(cardDetail, index) in nodeCardDetails">
+  <div class="performance-widget-container">
+    <p class="cortx-text-lg cortx-text-bold">Performance</p>
+    <div class="performance-cards-container">
+      <template v-for="(cardDetail, index) in performanceCardDetails">
         <cortx-dashboard-info-card
           :title="cardDetail.title"
           :description="cardDetail.description"
@@ -40,55 +32,37 @@ import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
 
 @Component({
-  name: "cortx-dashboard-cluster-health-card",
+  name: "cortx-dashboard-performance-card",
   components: { CortxDashboardInfoCard }
 })
-export default class CortxDashboardClusterHealthCard extends Vue {
-  public nodeCardDetails = [
+export default class CortxDashboardPerformanceCard extends Vue {
+  public performanceCardDetails = [
     {
       title: "05",
-      description: "Online Nodes",
-      imgUrl: "dashboard/health/online-nodes.svg",
-      navPath: "/health"
+      description: "Read Throughput",
+      imgUrl: "dashboard/performance/read-throughput.svg",
+      navPath: "/performance"
     },
     {
-      title: "05",
-      description: "Offline Nodes",
-      imgUrl: "dashboard/health/failed-nodes.svg",
-      navPath: "/health"
-    },
-    {
-      title: "05",
-      description: "Failed Nodes",
-      imgUrl: "dashboard/health/failed-nodes.svg",
-      navPath: "/health"
-    },
-    {
-      title: "05",
-      description: "Degraded Nodes",
-      imgUrl: "dashboard/health/degraded-nodes.svg",
-      navPath: "/health"
+      title: "22",
+      description: "Write Throughput",
+      imgUrl: "dashboard/performance/write-throughput.svg",
+      navPath: "/performance"
     }
   ];
+
   infoCardCallBack(routePath: string) {
     this.$router.push(routePath);
   }
 }
 </script>
 <style lang="scss" scoped>
-.node-health-cards-container {
+.performance-cards-container {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
-.info-card-container {
+.performance-cards-container > * {
   margin-bottom: 1em;
-}
-.health-widget-container > .info-card-container {
-  width: 100%;
-}
-.node-health-cards-container > * {
-  width: 48%;
   justify-content: flex-start;
 }
 </style>

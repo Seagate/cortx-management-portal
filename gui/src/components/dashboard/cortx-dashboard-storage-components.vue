@@ -11,18 +11,10 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 * For any questions about this software or licensing, * please email
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
-  <div class="health-widget-container">
-    <p class="cortx-text-lg cortx-text-bold">Cluster Health</p>
-    <cortx-dashboard-info-card
-      title="mycluster"
-      description="Cluster"
-      navPath="/health"
-      :callBack="infoCardCallBack"
-      imgUrl="dashboard/health/cluster-health-warning.svg"
-    />
-    <p class="cortx-text-lg cortx-text-bold">Nodes</p>
-    <div class="node-health-cards-container">
-      <template v-for="(cardDetail, index) in nodeCardDetails">
+  <div class="storage-components-widget-container">
+    <p class="cortx-text-lg cortx-text-bold">Storage Components</p>
+    <div class="storage-cards-container">
+      <template v-for="(cardDetail, index) in storageCardDetails">
         <cortx-dashboard-info-card
           :title="cardDetail.title"
           :description="cardDetail.description"
@@ -40,55 +32,42 @@ import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
 
 @Component({
-  name: "cortx-dashboard-cluster-health-card",
+  name: "cortx-dashboard-storage-components",
   components: { CortxDashboardInfoCard }
 })
-export default class CortxDashboardClusterHealthCard extends Vue {
-  public nodeCardDetails = [
+export default class CortxDashboardStorageComponents extends Vue {
+  public storageCardDetails = [
     {
       title: "05",
-      description: "Online Nodes",
-      imgUrl: "dashboard/health/online-nodes.svg",
-      navPath: "/health"
+      description: "Buckets",
+      imgUrl: "dashboard/storage/buckets.svg",
+      navPath: ""
     },
     {
-      title: "05",
-      description: "Offline Nodes",
-      imgUrl: "dashboard/health/failed-nodes.svg",
-      navPath: "/health"
+      title: "22",
+      description: "Objects",
+      imgUrl: "dashboard/storage/objects.svg",
+      navPath: ""
     },
     {
-      title: "05",
-      description: "Failed Nodes",
-      imgUrl: "dashboard/health/failed-nodes.svg",
-      navPath: "/health"
-    },
-    {
-      title: "05",
-      description: "Degraded Nodes",
-      imgUrl: "dashboard/health/degraded-nodes.svg",
-      navPath: "/health"
+      title: "12",
+      description: "Under Replicated",
+      imgUrl: "dashboard/storage/under-replicated.svg",
+      navPath: ""
     }
   ];
   infoCardCallBack(routePath: string) {
-    this.$router.push(routePath);
+    // nav path given in storageCardDetails will be received here and it can be used for redirects
   }
 }
 </script>
 <style lang="scss" scoped>
-.node-health-cards-container {
+.storage-cards-container {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
-.info-card-container {
+.storage-cards-container > * {
   margin-bottom: 1em;
-}
-.health-widget-container > .info-card-container {
-  width: 100%;
-}
-.node-health-cards-container > * {
-  width: 48%;
   justify-content: flex-start;
 }
 </style>

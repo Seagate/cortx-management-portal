@@ -18,29 +18,31 @@ opensource@seagate.com or cortx-questions@seagate.com. */
       </div>
     </div>
 
-    <div class="d-flex flex-column">
-      <div class="cortx-capacity-container" id="gauge_capacity"></div>
-      <div class="legends-and-value ml-7">
-        <div class="used-section">
-          <div class="d-flex">
-            <div :class="usedLegendClass"></div>
-            <div class="content-section">
-              <span class="legend-name">{{ $t("dashboard.used") }}</span>
-              <span>{{ capacityChartVal(capacityDetails.used) }}</span>
+    <div class="capacity-info-wrapper">
+      <div class="capacity-info d-flex flex-column">
+        <div class="cortx-capacity-container" id="gauge_capacity"></div>
+        <div class="legends-and-value ml-7">
+          <div class="used-section">
+            <div class="d-flex">
+              <div :class="usedLegendClass"></div>
+              <div class="content-section">
+                <span class="legend-name">{{ $t("dashboard.used") }}</span>
+                <span>{{ capacityChartVal(capacityDetails.used) }}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="available-section">
-          <div class="d-flex">
-            <div class="capacity-badge capacity-available"></div>
-            <div class="content-section">
-              <span class="legend-name">{{ $t("dashboard.available") }}</span>
-              <span>{{ capacityChartVal(capacityDetails.avail) }}</span>
+          <div class="available-section">
+            <div class="d-flex">
+              <div class="capacity-badge capacity-available"></div>
+              <div class="content-section">
+                <span class="legend-name">{{ $t("dashboard.available") }}</span>
+                <span>{{ capacityChartVal(capacityDetails.avail) }}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="total-section">
-          Total - {{ capacityChartVal(capacityDetails.size) }}
+          <div class="total-section">
+            Total - {{ capacityChartVal(capacityDetails.size) }}
+          </div>
         </div>
       </div>
     </div>
@@ -121,6 +123,11 @@ export default class CortxDashboardCapacityGauge extends Vue {
 @import "./../../../node_modules/c3/c3.min.css";
 .legends-and-value > div {
   margin-top: 15px;
+}
+.capacity-info-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .content-section {
   margin-left: 8px;
