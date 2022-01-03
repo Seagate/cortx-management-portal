@@ -16,36 +16,33 @@
 */
 <template>
   <div>
-    <header-bar />
-    <div class="header-margin" v-if="isRouterPathOnboading">
-      <router-view></router-view>
-    </div>
-    <div v-else>
-      <cortx-nav-bar />
+    <cortx-header @menu-click="drawer = !drawer" />
+    <div>
+      <cortx-navigation-drawer v-if="!isRouterPathOnboading" :drawer.sync="drawer" />
       <div class="header-margin navbar-margin">
         <router-view></router-view>
       </div>
     </div>
-    <CortxMessageDialog />
+    <cortx-message-dialog />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HeaderBar from "./header/header-bar.vue";
-import CortxNavBar from "./navigation/nav-bar.vue";
+import CortxHeader from "./cortx-header.vue";
 import { SystemConfigObject } from "../models/system-configuration";
 import CortxMessageDialog from "./widgets/cortx-message-dialog.vue";
-
+import CortxNavigationDrawer from "./cortx-navigation-drawer.vue";
 @Component({
   name: "Default",
   components: {
-    HeaderBar,
-    CortxNavBar,
-    CortxMessageDialog
+    cortxHeader: CortxHeader,
+    cortxMessageDialog: CortxMessageDialog,
+    cortxNavigationDrawer: CortxNavigationDrawer
   }
 })
 export default class CortxDefault extends Vue {
+  drawer: boolean = true;
 
   public mounted() {
     const dimensions = this.calculateDimensions();
@@ -59,30 +56,30 @@ export default class CortxDefault extends Vue {
   private calculateDimensions() {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-    const headerHeight = 60;
+    const headerHeight = 50;
     const headerWidth = windowWidth;
     const navBarHeight = windowHeight - headerHeight;
-    const navBarWidth = 180;
+    const navBarWidth = 60;
 
     return {
-        window: {
-            height: windowHeight,
-            width: windowWidth
+      window: {
+        height: windowHeight,
+        width: windowWidth
+      },
+      mainLayout: {
+        headerBar: {
+          height: headerHeight,
+          width: headerWidth
         },
-        mainLayout: {
-            headerBar: {
-                height: headerHeight,
-                width: headerWidth
-            },
-            navBar: {
-                height: navBarHeight,
-                width: navBarWidth
-            },
-            content: {
-                height: navBarHeight,
-                width: windowWidth - navBarWidth
-            }
+        navBar: {
+          height: navBarHeight,
+          width: navBarWidth
+        },
+        content: {
+          height: navBarHeight,
+          width: windowWidth - navBarWidth
         }
+      }
     };
   }
 }
@@ -93,6 +90,6 @@ export default class CortxDefault extends Vue {
   margin-top: 3.75em;
 }
 .navbar-margin {
-  margin-left: 11.25em;
+  margin-left: 3.75em;
 }
 </style>
