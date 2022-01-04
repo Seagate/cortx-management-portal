@@ -12,7 +12,10 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="health-widget-container">
-    <p class="cortx-text-lg cortx-text-bold">Cluster Health</p>
+    <div class="title-section">
+      <p class="widget-title cortx-text-lg cortx-text-bold">Cluster Health</p>
+      <div class="cortx-zoom-icon" @click="zoomIconHandler"></div>
+    </div>
     <cortx-dashboard-info-card
       title="mycluster"
       description="Degraded"
@@ -70,6 +73,7 @@ export default class CortxDashboardClusterHealthCard extends Vue {
       navPath: "/health"
     }
   ];
+
   infoCardCallBack(routePath: string) {
     this.$router.push(routePath);
   }
@@ -103,9 +107,27 @@ export default class CortxDashboardClusterHealthCard extends Vue {
         return "dashboard/health/degraded-nodes.svg";
     }
   }
+
+  zoomIconHandler() {
+    this.$router.push("/health");
+  }
 }
 </script>
 <style lang="scss" scoped>
+.title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.title-section .widget-title {
+  margin: 0;
+}
+.title-section > .cortx-zoom-icon {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
 .node-health-cards-container {
   display: flex;
   justify-content: space-between;

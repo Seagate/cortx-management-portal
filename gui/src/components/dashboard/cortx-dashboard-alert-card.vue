@@ -12,7 +12,10 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="alert-widget-container">
-    <p class="cortx-text-lg cortx-text-bold">Alerts</p>
+    <div class="title-section">
+      <p class="widget-title cortx-text-lg cortx-text-bold">Alert</p>
+      <div class="cortx-zoom-icon" @click="zoomIconHandler"></div>
+    </div>
     <div class="alert-cards-container">
       <template v-for="(cardDetail, index) in alertCardDetails">
         <cortx-dashboard-info-card
@@ -100,9 +103,27 @@ export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
   infoCardCallBack(routePath: string) {
     this.$router.push(routePath);
   }
+
+  zoomIconHandler() {
+    this.$router.push("/alerts");
+  }
 }
 </script>
 <style lang="scss" scoped>
+.title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.title-section .widget-title {
+  margin: 0;
+}
+.title-section > .cortx-zoom-icon {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
 .alert-cards-container {
   display: flex;
   justify-content: space-between;

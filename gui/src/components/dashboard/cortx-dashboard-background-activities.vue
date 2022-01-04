@@ -12,7 +12,12 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="bg-activities-widget-container">
-    <p class="cortx-text-lg cortx-text-bold">Background Activities</p>
+    <div class="title-section">
+      <p class="widget-title cortx-text-lg cortx-text-bold">
+        Background Activities
+      </p>
+      <div class="cortx-zoom-icon" @click="zoomIconHandler"></div>
+    </div>
     <div class="bg-activities-cards-container">
       <template v-for="(cardDetail, index) in bgActivitiesCardDetails">
         <cortx-dashboard-info-card
@@ -48,9 +53,28 @@ export default class CortxDashboardBackgroundActivities extends Vue {
   infoCardCallBack(routePath: string) {
     // nav path given in performanceCardDetails will be received here and it can be used for redirects
   }
+
+  zoomIconHandler() {
+    //Redirect to the background activities page when you have one
+    // this.$router.push("/");
+  }
 }
 </script>
 <style lang="scss" scoped>
+.title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.title-section .widget-title {
+  margin: 0;
+}
+.title-section > .cortx-zoom-icon {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
 .bg-activities-cards-container {
   display: flex;
   flex-direction: column;
