@@ -73,7 +73,7 @@ export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
       {
         title: this.criticalCount,
         description: "Critical",
-        imgUrl: "dashboard/alert/fatal-alert.svg",
+        imgUrl: "dashboard/alert/critical-alert.svg",
         navPath: "/alerts"
       },
       {

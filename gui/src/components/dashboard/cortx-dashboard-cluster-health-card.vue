@@ -15,10 +15,10 @@ opensource@seagate.com or cortx-questions@seagate.com. */
     <p class="cortx-text-lg cortx-text-bold">Cluster Health</p>
     <cortx-dashboard-info-card
       title="mycluster"
-      description="Cluster"
+      description="Degraded"
       navPath="/health"
       :callBack="infoCardCallBack"
-      imgUrl="dashboard/health/cluster-health-warning.svg"
+      :imgUrl="getClusterHealthImgUrl('degraded')"
     />
     <p class="cortx-text-lg cortx-text-bold">Nodes</p>
     <div class="node-health-cards-container">
@@ -46,32 +46,62 @@ import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
 export default class CortxDashboardClusterHealthCard extends Vue {
   public nodeCardDetails = [
     {
-      title: "05",
+      title: "5",
       description: "Online Nodes",
-      imgUrl: "dashboard/health/online-nodes.svg",
+      imgUrl: this.getNodeImgUrl(5, "online"),
       navPath: "/health"
     },
     {
-      title: "05",
+      title: "5",
       description: "Offline Nodes",
-      imgUrl: "dashboard/health/failed-nodes.svg",
+      imgUrl: this.getNodeImgUrl(5, "offline"),
       navPath: "/health"
     },
     {
-      title: "05",
+      title: "0",
       description: "Failed Nodes",
-      imgUrl: "dashboard/health/failed-nodes.svg",
+      imgUrl: this.getNodeImgUrl(0, "failed"),
       navPath: "/health"
     },
     {
-      title: "05",
+      title: "5",
       description: "Degraded Nodes",
-      imgUrl: "dashboard/health/degraded-nodes.svg",
+      imgUrl: this.getNodeImgUrl(5, "degraded"),
       navPath: "/health"
     }
   ];
   infoCardCallBack(routePath: string) {
     this.$router.push(routePath);
+  }
+
+  getClusterHealthImgUrl(healthType: "offline" | "degraded" | "failed") {
+    switch (healthType) {
+      case "offline":
+        return "dashboard/health/offline-cluster.svg";
+      case "degraded":
+        return "dashboard/health/degraded-cluster.svg";
+      case "failed":
+        return "dashboard/health/failed-cluster.svg";
+    }
+  }
+
+  getNodeImgUrl(
+    nodeCount: number,
+    nodeType: "online" | "offline" | "failed" | "degraded"
+  ) {
+    if (nodeCount === 0) {
+      return "dashboard/health/zero-nodes.svg";
+    }
+    switch (nodeType) {
+      case "online":
+        return "dashboard/health/online-nodes.svg";
+      case "offline":
+        return "dashboard/health/offline-nodes.svg";
+      case "failed":
+        return "dashboard/health/failed-nodes.svg";
+      case "degraded":
+        return "dashboard/health/degraded-nodes.svg";
+    }
   }
 }
 </script>
