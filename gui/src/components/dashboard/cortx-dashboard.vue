@@ -107,13 +107,13 @@ export default class CortxDashboard extends Vue {
 <style lang="scss" scoped>
 .dashboard-wrapper {
   background-color: #f7f7f7;
+  overflow: auto;
 }
 .dashboard-container {
   background-color: transparent;
   height: calc(100vh - 60px);
   max-width: 1260px;
   // margin: 0 auto;
-  overflow: auto;
 }
 .top-row,
 .bottom-row {
