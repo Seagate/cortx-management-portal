@@ -40,13 +40,13 @@ export default class CortxDashboardPerformanceCard extends Vue {
     {
       title: "05",
       description: "Read Throughput",
-      imgUrl: "dashboard/performance/read-throughput.svg",
+      imgUrl: "dashboard/performance/read-throughput-good.svg",
       navPath: "/performance"
     },
     {
       title: "22",
       description: "Write Throughput",
-      imgUrl: "dashboard/performance/write-throughput.svg",
+      imgUrl: "dashboard/performance/write-throughput-good.svg",
       navPath: "/performance"
     }
   ];
