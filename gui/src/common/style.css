@@ -836,8 +836,7 @@ tbody tr:hover {
 .cortx-header {
   display: flex;
   flex-wrap: nowrap;
-  background-color: #000000;
-  height: 60px;
+  height: 50px;
 }
 
 div.cortx-header.py-3 {
@@ -853,7 +852,7 @@ div.cortx-header.py-3 {
 
 .cortx-brand-logo:before {
   content: "";
-  background-image: url("../assets/Cortx-logo-GRN.svg");
+  background-image: url("../assets/lyve-rack-logo.svg");
   background-position: left center;
   width: 100%;
   height: 28px;

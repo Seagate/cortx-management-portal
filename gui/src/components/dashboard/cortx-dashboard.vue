@@ -1,15 +1,19 @@
-/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
-Seagate Technology LLC and/or its Affiliates * This program is free software:
-you can redistribute it and/or modify * it under the terms of the GNU Affero
-General Public License as published * by the Free Software Foundation, either
-version 3 of the License, or * (at your option) any later version. * This
-program is distributed in the hope that it will be useful, * but WITHOUT ANY
-WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
-A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
-details. * You should have received a copy of the GNU Affero General Public
-License * along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing, * please email
-opensource@seagate.com or cortx-questions@seagate.com. */
+/*
+* CORTX-CSM: CORTX Management web and CLI interface.
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing,
+* please email opensource@seagate.com or cortx-questions@seagate.com.
+*/
 <template>
   <div class="dashboard-wrapper">
     <div class="dashboard-container pa-4">
@@ -21,10 +25,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
         </v-col>
       </v-row>
       <v-row class="bottom-row">
-        <v-card
-          class="capacity-card pa-3"
-          v-feature="unsupportedFeatures.capacity"
-        >
+        <v-card class="capacity-card pa-3" v-feature="unsupportedFeatures.capacity">
           <cortx-dashboard-capacity-gauge />
         </v-card>
 
@@ -42,7 +43,6 @@ opensource@seagate.com or cortx-questions@seagate.com. */
 
 <script lang="ts">
 import { Component, Vue, Ref } from "vue-property-decorator";
-import { EVENT_BUS } from "../../main";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDashboardCapacityGauge from "./cortx-dashboard-capacity-gauge.vue";
 import CortxDashboardAlertCard from "./cortx-dashboard-alert-card.vue";
@@ -59,13 +59,9 @@ import CortxPerformanceChart from "../performance/cortx-performance-chart.vue";
   }
 })
 export default class CortxDashboard extends Vue {
-  public alertTblRowHeight: number = 0;
-  public alertTblRowHeightPx: string = "";
   public chartRowHeightPx: string = "";
-  public alertSectionColNumber: number = 8;
   public unsupportedFeatures = unsupportedFeatures;
   @Ref("capacity_col")
-  public capacityColRef: any;
   public created() {
     window.addEventListener("resize", this.resizeComponents);
   }
@@ -74,22 +70,11 @@ export default class CortxDashboard extends Vue {
     this.calculateComponentsHeight();
   }
 
-  public mounted() {
-    /**
-     * If Capacity feature is hidden, alerts table should take full width as performance graph
-     */
-    if (this.capacityColRef && this.capacityColRef.hidden) {
-      this.alertSectionColNumber = 12;
-    } else {
-      this.alertSectionColNumber = 8;
-    }
-  }
   public destroyed() {
     window.removeEventListener("resize", this.resizeComponents);
   }
   public resizeComponents() {
     this.calculateComponentsHeight();
-    EVENT_BUS.$emit("windowResized", this.alertTblRowHeight);
   }
   public calculateComponentsHeight() {
     /**
@@ -106,8 +91,6 @@ export default class CortxDashboard extends Vue {
     } else {
       this.chartRowHeightPx = calcHeight + "px";
     }
-    this.alertTblRowHeight = calcHeight;
-    this.alertTblRowHeightPx = this.alertTblRowHeight + "px";
   }
 }
 </script>
