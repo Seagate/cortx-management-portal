@@ -12,12 +12,10 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="bg-activities-widget-container">
-    <div class="title-section">
-      <p class="widget-title cortx-text-lg cortx-text-bold">
-        Background Activities
-      </p>
-      <div class="cortx-zoom-icon" @click="zoomIconHandler"></div>
-    </div>
+    <cortx-dashboard-widget-title
+      title="Background Activities"
+      :zoomIconCallback="zoomIconHandler"
+    />
     <div class="bg-activities-cards-container">
       <template v-for="(cardDetail, index) in bgActivitiesCardDetails">
         <cortx-dashboard-info-card
@@ -35,10 +33,11 @@ opensource@seagate.com or cortx-questions@seagate.com. */
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
+import CortxDashboardWidgetTitle from "./cortx-dashboard-widget-title.vue";
 
 @Component({
   name: "cortx-dashboard-background-activities",
-  components: { CortxDashboardInfoCard }
+  components: { CortxDashboardInfoCard, CortxDashboardWidgetTitle }
 })
 export default class CortxDashboardBackgroundActivities extends Vue {
   public bgActivitiesCardDetails = [
@@ -61,20 +60,6 @@ export default class CortxDashboardBackgroundActivities extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.title-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-.title-section .widget-title {
-  margin: 0;
-}
-.title-section > .cortx-zoom-icon {
-  height: 20px;
-  width: 20px;
-  cursor: pointer;
-}
 .bg-activities-cards-container {
   display: flex;
   flex-direction: column;
