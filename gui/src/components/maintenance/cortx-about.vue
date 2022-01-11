@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1">
+  <div class="cortx-p-1" v-feature="unsupportedFeatures.about">
     <div class="cortx-text-lg cortx-text-bold" id="lblAbout">
       {{ $t("aboutUs.title") }}
       <a href="https://github.com/Seagate" target="_blank">
@@ -70,6 +70,16 @@
           </td>
           <td class="cortx-td">
             <label>{{ serialNumber }}</label>
+          </td>
+        </tr>
+        <tr v-if="clusterId">
+          <td>
+            <label class="cortx-text-bold">{{
+              $t("aboutUs.clusterId")
+            }}</label>
+          </td>
+          <td class="cortx-td">
+            <label>{{ clusterId }}</label>
           </td>
         </tr>
       </table>
@@ -212,6 +222,7 @@ import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import i18n from "./maintenance.json";
 import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   components: {
@@ -223,6 +234,7 @@ import CortxTabs, { TabsInfo } from "../widgets/cortx-tabs.vue";
   }
 })
 export default class Cortxaboutpage extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
   public tabsInfo: TabsInfo = {
     tabs: [
       {
@@ -281,14 +293,15 @@ export default class Cortxaboutpage extends Vue {
         RELEASE: null,
         COMPONENTS: []
       },
-      serialNumber: "-" as string
+      serialNumber: "-" as string,
+      clusterId: "-" as string
     };
   }
 
   public async mounted() {
     await Promise.all([
       this.getSSLDetails(),
-      this.getApplianceDetails(),
+      // this.getApplianceDetails(),
       this.getVersion()
     ]);
   }
@@ -299,10 +312,11 @@ export default class Cortxaboutpage extends Vue {
     this.$data.versionDetails = res.data;
     this.$store.dispatch("systemConfig/hideLoader");
   }
-  public async getApplianceDetails() {
+  /* public async getApplianceDetails() {
     const res = await Api.getAll(apiRegister.appliance_info);
-    this.$data.serialNumber = res.data[0].serial_number;
-  }
+    this.$data.serialNumber = res.data.appliance_info[0].serial_number;
+    this.$data.clusterId = res.data.appliance_info[0].cluster_id;
+  } */
   public async getSSLDetails() {
     this.$store.dispatch("systemConfig/showLoader", "Fetching SSL details...");
     const res = await Api.getAll(apiRegister.ssl_details);

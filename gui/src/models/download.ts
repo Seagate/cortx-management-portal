@@ -17,7 +17,18 @@
 // Interface for Audit Log Query Param
 export interface AuditLogQueryParam {
     component: string;
-    timerange: string;
-    from: string;
-    to: string;
+    start_date: number;
+    end_date: number;
+    sortby?: string;
+    dir?: string;
+    offset?: number;
+    limit?: number;
+    filter?: string;
+}
+export interface CsmUserQueryParam {
+    [prop: string]: any;
+    sortby?: string;
+    dir?: string;
+    offset?: number;
+    limit?: number;
 }

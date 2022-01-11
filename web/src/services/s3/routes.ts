@@ -16,7 +16,7 @@
 */
 import { Request, Response } from "express";
 import { getAllAccounts, createAccount, deleteAccount, getAllIAMUsers, createIAMUser, deleteIAMUser, resetPassword, updateAccount } from "./s3-controller";
-import { checkRequiredParams } from './../../middleware/validator';
+import { checkApiVersion, checkRequiredParams } from './../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
 
@@ -26,9 +26,10 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/s3_accounts",
+    path: "/api/:version/s3_accounts",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -41,25 +42,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_accounts/:name",
-    method: "get",
-    handler: [
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        try {
-          console.log(req.params.name);
-          const result = await getAllAccounts(req, res);
-          res.status(res.statusCode).send(result);
-        } catch (err) {
-          throw err;
-        }
-      }
-    ]
-  },
-  {
-    path: "/api/v1/s3_accounts",
+    path: "/api/:version/s3_accounts",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -72,9 +58,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_accounts/:name",
+    path: "/api/:version/s3_accounts/:name",
     method: "delete",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -87,9 +74,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/iam_users",
+    path: "/api/:version/iam_users",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -102,9 +90,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/iam_users/:name",
+    path: "/api/:version/iam_users/:name",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -118,9 +107,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/iam_users",
+    path: "/api/:version/iam_users",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -133,9 +123,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/iam_users/:username",
+    path: "/api/:version/iam_users/:username",
     method: "delete",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -148,9 +139,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/iam_users/:account_name",
+    path: "/api/:version/iam_users/:account_name",
     method: "patch",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -163,9 +155,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3_accounts/:account_name",
+    path: "/api/:version/s3_accounts/:account_name",
     method: "patch",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {

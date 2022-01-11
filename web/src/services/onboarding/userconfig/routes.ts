@@ -16,7 +16,7 @@
 */
 import { Request, Response, request, response } from "express";
 import { getUserConfig, saveUserConfig, updateUserConfig } from "./user-config-controller";
-import { checkRequiredParams } from './../../../middleware/validator';
+import { checkApiVersion, checkRequiredParams } from './../../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
 /**
@@ -25,9 +25,10 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/sysconfig",
+    path: "/api/:version/sysconfig",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -40,9 +41,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/sysconfig",
+    path: "/api/:version/sysconfig",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -55,9 +57,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/sysconfig/:user_config_id",
+    path: "/api/:version/sysconfig/:user_config_id",
     method: "put",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {

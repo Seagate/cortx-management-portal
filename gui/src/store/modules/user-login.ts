@@ -26,7 +26,7 @@ import {
   MutationAction
 } from "vuex-module-decorators";
 import { UserLoginQueryParam } from "./../../models/user-login";
-// import { userPermissions } from "./../../models/user-permissions";
+import { ACCESS_TOKEN, USERNAME } from "./../../common/consts";
 Vue.use(Vuex);
 
 @Module({
@@ -35,6 +35,7 @@ Vue.use(Vuex);
 export default class UserLogin extends VuexModule {
   public user: any = {};
   public userPermissions: object = {};
+  public unsupportedFeatures: any = {};
 
   public queryParams: UserLoginQueryParam = {
     username: "",
@@ -49,6 +50,10 @@ export default class UserLogin extends VuexModule {
   public setUserPermissions(permissions: any) {
     this.userPermissions = permissions;
   }
+  @Mutation
+  public setUnsupportedFeatures(features: any) {
+    this.unsupportedFeatures = features;
+  }
 
   // Get user
   get getUser() {
@@ -59,19 +64,8 @@ export default class UserLogin extends VuexModule {
     return this.userPermissions;
   }
 
-  @Action({ rawError: true })
-  public async createUserAction(queryParams: object) {
-    queryParams = queryParams ? queryParams : this.queryParams;
-    try {
-      const res = await Api.post(apiRegister.create_user, queryParams);
-      return res;
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.error("err logger: ", e);
-      if (e && e.data && e.data.message_text) {
-        throw new Error(e.data.message_text);
-      }
-    }
+  get getUnsupportedFeatures() {
+    return this.unsupportedFeatures;
   }
 
   @Action
@@ -80,7 +74,7 @@ export default class UserLogin extends VuexModule {
     try {
       const res = await Api.post(apiRegister.login, queryParams);
       if (res && res.headers) {
-        return res.headers;
+        return res;
       }
     } catch (e) {
       // tslint:disable-next-line: no-console
@@ -91,14 +85,15 @@ export default class UserLogin extends VuexModule {
   @Action
   public async logoutAction() {
     try {
-      const res = await Api.post(apiRegister.logout, {});
-      if (res && res.status) {
-        return res.status;
-      }
+      await Api.post(apiRegister.logout, {});
     } catch (e) {
       // tslint:disable-next-line: no-console
       console.log("err logger: ", e);
     }
+    this.context.commit("setUserPermissions", {});
+    this.context.commit("setUnsupportedFeatures", {});
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(USERNAME);
   }
   @Action({ rawError: true })
   public async getUserPermissionsAction() {
@@ -120,6 +115,22 @@ export default class UserLogin extends VuexModule {
       console.error("err logger: ", e);
       throw new Error(e.message);
     }
+  }
+
+  @Action({ rawError: true })
+  public async getUnsupportedFeaturesAction() {
+    if (this.unsupportedFeatures && !Object.entries(this.unsupportedFeatures).length) {
+      const features = await Api.getAll(apiRegister.unsupported_features);
+      if (features && features.data && features.data.unsupported_features) {
+        const featuresMap = features.data.unsupported_features.reduce((result: any, item: string) => {
+          result[item] = true;
+          return result;
+        }, {});
+        this.context.commit("setUnsupportedFeatures", featuresMap);
+      }
+    }
+
+    return this.unsupportedFeatures;
   }
 
   @Action

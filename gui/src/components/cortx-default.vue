@@ -46,17 +46,53 @@ import CortxMessageDialog from "./widgets/cortx-message-dialog.vue";
   }
 })
 export default class CortxDefault extends Vue {
+
+  public mounted() {
+    const dimensions = this.calculateDimensions();
+    this.$store.commit("dimensions/setDimensions", dimensions);
+  }
+
   get isRouterPathOnboading() {
     return this.$route.name === "onboarding";
+  }
+
+  private calculateDimensions() {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const headerHeight = 60;
+    const headerWidth = windowWidth;
+    const navBarHeight = windowHeight - headerHeight;
+    const navBarWidth = 180;
+
+    return {
+        window: {
+            height: windowHeight,
+            width: windowWidth
+        },
+        mainLayout: {
+            headerBar: {
+                height: headerHeight,
+                width: headerWidth
+            },
+            navBar: {
+                height: navBarHeight,
+                width: navBarWidth
+            },
+            content: {
+                height: navBarHeight,
+                width: windowWidth - navBarWidth
+            }
+        }
+    };
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .header-margin {
-  margin-top: 3em;
+  margin-top: 3.75em;
 }
 .navbar-margin {
-  margin-left: 8.75em;
+  margin-left: 11.25em;
 }
 </style>

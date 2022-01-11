@@ -16,7 +16,7 @@
 */
 import { Request, Response, request, response } from "express";
 import { getBuckets, createBucket, deleteBucket, updateBuketPolicy, getBucketsPolicy,deleteBucketPolicy } from "./bucket";
-import { checkRequiredParams } from './../../../middleware/validator';
+import { checkApiVersion, checkRequiredParams } from './../../../middleware/validator';
 import HttpStatus from 'http-status-codes';
 
 /**
@@ -25,9 +25,10 @@ import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/s3/bucket",
+    path: "/api/:version/s3/bucket",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -40,9 +41,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3/bucket",
+    path: "/api/:version/s3/bucket",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -55,9 +57,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3/bucket/:bucket_name",
+    path: "/api/:version/s3/bucket/:bucket_name",
     method: "delete",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await deleteBucket(req, res);
@@ -66,9 +69,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3/bucket_policy/:bucket_name",
+    path: "/api/:version/s3/bucket_policy/:bucket_name",
     method: "put",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -81,9 +85,10 @@ export default [
     ]
   },
    {
-    path: "/api/v1/s3/bucket_policy/:bucket_name",
+    path: "/api/:version/s3/bucket_policy/:bucket_name",
     method: "delete",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await deleteBucketPolicy(req, res);
@@ -92,9 +97,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3/bucket_policy/:bucket_name",
+    path: "/api/:version/s3/bucket_policy/:bucket_name",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {

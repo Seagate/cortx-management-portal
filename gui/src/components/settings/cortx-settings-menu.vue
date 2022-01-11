@@ -25,6 +25,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import CortxMenuList from "../widgets/cortx-menu-list.vue";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-settings-menu",
@@ -40,28 +41,32 @@ export default class CortxSettingsMenu extends Vue {
       actionClickFunction: "goToNotifications",
       disabled: false,
       requiredAccess: "sysconfig",
-      requiredSubAccess: "update"
+      requiredSubAccess: "update",
+      featureId: unsupportedFeatures.notification
     },
     {
       title: "DNS",
       actionName: "Manage",
       actionClickFunction: "goToDNS",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: unsupportedFeatures.dns
     },
     {
       title: "NTP",
       actionName: "Manage",
       actionClickFunction: "goToNTP",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: unsupportedFeatures.ntp
     },
     {
       title: "SSL Certificate",
       actionName: "Manage",
       actionClickFunction: "goToSSL",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: unsupportedFeatures.ssl_upload
     }
   ];
   private goToNotifications() {

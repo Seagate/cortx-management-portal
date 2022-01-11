@@ -18,36 +18,10 @@ import { Api } from "./../api";
 import apiRegister from "./../api-register";
 import { Request, Response } from "express";
 
-
-export const getHealthSummary = async (req: Request, res: Response)=> {
-        let healthSummaryData = await Api.getAll(
-          apiRegister.health_summary,
-          req,
-          res
-    );
-return healthSummaryData;
+export const getClusterHealth = async (req: Request, res: Response)=> {
+  let healthClusterData = await Api.getAll(apiRegister.get_health_cluster_endpt(req.params.version, req.params.resource), req, res);
+  return healthClusterData;
 }
-
-export const getHealthView = async (req: Request, res: Response)=> {
-    let healthSummaryData = await Api.getAll(apiRegister.health_view, req, res);
-    return healthSummaryData;
-}
-
-export const getHealthComponents = async (req: Request, res: Response)=> {
-  let healthSummaryData = await Api.getAll(apiRegister.health_components, req, res);
-  return healthSummaryData;
-}
-
-export const getHealthResources = async (req: Request, res: Response)=> {
-  const healthResourcesData = await Api.getAll(apiRegister.health_resources, req, res);
-  return healthResourcesData;
-}
-
-export const getNodeHealth = async (req: Request, res: Response)=> {
-    let healthSummaryData = await Api.getAll(apiRegister.node_health, req, res);
-    return healthSummaryData;
-}
-
 
 /**
  * This is responsible to fetching node status.
@@ -55,7 +29,7 @@ export const getNodeHealth = async (req: Request, res: Response)=> {
  * @param res
  */
 export const getNodeStatus = async (req: Request, res: Response) => {
-  let nodeStatusData = await Api.getAll(apiRegister.node_status, req, res);
+  let nodeStatusData = await Api.getAll(apiRegister.get_node_status_endpt(req.params.version), req, res);
   return nodeStatusData;
 };
 
@@ -65,7 +39,7 @@ export const getNodeStatus = async (req: Request, res: Response) => {
  * @param res
  */
 export const stopNode = async (req: Request, res: Response) => {
-  return await Api.post(apiRegister.node_stop, req, res);
+  return await Api.post(apiRegister.get_node_stop_endpt(req.params.version), req, res);
 };
 /**
  * This is responsible to start node.
@@ -73,7 +47,7 @@ export const stopNode = async (req: Request, res: Response) => {
  * @param res
  */
 export const startNode = async (req: Request, res: Response) => {
-  return await Api.post(apiRegister.node_start, req, res);
+  return await Api.post(apiRegister.get_node_start_endpt(req.params.version), req, res);
 };
 /**
  * This is responsible to shutdown node.
@@ -81,7 +55,7 @@ export const startNode = async (req: Request, res: Response) => {
  * @param res
  */
 export const shutdownNode = async (req: Request, res: Response) => {
-  return await Api.post(apiRegister.node_shutdown, req, res);
+  return await Api.post(apiRegister.get_node_shutdown_endpt(req.params.version), req, res);
 };
 /**
  * This is responsible to get node replacement status.

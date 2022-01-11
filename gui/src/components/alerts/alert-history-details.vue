@@ -34,7 +34,7 @@
           <label>{{ $t("alerts.cluster") }} {{ alertExtendedInfo.cluster_id }}</label>
           <label>&nbsp;| {{ $t("alerts.site") }} {{ alertExtendedInfo.site_id }}</label>
           <label>&nbsp;| {{ $t("alerts.rack") }} {{ alertExtendedInfo.rack_id }}</label>
-          <label>&nbsp;| {{ $t("alerts.node") }} {{ alertExtendedInfo.node_id }}</label>
+          <label>&nbsp;| {{ $t("alerts.host_name") }}: {{ alert.hostname}}</label>
         </div>
         <div>
           <label>{{ $t("alerts.resourceType") }}: {{ alertExtendedInfo.resource_type }}</label>
@@ -51,12 +51,12 @@
             v-else-if="alert.module_type === 'volume'"
           >{{ $t("alerts.size") }}: {{ alert.volume_size }} | {{ $t("alerts.totalSize") }}: {{ alert.volume_total_size }}</span>
           <span v-else-if="alert.module_type === 'current'">{{ $t("alerts.sensorName") }}: {{ alert.name }}</span>
-          <span v-else-if="alert.module_name === 'enclosure:fru:psu'">{{ $t("alerts.location") }}: {{ alert.location }}</span>
+          <span v-else-if="alert.module_name === 'enclosure:hw:psu'">{{ $t("alerts.location") }}: {{ alert.location }}</span>
           <span
-            v-else-if="alert.module_name === 'enclosure:fru:fan' || alert.module_name === 'enclosure:fru:sideplane'"
+            v-else-if="alert.module_name === 'enclosure:hw:fan' || alert.module_name === 'enclosure:hw:sideplane'"
           >{{ $t("common.name") }}Name: {{ alert.name }} | {{ $t("alerts.location") }}: {{ alert.location }}</span>
           <span
-            v-else-if="alert.module_name === 'enclosure:fru:disk'"
+            v-else-if="alert.module_name === 'enclosure:hw:disk'"
           >{{ $t("alerts.serialNumber") }}: {{ alert.serial_number }} | {{ $t("alerts.size") }}: {{ alert.volume_size }}</span>
           <span
             v-else-if="alert.module_type === 'controller'"

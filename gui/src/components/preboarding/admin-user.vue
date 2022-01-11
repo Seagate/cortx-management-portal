@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <v-container class="white pa-0 ma-0" fluid>
+  <v-container class="white pa-0 ma-0" fluid v-feature="unsupportedFeatures.admin_user">
     <div class="cortx-header pl-10 py-3 col-12 black">
       <div class="cortx-brand-logo"></div>
     </div>
@@ -105,7 +105,7 @@
                     class="cortx-form-group-label"
                     for="Email"
                     id="lblAdminEmail"
-                    >{{ $t("admin.email") }}</label
+                    >{{ $t("admin.email") }}*</label
                   >
                   <div></div>
                   <input
@@ -277,6 +277,7 @@ import {
 import { invalid } from "moment";
 import i18n from "./preboarding.json";
 import CortxMessageDialog from "../widgets/cortx-message-dialog.vue";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-admin-user",
@@ -288,6 +289,8 @@ import CortxMessageDialog from "../widgets/cortx-message-dialog.vue";
   }
 })
 export default class CortxAdminUser extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
+
   @Validations()
   public validations = {
     createAccount: {
@@ -356,7 +359,8 @@ export default class CortxAdminUser extends Vue {
       username: this.$data.createAccount.username,
       password: this.$data.createAccount.password,
       email: this.$data.createAccount.email,
-      alert_notification: this.$data.createAccount.alert_notification
+      alert_notification: this.$data.createAccount.alert_notification,
+      role: 'admin'
     };
     this.$data.isValidResponse = true;
     this.$data.createUserInProgress = true;
@@ -364,7 +368,7 @@ export default class CortxAdminUser extends Vue {
 
     this.$store.dispatch("systemConfig/showLoader", "Creating admin user...");
     try {
-      const res = await Api.post(apiRegister.create_user, queryParams, {
+      const res = await Api.post(apiRegister.csm_user, queryParams, {
         timeout: 60000
       });
       if (res) {
@@ -374,7 +378,7 @@ export default class CortxAdminUser extends Vue {
       }
     } catch (error) {
       this.$data.isValidResponse = false;
-      this.$data.invalidMessage = error.data.message_text;
+      this.$data.invalidMessage = error.data.message;
     } finally {
       this.$data.createUserInProgress = false;
       this.$store.dispatch("systemConfig/hideLoader");

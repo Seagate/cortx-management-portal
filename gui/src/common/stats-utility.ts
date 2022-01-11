@@ -19,62 +19,6 @@ import {
   DiskCapacityDetails
 } from "./../models/performance-stats";
 export default abstract class StatsUtility {
-  // params : metricValue = selected stats metric value.
-  public static getYtwoObject(metricValue: string): any {
-    // metrics object has c3 y2 axis object for each stats parameter.
-    const metrics: any = {
-      throughput_read: { throughput_read: "y2" },
-      throughput_write: { throughput_write: "y2" },
-      throughput_total: { throughput_total: "y2" },
-      latency_average: { latency_average: "y2" },
-      latency_create_object: { latency_create_object: "y2" },
-      latency_delete_object: { latency_delete_object: "y2" },
-      latency_write_object: { latency_write_object: "y2" },
-      latency_read_object: { latency_read_object: "y2" },
-      latency_getkv: { latency_getkv: "y2" },
-      latency_putkv: { latency_putkv: "y2" },
-      latency_deletekv: { latency_deletekv: "y2" },
-      iops_read_object: { iops_read_object: "y2" },
-      iops_write_object: { iops_write_object: "y2" },
-      iops_read_bucket: { iops_read_bucket: "y2" },
-      iops_write_bucket: { iops_write_bucket: "y2" }
-    };
-
-    switch (metricValue) {
-      case "throughput_read":
-        return metrics.throughput_read;
-      case "throughput_write":
-        return metrics.throughput_write;
-      case "throughput_total":
-        return metrics.throughput_total;
-      case "latency_total_request_time":
-        return metrics.latency_total_request_time;
-      case "latency_create_object":
-        return metrics.latency_create_object;
-      case "latency_delete_object":
-        return metrics.latency_delete_object;
-      case "latency_write_object":
-        return metrics.latency_write_object;
-      case "latency_read_object":
-        return metrics.latency_read_object;
-      case "latency_getkv":
-        return metrics.latency_getkv;
-      case "latency_putkv":
-        return metrics.latency_putkv;
-      case "latency_deletekv":
-        return metrics.latency_deletekv;
-      case "iops_read_object":
-        return metrics.iops_read_object;
-      case "iops_write_object":
-        return metrics.iops_write_object;
-      case "iops_read_bucket":
-        return metrics.iops_read_bucket;
-      case "iops_write_bucket":
-        return metrics.iops_write_bucket;
-      default:
-        return {};
-    }
-  }
 
   // params : metricValue = selected stats metric value.
   public static getYaxisLabel(metricValue: string): any {
@@ -183,27 +127,16 @@ export default abstract class StatsUtility {
     chartType: string = "",
     paramList: any[]
   ) {
-    const c3Format: any = { ...payload };
-    const outputFormat: any[][] = [];
-    if (c3Format.metrics !== undefined) {
-      for (
-        let metricNo = 0;
-        metricNo <= c3Format.metrics.length - 1;
-        metricNo++
-      ) {
-        if (c3Format.metrics[metricNo].data !== undefined) {
-          if (metricNo === 0) {
-            c3Format.metrics[metricNo].data[0].unshift("x");
-            outputFormat.push(c3Format.metrics[metricNo].data[0]);
-          }
-          c3Format.metrics[metricNo].data[1].unshift(
-            this.replaceCharInStr(c3Format.metrics[metricNo].name, ".", "_")
-          );
-          outputFormat.push(c3Format.metrics[metricNo].data[1]);
-        }
-      }
+    const outputFormat: any[] = [];
+    if (payload.metrics && payload.metrics.length > 0) {
+      outputFormat.push(["x", ...payload.metrics[0].data[0]]);
+      payload.metrics.forEach((metric: any) => {
+        outputFormat.push([
+          metric.name.replace(".", "_"),
+          ...metric.data[1]
+        ])
+      });
     }
-
     return outputFormat;
   }
 

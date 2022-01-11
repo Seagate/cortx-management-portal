@@ -25,6 +25,8 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import CortxMenuList from "../widgets/cortx-menu-list.vue";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
+
 @Component({
   name: "cortx-maintenance-menu",
   components: {
@@ -38,28 +40,32 @@ export default class CortxMaintenanceMenu extends Vue {
       actionName: "Manage",
       actionClickFunction: "goToSystemMaintenance",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: unsupportedFeatures.cluster_management
     },
     {
       title: "Firmware update",
       actionName: "Manage",
       actionClickFunction: "goToFirmware",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: unsupportedFeatures.fw_update
     },
     {
       title: "Software update",
       actionName: "Manage",
       actionClickFunction: "goToSoftware",
       disabled: false,
-      requiredAccess: "maintenance"
+      requiredAccess: "maintenance",
+      featureId: unsupportedFeatures.sw_update
     },
     {
       title: "Audit log",
       actionName: "View/Download",
       actionClickFunction: "goToAuditLog",
       disabled: false,
-      requiredAccess: "auditlog"
+      requiredAccess: "auditlog",
+      featureId: unsupportedFeatures.auditlog
     },
     // commented as per bug EOS-13871
     // {
@@ -74,7 +80,8 @@ export default class CortxMaintenanceMenu extends Vue {
       actionName: "View",
       actionClickFunction: "goToAbout",
       disabled: false,
-      requiredAccess: ""
+      requiredAccess: "",
+      featureId: unsupportedFeatures.about
     }
   ];
   private goToSystemMaintenance() {

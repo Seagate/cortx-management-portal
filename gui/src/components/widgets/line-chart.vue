@@ -59,22 +59,34 @@
           style="border-bottom: 1px solid lightgrey;"
         >
           <v-tab @click="tabChange(1800)" id="1/2hrstab">
-            <label class="tab-label" id="1/2hrstablbl">{{ $t("widget.1By2Hrs") }}</label>
+            <label class="tab-label" id="1/2hrstablbl">{{
+              $t("widget.1By2Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(3600)" id="onehrstab">
-            <label class="tab-label" id="onehrstablbl">{{ $t("widget.1Hrs") }}</label>
+            <label class="tab-label" id="onehrstablbl">{{
+              $t("widget.1Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(7200)" id="twohrstab">
-            <label class="tab-label" id="twohrstablbl">{{ $t("widget.2Hrs") }}</label>
+            <label class="tab-label" id="twohrstablbl">{{
+              $t("widget.2Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(21600)" id="sixhrstab">
-            <label class="tab-label" id="sixhrstablbl">{{ $t("widget.6Hrs") }}</label>
+            <label class="tab-label" id="sixhrstablbl">{{
+              $t("widget.6Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(43200)" id="twelvehrstab">
-            <label class="tab-label" id="twelvehrstablbl">{{ $t("widget.12Hrs") }}</label>
+            <label class="tab-label" id="twelvehrstablbl">{{
+              $t("widget.12Hrs")
+            }}</label>
           </v-tab>
           <v-tab @click="tabChange(86400)" id="onedaytab">
-            <label class="tab-label" id="onedaytablbl">{{ $t("widget.1Day") }}</label>
+            <label class="tab-label" id="onedaytablbl">{{
+              $t("widget.1Day")
+            }}</label>
           </v-tab>
         </v-tabs>
       </v-col>
@@ -134,7 +146,7 @@ export default class CortxLineChart extends Vue {
         { value: "throughput_read", text: "throughput_read" },
         { value: "throughput_write", text: "throughput_write" },
         { value: "throughput_total", text: "throughput_total" },
-        { value: "latency_average", text: "average_latency" },
+        { value: "latency_average", text: "latency_average" },
         { value: "latency_create_object", text: "latency_create_object" },
         { value: "latency_delete_object", text: "latency_delete_object" },
         { value: "latency_write_object", text: "latency_write_object" },
@@ -221,11 +233,19 @@ export default class CortxLineChart extends Vue {
   // Component Lifecycle created event : prefetching past half an hour of data by default.
   public created() {
     this.initThrouthputStats(1800);
+    document.addEventListener("visibilitychange", this.onBrowerTabChange);
   }
-
+  public onBrowerTabChange() {
+    if (document.hidden) {
+      this.ispollThroughPut = false;
+    } else {
+      this.initThrouthputStats(this.prefetch?this.prefetch:1800);
+    }
+  }
   // Component Lifecycle distroyed event: stoping polling process.
   public destroyed() {
     this.ispollThroughPut = false;
+    document.removeEventListener("visibilitychange", this.onBrowerTabChange);
   }
 
   // Common method prefetch data and initialize polling\
@@ -256,11 +276,6 @@ export default class CortxLineChart extends Vue {
         "performanceStats/getThroughputPerformanceStats",
         queryParams
       );
-      const demoData = [
-        ["x", new Date().getTime()],
-        ["throughput_read", 0],
-        ["throughput_write", 0]
-      ];
       try {
         obj
           .then(data => {
@@ -270,7 +285,8 @@ export default class CortxLineChart extends Vue {
               this.showComponentLoader = false;
               const y1label: string = StatsUtility.getYaxisLabel(this.metric1);
               const y2label: string = StatsUtility.getYaxisLabel(this.metric2);
-              const y2Obj: any = StatsUtility.getYtwoObject(this.metric2);
+              const y2Obj: any = {};
+              y2Obj[this.metric2] = "y2";
               this.chart = c3.generate({
                 // bindto: "#line_chart",
                 bindto: "#" + this.chartId,

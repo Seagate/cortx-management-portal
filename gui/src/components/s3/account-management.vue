@@ -734,7 +734,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import { Validations } from "vuelidate-property-decorators";
 import { required, helpers, sameAs, email } from "vuelidate/lib/validators";
 import { Account } from "../../models/s3";
@@ -750,6 +750,8 @@ import {
 import i18n from "./s3.json";
 import CommonUtils from "../../common/common-utils";
 import { userPermissions } from "../../common/user-permissions-map"
+import { ROLES } from "@/common/consts";
+import LogoutMixin from "./../../mixins/logout";
 
 @Component({
   name: "cortx-account-management",
@@ -758,7 +760,8 @@ import { userPermissions } from "../../common/user-permissions-map"
   },
   components: { CortxAccessKeyManagement }
 })
-export default class CortxAccountManagement extends Vue {
+export default class CortxAccountManagement extends Mixins(LogoutMixin) {
+  public ROLES: any = ROLES;
   public createAccountForm = {
     account: {} as Account,
     confirmPassword: ""
@@ -854,11 +857,7 @@ export default class CortxAccountManagement extends Vue {
       }
     ];
   }
-  public data() {
-    return {
-      constStr: require("./../../common/const-string.json")
-    };
-  }
+
   public async mounted() {
     await this.checkPermissions();
     await this.getAllAccounts();
@@ -872,11 +871,15 @@ export default class CortxAccountManagement extends Vue {
     const res: any = await Api.getAll(apiRegister.s3_account);
     this.accountsList = res && res.data ? res.data.s3_accounts : [];
     this.s3Url = res.data && res.data.s3_urls ? res.data.s3_urls : [];
-    this.isS3UrlNone = this.s3Url.length === 0;
+    this.isS3UrlNone = this.s3Url.length === 0 || this.s3Url.filter((url:any) => url.includes("None")).length !== 0;
     this.$store.dispatch("systemConfig/hideLoader");
   }
 
-  public async checkPermissions() {    
+  public async checkPermissions() {
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      this.$t("s3.account.loading-checking-permissions")
+    );
     const vueInstance: any = this;
     if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete)) {
       this.isDeleteAccountAllowed = true;
@@ -884,11 +887,13 @@ export default class CortxAccountManagement extends Vue {
     if (vueInstance.$hasAccessToCsm(userPermissions.users + userPermissions.list)) {
       const cms_res = await Api.getAll(apiRegister.csm_user + "/" + this.loggedInUserName);
       if (cms_res && cms_res.data) {
-        this.isResetPasswordAllowed = cms_res.data.roles.includes("admin") || cms_res.data.roles.includes("manage");
+        this.isResetPasswordAllowed = cms_res.data.role === this.ROLES.ADMIN
+                                        || cms_res.data.role === this.ROLES.MANAGE;
       }
     } else if (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.update)) {
       this.isUpdatePasswordAllowed = true;
     }
+    this.$store.dispatch("systemConfig/hideLoader");
   }
 
   public async createAccount() {
@@ -914,7 +919,7 @@ export default class CortxAccountManagement extends Vue {
 
   public getCredentialsFileContent(): string {
     return (
-      "Account name,S3 URL,Access key,Secret key\n" +
+      "Account name,S3 URL,Access key,Secret key,Account id,Canonical id\n" +
       this.account.account_name +
       "," +
       `${this.s3Url[0]} ${this.s3Url[1]}` +
@@ -1042,18 +1047,26 @@ export default class CortxAccountManagement extends Vue {
     if (this.$v.resetAccountForm) {
       this.$v.resetAccountForm.$reset();
     }
-    this.showResetPasswordDialog = !this.showResetPasswordDialog;
+    this.showResetPasswordDialog = false;
   }
 
   private async deleteAccount() {
+    const vueInstance: any = this;
     this.$store.dispatch(
       "systemConfig/showLoader",
       "Deleting account " + this.accountToDelete
     );
     await Api.delete(apiRegister.s3_account, this.accountToDelete);
-    this.$store.dispatch("systemConfig/hideLoader");
-    localStorage.removeItem(this.$data.constStr.username);
-    this.$router.push("/login");
+    if (
+      (!vueInstance.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) &&
+      (vueInstance.$hasAccessToCsm(userPermissions.s3accounts + userPermissions.delete))
+    ) {
+      // S3 account user can delete her/his Account
+      this.logout();
+    } else if (vueInstance.$hasAccessToCsm(userPermissions.stats + userPermissions.list)) {
+      // Admin can delete any user account..........
+      this.getAllAccounts();
+    }
   }
 
   private async copyS3Url(url: string) {

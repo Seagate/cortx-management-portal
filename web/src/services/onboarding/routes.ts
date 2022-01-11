@@ -23,7 +23,7 @@ import {
   patchSystemConfig,
   sendTestEmail
 } from "./on-boarding-controller";
-import { checkRequiredParams } from "./../../middleware/validator";
+import { checkApiVersion, checkRequiredParams } from "./../../middleware/validator";
 import HttpStatus from "http-status-codes";
 
 /**
@@ -32,9 +32,10 @@ import HttpStatus from "http-status-codes";
 
 export default [
   {
-    path: "/api/v1/sysconfig",
+    path: "/api/:version/sysconfig",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -47,9 +48,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/sysconfig",
+    path: "/api/:version/sysconfig",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -62,9 +64,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/sysconfig_helpers/email_test",
+    path: "/api/:version/sysconfig_helpers/email_test",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -77,9 +80,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/sysconfig/:config_id",
+    path: "/api/:version/sysconfig/:config_id",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -92,9 +96,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/sysconfig/:config_id",
+    path: "/api/:version/sysconfig/:config_id",
     method: "put",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -107,9 +112,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/sysconfig/:config_id",
+    path: "/api/:version/sysconfig/:config_id",
     method: "patch",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {

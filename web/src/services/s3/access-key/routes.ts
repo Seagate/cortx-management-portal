@@ -15,8 +15,8 @@
  * please email opensource@seagate.com or cortx-questions@seagate.com.
  */
 import { Request, Response, request, response } from "express";
-import { getAccessKeys, createAccessKey, deleteAccessKey } from "./access-key";
-import { checkRequiredParams } from "../../../middleware/validator";
+import { getAccessKeys, createAccessKey, deleteAccessKey, updateAccessKeyStatus } from "./access-key";
+import { checkApiVersion, checkRequiredParams } from "../../../middleware/validator";
 import HttpStatus from "http-status-codes";
 
 /**
@@ -25,9 +25,10 @@ import HttpStatus from "http-status-codes";
 
 export default [
   {
-    path: "/api/v1/s3/access_keys",
+    path: "/api/:version/s3/access_keys",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -40,9 +41,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3/access_keys",
+    path: "/api/:version/s3/access_keys",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -55,12 +57,25 @@ export default [
     ]
   },
   {
-    path: "/api/v1/s3/access_keys/:access_key_name",
+    path: "/api/:version/s3/access_keys/:access_key_name",
     method: "delete",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await deleteAccessKey(req, res);
+        res.status(res.statusCode).send(result);
+      }
+    ]
+  },
+  {
+    path: "/api/:version/s3/access_keys/:access_key_name",
+    method: "patch",
+    handler: [
+      checkApiVersion,
+      checkRequiredParams,
+      async (req: Request, res: Response) => {
+        const result = await updateAccessKeyStatus(req, res);
         res.status(res.statusCode).send(result);
       }
     ]

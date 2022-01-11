@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div class="cortx-p-1">
+  <div class="cortx-p-1" v-feature="unsupportedFeatures.alerts">
     <cortx-tabs :tabsInfo="tabsInfo" />
     <cortx-has-access
       :to="$cortxUserPermissions.alerts + $cortxUserPermissions.update"
@@ -101,7 +101,7 @@
             <div>
               <span>{{ $t("alerts.resourceType") }}: {{ props.item.module_name }}</span><br />
               <span>{{ $t("alerts.resourceId") }}: {{ props.item.resource_id }} | {{ $t("alerts.state") }}: {{ props.item.state }}</span><br />
-              <span>{{ $t("alerts.nodeId") }}: {{ props.item.node_id }}</span>
+              <span>{{ $t("alerts.host_name") }}: {{ props.item.hostname }}</span>
             </div>
             <div>
               <span v-if="props.item.module_type === 'logical_volume'"
@@ -119,18 +119,18 @@
               <span v-else-if="props.item.module_type === 'current'"
                 >{{ $t("alerts.sensorName") }}: {{ props.item.name }}</span
               >
-              <span v-else-if="props.item.module_name === 'enclosure:fru:psu'"
+              <span v-else-if="props.item.module_name === 'enclosure:hw:psu'"
                 >{{ $t("alerts.location") }}: {{ props.item.location }}</span
               >
               <span
                 v-else-if="
-                  props.item.module_name === 'enclosure:fru:fan' ||
-                    props.item.module_type === 'enclosure:fru:sideplane'
+                  props.item.module_name === 'enclosure:hw:fan' ||
+                    props.item.module_type === 'enclosure:hw:sideplane'
                 "
                 >{{ $t("common.name") }}: {{ props.item.name }} | {{ $t("alerts.location") }}:
                 {{ props.item.location }}</span
               >
-              <span v-else-if="props.item.module_name === 'enclosure:fru:disk'"
+              <span v-else-if="props.item.module_name === 'enclosure:hw:disk'"
                 >{{ $t("alerts.serialNumber") }}: {{ props.item.serial_number }} | {{ $t("alerts.size") }}:
                 {{ props.item.volume_size }}</span
               >
@@ -146,35 +146,8 @@
           <td>
             <div
               style="margin: auto;"
-              v-if="
-                props.item.severity === alertStatus.critical ||
-                  props.item.severity === alertStatus.error || 
-                  props.item.severity === alertStatus.alert
-              "
-              v-bind:title="props.item.severity"
-              class="cortx-status-chip cortx-chip-alert"
-            ></div>
-            <div
-              style="margin: auto;"
-              title="warning"
-              v-else-if="props.item.severity === alertStatus.warning"
-              class="cortx-status-chip cortx-chip-warning"
-            ></div>
-            <div
-              style="margin: auto;"
-              v-if="props.item.severity === alertStatus.informational"
-              title="info"
-              class="cortx-status-chip cortx-chip-information"
-            ></div>
-             <div
-              style="margin: auto;"
-              v-if="(props.item.severity !== alertStatus.informational) 
-              && (props.item.severity !== alertStatus.warning)
-              && (props.item.severity !== alertStatus.critical && 
-              props.item.severity !== alertStatus.error 
-              && props.item.severity !== alertStatus.alert)"
               :title="props.item.severity"
-              class="cortx-status-chip cortx-chip-others"
+              :class="getAlertSeverityStyleClass(props.item.severity)"
             ></div>
           </td>
           <td v-cortx-alert-tbl-description="props.item"></td>
@@ -244,6 +217,8 @@ import CortxTabs, { TabsInfo } from "./../widgets/cortx-tabs.vue";
 import CortxAlertComments from "./alert-comments.vue";
 import { alertTblDescriptionDirective } from "./alert-description-directive";
 import i18n from "./alert.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
+import alertStatus from "../../common/const-string.json";
 
 @Component({
   name: "cortx-alert-large",
@@ -257,6 +232,8 @@ export default class CortxAlertLarge extends Mixins(AlertsMixin) {
   public isShowCommentsDialog: boolean = false;
   public alertIdForComments: string = "";
   public showConfirmationDialog: boolean = false;
+  public unsupportedFeatures = unsupportedFeatures;
+  public alertStatus = alertStatus;
   public tabsInfo: TabsInfo = {
     tabs: [
       { id: 1, label: "New alerts", show: true },
@@ -325,12 +302,6 @@ export default class CortxAlertLarge extends Mixins(AlertsMixin) {
 
   get sortInfo() {
     return this.$store.getters["alerts/getSortInfo"];
-  }
-
-  public data() {
-    return {
-      alertStatus: require("./../../common/const-string.json")
-    };
   }
 
   public showAlertCommentsDialog(alertId: string) {

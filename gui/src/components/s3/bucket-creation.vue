@@ -190,9 +190,9 @@
         </v-system-bar>
         <v-card-title class="title mt-5">
           <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
-          <span id="bucket-created-success-mgs">{{
-            $t("s3.bucket.created-successfully")
-          }}</span>
+          <span id="bucket-created-success-mgs">
+            {{ bucketName }} {{ $t("s3.bucket.created-successfully") }}
+          </span>
           <table class="mt-2 ml-9 cortx-text-md">
             <tr id="bucket-url-tr" v-if="!isBucketUrlNone">
               <td
@@ -431,7 +431,8 @@ export default class CortxBucketCreation extends Vue {
       apiRegister.s3_bucket,
       this.createBucketForm.bucket
     );
-    this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "NA";
+    this.bucketName = res && res.data.bucket_name ? res.data.bucket_name : "";
+    this.bucketUrl = res && res.data.bucket_url ? res.data.bucket_url : "/None/";
     if (this.bucketUrl.includes("/None/")) {
       this.isBucketUrlNone = true;
     }
@@ -488,6 +489,7 @@ export default class CortxBucketCreation extends Vue {
         apiRegister.bucket_policy + "/" + bucketname
       );
       this.policyJSON = JSON.stringify(res.data, null, 4);
+      this.policyJSON ?  this.noBucketPolicy = false :  this.noBucketPolicy = true;
     } catch (error) {
       this.policyJSON = "";
       this.noBucketPolicy = true;

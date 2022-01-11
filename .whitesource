@@ -1,6 +1,9 @@
 {
   "scanSettings": {
-    "baseBranches": []
+    "configMode": "LOCAL",
+    "configExternalURL": "",
+    "projectToken": "",
+    "baseBranches": ["main","kubernetes"]
   },
   "checkRunSettings": {
     "vulnerableCheckRunConclusionLevel": "failure",

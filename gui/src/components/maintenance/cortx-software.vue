@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div>
+  <div v-feature="unsupportedFeatures.sw_update">
     <div class="cortx-text-lg cortx-text-bold" id="lblUpdateHotfix">
       {{ $t("maintenance.updateSoftware") }}
     </div>
@@ -128,6 +128,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "../../services/api";
 import apiRegister from "../../services/api-register";
 import i18n from "./maintenance.json";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-hotfix",
@@ -146,6 +147,8 @@ export default class CortxHotfix extends Vue {
     isValid: false
   };
   public isSystemStable: boolean = true;
+  public unsupportedFeatures = unsupportedFeatures;
+
   public async mounted() {
     await this.getSyetmStatus();
     await this.getLastUpgradeStatus();

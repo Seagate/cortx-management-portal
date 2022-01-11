@@ -25,29 +25,38 @@
               : $cortxUserPermissions.list)
         "
       >
-        <router-link
-          :to="navItem.path"
-          tag="div"
-          class="cortx-nav-item"
-          active-class="cortx-nav-item-active"
-          :key="navItem.title"
-        >
-          <img class="cortx-nav-item-icon-default" :src="navItem.iconDefault" />
-          <img class="cortx-nav-item-icon-active" :src="navItem.iconActive" />
-          <label  :id="navItem.title">{{ navItem.title }}</label>
-        </router-link>
+        <v-tooltip right max-width="300"
+          v-feature="navItem.featureId">
+          <template v-slot:activator="{ on }">
+            <router-link
+              :to="navItem.path"
+              tag="div"
+              class="cortx-nav-item"
+              active-class="cortx-nav-item-active"
+              :key="navItem.title"
+            >
+              <img v-on="on" class="cortx-nav-item-icon-default" :src="navItem.iconDefault" />
+              <img v-on="on" class="cortx-nav-item-icon-active" :src="navItem.iconActive" />
+              <label v-on="on" :id="navItem.title">{{ navItem.title }}</label>
+            </router-link>
+          </template>
+          <span :id="navItem.title">{{ navItem.title }}</span>
+        </v-tooltip>
       </cortx-has-access>
     </div>
     <div class="cortx-nav-bottom" v-if="brandName">
       <div class="cortx-brand-text">{{ $t("common.poweredBy") }}</div>
-      <img class="cortx-nav-item-icon-default cortx-img-responsive"
-        :src="require('@/assets/Cortx-logo-GRN.svg/')" />
+      <img
+        class="cortx-nav-item-icon-default cortx-img-responsive"
+        :src="require('@/assets/Cortx-logo-GRN.svg/')"
+      />
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import i18n from "../../i18n";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
   name: "cortx-nav-bar"
@@ -67,21 +76,24 @@ export default class CortxNavBar extends Vue {
       path: "/health",
       iconDefault: require("@/assets/navigation/health-grey.svg"),
       iconActive: require("@/assets/navigation/health-white.svg"),
-      requiredAccess: "sysconfig"
+      requiredAccess: "sysconfig",
+      featureId: unsupportedFeatures.health
     },
     {
       title: "Manage",
       path: "/manage",
       iconDefault: require("@/assets/navigation/manage-grey.svg"),
       iconActive: require("@/assets/navigation/manage-white.svg"),
-      requiredAccess: "s3accounts"
+      requiredAccess: "s3accounts",
+      featureId: unsupportedFeatures.manage
     },
     {
       title: "Lyve Pilot",
       path: "/ldp",
       iconDefault: require("@/assets/navigation/udx-grey.svg"),
       iconActive: require("@/assets/navigation/udx-white.svg"),
-      requiredAccess: "lyve_pilot"
+      requiredAccess: "lyve_pilot",
+      featureId: unsupportedFeatures.lyve_pilot
     },
     {
       title: "Settings",
@@ -101,6 +113,20 @@ export default class CortxNavBar extends Vue {
 
   public mounted() {
     this.brandName = process.env.VUE_APP_BRANDNAME !== "CORTX";
+    const vueInstance: any = this;
+    if (
+      !vueInstance.$hasAccessToCsm(
+        vueInstance.$cortxUserPermissions.stats +
+          vueInstance.$cortxUserPermissions.list
+      ) &&
+      vueInstance.$hasAccessToCsm(
+        vueInstance.$cortxUserPermissions.s3accounts +
+          vueInstance.$cortxUserPermissions.delete
+      )
+    ) {
+      const foundIndex = this.navItems.findIndex(x => x.path === "/manage");
+      this.navItems[foundIndex].path = "/manage/s3";
+    }
   }
 
   get alertNotifications() {
@@ -111,11 +137,11 @@ export default class CortxNavBar extends Vue {
 <style lang="scss" scoped>
 .cortx-nav {
   position: fixed;
-  top: 50px;
+  top: 60px;
   left: 0;
   bottom: 0;
   z-index: 5;
-  width: 8.75em;
+  width: 11.25em;
   background: #000000;
 }
 .cortx-nav-item {
@@ -123,23 +149,25 @@ export default class CortxNavBar extends Vue {
   flex-wrap: nowrap;
   background-color: #000000;
   color: #757575;
-  height: 60px;
+  height: 50px;
   align-items: center;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
   line-height: 20px;
-  padding-left: 10px;
+  padding-left: 20px;
   padding-right: 10px;
+  border-left: 5px solid #000000;
   cursor: pointer;
 }
 .cortx-nav-item > label {
-  margin-left: 5px;
+  margin-left: 10px;
   cursor: pointer;
 }
 .cortx-nav-item-active {
-  background: #454545 !important;
+  background: #262626 !important;
   color: #ffffff !important;
+  border-left: 5px solid #6EBE49;
 }
 .cortx-nav-item-icon-default {
   display: block;
@@ -158,11 +186,13 @@ export default class CortxNavBar extends Vue {
   width: 100%;
   max-width: 100%;
   height: auto;
-  padding: 5px;
+  padding: 5px 20px 30px 20px;
 }
 .cortx-brand-text {
   color: #6ebe49;
   margin: auto 5px;
+  padding-left: 15px;
+  font-size: 18px;
 }
 .cortx-nav-bottom {
   position: absolute;

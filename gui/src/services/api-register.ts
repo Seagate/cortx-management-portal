@@ -14,19 +14,19 @@
 * For any questions about this software or licensing,
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
-export const version = "v1";
+export const version = "v2";
 
 export default {
   all_alerts: `/api/${version}/alerts`,
   alerts_history: `/api/${version}/alerts_history`,
   systemconfig: `api/${version}/systemconfig`,
-  create_user: `api/${version}/preboarding/user`,
   login: `api/${version}/login`,
   csm_user: `api/${version}/csm/users`,
   logout: `/api/${version}/logout`,
   udx_registration: `api/${version}/udx_device/registration`,
   udx_registration_token: `api/${version}/udx_device/registration_token`,
   udx_device: `api/${version}/udx_device`,
+  s3_url: `/api/${version}/s3`,
   s3_account: `/api/${version}/s3_accounts`,
   s3_iam_user: `/api/${version}/iam_users`,
   s3_bucket: `/api/${version}/s3/bucket`,
@@ -39,6 +39,7 @@ export default {
   sysconfig: `api/${version}/sysconfig`,
   bucket_policy: `/api/${version}/s3/bucket_policy`,
   user_permissions: `/api/${version}/permissions`,
+  unsupported_features: `/api/${version}/unsupported_features`,
   addlicensekey: `/api/${version}/license/onboarding`,
   hotfix_status: `/api/${version}/update/hotfix/status`,
   hotfix_upload: `/api/${version}/update/hotfix/upload`,
@@ -67,7 +68,10 @@ export default {
   health_components: `api/${version}/system/health/components`,
   system_status: `/api/${version}/system/status`,
   health_resources: `api/${version}/system/health/resources`,
+  health_cluster: `api/${version}/system/health/cluster`,
   appliance_info: `/api/${version}/appliance_info`,
   udx_saas: `/api/${version}/udx_saas`,
-  ssl_details: `/api/${version}/tls/bundle/details`
+  ssl_details: `/api/${version}/tls/bundle/details`,
+  manage_resource: `/api/${version}/system/management`,
+  cluster_status: `/api/${version}/system/management/cluster_status`
 };

@@ -53,15 +53,13 @@ export abstract class Api {
             var query_index = urle.indexOf('?');
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
+            logger.info('headers:--------> ' + JSON.stringify(req.headers))
+            var headers = Api.setHeaders(req);
 
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
             const options = {
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'authorization': authorization
-                }
+                headers: headers
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -84,15 +82,12 @@ export abstract class Api {
             var query_index = urle.indexOf('?');
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
-
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            logger.info('headers:--------> ' + JSON.stringify(req.headers))
+            var headers = Api.setHeaders(req);
             const options = {
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'authorization': authorization
-                }
+                headers: headers
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleFileResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = err.message;
@@ -118,15 +113,12 @@ export abstract class Api {
             var query_index = urle.indexOf('?');
             var query_string = (query_index>=0)?urle.slice(query_index+1):'';
             geturl += "?" + query_string;
-
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            logger.info('headers:--------> ' + JSON.stringify(req.headers))
+            var headers = Api.setHeaders(req);
             const options = {
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'authorization': authorization
-                }
+                headers: headers
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('GET: ' + geturl);
             http_agent.get(geturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -149,16 +141,14 @@ export abstract class Api {
             console.log("PATCH: " + patchurl);
             // -- end --
             
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            logger.info('headers:--------> ' + JSON.stringify(req.headers))
+            var headers = Api.setHeaders(req);
+
             const options = {
                 method: "PATCH",
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization
-                }
+                headers: headers
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('PATCH: ' + patchurl);
             let httpRequest = http_agent.request(patchurl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -182,17 +172,14 @@ export abstract class Api {
             }
             console.log("put: " + puturl);
             // -- end --
-            
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            logger.info('headers:--------> ' + JSON.stringify(req.headers))
+            var headers = Api.setHeaders(req);
+
             const options = {
                 method: "put",
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization
-                }
+                headers: headers
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('PUT: ' + puturl);
             let httpRequest = http_agent.request(puturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -213,17 +200,14 @@ export abstract class Api {
             }
             console.log("POST: " + posturl);
             // -- end --
-            
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            logger.info('headers:--------> ' + JSON.stringify(req.headers))
+            var headers = Api.setHeaders(req);
+
             const options = {
                 method: "POST",
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization
-                }
+                headers: headers
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('POST: ' + posturl);
             let httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 console.log("1. " + err);
@@ -265,12 +249,16 @@ export abstract class Api {
                 const form = new FormData();
                 form.append(name, fs.createReadStream(file.path), {filename: file.originalFilename});
                 const headers = form.getHeaders();
-                headers['authorization'] = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
-                
+                const client_ip = Api.getClientIP(req);
+                headers['authorization'] = req.headers.authorization ? req.headers.authorization : "";
+                headers['x-forwarded-host'] =  req.headers['host'] ? req.headers['host'] : "";
+                headers['x-forwarded-proto'] =  req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : "";
+                headers['x-forwarded-for'] = client_ip;
                 const options = {
                     method: 'POST',
                     headers: headers,
                 };
+                logger.info('options headers:--------> ' + JSON.stringify(headers));
                 const httpRequest = http_agent.request(posturl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                     let error = new HTTPError.HTTP500Error(err.message);
                     reject(error);
@@ -292,18 +280,15 @@ export abstract class Api {
             }
             console.log("DELETE: " + deleteUrl);
             // -- end --
-            
-            const requestData = req && req.body ? JSON.stringify(req.body) : "";
-            let authorization = req.headers ? (req.headers.authorization ? req.headers.authorization : "") : "";
+            logger.info('headers:--------> ' + JSON.stringify(req.headers))
+            var headers = Api.setHeaders(req);
+
+            const requestData = req && Object.keys(req.body).length > 0 ? JSON.stringify(req.body) : "";
             const options = {
                 method: "DELETE",
-                headers: {
-                    'user-agent':req.headers ? ( req.headers['user-agent'] ? req.headers['user-agent'] : ""): "",
-                    'Content-Type': 'application/json',
-                    'Content-Length': requestData.length,
-                    'authorization': authorization
-                }
+                headers: headers
             }
+            logger.info('options headers:--------> ' + JSON.stringify(options.headers))
             logger.info('DELETE: ' + deleteUrl);
             let httpRequest = http_agent.request(deleteUrl, options, Api.handleResponse(resolve, reject, resp)).on("error", (err: any) => {
                 let error = new HTTPError.HTTP500Error(err.message);
@@ -342,6 +327,37 @@ export abstract class Api {
                 }
             });
         };
+    }
+    private static getClientIP(req: Request) {
+        var client_ip = (typeof req.headers['x-forwarded-for'] === 'string'
+                && req.headers['x-forwarded-for'].split(',').shift())
+                || req.connection?.remoteAddress;
+        if(client_ip) {
+            client_ip = client_ip.replace("::ffff:", "")
+        }
+        return client_ip;
+    }
+    private static setHeaders(req: Request) {
+        const requestData = req.body ? JSON.stringify(req.body) : "";
+        const client_ip = Api.getClientIP(req);
+        let contentLength = 0;
+        try {
+            if(Object.keys(JSON.parse(requestData)).length > 0)
+                contentLength = requestData.length
+        } catch(e){
+            logger.error("Error during parsing request body " + requestData + " error:" + e);
+        }
+        
+        var headers = {
+            'Content-Type': 'application/json',
+            'Content-Length': contentLength,
+            'authorization': req.headers.authorization ? req.headers.authorization : "",
+            'user-agent': req.headers['user-agent'] ? req.headers['user-agent'] : "",
+            'x-forwarded-host':  req.headers['host'] ? req.headers['host'] : "",
+            'x-forwarded-proto': req.headers['x-forwarded-proto'] ? req.headers['x-forwarded-proto'] : "",
+            'x-forwarded-for': client_ip            
+        };
+        return headers;        
     }
     private static handleFileResponse(resolve: (value?: unknown) => void, reject: (value?: unknown) => void, resp: Response): any {
         return (req: any) => {

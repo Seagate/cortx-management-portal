@@ -16,14 +16,15 @@
 */
 import { Request, Response, request, response } from "express";
 import { sslCertificateUpload, sslCertificateInstall, certificateAvailability, certificateDetails } from "./ssl-controller";
-import { checkRequiredParams } from "../../middleware/validator";
+import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
 export default [
     {
-        path: "/api/v1/tls/bundle/upload",
+        path: "/api/:version/tls/bundle/upload",
         method: "post",
         handler: [
+            checkApiVersion,
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await sslCertificateUpload(req, res);
@@ -32,9 +33,10 @@ export default [
         ]
     },
     {
-        path: "/api/v1/tls/bundle/install",
+        path: "/api/:version/tls/bundle/install",
         method: "post",
         handler: [
+            checkApiVersion,
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await sslCertificateInstall(req, res);
@@ -43,9 +45,10 @@ export default [
         ]
     },
     {
-        path: "/api/v1/tls/bundle/status",
+        path: "/api/:version/tls/bundle/status",
         method: "get",
         handler: [
+            checkApiVersion,
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await certificateAvailability(req, res);
@@ -54,9 +57,10 @@ export default [
         ]
     },
     {
-        path: "/api/v1/tls/bundle/details",
+        path: "/api/:version/tls/bundle/details",
         method: "get",
         handler: [
+            checkApiVersion,
             checkRequiredParams,
             async (req: Request, res: Response) => {
                 const result = await certificateDetails(req, res);

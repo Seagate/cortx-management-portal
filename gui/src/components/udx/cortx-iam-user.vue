@@ -15,181 +15,265 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 <template>
-  <div v-if="isUserAlreadyCreated">
-    {{ $t("udx-registration.userAlreadyExist") }}:
-    {{ registrationForm.iamUsername }}
-    <br />
-    <div class="mb-2">
-      <label
-        class="cortx-form-group-label cortx-cursor-pointer create-new-user"
-        @click="createANewUser()"
-      >{{ $t("udx-registration.createIAMUser") }}</label>
-    </div> 
-    <button
-      class="cortx-btn-primary"
-      @click="continueToNextStep()"
-      type="button"
-    >
-      {{ $t("common.continue") }}
-    </button>
-    <button
-      class="cortx-btn-secondary ml-5"
-      @click="backToPreviousStep()"
-      type="button"
-    >
-      {{ $t("common.back") }}
-    </button>
-  </div>
-  <form autocomplete="off" id="create-iam-user" v-else>
-    <v-row>
-      <v-col class="py-0 pr-0">
-        <div
-          class="cortx-form-group"
-          :class="{
-            'cortx-form-group--error': $v.registrationForm.iamUsername.$error
-          }"
+  <div>
+    <div v-if="isUserAlreadyCreated">
+      {{ $t("udx-registration.userAlreadyExist") }}:
+      {{ registrationForm.iamUsername }}
+      <br />
+      <div class="mb-2">
+        <label
+          class="cortx-form-group-label cortx-cursor-pointer create-new-user"
+          @click="createANewUser()"
+          >{{ $t("udx-registration.createIAMUser") }}</label
         >
-          <label
-            class="cortx-form-group-label"
-            for="iamUsername"
-            id="udx-iamuserlbl"
+      </div>
+      <button
+        class="cortx-btn-primary"
+        @click="continueToNextStep()"
+        type="button"
+      >
+        {{ $t("common.continue") }}
+      </button>
+      <button
+        class="cortx-btn-secondary ml-5"
+        @click="backToPreviousStep()"
+        type="button"
+      >
+        {{ $t("common.back") }}
+      </button>
+    </div>
+    <form autocomplete="off" id="create-iam-user">
+      <v-row>
+        <v-col class="py-0 pr-0">
+          <div
+            class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error': $v.registrationForm.iamUsername.$error
+            }"
           >
-            <cortx-info-tooltip
-              :label="`${$t('login.user-name-placeholder')}*`"
-              :message="accountNameTooltipMessage"
-            />
-          </label>
-          <input
-            class="cortx-form__input_text"
-            type="text"
-            id="iamUsername"
-            name="iamUsername"
-            autocomplete="off"
-            v-model.trim="registrationForm.iamUsername"
-            @input="$v.registrationForm.iamUsername.$touch"
-          />
-          <div class="cortx-form-group-label cortx-form-group-error-msg">
             <label
-              id="udx-iamusername-required"
-              v-if="
-                $v.registrationForm.iamUsername.$dirty &&
-                  !$v.registrationForm.iamUsername.required
-              "
-              >{{ $t("udx-registration.username-required") }}</label
+              class="cortx-form-group-label"
+              for="iamUsername"
+              id="udx-iamuserlbl"
             >
+              <cortx-info-tooltip
+                :label="`${$t('login.user-name-placeholder')}*`"
+                :message="accountNameTooltipMessage"
+              />
+            </label>
+            <input
+              class="cortx-form__input_text"
+              type="text"
+              id="iamUsername"
+              name="iamUsername"
+              autocomplete="off"
+              v-model.trim="registrationForm.iamUsername"
+              @input="$v.registrationForm.iamUsername.$touch"
+            />
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label
+                id="udx-iamusername-required"
+                v-if="
+                  $v.registrationForm.iamUsername.$dirty &&
+                    !$v.registrationForm.iamUsername.required
+                "
+                >{{ $t("udx-registration.username-required") }}</label
+              >
+              <label
+                id="udx-iamusername-invalid"
+                v-else-if="
+                  $v.registrationForm.iamUsername.$dirty &&
+                    !$v.registrationForm.iamUsername.accountNameRegex
+                "
+                >{{ $t("udx-registration.invalid-user") }}</label
+              >
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col class="py-0 pr-0">
+          <div
+            class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error':
+                $v.registrationForm.iamUserPassword.$error
+            }"
+          >
             <label
-              id="udx-iamusername-invalid"
-              v-else-if="
-                $v.registrationForm.iamUsername.$dirty &&
-                  !$v.registrationForm.iamUsername.accountNameRegex
+              class="cortx-form-group-label"
+              for="iamUserPassword"
+              id="udx-iamuserpasswordlbl"
+            >
+              <cortx-info-tooltip
+                :label="`${$t('login.password-placeholder')}*`"
+                :message="passwordTooltipMessage"
+              />
+            </label>
+            <input
+              class="cortx-form__input_text"
+              type="password"
+              id="iamUserPassword"
+              name="iamUserPassword"
+              autocomplete="off"
+              v-model.trim="registrationForm.iamUserPassword"
+              @input="$v.registrationForm.iamUserPassword.$touch"
+            />
+            <div class="cortx-form-group-label cortx-form-group-error-msg">
+              <label
+                id="udx-iampassword-required"
+                v-if="
+                  $v.registrationForm.iamUserPassword.$dirty &&
+                    !$v.registrationForm.iamUserPassword.required
+                "
+                >{{ $t("udx-registration.password-required") }}</label
+              >
+              <label
+                id="udx-iampassword-invalid"
+                v-else-if="
+                  $v.registrationForm.iamUserPassword.$dirty &&
+                    !$v.registrationForm.iamUserPassword.passwordRegex
+                "
+                >{{ $t("udx-registration.invalid-password") }}</label
+              >
+            </div>
+          </div>
+        </v-col>
+        <v-col class="py-0 pr-0">
+          <div
+            class="cortx-form-group"
+            :class="{
+              'cortx-form-group--error':
+                $v.registrationForm.iamUserConfirmPassword.$error
+            }"
+          >
+            <label
+              class="cortx-form-group-label"
+              for="iamUserConfirmPassword"
+              id="udx-confirm-passwordlbl"
+              >{{ $t("udx-registration.confirm-pass") }}*</label
+            >
+            <input
+              class="cortx-form__input_text"
+              type="password"
+              id="iamUserConfirmPassword"
+              name="iamUserConfirmPassword"
+              autocomplete="off"
+              v-model.trim="registrationForm.iamUserConfirmPassword"
+              @input="$v.registrationForm.iamUserConfirmPassword.$touch"
+              v-on:keyup.enter="createUser()"
+            />
+            <span
+              class="cortx-form-group-label cortx-form-group-error-msg"
+              v-if="
+                $v.registrationForm.iamUserConfirmPassword.$dirty &&
+                  !$v.registrationForm.iamUserConfirmPassword
+                    .sameAsIAMUserPassword
               "
-              >{{ $t("udx-registration.invalid-user") }}</label
+              >{{ $t("udx-registration.password-match") }}</span
             >
           </div>
-        </div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="py-0 pr-0">
-        <div
-          class="cortx-form-group"
-          :class="{
-            'cortx-form-group--error':
-              $v.registrationForm.iamUserPassword.$error
-          }"
-        >
-          <label
-            class="cortx-form-group-label"
-            for="iamUserPassword"
-            id="udx-iamuserpasswordlbl"
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <button
+            class="cortx-btn-primary"
+            type="button"
+            @click="createUser()"
+            :disabled="$v.registrationForm.$invalid"
           >
-            <cortx-info-tooltip
-              :label="`${$t('login.password-placeholder')}*`"
-              :message="passwordTooltipMessage"
-            />
-          </label>
-          <input
-            class="cortx-form__input_text"
-            type="password"
-            id="iamUserPassword"
-            name="iamUserPassword"
-            autocomplete="off"
-            v-model.trim="registrationForm.iamUserPassword"
-            @input="$v.registrationForm.iamUserPassword.$touch"
-          />
-          <div class="cortx-form-group-label cortx-form-group-error-msg">
-            <label
-              id="udx-iampassword-required"
-              v-if="
-                $v.registrationForm.iamUserPassword.$dirty &&
-                  !$v.registrationForm.iamUserPassword.required
-              "
-              >{{ $t("udx-registration.password-required") }}</label
-            >
-            <label
-              id="udx-iampassword-invalid"
-              v-else-if="
-                $v.registrationForm.iamUserPassword.$dirty &&
-                  !$v.registrationForm.iamUserPassword.passwordRegex
-              "
-              >{{ $t("udx-registration.invalid-password") }}</label
-            >
-          </div>
-        </div>
-      </v-col>
-      <v-col class="py-0 pr-0">
-        <div
-          class="cortx-form-group"
-          :class="{
-            'cortx-form-group--error':
-              $v.registrationForm.iamUserConfirmPassword.$error
-          }"
-        >
-          <label
-            class="cortx-form-group-label"
-            for="iamUserConfirmPassword"
-            id="udx-confirm-passwordlbl"
-            >{{ $t("udx-registration.confirm-pass") }}*</label
+            {{ $t("common.create-btn") }}
+          </button>
+          <button
+            class="cortx-btn-secondary ml-5"
+            @click="backToPreviousStep()"
+            type="button"
           >
-          <input
-            class="cortx-form__input_text"
-            type="password"
-            id="iamUserConfirmPassword"
-            name="iamUserConfirmPassword"
-            autocomplete="off"
-            v-model.trim="registrationForm.iamUserConfirmPassword"
-            @input="$v.registrationForm.iamUserConfirmPassword.$touch"
-            v-on:keyup.enter="createUser()"
+            {{ $t("common.back") }}
+          </button>
+        </v-col>
+      </v-row>
+    </form>
+
+    <v-dialog
+      v-model="showUserDetailsDialog"
+      persistent
+      max-width="790"
+      id="iam-opendialogbox"
+    >
+      <v-card>
+        <v-card-title class="title mt-6 ml-3">
+          <img class="mr-2" :src="require('@/assets/resolved-default.svg')" />
+          <span id="iam-acceskeytext">{{ $t("s3.iam.user-key-access") }}</span>
+        </v-card-title>
+        <v-divider />
+        <div class="mt-2 pl-7" style="height: 30px">
+          <img
+            class="cortx-float-l mr-1"
+            :src="require('@/assets/actions/warning-orange.svg')"
           />
           <span
-            class="cortx-form-group-label cortx-form-group-error-msg"
-            v-if="
-              $v.registrationForm.iamUserConfirmPassword.$dirty &&
-                !$v.registrationForm.iamUserConfirmPassword
-                  .sameAsIAMUserPassword
-            "
-            >{{ $t("udx-registration.password-match") }}</span
+            id="iam-csvfileinfo"
+            class="cortx-float-l cortx-text-md cortx-text-bold cortx-text-warning mt-1"
+            >{{ $t("s3.download-csv-dialog.message") }}</span
           >
         </div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <button class="cortx-btn-primary" type="button" 
-        @click="createUser()"
-        :disabled="$v.registrationForm.$invalid">
-          {{ $t("common.create-btn") }}
-        </button>
-        <button
-          class="cortx-btn-secondary ml-5"
-          @click="backToPreviousStep()"
-          type="button"
-        >
-          {{ $t("common.back") }}
-        </button>
-      </v-col>
-    </v-row>
-  </form>
+        <table class="mt-2 ml-7 cortx-text-md" id="iam-user-data">
+          <tr id="iam-username">
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.access-key.table-headers.user_name") }}
+            </td>
+            <td class="py-2">{{ user.user_name }}</td>
+          </tr>
+          <tr id="iam-userid">
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.access-key.table-headers.user_id") }}
+            </td>
+            <td class="py-2">{{ user.user_id }}</td>
+          </tr>
+          <!-- <tr v-if="!isS3UrlNone">
+              <td class="py-2 cortx-text-bold credentials-item-label">
+                {{ $t("s3.account.s3-url") }}
+              </td>
+              <td class="py-2">{{ s3Url[0] }}, {{ s3Url[1] }}</td>
+            </tr> -->
+          <tr id="iamARN">
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.access-key.table-headers.arn") }}
+            </td>
+            <td class="py-2">{{ user.arn }}</td>
+          </tr>
+          <tr id="iam-accesskeyid">
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.access-key.table-headers.access_key") }}
+            </td>
+            <td class="py-2">{{ user.access_key_id }}</td>
+          </tr>
+          <tr id="iam-secretkey">
+            <td class="py-2 cortx-text-bold credentials-item-label">
+              {{ $t("s3.access-key.table-headers.secret_key") }}
+            </td>
+            <td class="py-2">{{ user.secret_key }}</td>
+          </tr>
+        </table>
+
+        <!-- <div v-if="isS3UrlNone" class="pl-7">
+            {{ $t("s3.account.url-note") }}
+          </div> -->
+        <v-card-actions>
+          <a
+            id="iam-downloadcsvfile"
+            class="ma-5 cortx-btn-primary cortx-download-csv-link"
+            :href="credentialsFileContent"
+            download="credentials.csv"
+            @click="downloadAndClose()"
+            >{{ $t("s3.account.download-as-csv") }}</a
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from "vue-property-decorator";
@@ -248,6 +332,7 @@ export default class CortxIamUser extends Vue {
 
   constructor() {
     super();
+    this.showUserDetailsDialog = false;
     this.user = {} as IAMUser;
   }
 
@@ -318,6 +403,13 @@ export default class CortxIamUser extends Vue {
 
     this.getPolicyDetails();
     this.isUserAlreadyCreated = true;
+  }
+
+  public async downloadAndClose() {
+    this.$store.dispatch("systemConfig/showLoader", "Logging in...");
+    this.isCredentialsFileDownloaded = true;
+    this.showUserDetailsDialog = false;
+    this.$store.dispatch("systemConfig/hideLoader");
     this.$emit(
       "onChange",
       false,
@@ -421,7 +513,13 @@ export default class CortxIamUser extends Vue {
 </script>
 <style lang="scss" scoped>
 .create-new-user {
- color: #6ebe49; 
- text-decoration: underline;
+  color: #6ebe49;
+  text-decoration: underline;
+}
+.cortx-download-csv-link {
+  text-decoration: none;
+  display: inline-block;
+  padding-top: 10px;
+  color: #ffffff;
 }
 </style>

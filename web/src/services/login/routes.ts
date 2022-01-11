@@ -15,28 +15,28 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 import { Request, Response, request, response } from "express";
-import { saveUser, logout, getAdminUser, license } from "./login-controller";
-import { checkRequiredParams } from "../../middleware/validator";
+import { logout, getAdminUser, license } from "./login-controller";
+import { checkApiVersion, checkRequiredParams } from "../../middleware/validator";
 import HttpStatus from 'http-status-codes';
 
 export default [
   {
-    path: "/api/v1/login",
+    path: "/api/:version/login",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
-        const result = await getAdminUser(req, res).then((response: any) =>{
-          console.log(response.headers);
-        });;
+        const result = await getAdminUser(req, res);
         res.status(res.statusCode).send(result);
       }
     ]
   },
   {
-    path: "/api/v1/logout",
+    path: "/api/:version/logout",
     method: "post",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await logout(req, res);
@@ -45,20 +45,10 @@ export default [
     ]
   },
   {
-    path: "/api/v1/preboarding/user",
+    path: "/api/:version/license/onboarding",
     method: "post",
     handler: [
-      checkRequiredParams,
-      async (req: Request, res: Response) => {
-        const result = await saveUser(req, res);
-        res.status(res.statusCode).send();
-      }
-    ]
-  },
-  {
-    path: "/api/v1/license/onboarding",
-    method: "post",
-    handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         const result = await license(req, res);

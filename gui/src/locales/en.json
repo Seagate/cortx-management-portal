@@ -9,7 +9,11 @@
         "password-placeholder": "Password",
         "user-name-required": "Username is required.",
         "password-required": "Password is required.",
-        "login-failed": "Login failed !"
+        "login-failed": "Login failed !",
+        "change-password": "Change Password",
+        "loading-reset": "Resetting password...",
+        "password-reset-message": "Password updated successfully for ",
+        "reset-btn": "Update"
     },
     "s3": {
         "s3ConfigSummary": "S3 configuration-summary",
@@ -111,6 +115,7 @@
         "invalid-password": "Invalid password.",
         "new-password-label": "New passowrd*",
         "confirm-password-label": "Confirm password*",
+        "current-password-label": "Current password*",
         "password-not-match": "Passwords do not match",
         "confirm-dialog": {
             "title": "Confirmation"
@@ -128,7 +133,10 @@
         "email": "Email",
         "login": "Login",
         "logout": "Logout",
-        "continue": "Continue"
+        "continue": "Continue",
+        "change-password": "Change Password",
+        "password-update-message": "Password updated successfully",
+        "logout_message": "Logging out..."
     },
     "csmuser": {
         "user-setting-label": "User settings: Local",
@@ -143,6 +151,7 @@
         "roles": "Roles",
         "manage": "Manage",
         "monitor": "Monitor",
+        "admin": "Admin",
         "username-required": "Account name is required.",
         "username-invalid": "Invalid username.",
         "password-required": "Password is required.",
@@ -252,6 +261,7 @@
         "release": "Release:",
         "COMPONENTS": "COMPONENTS",
         "SerialNumber": "Serial No:",
+        "clusterId": "Cluster ID",
         "common_name_lbl":"Common Name",
         "country_name_lbl":"Country Name",
         "locality_name_lbl":"Locality Name",

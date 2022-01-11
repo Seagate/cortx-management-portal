@@ -16,7 +16,7 @@
 */
 
 <template>
-  <div>
+  <div v-feature="unsupportedFeatures.fw_update">
     <div class="cortx-text-lg cortx-text-bold" id="lblUpdateFirmware">
       {{ $t("onBoarding.updateFirmware") }}
     </div>
@@ -113,6 +113,7 @@ import { Api } from "../../../../services/api";
 import apiRegister from "../../../../services/api-register";
 import { LastUpgradeStatus } from "../../../../models/firmware";
 import i18n from "../../onboarding.json";
+import { unsupportedFeatures } from "../../../../common/unsupported-feature";
 
 @Component({
   name: "cortx-firmware",
@@ -130,6 +131,8 @@ export default class CortxFirmware extends Vue {
     isValid: false
   };
   public isSystemStable: boolean = true;
+  public unsupportedFeatures = unsupportedFeatures;
+
   public async mounted() {
     await this.getSyetmStatus();
     await this.getLastUpgradeStatus();

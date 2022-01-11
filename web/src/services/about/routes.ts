@@ -16,7 +16,7 @@
 */
 import { Request, Response, request, response } from "express";
 import { getVersion, getApplianceInfo } from "./about-controller";
-import { checkRequiredParams } from './../../middleware/validator';
+import { checkApiVersion, checkRequiredParams } from './../../middleware/validator';
 
 
 /**
@@ -25,9 +25,10 @@ import { checkRequiredParams } from './../../middleware/validator';
 
 export default [
   {
-    path: "/api/v1/product_version",
+    path: "/api/:version/product_version",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
@@ -44,9 +45,10 @@ export default [
  * It has all the REST APIs to get about appliance  details. 
  */
   {
-    path: "/api/v1/appliance_info",
+    path: "/api/:version/appliance_info",
     method: "get",
     handler: [
+      checkApiVersion,
       checkRequiredParams,
       async (req: Request, res: Response) => {
         try {
