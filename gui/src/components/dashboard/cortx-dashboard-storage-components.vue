@@ -12,46 +12,48 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="storage-components-widget-container">
-    <p class="cortx-text-lg cortx-text-bold">Storage Components</p>
-    <div class="storage-cards-container">
-      <template v-for="(cardDetail, index) in storageCardDetails">
-        <cortx-dashboard-info-card
-          :title="cardDetail.title"
-          :description="cardDetail.description"
-          :navPath="cardDetail.navPath"
-          :callBack="infoCardCallBack"
-          :imgUrl="cardDetail.imgUrl"
-          :key="index"
-        />
-      </template>
-    </div>
+    <cortx-card :title="$t('dashboard.storageComponents')">
+      <div class="storage-cards-container">
+        <template v-for="(cardDetail, index) in storageCardDetails">
+          <cortx-dashboard-info-card
+            :title="cardDetail.title"
+            :description="cardDetail.description"
+            :navPath="cardDetail.navPath"
+            :callBack="infoCardCallBack"
+            :imgUrl="cardDetail.imgUrl"
+            :key="index"
+          />
+        </template>
+      </div>
+    </cortx-card>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
+import CortxCard from "./cortx-card.vue";
 
 @Component({
   name: "cortx-dashboard-storage-components",
-  components: { CortxDashboardInfoCard }
+  components: { CortxDashboardInfoCard, CortxCard }
 })
 export default class CortxDashboardStorageComponents extends Vue {
   public storageCardDetails = [
     {
-      title: "05",
-      description: "Buckets",
+      title: "5",
+      description: this.$t("dashboard.buckets"),
       imgUrl: "dashboard/storage/buckets.svg",
       navPath: ""
     },
     {
       title: "22",
-      description: "Objects",
+      description: this.$t("dashboard.objects"),
       imgUrl: "dashboard/storage/objects.svg",
       navPath: ""
     },
     {
       title: "12",
-      description: "Under Replicated",
+      description: this.$t("dashboard.underReplicated"),
       imgUrl: "dashboard/storage/under-replicated.svg",
       navPath: ""
     }

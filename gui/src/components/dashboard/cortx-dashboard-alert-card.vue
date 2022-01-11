@@ -12,33 +12,34 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="alert-widget-container">
-    <cortx-dashboard-widget-title
-      title="Alert"
+    <cortx-card
+      :title="$t('dashboard.alerts')"
       :zoomIconCallback="zoomIconHandler"
-    />
-    <div class="alert-cards-container">
-      <template v-for="(cardDetail, index) in alertCardDetails">
-        <cortx-dashboard-info-card
-          :title="cardDetail.title"
-          :description="cardDetail.description"
-          :imgUrl="cardDetail.imgUrl"
-          :navPath="cardDetail.navPath"
-          :callBack="infoCardCallBack"
-          :key="index"
-        />
-      </template>
-    </div>
+    >
+      <div class="alert-cards-container">
+        <template v-for="(cardDetail, index) in alertCardDetails">
+          <cortx-dashboard-info-card
+            :title="cardDetail.title"
+            :description="cardDetail.description"
+            :imgUrl="cardDetail.imgUrl"
+            :navPath="cardDetail.navPath"
+            :callBack="infoCardCallBack"
+            :key="index"
+          />
+        </template>
+      </div>
+    </cortx-card>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Mixins } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
-import CortxDashboardWidgetTitle from "./cortx-dashboard-widget-title.vue";
+import CortxCard from "./cortx-card.vue";
 import AlertsMixin from "../../mixins/alerts";
 
 @Component({
   name: "cortx-dashboard-alert-card",
-  components: { CortxDashboardInfoCard, CortxDashboardWidgetTitle }
+  components: { CortxDashboardInfoCard, CortxCard }
 })
 export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
   public fatalCount = 0;
@@ -70,31 +71,31 @@ export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
     return [
       {
         title: this.fatalCount,
-        description: "Fatal",
+        description: this.$t("dashboard.fatal"),
         imgUrl: "dashboard/alert/fatal-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.criticalCount,
-        description: "Critical",
+        description: this.$t("dashboard.critical"),
         imgUrl: "dashboard/alert/critical-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.errorCount,
-        description: "Error",
+        description: this.$t("dashboard.error"),
         imgUrl: "dashboard/alert/error-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.warningCount,
-        description: "Warning",
+        description: this.$t("dashboard.warning"),
         imgUrl: "dashboard/alert/warning-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.informationalCount,
-        description: "Informational",
+        description: this.$t("dashboard.informational"),
         imgUrl: "dashboard/alert/informational-alert.svg",
         navPath: "/alerts"
       }

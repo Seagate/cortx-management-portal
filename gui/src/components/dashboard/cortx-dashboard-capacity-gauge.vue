@@ -12,48 +12,48 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div id="capacityContainer">
-    <div>
-      <div class="cortx-text-lg cortx-text-bold" id="capacity-title">
-        {{ $t("dashboard.capacity") }}
-      </div>
-    </div>
-
-    <div class="capacity-info-wrapper">
-      <div class="capacity-info d-flex flex-column">
-        <div class="cortx-capacity-container" id="gauge_capacity"></div>
-        <div class="legends-and-value ml-7">
-          <div class="used-section">
-            <div class="d-flex">
-              <div :class="usedLegendClass"></div>
-              <div class="content-section">
-                <span class="legend-name">{{ $t("dashboard.used") }}</span>
-                <span>{{ capacityChartVal(capacityDetails.used) }}</span>
+    <cortx-card :title="$t('dashboard.capacity')">
+      <div class="capacity-info-wrapper">
+        <div class="capacity-info d-flex flex-column">
+          <div class="cortx-capacity-container" id="gauge_capacity"></div>
+          <div class="legends-and-value ml-7">
+            <div class="used-section">
+              <div class="d-flex">
+                <div :class="usedLegendClass"></div>
+                <div class="content-section">
+                  <span class="legend-name">{{ $t("dashboard.used") }}</span>
+                  <span>{{ capacityChartVal(capacityDetails.used) }}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="available-section">
-            <div class="d-flex">
-              <div class="capacity-badge capacity-available"></div>
-              <div class="content-section">
-                <span class="legend-name">{{ $t("dashboard.available") }}</span>
-                <span>{{ capacityChartVal(capacityDetails.avail) }}</span>
+            <div class="available-section">
+              <div class="d-flex">
+                <div class="capacity-badge capacity-available"></div>
+                <div class="content-section">
+                  <span class="legend-name">{{
+                    $t("dashboard.available")
+                  }}</span>
+                  <span>{{ capacityChartVal(capacityDetails.avail) }}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="total-section">
-            Total - {{ capacityChartVal(capacityDetails.size) }}
+            <div class="total-section">
+              Total - {{ capacityChartVal(capacityDetails.size) }}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </cortx-card>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
 import * as c3 from "c3";
+import CortxCard from "./cortx-card.vue";
 @Component({
-  name: "cortx-dashboard-capacity-gauge"
+  name: "cortx-dashboard-capacity-gauge",
+  components: { CortxCard }
 })
 export default class CortxDashboardCapacityGauge extends Vue {
   public usedLegendClass = "capacity-badge";

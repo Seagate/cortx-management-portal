@@ -12,64 +12,65 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="health-widget-container">
-    <cortx-dashboard-widget-title
-      title="Cluster Health"
+    <cortx-card
+      :title="$t('dashboard.clusterHealth')"
       :zoomIconCallback="zoomIconHandler"
-    />
-    <cortx-dashboard-info-card
-      title="mycluster"
-      description="Degraded"
-      navPath="/health"
-      :callBack="infoCardCallBack"
-      :imgUrl="getClusterHealthImgUrl('degraded')"
-    />
-    <p class="cortx-text-lg cortx-text-bold">Nodes</p>
-    <div class="node-health-cards-container">
-      <template v-for="(cardDetail, index) in nodeCardDetails">
-        <cortx-dashboard-info-card
-          :title="cardDetail.title"
-          :description="cardDetail.description"
-          :navPath="cardDetail.navPath"
-          :callBack="infoCardCallBack"
-          :imgUrl="cardDetail.imgUrl"
-          :key="index"
-        />
-      </template>
-    </div>
+    >
+      <cortx-dashboard-info-card
+        title="mycluster"
+        :description="$t('dashboard.degraded')"
+        navPath="/health"
+        :callBack="infoCardCallBack"
+        :imgUrl="getClusterHealthImgUrl('degraded')"
+      />
+      <p class="cortx-text-lg cortx-text-bold">{{ $t("dashboard.nodes") }}</p>
+      <div class="node-health-cards-container">
+        <template v-for="(cardDetail, index) in nodeCardDetails">
+          <cortx-dashboard-info-card
+            :title="cardDetail.title"
+            :description="cardDetail.description"
+            :navPath="cardDetail.navPath"
+            :callBack="infoCardCallBack"
+            :imgUrl="cardDetail.imgUrl"
+            :key="index"
+          />
+        </template>
+      </div>
+    </cortx-card>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
-import CortxDashboardWidgetTitle from "./cortx-dashboard-widget-title.vue";
+import CortxCard from "./cortx-card.vue";
 
 @Component({
   name: "cortx-dashboard-cluster-health-card",
-  components: { CortxDashboardInfoCard, CortxDashboardWidgetTitle }
+  components: { CortxDashboardInfoCard, CortxCard }
 })
 export default class CortxDashboardClusterHealthCard extends Vue {
   public nodeCardDetails = [
     {
       title: "5",
-      description: "Online Nodes",
+      description: this.$t("dashboard.onlineNodes"),
       imgUrl: this.getNodeImgUrl(5, "online"),
       navPath: "/health"
     },
     {
       title: "5",
-      description: "Offline Nodes",
+      description: this.$t("dashboard.offlineNodes"),
       imgUrl: this.getNodeImgUrl(5, "offline"),
       navPath: "/health"
     },
     {
       title: "0",
-      description: "Failed Nodes",
+      description: this.$t("dashboard.failedNodes"),
       imgUrl: this.getNodeImgUrl(0, "failed"),
       navPath: "/health"
     },
     {
       title: "5",
-      description: "Degraded Nodes",
+      description: this.$t("dashboard.degradedNodes"),
       imgUrl: this.getNodeImgUrl(5, "degraded"),
       navPath: "/health"
     }

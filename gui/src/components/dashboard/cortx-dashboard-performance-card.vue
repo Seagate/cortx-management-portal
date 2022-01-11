@@ -12,40 +12,42 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="performance-widget-container">
-    <p class="cortx-text-lg cortx-text-bold">Performance</p>
-    <div class="performance-cards-container">
-      <template v-for="(cardDetail, index) in performanceCardDetails">
-        <cortx-dashboard-info-card
-          :title="cardDetail.title"
-          :description="cardDetail.description"
-          :navPath="cardDetail.navPath"
-          :callBack="infoCardCallBack"
-          :imgUrl="cardDetail.imgUrl"
-          :key="index"
-        />
-      </template>
-    </div>
+    <cortx-card :title="$t('dashboard.performance')">
+      <div class="performance-cards-container">
+        <template v-for="(cardDetail, index) in performanceCardDetails">
+          <cortx-dashboard-info-card
+            :title="cardDetail.title"
+            :description="cardDetail.description"
+            :navPath="cardDetail.navPath"
+            :callBack="infoCardCallBack"
+            :imgUrl="cardDetail.imgUrl"
+            :key="index"
+          />
+        </template>
+      </div>
+    </cortx-card>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
+import CortxCard from "./cortx-card.vue";
 
 @Component({
   name: "cortx-dashboard-performance-card",
-  components: { CortxDashboardInfoCard }
+  components: { CortxDashboardInfoCard, CortxCard }
 })
 export default class CortxDashboardPerformanceCard extends Vue {
   public performanceCardDetails = [
     {
-      title: "05",
-      description: "Read Throughput",
+      title: "5",
+      description: this.$t("dashboard.readThroughput"),
       imgUrl: "dashboard/performance/read-throughput-good.svg",
       navPath: "/performance"
     },
     {
       title: "22",
-      description: "Write Throughput",
+      description: this.$t("dashboard.writeThroughput"),
       imgUrl: "dashboard/performance/write-throughput-good.svg",
       navPath: "/performance"
     }

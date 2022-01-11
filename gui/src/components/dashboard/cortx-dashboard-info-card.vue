@@ -57,4 +57,7 @@ export default class CortxDashboardInfoCard extends Vue {
   justify-content: center;
   margin-left: 1em;
 }
+.title {
+  font-weight: bold;
+}
 </style>

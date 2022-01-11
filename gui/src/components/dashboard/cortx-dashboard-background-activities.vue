@@ -12,38 +12,39 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
   <div class="bg-activities-widget-container">
-    <cortx-dashboard-widget-title
-      title="Background Activities"
+    <cortx-card
+      :title="$t('dashboard.backgroundActivities')"
       :zoomIconCallback="zoomIconHandler"
-    />
-    <div class="bg-activities-cards-container">
-      <template v-for="(cardDetail, index) in bgActivitiesCardDetails">
-        <cortx-dashboard-info-card
-          :title="cardDetail.title"
-          :description="cardDetail.description"
-          :navPath="cardDetail.navPath"
-          :callBack="infoCardCallBack"
-          :imgUrl="cardDetail.imgUrl"
-          :key="index"
-        />
-      </template>
-    </div>
+    >
+      <div class="bg-activities-cards-container">
+        <template v-for="(cardDetail, index) in bgActivitiesCardDetails">
+          <cortx-dashboard-info-card
+            :title="cardDetail.title"
+            :description="cardDetail.description"
+            :navPath="cardDetail.navPath"
+            :callBack="infoCardCallBack"
+            :imgUrl="cardDetail.imgUrl"
+            :key="index"
+          />
+        </template>
+      </div>
+    </cortx-card>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
-import CortxDashboardWidgetTitle from "./cortx-dashboard-widget-title.vue";
+import CortxCard from "./cortx-card.vue";
 
 @Component({
   name: "cortx-dashboard-background-activities",
-  components: { CortxDashboardInfoCard, CortxDashboardWidgetTitle }
+  components: { CortxDashboardInfoCard, CortxCard }
 })
 export default class CortxDashboardBackgroundActivities extends Vue {
   public bgActivitiesCardDetails = [
     {
       title: "05",
-      description: "Tasks",
+      description: this.$t("dashboard.tasks"),
       imgUrl: "dashboard/bg-activities/bg-tasks.svg",
       navPath: ""
     }

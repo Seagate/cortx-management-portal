@@ -11,26 +11,48 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 * For any questions about this software or licensing, * please email
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
-  <div class="title-section">
-    <p class="widget-title cortx-text-lg cortx-text-bold">{{ title }}</p>
-    <div
-      v-if="zoomIconCallback"
-      class="cortx-zoom-icon"
-      @click="zoomIconCallback"
-    ></div>
-  </div>
+  <v-card class="card-container pa-3" :v-bind="computedProps" :v-on="listeners">
+    <div class="title-section">
+      <p class="widget-title cortx-text-lg cortx-text-bold">{{ title }}</p>
+      <div
+        v-if="zoomIconCallback"
+        class="cortx-zoom-icon"
+        @click="zoomIconCallback"
+      ></div>
+    </div>
+    <slot></slot>
+  </v-card>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+
 @Component({
-  name: "cortx-dashboard-widget-title"
+  name: "cortx-card"
 })
-export default class CortxDashboardWidgetTitle extends Vue {
+export default class CortxCard extends Vue {
   @Prop({ required: true }) public title: string;
   @Prop({ required: false }) public zoomIconCallback: () => void;
+
+  get computedProps() {
+    console.log(this.$props);
+    return {
+      ...this.$props
+    };
+  }
+
+  get listeners() {
+    return {
+      ...this.$listeners
+    };
+  }
 }
 </script>
+
 <style lang="scss" scoped>
+.card-container {
+  height: 100%;
+}
 .title-section {
   display: flex;
   align-items: center;

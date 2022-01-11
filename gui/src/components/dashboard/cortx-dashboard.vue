@@ -14,34 +14,16 @@ opensource@seagate.com or cortx-questions@seagate.com. */
   <div class="dashboard-wrapper">
     <div class="dashboard-container pa-4">
       <v-row class="top-row">
-        <v-card
-          class="capacity-card pa-3"
+        <cortx-dashboard-capacity-gauge
           v-feature="unsupportedFeatures.capacity"
-        >
-          <cortx-dashboard-capacity-gauge />
-        </v-card>
-
-        <v-card class="storage-components-card pa-3">
-          <cortx-dashboard-storage-components />
-        </v-card>
-
-        <v-card class="performance-card pa-3">
-          <cortx-dashboard-performance-card />
-        </v-card>
+        />
+        <cortx-dashboard-storage-components />
+        <cortx-dashboard-performance-card />
       </v-row>
-
       <v-row class="bottom-row">
-        <v-card class="health-card pa-3">
-          <cortx-dashboard-cluster-health-card />
-        </v-card>
-
-        <v-card class="alert-card pa-3">
-          <cortx-dashboard-alert-card />
-        </v-card>
-
-        <v-card class="background-activities-card pa-3">
-          <cortx-dashboard-background-activities />
-        </v-card>
+        <cortx-dashboard-cluster-health-card />
+        <cortx-dashboard-alert-card />
+        <cortx-dashboard-background-activities />
       </v-row>
     </div>
   </div>
@@ -122,14 +104,10 @@ export default class CortxDashboard extends Vue {
   display: flex;
   flex-wrap: nowrap;
   gap: 20px;
-}
-.capacity-card,
-.storage-components-card,
-.performance-card,
-.health-card,
-.alert-card,
-.background-activities-card {
-  flex-grow: 1;
-  width: 33.33%;
+
+  & > * {
+    width: 33.33%;
+    flex-grow: 1;
+  }
 }
 </style>
