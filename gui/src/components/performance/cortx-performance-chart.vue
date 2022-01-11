@@ -16,18 +16,27 @@
 */
 <template>
   <div class="width-100">
-    <div class="loader-container" v-if="showComponentLoader && $route.name !== 'dashboard'">
+    <div
+      class="loader-container"
+      v-if="showComponentLoader && $route.name !== 'dashboard'"
+    >
       <div class="loader-message">
         <label>{{ message }}</label>
       </div>
       <div class="loader-body">
-        <v-progress-linear indeterminate color="csmprimary" background-color="csmdisabled"></v-progress-linear>
+        <v-progress-linear
+          indeterminate
+          color="csmprimary"
+          background-color="csmdisabled"
+        ></v-progress-linear>
       </div>
     </div>
 
     <v-row class="pt-3">
       <div class="py-0 pl-8 height-5 width-50">
-        <h2 class="pt-4" v-if="onDashboard">{{ $t("performance.performance") }}</h2>
+        <h2 class="pt-4" v-if="onDashboard">
+          {{ $t("performance.performance") }}
+        </h2>
       </div>
       <div class="py-0 pl-2 height-5 width-15">
         <v-select
@@ -70,10 +79,10 @@
             class="cortx-cursor-pointer"
           />
         </div>
-        <div v-if="!onDashboard && chartCount>1" class="pt-4">
+        <div v-if="!onDashboard && chartCount > 1" class="pt-4">
           <img
             class="cortx-modal-close cortx-cursor-pointer"
-            @click="$emit('remove-chart',chartId)"
+            @click="$emit('remove-chart', chartId)"
             :src="require('@/assets/close-green.svg')"
           />
         </div>
@@ -157,13 +166,13 @@ export default class CortxPerformanceChart extends Vue {
 
   get getMatric1(): any[] {
     return this.$data.items.filter(
-      ele => ele.value !== this.metric2 || ele.value == ""
+      (ele: any) => ele.value !== this.metric2 || ele.value == ""
     );
   }
 
   get getMetric2(): any[] {
     return this.$data.items.filter(
-      ele => ele.value !== this.metric1 || ele.value == ""
+      (ele: any) => ele.value !== this.metric1 || ele.value == ""
     );
   }
 
