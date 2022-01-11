@@ -747,6 +747,9 @@ tbody tr:hover {
 .cortx-zoom-icon {
   background-image: url("../assets/zoom-in.svg");
 }
+.cortx-zoom-icon:hover {
+  background-image: url("../assets/zoom-in-hover.svg");
+}
 
 /* Health related icons */
 .cortx-option-icon {
@@ -904,10 +907,10 @@ div.cortx-header.py-3 {
   background: #00a1dd;
 }
 .cortx-btn-one-information:hover {
-  background: #00B2FF;
+  background: #00b2ff;
 }
 .cortx-btn-one-information:active {
-  background: #0078D6;
+  background: #0078d6;
 }
 .cortx-btn-one-success {
   background: #6ebe49;
@@ -922,19 +925,19 @@ div.cortx-header.py-3 {
   background: #f7a528;
 }
 .cortx-btn-one-warning:hover {
-  background: #FFB744;
+  background: #ffb744;
 }
 .cortx-btn-one-warning:active {
-  background: #D98A13;
+  background: #d98a13;
 }
 .cortx-btn-one-critical {
   background: #dc1f2e;
 }
 .cortx-btn-one-critical:hover {
-  background: #EA3947;
+  background: #ea3947;
 }
 .cortx-btn-one-critical:active {
-  background: #AF131F;
+  background: #af131f;
 }
 /* Button primary (White background) style rules --- End */
 
@@ -967,12 +970,12 @@ div.cortx-header.py-3 {
   border: 1px solid #00a1dd;
 }
 .cortx-btn-two-information:hover {
-  color: #00B2FF;
-  border: 1px solid #00B2FF;
+  color: #00b2ff;
+  border: 1px solid #00b2ff;
 }
 .cortx-btn-two-information:active {
-  color: #0078D6;
-  border: 1px solid #0078D6;
+  color: #0078d6;
+  border: 1px solid #0078d6;
 }
 .cortx-btn-two-success {
   color: #6ebe49;
@@ -991,23 +994,23 @@ div.cortx-header.py-3 {
   border: 1px solid #f7a528;
 }
 .cortx-btn-two-warning:hover {
-  color: #FFB744;
-  border: 1px solid #FFB744;
+  color: #ffb744;
+  border: 1px solid #ffb744;
 }
 .cortx-btn-two-warning:active {
-  color: #D98A13;
-  border: 1px solid #D98A13;
+  color: #d98a13;
+  border: 1px solid #d98a13;
 }
 .cortx-btn-two-critical {
   color: #dc1f2e;
   border: 1px solid #dc1f2e;
 }
 .cortx-btn-two-critical:hover {
-  color: #EA3947;
-  border: 1px solid #EA3947;
+  color: #ea3947;
+  border: 1px solid #ea3947;
 }
 .cortx-btn-two-critical:active {
-  color: #AF131F;
-  border: 1px solid #AF131F;
+  color: #af131f;
+  border: 1px solid #af131f;
 }
 /* Button secondary (White background) style rules --- End */
