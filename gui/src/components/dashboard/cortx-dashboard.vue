@@ -14,9 +14,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
   <div class="dashboard-wrapper">
     <div class="dashboard-container pa-4">
       <v-row class="top-row">
-        <cortx-dashboard-capacity-gauge
-          v-feature="unsupportedFeatures.capacity"
-        />
+        <cortx-dashboard-capacity-gauge />
         <cortx-dashboard-storage-components />
         <cortx-dashboard-performance-card />
       </v-row>
@@ -31,7 +29,6 @@ opensource@seagate.com or cortx-questions@seagate.com. */
 
 <script lang="ts">
 import { Component, Vue, Ref } from "vue-property-decorator";
-import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDashboardCapacityGauge from "./cortx-dashboard-capacity-gauge.vue";
 import CortxDashboardStorageComponents from "./cortx-dashboard-storage-components.vue";
 import CortxDashboardPerformanceCard from "./cortx-dashboard-performance-card.vue";
@@ -52,7 +49,6 @@ import CortxDashboardBackgroundActivities from "./cortx-dashboard-background-act
 })
 export default class CortxDashboard extends Vue {
   public chartRowHeightPx: string = "";
-  public unsupportedFeatures = unsupportedFeatures;
   @Ref("capacity_col")
   public created() {
     window.addEventListener("resize", this.resizeComponents);

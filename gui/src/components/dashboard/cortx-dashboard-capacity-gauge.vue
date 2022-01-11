@@ -11,7 +11,7 @@ License * along with this program. If not, see <https://www.gnu.org/licenses/>.
 * For any questions about this software or licensing, * please email
 opensource@seagate.com or cortx-questions@seagate.com. */
 <template>
-  <div id="capacityContainer">
+  <div id="capacityContainer" v-feature="unsupportedFeatures.capacity">
     <cortx-card :title="$t('dashboard.capacity')">
       <div class="capacity-info-wrapper">
         <div class="capacity-info d-flex flex-column">
@@ -49,6 +49,7 @@ opensource@seagate.com or cortx-questions@seagate.com. */
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
+import { unsupportedFeatures } from "../../common/unsupported-feature";
 import * as c3 from "c3";
 import CortxCard from "./cortx-card.vue";
 @Component({
@@ -56,6 +57,7 @@ import CortxCard from "./cortx-card.vue";
   components: { CortxCard }
 })
 export default class CortxDashboardCapacityGauge extends Vue {
+  public unsupportedFeatures = unsupportedFeatures;
   public usedLegendClass = "capacity-badge";
   public chartDataVal: number;
   public created() {
