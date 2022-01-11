@@ -17,25 +17,15 @@
 <template>
   <div class="dashboard-wrapper">
     <div class="dashboard-container pa-4">
-      <v-row v-feature="unsupportedFeatures.performance">
-        <v-col>
-          <v-card class="pa-2">
-            <cortx-performance-chart chartId="line_chart" onDashboard="true" />
-          </v-card>
-        </v-col>
+      <v-row class="top-row">
+        <cortx-dashboard-capacity-gauge />
+        <cortx-dashboard-storage-components />
+        <cortx-dashboard-performance-card />
       </v-row>
       <v-row class="bottom-row">
-        <v-card class="capacity-card pa-3" v-feature="unsupportedFeatures.capacity">
-          <cortx-dashboard-capacity-gauge />
-        </v-card>
-
-        <v-card class="health-card pa-3">
-          <cortx-dashboard-cluster-health-card />
-        </v-card>
-
-        <v-card class="alerts-card pa-3">
-          <cortx-dashboard-alert-card />
-        </v-card>
+        <cortx-dashboard-cluster-health-card />
+        <cortx-dashboard-alert-card />
+        <cortx-dashboard-background-activities />
       </v-row>
     </div>
   </div>
@@ -43,24 +33,26 @@
 
 <script lang="ts">
 import { Component, Vue, Ref } from "vue-property-decorator";
-import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDashboardCapacityGauge from "./cortx-dashboard-capacity-gauge.vue";
-import CortxDashboardAlertCard from "./cortx-dashboard-alert-card.vue";
+import CortxDashboardStorageComponents from "./cortx-dashboard-storage-components.vue";
+import CortxDashboardPerformanceCard from "./cortx-dashboard-performance-card.vue";
 import CortxDashboardClusterHealthCard from "./cortx-dashboard-cluster-health-card.vue";
-import CortxPerformanceChart from "../performance/cortx-performance-chart.vue";
+import CortxDashboardAlertCard from "./cortx-dashboard-alert-card.vue";
+import CortxDashboardBackgroundActivities from "./cortx-dashboard-background-activities.vue";
 
 @Component({
   name: "cortx-dashboard",
   components: {
-    cortxDashboardCapacityGauge: CortxDashboardCapacityGauge,
-    cortxDashboardAlertCard: CortxDashboardAlertCard,
-    cortxDashboardClusterHealthCard: CortxDashboardClusterHealthCard,
-    CortxPerformanceChart: CortxPerformanceChart
+    CortxDashboardCapacityGauge,
+    CortxDashboardStorageComponents,
+    CortxDashboardPerformanceCard,
+    CortxDashboardClusterHealthCard,
+    CortxDashboardAlertCard,
+    CortxDashboardBackgroundActivities
   }
 })
 export default class CortxDashboard extends Vue {
   public chartRowHeightPx: string = "";
-  public unsupportedFeatures = unsupportedFeatures;
   @Ref("capacity_col")
   public created() {
     window.addEventListener("resize", this.resizeComponents);
@@ -97,31 +89,25 @@ export default class CortxDashboard extends Vue {
 <style lang="scss" scoped>
 .dashboard-wrapper {
   background-color: #f7f7f7;
+  overflow: auto;
 }
 .dashboard-container {
   background-color: transparent;
   height: calc(100vh - 60px);
   max-width: 1260px;
   // margin: 0 auto;
-  overflow: auto;
 }
+.top-row,
 .bottom-row {
   min-height: min(50%, 400px);
   padding: 12px;
   display: flex;
   flex-wrap: nowrap;
   gap: 20px;
-}
-.capacity-card {
-  flex-grow: 1;
-  width: 25%;
-}
-.health-card {
-  flex-grow: 1;
-  width: 37.5%;
-}
-.alerts-card {
-  flex-grow: 1;
-  width: 37.5%;
+
+  & > * {
+    width: 33.33%;
+    flex-grow: 1;
+  }
 }
 </style>

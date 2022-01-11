@@ -1,40 +1,46 @@
-/* * CORTX-CSM: CORTX Management web and CLI interface. * Copyright (c) 2020
-Seagate Technology LLC and/or its Affiliates * This program is free software:
-you can redistribute it and/or modify * it under the terms of the GNU Affero
-General Public License as published * by the Free Software Foundation, either
-version 3 of the License, or * (at your option) any later version. * This
-program is distributed in the hope that it will be useful, * but WITHOUT ANY
-WARRANTY; without even the implied warranty of * MERCHANTABILITY or FITNESS FOR
-A PARTICULAR PURPOSE. See the * GNU Affero General Public License for more
-details. * You should have received a copy of the GNU Affero General Public
-License * along with this program. If not, see <https://www.gnu.org/licenses/>.
-* For any questions about this software or licensing, * please email
-opensource@seagate.com or cortx-questions@seagate.com. */
+/*
+* CORTX-CSM: CORTX Management web and CLI interface.
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.
+* For any questions about this software or licensing,
+* please email opensource@seagate.com or cortx-questions@seagate.com.
+*/
 <template>
   <div class="alert-widget-container">
-    <p class="cortx-text-lg cortx-text-bold">Alerts</p>
-    <div class="alert-cards-container">
-      <template v-for="(cardDetail, index) in alertCardDetails">
-        <cortx-dashboard-info-card
-          :title="cardDetail.title"
-          :description="cardDetail.description"
-          :imgUrl="cardDetail.imgUrl"
-          :navPath="cardDetail.navPath"
-          :callBack="infoCardCallBack"
-          :key="index"
-        />
-      </template>
-    </div>
+    <cortx-card title="dashboard.alerts" :zoomIconCallback="zoomIconHandler">
+      <div class="alert-cards-container">
+        <template v-for="(cardDetail, index) in alertCardDetails">
+          <cortx-dashboard-info-card
+            :title="cardDetail.title"
+            :description="cardDetail.description"
+            :imgUrl="cardDetail.imgUrl"
+            :navPath="cardDetail.navPath"
+            :callBack="infoCardCallBack"
+            :key="index"
+          />
+        </template>
+      </div>
+    </cortx-card>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Mixins } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
+import CortxCard from "../widgets/cortx-card.vue";
 import AlertsMixin from "../../mixins/alerts";
 
 @Component({
   name: "cortx-dashboard-alert-card",
-  components: { CortxDashboardInfoCard }
+  components: { CortxDashboardInfoCard, CortxCard }
 })
 export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
   public fatalCount = 0;
@@ -66,31 +72,31 @@ export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
     return [
       {
         title: this.fatalCount,
-        description: "Fatal",
+        description: "dashboard.fatal",
         imgUrl: "dashboard/alert/fatal-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.criticalCount,
-        description: "Critical",
-        imgUrl: "dashboard/alert/fatal-alert.svg",
+        description: "dashboard.critical",
+        imgUrl: "dashboard/alert/critical-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.errorCount,
-        description: "Error",
+        description: "dashboard.error",
         imgUrl: "dashboard/alert/error-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.warningCount,
-        description: "Warning",
+        description: "dashboard.warning",
         imgUrl: "dashboard/alert/warning-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.informationalCount,
-        description: "Informational",
+        description: "dashboard.informational",
         imgUrl: "dashboard/alert/informational-alert.svg",
         navPath: "/alerts"
       }
@@ -99,6 +105,10 @@ export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
 
   infoCardCallBack(routePath: string) {
     this.$router.push(routePath);
+  }
+
+  zoomIconHandler() {
+    this.$router.push("/alerts");
   }
 }
 </script>
