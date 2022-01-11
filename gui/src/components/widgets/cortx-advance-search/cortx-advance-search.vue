@@ -46,7 +46,7 @@
       <v-card v-show="expand" hover width="400" class="mx-auto adv-container">
         <div v-for="row in config.advanceForm" :key="row.name">
           <v-row>
-            <v-col cols="3" class="px-0">
+            <v-col cols="3" class="pr-0">
               <label :for="row.name">
                 <b>
                   {{row.label}}
@@ -123,8 +123,8 @@
           </v-row>
         </div>
         <div class="btn-container">
-          <v-btn color="primary" class="clear-btn" @click="clearAll">Clear</v-btn>
-          <v-btn color="success" class="search-btn" @click="search">Search</v-btn>
+          <v-btn color="csmprimary" class="clear-btn" @click="clearAll" outlined>Clear</v-btn>
+          <v-btn color="csmprimary" class="search-btn" @click="search" dark>Search</v-btn>
         </div>
       </v-card>
     </v-expand-transition>
@@ -202,8 +202,6 @@ export default class CortxAdvanceSearch extends Vue {
     this.config.advanceForm?.forEach(ele => {
       if (!ele.required) ele.value = undefined;
     });
-    this.expand = !this.expand;
-    this.emitSearch();
   }
 
   /**
@@ -231,8 +229,8 @@ export default class CortxAdvanceSearch extends Vue {
 .adv-container {
   position: absolute;
   z-index: 99;
-  padding: 20px;
-  margin-top: 10px;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
   border-radius: 5px;
   border: 1px solid #6ebe49;
 }

@@ -6,7 +6,7 @@ export interface AdvanceSearchConfig {
   advanceForm?: AdvanceFormField[];
 }
 export interface AdvanceFormField {
-  type: string;
+  type: "textbox" | "dropdown" | "radio" | "date" | "checkbox" ;
   name: string;
   label: string;
   placeholder?: string;
