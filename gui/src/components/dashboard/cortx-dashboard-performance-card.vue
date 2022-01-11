@@ -16,7 +16,7 @@
 */
 <template>
   <div class="performance-widget-container">
-    <cortx-card :title="$t('dashboard.performance')">
+    <cortx-card title="dashboard.performance">
       <div class="performance-cards-container">
         <template v-for="(cardDetail, index) in performanceCardDetails">
           <cortx-dashboard-info-card
@@ -35,7 +35,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
-import CortxCard from "./cortx-card.vue";
+import CortxCard from "../widgets/cortx-card.vue";
 
 @Component({
   name: "cortx-dashboard-performance-card",
@@ -45,13 +45,13 @@ export default class CortxDashboardPerformanceCard extends Vue {
   public performanceCardDetails = [
     {
       title: "5",
-      description: this.$t("dashboard.readThroughput"),
+      description: "dashboard.readThroughput",
       imgUrl: "dashboard/performance/read-throughput-good.svg",
       navPath: "/performance"
     },
     {
       title: "22",
-      description: this.$t("dashboard.writeThroughput"),
+      description: "dashboard.writeThroughput",
       imgUrl: "dashboard/performance/write-throughput-good.svg",
       navPath: "/performance"
     }

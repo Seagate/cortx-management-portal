@@ -17,12 +17,12 @@
 <template>
   <div class="health-widget-container">
     <cortx-card
-      :title="$t('dashboard.clusterHealth')"
+      title="dashboard.clusterHealth"
       :zoomIconCallback="zoomIconHandler"
     >
       <cortx-dashboard-info-card
         title="mycluster"
-        :description="$t('dashboard.degraded')"
+        description="dashboard.degraded"
         navPath="/health"
         :callBack="infoCardCallBack"
         :imgUrl="getClusterHealthImgUrl('degraded')"
@@ -46,7 +46,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
-import CortxCard from "./cortx-card.vue";
+import CortxCard from "../widgets/cortx-card.vue";
 
 @Component({
   name: "cortx-dashboard-cluster-health-card",
@@ -56,25 +56,25 @@ export default class CortxDashboardClusterHealthCard extends Vue {
   public nodeCardDetails = [
     {
       title: "5",
-      description: this.$t("dashboard.onlineNodes"),
+      description: "dashboard.onlineNodes",
       imgUrl: this.getNodeImgUrl(5, "online"),
       navPath: "/health"
     },
     {
       title: "5",
-      description: this.$t("dashboard.offlineNodes"),
+      description: "dashboard.offlineNodes",
       imgUrl: this.getNodeImgUrl(5, "offline"),
       navPath: "/health"
     },
     {
       title: "0",
-      description: this.$t("dashboard.failedNodes"),
+      description: "dashboard.failedNodes",
       imgUrl: this.getNodeImgUrl(0, "failed"),
       navPath: "/health"
     },
     {
       title: "5",
-      description: this.$t("dashboard.degradedNodes"),
+      description: "dashboard.degradedNodes",
       imgUrl: this.getNodeImgUrl(5, "degraded"),
       navPath: "/health"
     }
@@ -85,33 +85,28 @@ export default class CortxDashboardClusterHealthCard extends Vue {
   }
 
   getClusterHealthImgUrl(healthType: "offline" | "degraded" | "failed") {
-    switch (healthType) {
-      case "offline":
-        return "dashboard/health/offline-cluster.svg";
-      case "degraded":
-        return "dashboard/health/degraded-cluster.svg";
-      case "failed":
-        return "dashboard/health/failed-cluster.svg";
-    }
+    const healthImageUrl = {
+      offline: "dashboard/health/offline-cluster.svg",
+      degraded: "dashboard/health/degraded-cluster.svg",
+      failed: "dashboard/health/failed-cluster.svg"
+    };
+    return healthImageUrl[healthType];
   }
 
   getNodeImgUrl(
     nodeCount: number,
     nodeType: "online" | "offline" | "failed" | "degraded"
   ) {
+    const nodeImgUrl = {
+      online: "dashboard/health/online-nodes.svg",
+      offline: "dashboard/health/offline-nodes.svg",
+      failed: "dashboard/health/failed-nodes.svg",
+      degraded: "dashboard/health/degraded-nodes.svg"
+    };
     if (nodeCount === 0) {
       return "dashboard/health/zero-nodes.svg";
     }
-    switch (nodeType) {
-      case "online":
-        return "dashboard/health/online-nodes.svg";
-      case "offline":
-        return "dashboard/health/offline-nodes.svg";
-      case "failed":
-        return "dashboard/health/failed-nodes.svg";
-      case "degraded":
-        return "dashboard/health/degraded-nodes.svg";
-    }
+    return nodeImgUrl[nodeType];
   }
 
   zoomIconHandler() {

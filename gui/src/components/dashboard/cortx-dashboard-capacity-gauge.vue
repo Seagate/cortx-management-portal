@@ -16,7 +16,7 @@
 */
 <template>
   <div id="capacityContainer" v-feature="unsupportedFeatures.capacity">
-    <cortx-card :title="$t('dashboard.capacity')">
+    <cortx-card title="dashboard.capacity">
       <div class="capacity-info-wrapper">
         <div class="capacity-info d-flex flex-column">
           <div class="cortx-capacity-container" id="gauge_capacity"></div>
@@ -55,7 +55,7 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import { DiskCapacityDetails } from "./../../models/performance-stats";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
 import * as c3 from "c3";
-import CortxCard from "./cortx-card.vue";
+import CortxCard from "../widgets/cortx-card.vue";
 @Component({
   name: "cortx-dashboard-capacity-gauge",
   components: { CortxCard }

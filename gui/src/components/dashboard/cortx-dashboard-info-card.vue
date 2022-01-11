@@ -19,7 +19,7 @@
     <img :src="require(`@/assets/${imgUrl}`)" alt="" />
     <div class="card-info">
       <span class="title">{{ title }}</span>
-      <span class="description">{{ description }}</span>
+      <span class="description">{{ $t(description) }}</span>
     </div>
   </div>
 </template>

@@ -17,7 +17,7 @@
 <template>
   <div class="bg-activities-widget-container">
     <cortx-card
-      :title="$t('dashboard.backgroundActivities')"
+      title="dashboard.backgroundActivities"
       :zoomIconCallback="zoomIconHandler"
     >
       <div class="bg-activities-cards-container">
@@ -38,7 +38,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
-import CortxCard from "./cortx-card.vue";
+import CortxCard from "../widgets/cortx-card.vue";
 
 @Component({
   name: "cortx-dashboard-background-activities",
@@ -48,7 +48,7 @@ export default class CortxDashboardBackgroundActivities extends Vue {
   public bgActivitiesCardDetails = [
     {
       title: "05",
-      description: this.$t("dashboard.tasks"),
+      description: "dashboard.tasks",
       imgUrl: "dashboard/bg-activities/bg-tasks.svg",
       navPath: ""
     }

@@ -16,7 +16,7 @@
 */
 <template>
   <div class="storage-components-widget-container">
-    <cortx-card :title="$t('dashboard.storageComponents')">
+    <cortx-card title="dashboard.storageComponents">
       <div class="storage-cards-container">
         <template v-for="(cardDetail, index) in storageCardDetails">
           <cortx-dashboard-info-card
@@ -35,7 +35,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
-import CortxCard from "./cortx-card.vue";
+import CortxCard from "../widgets/cortx-card.vue";
 
 @Component({
   name: "cortx-dashboard-storage-components",
@@ -45,19 +45,19 @@ export default class CortxDashboardStorageComponents extends Vue {
   public storageCardDetails = [
     {
       title: "5",
-      description: this.$t("dashboard.buckets"),
+      description: "dashboard.buckets",
       imgUrl: "dashboard/storage/buckets.svg",
       navPath: ""
     },
     {
       title: "22",
-      description: this.$t("dashboard.objects"),
+      description: "dashboard.objects",
       imgUrl: "dashboard/storage/objects.svg",
       navPath: ""
     },
     {
       title: "12",
-      description: this.$t("dashboard.underReplicated"),
+      description: "dashboard.underReplicated",
       imgUrl: "dashboard/storage/under-replicated.svg",
       navPath: ""
     }

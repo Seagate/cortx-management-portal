@@ -16,10 +16,7 @@
 */
 <template>
   <div class="alert-widget-container">
-    <cortx-card
-      :title="$t('dashboard.alerts')"
-      :zoomIconCallback="zoomIconHandler"
-    >
+    <cortx-card title="dashboard.alerts" :zoomIconCallback="zoomIconHandler">
       <div class="alert-cards-container">
         <template v-for="(cardDetail, index) in alertCardDetails">
           <cortx-dashboard-info-card
@@ -38,7 +35,7 @@
 <script lang="ts">
 import { Component, Vue, Mixins } from "vue-property-decorator";
 import CortxDashboardInfoCard from "./cortx-dashboard-info-card.vue";
-import CortxCard from "./cortx-card.vue";
+import CortxCard from "../widgets/cortx-card.vue";
 import AlertsMixin from "../../mixins/alerts";
 
 @Component({
@@ -75,31 +72,31 @@ export default class CortxDashboardAlertCard extends Mixins(AlertsMixin) {
     return [
       {
         title: this.fatalCount,
-        description: this.$t("dashboard.fatal"),
+        description: "dashboard.fatal",
         imgUrl: "dashboard/alert/fatal-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.criticalCount,
-        description: this.$t("dashboard.critical"),
+        description: "dashboard.critical",
         imgUrl: "dashboard/alert/critical-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.errorCount,
-        description: this.$t("dashboard.error"),
+        description: "dashboard.error",
         imgUrl: "dashboard/alert/error-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.warningCount,
-        description: this.$t("dashboard.warning"),
+        description: "dashboard.warning",
         imgUrl: "dashboard/alert/warning-alert.svg",
         navPath: "/alerts"
       },
       {
         title: this.informationalCount,
-        description: this.$t("dashboard.informational"),
+        description: "dashboard.informational",
         imgUrl: "dashboard/alert/informational-alert.svg",
         navPath: "/alerts"
       }
