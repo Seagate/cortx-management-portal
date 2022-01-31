@@ -63,24 +63,38 @@
                 <template v-if="col.type == 'date'">{{item[col.value] | formattedDate }}</template>
                 <template v-else-if="col.type == 'action'">
                   <div v-if="selected.length<1" class="action-col">
-                    <div class="hover-btn hover-effect">
+                    <div class="hover-btn" v-if="actionItems">
                       <template v-for="action in actionItems">
-                        <img
-                          :key="action.name"
-                          :src="require(`@/assets/actions/${action.path}`)"
-                          @click="$emit(action.name, item)"
-                          alt="logo"
-                        />
+                        <span :class="'action-btn'" :key="action.name">
+                          <img
+                            :src="require(`@/assets/${action.path}`)"
+                            @click="$emit(action.name, item)"
+                            alt="logo"
+                            class="action-btn-block"
+                          />
+                          <img
+                            :src="require(`@/assets/${action.hoverPath}`)"
+                            @click="$emit(action.name, item)"
+                            alt="logo"
+                            class="action-btn-hover"
+                          />
+                        </span>
                       </template>
                     </div>
-                    <template v-if="col.zoomIcon">
+                    <div v-if="col.zoomIcon" class="zoom-container">
                       <img
-                        class="hover-effect"
+                        class="zoom-icon"
                         :src="require(`@/assets/zoom-in.svg`)"
                         @click="$emit('zoom', item)"
                         alt="logo"
                       />
-                    </template>
+                      <img
+                        class="zoom-icon-hover"
+                        :src="require(`@/assets/zoom-in-hover.svg`)"
+                        @click="$emit('zoom', item)"
+                        alt="logo"
+                      />
+                    </div>
                   </div>
                 </template>
               </template>
@@ -96,10 +110,11 @@
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import CortxAdvanceSearch from "../cortx-advance-search/cortx-advance-search.vue";
 import { AdvanceSearchConfig } from "../cortx-advance-search/cortx-advance-search-config.model";
-import * as moment from "moment";
+import moment from "moment";
+import { lrDataTableConst } from "./LrDataTable.constant";
 
 @Component({
-  name: "lr-data-table",
+  name: "LrDataTable",
   components: { CortxAdvanceSearch: CortxAdvanceSearch },
   filters: {
     formattedDate: function(date: string | number) {
@@ -109,31 +124,26 @@ import * as moment from "moment";
   }
 })
 export default class LrDataTable extends Vue {
-  @Prop({ required: true }) headers: any[];
-  @Prop({ required: true }) records: any[];
-  @Prop({ required: false }) totalRecords: number;
-  @Prop({ required: false }) searchConfig: AdvanceSearchConfig;
-  @Prop({ required: false }) isMultiSelect: boolean;
-  @Prop({ required: false }) multiSelectButtons: any[];
+  @Prop({ required: true }) private headers: any[];
+  @Prop({ required: true }) private records: any[];
+  @Prop({ required: false }) private totalRecords: number;
+  @Prop({ required: false }) private searchConfig: AdvanceSearchConfig;
+  @Prop({ required: false }) private isMultiSelect: boolean;
+  @Prop({ required: false }) private multiSelectButtons: any[];
 
-  selected = [];
-  selectedItem = {};
-  allActions = [
-    { name: "comment", path: "comment-default.svg", tooltip: "" },
-    { name: "edit", path: "edit-green.svg", tooltip: "edit" },
-    { name: "delete", path: "delete-green.svg", tooltip: "delete" },
-    { name: "notification", path: "alert-green.svg", tooltip: "notification" }
-  ];
-  actionItems = [];
-  
+  private selected: any[] = [];
+  private selectedItem: any = {};
+  private actionItems: any[] = [];
+
   mounted() {
-    let actions = this.headers.find(ele => ele.type && ele.type == "action");
-    this.actionItems = this.allActions.filter(ele =>
+    const allActions = lrDataTableConst.buttonList;
+    const actions = this.headers.find(ele => ele.type && ele.type === "action");
+    this.actionItems = allActions.filter(ele =>
       actions.actionList.includes(ele.name)
     );
   }
 
-  resetSelected() {
+  public resetSelected() {
     this.selected = [];
   }
 }
@@ -166,7 +176,40 @@ export default class LrDataTable extends Vue {
     right: 2rem;
   }
 }
-.hover-effect:hover {
+
+.zoom-container {
+  .zoom-icon {
+    display: inline-block;
+  }
+  .zoom-icon-hover {
+    display: none;
+  }
+}
+.zoom-container:hover {
   cursor: pointer;
+  .zoom-icon {
+    display: none;
+  }
+  .zoom-icon-hover {
+    display: inline-block;
+  }
+}
+.action-btn {
+  cursor: pointer;
+  .action-btn-block {
+    display: block;
+  }
+  .action-btn-hover {
+    display: none;
+  }
+}
+.action-btn:hover {
+  cursor: pointer;
+  .action-btn-block {
+    display: none;
+  }
+  .action-btn-hover {
+    display: block;
+  }
 }
 </style>
