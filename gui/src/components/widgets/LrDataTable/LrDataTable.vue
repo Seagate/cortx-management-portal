@@ -38,9 +38,9 @@
     <v-data-table
       :headers="headers"
       :items="records"
-      class="elevation-1"
       :show-select="isMultiSelect"
       item-key="name"
+      class="elevation-1"
       v-model="selected"
     >
       <template v-slot:body="{ items }">
@@ -69,29 +69,29 @@
                           <img
                             :src="require(`@/assets/${action.path}`)"
                             @click="$emit(action.name, item)"
-                            alt="logo"
                             class="action-btn-block"
+                            alt="logo"
                           />
                           <img
                             :src="require(`@/assets/${action.hoverPath}`)"
                             @click="$emit(action.name, item)"
-                            alt="logo"
                             class="action-btn-hover"
+                            alt="logo"
                           />
                         </span>
                       </template>
                     </div>
                     <div v-if="col.zoomIcon" class="zoom-container">
                       <img
-                        class="zoom-icon"
                         :src="require(`@/assets/zoom-in.svg`)"
                         @click="$emit('zoom', item)"
+                        class="zoom-icon"
                         alt="logo"
                       />
                       <img
-                        class="zoom-icon-hover"
                         :src="require(`@/assets/zoom-in-hover.svg`)"
                         @click="$emit('zoom', item)"
+                        class="zoom-icon-hover"
                         alt="logo"
                       />
                     </div>
