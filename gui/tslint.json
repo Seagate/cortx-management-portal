@@ -37,6 +37,7 @@
     "max-classes-per-file": [
       false,
       1
-    ]
+    ],
+    "curly": [true, "ignore-same-line"]
   }
 }
