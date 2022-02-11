@@ -1,0 +1,40 @@
+{
+  "/dashboard/capacity": {
+    "size": 77309411328,
+    "available": 67309411328,
+    "used": 10000000000,
+    "usagePercentage": 13
+  },
+  "/dashboard/storage-components": {
+    "buckets": 5,
+    "objects": 22,
+    "underReplicated": 12
+  },
+  "/dashboard/performance": {
+    "readThroughput": 5,
+    "writeThroughput": 22,
+    "unit": "Gbps"
+  },
+  "/dashboard/health": {
+    "cluster": {
+      "name": "mycluster",
+      "status": "degraded"
+    },
+    "nodes": {
+      "online": 5,
+      "offline": 5,
+      "failed": 0,
+      "degraded": 5
+    }
+  },
+  "/dashboard/alerts": {
+    "fatal": "10",
+    "critical": "5",
+    "error": "0",
+    "warning": "20",
+    "informational": "17"
+  },
+  "/dashboard/background-activities": {
+    "tasks": 5
+  }
+}
