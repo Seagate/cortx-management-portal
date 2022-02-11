@@ -1,0 +1,15 @@
+@import url("./config.scss");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+.lr-zoom-in-icon {
+  background-image: url("../assets/images/icons/zoom-in.svg");
+}
+.lr-zoom-in-icon:hover {
+  background-image: url("../assets/images/icons/zoom-in-hover.svg");
+}
