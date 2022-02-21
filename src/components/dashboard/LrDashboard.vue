@@ -16,7 +16,7 @@
 -->
 <template>
   <div class="dashboard-wrapper">
-    <div class="dashboard-container pa-4">
+    <div class="dashboard-container">
       <v-row class="top-row">
         <LrDashboardCapacityCard />
         <LrDashboardStorageComponentsCard />
@@ -54,16 +54,11 @@ import LrDashboardBgActivitiesCard from "./LrDashboardBgActivitiesCard.vue";
 export default class LrDashboard extends Vue {}
 </script>
 <style lang="scss" scoped>
-.dashboard-wrapper {
-  background-color: #f7f7f7;
-  overflow: auto;
-  width: 100%;
-}
 .dashboard-container {
   background-color: transparent;
   height: calc(100vh - 60px);
   max-width: 1260px;
-  margin: 0 auto;
+  // margin: 0 auto;
 }
 .top-row,
 .bottom-row {

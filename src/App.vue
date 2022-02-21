@@ -21,7 +21,10 @@
       <nav class="side-nav">
         <LrNavigationDrawer :drawer.sync="drawer" />
       </nav>
-      <router-view />
+      <div class="main-content">
+        <LrBreadCrumb />
+        <router-view />
+      </div>
     </main>
   </v-app>
 </template>
@@ -30,12 +33,14 @@
 import { Component, Vue } from "vue-property-decorator";
 import LrHeader from "./components/LrHeader.vue";
 import LrNavigationDrawer from "./components/LrNavigationDrawer.vue";
+import LrBreadCrumb from "./components/bread-crumb/LrBreadCrumb.vue";
 
 @Component({
   name: "App",
   components: {
     LrHeader,
     LrNavigationDrawer,
+    LrBreadCrumb,
   },
 })
 export default class App extends Vue {
@@ -59,6 +64,13 @@ main {
       position: relative;
       top: 50%;
     }
+  }
+
+  .main-content {
+    background-color: #f7f7f7;
+    overflow: auto;
+    width: 100%;
+    padding: 1em 2em;
   }
 }
 </style>

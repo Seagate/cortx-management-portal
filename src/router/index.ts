@@ -16,17 +16,15 @@
  */
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-// import Home from "../views/Home.vue";
 import LrDashboard from "../components/dashboard/LrDashboard.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  // {
-  //   path: "/",
-  //   name: "Home",
-  //   component: Home,
-  // },
+  {
+    path: "/",
+    redirect: { name: "Dashboard" },
+  },
   {
     path: "/dashboard",
     name: "Dashboard",

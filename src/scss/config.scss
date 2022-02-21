@@ -1,4 +1,15 @@
 /* Variables, mixins and other scss implementations can be done here.*/
+$primary: #6EBE49;
+$disabled: #B7B7B7;
+$border: #9E9E9E;
+$header: #E8E8E8;
+$tooltip: #454545;
+$error: #DC1F2E;
+$warning: #F7A528;
+$success: #6EBE49;
+$info: #00A1DD;
+$overlay: #9E9E9E;
+
 .flex-filler {
     flex-grow: 1;
 }
