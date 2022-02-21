@@ -51,9 +51,9 @@ export default class LrBreadCrumb extends Vue {
   public populatePathList() {
     this.pathList = [];
     if (this.isBasePathPresent()) {
-      this.processPath = this.$router.currentRoute.path;
+      this.processPath = this.$route.path;
     } else {
-      this.processPath = `/dashboard${this.$router.currentRoute.path}`;
+      this.processPath = `/dashboard${this.$route.path}`;
     }
 
     let pathItems = this.processPath.substring(1).split("/");
@@ -68,9 +68,7 @@ export default class LrBreadCrumb extends Vue {
   }
 
   public isBasePathPresent() {
-    return basePathList.some((path) =>
-      this.$router.currentRoute.path.includes(path)
-    );
+    return basePathList.some((path) => this.$route.path.includes(path));
   }
 
   public mounted() {
