@@ -23,9 +23,7 @@
       </nav>
       <div class="main-content">
         <LrBreadCrumb />
-        <v-card class="pa-3">
-          <router-view />
-        </v-card>
+        <LrRouteComponents />
       </div>
     </main>
   </v-app>
@@ -35,6 +33,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import LrHeader from "./components/LrHeader.vue";
 import LrNavigationDrawer from "./components/LrNavigationDrawer.vue";
+import LrRouteComponents from "./components/LrRouteComponents.vue";
 import LrBreadCrumb from "./components/bread-crumb/LrBreadCrumb.vue";
 
 @Component({
@@ -43,6 +42,7 @@ import LrBreadCrumb from "./components/bread-crumb/LrBreadCrumb.vue";
     LrHeader,
     LrNavigationDrawer,
     LrBreadCrumb,
+    LrRouteComponents,
   },
 })
 export default class App extends Vue {
