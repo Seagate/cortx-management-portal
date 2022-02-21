@@ -23,7 +23,9 @@
       </nav>
       <div class="main-content">
         <LrBreadCrumb />
-        <router-view />
+        <v-card class="pa-3">
+          <router-view />
+        </v-card>
       </div>
     </main>
   </v-app>

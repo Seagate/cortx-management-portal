@@ -18,8 +18,17 @@
   <ul class="bread-crumb-container">
     <template v-for="(path, index) in pathList">
       <li :key="index">
-        <span class="path root-path" @click="$router.push({path: path.value, replace: true})">{{ path.displayPath }}</span>
-        <img class="bread-crumb-delimiter" :src="require('@/assets/icons/bread-crumbs.svg')" alt="" v-if="++index < pathList.length">
+        <span
+          class="path root-path"
+          @click="$router.push({ path: path.value, replace: true })"
+          >{{ path.displayPath }}</span
+        >
+        <img
+          class="bread-crumb-delimiter"
+          :src="require('@/assets/icons/bread-crumbs.svg')"
+          alt=""
+          v-if="++index < pathList.length"
+        />
       </li>
     </template>
   </ul>
@@ -41,25 +50,27 @@ export default class LrBreadCrumb extends Vue {
 
   public populatePathList() {
     this.pathList = [];
-    if(this.isBasePathPresent()) {
+    if (this.isBasePathPresent()) {
       this.processPath = this.$router.currentRoute.path;
     } else {
       this.processPath = `/dashboard${this.$router.currentRoute.path}`;
     }
 
     let pathItems = this.processPath.substring(1).split("/");
-    let pathValue = ""
+    let pathValue = "";
     pathItems.forEach((item) => {
-      pathValue += `/${item}`
+      pathValue += `/${item}`;
       this.pathList.push({
         displayPath: capitalizeFirstLetter(item),
-        value: pathValue
-      })
-    })
+        value: pathValue,
+      });
+    });
   }
 
   public isBasePathPresent() {
-    return basePathList.some(path => this.$router.currentRoute.path.includes(path));
+    return basePathList.some((path) =>
+      this.$router.currentRoute.path.includes(path)
+    );
   }
 
   public mounted() {

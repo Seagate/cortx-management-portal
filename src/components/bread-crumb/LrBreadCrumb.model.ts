@@ -1,4 +1,4 @@
 export interface PathData {
-    displayPath: string;
-    value: string;
+  displayPath: string;
+  value: string;
 }

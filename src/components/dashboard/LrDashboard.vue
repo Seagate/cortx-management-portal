@@ -15,19 +15,17 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div class="dashboard-wrapper">
-    <div class="dashboard-container">
-      <v-row class="top-row">
-        <LrDashboardCapacityCard />
-        <LrDashboardStorageComponentsCard />
-        <LrDashboardPerformanceCard />
-      </v-row>
-      <v-row class="bottom-row">
-        <LrDashboardClusterHealthCard />
-        <LrDashboardAlertCard />
-        <LrDashboardBgActivitiesCard />
-      </v-row>
-    </div>
+  <div class="dashboard-container">
+    <v-row class="top-row">
+      <LrDashboardCapacityCard />
+      <LrDashboardStorageComponentsCard />
+      <LrDashboardPerformanceCard />
+    </v-row>
+    <v-row class="bottom-row">
+      <LrDashboardClusterHealthCard />
+      <LrDashboardAlertCard />
+      <LrDashboardBgActivitiesCard />
+    </v-row>
   </div>
 </template>
 
@@ -56,7 +54,7 @@ export default class LrDashboard extends Vue {}
 <style lang="scss" scoped>
 .dashboard-container {
   background-color: transparent;
-  height: calc(100vh - 60px);
+  height: 100%;
   max-width: 1260px;
   // margin: 0 auto;
 }
