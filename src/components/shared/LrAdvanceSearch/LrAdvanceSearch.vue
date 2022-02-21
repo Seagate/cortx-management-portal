@@ -44,12 +44,16 @@
 
     <v-expand-transition v-if="advanceSearchActive">
       <v-card v-show="expand" hover width="360" class="mx-auto adv-container">
-        <div v-for="row in config.advanceForm" :key="row.name" class="pt-3 pr-3">
+        <div
+          v-for="row in config.advanceForm"
+          :key="row.name"
+          class="pt-3 pr-3"
+        >
           <v-row>
             <v-col cols="4" class="pr-1">
               <label :for="row.name">
                 <b>
-                  {{row.label}}
+                  {{ row.label }}
                   <span v-if="row.required">*</span>
                 </b>
               </label>
@@ -123,8 +127,12 @@
           </v-row>
         </div>
         <div class="btn-container">
-          <v-btn color="csmprimary" class="clear-btn" @click="clearAll" outlined>Clear</v-btn>
-          <v-btn color="csmprimary" class="search-btn" @click="search" dark>Search</v-btn>
+          <v-btn color="csmprimary" class="clear-btn" @click="clearAll" outlined
+            >Clear</v-btn
+          >
+          <v-btn color="csmprimary" class="search-btn" @click="search" dark
+            >Search</v-btn
+          >
         </div>
       </v-card>
     </v-expand-transition>
@@ -141,15 +149,16 @@ import { LrFilterObject } from "../LrChips/LrFilterObject.model";
 export default class LrAdvanceSearch extends Vue {
   @Prop({ required: true }) private config: LrAdvanceSearchConfig;
 
-  private expand: boolean = false;
-  private advanceSearchActive: boolean = false;
-  private menu: boolean = false;
-  private primarySearch: string = "";
+  private expand = false;
+  private advanceSearchActive = false;
+  private menu = false;
+  private primarySearch = "";
   private searchList: LrFilterObject[] = [];
 
   mounted() {
-    if (this.config.advanceForm && this.config.advanceForm.length > 0)
+    if (this.config.advanceForm && this.config.advanceForm.length > 0) {
       this.advanceSearchActive = true;
+    }
   }
 
   /**
@@ -176,22 +185,23 @@ export default class LrAdvanceSearch extends Vue {
    */
   primaryAction() {
     this.searchList = [];
-    if (this.primarySearch && this.primarySearch.trim())
+    if (this.primarySearch && this.primarySearch.trim()) {
       this.searchList.push({
         name: "primary",
         value: this.primarySearch.trim(),
         label: "primary",
         required: false,
       });
+    }
     this.config.advanceForm?.forEach((ele) => {
-      if (ele.required)
+      if (ele.required) {
         this.searchList.push({
           name: ele.name,
           value: ele.value,
           label: ele.label,
           required: ele.required,
         });
-      else ele.value = undefined;
+      } else ele.value = undefined;
     });
     this.$emit("filter-click", this.searchList);
   }
@@ -220,13 +230,14 @@ export default class LrAdvanceSearch extends Vue {
   emitSearch() {
     this.searchList = [];
     this.config.advanceForm?.forEach((ele) => {
-      if (ele.value)
+      if (ele.value) {
         this.searchList.push({
           name: ele.name,
           value: ele.value,
           label: ele.label,
           required: ele.required,
         });
+      }
     });
     this.$emit("filter-click", this.searchList);
   }

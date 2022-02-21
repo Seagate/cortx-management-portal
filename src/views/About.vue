@@ -15,7 +15,6 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 -->
 
-
 <template>
   <div class="about">
     <h1>This is an about page</h1>
