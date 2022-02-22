@@ -1,4 +1,5 @@
-<!--
+ 
+ <!--
 * CORTX-CSM: CORTX Management web.
 * Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
@@ -15,34 +16,29 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>
-    <v-chip-group :style="'max-width: ' + width">
-      <v-chip
-        color="csmprimary"
-        dark
-        v-for="(chip, i) in chips"
-        :key="i"
-        :close="chip.required ? false : true"
-        close-label="remove"
-        @click="$emit('chip-click', chip)"
-        @click:close="$emit('remove-chip', chip)"
-        class="mr-2"
-      >{{chip.label}} : {{ chip.value }}</v-chip>
-    </v-chip-group>
-  </div>
+    <v-chip
+      class="ma-1"
+      color="csmprimary"
+      label
+      outlined
+      text-color="#000000"
+    >
+      {{name}} : {{value}}
+    </v-chip>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { LrFilterObject } from "./LrFilterObject.model";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "LrChips",
+  name: "LrLabel",
   components: {}
 })
-export default class LrChips extends Vue {
-  @Prop({ required: true, default: [] }) private chips: LrFilterObject[];
-  @Prop({ required: false, default: "100%" }) private width: string;
+export default class Lrlabel extends Vue {
+  @Prop({ required: true }) private name: string;
+  @Prop({ required: true }) private value: string;
 }
 </script>
 
+<style lang="scss">
+</style>

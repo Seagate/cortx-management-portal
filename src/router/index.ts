@@ -16,8 +16,9 @@
  */
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-// import Home from "../views/Home.vue";
 import LrDashboard from "../components/dashboard/LrDashboard.vue";
+import LrAlert from "../components/alerts/LrAlert.vue";
+import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
 
 Vue.use(VueRouter);
 
@@ -33,13 +34,16 @@ const routes: Array<RouteConfig> = [
     component: LrDashboard,
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/alert",
+    name: "alert",
+    component: LrAlert,
+    props:true
+  },
+  {
+    path: "/alert-details/:alertId",
+    name: "alert-details",
+    component: LrAlertDetails,
+    props:true
   },
 ];
 
