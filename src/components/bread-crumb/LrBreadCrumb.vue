@@ -38,7 +38,7 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 import ClickOutsideHOC from "../shared/ClickOutsideHOC.vue";
 import { capitalizeFirstLetter } from "../../utils/CommonUtilFunctions";
 import { PathData } from "./LrBreadCrumb.model";
-import { basePathList } from "./LrBreadCrumb.data";
+import { basePathList } from "./LrBreadCrumb.constant";
 
 @Component({
   name: "LrBreadCrumb",

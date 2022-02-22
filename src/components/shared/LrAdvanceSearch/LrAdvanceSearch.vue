@@ -127,12 +127,17 @@
           </v-row>
         </div>
         <div class="btn-container">
-          <v-btn color="csmprimary" class="clear-btn" @click="clearAll" outlined
-            >Clear</v-btn
+          <v-btn
+            color="csmprimary"
+            class="clear-btn"
+            @click="clearAll"
+            outlined
           >
-          <v-btn color="csmprimary" class="search-btn" @click="search" dark
-            >Search</v-btn
-          >
+            Clear
+          </v-btn>
+          <v-btn color="csmprimary" class="search-btn" @click="search" dark>
+            Search
+          </v-btn>
         </div>
       </v-card>
     </v-expand-transition>

@@ -27,8 +27,9 @@
         @click="$emit('chip-click', chip)"
         @click:close="$emit('remove-chip', chip)"
         class="mr-2"
-        >{{ chip.label }} : {{ chip.value }}</v-chip
       >
+        {{ chip.label }} : {{ chip.value }}
+      </v-chip>
     </v-chip-group>
   </div>
 </template>
