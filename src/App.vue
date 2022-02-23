@@ -54,9 +54,9 @@ export default class App extends Vue {
 
 main {
   display: flex;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 4rem);
   .side-nav {
-    width: 50px;
+    width: 3rem;
     height: 100%;
     background-color: #e7e7e7;
 

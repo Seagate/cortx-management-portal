@@ -68,7 +68,7 @@ export default class LrHeaderDropdown extends Vue {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.25em;
+  gap: 0.5em;
   cursor: pointer;
 
   .username-label {
