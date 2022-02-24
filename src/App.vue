@@ -22,7 +22,10 @@
         <LrNavigationDrawer :drawer.sync="drawer" />
       </nav>
       <div class="main-content">
-        <LrBreadCrumb />
+        <SgtUrlBreadCrumb
+          backupBasepath="/dashboard"
+          :basePathList="basePathList"
+        />
         <LrRouteComponents />
       </div>
     </main>
@@ -34,19 +37,24 @@ import { Component, Vue } from "vue-property-decorator";
 import LrHeader from "./components/LrHeader.vue";
 import LrNavigationDrawer from "./components/LrNavigationDrawer.vue";
 import LrRouteComponents from "./components/LrRouteComponents.vue";
-import LrBreadCrumb from "./components/bread-crumb/LrBreadCrumb.vue";
+import SgtUrlBreadCrumb from "./components/shared/bread-crumb/SgtUrlBreadCrumb.vue";
+import { basePathList } from "./components/BreadCrumb.constant";
 
 @Component({
   name: "App",
   components: {
     LrHeader,
     LrNavigationDrawer,
-    LrBreadCrumb,
+    SgtUrlBreadCrumb,
     LrRouteComponents,
   },
 })
 export default class App extends Vue {
   drawer = true;
+
+  get basePathList() {
+    return basePathList;
+  }
 }
 </script>
 <style lang="scss" scoped>

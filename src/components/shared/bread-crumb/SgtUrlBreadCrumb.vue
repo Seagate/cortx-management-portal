@@ -15,45 +15,47 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <ul class="bread-crumb-container">
-    <template v-for="(path, index) in pathList">
-      <li :key="index">
-        <span
-          class="path root-path"
-          @click="$router.push({ path: path.value, replace: true })"
-          >{{ path.displayPath }}</span
-        >
-        <img
-          class="bread-crumb-delimiter"
-          :src="require('@/assets/icons/bread-crumbs.svg')"
-          alt=""
-          v-if="++index < pathList.length"
-        />
-      </li>
+  <v-breadcrumbs class="bread-crumb-container" :items="pathList">
+    <template v-slot:item="{ item }">
+      <span
+        class="path root-path"
+        @click="$router.push({ path: item.to, replace: true })"
+      >
+        {{ item.text }}
+      </span>
     </template>
-  </ul>
+    <template v-slot:divider>
+      <img
+        class="bread-crumb-delimiter"
+        :src="require('@/assets/icons/bread-crumbs.svg')"
+        alt=""
+      />
+    </template>
+  </v-breadcrumbs>
 </template>
 <script lang="ts">
-import { Vue, Component, Watch } from "vue-property-decorator";
-import ClickOutsideHOC from "../shared/ClickOutsideHOC.vue";
-import { capitalizeFirstLetter } from "../../utils/CommonUtilFunctions";
-import { PathData } from "./LrBreadCrumb.model";
-import { basePathList } from "./LrBreadCrumb.constant";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { PathData } from "./SgtUrlBreadCrumb.model";
+import { capitalizeFirstLetter } from "../../../utils/CommonUtilFunctions";
 
 @Component({
-  name: "LrBreadCrumb",
-  components: { ClickOutsideHOC },
+  name: "SgtUrlBreadCrumb",
 })
-export default class LrBreadCrumb extends Vue {
+export default class SgtUrlBreadCrumb extends Vue {
+  @Prop({ required: false }) backupBasepath: string;
+  @Prop({ required: false }) basePathList: string[];
   public pathList: Array<PathData> = [];
   public processPath = "";
 
   public populatePathList() {
     this.pathList = [];
-    if (this.isBasePathPresent()) {
-      this.processPath = this.$route.path;
-    } else {
-      this.processPath = `/dashboard${this.$route.path}`;
+    this.processPath = this.$route.path;
+    if (
+      this.backupBasepath &&
+      this.basePathList.length > 0 &&
+      !this.isBasePathPresent()
+    ) {
+      this.processPath = `${this.backupBasepath}${this.$route.path}`;
     }
 
     let pathItems = this.processPath.substring(1).split("/");
@@ -61,14 +63,15 @@ export default class LrBreadCrumb extends Vue {
     pathItems.forEach((item) => {
       pathValue += `/${item}`;
       this.pathList.push({
-        displayPath: capitalizeFirstLetter(item),
-        value: pathValue,
+        text: capitalizeFirstLetter(item),
+        to: pathValue,
+        disabled: false,
       });
     });
   }
 
   public isBasePathPresent() {
-    return basePathList.some((path) => this.$route.path.includes(path));
+    return this.basePathList.some((path) => this.$route.path.includes(path));
   }
 
   public mounted() {
@@ -76,7 +79,7 @@ export default class LrBreadCrumb extends Vue {
   }
 
   @Watch("$route")
-  public routerChanged() {
+  public routeChangeHandler() {
     this.populatePathList();
   }
 }
@@ -86,18 +89,12 @@ export default class LrBreadCrumb extends Vue {
 .bread-crumb-container {
   padding: 0;
   margin-bottom: 1em;
-  display: flex;
-  align-items: center;
 
   .path {
     cursor: pointer;
     &:last-child {
       color: $primary;
     }
-  }
-
-  .bread-crumb-delimiter {
-    margin: 0 0.5em;
   }
 }
 </style>
