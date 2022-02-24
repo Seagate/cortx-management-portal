@@ -92,23 +92,23 @@
         <span>Acknowledged</span>
       </div>
       <div class="alert-info">
-        <img
-        :src="require(`@/assets/icons/more-info.svg`)"
-        @click="showAlertDetailsDialog = true"
-        class="action-btn-block"
-        alt="logo"
-        />
-        <img
-          :src="require(`@/assets/icons/comment-default.svg`)"
-          @click="comment"
+        <LrSvgIcon
+          icon="more-info.svg"
+          hoverIcon="more-info.svg"
+          @click="showAlertDetailsDialog = true"
           class="action-btn-block"
-          alt="logo"
         />
-        <img
-          :src="require(`@/assets/icons/alert-green.svg`)"
+        <LrSvgIcon
+          icon="comment-default.svg"
+          hoverIcon="comment-hover.svg"
+          @click="showAlertCommentsDialog = true"
+          class="action-btn-block"
+        />
+        <LrSvgIcon
+          icon="alert-green.svg"
+          hoverIcon="alert-hover.svg"
           @click="acknowledge"
           class="action-btn-block"
-          alt="logo"
         />
       </div>
     </div>
@@ -121,16 +121,24 @@
         :showAlertDetailsDialog.sync="showAlertDetailsDialog"
       />
     </div>
+    <div>
+      <LrAlertDialog
+        v-if="alertDetails && alertDetails.alert_uuid && showAlertCommentsDialog"
+        :id="alertDetails.alert_uuid"
+        :showAlertCommentsDialog.sync="showAlertCommentsDialog"
+      />
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import LrLabel from "../shared/LrLabel/LrLabel.vue";
 import LrAlertDialog from "./LrAlertDialog.vue";
+import LrSvgIcon from "../shared/LrSvgIcon/LrSvgIcon.vue";
 
 @Component({
   name: "LrAlertInformation",
-  components: { LrLabel, LrAlertDialog },
+  components: { LrLabel, LrAlertDialog, LrSvgIcon },
 })
 export default class LrAlertInformation extends Vue {
   @Prop({ required: true }) private alert: any;
@@ -138,7 +146,7 @@ export default class LrAlertInformation extends Vue {
   public alertExtendedInfo: any = {};
   public alertDetails: any = {};
   public showAlertDetailsDialog = false;
-  public isShowCommentsDialog = false;
+  public showAlertCommentsDialog = false;
   public addCommentForm = {
     comment_text: "",
   };
@@ -201,7 +209,6 @@ export default class LrAlertInformation extends Vue {
     vertical-align: super;
   }
   .action-btn-block {
-    cursor: pointer;
     padding-right: 10px;
   }
 }
