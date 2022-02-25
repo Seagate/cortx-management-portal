@@ -1,6 +1,6 @@
-/*
-* CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+<!--
+* CORTX-CSM: CORTX Management web.
+* Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published
 * by the Free Software Foundation, either version 3 of the License, or
@@ -12,19 +12,19 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program. If not, see <https://www.gnu.org/licenses/>.
 * For any questions about this software or licensing,
-* please email opensource@seagate.com or cortx-questions@seagate.com.
-*/
+* please email opensource@seagate.com.
+-->
 <template>
   <div v-feature="unsupportedFeatures.health">
     <cortx-data-table
       id="health-details-table"
-      :headers="healthTableHeaderList" 
+      :headers="healthTableHeaderList"
       :records="clusterHealthData.data"
       :hideFilter="hideFilter"
       :onSort="{}"
       :onFilter="{}"
       :sortParams="{}"
-      :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]" 
+      :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]"
       :actionsCallback="actionsCallback"
       @update:items-per-page="getHealthData()"
       @update:page="getHealthData()"
@@ -51,7 +51,7 @@
           <br />
           Status: {{ resourceInfo.status.toUpperCase() }}
           <br />
-          Time: {{ resourceInfo.last_updated_time * 1000 | timeago }}
+          Time: {{ (resourceInfo.last_updated_time * 1000) | timeago }}
           <br />
         </v-card-text>
 
@@ -80,14 +80,14 @@ import { unsupportedFeatures } from "../../common/unsupported-feature";
 import CortxDataTable from "../widgets/cortx-data-table.vue";
 import {
   healthTableHeaders,
-  IResource
+  IResource,
 } from "../../common/health-table-headers";
 import CortxPromptDialog from "../widgets/cortx-prompt-dialog.vue";
 import CortxInfoDialog from "../widgets/cortx-info-dialog.vue";
 
 @Component({
   name: "cortx-health-table",
-  components: { CortxDataTable, CortxPromptDialog, CortxInfoDialog }
+  components: { CortxDataTable, CortxPromptDialog, CortxInfoDialog },
 })
 export default class CortxHealthTabular extends Mixins(ClusterManagementMixin) {
   public unsupportedFeatures = unsupportedFeatures;
@@ -101,16 +101,16 @@ export default class CortxHealthTabular extends Mixins(ClusterManagementMixin) {
     id: "",
     last_updated_time: "",
     resource: "",
-    status: ""
+    status: "",
   };
   public mounted() {
-    this.getHealthData();    
-  }  
+    this.getHealthData();
+  }
   public async getHealthData() {
     this.healthQueryParams = {
       response_format: "flattened",
       offset: 1,
-      limit: 0
+      limit: 0,
     };
     this.$store.dispatch("systemConfig/showLoader", "Fetching health...");
     const res = await Api.getAll(
@@ -130,7 +130,7 @@ export default class CortxHealthTabular extends Mixins(ClusterManagementMixin) {
       powerOffAction: (resource: any) =>
         this.performAction(resource, "poweroff"),
       powerAndStorageOffAction: (resource: any) =>
-        this.performAction(resource, "powerandstorageoff")
+        this.performAction(resource, "powerandstorageoff"),
     };
   }
 

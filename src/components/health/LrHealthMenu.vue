@@ -1,6 +1,6 @@
-/*
-* CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+<!--
+* CORTX-CSM: CORTX Management web.
+* Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published
 * by the Free Software Foundation, either version 3 of the License, or
@@ -12,8 +12,8 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program. If not, see <https://www.gnu.org/licenses/>.
 * For any questions about this software or licensing,
-* please email opensource@seagate.com or cortx-questions@seagate.com.
-*/
+* please email opensource@seagate.com.
+-->
 <template>
   <div class="cortx-p-1" v-feature="unsupportedFeatures.health">
     <div>
@@ -33,17 +33,16 @@
       <div>
         <label
           class="cortx-text-lg cortx-text-bold cortx-float-l cortx-menu-card-title"
-        >{{ menuItem.label }}</label>
-        
+          >{{ menuItem.label }}</label
+        >
+
         <div
           class="cortx-summary-chip cortx-chip-ok cortx-float-l cortx-cursor-pointer ml-2"
           v-if="menuItem.good_health.count > 0"
           @click="$router.push(menuItem.good_health.link)"
         >
           <div class="summary-count">
-            <span
-              class="cortx-text-sm"
-            >{{ menuItem.good_health.count }}</span>
+            <span class="cortx-text-sm">{{ menuItem.good_health.count }}</span>
           </div>
         </div>
         <div
@@ -52,9 +51,9 @@
           @click="$router.push(menuItem.warning_health.link)"
         >
           <div class="summary-count">
-            <span
-              class="cortx-text-sm"
-            >{{ menuItem.warning_health.count }}</span>
+            <span class="cortx-text-sm">{{
+              menuItem.warning_health.count
+            }}</span>
           </div>
         </div>
         <div
@@ -63,22 +62,29 @@
           @click="$router.push(menuItem.critical_health.link)"
         >
           <div class="summary-count">
-            <span
-              class="cortx-text-sm"
-            >{{ menuItem.critical_health.count }}</span>
+            <span class="cortx-text-sm">{{
+              menuItem.critical_health.count
+            }}</span>
           </div>
         </div>
         <button
           id="view-healthbtn"
           type="button"
           class="cortx-btn-tertiary cortx-float-r"
-          @click="$router.push({ name: 'healthview', query: { name: menuItem.value }})"
-        >{{ $t("health.view") }}</button>
+          @click="
+            $router.push({
+              name: 'healthview',
+              query: { name: menuItem.value },
+            })
+          "
+        >
+          {{ $t("health.view") }}
+        </button>
       </div>
     </div>
   </div>
 </template>
- <script lang="ts">
+<script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Api } from "./../../services/api";
 import apiRegister from "./../../services/api-register";
@@ -86,17 +92,17 @@ import i18n from "../../i18n";
 import { unsupportedFeatures } from "../../common/unsupported-feature";
 
 @Component({
-  name: "cortx-health-submenu"
+  name: "cortx-health-submenu",
 })
 export default class CortxHealthSubmenu extends Vue {
   public menu: any[] = [];
   public healthBySeverityRoute: string = "/health/healthview/severity/";
   public unsupportedFeatures = unsupportedFeatures;
-  
+
   public async mounted() {
     this.$store.dispatch("systemConfig/showLoaderMessage", {
       show: true,
-      message: "Getting health info..."
+      message: "Getting health info...",
     });
     const res = await Api.getAll(apiRegister.node_health);
     if (res && res.data) {
@@ -106,17 +112,23 @@ export default class CortxHealthSubmenu extends Vue {
           label: key === "storage_encl" ? i18n.t("health.storage_encl") : key,
           value: key,
           good_health: {
-            count: item[key].health_summary.good ? item[key].health_summary.good : 0,
-            link: `${this.healthBySeverityRoute}ok?component_id=${key}`
+            count: item[key].health_summary.good
+              ? item[key].health_summary.good
+              : 0,
+            link: `${this.healthBySeverityRoute}ok?component_id=${key}`,
           },
           warning_health: {
-            count: item[key].health_summary.warning ? item[key].health_summary.warning : 0,
-            link: `${this.healthBySeverityRoute}warning?component_id=${key}`
+            count: item[key].health_summary.warning
+              ? item[key].health_summary.warning
+              : 0,
+            link: `${this.healthBySeverityRoute}warning?component_id=${key}`,
           },
           critical_health: {
-            count: item[key].health_summary.critical ? item[key].health_summary.critical : 0,
-            link: `${this.healthBySeverityRoute}critical?component_id=${key}`
-          }
+            count: item[key].health_summary.critical
+              ? item[key].health_summary.critical
+              : 0,
+            link: `${this.healthBySeverityRoute}critical?component_id=${key}`,
+          },
         });
       });
     }

@@ -1,6 +1,6 @@
 /*
- * CORTX-CSM: CORTX Management web and CLI interface.
- * Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+ * CORTX-CSM: CORTX Management web.
+ * Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
@@ -10,9 +10,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see https://www.gnu.org/licenses/.
  * For any questions about this software or licensing,
- * please email opensource@seagate.com or cortx-questions@seagate.com.
+ * please email opensource@seagate.com.
  */
 import {
   ResourceConfig,
