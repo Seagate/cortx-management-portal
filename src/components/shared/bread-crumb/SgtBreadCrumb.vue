@@ -35,13 +35,13 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { PathData } from "./SgtUrlBreadCrumb.model";
+import { PathData } from "./SgtBreadCrumb.model";
 import { capitalizeFirstLetter } from "../../../utils/CommonUtilFunctions";
 
 @Component({
-  name: "SgtUrlBreadCrumb",
+  name: "SgtBreadCrumb",
 })
-export default class SgtUrlBreadCrumb extends Vue {
+export default class SgtBreadCrumb extends Vue {
   @Prop({ required: false }) backupBasepath: string;
   @Prop({ required: false }) basePathList: string[];
   public pathList: Array<PathData> = [];
