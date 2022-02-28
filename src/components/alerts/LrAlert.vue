@@ -27,6 +27,7 @@
       :itemKey="alertConst.alertTable.itemKey"
       @filter-click="filterData($event)"
       @zoom="openDetails($event)"
+      @comment="comment($event)"
       @acknowledge="multiAcknowledge($event)"
     >
       <template v-slot:severity="item">
@@ -40,8 +41,8 @@
       :modalData="selectedRecord"
       :showAlertDetailsDialog.sync="showAlertDetailsDialog"
     />
-    <LrAlertDialog
-      v-if="selectedRecord && showAlertCommentsDialog"
+    <LrAlertComments
+      v-if="showAlertCommentsDialog"
       :id="selectedRecord.alert_uuid"
       :showAlertCommentsDialog.sync="showAlertCommentsDialog"
     />
@@ -53,10 +54,11 @@ import LrDataTable from "../shared/LrDataTable/LrDataTable.vue";
 import { lrAlertConst } from "./LrAlert.constant";
 import { Api } from "../../services/Api";
 import LrAlertDialog from "./LrAlertDialog.vue";
+import LrAlertComments from "./LrAlertComments.vue";
 
 @Component({
 	name: "LrAlert",
-	components: { LrDataTable, LrAlertDialog },
+	components: { LrDataTable, LrAlertDialog, LrAlertComments },
 })
 export default class LrAlert extends Vue {
 	@Prop({ required: false, default: "" }) private severity: string;
@@ -66,8 +68,9 @@ export default class LrAlert extends Vue {
 	showDataTable = false;
 	chips = [];
 	showAlertDetailsDialog = false;
-  selectedRecord: any = null;
-  showAlertCommentsDialog = false
+	selectedRecord: any = null;
+	showAlertCommentsDialog = false;
+
 	mounted() {
 		Api.getData("alerts/list", { isDummy: true }).then((resp: any) => {
 			this.alerts = resp["list"];
@@ -93,7 +96,8 @@ export default class LrAlert extends Vue {
 
 	openDetails(selectedRow: any) {
 		if (this.alertId) {
-			this.selectedRecord = selectedRow;
+			this.selectedRecord = null;
+			this.selectedRecord = JSON.parse(JSON.stringify(selectedRow));
 			this.selectedRecord.extended_info = JSON.parse(
 				this.selectedRecord.extended_info
 			);
@@ -104,6 +108,12 @@ export default class LrAlert extends Vue {
 				params: { alertId: selectedRow.alert_uuid },
 			});
 		}
+	}
+
+	comment(selectedRow: any) {
+		this.selectedRecord = null;
+		this.selectedRecord = JSON.parse(JSON.stringify(selectedRow));
+		this.showAlertCommentsDialog = true;
 	}
 	multiAcknowledge(data: any) {
 		//multi select action
