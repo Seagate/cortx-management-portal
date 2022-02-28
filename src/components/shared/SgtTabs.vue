@@ -15,9 +15,9 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <ul class="cortx-tabs-container">
+  <ul class="sgt-tabs-container">
     <li
-      class="cortx-tab"
+      class="sgt-tab"
       v-for="tab in tabsInfo"
       v-bind:key="tab.id"
       :id="`tab-${tab.id}`"
@@ -44,7 +44,11 @@ export type TabsInfo = Array<Tab>;
 })
 export default class SgtTabs extends Vue {
   @Prop({ required: true }) public tabsInfo: TabsInfo;
-  selectedTab = this.tabsInfo[0].id;
+  selectedTab = 1;
+
+  public mounted() {
+    this.tabsInfo[0].id;
+  }
 
   public tabChangeHandler(id: number) {
     this.selectedTab = id;
@@ -53,13 +57,13 @@ export default class SgtTabs extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.cortx-tabs-container {
+.sgt-tabs-container {
   padding: 0;
   border-bottom: 1px solid #e8e8e8;
   display: flex;
   flex-wrap: nowrap;
 
-  .cortx-tab {
+  .sgt-tab {
     min-width: 173px;
     height: 35px;
     text-align: center;

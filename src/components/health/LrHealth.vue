@@ -16,6 +16,7 @@
 -->
 <template>
   <div class="cortx-p-1">
+    <LrCalulateDimensions />
     <SgtTabs :tabsInfo="tabsInfo" @selected="onTabChange" />
     <component :is="activeTab" />
   </div>
@@ -24,7 +25,8 @@
 import SgtTabs, { TabsInfo } from "../shared/SgtTabs.vue";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 // import LrHealthTabular from "./LrHealthTabular.vue";
-// import LrHealthGraphical from "./LrHealthGraphical.vue";
+import LrHealthGraphical from "./LrHealthGraphical.vue";
+import LrCalulateDimensions from "../LrCalulateDimensions.vue";
 import Tab1 from "./Tab1.vue";
 import Tab2 from "./Tab2.vue";
 
@@ -32,7 +34,8 @@ import Tab2 from "./Tab2.vue";
   name: "LrHealth",
   components: {
     SgtTabs,
-    // LrHealthGraphical,
+    LrHealthGraphical,
+    LrCalulateDimensions,
     // LrHealthTabular,
     Tab1,
     Tab2,
@@ -49,14 +52,14 @@ export default class LrHealth extends Vue {
       label: "Tabular",
     },
   ];
-  private activeTab = "Tab1";
-  // private activeTab = "LrHealthGraphical";
+  // private activeTab = "Tab1";
+  private activeTab = "LrHealthGraphical";
 
   public onTabChange(value: number) {
     switch (value) {
       case 1:
-        this.activeTab = "Tab1";
-        // this.activeTab = "LrHealthGraphical";
+        // this.activeTab = "Tab1";
+        this.activeTab = "LrHealthGraphical";
         break;
       case 2:
         this.activeTab = "Tab2";

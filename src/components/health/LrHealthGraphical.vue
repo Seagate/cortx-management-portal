@@ -32,7 +32,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import ClusterManagementMixin from "../../mixins/cluster-management";
 import * as d3 from "d3";
 import HealthCardBuilder from "./LrHealthCardBuilder";
@@ -70,7 +70,6 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
     this.resource_health = await this.getHealthData(true);
 
     this.healthTreePathLine = d3.line().defined((d) => d !== null);
-    debugger;
     const nodes: any[] = this.traverse();
     this.initSVG();
     this.buildSVG(nodes);
@@ -79,7 +78,6 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
   private calculateDimensions() {
     const mainContentDim: any =
       this.$store.getters["dimensions/getContentDimension"];
-    debugger;
     this.healthTreeContainerDim.height = `${mainContentDim.height - 69}px`;
     this.healthTreeContainerDim.width = `${mainContentDim.width - 32}px`;
   }

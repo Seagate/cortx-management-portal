@@ -36,5 +36,41 @@
   },
   "/dashboard/background-activities": {
     "tasks": 5
+  },
+  "/health/cluster-details": {
+    "data": [
+      {
+        "resource": "cluster",
+        "id": "394dce5b-0770-4160-b7c9-20f3c6c5983d",
+        "status": "online",
+        "last_updated_time": "1637652160",
+        "sub_resources": [
+          {
+            "resource": "site",
+            "id": "1",
+            "status": "online",
+            "last_updated_time": "1637652160",
+            "sub_resources": [
+              {
+                "resource": "rack",
+                "id": "1",
+                "status": "online",
+                "last_updated_time": "1637652160",
+                "sub_resources": [
+                  {
+                    "resource": "node",
+                    "id": "1",
+                    "status": "online",
+                    "last_updated_time": "1637652159",
+                    "sub_resources": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "version": "2.0"
   }
 }

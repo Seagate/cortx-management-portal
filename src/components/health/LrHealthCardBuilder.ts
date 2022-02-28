@@ -317,7 +317,7 @@ export default abstract class HealthCardBuilder {
           .attr("transform", `translate(0.5,${actionItemY})`)
           .attr("width", 268)
           .attr("height", 40);
-        const rectId: string = `rect_${data.treeNodeId}_${action.action}`;
+        const rectId = `rect_${data.treeNodeId}_${action.action}`;
         actionItemContainerG
           .append("text")
           .attr("x", 45)
