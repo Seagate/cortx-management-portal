@@ -21,7 +21,13 @@
       <nav class="side-nav">
         <LrNavigationDrawer :drawer.sync="drawer" />
       </nav>
-      <router-view />
+      <div class="main-content">
+        <SgtBreadCrumb
+          backupBasepath="/dashboard"
+          :basePathList="basePathList"
+        />
+        <LrRouteComponents />
+      </div>
     </main>
   </v-app>
 </template>
@@ -30,16 +36,25 @@
 import { Component, Vue } from "vue-property-decorator";
 import LrHeader from "./components/LrHeader.vue";
 import LrNavigationDrawer from "./components/LrNavigationDrawer.vue";
+import LrRouteComponents from "./components/LrRouteComponents.vue";
+import SgtBreadCrumb from "./components/shared/bread-crumb/SgtBreadCrumb.vue";
+import { basePathList } from "./components/BreadCrumb.constant";
 
 @Component({
   name: "App",
   components: {
     LrHeader,
     LrNavigationDrawer,
+    SgtBreadCrumb,
+    LrRouteComponents,
   },
 })
 export default class App extends Vue {
   drawer = true;
+
+  get basePathList() {
+    return basePathList;
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -47,9 +62,9 @@ export default class App extends Vue {
 
 main {
   display: flex;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 4rem);
   .side-nav {
-    width: 60px;
+    width: 3rem;
     height: 100%;
     background-color: #e7e7e7;
 
@@ -59,6 +74,13 @@ main {
       position: relative;
       top: 50%;
     }
+  }
+
+  .main-content {
+    background-color: #f7f7f7;
+    overflow: auto;
+    width: 100%;
+    padding: 1em 2em;
   }
 }
 </style>
