@@ -18,15 +18,7 @@
   <ClickOutsideHOC @clicked-outside="isMenuOpen = false">
     <div class="lr-header-dropdown" @click="isMenuOpen = !isMenuOpen">
       <label class="username-label">{{ username }}</label>
-      <img
-        :src="require('@/assets/images/profile-logout.svg')"
-        id="logout-icon"
-      />
-      <img
-        class="icon dropdown-icon"
-        :class="{ 'dropdown-active': isMenuOpen }"
-        :src="require('@/assets/images/caret-down.svg')"
-      />
+      <img :src="require('@/assets/icons/user-icon.svg')" id="logout-icon" />
       <ul class="lr-dropdown-menu" v-show="isMenuOpen">
         <li class="lr-dropdown-menu-item">
           <div
@@ -76,7 +68,7 @@ export default class LrHeaderDropdown extends Vue {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.25em;
+  gap: 0.5em;
   cursor: pointer;
 
   .username-label {
