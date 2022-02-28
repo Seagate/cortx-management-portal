@@ -15,11 +15,11 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <v-dialog v-model="dialog" scrollable max-width="300px">
+  <v-dialog v-model="dialog" scrollable max-width="400px">
     <v-card>
       <v-card-title>
         <div class="title-container">
-          {{modalTitle}}
+          Add Comment
           <img
             :src="require(`@/assets/icons/close-green.svg`)"
             @click="dialog = false"
@@ -29,8 +29,8 @@
         </div>
       </v-card-title>
       <v-divider></v-divider>
-      <v-card-text style="height: 200px;">
-        <label v-if="alertComments.length === 0">No Comments </label>
+      <v-card-text>
+        <label class="no-cmt-lbl" v-if="alertComments.length === 0">No Comments</label>
         <div
           v-else
           class="cortx-comment"
@@ -46,17 +46,23 @@
             <span class="sub-txt">{{ comment.created_by }}</span>
           </div>
         </div>
-        <div>
-          <v-textarea outlined name="comment" label="Add Comment" rows="3" row-height="30" v-model.trim="commentText"></v-textarea> 
-
+        <div class="comment-text">
+          <v-textarea
+            outlined
+            name="comment"
+            label="Add Comment"
+            rows="3"
+            row-height="30"
+            v-model.trim="commentText"
+          ></v-textarea>
           <span class="error-txt sub-txt">{{errorMsg}}</span>
         </div>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="dialog = false">cancel</v-btn>
-        <v-btn color="green darken-1" @click="addComment()">Save</v-btn>
+        <v-btn color="csmprimary" @click="dialog = false" dark>cancel</v-btn>
+        <v-btn color="csmprimary" @click="addComment()" dark>Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -75,8 +81,8 @@ export default class LrAlertComments extends Vue {
 	@PropSync("showAlertCommentsDialog", { required: false, default: false })
 	private dialog: boolean;
 	private commentText = "";
-    private alertComments: AlertCommentModel[] = [];
-    private errorMsg = "";
+	private alertComments: AlertCommentModel[] = [];
+	private errorMsg = "";
 
 	mounted() {
 		Api.getData("alerts/comment", { isDummy: true }).then((resp: any) => {
@@ -85,16 +91,14 @@ export default class LrAlertComments extends Vue {
 	}
 
 	addComment() {
-        if(!this.commentText)
-            this.errorMsg = "Comment Required";
-        else if(this.commentText.length>250)
-            this.errorMsg = "Comment Cannot Be More Than 250 Char"
-        else {
-            this.errorMsg ="";
-            // code to post date 
-        }
-
-    }
+		if (!this.commentText) this.errorMsg = "Comment Required";
+		else if (this.commentText.length > 250)
+			this.errorMsg = "Comment Cannot Be More Than 250 Char";
+		else {
+			this.errorMsg = "";
+			// code to post date
+		}
+	}
 }
 </script>
 <style lang="scss" scoped>
@@ -105,10 +109,17 @@ export default class LrAlertComments extends Vue {
 		float: right;
 	}
 }
-.sub-txt{
-    font-size: 0.8rem;
+.sub-txt {
+	font-size: 0.8rem;
 }
-.error-txt{
-    color: red;
+.error-txt {
+	color: red;
+}
+.comment-text {
+	margin-top: 1rem;
+}
+.no-cmnt-lbl{
+  display: block;
+  margin-top: 1rem;
 }
 </style>

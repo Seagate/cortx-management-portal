@@ -115,15 +115,15 @@
 
     <div>
       <LrAlertDialog
-        v-if="alertDetails && alertDetails.alert_uuid"
+        v-if="alertDetails && alertExtendedInfo && Object.keys(alertExtendedInfo).length>0"
         :modalTitle="'Alert Details'"
-        :modalData="alertDetails"
+        :modalData="alertExtendedInfo"
         :showAlertDetailsDialog.sync="showAlertDetailsDialog"
       />
     </div>
     <div>
-      <LrAlertDialog
-        v-if="alertDetails && alertDetails.alert_uuid && showAlertCommentsDialog"
+      <LrAlertComments
+        v-if="alertDetails"
         :id="alertDetails.alert_uuid"
         :showAlertCommentsDialog.sync="showAlertCommentsDialog"
       />
@@ -134,82 +134,84 @@
 import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import LrLabel from "../shared/LrLabel/LrLabel.vue";
 import LrAlertDialog from "./LrAlertDialog.vue";
+import LrAlertComments from "./LrAlertComments.vue";
 import LrSvgIcon from "../shared/LrSvgIcon/LrSvgIcon.vue";
 
 @Component({
-  name: "LrAlertInformation",
-  components: { LrLabel, LrAlertDialog, LrSvgIcon },
+	name: "LrAlertInformation",
+	components: { LrLabel, LrAlertDialog, LrSvgIcon, LrAlertComments },
 })
 export default class LrAlertInformation extends Vue {
-  @Prop({ required: true }) private alert: any;
-  public alertEventDetails: any = [];
-  public alertExtendedInfo: any = {};
-  public alertDetails: any = {};
-  public showAlertDetailsDialog = false;
-  public showAlertCommentsDialog = false;
-  public addCommentForm = {
-    comment_text: "",
-  };
+	@Prop({ required: true }) private alert: any;
+	public alertEventDetails: any = [];
+	public alertExtendedInfo: any = {};
+	public alertDetails: any = {};
+	public showAlertDetailsDialog = false;
+	public showAlertCommentsDialog = false;
+	public addCommentForm = {
+		comment_text: "",
+	};
 
-  public async mounted() {
-    try {
-      if (this.alert.extended_info) {
-        this.alertDetails = JSON.parse(this.alert.extended_info);
-        this.alertExtendedInfo = this.alertDetails.info;
-      }
-      let tempAlertEventDetails = [];
-      if (this.alert.event_details) {
-        tempAlertEventDetails = JSON.parse(this.alert.event_details);
-      }
-      if (tempAlertEventDetails.length > 0) {
-        tempAlertEventDetails.forEach((event_detail: any) => {
-          const alertEventDetail = {
-            name: event_detail.name,
-            event_reason: event_detail.event_reason,
-            event_recommendation: event_detail.event_recommendation.split("-"),
-            showRecommendation: false,
-          };
-          this.alertEventDetails.push(alertEventDetail);
-        });
-      } else {
-        this.alertEventDetails.push({
-          name: this.alertExtendedInfo.resource_id
-            ? this.alertExtendedInfo.resource_id
-            : "",
-          event_reason: this.alert.description,
-          event_recommendation: this.alert.health_recommendation
-            ? this.alert.health_recommendation.split("-")
-            : [],
-          showRecommendation: false,
-        });
-      }
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
-    }
-  }
+	public async mounted() {
+		try {
+			if (this.alert.extended_info) {
+				this.alertDetails = JSON.parse(this.alert.extended_info);
+				this.alertExtendedInfo = this.alertDetails.info;
+			}
+			let tempAlertEventDetails = [];
+			if (this.alert.event_details) {
+				tempAlertEventDetails = JSON.parse(this.alert.event_details);
+			}
+			if (tempAlertEventDetails.length > 0) {
+				tempAlertEventDetails.forEach((event_detail: any) => {
+					const alertEventDetail = {
+						name: event_detail.name,
+						event_reason: event_detail.event_reason,
+						event_recommendation: event_detail.event_recommendation.split("-"),
+						showRecommendation: false,
+					};
+					this.alertEventDetails.push(alertEventDetail);
+				});
+			} else {
+				this.alertEventDetails.push({
+					name: this.alertExtendedInfo.resource_id
+						? this.alertExtendedInfo.resource_id
+						: "",
+					event_reason: this.alert.description,
+					event_recommendation: this.alert.health_recommendation
+						? this.alert.health_recommendation.split("-")
+						: [],
+					showRecommendation: false,
+				});
+			}
+		} catch (e) {
+			// tslint:disable-next-line: no-console
+			console.log(e);
+		}
+	}
 
-  comment() {
-    //comment action
-  }
-  acknowledge() {
-    //acknowledge action
-  }
+	comment() {
+		//comment action
+		this.showAlertCommentsDialog = true;
+	}
+	acknowledge() {
+		//acknowledge action
+	}
 }
 </script>
 
 <style lang="scss" scoped >
 .alert-details-container {
-  margin: 10px;
+	margin: 0.5rem;
 }
 .alert-info {
-  display: inline-block;
-  padding-right: 20px;
-  span {
-    vertical-align: super;
-  }
-  .action-btn-block {
-    padding-right: 10px;
-  }
+	display: inline-block;
+	padding-right: 1rem;
+	span {
+		vertical-align: super;
+	}
+	.action-btn-block {
+		padding-right: 1rem;
+	}
 }
 </style>
