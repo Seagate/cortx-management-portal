@@ -22,7 +22,7 @@
       fixed
       dark
       color="#000000"
-      mini-variant-width="60px"
+      mini-variant-width="4rem"
       class="nav-style"
     >
       <v-list nav dense>

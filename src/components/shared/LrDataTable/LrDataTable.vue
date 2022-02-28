@@ -19,10 +19,14 @@
     <div class="search-container">
       <v-row class="search-row">
         <v-col class="ma-2 pb-2">
-          <LrAdvanceSearch v-if="searchConfig" :config="searchConfig" v-on="$listeners" />
+          <LrAdvanceSearch
+            v-if="searchConfig"
+            :config="searchConfig"
+            v-on="$listeners"
+          />
         </v-col>
         <v-col cols="4">
-          <div v-if="isMultiSelect && selected.length>0" class="multi-btn">
+          <div v-if="isMultiSelect && selected.length > 0" class="multi-btn">
             <v-btn
               v-for="button in multiSelectButtons"
               class="ma-2"
@@ -30,12 +34,18 @@
               :key="button.name"
               :color="button.color"
               @click="$emit(button.name, selected)"
-            >{{button.label}}</v-btn>
+              >{{ button.label }}</v-btn
+            >
           </div>
         </v-col>
       </v-row>
     </div>
-    <LrChips v-if="chips && chips.length>0" :chips="chips" class="pb-1" v-on="$listeners" />
+    <LrChips
+      v-if="chips && chips.length > 0"
+      :chips="chips"
+      class="pb-1"
+      v-on="$listeners"
+    />
     <v-data-table
       :headers="headers"
       :items="records"
@@ -52,18 +62,26 @@
                 multiple
                 v-model="selected"
                 :value="item"
-                style="margin:0px;padding:0px"
+                style="margin: 0px; padding: 0px"
                 hide-details
               />
             </td>
-            <td v-for="(col,i) in headers" :key="i" :class="{'action-button': col.type=='action'}">
+            <td
+              v-for="(col, i) in headers"
+              :key="i"
+              :class="{ 'action-button': col.type == 'action' }"
+            >
               <template v-if="col.type">
-                <template v-if="col.type == 'date'">{{item[col.value] | formattedDate }}</template>
+                <template v-if="col.type == 'date'">{{
+                  item[col.value] | formattedDate
+                }}</template>
                 <template v-else-if="col.type == 'custom'">
-                  <slot v-bind:value="item[col.value]" :name="col.value">{{item[col.value]}}</slot>
+                  <slot v-bind:value="item[col.value]" :name="col.value">{{
+                    item[col.value]
+                  }}</slot>
                 </template>
                 <template v-else-if="col.type == 'action'">
-                  <div v-if="selected.length<1" class="action-col">
+                  <div v-if="selected.length < 1" class="action-col">
                     <div class="hover-btn" v-if="actionItems">
                       <template v-for="action in actionItems">
                         <span :class="'action-btn'" :key="action.name">
@@ -98,9 +116,9 @@
                     </div>
                   </div>
                 </template>
-                <template v-else>{{item[col.value]}}</template>
+                <template v-else>{{ item[col.value] }}</template>
               </template>
-              <template v-else>{{item[col.value]}}</template>
+              <template v-else>{{ item[col.value] }}</template>
             </td>
           </tr>
         </tbody>

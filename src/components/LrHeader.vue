@@ -59,7 +59,7 @@ export default class LrHeader extends Vue {
 .lr-header {
   display: flex;
   align-items: center;
-  height: 60px;
+  height: 4rem;
 
   .header-alert-icon {
     cursor: pointer;
