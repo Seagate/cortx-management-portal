@@ -15,7 +15,7 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div class="cortx-p-1">
+  <div class="health-page-container">
     <LrCalulateDimensions />
     <SgtTabs :tabsInfo="tabsInfo" @selected="onTabChange" />
     <component :is="activeTab" />

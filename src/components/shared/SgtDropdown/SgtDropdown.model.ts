@@ -14,7 +14,7 @@
  * For any questions about this software or licensing,
  * please email opensource@seagate.com.
  */
-export interface LrDropdownOption {
+export interface SgtDropdownOption {
   label: string;
   value: any;
 }

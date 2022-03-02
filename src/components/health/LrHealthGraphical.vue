@@ -15,7 +15,25 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div id="health_tree_container" :style="healthTreeContainerDim">
+  <div class="graphical-view-container">
+    <div class="export-feature">
+      <SgtDropdown
+        :options="exportOptions"
+        title="EXPORT AS"
+        @update:selectedOption="handleExportDropdown"
+        :selectedOption="selectedExport"
+      />
+      <v-btn
+        color="csmprimary"
+        class="white--text"
+        @click="handleExport"
+        :disabled="!selectedExport.value"
+      >
+        Export
+      </v-btn>
+    </div>
+
+    <div id="health_tree_container" :style="healthTreeContainerDim"></div>
     <!-- <cortx-info-dialog
       v-model="isShowInfoDialog"
       :type="infoDialogType"
@@ -36,12 +54,22 @@ import { Component, Mixins } from "vue-property-decorator";
 import ClusterManagementMixin from "../../mixins/cluster-management";
 import * as d3 from "d3";
 import HealthCardBuilder from "./LrHealthCardBuilder";
+import SgtDropdown from "../shared/SgtDropdown/SgtDropdown.vue";
+import { SgtDropdownOption } from "../shared/SgtDropdown/SgtDropdown.model";
+import {
+  downloadSVGAsText,
+  downloadSVGAsPNG,
+  downloadSVGAsJPEG,
+} from "../../utils/CommonUtilFunctions";
 // import CortxPromptDialog from "../widgets/cortx-prompt-dialog.vue";
 // import CortxInfoDialog from "../widgets/cortx-info-dialog.vue";
 
 @Component({
   name: "LrHealthGraphical",
-  // components: { CortxPromptDialog, CortxInfoDialog },
+  components: {
+    SgtDropdown,
+    // CortxPromptDialog, CortxInfoDialog
+  },
 })
 export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
   public healthTreeContainerDim: any = {
@@ -65,6 +93,30 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
   public resource_health: any;
   public outerG: any;
 
+  public exportOptions: SgtDropdownOption[] = [
+    {
+      label: "PDF",
+      value: "PDF",
+    },
+    {
+      label: "PNG",
+      value: "PNG",
+    },
+    {
+      label: "JPEG",
+      value: "JPEG",
+    },
+    {
+      label: "SVG",
+      value: "SVG",
+    },
+  ];
+  public selectedExport: SgtDropdownOption = {} as SgtDropdownOption;
+
+  public handleExportDropdown(selected: SgtDropdownOption) {
+    this.selectedExport = selected;
+  }
+
   public async mounted() {
     this.calculateDimensions();
     this.resource_health = await this.getHealthData(true);
@@ -79,7 +131,7 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
     const mainContentDim: any =
       this.$store.getters["dimensions/getContentDimension"];
     this.healthTreeContainerDim.height = `${mainContentDim.height - 69}px`;
-    this.healthTreeContainerDim.width = `${mainContentDim.width - 32}px`;
+    this.healthTreeContainerDim.width = `${mainContentDim.width - 110}px`;
   }
 
   private initSVG() {
@@ -91,7 +143,10 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
       .select("#health_tree_container")
       .append("svg")
       .attr("width", svgWidth)
-      .attr("height", svgHeight);
+      .attr("height", svgHeight)
+      .attr("xmlns", "http://www.w3.org/2000/svg")
+      .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+      .attr("class", "health-tree");
     this.outerG = healthTreeContainerSVG
       .append("g")
       .attr("id", "outer_g")
@@ -268,9 +323,38 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
       paddingY: 20,
     };
   }
+
+  public handleExport() {
+    switch (this.selectedExport.value) {
+      case "SVG":
+        downloadSVGAsText(".health-tree");
+        break;
+      case "PNG":
+        downloadSVGAsPNG(".health-tree");
+        break;
+      case "JPEG":
+        downloadSVGAsJPEG(".health-tree");
+        break;
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
+.graphical-view-container {
+  & > * {
+    margin: 1.5em 0;
+  }
+
+  & > *:first-child {
+    margin-left: 1.5rem;
+  }
+
+  .export-feature {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+  }
+}
 .g_popup:focus {
   outline: none;
 }
