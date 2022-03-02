@@ -60,7 +60,8 @@ import {
   downloadSVGAsText,
   downloadSVGAsPNG,
   downloadSVGAsJPEG,
-} from "../../utils/CommonUtilFunctions";
+  downloadSVGAsPDF,
+} from "../../utils/SVGExport";
 // import CortxPromptDialog from "../widgets/cortx-prompt-dialog.vue";
 // import CortxInfoDialog from "../widgets/cortx-info-dialog.vue";
 
@@ -334,6 +335,9 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
         break;
       case "JPEG":
         downloadSVGAsJPEG(".health-tree");
+        break;
+      case "PDF":
+        downloadSVGAsPDF(".health-tree");
         break;
     }
   }
