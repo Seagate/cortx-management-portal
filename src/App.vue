@@ -39,6 +39,7 @@ import LrNavigationDrawer from "./components/LrNavigationDrawer.vue";
 import LrRouteComponents from "./components/LrRouteComponents.vue";
 import SgtBreadCrumb from "./components/shared/bread-crumb/SgtBreadCrumb.vue";
 import { basePathList } from "./components/BreadCrumb.constant";
+import LrCalulateDimensions from "./components/LrCalulateDimensions";
 
 @Component({
   name: "App",
@@ -51,6 +52,10 @@ import { basePathList } from "./components/BreadCrumb.constant";
 })
 export default class App extends Vue {
   drawer = true;
+
+  public created() {
+    LrCalulateDimensions.populateDimensions();
+  }
 
   get basePathList() {
     return basePathList;
