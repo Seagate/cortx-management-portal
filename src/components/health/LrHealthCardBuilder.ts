@@ -79,7 +79,7 @@ export default abstract class HealthCardBuilder {
   public static buildIcon(healthCardG: any) {
     healthCardG
       .append("image")
-      .attr("xlink:href", (data: any) =>
+      .attr("href", (data: any) =>
         require(`@/assets/health/${data.resource}/${data.status}/icon.svg`)
       )
       .attr("x", 21.5)
@@ -91,7 +91,7 @@ export default abstract class HealthCardBuilder {
   public static buildShowDescriptionIcon(healthCardG: any) {
     healthCardG
       .append("image")
-      .attr("xlink:href", require("@/assets/health/magnify_icon.svg"))
+      .attr("href", require("@/assets/health/magnify_icon.svg"))
       .attr("id", (d: any) => `show_desc_icon_${d.treeNodeId}`)
       .attr("x", (data: any) => (data.config.actions.length > 0 ? 218 : 235))
       .attr("y", 13)
@@ -106,7 +106,7 @@ export default abstract class HealthCardBuilder {
   public static buildShowActionsIcon(healthCardG: any, performAction: any) {
     healthCardG
       .append("image")
-      .attr("xlink:href", require("@/assets/health/actions_menu_icon.svg"))
+      .attr("href", require("@/assets/health/actions_menu_icon.svg"))
       .attr("id", (d: any) => `show_actions_icon_${d.treeNodeId}`)
       .attr("x", 250)
       .attr("y", 12)
@@ -328,7 +328,7 @@ export default abstract class HealthCardBuilder {
         actionItemContainerG
           .append("image")
           .attr(
-            "xlink:href",
+            "href",
             require(`@/assets/health/${data.resource}/${data.status}/operations/${action.action}.svg`)
           )
           .attr("x", 15)
