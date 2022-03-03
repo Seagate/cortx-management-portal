@@ -63,6 +63,51 @@
                     "status": "online",
                     "last_updated_time": "1637652159",
                     "sub_resources": null
+                  },
+                  {
+                    "resource": "node",
+                    "id": "2",
+                    "status": "online",
+                    "last_updated_time": "1637652159",
+                    "sub_resources": null
+                  }
+                ]
+              },
+              {
+                "resource": "rack",
+                "id": "2",
+                "status": "online",
+                "last_updated_time": "1637652160",
+                "sub_resources": [
+                  {
+                    "resource": "node",
+                    "id": "1",
+                    "status": "online",
+                    "last_updated_time": "1637652159",
+                    "sub_resources": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "resource": "site",
+            "id": "2",
+            "status": "online",
+            "last_updated_time": "1637652160",
+            "sub_resources": [
+              {
+                "resource": "rack",
+                "id": "1",
+                "status": "degraded",
+                "last_updated_time": "1637652160",
+                "sub_resources": [
+                  {
+                    "resource": "node",
+                    "id": "1",
+                    "status": "failed",
+                    "last_updated_time": "1637652159",
+                    "sub_resources": null
                   }
                 ]
               }
