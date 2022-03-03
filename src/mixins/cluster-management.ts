@@ -14,7 +14,6 @@
  * For any questions about this software or licensing,
  * please email opensource@seagate.com or cortx-questions@seagate.com.
  */
-// mixin.js
 import { Component, Vue } from "vue-property-decorator";
 import { Api } from "../services/Api";
 
@@ -127,34 +126,36 @@ export default class ClusterManagementMixin extends Vue {
     }
     const loaderMsg: string = `${warnMsgPrefix} node ${resource.id}.`;
     this.buildOperationRequestObj("node", loaderMsg, requestObj);
-    // if (clusterStatus.status === "ok") {
-    //   const promptMsg: string = `Are you sure you want to ${requestObj.operation} node ${resource.id}?`;
-    //   this.showPromptDialog("Confirmation", promptMsg);
-    // } else {
-    //   const warnMsg: string = `
-    //             ${warnMsgPrefix} node ${resource.id} will bring the cluster offline.
-    //             Are you sure you want to continue?
-    //         `;
-    //   this.showPromptDialog("Confirmation", warnMsg);
-    // }
+    if (clusterStatus.status === "ok") {
+      const promptMsg: string = `Are you sure you want to ${requestObj.operation} node ${resource.id}?`;
+      this.showPromptDialog("Confirmation", promptMsg);
+    } else {
+      const warnMsg: string = `
+                ${warnMsgPrefix} node ${resource.id} will bring the cluster offline.
+                Are you sure you want to continue?
+            `;
+      this.showPromptDialog("Confirmation", warnMsg);
+    }
   }
 
-  //   public async promptDialogClosed(prompt: string) {
-  //     this.clearPromptDialog();
-  //     if (prompt === "yes") {
-  //       this.$store.dispatch(
-  //         "systemConfig/showLoader",
-  //         this.operationRequestObj.loaderMsg
-  //       );
-  //       const resp: any = await Api.post(
-  //         `${apiRegister.manage_resource}/${this.operationRequestObj.resource}`,
-  //         this.operationRequestObj.requestObj
-  //       );
-  //       this.$store.dispatch("systemConfig/hideLoader");
-  //       this.showInfoDialog("success", "Success", resp.data.message);
-  //     }
-  //     this.clearOperationRequestObj();
-  //   }
+  public async promptDialogClosed(prompt: string) {
+    this.clearPromptDialog();
+    if (prompt === "yes") {
+      this.$store.dispatch(
+        "systemConfig/showLoader",
+        this.operationRequestObj.loaderMsg
+      );
+      // API call should be made and the response has to be stored in the resp variable below
+      const resp: any = {
+        data: {
+          message: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+        },
+      };
+      this.$store.dispatch("systemConfig/hideLoader");
+      this.showInfoDialog("success", "Success", resp.data.message);
+    }
+    this.clearOperationRequestObj();
+  }
 
   public clearPromptDialog() {
     this.promptDialogTitle = "";
@@ -168,7 +169,14 @@ export default class ClusterManagementMixin extends Vue {
   }
 
   public async getNodeStopClusterStatus(node_id: string) {
-    //
+    this.$store.dispatch(
+      "systemConfig/showLoader",
+      "Fetching cluster status..."
+    );
+    // API call should be made and the response has to be stored in the res variable below
+    const res: any = { data: { status: "ok" } };
+    this.$store.dispatch("systemConfig/hideLoader");
+    return res.data;
   }
 
   public buildOperationRequestObj(

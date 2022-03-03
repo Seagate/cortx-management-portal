@@ -34,19 +34,19 @@
     </div>
 
     <div id="health_tree_container" :style="healthTreeContainerDim"></div>
-    <!-- <cortx-info-dialog
+    <SgtInfoDialog
       v-model="isShowInfoDialog"
       :type="infoDialogType"
       :title="infoDialogTitle"
       :message="infoDialogMessage"
       @close="clearInfoDialog()"
     />
-    <cortx-prompt-dialog
+    <SgtPromptDialog
       v-model="isShowPromptDialog"
       :title="promptDialogTitle"
       :message="promptDialogMessage"
       @close="promptDialogClosed($event)"
-    /> -->
+    />
   </div>
 </template>
 <script lang="ts">
@@ -62,14 +62,15 @@ import {
   downloadSVGAsJPEG,
   downloadSVGAsPDF,
 } from "../../utils/SVGExport";
-// import CortxPromptDialog from "../widgets/cortx-prompt-dialog.vue";
-// import CortxInfoDialog from "../widgets/cortx-info-dialog.vue";
+import SgtInfoDialog from "../shared/SgtInfoDialog.vue";
+import SgtPromptDialog from "../shared/SgtPromptDialog.vue";
 
 @Component({
   name: "LrHealthGraphical",
   components: {
     SgtDropdown,
-    // CortxPromptDialog, CortxInfoDialog
+    SgtInfoDialog,
+    SgtPromptDialog,
   },
 })
 export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
