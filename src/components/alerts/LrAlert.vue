@@ -25,10 +25,10 @@
       :multiSelectButtons="alertConst.alertTable.multiSelectButtons"
       :chips="chips"
       :itemKey="alertConst.alertTable.itemKey"
-      @filter-click="filterData($event)"
       @zoom="openDetails($event)"
       @comment="comment($event)"
       @acknowledge="multiAcknowledge($event)"
+      @update-record="updateRecord($event)"
     >
       <template v-slot:severity="item">
         <v-avatar :color="getColor(item)" size="24"></v-avatar>
@@ -55,6 +55,10 @@ import { lrAlertConst } from "./LrAlert.constant";
 import { Api } from "../../services/Api";
 import LrAlertDialog from "./LrAlertDialog.vue";
 import LrAlertComments from "./LrAlertComments.vue";
+import {
+	LrDataTableFilterSortPag,
+	PaginationModel,
+} from "../shared/LrDataTable/LrDataTableFilterSortPag.model";
 
 @Component({
 	name: "LrAlert",
@@ -92,6 +96,10 @@ export default class LrAlert extends Vue {
 
 	filterData(filterList: any) {
 		this.chips = filterList;
+	}
+
+	updateRecord(tableDataConfig: LrDataTableFilterSortPag) {
+		console.log(tableDataConfig);
 	}
 
 	openDetails(selectedRow: any) {

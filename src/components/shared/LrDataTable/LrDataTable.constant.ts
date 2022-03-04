@@ -41,4 +41,26 @@ export const lrDataTableConst = {
       tooltip: "notification",
     },
   ],
+  defaultTableConfig: {
+    pagination: {
+      pageSize: 10,
+      totalRecords: 10,
+      currentPage: 1
+    },
+    filterList: [],
+    sort: null
+  },
+  defaultPaginationConfig: {
+    pageLength: 1,
+    totalVisible: 1,
+    color: "csmprimary",
+    nextIcon: "mdi-chevron-double-right",
+    prevIcon: "mdi-chevron-double-left",
+    pageSizeList: [
+      { text: '5 rows', value: 5 },
+      { text: '10 rows', value: 10 },
+      { text: '15 rows', value: 15 },
+      { text: '20 rows', value: 20 }
+    ]
+  }
 };
