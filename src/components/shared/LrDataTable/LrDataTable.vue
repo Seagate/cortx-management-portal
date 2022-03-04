@@ -1,6 +1,6 @@
 <!--
 * CORTX-CSM: CORTX Management web.
-* Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
+* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published
 * by the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
 <template>
   <div>
     <div class="search-container">
-      <v-row>
+      <v-row class="search-row">
         <v-col class="ma-2 pb-2">
           <LrAdvanceSearch
             v-if="searchConfig"
@@ -177,6 +177,9 @@ export default class LrDataTable extends Vue {
 <style lang="scss" scoped>
 .search-container {
   min-height: 4rem;
+  .search-row {
+    width: 100%;
+  }
 }
 .multi-btn {
   display: flex;
