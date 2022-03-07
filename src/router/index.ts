@@ -23,11 +23,10 @@ import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  // {
-  //   path: "/",
-  //   name: "Home",
-  //   component: Home,
-  // },
+  {
+    path: "/",
+    redirect: { name: "Dashboard" },
+  },
   {
     path: "/dashboard",
     name: "Dashboard",

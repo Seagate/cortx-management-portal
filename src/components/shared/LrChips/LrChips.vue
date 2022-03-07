@@ -27,7 +27,9 @@
         @click="$emit('chip-click', chip)"
         @click:close="$emit('remove-chip', chip)"
         class="mr-2"
-      >{{chip.label}} : {{ chip.value }}</v-chip>
+      >
+        {{ chip.label }} : {{ chip.value }}
+      </v-chip>
     </v-chip-group>
   </div>
 </template>
@@ -38,7 +40,7 @@ import { LrFilterObject } from "./LrFilterObject.model";
 
 @Component({
   name: "LrChips",
-  components: {}
+  components: {},
 })
 export default class LrChips extends Vue {
   @Prop({ required: true, default: [] }) private chips: LrFilterObject[];
