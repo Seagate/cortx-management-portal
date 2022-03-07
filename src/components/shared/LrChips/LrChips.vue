@@ -47,4 +47,3 @@ export default class LrChips extends Vue {
   @Prop({ required: false, default: "100%" }) private width: string;
 }
 </script>
-

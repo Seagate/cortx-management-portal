@@ -22,7 +22,7 @@
       fixed
       dark
       color="#000000"
-      mini-variant-width="3rem"
+      mini-variant-width="4rem"
       class="nav-style"
     >
       <v-list nav dense>
@@ -155,12 +155,6 @@ export default class LrNavigationDrawer extends Vue {
 }
 .font-inherit {
   font-size: inherit;
-}
-.v-list {
-  padding: 0;
-  .v-list-item {
-    border-radius: 0;
-  }
 }
 .lr-nav-item-active {
   background: #262626;
