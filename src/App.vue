@@ -21,7 +21,7 @@
       <nav class="side-nav">
         <SgtNavigationDrawer 
         :drawer.sync="drawer" 
-        :navItems="navItems"
+        :navItems="navItemsList"
         brandName="Seagate"
         brandLogo="images/seagate-green.svg"
         />
@@ -44,6 +44,7 @@ import SgtNavigationDrawer from "./components/shared/SgtNavigationDrawer/SgtNavi
 import LrRouteComponents from "./components/LrRouteComponents.vue";
 import SgtBreadCrumb from "./components/shared/bread-crumb/SgtBreadCrumb.vue";
 import { basePathList } from "./components/BreadCrumb.constant";
+import { AppConst } from "./App.constant";
 
 @Component({
   name: "App",
@@ -56,50 +57,9 @@ import { basePathList } from "./components/BreadCrumb.constant";
 })
 export default class App extends Vue {
   drawer = true;
-  navItems = [
-    {
-      title: "dashboard",
-      path: "/dashboard",
-      iconDefault: "images/dashboard-grey.svg",
-      iconActive: "images/dashboard-white.svg",
-      requiredAccess: "alerts",
-    },
-    {
-      title: "health",
-      path: "/health",
-      iconDefault: "images/health-grey.svg",
-      iconActive: "images/health-white.svg",
-      requiredAccess: "sysconfig",
-    },
-    {
-      title: "manage",
-      path: "/manage",
-      iconDefault: "images/manage-grey.svg",
-      iconActive: "images/manage-white.svg",
-      requiredAccess: "s3accounts",
-    },
-    {
-      title: "lyvePilot",
-      path: "/ldp",
-      iconDefault: "images/udx-grey.svg",
-      iconActive: "images/udx-white.svg",
-      requiredAccess: "lyve_pilot",
-    },
-    {
-      title: "settings",
-      path: "/settings",
-      iconDefault: "images/settings-grey.svg",
-      iconActive: "images/settings-white.svg",
-      requiredAccess: "maintenance",
-    },
-    {
-      title: "maintenance",
-      path: "/maintenance",
-      iconDefault: "images/maintenance-grey.svg",
-      iconActive: "images/maintenance-white.svg",
-      requiredAccess: "sysconfig",
-    },
-  ];
+  get navItemsList() {
+    return AppConst.navItems;
+  }
   get basePathList() {
     return basePathList;
   }
