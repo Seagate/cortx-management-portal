@@ -67,7 +67,7 @@
           <v-list-item-icon class="nav-logo">
             <img v-if="brandLogo" :src="require(`@/assets/${brandLogo}`)" alt="logo" />
           </v-list-item-icon>
-          <v-list-item-title class="logo-title">{{brandName}}</v-list-item-title>
+          <v-list-item-title v-if="brandName" class="logo-title">{{brandName}}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
