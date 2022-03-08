@@ -94,7 +94,6 @@
       <div class="alert-info">
         <LrSvgIcon
           icon="more-info.svg"
-          hoverIcon="more-info.svg"
           @click="showAlertDetailsDialog = true"
           class="action-btn-block"
         />
