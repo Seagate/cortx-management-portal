@@ -1,6 +1,6 @@
 <!--
 * CORTX-CSM: CORTX Management web.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published
 * by the Free Software Foundation, either version 3 of the License, or
@@ -59,6 +59,7 @@ import {
 	LrDataTableFilterSortPag,
 	PaginationModel,
 } from "../shared/LrDataTable/LrDataTableFilterSortPag.model";
+import { LrFilterObject } from "../shared/LrChips/LrFilterObject.model";
 
 @Component({
 	name: "LrAlert",
@@ -70,7 +71,7 @@ export default class LrAlert extends Vue {
 	alertConst: any = JSON.parse(JSON.stringify(lrAlertConst));
 	alerts: any = [];
 	showDataTable = false;
-	chips = [];
+	chips: LrFilterObject[] = [];
 	showAlertDetailsDialog = false;
 	selectedRecord: any = null;
 	showAlertCommentsDialog = false;
@@ -94,12 +95,9 @@ export default class LrAlert extends Vue {
 		return this.alertConst.severityList[item.value];
 	}
 
-	filterData(filterList: any) {
-		this.chips = filterList;
-	}
-
 	updateRecord(tableDataConfig: LrDataTableFilterSortPag) {
-		console.log(tableDataConfig);
+		// code for API call
+		this.chips = tableDataConfig.filterList;
 	}
 
 	openDetails(selectedRow: any) {

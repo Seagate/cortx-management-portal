@@ -39,7 +39,12 @@
         </v-col>
       </v-row>
     </div>
-    <LrChips v-if="chips && chips.length > 0" :chips="chips" class="pb-1" v-on="$listeners" />
+    <LrChips
+      v-if="chips && chips.length > 0"
+      :chips="chips"
+      class="pb-1"
+      @remove-chip="updateFilterByChip($event)"
+    />
     <v-data-table
       :headers="headers"
       :items="records"
@@ -185,7 +190,6 @@ import { lrDataTableConst } from "./LrDataTable.constant";
 import { LrFilterObject } from "../LrChips/LrFilterObject.model";
 import LrChips from "../LrChips/LrChips.vue";
 import LrSvgIcon from "../LrSvgIcon/LrSvgIcon.vue";
-
 import {
 	LrDataTableFilterSortPag,
 	PaginationModel,
@@ -294,6 +298,19 @@ export default class LrDataTable extends Vue {
 	updateFilter(filterList: LrFilterObject[]) {
 		this.tableDataConfig.filterList = filterList;
 		this.updateRecord();
+	}
+
+	/**
+	 * On chip cancel button click. event emitted from chips component.
+	 */
+	updateFilterByChip(chip: LrFilterObject) {
+		const ind = this.tableDataConfig.filterList.findIndex(
+			(ele) => ele.name == chip.name
+		);
+		if (ind >= 0) {
+			this.tableDataConfig.filterList.splice(ind, 1);
+			this.updateRecord();
+		}
 	}
 
 	/**
