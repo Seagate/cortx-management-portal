@@ -76,13 +76,13 @@ export const lrAlertConst = {
                 align: "start",
                 value: "updated_time",
                 type: "date",
-                width:"120px"
+                width: "125px"
             },
-            { text: "Category", value: "category", width:"120px" },
-            { text: "Severity", value: "severity", type: "custom",width:"120px" },
-            { text: "State", value: "state",width:"120px" },
-            { text: "Description", value: "description", type:"custom" },
-            { text: "Alert Type", value: "alert_type", width:"120px" },
+            { text: "Category", value: "category", width: "125px" },
+            { text: "Severity", value: "severity", type: "custom", width: "125px", align: "middle" },
+            { text: "State", value: "state", width: "125px" },
+            { text: "Description", value: "description", type: "custom" },
+            { text: "Alert Type", value: "alert_type", width: "125px" },
             {
                 text: "",
                 value: "action",

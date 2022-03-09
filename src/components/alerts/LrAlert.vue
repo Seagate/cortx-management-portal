@@ -25,10 +25,10 @@
       :multiSelectButtons="alertConst.alertTable.multiSelectButtons"
       :chips="chips"
       :itemKey="alertConst.alertTable.itemKey"
-      @filter-click="filterData($event)"
       @zoom="openDetails($event)"
       @comment="comment($event)"
       @acknowledge="multiAcknowledge($event)"
+      @update-record="updateRecord($event)"
     >
       <template v-slot:severity="item">
         <v-avatar :color="getColor(item)" size="24"></v-avatar>
@@ -55,6 +55,11 @@ import { lrAlertConst } from "./LrAlert.constant";
 import { Api } from "../../services/Api";
 import LrAlertDialog from "./LrAlertDialog.vue";
 import LrAlertComments from "./LrAlertComments.vue";
+import {
+	LrDataTableFilterSortPag,
+	PaginationModel,
+} from "../shared/LrDataTable/LrDataTableFilterSortPag.model";
+import { LrFilterObject } from "../shared/LrChips/LrFilterObject.model";
 
 @Component({
 	name: "LrAlert",
@@ -66,7 +71,7 @@ export default class LrAlert extends Vue {
 	alertConst: any = JSON.parse(JSON.stringify(lrAlertConst));
 	alerts: any = [];
 	showDataTable = false;
-	chips = [];
+	chips: LrFilterObject[] = [];
 	showAlertDetailsDialog = false;
 	selectedRecord: any = null;
 	showAlertCommentsDialog = false;
@@ -90,8 +95,9 @@ export default class LrAlert extends Vue {
 		return this.alertConst.severityList[item.value];
 	}
 
-	filterData(filterList: any) {
-		this.chips = filterList;
+	updateRecord(tableDataConfig: LrDataTableFilterSortPag) {
+		// code for API call
+		this.chips = tableDataConfig.filterList;
 	}
 
 	openDetails(selectedRow: any) {
