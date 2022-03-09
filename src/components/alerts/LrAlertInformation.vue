@@ -1,6 +1,6 @@
 <!--
 * CORTX-CSM: CORTX Management web.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published
 * by the Free Software Foundation, either version 3 of the License, or
@@ -92,33 +92,39 @@
         <span>Acknowledged</span>
       </div>
       <div class="alert-info">
-        <img
-        :src="require(`@/assets/icons/more-info.svg`)"
-        @click="showAlertDetailsDialog = true"
-        class="action-btn-block"
-        alt="logo"
-        />
-        <img
-          :src="require(`@/assets/icons/comment-default.svg`)"
-          @click="comment"
+        <LrSvgIcon
+          icon="more-info.svg"
+          @click="showAlertDetailsDialog = true"
           class="action-btn-block"
-          alt="logo"
         />
-        <img
-          :src="require(`@/assets/icons/alert-green.svg`)"
+        <LrSvgIcon
+          icon="comment-default.svg"
+          hoverIcon="comment-hover.svg"
+          @click="showAlertCommentsDialog = true"
+          class="action-btn-block"
+        />
+        <LrSvgIcon
+          icon="alert-green.svg"
+          hoverIcon="alert-hover.svg"
           @click="acknowledge"
           class="action-btn-block"
-          alt="logo"
         />
       </div>
     </div>
 
     <div>
       <LrAlertDialog
-        v-if="alertDetails && alertDetails.alert_uuid"
+        v-if="alertDetails && alertExtendedInfo && Object.keys(alertExtendedInfo).length>0"
         :modalTitle="'Alert Details'"
-        :modalData="alertDetails"
+        :modalData="alertExtendedInfo"
         :showAlertDetailsDialog.sync="showAlertDetailsDialog"
+      />
+    </div>
+    <div>
+      <LrAlertComments
+        v-if="alertDetails"
+        :id="alertDetails.alert_uuid"
+        :showAlertCommentsDialog.sync="showAlertCommentsDialog"
       />
     </div>
   </div>
@@ -127,82 +133,84 @@
 import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import LrLabel from "../shared/LrLabel/LrLabel.vue";
 import LrAlertDialog from "./LrAlertDialog.vue";
+import LrAlertComments from "./LrAlertComments.vue";
+import LrSvgIcon from "../shared/LrSvgIcon/LrSvgIcon.vue";
 
 @Component({
-  name: "LrAlertInformation",
-  components: { LrLabel, LrAlertDialog },
+	name: "LrAlertInformation",
+	components: { LrLabel, LrAlertDialog, LrSvgIcon, LrAlertComments },
 })
 export default class LrAlertInformation extends Vue {
-  @Prop({ required: true }) private alert: any;
-  public alertEventDetails: any = [];
-  public alertExtendedInfo: any = {};
-  public alertDetails: any = {};
-  public showAlertDetailsDialog = false;
-  public isShowCommentsDialog = false;
-  public addCommentForm = {
-    comment_text: "",
-  };
+	@Prop({ required: true }) private alert: any;
+	public alertEventDetails: any = [];
+	public alertExtendedInfo: any = {};
+	public alertDetails: any = {};
+	public showAlertDetailsDialog = false;
+	public showAlertCommentsDialog = false;
+	public addCommentForm = {
+		comment_text: "",
+	};
 
-  public async mounted() {
-    try {
-      if (this.alert.extended_info) {
-        this.alertDetails = JSON.parse(this.alert.extended_info);
-        this.alertExtendedInfo = this.alertDetails.info;
-      }
-      let tempAlertEventDetails = [];
-      if (this.alert.event_details) {
-        tempAlertEventDetails = JSON.parse(this.alert.event_details);
-      }
-      if (tempAlertEventDetails.length > 0) {
-        tempAlertEventDetails.forEach((event_detail: any) => {
-          const alertEventDetail = {
-            name: event_detail.name,
-            event_reason: event_detail.event_reason,
-            event_recommendation: event_detail.event_recommendation.split("-"),
-            showRecommendation: false,
-          };
-          this.alertEventDetails.push(alertEventDetail);
-        });
-      } else {
-        this.alertEventDetails.push({
-          name: this.alertExtendedInfo.resource_id
-            ? this.alertExtendedInfo.resource_id
-            : "",
-          event_reason: this.alert.description,
-          event_recommendation: this.alert.health_recommendation
-            ? this.alert.health_recommendation.split("-")
-            : [],
-          showRecommendation: false,
-        });
-      }
-    } catch (e) {
-      // tslint:disable-next-line: no-console
-      console.log(e);
-    }
-  }
+	public async mounted() {
+		try {
+			if (this.alert.extended_info) {
+				this.alertDetails = JSON.parse(this.alert.extended_info);
+				this.alertExtendedInfo = this.alertDetails.info;
+			}
+			let tempAlertEventDetails = [];
+			if (this.alert.event_details) {
+				tempAlertEventDetails = JSON.parse(this.alert.event_details);
+			}
+			if (tempAlertEventDetails.length > 0) {
+				tempAlertEventDetails.forEach((event_detail: any) => {
+					const alertEventDetail = {
+						name: event_detail.name,
+						event_reason: event_detail.event_reason,
+						event_recommendation: event_detail.event_recommendation.split("-"),
+						showRecommendation: false,
+					};
+					this.alertEventDetails.push(alertEventDetail);
+				});
+			} else {
+				this.alertEventDetails.push({
+					name: this.alertExtendedInfo.resource_id
+						? this.alertExtendedInfo.resource_id
+						: "",
+					event_reason: this.alert.description,
+					event_recommendation: this.alert.health_recommendation
+						? this.alert.health_recommendation.split("-")
+						: [],
+					showRecommendation: false,
+				});
+			}
+		} catch (e) {
+			// tslint:disable-next-line: no-console
+			console.log(e);
+		}
+	}
 
-  comment() {
-    //comment action
-  }
-  acknowledge() {
-    //acknowledge action
-  }
+	comment() {
+		//comment action
+		this.showAlertCommentsDialog = true;
+	}
+	acknowledge() {
+		//acknowledge action
+	}
 }
 </script>
 
 <style lang="scss" scoped >
 .alert-details-container {
-  margin: 10px;
+	margin: 0.5rem;
 }
 .alert-info {
-  display: inline-block;
-  padding-right: 20px;
-  span {
-    vertical-align: super;
-  }
-  .action-btn-block {
-    cursor: pointer;
-    padding-right: 10px;
-  }
+	display: inline-block;
+	padding-right: 1rem;
+	span {
+		vertical-align: super;
+	}
+	.action-btn-block {
+		padding-right: 1rem;
+	}
 }
 </style>
