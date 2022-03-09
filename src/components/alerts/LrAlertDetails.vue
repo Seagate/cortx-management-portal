@@ -15,35 +15,30 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>
-    <v-chip-group :style="'max-width: ' + width">
-      <v-chip
-        color="csmprimary"
-        dark
-        v-for="(chip, i) in chips"
-        :key="i"
-        :close="chip.required ? false : true"
-        close-label="remove"
-        @click="$emit('chip-click', chip)"
-        @click:close="$emit('remove-chip', chip)"
-        class="mr-2"
-      >
-        {{ chip.label }} : {{ chip.value }}
-      </v-chip>
-    </v-chip-group>
-  </div>
+    <div>
+        <LrAlertInformation v-if="alertDetails" :alert="alertDetails"/>
+        <LrAlert :alertId="alertId"/>
+    </div>
 </template>
-
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { LrFilterObject } from "./LrFilterObject.model";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { lrAlertConst } from "./LrAlert.constant";
+import LrAlert from "./LrAlert.vue";
+import LrAlertInformation from "./LrAlertInformation.vue";
+import { Api } from "../../services/Api";
 
 @Component({
-  name: "LrChips",
-  components: {},
+  name: "LrAlertDetails",
+  components: { LrAlert, LrAlertInformation }
 })
-export default class LrChips extends Vue {
-  @Prop({ required: true, default: [] }) private chips: LrFilterObject[];
-  @Prop({ required: false, default: "100%" }) private width: string;
+export default class LrAlertDetails extends Vue {
+  @Prop({ required: true }) private alertId: string;
+  alertDetails :any = null;
+  mounted() {
+    Api.getData("alerts/list", { isDummy: true }).then((resp: any) => {
+      const alertsList:any[] = resp["list"];
+     this.alertDetails = alertsList.find(ele=>ele.alert_uuid === this.alertId)
+    });
+  }
 }
 </script>

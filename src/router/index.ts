@@ -17,6 +17,8 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import LrDashboard from "../components/dashboard/LrDashboard.vue";
+import LrAlert from "../components/alerts/LrAlert.vue";
+import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
 
 Vue.use(VueRouter);
 
@@ -29,7 +31,19 @@ const routes: Array<RouteConfig> = [
     path: "/dashboard",
     name: "Dashboard",
     component: LrDashboard,
-  }
+  },
+  {
+    path: "/alert",
+    name: "alert",
+    component: LrAlert,
+    props:true
+  },
+  {
+    path: "/alert-details/:alertId",
+    name: "alert-details",
+    component: LrAlertDetails,
+    props:true
+  },
 ];
 
 const router = new VueRouter({
