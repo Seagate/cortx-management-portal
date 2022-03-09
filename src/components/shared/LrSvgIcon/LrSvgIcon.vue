@@ -15,7 +15,8 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div class="icon-container action-btn" v-if="icon">
+  <div class="icon-container" v-if="icon"
+    :class="[hoverIcon ? 'action-btn':'']">
     <img
       :src="require(`@/assets/icons/${icon}`)"
       @click="$emit('click')"

@@ -1,6 +1,6 @@
 <!--
 * CORTX-CSM: CORTX Management web.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published
 * by the Free Software Foundation, either version 3 of the License, or
@@ -94,7 +94,6 @@
       <div class="alert-info">
         <LrSvgIcon
           icon="more-info.svg"
-          hoverIcon="more-info.svg"
           @click="showAlertDetailsDialog = true"
           class="action-btn-block"
         />
