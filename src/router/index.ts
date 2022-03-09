@@ -33,8 +33,13 @@ const routes: Array<RouteConfig> = [
     component: LrDashboard,
   },
   {
+<<<<<<< HEAD
     path: "/alert",
     name: "alert",
+=======
+    path: "/alerts",
+    name: "alerts",
+>>>>>>> EOS-27297,EOS-28609 : Alert and Alert details page Implementation. (#590)
     component: LrAlert,
     props:true
   },

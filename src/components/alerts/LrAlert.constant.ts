@@ -99,10 +99,10 @@ export const lrAlertConst = {
         ]
     },
     severityList: {
-        warning: 'yellow',
-        fatal: "green",
-        critical: "grey",
-        error: "red",
-        informational: "blue"
+        warning:'yellow',
+        fatal:"green",
+        critical:"grey",
+        error:"red",
+        informational:"blue"
     }
 }
