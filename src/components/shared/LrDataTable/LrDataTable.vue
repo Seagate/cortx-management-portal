@@ -17,24 +17,33 @@
 <template>
   <div>
     <div class="search-container">
-      <v-row class="search-row">
-        <v-col class="ma-2 pb-2 pl-1">
+      <v-row class="search-row ma-0">
+        <v-col class="pl-0 margin-auto">
           <LrAdvanceSearch
             v-if="searchConfig"
             :config="searchConfig"
             @filter-click="updateFilter($event)"
           />
         </v-col>
-        <v-col cols="4">
+        <v-col cols="4" class="pr-0 margin-auto">
           <div v-if="isMultiSelect && selected.length > 0" class="multi-btn">
             <v-btn
               v-for="button in multiSelectButtons"
-              class="ma-2"
+              class="ml-4"
               dark
               :key="button.name"
-              :color="button.color"
+              :color="button.color ? button.color: 'csmprimary'"
               @click="$emit(button.name, selected)"
             >{{ button.label }}</v-btn>
+          </div>
+          <div v-if="headerButton && selected.length == 0" class="multi-btn">
+            <v-btn
+              class="ml-4"
+              dark
+              :key="headerButton.name"
+              :color="headerButton.color ? headerButton.color: 'csmprimary'"
+              @click="$emit(headerButton.name, selected)"
+            >{{ headerButton.label }}</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -223,6 +232,7 @@ export default class LrDataTable extends Vue {
 		default: () => lrDataTableConst.defaultPaginationConfig,
 	})
 	private paginationConfig: PaginationModel;
+	@Prop({ required: false }) private headerButton: any;
 
 	private selected: any[] = [];
 	private selectedItem: any = {};
@@ -346,6 +356,9 @@ export default class LrDataTable extends Vue {
 	.search-row {
 		width: 100%;
 	}
+}
+.margin-auto {
+	margin: auto;
 }
 .multi-btn {
 	display: flex;
