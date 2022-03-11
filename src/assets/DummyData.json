@@ -37,8 +37,8 @@
   "/dashboard/background-activities": {
     "tasks": 5
   },
-  "alerts/list" : {
-    "list":[
+  "alerts/list": {
+    "list": [
       {
         "alert_uuid": "1638276506e3b3954d1c03463b8ca4ecaa84a6b92f",
         "module_name": "node:os:memory_usage",
@@ -199,6 +199,28 @@
         "support_message": "",
         "resource_id": "elasticsearch.service",
         "hostname": "srvnode-1.mgmt.public"
+      }
+    ]
+  },
+  "s3/s3_accounts": {
+    "s3_accounts": [
+      {
+        "account_name": "tests3",
+        "account_email": "tests3@gmail.com"
+      }
+    ]
+  },
+  "s3/access_keys": {
+    "access_keys": [
+      {
+        "user_name": "tests3",
+        "access_key_id": "AKIAxBkOgNJbTNXgHs2e5WHDtg",
+        "status": "Active"
+      },
+      {
+        "user_name": "tests3",
+        "access_key_id": "AKIA6zRZMjdlTwG_gEbTuQ52lA",
+        "status": "Active"
       }
     ]
   }
