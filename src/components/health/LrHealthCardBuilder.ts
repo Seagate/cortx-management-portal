@@ -21,6 +21,7 @@ import {
 } from "./LrHealthConfig";
 import * as d3 from "d3";
 import * as moment from "moment";
+import { graphImages } from "./LrHeathGraphImages.constant";
 
 export default abstract class HealthCardBuilder {
   public static build(
@@ -78,9 +79,12 @@ export default abstract class HealthCardBuilder {
 
   public static buildIcon(healthCardG: any) {
     healthCardG
-      .append("image")
-      .attr("href", (data: any) =>
-        require(`@/assets/health/${data.resource}/${data.status}/icon.svg`)
+      .append("svg")
+      .html(
+        (data: {
+          resource: "cluster" | "node" | "rack" | "site";
+          status: "online" | "offline" | "degraded" | "failed" | "unknown";
+        }) => graphImages[data.resource][data.status]
       )
       .attr("x", 21.5)
       .attr("y", 66.5)
@@ -90,8 +94,8 @@ export default abstract class HealthCardBuilder {
 
   public static buildShowDescriptionIcon(healthCardG: any) {
     healthCardG
-      .append("image")
-      .attr("href", require("@/assets/health/magnify_icon.svg"))
+      .append("svg")
+      .html(graphImages.magnifyIcon)
       .attr("id", (d: any) => `show_desc_icon_${d.treeNodeId}`)
       .attr("x", (data: any) => (data.config.actions.length > 0 ? 218 : 235))
       .attr("y", 13)
@@ -105,8 +109,8 @@ export default abstract class HealthCardBuilder {
 
   public static buildShowActionsIcon(healthCardG: any, performAction: any) {
     healthCardG
-      .append("image")
-      .attr("href", require("@/assets/health/actions_menu_icon.svg"))
+      .append("svg")
+      .html(graphImages.threeDotMenu)
       .attr("id", (d: any) => `show_actions_icon_${d.treeNodeId}`)
       .attr("x", 250)
       .attr("y", 12)
