@@ -22,7 +22,7 @@
       fixed
       dark
       color="#000000"
-      mini-variant-width="3rem"
+      :mini-variant-width="minVariantWidth"
       class="nav-style"
     >
       <v-list nav dense>
@@ -46,7 +46,7 @@
               <v-list-item-icon>
                 <img
                   :src="
-                    require(`@/assets/images/${
+                    require(`@/assets/${
                       $route.path.includes(navItem.path)
                         ? navItem.iconActive
                         : navItem.iconDefault
@@ -57,8 +57,7 @@
               <v-list-item-title
                 :id="navItem.title"
                 :class="{ 'font-grey': !$route.path.includes(navItem.path) }"
-                >{{ $t(navItem.title) }}</v-list-item-title
-              >
+              >{{ $t(navItem.title) }}</v-list-item-title>
             </v-list-item>
           </template>
           <span>{{ $t(navItem.title) }}</span>
@@ -66,9 +65,9 @@
 
         <v-list-item class="nav-brand">
           <v-list-item-icon class="nav-logo">
-            <img src="@/assets/images/seagate-green.svg" alt="logo" />
+            <img v-if="brandLogo" :src="require(`@/assets/${brandLogo}`)" alt="logo" />
           </v-list-item-icon>
-          <v-list-item-title class="logo-title">Seagate</v-list-item-title>
+          <v-list-item-title v-if="brandName" class="logo-title">{{brandName}}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -76,98 +75,54 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, PropSync } from "vue-property-decorator";
-import router from "../router";
+import { Component, Vue, PropSync, Prop } from "vue-property-decorator";
+import router from "@/router";
+import { SgtNavigationDrawerItem } from "./SgtNavigationDrawerItem.model";
 
 @Component({
-  name: "LrNavigationDrawer",
-  components: {},
+	name: "SgtNavigationDrawer",
+	components: {},
 })
 export default class LrNavigationDrawer extends Vue {
-  @PropSync("drawer", { type: Boolean }) syncedName!: boolean;
-  activeRoute = "";
-  navItems = [
-    {
-      title: "dashboard",
-      path: "/dashboard",
-      iconDefault: "dashboard-grey.svg",
-      iconActive: "dashboard-white.svg",
-      requiredAccess: "alerts",
-    },
-    {
-      title: "health",
-      path: "/health",
-      iconDefault: "health-grey.svg",
-      iconActive: "health-white.svg",
-      requiredAccess: "sysconfig",
-    },
-    {
-      title: "manage",
-      path: "/manage",
-      iconDefault: "manage-grey.svg",
-      iconActive: "manage-white.svg",
-      requiredAccess: "s3accounts",
-    },
-    {
-      title: "lyvePilot",
-      path: "/ldp",
-      iconDefault: "udx-grey.svg",
-      iconActive: "udx-white.svg",
-      requiredAccess: "lyve_pilot",
-    },
-    {
-      title: "settings",
-      path: "/settings",
-      iconDefault: "settings-grey.svg",
-      iconActive: "settings-white.svg",
-      requiredAccess: "maintenance",
-    },
-    {
-      title: "maintenance",
-      path: "/maintenance",
-      iconDefault: "maintenance-grey.svg",
-      iconActive: "maintenance-white.svg",
-      requiredAccess: "sysconfig",
-    },
-  ];
+	@PropSync("drawer", { type: Boolean }) syncedName!: boolean;
+	@Prop({ required: true }) navItems: SgtNavigationDrawerItem[];
+	@Prop({ required: false }) brandLogo: string;
+	@Prop({ required: false }) brandName: string;
+	@Prop({ required: false, default: "4rem" }) minVariantWidth: string;
 
-  navigate(path: string) {
-    router.push(path);
-    this.syncedName = true;
-  }
+	activeRoute = "";
+
+	navigate(path: string) {
+		router.push(path);
+		this.syncedName = true;
+	}
 }
 </script>
 
 <style lang="scss" scoped>
 .nav-style {
-  margin-top: 3.75em;
+	margin-top: 3.75em;
 }
 .nav-brand {
-  position: fixed;
-  bottom: 4em;
-  .nav-logo {
-    height: 27px;
-  }
-  .logo-title {
-    color: #6cc04a;
-    font-size: 1rem;
-  }
+	position: fixed;
+	bottom: 4em;
+	.nav-logo {
+		height: 27px;
+	}
+	.logo-title {
+		color: #6cc04a;
+		font-size: 1rem;
+	}
 }
 .font-inherit {
-  font-size: inherit;
-}
-.v-list {
-  padding: 0;
-  .v-list-item {
-    border-radius: 0;
-  }
+	font-size: inherit;
 }
 .lr-nav-item-active {
-  background: #262626;
-  color: #ffffff;
-  border-bottom: 3px solid #6ebe49;
+	background: #262626;
+	color: #ffffff;
+	border-bottom: 3px solid #6ebe49;
 }
 .font-grey {
-  color: #9e9e9e;
+	color: #9e9e9e;
 }
 </style>

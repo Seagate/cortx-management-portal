@@ -15,35 +15,56 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>
-    <v-chip-group :style="'max-width: ' + width">
-      <v-chip
-        color="csmprimary"
-        dark
-        v-for="(chip, i) in chips"
-        :key="i"
-        :close="chip.required ? false : true"
-        close-label="remove"
-        @click="$emit('chip-click', chip)"
-        @click:close="$emit('remove-chip', chip)"
-        class="mr-2"
-      >
-        {{ chip.label }} : {{ chip.value }}
-      </v-chip>
-    </v-chip-group>
+  <div class="icon-container" v-if="icon"
+    :class="[hoverIcon ? 'action-btn':'']">
+    <img
+      :src="require(`@/assets/icons/${icon}`)"
+      @click="$emit('click')"
+      class="action-btn-block"
+      alt="logo"
+    />
+    <img
+      v-if="hoverIcon"
+      :src="require(`@/assets/icons/${hoverIcon}`)"
+      @click="$emit('click')"
+      class="action-btn-hover"
+      alt="logo"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { LrFilterObject } from "./LrFilterObject.model";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "LrChips",
+  name: "LrSvgIcon",
   components: {},
 })
-export default class LrChips extends Vue {
-  @Prop({ required: true, default: [] }) private chips: LrFilterObject[];
-  @Prop({ required: false, default: "100%" }) private width: string;
+export default class LrSvgIcon extends Vue {
+  @Prop({ required: true }) private icon: string;
+  @Prop({ required: false }) private hoverIcon: string;
 }
 </script>
+
+<style lang="scss">
+.icon-container {
+    display: inline-block;
+    cursor: pointer;
+}
+.action-btn {
+  .action-btn-block {
+    display: block;
+  }
+  .action-btn-hover {
+    display: none;
+  }
+}
+.action-btn:hover {
+  .action-btn-block {
+    display: none;
+  }
+  .action-btn-hover {
+    display: block;
+  }
+}
+</style>

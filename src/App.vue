@@ -19,7 +19,12 @@
     <LrHeader @menu-click="drawer = !drawer" />
     <main>
       <nav class="side-nav">
-        <LrNavigationDrawer :drawer.sync="drawer" />
+        <SgtNavigationDrawer
+          :drawer.sync="drawer"
+          :navItems="navItemsList"
+          brandName="Seagate"
+          brandLogo="images/seagate-green.svg"
+        />
       </nav>
       <div class="main-content">
         <SgtBreadCrumb
@@ -35,17 +40,18 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import LrHeader from "./components/LrHeader.vue";
-import LrNavigationDrawer from "./components/LrNavigationDrawer.vue";
+import SgtNavigationDrawer from "./components/shared/SgtNavigationDrawer/SgtNavigationDrawer.vue";
 import LrRouteComponents from "./components/LrRouteComponents.vue";
 import SgtBreadCrumb from "./components/shared/bread-crumb/SgtBreadCrumb.vue";
 import { basePathList } from "./components/BreadCrumb.constant";
 import LrCalulateDimensions from "./components/LrCalulateDimensions";
+import { AppConst } from "./App.constant";
 
 @Component({
   name: "App",
   components: {
     LrHeader,
-    LrNavigationDrawer,
+    SgtNavigationDrawer,
     SgtBreadCrumb,
     LrRouteComponents,
   },
@@ -57,6 +63,9 @@ export default class App extends Vue {
     LrCalulateDimensions.populateDimensions();
   }
 
+  get navItemsList() {
+    return AppConst.navItems;
+  }
   get basePathList() {
     return basePathList;
   }
