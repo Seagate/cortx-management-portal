@@ -18,7 +18,8 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import LrDashboard from "../components/dashboard/LrDashboard.vue";
 import LrAlert from "../components/alerts/LrAlert.vue";
-import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
+import LrAlertDetails from "../components/alerts/LrAlertDetails.vue";
+import LrManageUser from "../components/manage/LrManageUser.vue";
 
 Vue.use(VueRouter);
 
@@ -36,13 +37,19 @@ const routes: Array<RouteConfig> = [
     path: "/alerts",
     name: "alerts",
     component: LrAlert,
-    props:true
+    props: true,
+  },
+  {
+    path: "/manage",
+    name: "manage",
+    component: LrManageUser,
+    props: true,
   },
   {
     path: "/alert-details/:alertId",
     name: "alert-details",
     component: LrAlertDetails,
-    props:true
+    props: true,
   },
 ];
 
