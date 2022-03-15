@@ -77,11 +77,7 @@
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import ClusterManagementMixin from "../../mixins/cluster-management";
 import { Api } from "../../services/Api";
-import {
-  healthTableHeaders,
-  IResource,
-  lrHealthConst,
-} from "./HealthTableHeaders.constant";
+import { IResource, lrHealthConst } from "./HealthTabularView.constant";
 import CortxDataTable from "../widgets/cortx-data-table.vue";
 import LrDataTable from "../shared/LrDataTable/LrDataTable.vue";
 import SgtPromptDialog from "../shared/SgtPromptDialog.vue";
@@ -92,7 +88,6 @@ import SgtInfoDialog from "../shared/SgtInfoDialog.vue";
   components: { LrDataTable, SgtPromptDialog, SgtInfoDialog },
 })
 export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
-  public healthTableHeaders = healthTableHeaders;
   public hideFilter: boolean = true;
   public healthQueryParams: any = {};
   public healthTableHeaderList: any[] = [];
@@ -134,7 +129,9 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
     };
   }
 
-  getColor(item: any) {
+  getColor(item: {
+    value: "online" | "offline" | "degraded" | "failed" | "unknown";
+  }) {
     return lrHealthConst.severityList[item.value];
   }
 

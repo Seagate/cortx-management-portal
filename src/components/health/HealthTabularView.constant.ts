@@ -15,7 +15,7 @@
  * please email opensource@seagate.com.
  */
 
-const actionGroupCondition = (resoureDetails: IResource) => {
+const actionListCondition = (resoureDetails: IResource) => {
   return resoureDetails.resource === "node";
 };
 
@@ -70,6 +70,7 @@ export const lrHealthConst = {
         sortable: false,
         zoomIcon: true,
         actionList: [],
+        actionListCondition,
         customActionList: [
           {
             name: "start-node",

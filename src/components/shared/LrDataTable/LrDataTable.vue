@@ -182,6 +182,11 @@
                           :key="action.name"
                           bottom
                           :disabled="!action.tooltip"
+                          v-if="
+                            col.actionListCondition
+                              ? col.actionListCondition(item)
+                              : true
+                          "
                         >
                           <template v-slot:activator="{ on, attrs }">
                             <span
