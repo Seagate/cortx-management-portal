@@ -23,17 +23,15 @@
 <script lang="ts">
 import SgtTabs, { TabsInfo } from "../shared/SgtTabs.vue";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-// import LrHealthTabular from "./LrHealthTabular.vue";
+import LrHealthTabular from "./LrHealthTabular.vue";
 import LrHealthGraphical from "./LrHealthGraphical.vue";
-import Tab2 from "./Tab2.vue";
 
 @Component({
   name: "LrHealth",
   components: {
     SgtTabs,
     LrHealthGraphical,
-    // LrHealthTabular,
-    Tab2,
+    LrHealthTabular,
   },
 })
 export default class LrHealth extends Vue {
@@ -55,8 +53,7 @@ export default class LrHealth extends Vue {
         this.activeTab = "LrHealthGraphical";
         break;
       case 2:
-        this.activeTab = "Tab2";
-        // this.activeTab = "LrHealthTabular";
+        this.activeTab = "LrHealthTabular";
         break;
     }
   }

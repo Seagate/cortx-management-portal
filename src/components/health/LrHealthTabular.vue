@@ -15,28 +15,26 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div v-feature="unsupportedFeatures.health">
-    <cortx-data-table
-      id="health-details-table"
-      :headers="healthTableHeaderList"
-      :records="clusterHealthData.data"
-      :hideFilter="hideFilter"
-      :onSort="{}"
-      :onFilter="{}"
-      :sortParams="{}"
-      :rowsPerPage="[10, 20, 30, 50, 100, 150, 200]"
-      :actionsCallback="actionsCallback"
-      @update:items-per-page="getHealthData()"
-      @update:page="getHealthData()"
-    />
-    <cortx-info-dialog
+  <div>
+    <LrDataTable
+      ref="healthDetailsTable"
+      :headers="healthTableConfig.healthTable.headers"
+      :records="clusterHealthData"
+      :searchConfig="healthTableConfig.searchConfig"
+      @zoom="showMoreDetails"
+    >
+      <template v-slot:status="item">
+        <v-avatar :color="getColor(item)" size="16"></v-avatar>
+      </template>
+    </LrDataTable>
+    <SgtInfoDialog
       v-model="isShowInfoDialog"
       :type="infoDialogType"
       :title="infoDialogTitle"
       :message="infoDialogMessage"
       @close="clearInfoDialog()"
     />
-    <cortx-prompt-dialog
+    <SgtPromptDialog
       v-model="isShowPromptDialog"
       :title="promptDialogTitle"
       :message="promptDialogMessage"
@@ -74,29 +72,29 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import ClusterManagementMixin from "../../mixins/cluster-management";
-import { Api } from "../../services/api";
-import apiRegister from "../../services/api-register";
-import { unsupportedFeatures } from "../../common/unsupported-feature";
-import CortxDataTable from "../widgets/cortx-data-table.vue";
+import { Api } from "../../services/Api";
 import {
   healthTableHeaders,
   IResource,
-} from "../../common/health-table-headers";
-import CortxPromptDialog from "../widgets/cortx-prompt-dialog.vue";
-import CortxInfoDialog from "../widgets/cortx-info-dialog.vue";
+  lrHealthConst,
+} from "./HealthTableHeaders.constant";
+import CortxDataTable from "../widgets/cortx-data-table.vue";
+import LrDataTable from "../shared/LrDataTable/LrDataTable.vue";
+import SgtPromptDialog from "../shared/SgtPromptDialog.vue";
+import SgtInfoDialog from "../shared/SgtInfoDialog.vue";
 
 @Component({
-  name: "cortx-health-table",
-  components: { CortxDataTable, CortxPromptDialog, CortxInfoDialog },
+  name: "LrHealthTabular",
+  components: { LrDataTable, SgtPromptDialog, SgtInfoDialog },
 })
-export default class CortxHealthTabular extends Mixins(ClusterManagementMixin) {
-  public unsupportedFeatures = unsupportedFeatures;
+export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
   public healthTableHeaders = healthTableHeaders;
   public hideFilter: boolean = true;
   public healthQueryParams: any = {};
   public healthTableHeaderList: any[] = [];
-  public clusterHealthData: any = {};
+  public clusterHealthData: any = [];
   public displayInfoModal: boolean = false;
+  public healthTableConfig: any = lrHealthConst;
   public resourceInfo: IResource = {
     id: "",
     last_updated_time: "",
@@ -112,14 +110,13 @@ export default class CortxHealthTabular extends Mixins(ClusterManagementMixin) {
       offset: 1,
       limit: 0,
     };
-    this.$store.dispatch("systemConfig/showLoader", "Fetching health...");
-    const res = await Api.getAll(
-      apiRegister.health_cluster,
-      this.healthQueryParams
-    );
+    // this.$store.dispatch("systemConfig/showLoader", "Fetching health...");
+    const res: any = await Api.getData("/health/health-tabular", {
+      isDummy: true,
+    });
+    console.log("health data: ", res.data);
     this.clusterHealthData = res.data;
-    this.healthTableHeaderList = healthTableHeaders.healthTableHeaderList;
-    this.$store.dispatch("systemConfig/hideLoader");
+    // this.$store.dispatch("systemConfig/hideLoader");
   }
 
   get actionsCallback() {
@@ -134,7 +131,12 @@ export default class CortxHealthTabular extends Mixins(ClusterManagementMixin) {
     };
   }
 
-  public async showMoreDetails(event: any, details: IResource) {
+  getColor(item: any) {
+    debugger;
+    return lrHealthConst.severityList[item.value];
+  }
+
+  public async showMoreDetails(details: IResource) {
     this.resourceInfo = details;
     this.displayInfoModal = true;
   }

@@ -40,11 +40,11 @@ export default class ClusterManagementMixin extends Vue {
       const healthQueryParams = {
         depth: 0,
       };
-      this.$store.dispatch("systemConfig/showLoader", "Fetching health...");
-      const res: any = await Api.getData("/health/cluster-details", {
+      // this.$store.dispatch("systemConfig/showLoader", "Fetching health...");
+      const res: any = await Api.getData("/health/health-graphical", {
         isDummy: true,
       });
-      this.$store.dispatch("systemConfig/hideLoader");
+      // this.$store.dispatch("systemConfig/hideLoader");
       healthData = res.data;
     }
     return healthData;

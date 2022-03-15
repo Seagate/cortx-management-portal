@@ -37,7 +37,7 @@
   "/dashboard/background-activities": {
     "tasks": 5
   },
-  "/health/cluster-details": {
+  "/health/health-graphical": {
     "data": [
       {
         "resource": "cluster",
@@ -117,5 +117,33 @@
       }
     ],
     "version": "2.0"
+  },
+  "/health/health-tabular": {
+    "data": [
+      {
+        "resource": "cluster",
+        "id": "394dce5b-0770-4160-b7c9-20f3c6c5983d",
+        "status": "online",
+        "last_updated_time": "1637652160"
+      },
+      {
+        "resource": "site",
+        "id": "1",
+        "status": "online",
+        "last_updated_time": "1637652160"
+      },
+      {
+        "resource": "rack",
+        "id": "1",
+        "status": "online",
+        "last_updated_time": "1637652160"
+      },
+      {
+        "resource": "node",
+        "id": "1",
+        "status": "online",
+        "last_updated_time": "1637652159"
+      }
+    ]
   }
 }

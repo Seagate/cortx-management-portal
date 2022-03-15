@@ -17,12 +17,9 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import LrDashboard from "../components/dashboard/LrDashboard.vue";
-<<<<<<< HEAD
 import LrHealth from "../components/health/LrHealth.vue";
-=======
 import LrAlert from "../components/alerts/LrAlert.vue";
-import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
->>>>>>> 9176529e4ba6d4e698a10714dfa60ec2789e1eac
+import LrAlertDetails from "../components/alerts/LrAlertDetails.vue";
 
 Vue.use(VueRouter);
 
@@ -37,22 +34,21 @@ const routes: Array<RouteConfig> = [
     component: LrDashboard,
   },
   {
-<<<<<<< HEAD
     path: "/health",
     name: "Health",
     component: LrHealth,
-=======
+  },
+  {
     path: "/alerts",
     name: "alerts",
     component: LrAlert,
-    props:true
+    props: true,
   },
   {
     path: "/alert-details/:alertId",
     name: "alert-details",
     component: LrAlertDetails,
-    props:true
->>>>>>> 9176529e4ba6d4e698a10714dfa60ec2789e1eac
+    props: true,
   },
 ];
 
