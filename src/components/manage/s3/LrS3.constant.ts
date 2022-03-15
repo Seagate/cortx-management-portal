@@ -15,15 +15,13 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 export const lrS3AccountConst = {
-    searchConfig: {
-        placeholder: "Search"
-    },
     s3AccountTable: {
         isMultiSelect: false,
         itemKey: "accessKey",
         headers: [
-            { text: "Access Key", value: "access_key_id", width:"500px" },
-            { text: "Secret Key", value: "secretKey",sortable: false },
+            { text: "Access Key", value: "access_key_id", sortable: false },
+            { text: "Last update", value: "updated_time", type: "date", sortable: false },
+            { text: "status", value: "status",sortable: false },
             {
                 text: "",
                 value: "action",
@@ -37,6 +35,7 @@ export const lrS3AccountConst = {
         headerButton:{
             name:"add",
             label:"Add/Generate",
+            disabled :false
         }
     }
 }
