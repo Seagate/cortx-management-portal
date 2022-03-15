@@ -41,6 +41,7 @@
       :itemKey="s3AccountConst.s3AccountTable.itemKey"
       :isPagination="false"
       :headerButton="s3AccountConst.s3AccountTable.headerButton"
+      @generate="generateNewKey"
     ></LrDataTable>
     <v-dialog v-model="passwordDialog" max-width="600px">
       <v-card>
@@ -81,11 +82,37 @@
             </v-container>
           </div>
         </v-card-text>
-
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="csmprimary" @click="passwordDialog = false" outlined>cancel</v-btn>
           <v-btn color="csmprimary" @click="resetPassword()" dark>Reset</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="generatedAccessKeyDialog" max-width="600px">
+      <v-card>
+        <v-card-title>
+          <div class="title-container">
+            <LrSvgIcon icon="green-tick.svg" />Access key created
+          </div>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <div class="content-container">
+            <v-container>
+              <v-row>
+                <div>Save this information, you will not see it again. Download as CSV and close.</div>
+                <div>Access Key : {{newAccessKey.access_key_id}}</div>
+                <div>Secret Key : {{newAccessKey.secret_key}}</div>
+                <div>Note : {{newAccessKey.note}}</div>
+              </v-row>
+            </v-container>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="csmprimary" @click="downloadKey()" dark>download & close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -112,6 +139,8 @@ export default class LrS3Account extends Vue {
 		password: "",
 		confirmPassword: "",
 	};
+	newAccessKey = {};
+	generatedAccessKeyDialog = false;
 	mounted() {
 		Api.getData("s3/s3_accounts", { isDummy: true }).then((resp: any) => {
 			this.s3AccountDetails = resp["s3_accounts"][0];
@@ -119,11 +148,15 @@ export default class LrS3Account extends Vue {
 		Api.getData("s3/access_keys", { isDummy: true }).then((resp: any) => {
 			this.accessList = resp["access_keys"];
 			if (this.accessList.length > 1) {
-        this.s3AccountConst.s3AccountTable.headerButton["disabled"] = true;
-        this.s3AccountConst.s3AccountTable.headers[this.s3AccountConst.s3AccountTable.headers.length-1]["actionList"] = ["delete"];
+				this.s3AccountConst.s3AccountTable.headerButton["disabled"] = true;
+				this.s3AccountConst.s3AccountTable.headers[
+					this.s3AccountConst.s3AccountTable.headers.length - 1
+				]["actionList"] = ["delete"];
 			} else {
-        this.s3AccountConst.s3AccountTable.headerButton["disabled"] = false;
-        this.s3AccountConst.s3AccountTable.headers[this.s3AccountConst.s3AccountTable.headers.length-1]["actionList"] = [];
+				this.s3AccountConst.s3AccountTable.headerButton["disabled"] = false;
+				this.s3AccountConst.s3AccountTable.headers[
+					this.s3AccountConst.s3AccountTable.headers.length - 1
+				]["actionList"] = [];
 			}
 		});
 	}
@@ -172,6 +205,21 @@ export default class LrS3Account extends Vue {
 	resetForm(name: string) {
 		const field = this.$refs[name] as Vue & { reset: () => void };
 		field.reset();
+	}
+
+	generateNewKey() {
+		//code to generate key
+		Api.getData("s3/generate_access_keys", { isDummy: true }).then(
+			(resp: any) => {
+				this.newAccessKey = resp;
+				this.generatedAccessKeyDialog = true;
+			}
+		);
+	}
+
+	downloadKey() {
+		//code to download
+		this.generatedAccessKeyDialog = false;
 	}
 }
 </script>
