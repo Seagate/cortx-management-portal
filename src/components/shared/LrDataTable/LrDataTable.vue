@@ -39,9 +39,10 @@
           <div v-if="headerButton && selected.length == 0" class="multi-btn">
             <v-btn
               class="ml-4"
-              dark
+              :dark="headerButton.disabled ? false : true"
               :key="headerButton.name"
               :color="headerButton.color ? headerButton.color: 'csmprimary'"
+              :disabled="headerButton.disabled ? headerButton.disabled : false"
               @click="$emit(headerButton.name, selected)"
             >{{ headerButton.label }}</v-btn>
           </div>
@@ -133,7 +134,11 @@
                 </template>
                 <template v-else-if="col.type == 'action'">
                   <div v-if="selected.length < 1" class="action-col">
-                    <div class="hover-btn" v-if="actionItems">
+                    <div
+                      class="hover-btn"
+                      v-if="actionItems"
+                      :style="{right: col.zoomIcon? '2rem' : '0rem'}"
+                    >
                       <template v-for="action in actionItems">
                         <span :class="'action-btn'" :key="action.name">
                           <LrSvgIcon
@@ -162,7 +167,7 @@
       </template>
 
       <template v-slot:footer="{}" v-if="records.length > 0">
-        <v-row justify="end" align="center" class="pr-3 py-4">
+        <v-row justify="end" align="center" class="pr-3 py-4" v-if="isPagination">
           <v-col class="text-right pa-0 pr-4 flex-grow-0">
             <v-pagination
               v-model="page"
@@ -233,6 +238,7 @@ export default class LrDataTable extends Vue {
 	})
 	private paginationConfig: PaginationModel;
 	@Prop({ required: false }) private headerButton: any;
+	@Prop({ required: false, default: true }) private isPagination: boolean;
 
 	private selected: any[] = [];
 	private selectedItem: any = {};
@@ -241,14 +247,7 @@ export default class LrDataTable extends Vue {
 	private row = 5;
 
 	mounted() {
-		console.log(this.tableDataConfig, this.paginationConfig);
-		const allActions = lrDataTableConst.buttonList;
-		const actions = this.headers.find(
-			(ele) => ele.type && ele.type === "action"
-		);
-		this.actionItems = allActions.filter((ele) =>
-			actions.actionList.includes(ele.name)
-		);
+		this.updateActionItems();
 	}
 
 	/**
@@ -267,6 +266,20 @@ export default class LrDataTable extends Vue {
 	 */
 	get getSortDir() {
 		return this.tableDataConfig.sort ? this.tableDataConfig.sort.dir : false;
+	}
+	/**
+	 * To update the action buttons, custom buttons 
+	 */
+	updateActionItems() {
+		const allActions = lrDataTableConst.buttonList;
+		const actions = this.headers.find(
+			(ele) => ele.type && ele.type === "action"
+		);
+		this.actionItems = allActions.filter((ele) =>
+			actions.actionList.includes(ele.name)
+		);
+		if (actions.customActionList)
+			this.actionItems.push(...actions.customActionList);
 	}
 
 	/**
@@ -371,6 +384,7 @@ export default class LrDataTable extends Vue {
 
 .action-col {
 	position: relative;
+	min-height: 1.5rem;
 }
 
 .hover-btn {
