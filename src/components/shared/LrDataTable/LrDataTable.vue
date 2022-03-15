@@ -178,13 +178,39 @@
                       :style="{ right: col.zoomIcon ? '2rem' : '0rem' }"
                     >
                       <template v-for="action in actionItems">
-                        <span :class="'action-btn'" :key="action.name">
-                          <LrSvgIcon
-                            :icon="action.path"
-                            :hoverIcon="action.hoverPath"
-                            @click="$emit(action.name, item)"
-                          />
-                        </span>
+                        <v-tooltip
+                          :key="action.name"
+                          bottom
+                          :disabled="!action.tooltip"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <span
+                              :class="[
+                                'action-btn',
+                                action.condition && action.condition(item)
+                                  ? 'disabled'
+                                  : '',
+                              ]"
+                              v-bind="attrs"
+                              v-on="on"
+                            >
+                              <LrSvgIcon
+                                :icon="
+                                  typeof action.path === 'function'
+                                    ? action.path(item)
+                                    : action.path
+                                "
+                                :hoverIcon="
+                                  typeof action.hoverPath === 'function'
+                                    ? action.hoverPath(item)
+                                    : action.hoverPath
+                                "
+                                @click="$emit(action.name, item)"
+                              />
+                            </span>
+                          </template>
+                          <span>{{ action.tooltip }}</span>
+                        </v-tooltip>
                       </template>
                     </div>
                     <div v-if="col.zoomIcon" class="zoom-container">
@@ -484,6 +510,12 @@ export default class LrDataTable extends Vue {
   .sort-icon.sort-desc path:last-child {
     fill: #000;
   }
+}
+
+.action-btn.disabled,
+.action-btn.disabled * {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .pag-dropdown {

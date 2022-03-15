@@ -26,11 +26,7 @@ const startNodeCondition = (resoureDetails: IResource) => {
 };
 
 const stopNodeCondition = (resoureDetails: IResource) => {
-  return resoureDetails.status === "online";
-};
-
-const getClassName = (resoureDetails: IResource, staticClass: string) => {
-  return `${staticClass}-${resoureDetails.status}`;
+  return resoureDetails.status === "offline";
 };
 
 export interface IResource {
@@ -77,26 +73,31 @@ export const lrHealthConst = {
         customActionList: [
           {
             name: "start-node",
-            path: "start.svg",
-            hoverPath: "start.svg",
+            path: (resource: IResource) => `start-${resource.status}.svg`,
+            hoverPath: (resource: IResource) => `start-${resource.status}.svg`,
             tooltip: "Start Node",
+            condition: startNodeCondition,
           },
           {
             name: "stop-node",
-            path: "stop.svg",
-            hoverPath: "stop.svg",
+            path: (resource: IResource) => `stop-${resource.status}.svg`,
+            hoverPath: (resource: IResource) => `stop-${resource.status}.svg`,
             tooltip: "Stop Node",
+            condition: stopNodeCondition,
           },
           {
             name: "server-power-off",
-            path: "poweroff.svg",
-            hoverPath: "poweroff.svg",
+            path: (resource: IResource) => `poweroff-${resource.status}.svg`,
+            hoverPath: (resource: IResource) =>
+              `poweroff-${resource.status}.svg`,
             tooltip: "Server Power Off",
           },
           {
             name: "server-storage-off",
-            path: "powerandstorageoff.svg",
-            hoverPath: "powerandstorageoff.svg",
+            path: (resource: IResource) =>
+              `powerandstorageoff-${resource.status}.svg`,
+            hoverPath: (resource: IResource) =>
+              `powerandstorageoff-${resource.status}.svg`,
             tooltip: "Server and Storage off",
           },
         ],

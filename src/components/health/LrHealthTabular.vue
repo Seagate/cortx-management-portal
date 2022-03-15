@@ -118,7 +118,6 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
     const res: any = await Api.getData("/health/health-tabular", {
       isDummy: true,
     });
-    console.log("health data: ", res.data);
     this.clusterHealthData = res.data;
     // this.$store.dispatch("systemConfig/hideLoader");
   }
@@ -141,22 +140,18 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
 
   startNode(resource: IResource) {
     //API call to start the node
-    console.log(resource);
   }
 
   stopNode(resource: IResource) {
     //API call to stop the node
-    console.log(resource);
   }
 
   serverPowerOff(resource: IResource) {
     //API call to turn the server off
-    console.log(resource);
   }
 
   serverAndStorageOff(resource: IResource) {
     //API call to turn the server and storage off
-    console.log(resource);
   }
 
   public async showMoreDetails(details: IResource) {

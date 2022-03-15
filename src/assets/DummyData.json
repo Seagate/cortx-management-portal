@@ -141,7 +141,7 @@
       {
         "resource": "node",
         "id": "1",
-        "status": "online",
+        "status": "offline",
         "last_updated_time": "1637652159"
       }
     ]
