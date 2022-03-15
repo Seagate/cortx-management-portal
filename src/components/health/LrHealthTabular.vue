@@ -22,6 +22,10 @@
       :records="clusterHealthData"
       :searchConfig="healthTableConfig.searchConfig"
       @zoom="showMoreDetails"
+      @start-node="startNode"
+      @stop-node="stopNode"
+      @server-power-off="serverPowerOff"
+      @server-storage-off="serverAndStorageOff"
     >
       <template v-slot:status="item">
         <v-avatar :color="getColor(item)" size="16"></v-avatar>
@@ -132,8 +136,27 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
   }
 
   getColor(item: any) {
-    debugger;
     return lrHealthConst.severityList[item.value];
+  }
+
+  startNode(resource: IResource) {
+    //API call to start the node
+    console.log(resource);
+  }
+
+  stopNode(resource: IResource) {
+    //API call to stop the node
+    console.log(resource);
+  }
+
+  serverPowerOff(resource: IResource) {
+    //API call to turn the server off
+    console.log(resource);
+  }
+
+  serverAndStorageOff(resource: IResource) {
+    //API call to turn the server and storage off
+    console.log(resource);
   }
 
   public async showMoreDetails(details: IResource) {
