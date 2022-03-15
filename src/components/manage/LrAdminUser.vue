@@ -15,15 +15,64 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>Admin user</div>
+  <div class="title-container">
+    <span class="title-label">User Settings</span>
+    <SgtIButton>
+      <div class="i-content">
+        <div>
+          <p class="section-title">User Settings: Local</p>
+          <p class="description">
+            Manage users. Depending on the user role, you can create, modify,
+            and delete users. You can also change the password for the admin
+            user. A role is a collection of permissions granted to a user.
+          </p>
+        </div>
+        <div>
+          <p class="section-title">Note:</p>
+          <p class="description">
+            Only admin user can create and delete users and change the password
+            of the admin user.
+          </p>
+        </div>
+      </div>
+    </SgtIButton>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import SgtIButton from "../shared/SgtIButton.vue";
 
 @Component({
   name: "LrAdminUser",
+  components: {
+    SgtIButton,
+  },
 })
 export default class LrAdminUser extends Vue {}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.title-container {
+  margin: 1em 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  .title-label {
+    font-weight: bold;
+  }
+}
+
+.i-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  p {
+    margin: 0;
+  }
+  .section-title {
+    font-weight: bold;
+  }
+}
+</style>
