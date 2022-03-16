@@ -1,6 +1,6 @@
 <!--
 * CORTX-CSM: CORTX Management web.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published
 * by the Free Software Foundation, either version 3 of the License, or
@@ -15,185 +15,237 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>
-    <div class="search-container">
-      <v-row class="search-row ma-0">
-        <v-col class="pl-0 margin-auto">
-          <LrAdvanceSearch
-            v-if="searchConfig"
-            :config="searchConfig"
-            @filter-click="updateFilter($event)"
-          />
-        </v-col>
-        <v-col cols="4" class="pr-0 margin-auto">
-          <div v-if="isMultiSelect && selected.length > 0" class="multi-btn">
-            <v-btn
-              v-for="button in multiSelectButtons"
-              class="ml-4"
-              dark
-              :key="button.name"
-              :color="button.color ? button.color: 'csmprimary'"
-              @click="$emit(button.name, selected)"
-            >{{ button.label }}</v-btn>
-          </div>
-          <div v-if="headerButton && selected.length == 0" class="multi-btn">
-            <v-btn
-              class="ml-4"
-              :dark="headerButton.disabled ? false : true"
-              :key="headerButton.name"
-              :color="headerButton.color ? headerButton.color: 'csmprimary'"
-              :disabled="headerButton.disabled ? headerButton.disabled : false"
-              @click="$emit(headerButton.name, selected)"
-            >{{ headerButton.label }}</v-btn>
-          </div>
-        </v-col>
-      </v-row>
-    </div>
-    <LrChips
-      v-if="chips && chips.length > 0"
-      :chips="chips"
-      class="pb-1"
-      @remove-chip="updateFilterByChip($event)"
-    />
-    <v-data-table
-      :headers="headers"
-      :items="records"
-      :show-select="isMultiSelect"
-      :item-key="itemKey"
-      :hide-default-footer="true"
-      :hide-default-header="true"
-      class="elevation-1"
-      v-model="selected"
-    >
-      <template v-slot:header="{}">
-        <tr>
-          <th v-if="isMultiSelect">
-            <v-simple-checkbox
-              :value="selected.length == records.length"
-              :indeterminate="selected.length>0 && selected.length<records.length"
-              :ripple="false"
-              @click="toggleSelectAll"
-            ></v-simple-checkbox>
-          </th>
-          <template v-for="header in headers">
-            <th
-              :key="header.text"
-              :class="[ 'table-header', (typeof header.sortable == 'boolean' && header.sortable === false ) ? '' : 'cursor-pointer' ]"
-              :style="{'text-align':getTextAlign(header.align), minWidth:header.width}"
-              @click="handleSorting(header)"
-            >
-              <span>
-                {{ header.text }}
-                <span
-                  v-if="!(typeof header.sortable == 'boolean' && header.sortable === false)"
-                  class="sort-icon"
-                  :class="{
-                    'sort-asc':tableDataConfig.sort && header.value === tableDataConfig.sort.name && tableDataConfig.sort.dir === 'asc',
-                    'sort-desc':tableDataConfig.sort && header.value === tableDataConfig.sort.name && tableDataConfig.sort.dir === 'desc'
-                  }"
-                >
-                  <svg
-                    v-if="!(typeof header.sortable == 'boolean' && header.sortable === false)"
-                    width="8"
-                    height="13"
-                    viewBox="0 0 8 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M4.42432 0L7.48247 5.25H1.36616L4.42432 0Z" fill="#9E9E9E" />
-                    <path d="M4.42432 13L7.48247 7.75H1.36616L4.42432 13Z" fill="#9E9E9E" />
-                  </svg>
-                </span>
-              </span>
-            </th>
-          </template>
-        </tr>
-      </template>
-      <template v-slot:body="{ items }">
-        <tbody>
-          <tr class="record" v-for="item in items" :key="item.id">
-            <td v-if="isMultiSelect">
-              <v-checkbox
-                multiple
-                v-model="selected"
-                :value="item"
-                style="margin: 0px; padding: 0px"
-                hide-details
-              />
-            </td>
-            <td
-              v-for="(col, i) in headers"
-              :key="i"
-              :class="{ 'action-button': col.type == 'action' }"
-              :style="{'text-align':getTextAlign(col.align)}"
-            >
-              <template v-if="col.type">
-                <template v-if="col.type == 'date'">{{ item[col.value] | formattedDate }}</template>
-                <template v-else-if="col.type == 'custom'">
-                  <slot v-bind:value="item[col.value]" :name="col.value">{{ item[col.value] }}</slot>
-                </template>
-                <template v-else-if="col.type == 'action'">
-                  <div v-if="selected.length < 1" class="action-col">
-                    <div
-                      class="hover-btn"
-                      v-if="actionItems"
-                      :style="{right: col.zoomIcon? '2rem' : '0rem'}"
-                    >
-                      <template v-for="action in actionItems">
-                        <span :class="'action-btn'" :key="action.name">
-                          <LrSvgIcon
-                            :icon="action.path"
-                            :hoverIcon="action.hoverPath"
-                            @click="$emit(action.name, item)"
-                          />
-                        </span>
-                      </template>
-                    </div>
-                    <div v-if="col.zoomIcon" class="zoom-container">
-                      <LrSvgIcon
-                        icon="zoom-in.svg"
-                        hoverIcon="zoom-in-hover.svg"
-                        @click="$emit('zoom', item)"
-                      />
-                    </div>
-                  </div>
-                </template>
-                <template v-else>{{ item[col.value] }}</template>
-              </template>
-              <template v-else>{{ item[col.value] }}</template>
-            </td>
-          </tr>
-        </tbody>
-      </template>
+	<div>
+		<div class="search-container">
+			<v-row class="search-row ma-0">
+				<v-col class="pl-0 margin-auto">
+					<LrAdvanceSearch
+						v-if="searchConfig"
+						:config="searchConfig"
+						@filter-click="updateFilter($event)"
+					/>
+				</v-col>
+				<v-col cols="4" class="pr-0 margin-auto">
+					<div v-if="isMultiSelect && selected.length > 0" class="multi-btn">
+						<v-btn
+							v-for="button in multiSelectButtons"
+							class="ml-4"
+							dark
+							:key="button.name"
+							:color="button.color ? button.color : 'csmprimary'"
+							@click="$emit(button.name, selected)"
+							>{{ button.label }}</v-btn
+						>
+					</div>
+					<div v-if="headerButton && selected.length == 0" class="multi-btn">
+						<v-btn
+							class="ml-4"
+							:dark="headerButton.disabled ? false : true"
+							:key="headerButton.name"
+							:color="headerButton.color ? headerButton.color : 'csmprimary'"
+							:disabled="headerButton.disabled ? headerButton.disabled : false"
+							@click="$emit(headerButton.name, selected)"
+							>{{ headerButton.label }}</v-btn
+						>
+					</div>
+				</v-col>
+			</v-row>
+		</div>
+		<LrChips
+			v-if="chips && chips.length > 0"
+			:chips="chips"
+			class="pb-1"
+			@remove-chip="updateFilterByChip($event)"
+		/>
+		<v-data-table
+			:headers="headers"
+			:items="records"
+			:show-select="isMultiSelect"
+			:item-key="itemKey"
+			:hide-default-footer="true"
+			:hide-default-header="true"
+			class="elevation-1"
+			v-model="selected"
+		>
+			<template v-slot:header="{}">
+				<tr>
+					<th v-if="isMultiSelect">
+						<v-simple-checkbox
+							:value="selected.length == records.length"
+							:indeterminate="
+								selected.length > 0 && selected.length < records.length
+							"
+							:ripple="false"
+							@click="toggleSelectAll"
+						></v-simple-checkbox>
+					</th>
+					<template v-for="header in headers">
+						<th
+							:key="header.text"
+							:class="[
+								'table-header',
+								typeof header.sortable == 'boolean' && header.sortable === false
+									? ''
+									: 'cursor-pointer',
+							]"
+							:style="{
+								'text-align': getTextAlign(header.align),
+								minWidth: header.width,
+							}"
+							@click="handleSorting(header)"
+						>
+							<span>
+								{{ header.text }}
+								<span
+									v-if="
+										!(
+											typeof header.sortable == 'boolean' &&
+											header.sortable === false
+										)
+									"
+									class="sort-icon"
+									:class="{
+										'sort-asc':
+											tableDataConfig.sort &&
+											header.value === tableDataConfig.sort.name &&
+											tableDataConfig.sort.dir === 'asc',
+										'sort-desc':
+											tableDataConfig.sort &&
+											header.value === tableDataConfig.sort.name &&
+											tableDataConfig.sort.dir === 'desc',
+									}"
+								>
+									<svg
+										v-if="
+											!(
+												typeof header.sortable == 'boolean' &&
+												header.sortable === false
+											)
+										"
+										width="8"
+										height="13"
+										viewBox="0 0 8 13"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M4.42432 0L7.48247 5.25H1.36616L4.42432 0Z"
+											fill="#9E9E9E"
+										/>
+										<path
+											d="M4.42432 13L7.48247 7.75H1.36616L4.42432 13Z"
+											fill="#9E9E9E"
+										/>
+									</svg>
+								</span>
+							</span>
+						</th>
+					</template>
+				</tr>
+			</template>
+			<template v-slot:body="{ items }">
+				<tbody>
+					<tr
+						class="record"
+						v-for="(item, rowIndex) in items"
+						:key="rowIndex"
+					>
+						<td v-if="isMultiSelect">
+							<v-checkbox
+								multiple
+								v-model="selected"
+								:value="item"
+								style="margin: 0px; padding: 0px"
+								hide-details
+							/>
+						</td>
+						<td
+							v-for="(col, i) in headers"
+							:key="i"
+							:class="{ 'action-button': col.type == 'action' }"
+							:style="{ 'text-align': getTextAlign(col.align) }"
+						>
+							<template v-if="col.type">
+								<template v-if="col.type == 'date'">{{
+									item[col.value] | formattedDate
+								}}</template>
+								<template v-else-if="col.type == 'custom'">
+									<slot
+										v-bind:data="{
+											index: rowIndex,
+											[col.value]: item[col.value],
+										}"
+										:name="col.value"
+										>{{ item[col.value] }}</slot
+									>
+								</template>
+								<template v-else-if="col.type == 'action'">
+									<div v-if="selected.length < 1" class="action-col">
+										<div
+											class="hover-btn"
+											v-if="actionItems"
+											:style="{ right: col.zoomIcon ? '2rem' : '0rem' }"
+										>
+											<template v-for="action in actionItems">
+												<span :class="'action-btn'" :key="action.name">
+													<LrSvgIcon
+														:icon="action.path"
+														:hoverIcon="action.hoverPath"
+														@click="$emit(action.name, item)"
+													/>
+												</span>
+											</template>
+										</div>
+										<div v-if="col.zoomIcon" class="zoom-container">
+											<LrSvgIcon
+												icon="zoom-in.svg"
+												hoverIcon="zoom-in-hover.svg"
+												@click="$emit('zoom', item)"
+											/>
+										</div>
+									</div>
+								</template>
+								<template v-else>{{ item[col.value] }}</template>
+							</template>
+							<template v-else>{{ item[col.value] }}</template>
+						</td>
+					</tr>
+				</tbody>
+			</template>
 
-      <template v-slot:footer="{}" v-if="records.length > 0">
-        <v-row justify="end" align="center" class="pr-3 py-4" v-if="isPagination">
-          <v-col class="text-right pa-0 pr-4 flex-grow-0">
-            <v-pagination
-              v-model="page"
-              :length="paginationConfig.pageLength"
-              :total-visible="paginationConfig.totalVisible"
-              :color="paginationConfig.color"
-              :next-icon="paginationConfig.nextIcon"
-              :prev-icon="paginationConfig.prevIcon"
-              @input="handlePageInput"
-            ></v-pagination>
-          </v-col>
-          <div class="pt-1 pag-dropdown">
-            <v-select
-              :items="paginationConfig.pageSizeList"
-              v-model="tableDataConfig.pagination.pageSize"
-              outlined
-              dense
-              height="10px"
-              color="csmprimary"
-              @change="updatePageSize"
-            ></v-select>
-          </div>
-        </v-row>
-      </template>
-    </v-data-table>
-  </div>
+			<template v-slot:footer="{}" v-if="records.length > 0">
+				<v-row
+					justify="end"
+					align="center"
+					class="pr-3 py-4"
+					v-if="isPagination"
+				>
+					<v-col class="text-right pa-0 pr-4 flex-grow-0">
+						<v-pagination
+							v-model="page"
+							:length="paginationConfig.pageLength"
+							:total-visible="paginationConfig.totalVisible"
+							:color="paginationConfig.color"
+							:next-icon="paginationConfig.nextIcon"
+							:prev-icon="paginationConfig.prevIcon"
+							@input="handlePageInput"
+						></v-pagination>
+					</v-col>
+					<div class="pt-1 pag-dropdown">
+						<v-select
+							:items="paginationConfig.pageSizeList"
+							v-model="tableDataConfig.pagination.pageSize"
+							outlined
+							dense
+							height="10px"
+							color="csmprimary"
+							@change="updatePageSize"
+						></v-select>
+					</div>
+				</v-row>
+			</template>
+		</v-data-table>
+	</div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
@@ -268,7 +320,7 @@ export default class LrDataTable extends Vue {
 		return this.tableDataConfig.sort ? this.tableDataConfig.sort.dir : false;
 	}
 	/**
-	 * To update the action buttons, custom buttons 
+	 * To update the action buttons, custom buttons
 	 */
 	updateActionItems() {
 		const allActions = lrDataTableConst.buttonList;

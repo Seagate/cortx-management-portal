@@ -17,11 +17,11 @@
 export const lrS3AccountConst = {
     s3AccountTable: {
         isMultiSelect: false,
-        itemKey: "accessKey",
+        itemKey: "access_key_id",
         headers: [
             { text: "Access Key", value: "access_key_id", sortable: false },
             { text: "Last update", value: "updated_time", type: "date", sortable: false },
-            { text: "status", value: "status",sortable: false },
+            { text: "Status", value: "status", sortable: false, type: "custom" },
             {
                 text: "",
                 value: "action",
@@ -32,10 +32,10 @@ export const lrS3AccountConst = {
                 actionList: ["delete"]
             }
         ],
-        headerButton:{
-            name:"generate",
-            label:"Add/Generate",
-            disabled :false
+        headerButton: {
+            name: "generate",
+            label: "Add/Generate",
+            disabled: false
         }
     }
 }

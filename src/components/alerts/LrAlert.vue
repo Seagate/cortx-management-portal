@@ -30,10 +30,10 @@
       @acknowledge="multiAcknowledge($event)"
       @update-record="updateRecord($event)"
     >
-      <template v-slot:severity="item">
-        <v-avatar :color="getColor(item)" size="24"></v-avatar>
+      <template v-slot:severity="{data}">
+        <v-avatar :color="getColor(data)" size="24"></v-avatar>
       </template>
-      <template v-slot:description="item">{{item.value}}</template>
+      <template v-slot:description="{data}">{{data.description}}</template>
     </LrDataTable>
     <LrAlertDialog
       v-if="selectedRecord"
@@ -92,7 +92,7 @@ export default class LrAlert extends Vue {
 		}
 	}
 	getColor(item: any) {
-		return this.alertConst.severityList[item.value];
+		return this.alertConst.severityList[item.severity];
 	}
 
 	updateRecord(tableDataConfig: LrDataTableFilterSortPag) {

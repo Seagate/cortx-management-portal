@@ -218,22 +218,15 @@
       {
         "user_name": "tests3",
         "access_key_id": "AKIAxBkOgNJbTNXgHs2e5WHDtg",
-        "status": "Active",
+        "status": "active",
         "updated_time": 1643300266
-      },
-      {
-        "user_name": "tests3",
-        "access_key_id": "AKIA6zRZMjdlTwG_gEbTuQ52lA",
-        "status": "Active",
-        "updated_time": 1638276462
       }
     ]
   },
   "s3/generate_access_keys": {
     "access_key_id": "AKIAxBkOgNJbTNXgHs2e5WHDtg",
     "secret_key": "3afj0RjLGIE9dIYV+EZCsWuELn0SWjZcL",
-    "status": "Active",
-    "updated_time": 1638276462,
-    "note": "This deployment is not configured with Virtual IP. Please check documentation to get IP Address of public data interface."
+    "status": "active",
+    "user_name": "tests3"
   }
 }
