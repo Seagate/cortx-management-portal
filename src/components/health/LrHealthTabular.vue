@@ -74,11 +74,10 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import ClusterManagementMixin from "../../mixins/cluster-management";
 import { Api } from "../../services/Api";
 import { IResource, lrHealthConst } from "./HealthTabularView.constant";
-import CortxDataTable from "../widgets/cortx-data-table.vue";
 import LrDataTable from "../shared/LrDataTable/LrDataTable.vue";
 import SgtPromptDialog from "../shared/SgtPromptDialog.vue";
 import SgtInfoDialog from "../shared/SgtInfoDialog.vue";
