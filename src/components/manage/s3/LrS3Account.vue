@@ -49,7 +49,7 @@
           value="active"
           color="csmprimary"
           inset
-          @change="updateAccessKeyStatus(data.index)"
+          @change="updateAccessKeyStatus(data.rowIdx)"
         ></v-switch>
       </template>
     </LrDataTable>

@@ -168,8 +168,8 @@
                 <template v-else-if="col.type == 'custom'">
                   <slot
                     v-bind:data="{
-                      index: rowIndex,
-                      [col.value]: item[col.value],
+                      ...item,
+											rowIdx: rowIndex
                     }"
                     :name="col.value"
                     >{{ item[col.value] }}</slot
@@ -187,6 +187,7 @@
                           <LrSvgIcon
                             :icon="action.path"
                             :hoverIcon="action.hoverPath"
+														:refPath ="action.refPath"
                             @click="$emit(action.name, item)"
                           />
                         </span>
