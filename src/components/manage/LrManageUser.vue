@@ -23,7 +23,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import SgtTabs, { TabsInfo } from "../shared/SgtTabs.vue";
-import LrAdminUser from "./LrAdminUser.vue";
+import LrAdminUser from "./admin-user/LrAdminUser.vue";
 import LrS3User from "./LrS3User.vue";
 
 @Component({

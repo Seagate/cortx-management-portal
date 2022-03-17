@@ -37,8 +37,8 @@
   "/dashboard/background-activities": {
     "tasks": 5
   },
-  "alerts/list" : {
-    "list":[
+  "alerts/list": {
+    "list": [
       {
         "alert_uuid": "1638276506e3b3954d1c03463b8ca4ecaa84a6b92f",
         "module_name": "node:os:memory_usage",
@@ -202,7 +202,31 @@
       }
     ]
   },
-  "alerts/comment":{
-    "comments":[]
+  "alerts/comment": {
+    "comments": []
+  },
+  "manage/admin-users": {
+    "data": [
+      {
+        "username": "admin1",
+        "role": "admin",
+        "email": "admin1@seagate.com"
+      },
+      {
+        "username": "admin2",
+        "role": "admin",
+        "email": "admin2@seagate.com"
+      },
+      {
+        "username": "monitor1",
+        "role": "monitor",
+        "email": "monitor1@seagate.com"
+      },
+      {
+        "username": "manage1",
+        "role": "manage",
+        "email": "manage1@seagate.com"
+      }
+    ]
   }
 }
