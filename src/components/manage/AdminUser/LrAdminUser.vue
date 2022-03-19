@@ -43,8 +43,10 @@
       :headers="adminUserTableConfig.adminUsersTable.headers"
       :records="adminUsersData"
       :searchConfig="adminUserTableConfig.searchConfig"
+      :headerButton="{ name: 'addNewUser', label: 'Add new user' }"
       @edit="editUser"
       @delete="deleteUser"
+      @addNewUser="addUser"
     />
   </div>
 </template>
@@ -73,12 +75,19 @@ export default class LrAdminUser extends Vue {
     this.adminUsersData = res.data;
   }
 
+  public addUser() {
+    //Open the edit user window and make the API call
+    console.log("add user");
+  }
+
   public editUser(userInfo: IUserDetail) {
     //Open the edit user window and make the API call
+    console.log("edit user");
   }
 
   public deleteUser(userInfo: IUserDetail) {
     //Make an API call to delete the user from the table
+    console.log("delete user");
   }
 }
 </script>
