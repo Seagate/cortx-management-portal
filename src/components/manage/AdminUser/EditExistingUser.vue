@@ -24,7 +24,7 @@
   >
     <v-card>
       <v-card-title class="title-section">
-        <span>Add New User</span>
+        <span>Edit user account</span>
         <span class="close-btn" @click="$emit('close-popup')">&times;</span>
       </v-card-title>
       <v-divider />
@@ -32,15 +32,10 @@
         <v-container>
           <v-row>
             <v-col cols="12" sm="6">
-              <div
-                class="cortx-form-group-custom"
-                :class="{
-                  'cortx-form-group--error': $v.userDetails.username.$error,
-                }"
-              >
+              <div class="cortx-form-group-custom">
                 <label
                   class="cortx-form-group-label"
-                  for="Username"
+                  for="username"
                   id="lblusername"
                 >
                   Username*
@@ -55,30 +50,11 @@
                 <input
                   class="cortx-form__input_text"
                   type="text"
-                  name="txtCreateUsername"
+                  name="txt-username"
                   v-model.trim="userDetails.username"
-                  id="txtUsername"
-                  @input="$v.userDetails.username.$touch"
+                  id="username"
+                  disabled
                 />
-
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
-                  <label
-                    id="localusername-required"
-                    v-if="
-                      $v.userDetails.username.$dirty &&
-                      !$v.userDetails.username.required
-                    "
-                    >Username is required.</label
-                  >
-                  <label
-                    id="localuser-invalid"
-                    v-else-if="
-                      $v.userDetails.username.$dirty &&
-                      !$v.userDetails.username.accountNameRegex
-                    "
-                    >Invalid username.</label
-                  >
-                </div>
               </div>
             </v-col>
 
@@ -130,7 +106,8 @@
               <div
                 class="cortx-form-group-custom"
                 :class="{
-                  'cortx-form-group--error': $v.userDetails.password.$error,
+                  'cortx-form-group--error':
+                    $v.userDetails.currentPassword.$error,
                 }"
               >
                 <label
@@ -151,24 +128,24 @@
                   class="cortx-form__input_text"
                   type="password"
                   name="txtCreatePassword"
-                  v-model.trim="userDetails.password"
-                  @input="$v.userDetails.password.$touch"
+                  v-model.trim="userDetails.currentPassword"
+                  @input="$v.userDetails.currentPassword.$touch"
                   id="txtLocalPass"
                 />
                 <div class="cortx-form-group-label cortx-form-group-error-msg">
                   <label
                     id="localuser-password-required"
                     v-if="
-                      $v.userDetails.password.$dirty &&
-                      !$v.userDetails.password.required
+                      $v.userDetails.currentPassword.$dirty &&
+                      !$v.userDetails.currentPassword.required
                     "
-                    >Password is required</label
+                    >Current password is required</label
                   >
                   <label
                     id="localuser-password-invalid"
                     v-else-if="
-                      $v.userDetails.password.$dirty &&
-                      !$v.userDetails.password.passwordRegex
+                      $v.userDetails.currentPassword.$dirty &&
+                      !$v.userDetails.currentPassword.passwordRegex
                     "
                     >Invalid password.</label
                   >
@@ -176,6 +153,42 @@
               </div>
             </v-col>
 
+            <v-col cols="12" sm="6">
+              <div
+                class="cortx-form-group-custom"
+                :class="{
+                  'cortx-form-group--error': $v.userDetails.password.$error,
+                }"
+              >
+                <label
+                  class="cortx-form-group-label"
+                  for="password"
+                  id="localuser-confirmpasslbl"
+                  >New Password*</label
+                >
+                <input
+                  class="cortx-form__input_text"
+                  type="password"
+                  name="txtCreateConfirmPassword"
+                  v-model="userDetails.password"
+                  id="txtLocalConfirmPass"
+                  @input="$v.userDetails.password.$touch"
+                />
+                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                  <label
+                    id="localuser-confirmpassword-notmatch"
+                    v-if="
+                      $v.userDetails.password.$dirty &&
+                      !$v.userDetails.password.passwordRegex
+                    "
+                    >Invalid new password.</label
+                  >
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+
+          <v-row>
             <v-col cols="12" sm="6">
               <div
                 class="cortx-form-group-custom"
@@ -211,7 +224,11 @@
               </div>
             </v-col>
           </v-row>
-
+        </v-container>
+      </v-card-text>
+      <v-divider />
+      <v-card-actions>
+        <v-container>
           <v-row>
             <v-col cols="12">
               <label class="mr-3">Roles</label>
@@ -253,19 +270,15 @@
               </label>
             </v-col>
           </v-row>
-        </v-container>
-      </v-card-text>
-      <v-divider />
-      <v-card-actions>
-        <v-container>
+
           <v-row>
             <v-col cols="12" class="btn-container">
               <button
                 v-if="value"
                 type="button"
                 class="cortx-btn-primary"
-                @click="createUser()"
-                id="btnLocalCreateUser"
+                @click="editUser()"
+                id="btnLocalEditUser"
                 :disabled="$v.userDetails.$invalid || !userDetails.role"
               >
                 Create
@@ -274,7 +287,7 @@
                 v-if="value"
                 type="button"
                 class="cortx-btn-secondary"
-                @click="onAddNewUser()"
+                @click="cancelOperation()"
                 id="lblLocalCancel"
               >
                 Cancel
@@ -288,7 +301,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import SgtIButton from "../../shared/SgtIButton.vue";
 import { Validations } from "vuelidate-property-decorators";
 import {
@@ -301,27 +314,49 @@ import {
 import { accountNameRegex, passwordRegex } from "../../../utils/RegexHelpers";
 
 @Component({
-  name: "AddNewUser",
+  name: "EditExistingUser",
   components: {
     SgtIButton,
   },
 })
-export default class AddNewUser extends Vue {
+export default class EditExistingUser extends Vue {
   @Prop({ required: true }) value: boolean;
+  @Prop({ required: true }) userData: {
+    username: string;
+    role: "admin" | "manage" | "monitor";
+    email: string;
+  };
 
   public userDetails = {
     username: "",
+    role: "",
+    email: "",
+    currentPassword: "",
     password: "",
     confirmPassword: "",
-    email: "",
-    role: "",
   };
+
+  @Watch("userData")
+  public userDataChangeHandler() {
+    this.userDetails.username = this.userData.username;
+    this.userDetails.email = this.userData.email;
+    this.userDetails.role = this.userData.role;
+  }
 
   @Validations()
   public validations = {
     userDetails: {
-      username: { required, accountNameRegex },
-      password: { required, passwordRegex },
+      password: { passwordRegex },
+      currentPassword: {
+        required: requiredIf(function (this: any, form: any) {
+          // return this.strEqualityCaseInsensitive(
+          //   this.$data.selectedItem.username,
+          //   this.$data.loggedInUserName
+          // );
+          return true;
+        }),
+        passwordRegex,
+      },
       confirmPassword: {
         sameAsPassword: sameAs("password"),
       },
@@ -329,8 +364,17 @@ export default class AddNewUser extends Vue {
     },
   };
 
-  private onAddNewUser() {
-    //API call to add new user
+  private strEqualityCaseInsensitive(first: string, second: string) {
+    return (
+      first.localeCompare(second, undefined, { sensitivity: "base" }) === 0
+    );
+  }
+
+  private editUser() {
+    //API call to update the existing user. Data is available in this.userDetails.
+  }
+
+  private cancelOperation() {
     this.$emit("close-popup");
   }
 

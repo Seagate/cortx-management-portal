@@ -49,6 +49,11 @@
       @addNewUser="isUserCreate = true"
     />
     <AddNewUser v-model="isUserCreate" @close-popup="isUserCreate = false" />
+    <EditExistingUser
+      v-model="isUserEdit"
+      @close-popup="isUserEdit = false"
+      :userData="dataToEdit"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -58,6 +63,7 @@ import { adminUserTableConst, IUserDetail } from "./AdminUserDetails.constant";
 import { Api } from "../../../services/Api";
 import LrDataTable from "../../shared/LrDataTable/LrDataTable.vue";
 import AddNewUser from "./AddNewUser.vue";
+import EditExistingUser from "./EditExistingUser.vue";
 
 @Component({
   name: "LrAdminUser",
@@ -65,12 +71,15 @@ import AddNewUser from "./AddNewUser.vue";
     SgtIButton,
     LrDataTable,
     AddNewUser,
+    EditExistingUser,
   },
 })
 export default class LrAdminUser extends Vue {
   public adminUserTableConfig = adminUserTableConst;
   public adminUsersData = [];
   public isUserCreate = false;
+  public isUserEdit = false;
+  public dataToEdit = {};
 
   public async mounted() {
     const res: any = await Api.getData("manage/admin-users", {
@@ -80,8 +89,8 @@ export default class LrAdminUser extends Vue {
   }
 
   public editUser(userInfo: IUserDetail) {
-    //Open the edit user window and make the API call
-    console.log("edit user");
+    this.dataToEdit = userInfo;
+    this.isUserEdit = true;
   }
 
   public deleteUser(userInfo: IUserDetail) {
