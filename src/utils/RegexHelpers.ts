@@ -10,26 +10,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see https://www.gnu.org/licenses/.
  * For any questions about this software or licensing,
  * please email opensource@seagate.com.
  */
-import Vue from "vue";
-import App from "./App.vue";
-import "./registerServiceWorker";
-import router from "./router";
-import store from "./store";
-import vuetify from "./plugins/vuetify";
-import i18n from "./i18n";
-import Vuelidate from "vuelidate";
 
-Vue.config.productionTip = false;
-Vue.use(Vuelidate);
+import { helpers } from "vuelidate/lib/validators";
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  i18n,
-  render: (h) => h(App),
-}).$mount("#app");
+export const accountNameRegex = helpers.regex(
+  "accountNameRegex",
+  /^[a-zA-Z0-9_-]{4,56}$/
+);
+
+export const passwordRegex = helpers.regex(
+  "passwordRegex",
+  // tslint:disable-next-line
+  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
+);

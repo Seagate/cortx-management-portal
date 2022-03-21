@@ -16,8 +16,8 @@
 -->
 <template>
   <ClickOutsideHOC @clicked-outside="showInfo = false">
-    <div class="i-button-container">
-      <div class="i-button-icon" @click="showInfo = !showInfo">
+    <span class="i-button-container">
+      <span class="i-button-icon" @click="showInfo = !showInfo">
         <svg
           width="13"
           height="12"
@@ -32,13 +32,13 @@
             fill="#6EBE49"
           />
         </svg>
-      </div>
+      </span>
 
       <div class="i-info-container" v-if="showInfo">
         <slot></slot>
         <div class="upward-pointer"></div>
       </div>
-    </div>
+    </span>
   </ClickOutsideHOC>
 </template>
 
