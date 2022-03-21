@@ -53,7 +53,7 @@
           <br />
           Status: {{ resourceInfo.status.toUpperCase() }}
           <br />
-          Time: {{ (resourceInfo.last_updated_time * 1000) | timeago }}
+          Time: {{ formattedTime(resourceInfo.last_updated_time * 1000) }}
           <br />
         </v-card-text>
 
@@ -75,12 +75,13 @@
 </template>
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import ClusterManagementMixin from "../../mixins/cluster-management";
+import ClusterManagementMixin from "../../mixins/ClusterManagement";
 import { Api } from "../../services/Api";
 import { IResource, lrHealthConst } from "./HealthTabularView.constant";
 import LrDataTable from "../shared/LrDataTable/LrDataTable.vue";
 import SgtPromptDialog from "../shared/SgtPromptDialog.vue";
 import SgtInfoDialog from "../shared/SgtInfoDialog.vue";
+import { formatTime } from "../../utils/CommonUtilFunctions";
 
 @Component({
   name: "LrHealthTabular",
@@ -99,6 +100,9 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
     resource: "",
     status: "",
   };
+  public formattedTime(date: string) {
+    return formatTime(date);
+  }
   public mounted() {
     this.getHealthData();
   }

@@ -25,10 +25,6 @@ import * as moment from "moment";
 
 Vue.config.productionTip = false;
 
-Vue.filter("timeago", (date: string) => {
-  return moment.default(date).format("DD-MM-YYYY hh:mm A");
-});
-
 new Vue({
   router,
   store,

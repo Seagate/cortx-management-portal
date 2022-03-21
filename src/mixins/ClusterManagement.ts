@@ -25,14 +25,14 @@ export default class ClusterManagementMixin extends Vue {
     requestObj: {},
   };
 
-  public isShowInfoDialog: boolean = false;
-  public infoDialogType: string = "";
-  public infoDialogTitle: string = "";
-  public infoDialogMessage: string = "";
+  public isShowInfoDialog = false;
+  public infoDialogType = "";
+  public infoDialogTitle = "";
+  public infoDialogMessage = "";
 
-  public isShowPromptDialog: boolean = false;
-  public promptDialogTitle: string = "";
-  public promptDialogMessage: string = "";
+  public isShowPromptDialog = false;
+  public promptDialogTitle = "";
+  public promptDialogMessage = "";
 
   public async getHealthData(isTreeFormat: boolean) {
     let healthData;

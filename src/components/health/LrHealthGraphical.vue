@@ -17,17 +17,19 @@
 <template>
   <div class="graphical-view-container">
     <div class="export-feature">
-      <SgtDropdown
-        :options="exportOptions"
-        title="EXPORT AS"
-        @update:selectedOption="handleExportDropdown"
-        :selectedOption="selectedExport"
-      />
+      <v-select
+        :items="exportOptions"
+        label="EXPORT AS"
+        append-icon="$caret-down"
+        outlined
+        color="csmprimary"
+        v-model="selectedExport"
+      ></v-select>
       <v-btn
         color="csmprimary"
-        class="white--text"
+        class="white--text mt-3"
         @click="handleExport"
-        :disabled="!selectedExport.value"
+        :disabled="!selectedExport"
       >
         Export
       </v-btn>
@@ -51,11 +53,9 @@
 </template>
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
-import ClusterManagementMixin from "../../mixins/cluster-management";
+import ClusterManagementMixin from "../../mixins/ClusterManagement";
 import * as d3 from "d3";
 import HealthCardBuilder from "./LrHealthCardBuilder";
-import SgtDropdown from "../shared/SgtDropdown/SgtDropdown.vue";
-import { SgtDropdownOption } from "../shared/SgtDropdown/SgtDropdown.model";
 import {
   downloadSVGAsText,
   downloadSVGAsPNG,
@@ -68,7 +68,6 @@ import SgtPromptDialog from "../shared/SgtPromptDialog.vue";
 @Component({
   name: "LrHealthGraphical",
   components: {
-    SgtDropdown,
     SgtInfoDialog,
     SgtPromptDialog,
   },
@@ -95,29 +94,8 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
   public resource_health: any;
   public outerG: any;
 
-  public exportOptions: SgtDropdownOption[] = [
-    {
-      label: "PDF",
-      value: "PDF",
-    },
-    {
-      label: "PNG",
-      value: "PNG",
-    },
-    {
-      label: "JPEG",
-      value: "JPEG",
-    },
-    {
-      label: "SVG",
-      value: "SVG",
-    },
-  ];
-  public selectedExport: SgtDropdownOption = {} as SgtDropdownOption;
-
-  public handleExportDropdown(selected: SgtDropdownOption) {
-    this.selectedExport = selected;
-  }
+  public exportOptions = ["PDF", "PNG", "JPEG", "SVG"];
+  public selectedExport = "";
 
   public async mounted() {
     this.calculateDimensions();
@@ -327,7 +305,7 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
   }
 
   public handleExport() {
-    switch (this.selectedExport.value) {
+    switch (this.selectedExport) {
       case "SVG":
         downloadSVGAsText(".health-tree");
         break;
@@ -356,8 +334,8 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
 
   .export-feature {
     display: flex;
-    align-items: center;
     gap: 1em;
+    max-width: 400px;
   }
 }
 .g_popup:focus {
