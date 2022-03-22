@@ -29,11 +29,11 @@
           <div>Email: {{ s3AccountDetails.account_email }}</div>
         </v-col>
         <v-col cols="1" style="margin-right: 1rem">
-          <LrSvgIcon icon="edit-green.svg" @click="editDetails" />
+          <SgtSvgIcon icon="edit-green.svg" @click="editDetails" />
         </v-col>
       </v-row>
     </v-card>
-    <LrDataTable
+    <SgtDataTable
       ref="lrS3AccountDataTable"
       :headers="s3AccountConst.s3AccountTable.headers"
       :records="accessList"
@@ -52,13 +52,13 @@
           @change="updateAccessKeyStatus(data.rowIdx)"
         ></v-switch>
       </template>
-    </LrDataTable>
+    </SgtDataTable>
     <v-dialog v-model="passwordDialog" max-width="600px" persistent>
       <v-card>
         <v-card-title>
           <div class="title-container">
             Reset Password
-            <LrSvgIcon
+            <SgtSvgIcon
               icon="close-green.svg"
               @click="passwordDialog = false"
               class="close-btn"
@@ -109,7 +109,7 @@
       <v-card>
         <v-card-title>
           <div class="title-container">
-            <LrSvgIcon icon="green-tick.svg" class="title-icon" />
+            <SgtSvgIcon icon="green-tick.svg" class="title-icon" />
             <div class="title-content">Access key created</div>
           </div>
         </v-card-title>
@@ -162,14 +162,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import LrDataTable from "../../shared/LrDataTable/LrDataTable.vue";
+import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
 import { lrS3AccountConst } from "./LrS3.constant";
 import { Api } from "@/services/Api";
-import LrSvgIcon from "@/components/shared/LrSvgIcon/LrSvgIcon.vue";
-import { passwordTest } from "@/utils/CommonUtilFunctions";
+import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
+import { passwordTest } from "@/lib/services/CommonUtilFunctions";
 @Component({
   name: "LrS3Account",
-  components: { LrDataTable, LrSvgIcon },
+  components: { SgtDataTable, SgtSvgIcon },
 })
 export default class LrS3Account extends Vue {
   s3AccountConst: any = JSON.parse(JSON.stringify(lrS3AccountConst));
