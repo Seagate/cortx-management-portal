@@ -48,8 +48,9 @@
       @delete="deleteUser"
       @addNewUser="isUserCreate = true"
     />
-    <AddNewUser v-model="isUserCreate" @close-popup="isUserCreate = false" />
-    <EditExistingUser
+    <AddOrEditUser v-model="isUserCreate" @close-popup="isUserCreate = false" />
+    <AddOrEditUser
+      :isEdit="true"
       v-model="isUserEdit"
       @close-popup="isUserEdit = false"
       :userData="dataToEdit"
@@ -68,8 +69,7 @@ import SgtIButton from "../../shared/SgtIButton.vue";
 import { adminUserTableConst, IUserDetail } from "./AdminUserDetails.constant";
 import { Api } from "../../../services/Api";
 import LrDataTable from "../../shared/LrDataTable/LrDataTable.vue";
-import AddNewUser from "./AddNewUser.vue";
-import EditExistingUser from "./EditExistingUser.vue";
+import AddOrEditUser from "./AddOrEditUser.vue";
 import SgtPromptDialog from "../../shared/SgtPromptDialog.vue";
 
 @Component({
@@ -77,9 +77,8 @@ import SgtPromptDialog from "../../shared/SgtPromptDialog.vue";
   components: {
     SgtIButton,
     LrDataTable,
-    AddNewUser,
-    EditExistingUser,
     SgtPromptDialog,
+    AddOrEditUser,
   },
 })
 export default class LrAdminUser extends Vue {

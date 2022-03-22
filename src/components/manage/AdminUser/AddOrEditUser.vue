@@ -24,7 +24,7 @@
   >
     <v-card>
       <v-card-title class="title-section">
-        <span>Add New User</span>
+        <span>{{ formLabelItems.formTitle }}</span>
         <span class="close-btn" @click="$emit('close-popup')">&times;</span>
       </v-card-title>
       <v-divider />
@@ -32,15 +32,10 @@
         <v-container>
           <v-row>
             <v-col cols="12" sm="6">
-              <div
-                class="sgt-form-group-custom"
-                :class="{
-                  'sgt-form-group--error': $v.userDetails.username.$error,
-                }"
-              >
+              <div class="sgt-form-group-custom">
                 <label
                   class="sgt-form-group-label"
-                  for="Username"
+                  for="username"
                   id="lblusername"
                 >
                   Username*
@@ -59,8 +54,8 @@
                   v-model.trim="userDetails.username"
                   id="txtUsername"
                   @input="$v.userDetails.username.$touch"
+                  :disabled="isEdit"
                 />
-
                 <div class="sgt-form-group-label sgt-form-group-error-msg">
                   <label
                     id="localusername-required"
@@ -125,12 +120,13 @@
             </v-col>
           </v-row>
 
-          <v-row>
+          <v-row v-if="isEdit">
             <v-col cols="12" sm="6">
               <div
                 class="sgt-form-group-custom"
                 :class="{
-                  'sgt-form-group--error': $v.userDetails.password.$error,
+                  'sgt-form-group--error':
+                    $v.userDetails.currentPassword.$error,
                 }"
               >
                 <label
@@ -138,7 +134,7 @@
                   for="password"
                   id="localuser-passwordlbl"
                 >
-                  Password*
+                  Current Password*
                   <SgtIButton>
                     <span
                       >Password must contain: Minimum 8 characters, One
@@ -151,26 +147,62 @@
                   class="sgt-form__input_text"
                   type="password"
                   name="txtCreatePassword"
-                  v-model.trim="userDetails.password"
-                  @input="$v.userDetails.password.$touch"
+                  v-model.trim="userDetails.currentPassword"
+                  @input="$v.userDetails.currentPassword.$touch"
                   id="txtLocalPass"
                 />
                 <div class="sgt-form-group-label sgt-form-group-error-msg">
                   <label
                     id="localuser-password-required"
                     v-if="
-                      $v.userDetails.password.$dirty &&
-                      !$v.userDetails.password.required
+                      $v.userDetails.currentPassword.$dirty &&
+                      !$v.userDetails.currentPassword.required
                     "
-                    >Password is required</label
+                    >Current password is required</label
                   >
                   <label
                     id="localuser-password-invalid"
                     v-else-if="
+                      $v.userDetails.currentPassword.$dirty &&
+                      !$v.userDetails.currentPassword.passwordRegex
+                    "
+                    >Invalid password.</label
+                  >
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="12" sm="6">
+              <div
+                class="sgt-form-group-custom"
+                :class="{
+                  'sgt-form-group--error': $v.userDetails.password.$error,
+                }"
+              >
+                <label
+                  class="sgt-form-group-label"
+                  for="password"
+                  id="localuser-confirmpasslbl"
+                  >{{ formLabelItems.passwordLabel }}*</label
+                >
+                <input
+                  class="sgt-form__input_text"
+                  type="password"
+                  name="txtCreateConfirmPassword"
+                  v-model="userDetails.password"
+                  id="txtLocalConfirmPass"
+                  @input="$v.userDetails.password.$touch"
+                />
+                <div class="sgt-form-group-label sgt-form-group-error-msg">
+                  <label
+                    id="localuser-confirmpassword-notmatch"
+                    v-if="
                       $v.userDetails.password.$dirty &&
                       !$v.userDetails.password.passwordRegex
                     "
-                    >Invalid password.</label
+                    >{{ formLabelItems.passwordLabel }}.</label
                   >
                 </div>
               </div>
@@ -264,8 +296,8 @@
                 v-if="value"
                 type="button"
                 class="sgt-btn-one sgt-btn-one-success"
-                @click="createUser()"
-                id="btnLocalCreateUser"
+                @click="proceedOperation()"
+                id="btnLocalEditUser"
                 :disabled="$v.userDetails.$invalid || !userDetails.role"
               >
                 Create
@@ -274,7 +306,7 @@
                 v-if="value"
                 type="button"
                 class="sgt-btn-two"
-                @click="onAddNewUser()"
+                @click="cancelOperation()"
                 id="lblLocalCancel"
               >
                 Cancel
@@ -288,7 +320,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import SgtIButton from "../../shared/SgtIButton.vue";
 import { Validations } from "vuelidate-property-decorators";
 import {
@@ -301,27 +333,66 @@ import {
 import { accountNameRegex, passwordRegex } from "../../../utils/RegexHelpers";
 
 @Component({
-  name: "AddNewUser",
+  name: "EditExistingUser",
   components: {
     SgtIButton,
   },
 })
-export default class AddNewUser extends Vue {
+export default class EditExistingUser extends Vue {
   @Prop({ required: true }) value: boolean;
+  @Prop({ required: false, default: false }) isEdit: boolean;
+  @Prop({ required: false }) userData: {
+    username: string;
+    role: "admin" | "manage" | "monitor";
+    email: string;
+  };
 
   public userDetails = {
     username: "",
+    role: "",
+    email: "",
+    currentPassword: "",
     password: "",
     confirmPassword: "",
-    email: "",
-    role: "",
   };
+
+  public formLabels = {
+    formTitle: "Add New User",
+    passwordLabel: "Password",
+  };
+
+  get formLabelItems() {
+    if (this.isEdit) {
+      return {
+        formTitle: "Edit user account",
+        passwordLabel: "New Password",
+      };
+    }
+    return this.formLabels;
+  }
+
+  @Watch("userData")
+  public userDataChangeHandler() {
+    this.userDetails.username = this.userData.username;
+    this.userDetails.email = this.userData.email;
+    this.userDetails.role = this.userData.role;
+  }
 
   @Validations()
   public validations = {
     userDetails: {
       username: { required, accountNameRegex },
-      password: { required, passwordRegex },
+      password: { passwordRegex },
+      currentPassword: {
+        required: requiredIf(function (this: any, form: any) {
+          // return this.strEqualityCaseInsensitive(
+          //   this.$data.selectedItem.username,
+          //   this.$data.loggedInUserName
+          // );
+          return true;
+        }),
+        passwordRegex,
+      },
       confirmPassword: {
         sameAsPassword: sameAs("password"),
       },
@@ -329,8 +400,23 @@ export default class AddNewUser extends Vue {
     },
   };
 
-  private onAddNewUser() {
-    //API call to add new user
+  private strEqualityCaseInsensitive(first: string, second: string) {
+    return (
+      first.localeCompare(second, undefined, { sensitivity: "base" }) === 0
+    );
+  }
+
+  private proceedOperation() {
+    // Data is available in this.userDetails.
+    if (this.isEdit) {
+      // API call to edit the existing record
+    } else {
+      // API call to add a new record
+    }
+    this.$emit("close-popup");
+  }
+
+  private cancelOperation() {
     this.$emit("close-popup");
   }
 
