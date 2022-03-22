@@ -24,11 +24,11 @@
 import { Component, Vue } from "vue-property-decorator";
 import SgtTabs, { TabsInfo } from "../shared/SgtTabs.vue";
 import LrAdminUser from "./AdminUser/LrAdminUser.vue";
-import LrS3User from "./LrS3User.vue";
+import LrS3Account from "./s3/LrS3Account.vue";
 
 @Component({
   name: "LrHeader",
-  components: { SgtTabs, LrAdminUser, LrS3User },
+  components: { SgtTabs, LrAdminUser, LrS3Account },
 })
 export default class LrHeader extends Vue {
   public tabsInfo: TabsInfo = [
@@ -48,7 +48,7 @@ export default class LrHeader extends Vue {
         this.activeTab = "LrAdminUser";
         break;
       case 2:
-        this.activeTab = "LrS3User";
+        this.activeTab = "LrS3Account";
         break;
     }
   }

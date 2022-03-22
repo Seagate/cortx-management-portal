@@ -29,10 +29,10 @@ export const lrDataTableConst = {
       tooltip: "edit",
     },
     {
-      name: "delete",
+      name: "remove",
       path: "close-green.svg",
       hoverPath: "close-hover.svg",
-      tooltip: "delete",
+      tooltip: "remove",
     },
     {
       name: "notification",
@@ -40,6 +40,12 @@ export const lrDataTableConst = {
       hoverPath: "alert-hover.svg",
       tooltip: "notification",
     },
+    {
+      name: "delete",
+      path: "delete-green.svg",
+      hoverPath: "delete-green.svg",
+      tooltip: "delete",
+    }
   ],
   defaultTableConfig: {
     pagination: {
