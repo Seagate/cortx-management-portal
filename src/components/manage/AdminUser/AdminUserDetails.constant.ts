@@ -24,6 +24,29 @@ export interface IUserDetail {
 export const adminUserTableConst = {
   searchConfig: {
     placeholder: "Search",
+    advanceForm: [
+      {
+        type: "textbox",
+        name: "username",
+        label: "Username",
+        placeholder: "Username",
+        value: "",
+      },
+      {
+        type: "textbox",
+        name: "role",
+        label: "Role",
+        placeholder: "Role",
+        value: "",
+      },
+      {
+        type: "textbox",
+        name: "email",
+        label: "Email",
+        placeholder: "Email",
+        value: "",
+      },
+    ],
   },
   adminUsersTable: {
     isMultiSelect: true,
