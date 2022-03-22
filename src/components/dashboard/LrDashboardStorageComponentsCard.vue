@@ -16,7 +16,7 @@
 -->
 <template>
   <div class="storage-components-widget-container">
-    <LrCard title="storageComponents">
+    <SgtCard title="storageComponents">
       <div class="storage-cards-container">
         <template v-for="(cardDetail, index) in dashboardCardDetails">
           <LrDashboardInfoCard
@@ -28,13 +28,13 @@
           />
         </template>
       </div>
-    </LrCard>
+    </SgtCard>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import LrDashboardInfoCard from "./LrDashboardInfoCard.vue";
-import LrCard from "../shared/LrCard.vue";
+import SgtCard from "@/SeagateShared/SgtCard/SgtCard.vue";
 import { Api } from "../../services/Api";
 import {
   StorageComponentsData,
@@ -44,7 +44,7 @@ import { dashboardCardData } from "./LrDashboardCardData.constant";
 
 @Component({
   name: "LrDashboardStorageComponentsCard",
-  components: { LrDashboardInfoCard, LrCard },
+  components: { LrDashboardInfoCard, SgtCard },
 })
 export default class LrDashboardStorageComponentsCard extends Vue {
   public dashboardCardDetails: DashboardCardDetail[] = [];

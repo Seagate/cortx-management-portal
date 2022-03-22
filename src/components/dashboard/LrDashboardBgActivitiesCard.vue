@@ -16,7 +16,7 @@
 -->
 <template>
   <div class="bg-activities-widget-container">
-    <LrCard
+    <SgtCard
       title="backgroundActivities"
       :showZoomIcon="true"
       @zoom-click="zoomIconHandler"
@@ -32,13 +32,13 @@
           />
         </template>
       </div>
-    </LrCard>
+    </SgtCard>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import LrDashboardInfoCard from "./LrDashboardInfoCard.vue";
-import LrCard from "../shared/LrCard.vue";
+import SgtCard from "@/SeagateShared/SgtCard/SgtCard.vue";
 import {
   DashboardCardDetail,
   BackgroundActivitiesData,
@@ -48,7 +48,7 @@ import { dashboardCardData } from "./LrDashboardCardData.constant";
 
 @Component({
   name: "LrDashboardBgActivitiesCard",
-  components: { LrDashboardInfoCard, LrCard },
+  components: { LrDashboardInfoCard, SgtCard },
 })
 export default class LrDashboardBgActivitiesCard extends Vue {
   public dashboardCardDetails: DashboardCardDetail[] = [];

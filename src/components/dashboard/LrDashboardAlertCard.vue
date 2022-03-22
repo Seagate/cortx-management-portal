@@ -16,7 +16,7 @@
 -->
 <template>
   <div class="alert-widget-container">
-    <LrCard title="alerts" :showZoomIcon="true" @zoom-click="zoomIconHandler">
+    <SgtCard title="alerts" :showZoomIcon="true" @zoom-click="zoomIconHandler">
       <div class="alert-cards-container">
         <template v-for="(cardDetail, index) in dashboardCardDetails">
           <LrDashboardInfoCard
@@ -28,20 +28,20 @@
           />
         </template>
       </div>
-    </LrCard>
+    </SgtCard>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import LrDashboardInfoCard from "./LrDashboardInfoCard.vue";
-import LrCard from "../shared/LrCard.vue";
+import SgtCard from "@/SeagateShared/SgtCard/SgtCard.vue";
 import { AlertData, DashboardCardDetail } from "./LrDashboardData.model";
 import { Api } from "../../services/Api";
 import { dashboardCardData } from "./LrDashboardCardData.constant";
 
 @Component({
   name: "LrDashboardAlertCard",
-  components: { LrDashboardInfoCard, LrCard },
+  components: { LrDashboardInfoCard, SgtCard },
 })
 export default class LrDashboardAlertCard extends Vue {
   public dashboardCardDetails: DashboardCardDetail[] = [];

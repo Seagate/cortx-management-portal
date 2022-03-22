@@ -16,7 +16,7 @@
 -->
 <template>
   <div id="capacityContainer">
-    <LrCard title="capacity">
+    <SgtCard title="capacity">
       <div class="capacity-info-wrapper">
         <div class="capacity-info">
           <div id="capacity-gauge"></div>
@@ -48,19 +48,19 @@
           </div>
         </div>
       </div>
-    </LrCard>
+    </SgtCard>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import * as c3 from "c3";
-import LrCard from "../shared/LrCard.vue";
+import SgtCard from "@/SeagateShared/SgtCard/SgtCard.vue";
 import { CapacityData } from "./LrDashboardData.model";
 import { Api } from "../../services/Api";
 
 @Component({
   name: "LrDashboardCapacityCard",
-  components: { LrCard },
+  components: { SgtCard },
 })
 export default class LrDashboardCapacityCard extends Vue {
   public usedLegendClass = "capacity-badge";

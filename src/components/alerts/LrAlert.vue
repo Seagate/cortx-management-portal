@@ -16,7 +16,7 @@
 -->
 <template>
   <div v-if="showDataTable">
-    <LrDataTable
+    <SgtDataTable
       ref="alertDataTable"
       :headers="alertConst.alertTable.headers"
       :records="alerts"
@@ -34,7 +34,7 @@
         <v-avatar :color="getColor(item)" size="24"></v-avatar>
       </template>
       <template v-slot:description="item">{{item.value}}</template>
-    </LrDataTable>
+    </SgtDataTable>
     <LrAlertDialog
       v-if="selectedRecord"
       :modalTitle="'Alert Details'"
@@ -50,20 +50,20 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch, PropSync } from "vue-property-decorator";
-import LrDataTable from "../shared/LrDataTable/LrDataTable.vue";
+import SgtDataTable from "@/SeagateShared/SgtDataTable/SgtDataTable.vue";
 import { lrAlertConst } from "./LrAlert.constant";
 import { Api } from "../../services/Api";
 import LrAlertDialog from "./LrAlertDialog.vue";
 import LrAlertComments from "./LrAlertComments.vue";
 import {
-	LrDataTableFilterSortPag,
+	SgtDataTableFilterSortPag,
 	PaginationModel,
-} from "../shared/LrDataTable/LrDataTableFilterSortPag.model";
-import { LrFilterObject } from "../shared/LrChips/LrFilterObject.model";
+} from "@/SeagateShared/SgtDataTable/SgtDataTableFilterSortPag.model";
+import { SgtFilterObject } from "@/SeagateShared/SgtChips/SgtFilterObject.model";
 
 @Component({
 	name: "LrAlert",
-	components: { LrDataTable, LrAlertDialog, LrAlertComments },
+	components: { SgtDataTable, LrAlertDialog, LrAlertComments },
 })
 export default class LrAlert extends Vue {
 	@Prop({ required: false, default: "" }) private severity: string;
@@ -71,7 +71,7 @@ export default class LrAlert extends Vue {
 	alertConst: any = JSON.parse(JSON.stringify(lrAlertConst));
 	alerts: any = [];
 	showDataTable = false;
-	chips: LrFilterObject[] = [];
+	chips: SgtFilterObject[] = [];
 	showAlertDetailsDialog = false;
 	selectedRecord: any = null;
 	showAlertCommentsDialog = false;
@@ -95,7 +95,7 @@ export default class LrAlert extends Vue {
 		return this.alertConst.severityList[item.value];
 	}
 
-	updateRecord(tableDataConfig: LrDataTableFilterSortPag) {
+	updateRecord(tableDataConfig: SgtDataTableFilterSortPag) {
 		// code for API call
 		this.chips = tableDataConfig.filterList;
 	}

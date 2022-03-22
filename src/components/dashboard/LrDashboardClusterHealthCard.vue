@@ -16,7 +16,7 @@
 -->
 <template>
   <div class="health-widget-container">
-    <LrCard
+    <SgtCard
       title="clusterHealth"
       :showZoomIcon="true"
       @zoom-click="zoomIconHandler"
@@ -41,13 +41,13 @@
           />
         </template>
       </div>
-    </LrCard>
+    </SgtCard>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import LrDashboardInfoCard from "./LrDashboardInfoCard.vue";
-import LrCard from "../shared/LrCard.vue";
+import SgtCard from "@/SeagateShared/SgtCard/SgtCard.vue";
 import {
   DashboardCardDetail,
   HealthData,
@@ -59,7 +59,7 @@ import { dashboardCardData } from "./LrDashboardCardData.constant";
 
 @Component({
   name: "LrDashboardClusterHealthCard",
-  components: { LrDashboardInfoCard, LrCard },
+  components: { LrDashboardInfoCard, SgtCard },
 })
 export default class LrDashboardClusterHealthCard extends Vue {
   public dashboardCardDetails: DashboardCardDetail[] = [];
