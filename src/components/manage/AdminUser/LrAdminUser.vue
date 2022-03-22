@@ -104,7 +104,6 @@ export default class LrAdminUser extends Vue {
   }
 
   private promptDialogClosed(confirmation: string) {
-    debugger;
     this.isShowPromptDialog = false;
     if (confirmation === "yes") {
       // API call to delete the record

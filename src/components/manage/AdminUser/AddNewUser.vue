@@ -33,13 +33,13 @@
           <v-row>
             <v-col cols="12" sm="6">
               <div
-                class="cortx-form-group-custom"
+                class="sgt-form-group-custom"
                 :class="{
-                  'cortx-form-group--error': $v.userDetails.username.$error,
+                  'sgt-form-group--error': $v.userDetails.username.$error,
                 }"
               >
                 <label
-                  class="cortx-form-group-label"
+                  class="sgt-form-group-label"
                   for="Username"
                   id="lblusername"
                 >
@@ -53,7 +53,7 @@
                   </SgtIButton>
                 </label>
                 <input
-                  class="cortx-form__input_text"
+                  class="sgt-form__input_text"
                   type="text"
                   name="txtCreateUsername"
                   v-model.trim="userDetails.username"
@@ -61,7 +61,7 @@
                   @input="$v.userDetails.username.$touch"
                 />
 
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                <div class="sgt-form-group-label sgt-form-group-error-msg">
                   <label
                     id="localusername-required"
                     v-if="
@@ -84,19 +84,19 @@
 
             <v-col cols="12" sm="6">
               <div
-                class="cortx-form-group-custom"
+                class="sgt-form-group-custom"
                 :class="{
-                  'cortx-form-group--error': $v.userDetails.email.$error,
+                  'sgt-form-group--error': $v.userDetails.email.$error,
                 }"
               >
                 <label
-                  class="cortx-form-group-label"
+                  class="sgt-form-group-label"
                   for="Email"
                   id="localuseremaillbl"
                   >Email</label
                 >
                 <input
-                  class="cortx-form__input_text"
+                  class="sgt-form__input_text"
                   type="email"
                   name="email"
                   v-model.trim="userDetails.email"
@@ -104,7 +104,7 @@
                   @input="$v.userDetails.email.$touch"
                   placeholder="example@email.com"
                 />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                <div class="sgt-form-group-label sgt-form-group-error-msg">
                   <label
                     id="localuser-email-required"
                     v-if="
@@ -128,13 +128,13 @@
           <v-row>
             <v-col cols="12" sm="6">
               <div
-                class="cortx-form-group-custom"
+                class="sgt-form-group-custom"
                 :class="{
-                  'cortx-form-group--error': $v.userDetails.password.$error,
+                  'sgt-form-group--error': $v.userDetails.password.$error,
                 }"
               >
                 <label
-                  class="cortx-form-group-label"
+                  class="sgt-form-group-label"
                   for="password"
                   id="localuser-passwordlbl"
                 >
@@ -148,14 +148,14 @@
                   </SgtIButton>
                 </label>
                 <input
-                  class="cortx-form__input_text"
+                  class="sgt-form__input_text"
                   type="password"
                   name="txtCreatePassword"
                   v-model.trim="userDetails.password"
                   @input="$v.userDetails.password.$touch"
                   id="txtLocalPass"
                 />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                <div class="sgt-form-group-label sgt-form-group-error-msg">
                   <label
                     id="localuser-password-required"
                     v-if="
@@ -178,27 +178,27 @@
 
             <v-col cols="12" sm="6">
               <div
-                class="cortx-form-group-custom"
+                class="sgt-form-group-custom"
                 :class="{
-                  'cortx-form-group--error':
+                  'sgt-form-group--error':
                     $v.userDetails.confirmPassword.$error,
                 }"
               >
                 <label
-                  class="cortx-form-group-label"
+                  class="sgt-form-group-label"
                   for="password"
                   id="localuser-confirmpasslbl"
                   >Confirm Password*</label
                 >
                 <input
-                  class="cortx-form__input_text"
+                  class="sgt-form__input_text"
                   type="password"
                   name="txtCreateConfirmPassword"
                   v-model="userDetails.confirmPassword"
                   id="txtLocalConfirmPass"
                   @input="$v.userDetails.confirmPassword.$touch"
                 />
-                <div class="cortx-form-group-label cortx-form-group-error-msg">
+                <div class="sgt-form-group-label sgt-form-group-error-msg">
                   <label
                     id="localuser-confirmpassword-notmatch"
                     v-if="
@@ -216,7 +216,7 @@
             <v-col cols="12">
               <label class="mr-3">Roles</label>
 
-              <label class="cortx-rdb-container ml-4" id="localuser-adminlbl">
+              <label class="sgt-rdb-container ml-4" id="localuser-adminlbl">
                 Admin
                 <input
                   type="radio"
@@ -225,10 +225,10 @@
                   value="admin"
                   id="chkLocalAdmin"
                 />
-                <span class="cortx-rdb-tick" id="lblLocalAdmin"></span>
+                <span class="sgt-rdb-tick" id="lblLocalAdmin"></span>
               </label>
 
-              <label class="cortx-rdb-container ml-4" id="localuser-managelbl">
+              <label class="sgt-rdb-container ml-4" id="localuser-managelbl">
                 Manage
                 <input
                   type="radio"
@@ -237,10 +237,10 @@
                   value="manage"
                   id="chkLocalManage"
                 />
-                <span class="cortx-rdb-tick" id="lblLocalManage"></span>
+                <span class="sgt-rdb-tick" id="lblLocalManage"></span>
               </label>
 
-              <label class="cortx-rdb-container ml-4" id="localuser-monitorlbl">
+              <label class="sgt-rdb-container ml-4" id="localuser-monitorlbl">
                 Monitor
                 <input
                   type="radio"
@@ -249,7 +249,7 @@
                   value="monitor"
                   id="chkLocalMonitor"
                 />
-                <span class="cortx-rdb-tick" id="lblLocalMonitor"></span>
+                <span class="sgt-rdb-tick" id="lblLocalMonitor"></span>
               </label>
             </v-col>
           </v-row>
@@ -263,7 +263,7 @@
               <button
                 v-if="value"
                 type="button"
-                class="cortx-btn-primary"
+                class="sgt-btn-one sgt-btn-one-success"
                 @click="createUser()"
                 id="btnLocalCreateUser"
                 :disabled="$v.userDetails.$invalid || !userDetails.role"
@@ -273,7 +273,7 @@
               <button
                 v-if="value"
                 type="button"
-                class="cortx-btn-secondary"
+                class="sgt-btn-two"
                 @click="onAddNewUser()"
                 id="lblLocalCancel"
               >
@@ -354,5 +354,6 @@ export default class AddNewUser extends Vue {
 .btn-container {
   display: flex;
   gap: 1rem;
+  margin: 0.5em 0;
 }
 </style>
