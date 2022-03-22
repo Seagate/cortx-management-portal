@@ -54,6 +54,12 @@
       @close-popup="isUserEdit = false"
       :userData="dataToEdit"
     />
+    <SgtPromptDialog
+      v-model="isShowPromptDialog"
+      title="Confirmation"
+      message="Are you sure you want to delete?"
+      @close="promptDialogClosed($event)"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -64,6 +70,7 @@ import { Api } from "../../../services/Api";
 import LrDataTable from "../../shared/LrDataTable/LrDataTable.vue";
 import AddNewUser from "./AddNewUser.vue";
 import EditExistingUser from "./EditExistingUser.vue";
+import SgtPromptDialog from "../../shared/SgtPromptDialog.vue";
 
 @Component({
   name: "LrAdminUser",
@@ -72,6 +79,7 @@ import EditExistingUser from "./EditExistingUser.vue";
     LrDataTable,
     AddNewUser,
     EditExistingUser,
+    SgtPromptDialog,
   },
 })
 export default class LrAdminUser extends Vue {
@@ -80,6 +88,8 @@ export default class LrAdminUser extends Vue {
   public isUserCreate = false;
   public isUserEdit = false;
   public dataToEdit = {};
+  public isShowPromptDialog = false;
+  public dataToDelete = {};
 
   public async mounted() {
     const res: any = await Api.getData("manage/admin-users", {
@@ -93,9 +103,19 @@ export default class LrAdminUser extends Vue {
     this.isUserEdit = true;
   }
 
+  private promptDialogClosed(confirmation: string) {
+    debugger;
+    this.isShowPromptDialog = false;
+    if (confirmation === "yes") {
+      // API call to delete the record
+    }
+    this.dataToDelete = {};
+  }
+
   public deleteUser(userInfo: IUserDetail) {
     //Make an API call to delete the user from the table
-    console.log("delete user");
+    this.dataToDelete = userInfo;
+    this.isShowPromptDialog = true;
   }
 }
 </script>
