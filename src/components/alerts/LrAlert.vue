@@ -30,10 +30,10 @@
       @acknowledge="multiAcknowledge($event)"
       @update-record="updateRecord($event)"
     >
-      <template v-slot:severity="item">
-        <v-avatar :color="getColor(item)" size="24"></v-avatar>
+      <template v-slot:severity="{ data }">
+        <v-avatar :color="getColor(data)" size="24"></v-avatar>
       </template>
-      <template v-slot:description="item">{{item.value}}</template>
+      <template v-slot:description="{ data }">{{ data.description }}</template>
     </SgtDataTable>
     <LrAlertDialog
       v-if="selectedRecord"
@@ -56,73 +56,68 @@ import { Api } from "../../services/Api";
 import LrAlertDialog from "./LrAlertDialog.vue";
 import LrAlertComments from "./LrAlertComments.vue";
 import {
-	SgtDataTableFilterSortPag,
-	PaginationModel,
+  SgtDataTableFilterSortPag,
+  PaginationModel,
 } from "@/SeagateShared/SgtDataTable/SgtDataTableFilterSortPag.model";
 import { SgtFilterObject } from "@/SeagateShared/SgtChips/SgtFilterObject.model";
-
 @Component({
-	name: "LrAlert",
-	components: { SgtDataTable, LrAlertDialog, LrAlertComments },
+  name: "LrAlert",
+  components: { SgtDataTable, LrAlertDialog, LrAlertComments },
 })
 export default class LrAlert extends Vue {
-	@Prop({ required: false, default: "" }) private severity: string;
-	@Prop({ required: false }) private alertId: string;
-	alertConst: any = JSON.parse(JSON.stringify(lrAlertConst));
-	alerts: any = [];
-	showDataTable = false;
-	chips: SgtFilterObject[] = [];
-	showAlertDetailsDialog = false;
-	selectedRecord: any = null;
-	showAlertCommentsDialog = false;
-
-	mounted() {
-		Api.getData("alerts/list", { isDummy: true }).then((resp: any) => {
-			this.alerts = resp["list"];
-		});
-		if (this.alertId) {
-			let headers = this.alertConst?.alertTable?.headers;
-			let actionColumn = headers[headers?.length - 1];
-			actionColumn.actionList = [];
-			this.alertConst.alertTable.isMultiSelect = false;
-			//   getMethod for selected alert
-			this.showDataTable = true;
-		} else {
-			this.showDataTable = true;
-		}
-	}
-	getColor(item: any) {
-		return this.alertConst.severityList[item.value];
-	}
-
-	updateRecord(tableDataConfig: SgtDataTableFilterSortPag) {
-		// code for API call
-		this.chips = tableDataConfig.filterList;
-	}
-
-	openDetails(selectedRow: any) {
-		if (this.alertId) {
-			this.selectedRecord = null;
-			this.selectedRecord = JSON.parse(JSON.stringify(selectedRow));
-			this.selectedRecord.extended_info = JSON.parse(
-				this.selectedRecord.extended_info
-			);
-			this.showAlertDetailsDialog = true;
-		} else {
-			this.$router.push({
-				name: "alert-details",
-				params: { alertId: selectedRow.alert_uuid },
-			});
-		}
-	}
-
-	comment(selectedRow: any) {
-		this.selectedRecord = null;
-		this.selectedRecord = JSON.parse(JSON.stringify(selectedRow));
-		this.showAlertCommentsDialog = true;
-	}
-	multiAcknowledge(data: any) {
-		//multi select action
-	}
+  @Prop({ required: false, default: "" }) private severity: string;
+  @Prop({ required: false }) private alertId: string;
+  alertConst: any = JSON.parse(JSON.stringify(lrAlertConst));
+  alerts: any = [];
+  showDataTable = false;
+  chips: SgtFilterObject[] = [];
+  showAlertDetailsDialog = false;
+  selectedRecord: any = null;
+  showAlertCommentsDialog = false;
+  mounted() {
+    Api.getData("alerts/list", { isDummy: true }).then((resp: any) => {
+      this.alerts = resp["list"];
+    });
+    if (this.alertId) {
+      let headers = this.alertConst?.alertTable?.headers;
+      let actionColumn = headers[headers?.length - 1];
+      actionColumn.actionList = [];
+      this.alertConst.alertTable.isMultiSelect = false;
+      //   getMethod for selected alert
+      this.showDataTable = true;
+    } else {
+      this.showDataTable = true;
+    }
+  }
+  getColor(item: any) {
+    return this.alertConst.severityList[item.severity];
+  }
+  updateRecord(tableDataConfig: SgtDataTableFilterSortPag) {
+    // code for API call
+    this.chips = tableDataConfig.filterList;
+  }
+  openDetails(selectedRow: any) {
+    if (this.alertId) {
+      this.selectedRecord = null;
+      this.selectedRecord = JSON.parse(JSON.stringify(selectedRow));
+      this.selectedRecord.extended_info = JSON.parse(
+        this.selectedRecord.extended_info
+      );
+      this.showAlertDetailsDialog = true;
+    } else {
+      this.$router.push({
+        name: "alert-details",
+        params: { alertId: selectedRow.alert_uuid },
+      });
+    }
+  }
+  comment(selectedRow: any) {
+    this.selectedRecord = null;
+    this.selectedRecord = JSON.parse(JSON.stringify(selectedRow));
+    this.showAlertCommentsDialog = true;
+  }
+  multiAcknowledge(data: any) {
+    //multi select action
+  }
 }
 </script>

@@ -1,6 +1,6 @@
 /*
 * CORTX-CSM: CORTX Management web and CLI interface.
-* Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+* Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published
 * by the Free Software Foundation, either version 3 of the License, or
@@ -90,7 +90,7 @@ export const lrAlertConst = {
                 align: "end",
                 sortable: false,
                 zoomIcon: true,
-                actionList: ["notification", "comment", "delete"]
+                actionList: ["notification", "comment", "remove"]
             }
         ],
         multiSelectButtons: [
@@ -99,10 +99,10 @@ export const lrAlertConst = {
         ]
     },
     severityList: {
-        warning:'yellow',
-        fatal:"green",
-        critical:"grey",
-        error:"red",
-        informational:"blue"
+        warning: 'yellow',
+        fatal: "green",
+        critical: "grey",
+        error: "red",
+        informational: "blue"
     }
 }
