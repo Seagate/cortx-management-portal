@@ -20,7 +20,7 @@
       <v-select
         :items="exportOptions"
         label="EXPORT AS"
-        append-icon="$caret-down"
+        append-icon="mdi-chevron-down"
         outlined
         color="csmprimary"
         v-model="selectedExport"

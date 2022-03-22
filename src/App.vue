@@ -44,7 +44,7 @@ import SgtNavigationDrawer from "./components/shared/SgtNavigationDrawer/SgtNavi
 import LrRouteComponents from "./components/LrRouteComponents.vue";
 import SgtBreadCrumb from "./components/shared/bread-crumb/SgtBreadCrumb.vue";
 import { basePathList } from "./components/BreadCrumb.constant";
-import LrCalulateDimensions from "./components/LrCalulateDimensions";
+import { populateDimensions } from "./utils/LrUtilFunctions";
 import { AppConst } from "./App.constant";
 
 @Component({
@@ -60,7 +60,7 @@ export default class App extends Vue {
   drawer = true;
 
   public created() {
-    LrCalulateDimensions.populateDimensions();
+    populateDimensions();
   }
 
   get navItemsList() {

@@ -16,18 +16,12 @@
  */
 import Vue from "vue";
 import Vuetify from "vuetify/lib/framework";
-import CaretDownIcon from "@/components/CaretDownIcon.vue";
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
   icons: {
     iconfont: "mdi",
-    values: {
-      "caret-down": {
-        component: CaretDownIcon,
-      },
-    },
   },
   theme: {
     options: {
