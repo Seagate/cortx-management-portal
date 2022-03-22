@@ -54,7 +54,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import * as c3 from "c3";
-import SgtCard from "@/SeagateShared/SgtCard/SgtCard.vue";
+import SgtCard from "@/lib/components/SgtCard/SgtCard.vue";
 import { CapacityData } from "./LrDashboardData.model";
 import { Api } from "../../services/Api";
 

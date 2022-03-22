@@ -131,10 +131,10 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
-import SgtLabel from "@/SeagateShared/SgtLabel/SgtLabel.vue";
+import SgtLabel from "@/lib/components/SgtLabel/SgtLabel.vue";
 import LrAlertDialog from "./LrAlertDialog.vue";
 import LrAlertComments from "./LrAlertComments.vue";
-import SgtSvgIcon from "@/SeagateShared/SgtSvgIcon/SgtSvgIcon.vue";
+import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 
 @Component({
 	name: "LrAlertInformation",

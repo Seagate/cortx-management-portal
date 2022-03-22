@@ -50,7 +50,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch, PropSync } from "vue-property-decorator";
-import SgtDataTable from "@/SeagateShared/SgtDataTable/SgtDataTable.vue";
+import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
 import { lrAlertConst } from "./LrAlert.constant";
 import { Api } from "../../services/Api";
 import LrAlertDialog from "./LrAlertDialog.vue";
@@ -58,8 +58,8 @@ import LrAlertComments from "./LrAlertComments.vue";
 import {
   SgtDataTableFilterSortPag,
   PaginationModel,
-} from "@/SeagateShared/SgtDataTable/SgtDataTableFilterSortPag.model";
-import { SgtFilterObject } from "@/SeagateShared/SgtChips/SgtFilterObject.model";
+} from "@/lib/components/SgtDataTable/SgtDataTableFilterSortPag.model";
+import { SgtFilterObject } from "@/lib/components/SgtChips/SgtFilterObject.model";
 @Component({
   name: "LrAlert",
   components: { SgtDataTable, LrAlertDialog, LrAlertComments },

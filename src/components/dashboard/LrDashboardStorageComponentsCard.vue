@@ -34,7 +34,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import LrDashboardInfoCard from "./LrDashboardInfoCard.vue";
-import SgtCard from "@/SeagateShared/SgtCard/SgtCard.vue";
+import SgtCard from "@/lib/components/SgtCard/SgtCard.vue";
 import { Api } from "../../services/Api";
 import {
   StorageComponentsData,
