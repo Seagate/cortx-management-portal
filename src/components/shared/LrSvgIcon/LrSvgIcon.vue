@@ -15,17 +15,20 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div class="icon-container" v-if="icon"
-    :class="[hoverIcon ? 'action-btn':'']">
+  <div
+    class="icon-container"
+    v-if="icon"
+    :class="[hoverIcon ? 'action-btn' : '']"
+  >
     <img
-      :src="require(`@/assets/icons/${icon}`)"
+      :src="require(`@/assets${refPath ? refPath : '/icons'}/${icon}`)"
       @click="$emit('click')"
       class="action-btn-block"
       alt="logo"
     />
     <img
       v-if="hoverIcon"
-      :src="require(`@/assets/icons/${hoverIcon}`)"
+      :src="require(`@/assets${refPath ? refPath : '/icons'}/${hoverIcon}`)"
       @click="$emit('click')"
       class="action-btn-hover"
       alt="logo"
@@ -43,13 +46,14 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class LrSvgIcon extends Vue {
   @Prop({ required: true }) private icon: string;
   @Prop({ required: false }) private hoverIcon: string;
+  @Prop({ required: false }) private refPath: string;
 }
 </script>
 
 <style lang="scss">
 .icon-container {
-    display: inline-block;
-    cursor: pointer;
+  display: inline-block;
+  cursor: pointer;
 }
 .action-btn {
   .action-btn-block {
