@@ -16,7 +16,7 @@
 -->
 <template>
   <div v-if="showDataTable">
-    <LrDataTable
+    <SgtDataTable
       ref="alertDataTable"
       :headers="alertConst.alertTable.headers"
       :records="alerts"
@@ -34,7 +34,7 @@
         <v-avatar :color="getColor(data)" size="24"></v-avatar>
       </template>
       <template v-slot:description="{ data }">{{ data.description }}</template>
-    </LrDataTable>
+    </SgtDataTable>
     <LrAlertDialog
       v-if="selectedRecord"
       :modalTitle="'Alert Details'"
@@ -50,20 +50,19 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch, PropSync } from "vue-property-decorator";
-import LrDataTable from "../shared/LrDataTable/LrDataTable.vue";
+import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
 import { lrAlertConst } from "./LrAlert.constant";
 import { Api } from "../../services/Api";
 import LrAlertDialog from "./LrAlertDialog.vue";
 import LrAlertComments from "./LrAlertComments.vue";
 import {
-  LrDataTableFilterSortPag,
+  SgtDataTableFilterSortPag,
   PaginationModel,
-} from "../shared/LrDataTable/LrDataTableFilterSortPag.model";
-import { LrFilterObject } from "../shared/LrChips/LrFilterObject.model";
-
+} from "@/lib/components/SgtDataTable/SgtDataTableFilterSortPag.model";
+import { SgtFilterObject } from "@/lib/components/SgtChips/SgtFilterObject.model";
 @Component({
   name: "LrAlert",
-  components: { LrDataTable, LrAlertDialog, LrAlertComments },
+  components: { SgtDataTable, LrAlertDialog, LrAlertComments },
 })
 export default class LrAlert extends Vue {
   @Prop({ required: false, default: "" }) private severity: string;
@@ -71,11 +70,10 @@ export default class LrAlert extends Vue {
   alertConst: any = JSON.parse(JSON.stringify(lrAlertConst));
   alerts: any = [];
   showDataTable = false;
-  chips: LrFilterObject[] = [];
+  chips: SgtFilterObject[] = [];
   showAlertDetailsDialog = false;
   selectedRecord: any = null;
   showAlertCommentsDialog = false;
-
   mounted() {
     Api.getData("alerts/list", { isDummy: true }).then((resp: any) => {
       this.alerts = resp["list"];
@@ -94,12 +92,10 @@ export default class LrAlert extends Vue {
   getColor(item: any) {
     return this.alertConst.severityList[item.severity];
   }
-
-  updateRecord(tableDataConfig: LrDataTableFilterSortPag) {
+  updateRecord(tableDataConfig: SgtDataTableFilterSortPag) {
     // code for API call
     this.chips = tableDataConfig.filterList;
   }
-
   openDetails(selectedRow: any) {
     if (this.alertId) {
       this.selectedRecord = null;
@@ -115,7 +111,6 @@ export default class LrAlert extends Vue {
       });
     }
   }
-
   comment(selectedRow: any) {
     this.selectedRecord = null;
     this.selectedRecord = JSON.parse(JSON.stringify(selectedRow));
