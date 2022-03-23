@@ -66,7 +66,7 @@
                     class="sgt-form-group-label"
                     for="Email"
                     id="localuseremaillbl"
-                    >Email</label
+                    >Email*</label
                   >
                   <v-text-field
                     type="text"
