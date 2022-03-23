@@ -48,12 +48,11 @@
       @delete="deleteUser"
       @addNewUser="isUserCreate = true"
     />
-    <AddOrEditUser v-model="isUserCreate" @close-popup="isUserCreate = false" />
-    <AddOrEditUser
-      :isEdit="true"
-      v-model="isUserEdit"
-      @close-popup="isUserEdit = false"
-      :userData="dataToEdit"
+    <LrAddOrEditUser
+      v-if="isUserEdit || isUserCreate"
+      v-model="modelValue"
+      @close-popup="isUserEdit ? (isUserEdit = false) : (isUserCreate = false)"
+      :userData="userData"
     />
     <SgtPromptDialog
       v-model="isShowPromptDialog"
@@ -66,10 +65,10 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import SgtIButton from "../../shared/SgtIButton.vue";
-import { adminUserTableConst, IUserDetail } from "./AdminUserDetails.constant";
+import { adminUserTableConst, IUserDetail } from "./AdminUser.constant";
 import { Api } from "../../../services/Api";
 import LrDataTable from "../../shared/LrDataTable/LrDataTable.vue";
-import AddOrEditUser from "./AddOrEditUser.vue";
+import LrAddOrEditUser from "./LrAddOrEditUser.vue";
 import SgtPromptDialog from "../../shared/SgtPromptDialog.vue";
 
 @Component({
@@ -78,7 +77,7 @@ import SgtPromptDialog from "../../shared/SgtPromptDialog.vue";
     SgtIButton,
     LrDataTable,
     SgtPromptDialog,
-    AddOrEditUser,
+    LrAddOrEditUser,
   },
 })
 export default class LrAdminUser extends Vue {
@@ -95,6 +94,14 @@ export default class LrAdminUser extends Vue {
       isDummy: true,
     });
     this.adminUsersData = res.data;
+  }
+
+  get modelValue() {
+    return this.isUserEdit ? this.isUserEdit : this.isUserCreate;
+  }
+
+  get userData() {
+    return this.isUserEdit ? this.dataToEdit : {};
   }
 
   public editUser(userInfo: IUserDetail) {

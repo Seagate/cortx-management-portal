@@ -15,15 +15,8 @@
  * please email opensource@seagate.com.
  */
 
-import { helpers } from "vuelidate/lib/validators";
-
-export const accountNameRegex = helpers.regex(
-  "accountNameRegex",
-  /^[a-zA-Z0-9_-]{4,56}$/
-);
-
-export const passwordRegex = helpers.regex(
-  "passwordRegex",
-  // tslint:disable-next-line
-  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/
-);
+export const usernameRegex = /^[a-zA-Z0-9_-]{4,56}$/;
+export const emailRegex =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+export const passwordRegex =
+  /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\'])[A-Za-z\d!@#\$%\^&\*\(\)\_\+\-\=\[\]\{\}\|\']{8,}/;
