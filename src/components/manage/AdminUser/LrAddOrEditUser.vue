@@ -40,13 +40,13 @@
                     id="lblusername"
                   >
                     Username*
-                    <SgtIButton>
+                    <SgtTooltipIcon>
                       <span>
                         The username must be of minimum 4 characters and maximum
                         56 characters. The username must be alphanumeric and can
                         contain underscore (_) and dash (-).
                       </span>
-                    </SgtIButton>
+                    </SgtTooltipIcon>
                   </label>
                   <v-text-field
                     type="text"
@@ -110,13 +110,13 @@
                     for="password"
                     id="localuser-confirmpasslbl"
                     >{{ formLabelItems.passwordLabel }}*
-                    <SgtIButton>
+                    <SgtTooltipIcon>
                       <span
                         >Password must contain: Minimum 8 characters, One
                         uppercase letter, One lowercase letter, One special
                         character, One number</span
                       >
-                    </SgtIButton></label
+                    </SgtTooltipIcon></label
                   >
                   <v-text-field
                     type="password"
@@ -202,7 +202,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import SgtIButton from "../../shared/SgtIButton.vue";
+import SgtTooltipIcon from "../../shared/SgtTooltipIcon.vue";
 import {
   usernameRegex,
   emailRegex,
@@ -212,7 +212,7 @@ import {
 @Component({
   name: "LrAddOrEditUser",
   components: {
-    SgtIButton,
+    SgtTooltipIcon,
   },
 })
 export default class LrAddOrEditUser extends Vue {

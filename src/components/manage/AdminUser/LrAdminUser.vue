@@ -18,26 +18,30 @@
   <div>
     <div class="title-container">
       <span class="title-label">User Settings</span>
-      <SgtIButton>
-        <div class="i-content">
-          <div>
-            <p class="section-title">User Settings: Local</p>
-            <p class="description">
-              Manage users. Depending on the user role, you can create, modify,
-              and delete users. You can also change the password for the admin
-              user. A role is a collection of permissions granted to a user.
-            </p>
+      <SgtTooltipIcon>
+        <template #default>
+          <div class="i-content">
+            <div>
+              <p class="section-title">User Settings: Local</p>
+              <p class="description">
+                Manage users. Depending on the user role, you can create,
+                modify, and delete users. You can also change the password for
+                the admin user. A role is a collection of permissions granted to
+                a user.
+              </p>
+            </div>
+            <div>
+              <p class="section-title">Note:</p>
+              <p class="description">
+                Only admin user can create and delete users and change the
+                password of the admin user.
+              </p>
+            </div>
           </div>
-          <div>
-            <p class="section-title">Note:</p>
-            <p class="description">
-              Only admin user can create and delete users and change the
-              password of the admin user.
-            </p>
-          </div>
-        </div>
-      </SgtIButton>
+        </template>
+      </SgtTooltipIcon>
     </div>
+
     <LrDataTable
       ref="adminUserDetailsTable"
       :headers="adminUserTableConfig.adminUsersTable.headers"
@@ -48,23 +52,18 @@
       @delete="deleteUser"
       @addNewUser="isUserCreate = true"
     />
+
     <LrAddOrEditUser
       v-if="isUserEdit || isUserCreate"
       v-model="modelValue"
       @close-popup="isUserEdit ? (isUserEdit = false) : (isUserCreate = false)"
       :userData="userData"
     />
-    <SgtPromptDialog
-      v-model="isShowPromptDialog"
-      title="Confirmation"
-      message="Are you sure you want to delete?"
-      @close="promptDialogClosed($event)"
-    />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import SgtIButton from "../../shared/SgtIButton.vue";
+import SgtTooltipIcon from "../../shared/SgtTooltipIcon.vue";
 import { adminUserTableConst, IUserDetail } from "./AdminUser.constant";
 import { Api } from "../../../services/Api";
 import LrDataTable from "../../shared/LrDataTable/LrDataTable.vue";
@@ -74,7 +73,7 @@ import SgtPromptDialog from "../../shared/SgtPromptDialog.vue";
 @Component({
   name: "LrAdminUser",
   components: {
-    SgtIButton,
+    SgtTooltipIcon,
     LrDataTable,
     SgtPromptDialog,
     LrAddOrEditUser,
@@ -101,7 +100,7 @@ export default class LrAdminUser extends Vue {
   }
 
   get userData() {
-    return this.isUserEdit ? this.dataToEdit : {};
+    return this.isUserEdit ? this.dataToEdit : false;
   }
 
   public editUser(userInfo: IUserDetail) {
