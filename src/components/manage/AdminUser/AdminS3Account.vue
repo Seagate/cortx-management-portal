@@ -15,44 +15,15 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div class="manage-user-page-container">
-    <SgtTabs :tabsInfo="tabsInfo" @selected="onTabChange" />
-    <component :is="activeTab" />
-  </div>
+  <div>Admin S3 tab</div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import SgtTabs, { TabsInfo } from "../shared/SgtTabs.vue";
-import LrAdminUser from "./AdminUser/LrAdminUser.vue";
-import AdminS3Account from "./AdminUser/AdminS3Account.vue";
 
 @Component({
-  name: "LrHeader",
-  components: { SgtTabs, LrAdminUser, AdminS3Account },
+  name: "AdminS3Account",
 })
-export default class LrHeader extends Vue {
-  public tabsInfo: TabsInfo = [
-    {
-      id: 1,
-      label: "Administrative User",
-    },
-    {
-      id: 2,
-      label: "S3 Accounts",
-    },
-  ];
-  private activeTab = "LrAdminUser";
-  public onTabChange(value: number) {
-    switch (value) {
-      case 1:
-        this.activeTab = "LrAdminUser";
-        break;
-      case 2:
-        this.activeTab = "AdminS3Account";
-        break;
-    }
-  }
-}
+export default class AdminS3Account extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

@@ -20,6 +20,7 @@ import LrDashboard from "../components/dashboard/LrDashboard.vue";
 import LrAlert from "../components/alerts/LrAlert.vue";
 import LrAlertDetails from "../components/alerts/LrAlertDetails.vue";
 import LrManageUser from "../components/manage/LrManageUser.vue";
+import LrS3Account from "../components/manage/s3/LrS3Account.vue";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -51,8 +52,9 @@ const routes: Array<RouteConfig> = [
     props: true,
   },
   {
-    path: "/manage",
-    redirect: "s3Account",
+    path: "/s3Account",
+    name: "s3Account",
+    component: LrS3Account,
   },
 ];
 
