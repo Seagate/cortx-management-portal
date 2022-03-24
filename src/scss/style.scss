@@ -1,5 +1,9 @@
 @import url("./config.scss");
 
+html {
+  overflow-y: auto;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -15,10 +19,10 @@
 }
 
 .lr-tooltip-text {
-  max-width:100px;
-  padding:5px;
-  min-height:10px;
-  background:#000;
+  max-width: 100px;
+  padding: 5px;
+  min-height: 10px;
+  background: #000;
   visibility: hidden;
   color: #fff;
   text-align: center;
@@ -26,10 +30,10 @@
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
-  word-wrap:break-word;
+  word-wrap: break-word;
 }
 .lr-tooltip:hover {
   .lr-tooltip-text {
-  visibility: visible;
-}
+    visibility: visible;
+  }
 }
