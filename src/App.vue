@@ -34,6 +34,7 @@
         <LrRouteComponents />
       </div>
     </main>
+    <dialogs-wrapper></dialogs-wrapper>
   </v-app>
 </template>
 
