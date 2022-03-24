@@ -16,7 +16,7 @@
 -->
 <template>
   <div>
-    <v-dialog value="true" scrollable :max-width="modalWidth">
+    <v-dialog value="true" scrollable :max-width="modalWidth" persistent>
       <v-card>
         <v-card-title>
           <div>
@@ -29,9 +29,10 @@
             <p>{{ modalContent }}</p>
           </div>
           <template v-else>
-            <div v-html="modalContent"></div>
+            <div class="text-content" v-html="modalContent"></div>
           </template>
         </v-card-text>
+        <v-divider></v-divider>
         <v-card-actions>
           <v-btn
             color="csmprimary"
@@ -59,10 +60,10 @@ import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
 import { DialogComponent } from "vue-modal-dialogs";
 
 @Component({
-  name: "SgtModal",
+  name: "SgtDialog",
   components: {},
 })
-export default class SgtModal extends DialogComponent<boolean> {
+export default class SgtDialog extends DialogComponent<boolean> {
   @PropSync("showModal", { required: false, default: false })
   private dialog: boolean;
   @Prop({ required: true, default: "info" }) private modalType:
@@ -85,5 +86,8 @@ export default class SgtModal extends DialogComponent<boolean> {
 <style lang="scss">
 .content-container {
   min-height: 8rem;
+  .text-content {
+    margin-top: 1rem;
+  }
 }
 </style>

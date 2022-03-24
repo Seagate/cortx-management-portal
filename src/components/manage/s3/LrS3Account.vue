@@ -168,11 +168,12 @@ import { lrS3AccountConst } from "./LrS3.constant";
 import { Api } from "@/services/Api";
 import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import { passwordTest } from "@/lib/services/CommonUtilFunctions";
-import SgtModal from "@/lib/components/SgtModal/SgtModal.vue";
+import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
+import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
 import { create } from "vue-modal-dialogs";
 @Component({
   name: "LrS3Account",
-  components: { SgtDataTable, SgtSvgIcon, SgtModal },
+  components: { SgtDataTable, SgtSvgIcon },
 })
 export default class LrS3Account extends Vue {
   s3AccountConst: any = JSON.parse(JSON.stringify(lrS3AccountConst));
@@ -186,7 +187,7 @@ export default class LrS3Account extends Vue {
   };
   newAccessKey = {};
   generatedAccessKeyDialog = false;
-  deleteModal = create(SgtModal);
+  deleteModal = create<SgtDialogModel>(SgtDialog);
 
   mounted() {
     Api.getData("s3/s3_accounts", { isDummy: true }).then((resp: any) => {
@@ -288,12 +289,13 @@ export default class LrS3Account extends Vue {
   async deleteKey(row: any) {
     const result = await this.deleteModal({
       modalTitle: "Confirmation",
-      modalContent: `Are you sure you want to delete ${row.access_key_id} ?`,
+      modalContent: `Are you sure you want to delete <b>${row.access_key_id}</b> ?`,
       modalType: "prompt",
+      modalContentType:'html'
     }).then((resp) => {
       //code to delete
-      console.log(resp)
-      });
+      console.log(resp);
+    });
   }
 
   updateAccessKeyStatus() {
