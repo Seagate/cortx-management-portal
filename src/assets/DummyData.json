@@ -228,5 +228,11 @@
     "secret_key": "3afj0RjLGIE9dIYV+EZCsWuELn0SWjZcL",
     "status": "active",
     "user_name": "tests3"
+  },
+  "s3/iAmUser":{
+    "user_name": "tests3",
+    "user_id": "tests-3",
+    "arn":"aaaaaaa"
+
   }
 }

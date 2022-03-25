@@ -19,7 +19,8 @@ import VueRouter, { RouteConfig } from "vue-router";
 import LrDashboard from "../components/dashboard/LrDashboard.vue";
 import LrAlert from "../components/alerts/LrAlert.vue";
 import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
-import LrS3Account from "../components/manage/s3/LrS3Account.vue"
+import LrS3Account from "../components/manage/s3/LrS3Account.vue";
+import LrIAmUser from "../components/manage/s3/LrIAmUser.vue"
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -52,6 +53,11 @@ const routes: Array<RouteConfig> = [
     path: "/s3Account",
     name: "s3Account",
     component: LrS3Account,
+  },
+  {
+    path: "/iAmUser",
+    name: "iAmUser",
+    component: LrIAmUser,
   },
 ];
 

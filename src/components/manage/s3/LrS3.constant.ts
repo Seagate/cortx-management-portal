@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 export const lrS3AccountConst = {
-    s3AccountTable: {
+    s3AccessTable: {
         isMultiSelect: false,
         itemKey: "access_key_id",
         headers: [
@@ -30,6 +30,29 @@ export const lrS3AccountConst = {
                 sortable: false,
                 zoomIcon: false,
                 actionList: ["delete"]
+            }
+        ],
+        headerButton: {
+            name: "generate",
+            label: "Add/Generate",
+            disabled: false
+        }
+    },
+    s3IAmUSerTable: {
+        isMultiSelect: false,
+        itemKey: "user_id",
+        headers: [
+            { text: "User name", value: "user_name" },
+            { text: "User id", value: "user_id" },
+            { text: "ARN", value: "arn" },
+            {
+                text: "",
+                value: "action",
+                type: "action",
+                align: "end",
+                sortable: false,
+                zoomIcon: false,
+                actionList: ["edit", "delete"]
             }
         ],
         headerButton: {

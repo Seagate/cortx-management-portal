@@ -33,26 +33,6 @@
         </v-col>
       </v-row>
     </v-card>
-    <SgtDataTable
-      ref="lrS3AccountDataTable"
-      :headers="s3AccountConst.s3AccountTable.headers"
-      :records="accessList"
-      :isMultiSelect="s3AccountConst.s3AccountTable.isMultiSelect"
-      :itemKey="s3AccountConst.s3AccountTable.itemKey"
-      :isPagination="false"
-      :headerButton="s3AccountConst.s3AccountTable.headerButton"
-      @generate="generateNewKey"
-    >
-      <template v-slot:status="{ data }">
-        <v-switch
-          v-model="data.status"
-          value="active"
-          color="csmprimary"
-          inset
-          @change="updateAccessKeyStatus(data.rowIdx)"
-        ></v-switch>
-      </template>
-    </SgtDataTable>
     <v-dialog v-model="passwordDialog" max-width="600px" persistent>
       <v-card>
         <v-card-title>
@@ -79,6 +59,9 @@
                     outlined
                     :rules="passwordRules"
                     validate-on-blur
+                    :type="showPassword ? 'text' : 'password'"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append="showPassword = !showPassword"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
@@ -90,104 +73,52 @@
                     :rules="confirmPasswordRules"
                     outlined
                     validate-on-blur
+                    :type="showConfirmPassword ? 'text' : 'password'"
+                    :append-icon="
+                      showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
+                    "
+                    @click:append="showConfirmPassword = !showConfirmPassword"
                   ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
           </div>
         </v-card-text>
+        <v-divider></v-divider>
         <v-card-actions>
+          <v-btn color="csmprimary" @click="resetPassword()" dark>Reset</v-btn>
           <v-btn color="csmprimary" @click="passwordDialog = false" outlined
             >cancel</v-btn
           >
-          <v-btn color="csmprimary" @click="resetPassword()" dark>Reset</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <v-dialog v-model="generatedAccessKeyDialog" max-width="800px" persistent>
-      <v-card>
-        <v-card-title>
-          <div class="title-container">
-            <SgtSvgIcon icon="green-tick.svg" class="title-icon" />
-            <div class="title-content">Access key created</div>
-          </div>
-        </v-card-title>
-        <v-divider></v-divider>
-        <v-card-text>
-          <div class="content-container">
-            <v-container>
-              <v-row class="content-title">
-                <v-col>
-                  <v-icon class="content-title-icon" color="csmwarning"
-                    >mdi-alert-circle-outline</v-icon
-                  >Save this information, you will not see it again. Download as
-                  CSV and close.
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="3">
-                  <b>Access Key :</b>
-                </v-col>
-                <v-col>{{ newAccessKey.access_key_id }}</v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="3">
-                  <b>Secret Key :</b>
-                </v-col>
-                <v-col>{{ newAccessKey.secret_key }}</v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="3">
-                  <b>Note :</b>
-                </v-col>
-                <v-col
-                  >This deployment is not configured with Virtual IP. Please
-                  check documentation to get IP Address of public data
-                  interface</v-col
-                >
-              </v-row>
-            </v-container>
-          </div>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions class="pa-4">
-          <v-btn color="csmprimary" @click="downloadKey()" dark
-            >Save & close</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <LrS3Access />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
-import { lrS3AccountConst } from "./LrS3.constant";
 import { Api } from "@/services/Api";
 import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import { passwordTest } from "@/lib/services/CommonUtilFunctions";
+import LrS3Access from "./LrS3Access.vue";
 @Component({
   name: "LrS3Account",
-  components: { SgtDataTable, SgtSvgIcon },
+  components: { SgtSvgIcon, LrS3Access },
 })
 export default class LrS3Account extends Vue {
-  s3AccountConst: any = JSON.parse(JSON.stringify(lrS3AccountConst));
   s3AccountDetails = {};
-  accessList = [];
-  selectedRecord: any = null;
   passwordDialog = false;
   passwordForm = {
     password: "",
     confirmPassword: "",
   };
-  newAccessKey = {};
-  generatedAccessKeyDialog = false;
+  showPassword = false;
+  showConfirmPassword = false;
   mounted() {
     Api.getData("s3/s3_accounts", { isDummy: true }).then((resp: any) => {
       this.s3AccountDetails = resp["s3_accounts"][0];
     });
-    this.getAccessKeys();
   }
 
   get passwordRules() {
@@ -204,23 +135,6 @@ export default class LrS3Account extends Vue {
         (value && value == this.passwordForm.password) ||
         "Confirm password mismatch ",
     ];
-  }
-
-  getAccessKeys() {
-    Api.getData("s3/access_keys", { isDummy: true }).then((resp: any) => {
-      this.accessList = resp["access_keys"];
-      if (this.accessList.length > 1) {
-        this.s3AccountConst.s3AccountTable.headerButton["disabled"] = true;
-        this.s3AccountConst.s3AccountTable.headers[
-          this.s3AccountConst.s3AccountTable.headers.length - 1
-        ]["actionList"] = ["delete"];
-      } else {
-        this.s3AccountConst.s3AccountTable.headerButton["disabled"] = false;
-        this.s3AccountConst.s3AccountTable.headers[
-          this.s3AccountConst.s3AccountTable.headers.length - 1
-        ]["actionList"] = [];
-      }
-    });
   }
 
   editDetails() {
@@ -252,37 +166,6 @@ export default class LrS3Account extends Vue {
     const field = this.$refs[name] as Vue & { reset: () => void };
     field.reset();
   }
-
-  generateNewKey() {
-    //code to generate key
-    Api.getData("s3/generate_access_keys", { isDummy: true }).then(
-      (resp: any) => {
-        this.newAccessKey = resp;
-        this.generatedAccessKeyDialog = true;
-      }
-    );
-  }
-
-  downloadKey() {
-    const headerNames = Object.keys(this.newAccessKey).join(",") + "\n";
-    const values = Object.entries(this.newAccessKey)
-      .map(([k, v]: [string, any]) => {
-        return v.replaceAll(/,/g, " ");
-      })
-      .join(",");
-    const csv = headerNames + values;
-    const anchor = document.createElement("a");
-    anchor.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
-    anchor.target = "_blank";
-    anchor.download = "credentials.csv";
-    anchor.click();
-    this.getAccessKeys();
-    this.generatedAccessKeyDialog = false;
-  }
-
-  updateAccessKeyStatus() {
-    //code to update
-  }
 }
 </script>
 <style lang="scss" scoped>
@@ -295,7 +178,6 @@ export default class LrS3Account extends Vue {
   justify-content: center;
   margin-left: 1rem;
 }
-
 .title-container {
   width: 100%;
   .close-btn {
