@@ -103,7 +103,9 @@ import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
   components: { SgtDataTable, SgtSvgIcon },
 })
 export default class LrS3Access extends Vue {
-  s3AccountConst: any = JSON.parse(JSON.stringify(lrS3AccountConst));
+  s3AccountConst: any = JSON.parse(
+    JSON.stringify(lrS3AccountConst.s3AccessConfig)
+  );
   accessList = [];
   selectedRecord: any = null;
   newAccessKey = {};

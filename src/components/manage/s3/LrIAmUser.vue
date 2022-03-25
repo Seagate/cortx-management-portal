@@ -18,15 +18,26 @@
   <div>
     <SgtDataTable
       ref="lrIAmUserDataTable"
-      :headers="s3IAmUSerTable.headers"
-      :records="accessList"
-      :isMultiSelect="s3IAmUSerTable.isMultiSelect"
-      :itemKey="s3IAmUSerTable.itemKey"
-      :headerButton="s3IAmUSerTable.headerButton"
-      @generate="generateNewKey"
+      :headers="s3IAmUserTable.headers"
+      :records="userList"
+      :isMultiSelect="s3IAmUserTable.isMultiSelect"
+      :itemKey="s3IAmUserTable.itemKey"
+      :headerButton="s3IAmUserTable.headerButton"
+      :searchConfig="s3IAmUSerSearch"
+      :tableDataConfig="tableDataConfig"
+      :chips="chips"
+      @create="createUser"
+      @edit="editUser($event)"
+      @delete="deleteUser($event)"
+      @update-record="updateRecord($event)"
     >
     </SgtDataTable>
-    <LrS3Access/>
+    <LrS3UserForm
+      :showDialog.sync="showUserDialog"
+      :formType="formType"
+      @formData="userForm($event)"
+    />
+    <LrS3Access class="access-section" />
   </div>
 </template>
 <script lang="ts">
@@ -35,25 +46,69 @@ import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
 import { lrS3AccountConst } from "./LrS3.constant";
 import { Api } from "@/services/Api";
 import LrS3Access from "./LrS3Access.vue";
+import LrS3UserForm from "./LrS3UserForm.vue";
+import { SgtDataTableFilterSortPag } from '@/lib/components/SgtDataTable/SgtDataTableFilterSortPag.model';
+import { SgtFilterObject } from '@/lib/components/SgtChips/SgtFilterObject.model';
 
 @Component({
   name: "LrIAmUser",
-  components: { SgtDataTable, LrS3Access },
+  components: { SgtDataTable, LrS3Access, LrS3UserForm },
 })
 export default class LrIAmUser extends Vue {
-  s3IAmUSerTable: any = JSON.parse(JSON.stringify(lrS3AccountConst.s3IAmUSerTable));
-  accessList = [];
+  s3IAmUserTable: any = JSON.parse(
+    JSON.stringify(lrS3AccountConst.iAmUserConfig.s3IAmUserTable)
+  );
+  s3IAmUSerSearch: any = JSON.parse(
+    JSON.stringify(lrS3AccountConst.iAmUserConfig.searchConfig)
+  );
+  tableDataConfig: any = JSON.parse(
+    JSON.stringify(lrS3AccountConst.iAmUserConfig.tableConfig)
+  );
+  userList = [];
+  showUserDialog = false;
+  formType = "create";
+  chips: SgtFilterObject[] = [];
 
   mounted() {
     this.getAccessKeys();
   }
+
+  updateRecord(tableDataConfig: SgtDataTableFilterSortPag) {
+    // code for API call
+    this.chips = tableDataConfig.filterList;
+  }
   getAccessKeys() {
     Api.getData("s3/iAmUser", { isDummy: true }).then((resp: any) => {
-      this.accessList = resp["iAmUser"];
+      this.userList = resp["user"];
     });
   }
 
+  createUser() {
+    this.formType = "create";
+    this.showUserDialog = true;
+  }
+
+  editUser(row: any) {
+    this.formType = "edit";
+    this.showUserDialog = true;
+  }
+
+  deleteUser(row: any) {
+    //code to delete
+  }
+
+  userForm(data: any) {
+    if (this.formType === "create") {
+      // code to create user
+    } else {
+      // code to update password
+    }
+    this.showUserDialog = false;
+  }
 }
 </script>
 <style lang="scss" scoped>
+.access-section {
+  margin-top: 2rem;
+}
 </style>

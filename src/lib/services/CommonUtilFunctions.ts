@@ -7,3 +7,9 @@ export function passwordTest(str: string, reg?: string) {
   const regex = new RegExp(reg ? reg : standardRegex);
   return regex.test(str)
 }
+
+export function usernameTest(str: string, reg?: string) {
+  const standardRegex = "^[ A-Za-z0-9_-]*$";
+  const regex = new RegExp(reg ? reg : standardRegex);
+  return regex.test(str)
+}
