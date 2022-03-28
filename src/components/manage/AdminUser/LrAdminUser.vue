@@ -64,7 +64,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import SgtTooltipIcon from "../../../lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
-import { adminUserTableConst, IUserDetail } from "./AdminUser.constant";
+import { adminUserTableConst, IUserDetail } from "./LrAdminUser.constant";
 import { Api } from "../../../services/Api";
 import SgtDataTable from "../../../lib/components/SgtDataTable/SgtDataTable.vue";
 import LrAddOrEditUser from "./LrAddOrEditUser.vue";

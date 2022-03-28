@@ -21,9 +21,9 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({
-  name: "AdminS3Account",
+  name: "LrAdminS3Account",
 })
-export default class AdminS3Account extends Vue {}
+export default class LrAdminS3Account extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

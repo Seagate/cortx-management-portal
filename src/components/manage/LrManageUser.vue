@@ -22,13 +22,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import SgtTabs, { TabsInfo } from "../../lib/components/SgtTabs/SgtTabs.vue";
+import SgtTabs from "../../lib/components/SgtTabs/SgtTabs.vue";
+import { TabsInfo } from "../../lib/components/SgtTabs/SgtTabs.model";
 import LrAdminUser from "./AdminUser/LrAdminUser.vue";
-import AdminS3Account from "./AdminUser/AdminS3Account.vue";
+import LrAdminS3Account from "./AdminUser/LrAdminS3Account.vue";
 
 @Component({
   name: "LrManageUser",
-  components: { SgtTabs, LrAdminUser, AdminS3Account },
+  components: { SgtTabs, LrAdminUser, LrAdminS3Account },
 })
 export default class LrManageUser extends Vue {
   public tabsInfo: TabsInfo = [
@@ -48,7 +49,7 @@ export default class LrManageUser extends Vue {
         this.activeTab = "LrAdminUser";
         break;
       case 2:
-        this.activeTab = "AdminS3Account";
+        this.activeTab = "LrAdminS3Account";
         break;
     }
   }
