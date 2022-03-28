@@ -43,7 +43,12 @@
     </v-row>
 
     <v-expand-transition v-if="advanceSearchActive">
-      <v-card v-show="expand" hover width="360" class="mx-auto adv-container">
+      <v-card
+        v-show="expand"
+        hover
+        width="360"
+        class="mx-auto advance-search-container"
+      >
         <div
           v-for="row in config.advanceForm"
           :key="row.name"
@@ -145,20 +150,20 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Ref, Prop } from "vue-property-decorator";
-import { LrAdvanceSearchConfig } from "./LrAdvanceSearch.model";
-import { LrFilterObject } from "../LrChips/LrFilterObject.model";
+import { SgtAdvanceSearchConfig } from "./SgtAdvanceSearch.model";
+import { SgtFilterObject } from "../SgtChips/SgtFilterObject.model";
 
 @Component({
-  name: "LrAdvanceSearch",
+  name: "SgtAdvanceSearch",
 })
-export default class LrAdvanceSearch extends Vue {
-  @Prop({ required: true }) private config: LrAdvanceSearchConfig;
+export default class SgtAdvanceSearch extends Vue {
+  @Prop({ required: true }) private config: SgtAdvanceSearchConfig;
 
   private expand = false;
   private advanceSearchActive = false;
   private menu = false;
   private primarySearch = "";
-  private searchList: LrFilterObject[] = [];
+  private searchList: SgtFilterObject[] = [];
 
   mounted() {
     if (this.config.advanceForm && this.config.advanceForm.length > 0) {
@@ -257,7 +262,7 @@ export default class LrAdvanceSearch extends Vue {
   height: 40px;
   width: 300px;
 }
-.adv-container {
+.advance-search-container {
   position: absolute;
   z-index: 99;
   padding: 0.8rem;

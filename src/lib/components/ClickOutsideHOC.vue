@@ -15,44 +15,29 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div class="manage-user-page-container">
-    <SgtTabs :tabsInfo="tabsInfo" @selected="onTabChange" />
-    <component :is="activeTab" />
+  <div>
+    <slot />
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import SgtTabs, { TabsInfo } from "../../lib/components/SgtTabs/SgtTabs.vue";
-import LrAdminUser from "./AdminUser/LrAdminUser.vue";
-import AdminS3Account from "./AdminUser/AdminS3Account.vue";
+import { Vue, Component } from "vue-property-decorator";
 
 @Component({
-  name: "LrManageUser",
-  components: { SgtTabs, LrAdminUser, AdminS3Account },
+  name: "ClickOutsideHOC",
 })
-export default class LrManageUser extends Vue {
-  public tabsInfo: TabsInfo = [
-    {
-      id: 1,
-      label: "Administrative User",
-    },
-    {
-      id: 2,
-      label: "S3 Accounts",
-    },
-  ];
-  private activeTab = "LrAdminUser";
-  public onTabChange(value: number) {
-    switch (value) {
-      case 1:
-        this.activeTab = "LrAdminUser";
-        break;
-      case 2:
-        this.activeTab = "AdminS3Account";
-        break;
+export default class ClickOutsideHOC extends Vue {
+  public close(e: Event) {
+    if (!this.$el.contains(e.target as Node)) {
+      this.$emit("clicked-outside");
     }
+  }
+
+  public mounted() {
+    document.addEventListener("click", this.close);
+  }
+
+  public beforeDestroy() {
+    document.removeEventListener("click", this.close);
   }
 }
 </script>
-
-<style lang="scss" scoped></style>
