@@ -15,7 +15,8 @@
  * please email opensource@seagate.com.
  */
 export interface SgtDialogModel {
-  modalType: "prompt" | "info" | "message";
+  modalType: "prompt" | "message";
+  infoType: "success" | "alert" | "warning" | "neutral";
   modalTitle: string;
   modalContent: string;
   modalContentType?: "text" | "html";
@@ -23,5 +24,4 @@ export interface SgtDialogModel {
   okButtonLabel?: string;
   yesButtonLabel?: string;
   noButtonLabel?: string;
-
 }

@@ -18,9 +18,15 @@
   <div>
     <v-dialog value="true" scrollable :max-width="modalWidth" persistent>
       <v-card>
-        <v-card-title>
-          <div>
-            {{ modalTitle }}
+        <v-card-title :class="infoType">
+          <div class="title-container">
+            <div class="title-content">{{ modalTitle }}</div>
+            <v-icon
+              class="close-btn"
+              :color="invertedColor"
+              @click="$close(modalType !== 'prompt' ? 'ok' : 'no')"
+              >mdi-close</v-icon
+            >
           </div>
         </v-card-title>
         <v-divider></v-divider>
@@ -35,17 +41,17 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn
-            color="csmprimary"
+            :color="dialogColor"
             @click="$close('ok')"
             dark
             v-if="modalType !== 'prompt'"
             >{{ okButtonLabel }}</v-btn
           >
           <template v-else>
-            <v-btn color="csmprimary" @click="$close('yes')" dark>{{
+            <v-btn :color="dialogColor" @click="$close('yes')" dark>{{
               yesButtonLabel
             }}</v-btn>
-            <v-btn color="csmprimary" @click="$close('no')" dark outlined>{{
+            <v-btn :color="dialogColor" @click="$close('no')" dark outlined>{{
               noButtonLabel
             }}</v-btn>
           </template>
@@ -58,6 +64,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
 import { DialogComponent } from "vue-modal-dialogs";
+import { SgtDialogConst } from "./SgtDialog.constant";
 
 @Component({
   name: "SgtDialog",
@@ -66,28 +73,73 @@ import { DialogComponent } from "vue-modal-dialogs";
 export default class SgtDialog extends DialogComponent<boolean> {
   @PropSync("showModal", { required: false, default: false })
   private dialog: boolean;
-  @Prop({ required: true, default: "info" }) private modalType:
+  @Prop({ required: true, default: "message" }) private modalType:
     | "prompt"
-    | "info"
     | "message";
   @Prop({ required: true }) private modalTitle: string;
   @Prop({ required: true }) private modalContent: string;
+  @Prop({ required: false, default: "neutral" }) private infoType:
+    | "success"
+    | "alert"
+    | "warning"
+    | "neutral";
   @Prop({ required: false, default: "text" }) private modalContentType:
     | "text"
     | "html";
-  @Prop({ required: false, default: "600px" }) private modalWidth: string;
-  @Prop({ required: false, default: "Ok" }) public okButtonLabel: string;
-  @Prop({ required: false, default: "Yes" }) public yesButtonLabel: string;
-  @Prop({ required: false, default: "No" })
+  @Prop({ required: false, default: SgtDialogConst.modalWidth })
+  private modalWidth: string;
+  @Prop({ required: false, default: SgtDialogConst.okButtonLabel })
+  public okButtonLabel: string;
+  @Prop({ required: false, default: SgtDialogConst.yesButtonLabel })
+  public yesButtonLabel: string;
+  @Prop({ required: false, default: SgtDialogConst.noButtonLabel })
   public noButtonLabel: string;
+
+  private dialogConst = SgtDialogConst;
+
+  get dialogColor() {
+    return this.dialogConst.infoTypeColors[this.infoType];
+  }
+  get invertedColor() {
+    return this.infoType === "neutral"
+      ? this.dialogConst.infoTypeColors.neutral
+      : "#FFFFFF";
+  }
 }
 </script>
 
 <style lang="scss">
+.title-container {
+  width: 100%;
+  .close-btn {
+    cursor: pointer;
+    float: right;
+  }
+  .title-content {
+    display: inline-block;
+  }
+}
 .content-container {
   min-height: 8rem;
   .text-content {
     margin-top: 1rem;
   }
+}
+
+.alert {
+  background-color: $error;
+  color: $light;
+}
+.warning {
+  background-color: $warning;
+  color: $light;
+}
+.success {
+  background-color: $success;
+  color: $light;
+}
+.neutral {
+  background-color: $light;
+  color: $dark;
 }
 </style>
