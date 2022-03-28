@@ -27,10 +27,10 @@ import LrAdminUser from "./AdminUser/LrAdminUser.vue";
 import AdminS3Account from "./AdminUser/AdminS3Account.vue";
 
 @Component({
-  name: "LrHeader",
+  name: "LrManageUser",
   components: { SgtTabs, LrAdminUser, AdminS3Account },
 })
-export default class LrHeader extends Vue {
+export default class LrManageUser extends Vue {
   public tabsInfo: TabsInfo = [
     {
       id: 1,
