@@ -229,6 +229,26 @@
       }
     ]
   },
+  "manage/admin-s3-users": {
+    "data": [
+      {
+        "accountName": "admin1",
+        "email": "admin1@seagate.com"
+      },
+      {
+        "accountName": "admin2",
+        "email": "admin2@seagate.com"
+      },
+      {
+        "accountName": "monitor1",
+        "email": "monitor1@seagate.com"
+      },
+      {
+        "accountName": "manage1",
+        "email": "manage1@seagate.com"
+      }
+    ]
+  },
   "s3/s3_accounts": {
     "s3_accounts": [
       {

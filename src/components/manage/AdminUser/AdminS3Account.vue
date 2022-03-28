@@ -15,15 +15,139 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>Admin S3 tab</div>
+  <div>
+    <div class="title-container">
+      <span class="title-label">S3 configuration</span>
+      <SgtTooltipIcon>
+        <template #default>
+          <div class="i-content">
+            <div>
+              <p class="section-title">S3 configuration:</p>
+              <p class="description">
+                Create an S3 account. You must log in to the system using S3
+                account credentials to manage S3 account, IAM users, and
+                buckets.
+              </p>
+            </div>
+            <div>
+              <p class="section-title">Note:</p>
+              <p class="description">
+                Only admin user can create and delete users and change the
+                password of the admin user.
+              </p>
+            </div>
+          </div>
+        </template>
+      </SgtTooltipIcon>
+    </div>
+
+    <LrDataTable
+      ref="adminS3UserDetailsTable"
+      :headers="adminS3UserTableConfig.adminS3UsersTable.headers"
+      :records="adminS3UsersData"
+      :searchConfig="adminS3UserTableConfig.searchConfig"
+      :headerButton="{ name: 'addNewUser', label: 'Add new user' }"
+      @edit="editUser"
+      @delete="deleteUser"
+      @addNewUser="isUserCreate = true"
+    />
+
+    <LrAddOrEditS3User
+      v-if="isUserEdit || isUserCreate"
+      v-model="modelValue"
+      @close-popup="isUserEdit ? (isUserEdit = false) : (isUserCreate = false)"
+      :userData="userData"
+    />
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import SgtTooltipIcon from "../../shared/SgtTooltipIcon.vue";
+import {
+  adminS3UserTableConst,
+  IAdminS3UserDetail,
+} from "./AdminS3User.constant";
+import { Api } from "../../../services/Api";
+import LrDataTable from "../../shared/LrDataTable/LrDataTable.vue";
+import LrAddOrEditS3User from "./LrAddOrEditS3User.vue";
+import SgtPromptDialog from "../../shared/SgtPromptDialog.vue";
 
 @Component({
   name: "AdminS3Account",
+  components: {
+    SgtTooltipIcon,
+    LrDataTable,
+    SgtPromptDialog,
+    LrAddOrEditS3User,
+  },
 })
-export default class AdminS3Account extends Vue {}
+export default class AdminS3Account extends Vue {
+  public adminS3UserTableConfig = adminS3UserTableConst;
+  public adminS3UsersData = [];
+  public isUserCreate = false;
+  public isUserEdit = false;
+  public dataToEdit = {};
+  public isShowPromptDialog = false;
+  public dataToDelete = {};
+
+  public async mounted() {
+    const res: any = await Api.getData("manage/admin-s3-users", {
+      isDummy: true,
+    });
+    this.adminS3UsersData = res.data;
+  }
+
+  get modelValue() {
+    return this.isUserEdit ? this.isUserEdit : this.isUserCreate;
+  }
+
+  get userData() {
+    return this.isUserEdit ? this.dataToEdit : false;
+  }
+
+  public editUser(userInfo: IAdminS3UserDetail) {
+    this.dataToEdit = userInfo;
+    this.isUserEdit = true;
+  }
+
+  private promptDialogClosed(confirmation: string) {
+    this.isShowPromptDialog = false;
+    if (confirmation === "yes") {
+      // API call to delete the record
+    }
+    this.dataToDelete = {};
+  }
+
+  public deleteUser(userInfo: IAdminS3UserDetail) {
+    //Make an API call to delete the user from the table
+    this.dataToDelete = userInfo;
+    this.isShowPromptDialog = true;
+  }
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.title-container {
+  margin: 1em 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  .title-label {
+    font-weight: bold;
+  }
+}
+
+.i-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  p {
+    margin: 0;
+  }
+  .section-title {
+    font-weight: bold;
+  }
+}
+</style>
