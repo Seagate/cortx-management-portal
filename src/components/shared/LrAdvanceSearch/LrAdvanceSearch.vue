@@ -43,12 +43,7 @@
     </v-row>
 
     <v-expand-transition v-if="advanceSearchActive">
-      <v-card
-        v-show="expand"
-        hover
-        width="360"
-        class="mx-auto advance-search-container"
-      >
+      <v-card v-show="expand" hover width="360" class="mx-auto adv-container">
         <div
           v-for="row in config.advanceForm"
           :key="row.name"
@@ -262,7 +257,7 @@ export default class LrAdvanceSearch extends Vue {
   height: 40px;
   width: 300px;
 }
-.advance-search-container {
+.adv-container {
   position: absolute;
   z-index: 99;
   padding: 0.8rem;

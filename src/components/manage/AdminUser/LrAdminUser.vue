@@ -42,7 +42,7 @@
       </SgtTooltipIcon>
     </div>
 
-    <LrDataTable
+    <SgtDataTable
       ref="adminUserDetailsTable"
       :headers="adminUserTableConfig.adminUsersTable.headers"
       :records="adminUsersData"
@@ -63,19 +63,17 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import SgtTooltipIcon from "../../shared/SgtTooltipIcon.vue";
+import SgtTooltipIcon from "../../../lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
 import { adminUserTableConst, IUserDetail } from "./AdminUser.constant";
 import { Api } from "../../../services/Api";
-import LrDataTable from "../../shared/LrDataTable/LrDataTable.vue";
+import SgtDataTable from "../../../lib/components/SgtDataTable/SgtDataTable.vue";
 import LrAddOrEditUser from "./LrAddOrEditUser.vue";
-import SgtPromptDialog from "../../shared/SgtPromptDialog.vue";
 
 @Component({
   name: "LrAdminUser",
   components: {
     SgtTooltipIcon,
-    LrDataTable,
-    SgtPromptDialog,
+    SgtDataTable,
     LrAddOrEditUser,
   },
 })
