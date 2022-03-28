@@ -17,62 +17,62 @@
 <template>
   <div class="alert-details-container" v-if="alert">
     <div v-if="alert && alertExtendedInfo">
-      <LrLabel name="Id" :value="alertExtendedInfo.resource_id" />
-      <LrLabel name="Name" :value="alert.module_type" />
-      <LrLabel name="Cluster" :value="alertExtendedInfo.cluster_id" />
-      <LrLabel name="Site" :value="alertExtendedInfo.site_id" />
-      <LrLabel name="Rack" :value="alertExtendedInfo.rack_id" />
-      <LrLabel name="Host Name" :value="alert.hostname" />
+      <SgtLabel name="Id" :value="alertExtendedInfo.resource_id" />
+      <SgtLabel name="Name" :value="alert.module_type" />
+      <SgtLabel name="Cluster" :value="alertExtendedInfo.cluster_id" />
+      <SgtLabel name="Site" :value="alertExtendedInfo.site_id" />
+      <SgtLabel name="Rack" :value="alertExtendedInfo.rack_id" />
+      <SgtLabel name="Host Name" :value="alert.hostname" />
     </div>
     <div>
-      <LrLabel name="Resource Type" :value="alertExtendedInfo.resource_type" />
-      <LrLabel name="State" :value="alert.state" />
-      <LrLabel name="Created Time" :value="new Date(alert.created_time*1000)" />
-      <LrLabel name="Updated Time" :value="new Date(alert.updated_time*1000)" />
+      <SgtLabel name="Resource Type" :value="alertExtendedInfo.resource_type" />
+      <SgtLabel name="State" :value="alert.state" />
+      <SgtLabel name="Created Time" :value="new Date(alert.created_time*1000)" />
+      <SgtLabel name="Updated Time" :value="new Date(alert.updated_time*1000)" />
     </div>
 
     <div>
       <template v-if="alert.module_type === 'logical_volume'">
-        <LrLabel name="Volume Group" :value="alert.volume_group" />
-        <LrLabel name="Volume Name" :value="alert.name" />
+        <SgtLabel name="Volume Group" :value="alert.volume_group" />
+        <SgtLabel name="Volume Name" :value="alert.name" />
       </template>
       <template v-else-if="alert.module_type === 'system'">
-        <LrLabel name="Version" :value="alert.version" />
-        <LrLabel name="Node Name" :value="alert.name" />
+        <SgtLabel name="Version" :value="alert.version" />
+        <SgtLabel name="Node Name" :value="alert.name" />
       </template>
       <template v-else-if="alert.module_type === 'volume'">
-        <LrLabel name="Size" :value="alert.volume_size" />
-        <LrLabel name="Total Size" :value="alert.volume_total_size" />
+        <SgtLabel name="Size" :value="alert.volume_size" />
+        <SgtLabel name="Total Size" :value="alert.volume_total_size" />
       </template>
       <template v-else-if="alert.module_type === 'current'">
-        <LrLabel name="Sensor Name" :value="alert.name" />
+        <SgtLabel name="Sensor Name" :value="alert.name" />
       </template>
       <template v-else-if="alert.module_type === 'controller'">
-        <LrLabel name="Serial Number" :value="alert.serial_number" />
+        <SgtLabel name="Serial Number" :value="alert.serial_number" />
       </template>
     </div>
 
     <div>
       <template v-if="alert.module_name === 'enclosure:fru:psu'">
-        <LrLabel name="Location" :value="alert.location" />
+        <SgtLabel name="Location" :value="alert.location" />
       </template>
       <template
         v-if="alert.module_name === 'enclosure:fru:fan' || alert.module_name === 'enclosure:fru:sideplane'"
       >
-        <LrLabel name="Name" :value="alert.Name" />
-        <LrLabel name="Location" :value="alert.location" />
+        <SgtLabel name="Name" :value="alert.Name" />
+        <SgtLabel name="Location" :value="alert.location" />
       </template>
       <template v-if="alert.module_name === 'enclosure:fru:disk'">
-        <LrLabel name="Serial Number" :value="alert.serial_number" />
-        <LrLabel name="Size" :value="alert.volume_size" />
+        <SgtLabel name="Serial Number" :value="alert.serial_number" />
+        <SgtLabel name="Size" :value="alert.volume_size" />
       </template>
     </div>
 
     <template v-if="alertEventDetails.length > 0">
       <div v-for="(event_detail, i) in alertEventDetails" v-bind:key="'event_detail_' + i">
-        <LrLabel name="Name" :value="event_detail.name" />
-        <LrLabel name="Reason" :value="event_detail.event_reason" />
-        <LrLabel
+        <SgtLabel name="Name" :value="event_detail.name" />
+        <SgtLabel name="Reason" :value="event_detail.event_reason" />
+        <SgtLabel
           v-if="event_detail.event_recommendation.length > 0"
           name
           :value="alerts.recommendations"
@@ -92,18 +92,18 @@
         <span>Acknowledged</span>
       </div>
       <div class="alert-info">
-        <LrSvgIcon
+        <SgtSvgIcon
           icon="more-info.svg"
           @click="showAlertDetailsDialog = true"
           class="action-btn-block"
         />
-        <LrSvgIcon
+        <SgtSvgIcon
           icon="comment-default.svg"
           hoverIcon="comment-hover.svg"
           @click="showAlertCommentsDialog = true"
           class="action-btn-block"
         />
-        <LrSvgIcon
+        <SgtSvgIcon
           icon="alert-green.svg"
           hoverIcon="alert-hover.svg"
           @click="acknowledge"
@@ -131,14 +131,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
-import LrLabel from "../shared/LrLabel/LrLabel.vue";
+import SgtLabel from "@/lib/components/SgtLabel/SgtLabel.vue";
 import LrAlertDialog from "./LrAlertDialog.vue";
 import LrAlertComments from "./LrAlertComments.vue";
-import LrSvgIcon from "../shared/LrSvgIcon/LrSvgIcon.vue";
+import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 
 @Component({
 	name: "LrAlertInformation",
-	components: { LrLabel, LrAlertDialog, LrSvgIcon, LrAlertComments },
+	components: { SgtLabel, LrAlertDialog, SgtSvgIcon, LrAlertComments },
 })
 export default class LrAlertInformation extends Vue {
 	@Prop({ required: true }) private alert: any;
