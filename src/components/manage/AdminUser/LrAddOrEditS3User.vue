@@ -158,7 +158,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import SgtTooltipIcon from "../../shared/SgtTooltipIcon.vue";
+import SgtTooltipIcon from "../../../lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
 import {
   usernameRegex,
   emailRegex,
