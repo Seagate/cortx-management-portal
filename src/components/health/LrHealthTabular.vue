@@ -84,8 +84,8 @@
 import { Component, Mixins } from "vue-property-decorator";
 import ClusterManagementMixin from "../../mixins/ClusterManagement";
 import { Api } from "../../services/Api";
-import { lrHealthConst } from "./LrHealthTabularView.constant";
-import { IResource } from "./LrHealthTabularView.model";
+import { lrHealthConst } from "./LrHealthTabular.constant";
+import { IResource } from "./LrHealthTabular.model";
 import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
 import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import { formatTime } from "../../utils/CommonUtilFunctions";
