@@ -14,52 +14,56 @@
       <v-divider></v-divider>
       <v-card-text>
         <div class="content-container">
-          <v-container>
-            <v-row v-if="formType === 'create'">
-              <v-col cols="12" sm="6">
-                <label for="username">Username *</label>
-                <v-text-field
-                  name="username"
-                  ref="username"
-                  v-model="userForm.username"
-                  outlined
-                  :rules="usernameRules"
-                  validate-on-blur
-                  type="text"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <label for="password">New Password *</label>
-                <v-text-field
-                  name="password"
-                  ref="password"
-                  v-model="userForm.password"
-                  outlined
-                  :rules="passwordRules"
-                  validate-on-blur
-                  :type="showPassword ? 'text' : 'password'"
-                  :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                  @click:append="showPassword = !showPassword"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <label for="confirmPassword">Confirm Password *</label>
-                <v-text-field
-                  name="confirmPassword"
-                  ref="confirmPassword"
-                  v-model="userForm.confirmPassword"
-                  :rules="confirmPasswordRules"
-                  outlined
-                  validate-on-blur
-                  :type="showConfirmPassword ? 'text' : 'password'"
-                  :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                  @click:append="showConfirmPassword = !showConfirmPassword"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
+          <v-form ref="form" v-model="formValid">
+            <v-container>
+              <v-row v-if="formType === 'create'">
+                <v-col cols="12" sm="6">
+                  <label for="username">Username *</label>
+                  <v-text-field
+                    name="username"
+                    ref="username"
+                    v-model="userForm.username"
+                    outlined
+                    :rules="usernameRules"
+                    validate-on-blur
+                    type="text"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <label for="password">New Password *</label>
+                  <v-text-field
+                    name="password"
+                    ref="password"
+                    v-model="userForm.password"
+                    outlined
+                    :rules="passwordRules"
+                    validate-on-blur
+                    :type="showPassword ? 'text' : 'password'"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append="showPassword = !showPassword"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <label for="confirmPassword">Confirm Password *</label>
+                  <v-text-field
+                    name="confirmPassword"
+                    ref="confirmPassword"
+                    v-model="userForm.confirmPassword"
+                    :rules="confirmPasswordRules"
+                    outlined
+                    validate-on-blur
+                    :type="showConfirmPassword ? 'text' : 'password'"
+                    :append-icon="
+                      showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
+                    "
+                    @click:append="showConfirmPassword = !showConfirmPassword"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-form>
         </div>
       </v-card-text>
       <v-divider></v-divider>
@@ -67,7 +71,9 @@
         <v-btn color="csmprimary" @click="validateForm()" dark>{{
           formType === "create" ? "Create" : "Reset"
         }}</v-btn>
-        <v-btn color="csmdisabled" @click="closeForm()" depressed dark>Cancel</v-btn>
+        <v-btn color="csmdisabled" @click="closeForm()" depressed dark
+          >Cancel</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -86,6 +92,7 @@ export default class LrS3UserForm extends Vue {
   @Prop({ required: false, default: "edit" }) private formType:
     | "create"
     | "edit";
+  formValid = false;
   userForm = {
     username: "",
     password: "",
@@ -123,33 +130,16 @@ export default class LrS3UserForm extends Vue {
   }
 
   validateForm() {
-    if (
-      (this.formType === "create" ? this.testValidation("username") : true) &&
-      this.testValidation("password") &&
-      this.testValidation("confirmPassword")
-    ) {
+    (this.$refs.form as Vue & { validate: () => boolean }).validate();
+    if (this.formValid) {
+      this.formType === "edit" ? delete this.userForm.username : true;
       this.$emit("formData", this.userForm);
     }
   }
 
   closeForm() {
-    this.resetFormFields("password");
-    this.resetFormFields("confirmPassword");
-    this.resetFormFields("username");
+    (this.$refs.form as Vue & { reset: () => boolean }).reset();
     this.showUserDialog = false;
-  }
-
-  testValidation(name: string) {
-    const field = this.$refs[name] as Vue & {
-      validate: (flag: boolean) => boolean;
-    };
-    if (!field) return false;
-    return field.validate(true);
-  }
-
-  resetFormFields(name: string) {
-    const field = this.$refs[name] as Vue & { reset: () => void };
-    if (field) field.reset();
   }
 }
 </script>
