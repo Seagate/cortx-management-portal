@@ -1,5 +1,9 @@
 @import url("./config.scss");
 
+html {
+  overflow-y: auto;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -14,207 +18,23 @@
   background-image: url("../assets/images/icons/zoom-in-hover.svg");
 }
 
-/* Button primary (White background) style rules --- Start */
-.sgt-btn-one {
-  box-sizing: border-box;
-  border-radius: 4px;
-  height: 40px;
-  min-width: 64px;
-  padding-left: 16px;
-  padding-right: 16px;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 20px;
+.lr-tooltip-text {
+  max-width: 100px;
+  padding: 5px;
+  min-height: 10px;
+  background: #000;
+  visibility: hidden;
+  color: #fff;
   text-align: center;
-  color: #ffffff;
+  border-radius: 6px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  word-wrap: break-word;
 }
-.sgt-btn-one:focus {
-  outline: 0;
-}
-.sgt-btn-one:disabled {
-  background: $disabled;
-}
-.sgt-btn-one-information {
-  background: $info;
-}
-.sgt-btn-one-information:hover {
-  background: $info-hover;
-}
-.sgt-btn-one-information:active {
-  background: $info-active;
-}
-.sgt-btn-one-success {
-  background: $success;
-}
-.sgt-btn-one-success:hover {
-  background: $success-hover;
-}
-.sgt-btn-one-success:active {
-  background: $success-active;
-}
-.sgt-btn-one-warning {
-  background: $warning;
-}
-.sgt-btn-one-warning:hover {
-  background: $warning-hover;
-}
-.sgt-btn-one-warning:active {
-  background: $warning-active;
-}
-.sgt-btn-one-critical {
-  background: $error;
-}
-.sgt-btn-one-critical:hover {
-  background: $error-hover;
-}
-.sgt-btn-one-critical:active {
-  background: $error-active;
-}
-/* Button primary (White background) style rules --- End */
-
-/* Button secondary (White background) style rules --- Start */
-.sgt-btn-two {
-  background: #ffffff;
-  box-sizing: border-box;
-  border-radius: 4px;
-  height: 40px;
-  min-width: 64px;
-  padding-left: 16px;
-  padding-right: 16px;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
-  color: #000000;
-  border: 1px solid #000000;
-}
-.sgt-btn-two:focus {
-  outline: 0;
-}
-.sgt-btn-two:disabled {
-  color: #b7b7b7;
-  border: 1px solid #b7b7b7;
-}
-.sgt-btn-two-information {
-  color: $info;
-  border: 1px solid $info;
-}
-.sgt-btn-two-information:hover {
-  color: $info-hover;
-  border: 1px solid $info-hover;
-}
-.sgt-btn-two-information:active {
-  color: $info-active;
-  border: 1px solid $info-active;
-}
-.sgt-btn-two-success {
-  color: $info-success;
-  border: 1px solid $info-success;
-}
-.sgt-btn-two-success:hover {
-  color: #8acb6b;
-  border: 1px solid #8acb6b;
-}
-.sgt-btn-two-success:active {
-  color: #4b813d;
-  border: 1px solid #4b813d;
-}
-.sgt-btn-two-warning {
-  color: $warning;
-  border: 1px solid $warning;
-}
-.sgt-btn-two-warning:hover {
-  color: $warning-hover;
-  border: 1px solid $warning-hover;
-}
-.sgt-btn-two-warning:active {
-  color: $warning-active;
-  border: 1px solid $warning-active;
-}
-.sgt-btn-two-critical {
-  color: $error;
-  border: 1px solid $error;
-}
-.sgt-btn-two-critical:hover {
-  color: $error-hover;
-  border: 1px solid $error-hover;
-}
-.sgt-btn-two-critical:active {
-  color: $error-active;
-  border: 1px solid $error-active;
-}
-/* Button secondary (White background) style rules --- End */
-
-/* Status chips style rules --- Start */
-.sgt-status-chip {
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-}
-.sgt-chip-information {
-  background: $info;
-}
-.sgt-chip-ok {
-  background: $info-success;
-}
-.sgt-chip-success {
-  background: $info-success;
-}
-.sgt-chip-warning {
-  background: $warning;
-}
-.sgt-chip-alert {
-  background: $error;
-}
-.sgt-chip-critical {
-  background: $error;
-}
-.sgt-chip-others {
-  background: #8b4513;
-}
-.sgt-chip-offline {
-  background: $border;
-}
-/* Status chips style rules --- End */
-
-/* Modal style rules --- Start */
-.sgt-modal-container {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 99;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.75);
-}
-.sgt-modal {
-  width: 424px;
-  min-height: 212px;
-  background: #ffffff;
-  margin: auto;
-}
-.sgt-modal-header {
-  height: 65px;
-  display: flex;
-  padding: 20px;
-  flex-wrap: nowrap;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 26px;
-  border-bottom: 1px solid #b7b7b7;
-}
-.sgt-modal-close {
-  cursor: pointer;
-  margin-left: auto;
-}
-.sgt-modal-body {
-  padding: 20px;
+.lr-tooltip:hover {
+  .lr-tooltip-text {
+    visibility: visible;
+  }
 }
 /* Modal style rules --- End */

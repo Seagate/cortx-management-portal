@@ -1,4 +1,5 @@
-<!--
+ 
+ <!--
 * CORTX-CSM: CORTX Management web.
 * Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
@@ -15,60 +16,29 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div
-    class="icon-container"
-    v-if="icon"
-    :class="[hoverIcon ? 'action-btn' : '']"
-  >
-    <img
-      :src="require(`@/assets${refPath ? refPath : '/icons'}/${icon}`)"
-      @click="$emit('click')"
-      class="action-btn-block"
-      alt="logo"
-    />
-    <img
-      v-if="hoverIcon"
-      :src="require(`@/assets${refPath ? refPath : '/icons'}/${hoverIcon}`)"
-      @click="$emit('click')"
-      class="action-btn-hover"
-      alt="logo"
-    />
-  </div>
+    <v-chip
+      class="ma-1"
+      color="csmprimary"
+      label
+      outlined
+      text-color="#000000"
+    >
+      {{name}} : {{value}}
+    </v-chip>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
-  name: "LrSvgIcon",
-  components: {},
+  name: "SgtLabel",
+  components: {}
 })
-export default class LrSvgIcon extends Vue {
-  @Prop({ required: true }) private icon: string;
-  @Prop({ required: false }) private hoverIcon: string;
-  @Prop({ required: false }) private refPath: string;
+export default class Sgtlabel extends Vue {
+  @Prop({ required: true }) private name: string;
+  @Prop({ required: true }) private value: string;
 }
 </script>
 
 <style lang="scss">
-.icon-container {
-  display: inline-block;
-  cursor: pointer;
-}
-.action-btn {
-  .action-btn-block {
-    display: block;
-  }
-  .action-btn-hover {
-    display: none;
-  }
-}
-.action-btn:hover {
-  .action-btn-block {
-    display: none;
-  }
-  .action-btn-hover {
-    display: block;
-  }
-}
 </style>

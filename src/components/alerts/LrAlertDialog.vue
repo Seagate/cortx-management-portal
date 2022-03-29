@@ -39,7 +39,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
-import LrLabel from "../shared/LrLabel/LrLabel.vue";
 @Component({
 	name: "LrAlertDialog",
 	components: {},

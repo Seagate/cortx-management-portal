@@ -14,7 +14,7 @@
  * For any questions about this software or licensing,
  * please email opensource@seagate.com.
  */
-export const lrDataTableConst = {
+export const SgtDataTableConst = {
   buttonList: [
     {
       name: "comment",

@@ -19,7 +19,7 @@
     <div class="search-container">
       <v-row class="search-row ma-0">
         <v-col class="pl-0 margin-auto">
-          <LrAdvanceSearch
+          <SgtAdvanceSearch
             v-if="searchConfig"
             :config="searchConfig"
             @filter-click="updateFilter($event)"
@@ -51,7 +51,7 @@
         </v-col>
       </v-row>
     </div>
-    <LrChips
+    <SgtChips
       v-if="chips && chips.length > 0"
       :chips="chips"
       class="pb-1"
@@ -184,7 +184,7 @@
                     >
                       <template v-for="action in actionItems">
                         <span :class="'action-btn'" :key="action.name">
-                          <LrSvgIcon
+                          <SgtSvgIcon
                             :icon="action.path"
                             :hoverIcon="action.hoverPath"
                             :refPath="action.refPath"
@@ -194,7 +194,7 @@
                       </template>
                     </div>
                     <div v-if="col.zoomIcon" class="zoom-container">
-                      <LrSvgIcon
+                      <SgtSvgIcon
                         icon="zoom-in.svg"
                         hoverIcon="zoom-in-hover.svg"
                         @click="$emit('zoom', item)"
@@ -246,21 +246,21 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import LrAdvanceSearch from "../LrAdvanceSearch/LrAdvanceSearch.vue";
-import { LrAdvanceSearchConfig } from "../LrAdvanceSearch/LrAdvanceSearch.model";
+import SgtAdvanceSearch from "../SgtAdvanceSearch/SgtAdvanceSearch.vue";
+import { SgtAdvanceSearchConfig } from "../SgtAdvanceSearch/SgtAdvanceSearch.model";
 import moment from "moment";
-import { lrDataTableConst } from "./LrDataTable.constant";
-import { LrFilterObject } from "../LrChips/LrFilterObject.model";
-import LrChips from "../LrChips/LrChips.vue";
-import LrSvgIcon from "../LrSvgIcon/LrSvgIcon.vue";
+import { SgtDataTableConst } from "./SgtDataTable.constant";
+import { SgtFilterObject } from "../SgtChips/SgtFilterObject.model";
+import SgtChips from "../SgtChips/SgtChips.vue";
+import SgtSvgIcon from "../SgtSvgIcon/SgtSvgIcon.vue";
 import {
-  LrDataTableFilterSortPag,
+  SgtDataTableFilterSortPag,
   PaginationModel,
-} from "./LrDataTableFilterSortPag.model";
+} from "./SgtDataTableFilterSortPag.model";
 
 @Component({
-  name: "LrDataTable",
-  components: { LrAdvanceSearch, LrChips, LrSvgIcon },
+  name: "SgtDataTable",
+  components: { SgtAdvanceSearch, SgtChips, SgtSvgIcon },
   filters: {
     formattedDate: function (date: string | number) {
       if (isNaN(+date)) return moment(date).format("DD-MM-YYYY hh:mm A");
@@ -268,22 +268,22 @@ import {
     },
   },
 })
-export default class LrDataTable extends Vue {
+export default class SgtDataTable extends Vue {
   @Prop({ required: true }) private headers: any[];
   @Prop({ required: true }) private records: any[];
-  @Prop({ required: false }) private searchConfig: LrAdvanceSearchConfig;
+  @Prop({ required: false }) private searchConfig: SgtAdvanceSearchConfig;
   @Prop({ required: false }) private isMultiSelect: boolean;
   @Prop({ required: false }) private multiSelectButtons: any[];
-  @Prop({ required: false }) private chips: LrFilterObject[];
+  @Prop({ required: false }) private chips: SgtFilterObject[];
   @Prop({ required: false }) private itemKey: string;
   @Prop({
     required: false,
-    default: () => lrDataTableConst.defaultTableConfig,
+    default: () => SgtDataTableConst.defaultTableConfig,
   })
-  private tableDataConfig: LrDataTableFilterSortPag;
+  private tableDataConfig: SgtDataTableFilterSortPag;
   @Prop({
     required: false,
-    default: () => lrDataTableConst.defaultPaginationConfig,
+    default: () => SgtDataTableConst.defaultPaginationConfig,
   })
   private paginationConfig: PaginationModel;
   @Prop({ required: false }) private headerButton: any;
@@ -320,7 +320,7 @@ export default class LrDataTable extends Vue {
    * To update the action buttons, custom buttons
    */
   updateActionItems() {
-    const allActions = lrDataTableConst.buttonList;
+    const allActions = SgtDataTableConst.buttonList;
     const actions = this.headers.find(
       (ele) => ele.type && ele.type === "action"
     );
@@ -367,7 +367,7 @@ export default class LrDataTable extends Vue {
   /**
    * On filter update. event emitted from advance search component.
    */
-  updateFilter(filterList: LrFilterObject[]) {
+  updateFilter(filterList: SgtFilterObject[]) {
     this.tableDataConfig.filterList = filterList;
     this.updateRecord();
   }
@@ -375,7 +375,7 @@ export default class LrDataTable extends Vue {
   /**
    * On chip cancel button click. event emitted from chips component.
    */
-  updateFilterByChip(chip: LrFilterObject) {
+  updateFilterByChip(chip: SgtFilterObject) {
     const ind = this.tableDataConfig.filterList.findIndex(
       (ele) => ele.name == chip.name
     );
@@ -443,7 +443,6 @@ export default class LrDataTable extends Vue {
 .record:hover {
   .hover-btn {
     display: flex;
-    gap: 5px;
     position: absolute;
     right: 2rem;
   }
@@ -490,12 +489,6 @@ export default class LrDataTable extends Vue {
   .sort-icon.sort-desc path:last-child {
     fill: #000;
   }
-}
-
-.action-btn.disabled,
-.action-btn.disabled * {
-  cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .pag-dropdown {

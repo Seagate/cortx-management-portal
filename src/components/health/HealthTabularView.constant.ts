@@ -64,6 +64,11 @@ export const lrHealthConst = {
       },
       {
         text: "",
+        value: "actionColumn",
+        sortable: false,
+      },
+      {
+        text: "",
         value: "action",
         type: "action",
         align: "end",

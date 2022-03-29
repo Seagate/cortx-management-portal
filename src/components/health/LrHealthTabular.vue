@@ -30,6 +30,9 @@
       <template v-slot:status="item">
         <v-avatar :color="getColor(item)" size="16"></v-avatar>
       </template>
+      <template v-slot:actionColumn="item">
+        <v-avatar :color="getColor(item)" size="16"></v-avatar>
+      </template>
     </LrDataTable>
     <SgtInfoDialog
       v-model="isShowInfoDialog"

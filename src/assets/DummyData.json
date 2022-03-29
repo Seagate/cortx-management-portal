@@ -313,5 +313,29 @@
         "last_updated_time": "1637652159"
       }
     ]
+  },
+  "s3/s3_accounts": {
+    "s3_accounts": [
+      {
+        "account_name": "tests3",
+        "account_email": "tests3@gmail.com"
+      }
+    ]
+  },
+  "s3/access_keys": {
+    "access_keys": [
+      {
+        "user_name": "tests3",
+        "access_key_id": "AKIAxBkOgNJbTNXgHs2e5WHDtg",
+        "status": "active",
+        "updated_time": 1643300266
+      }
+    ]
+  },
+  "s3/generate_access_keys": {
+    "access_key_id": "AKIAxBkOgNJbTNXgHs2e5WHDtg",
+    "secret_key": "3afj0RjLGIE9dIYV+EZCsWuELn0SWjZcL",
+    "status": "active",
+    "user_name": "tests3"
   }
 }
