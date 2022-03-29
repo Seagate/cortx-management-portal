@@ -16,15 +16,20 @@
 -->
 <template>
   <div>
-    <v-dialog value="true" scrollable :max-width="modalWidth" persistent>
+    <v-dialog
+      value="true"
+      scrollable
+      :max-width="modalWidth"
+      :persistent="persistent"
+    >
       <v-card>
         <v-card-title :class="infoType">
           <div class="title-container">
-            <div class="title-content">{{ modalTitle }}</div>
+            <div class="title-content">{{ getModalTitle }}</div>
             <v-icon
               class="close-btn"
               :color="invertedColor"
-              @click="$close(modalType !== 'prompt' ? 'ok' : 'no')"
+              @click="$close('close')"
               >mdi-close</v-icon
             >
           </div>
@@ -38,8 +43,7 @@
             <div class="text-content" v-html="modalContent"></div>
           </template>
         </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
+        <v-card-actions class="button-container">
           <v-btn
             :color="dialogColor"
             @click="$close('ok')"
@@ -76,7 +80,7 @@ export default class SgtDialog extends DialogComponent<boolean> {
   @Prop({ required: true, default: "message" }) private modalType:
     | "prompt"
     | "message";
-  @Prop({ required: true }) private modalTitle: string;
+  @Prop({ required: false }) private modalTitle: string;
   @Prop({ required: true }) private modalContent: string;
   @Prop({ required: false, default: "neutral" }) private infoType:
     | "success"
@@ -89,11 +93,12 @@ export default class SgtDialog extends DialogComponent<boolean> {
   @Prop({ required: false, default: SgtDialogConst.modalWidth })
   private modalWidth: string;
   @Prop({ required: false, default: SgtDialogConst.okButtonLabel })
-  public okButtonLabel: string;
+  private okButtonLabel: string;
   @Prop({ required: false, default: SgtDialogConst.yesButtonLabel })
-  public yesButtonLabel: string;
+  private yesButtonLabel: string;
   @Prop({ required: false, default: SgtDialogConst.noButtonLabel })
-  public noButtonLabel: string;
+  private noButtonLabel: string;
+  @Prop({ required: false, default: true }) private persistent: boolean;
 
   private dialogConst = SgtDialogConst;
 
@@ -104,6 +109,10 @@ export default class SgtDialog extends DialogComponent<boolean> {
     return this.infoType === "neutral"
       ? this.dialogConst.infoTypeColors.neutral
       : "#FFFFFF";
+  }
+
+  get getModalTitle() {
+    return this.modalTitle ? this.modalTitle : this.infoType;
   }
 }
 </script>
@@ -120,10 +129,12 @@ export default class SgtDialog extends DialogComponent<boolean> {
   }
 }
 .content-container {
-  min-height: 8rem;
-  .text-content {
-    margin-top: 1rem;
-  }
+  min-height: 6rem;
+  padding: 2rem 1.5rem !important;
+}
+
+.button-container {
+  padding: 1.5rem !important;
 }
 
 .alert {

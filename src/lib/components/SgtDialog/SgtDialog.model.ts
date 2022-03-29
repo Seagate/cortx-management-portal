@@ -17,11 +17,12 @@
 export interface SgtDialogModel {
   modalType: "prompt" | "message";
   infoType: "success" | "alert" | "warning" | "neutral";
-  modalTitle: string;
+  modalTitle?: string;
   modalContent: string;
   modalContentType?: "text" | "html";
   modalWidth?: string;
   okButtonLabel?: string;
   yesButtonLabel?: string;
   noButtonLabel?: string;
+  persistent?:boolean;
 }
