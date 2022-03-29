@@ -15,12 +15,6 @@
  * please email opensource@seagate.com.
  */
 
-export interface IUserDetail {
-  username: string;
-  role: "admin" | "manage" | "monitor";
-  email: string;
-}
-
 export const adminUserTableConst = {
   searchConfig: {
     placeholder: "Search",
