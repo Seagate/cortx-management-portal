@@ -302,13 +302,13 @@
       },
       {
         "resource": "rack",
-        "id": "1",
+        "id": "2",
         "status": "online",
         "last_updated_time": "1637652160"
       },
       {
         "resource": "node",
-        "id": "1",
+        "id": "3",
         "status": "offline",
         "last_updated_time": "1637652159"
       }

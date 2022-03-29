@@ -15,8 +15,11 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div class="icon-container" v-if="icon"
-    :class="[hoverIcon ? 'action-btn':'']">
+  <div
+    class="icon-container"
+    v-if="icon"
+    :class="[hoverIcon ? 'action-btn' : '', { disabled }]"
+  >
     <img
       :src="require(`@/assets/icons/${icon}`)"
       @click="$emit('click')"
@@ -43,13 +46,19 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class SgtSvgIcon extends Vue {
   @Prop({ required: true }) private icon: string;
   @Prop({ required: false }) private hoverIcon: string;
+  @Prop({ required: false, default: false }) private disabled: boolean;
 }
 </script>
 
 <style lang="scss">
 .icon-container {
-    display: inline-block;
-    cursor: pointer;
+  display: inline-block;
+  cursor: pointer;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 .action-btn {
   .action-btn-block {

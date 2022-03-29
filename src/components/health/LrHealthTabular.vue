@@ -16,7 +16,7 @@
 -->
 <template>
   <div>
-    <LrDataTable
+    <SgtDataTable
       ref="healthDetailsTable"
       :headers="healthTableConfig.healthTable.headers"
       :records="clusterHealthData"
@@ -27,26 +27,30 @@
       @server-power-off="serverPowerOff"
       @server-storage-off="serverAndStorageOff"
     >
-      <template v-slot:status="item">
-        <v-avatar :color="getColor(item)" size="16"></v-avatar>
+      <template v-slot:status="{ data }">
+        {{ data.status }}
+        <v-avatar :color="getColor(data.status)" size="16"></v-avatar>
       </template>
-      <template v-slot:actionColumn="item">
-        <v-avatar :color="getColor(item)" size="16"></v-avatar>
+
+      <template v-slot:actionColumn="{ data }">
+        <div class="action-icons-container" v-if="data.resource === 'node'">
+          <v-tooltip bottom v-for="icon in getIconList(data)">
+            <template v-slot:activator="{ on, attrs }">
+              <SgtSvgIcon
+                :icon="icon.path"
+                :hoverIcon="icon.hoverPath"
+                :disabled="icon.disabled"
+                @click="actionIconHandler(icon.action, data)"
+                v-bind="attrs"
+                v-on="on"
+              />
+            </template>
+            <span>{{ icon.tooltip }}</span>
+          </v-tooltip>
+        </div>
       </template>
-    </LrDataTable>
-    <SgtInfoDialog
-      v-model="isShowInfoDialog"
-      :type="infoDialogType"
-      :title="infoDialogTitle"
-      :message="infoDialogMessage"
-      @close="clearInfoDialog()"
-    />
-    <SgtPromptDialog
-      v-model="isShowPromptDialog"
-      :title="promptDialogTitle"
-      :message="promptDialogMessage"
-      @close="promptDialogClosed($event)"
-    />
+    </SgtDataTable>
+
     <v-dialog v-model="displayInfoModal" width="500">
       <v-card class="pt-3">
         <v-card-text class="mt-2">
@@ -80,15 +84,15 @@
 import { Component, Mixins } from "vue-property-decorator";
 import ClusterManagementMixin from "../../mixins/ClusterManagement";
 import { Api } from "../../services/Api";
-import { IResource, lrHealthConst } from "./HealthTabularView.constant";
-import LrDataTable from "../shared/LrDataTable/LrDataTable.vue";
-import SgtPromptDialog from "../shared/SgtPromptDialog.vue";
-import SgtInfoDialog from "../shared/SgtInfoDialog.vue";
+import { lrHealthConst } from "./LrHealthTabularView.constant";
+import { IResource } from "./LrHealthTabularView.model";
+import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
+import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import { formatTime } from "../../utils/CommonUtilFunctions";
 
 @Component({
   name: "LrHealthTabular",
-  components: { LrDataTable, SgtPromptDialog, SgtInfoDialog },
+  components: { SgtDataTable, SgtSvgIcon },
 })
 export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
   public hideFilter: boolean = true;
@@ -123,6 +127,43 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
     // this.$store.dispatch("systemConfig/hideLoader");
   }
 
+  public getIconList(data: IResource) {
+    return [
+      {
+        path: `start-${data.status}.svg`,
+        hoverPath: `start-${data.status}.svg`,
+        disabled: data.status === "online",
+        action: "start",
+        tooltip: "Start Node",
+      },
+      {
+        path: `stop-${data.status}.svg`,
+        hoverPath: `stop-${data.status}.svg`,
+        disabled: data.status === "offline" || data.status === "failed",
+        action: "stop",
+        tooltip: "Stop Node",
+      },
+      {
+        path: `poweroff-${data.status}.svg`,
+        hoverPath: `poweroff-${data.status}.svg`,
+        action: "poweroff",
+        tooltip: "Power off",
+      },
+      {
+        path: `powerandstorageoff-${data.status}.svg`,
+        hoverPath: `powerandstorageoff-${data.status}.svg`,
+        action: "powerandstorageoff",
+        tooltip: "Power and storage off",
+      },
+    ];
+  }
+
+  public actionIconHandler(action: string, data: any) {
+    //Perform API calls for respective actions
+    console.log(action);
+    console.log(data);
+  }
+
   get actionsCallback() {
     return {
       getMoreInfoAction: this.showMoreDetails,
@@ -138,7 +179,7 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
   getColor(item: {
     value: "online" | "offline" | "degraded" | "failed" | "unknown";
   }) {
-    return lrHealthConst.severityList[item.value];
+    return this.healthTableConfig.severityList[item.value];
   }
 
   startNode(resource: IResource) {
@@ -163,4 +204,11 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.action-icons-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+</style>
