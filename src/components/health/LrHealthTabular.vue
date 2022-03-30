@@ -35,16 +35,18 @@
               class="action-icons-container"
               v-if="data.resource === 'node' && data.rowIdx === rowHoverIndex"
             >
-              <SgtSvgIcon
-                v-for="icon in getIconList(data)"
-                :icon="icon.path"
-                :hoverIcon="icon.hoverPath"
-                :disabled="icon.disabled"
-                :tooltip="icon.tooltip"
-                @click="actionIconHandler(icon.action, data)"
-                v-bind="attrs"
-                v-on="on"
-              />
+              <template v-for="(icon, index) in getIconList(data)">
+                <SgtSvgIcon
+                  :key="index"
+                  :icon="icon.path"
+                  :hoverIcon="icon.hoverPath"
+                  :disabled="icon.disabled"
+                  :tooltip="icon.tooltip"
+                  @click="actionIconHandler(icon.action, data)"
+                  v-bind="attrs"
+                  v-on="on"
+                />
+              </template>
             </div>
             <SgtSvgIcon
               icon="zoom-in.svg"
