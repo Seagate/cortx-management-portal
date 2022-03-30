@@ -16,11 +16,10 @@
  */
 import Vue from "vue";
 import Vuex from "vuex";
-import dimensions from "./modules/dimensions";
 import messageDialog from "./modules/messageDialog";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: { dimensions, messageDialog },
+  modules: { messageDialog },
 });

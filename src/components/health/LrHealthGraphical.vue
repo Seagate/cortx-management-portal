@@ -36,19 +36,6 @@
     </div>
 
     <div id="health_tree_container" :style="healthTreeContainerDim"></div>
-    <SgtInfoDialog
-      v-model="isShowInfoDialog"
-      :type="infoDialogType"
-      :title="infoDialogTitle"
-      :message="infoDialogMessage"
-      @close="clearInfoDialog()"
-    />
-    <SgtPromptDialog
-      v-model="isShowPromptDialog"
-      :title="promptDialogTitle"
-      :message="promptDialogMessage"
-      @close="promptDialogClosed($event)"
-    />
   </div>
 </template>
 <script lang="ts">
@@ -62,15 +49,10 @@ import {
   downloadSVGAsJPEG,
   downloadSVGAsPDF,
 } from "../../utils/SVGExport";
-import SgtInfoDialog from "../shared/SgtInfoDialog.vue";
-import SgtPromptDialog from "../shared/SgtPromptDialog.vue";
+import { Dimensions } from "@/utils/LrUtilFunctions";
 
 @Component({
   name: "LrHealthGraphical",
-  components: {
-    SgtInfoDialog,
-    SgtPromptDialog,
-  },
 })
 export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
   public healthTreeContainerDim: any = {
@@ -108,8 +90,7 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
   }
 
   private calculateDimensions() {
-    const mainContentDim: any =
-      this.$store.getters["dimensions/getContentDimension"];
+    const mainContentDim: any = Dimensions.getInstance().getContentDimension();
     this.healthTreeContainerDim.height = `${mainContentDim.height - 69}px`;
     this.healthTreeContainerDim.width = `${mainContentDim.width - 110}px`;
   }
