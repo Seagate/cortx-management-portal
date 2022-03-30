@@ -112,7 +112,9 @@ export default class SgtDialog extends DialogComponent<boolean> {
   }
 
   get getModalTitle() {
-    return this.modalTitle ? this.modalTitle : this.infoType;
+    return this.modalTitle
+      ? this.modalTitle
+      : this.dialogConst.infoTypeTitle[this.infoType];
   }
 }
 </script>

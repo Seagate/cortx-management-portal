@@ -23,6 +23,12 @@ export const SgtDialogConst = {
     "success": "csmsuccess",
     "alert": "csmerror",
     "warning": "csmwarning",
-    "neutral": "csmsuccess",
+    "neutral": "csmsuccess"
+  },
+  infoTypeTitle: {
+    "success": "Success",
+    "alert": "Alert",
+    "warning": "Warning",
+    "neutral": "Info"
   }
 }
