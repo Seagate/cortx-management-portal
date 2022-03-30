@@ -12,7 +12,7 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        additionalData: `@import "@/scss/config.scss";`,
+        additionalData: `@import "@/scss/config.scss";@import "@/scss/style.scss";`,
       },
     },
   },

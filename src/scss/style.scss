@@ -1,4 +1,8 @@
-@import url("./config.scss");
+@import "config.scss";
+
+html {
+  overflow-y: auto;
+}
 
 * {
   margin: 0;
@@ -8,17 +12,17 @@
 }
 
 .lr-zoom-in-icon {
-  background-image: url("../assets/images/icons/zoom-in.svg");
+  background-image: url("~@/assets/images/icons/zoom-in.svg");
 }
 .lr-zoom-in-icon:hover {
-  background-image: url("../assets/images/icons/zoom-in-hover.svg");
+  background-image: url("~@/assets/images/icons/zoom-in-hover.svg");
 }
 
 .lr-tooltip-text {
-  max-width:100px;
-  padding:5px;
-  min-height:10px;
-  background:#000;
+  max-width: 100px;
+  padding: 5px;
+  min-height: 10px;
+  background: #000;
   visibility: hidden;
   color: #fff;
   text-align: center;
@@ -26,10 +30,21 @@
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
-  word-wrap:break-word;
+  word-wrap: break-word;
 }
 .lr-tooltip:hover {
   .lr-tooltip-text {
-  visibility: visible;
+    visibility: visible;
+  }
 }
+
+.sgt-form-group-custom {
+  width: auto;
+  min-height: auto;
+  padding: 0.5em;
+}
+.sgt-form-group-label {
+  display: flex;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
 }
