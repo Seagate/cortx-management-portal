@@ -21,11 +21,7 @@
       :headers="healthTableConfig.healthTable.headers"
       :records="clusterHealthData"
       :searchConfig="healthTableConfig.searchConfig"
-      @zoom="showMoreDetails"
-      @start-node="startNode"
-      @stop-node="stopNode"
-      @server-power-off="serverPowerOff"
-      @server-storage-off="serverAndStorageOff"
+      @onRowHover="handleHover"
     >
       <template v-slot:status="{ data }">
         {{ data.status }}
@@ -33,20 +29,29 @@
       </template>
 
       <template v-slot:actionColumn="{ data }">
-        <div class="action-icons-container" v-if="data.resource === 'node'">
-          <v-tooltip bottom v-for="icon in getIconList(data)">
-            <template v-slot:activator="{ on, attrs }">
+        <div class="action-icons-wrapper">
+          <div class="all-icons-container">
+            <div
+              class="action-icons-container"
+              v-if="data.resource === 'node' && data.rowIdx === rowHoverIndex"
+            >
               <SgtSvgIcon
+                v-for="icon in getIconList(data)"
                 :icon="icon.path"
                 :hoverIcon="icon.hoverPath"
                 :disabled="icon.disabled"
+                :tooltip="icon.tooltip"
                 @click="actionIconHandler(icon.action, data)"
                 v-bind="attrs"
                 v-on="on"
               />
-            </template>
-            <span>{{ icon.tooltip }}</span>
-          </v-tooltip>
+            </div>
+            <SgtSvgIcon
+              icon="zoom-in.svg"
+              hoverIcon="zoom-in-hover.svg"
+              @click="showMoreDetails"
+            />
+          </div>
         </div>
       </template>
     </SgtDataTable>
@@ -101,6 +106,7 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
   public clusterHealthData: any = [];
   public displayInfoModal: boolean = false;
   public healthTableConfig: any = lrHealthConst;
+  public rowHoverIndex: number = -1;
   public resourceInfo: IResource = {
     id: "",
     last_updated_time: "",
@@ -112,6 +118,9 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
   }
   public mounted() {
     this.getHealthData();
+  }
+  public handleHover(index: number) {
+    this.rowHoverIndex = index;
   }
   public async getHealthData() {
     this.healthQueryParams = {
@@ -205,10 +214,20 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
 }
 </script>
 <style lang="scss" scoped>
-.action-icons-container {
+.action-icons-wrapper {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  gap: 5px;
+  .all-icons-container {
+    position: relative;
+
+    .action-icons-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+      position: absolute;
+      right: 25px;
+    }
+  }
 }
 </style>

@@ -15,25 +15,32 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div
-    class="icon-container"
-    v-if="icon"
-    :class="[hoverIcon ? 'action-btn' : '', { disabled }]"
-  >
-    <img
-      :src="require(`@/assets/icons/${icon}`)"
-      @click="$emit('click')"
-      class="action-btn-block"
-      alt="logo"
-    />
-    <img
-      v-if="hoverIcon"
-      :src="require(`@/assets/icons/${hoverIcon}`)"
-      @click="$emit('click')"
-      class="action-btn-hover"
-      alt="logo"
-    />
-  </div>
+  <v-tooltip left :disabled="!tooltip">
+    <template v-slot:activator="{ on, attrs }">
+      <div
+        class="icon-container"
+        v-if="icon"
+        :class="[hoverIcon ? 'action-btn' : '', { disabled }]"
+        v-bind="attrs"
+        v-on="on"
+      >
+        <img
+          :src="require(`@/assets/icons/${icon}`)"
+          @click="$emit('click')"
+          class="action-btn-block"
+          alt="logo"
+        />
+        <img
+          v-if="hoverIcon"
+          :src="require(`@/assets/icons/${hoverIcon}`)"
+          @click="$emit('click')"
+          class="action-btn-hover"
+          alt="logo"
+        />
+      </div>
+    </template>
+    <span>{{ tooltip }}</span>
+  </v-tooltip>
 </template>
 
 <script lang="ts">
@@ -46,6 +53,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class SgtSvgIcon extends Vue {
   @Prop({ required: true }) private icon: string;
   @Prop({ required: false }) private hoverIcon: string;
+  @Prop({ required: false }) private tooltip: string;
   @Prop({ required: false, default: false }) private disabled: boolean;
 }
 </script>
