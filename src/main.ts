@@ -22,7 +22,9 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import i18n from "./i18n";
 import * as moment from "moment";
+import * as ModalDialogs from "vue-modal-dialogs";
 
+Vue.use(ModalDialogs);
 Vue.config.productionTip = false;
 
 new Vue({
