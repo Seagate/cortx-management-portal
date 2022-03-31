@@ -314,6 +314,30 @@
       }
     ]
   },
+  "manage/admin-users": {
+    "data": [
+      {
+        "username": "admin1",
+        "role": "admin",
+        "email": "admin1@seagate.com"
+      },
+      {
+        "username": "admin2",
+        "role": "admin",
+        "email": "admin2@seagate.com"
+      },
+      {
+        "username": "monitor1",
+        "role": "monitor",
+        "email": "monitor1@seagate.com"
+      },
+      {
+        "username": "manage1",
+        "role": "manage",
+        "email": "manage1@seagate.com"
+      }
+    ]
+  },
   "s3/s3_accounts": {
     "s3_accounts": [
       {
