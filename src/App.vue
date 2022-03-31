@@ -40,9 +40,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import LrHeader from "./components/LrHeader.vue";
-import SgtNavigationDrawer from "./components/shared/SgtNavigationDrawer/SgtNavigationDrawer.vue";
+import SgtNavigationDrawer from "@/lib/components/SgtNavigationDrawer/SgtNavigationDrawer.vue";
 import LrRouteComponents from "./components/LrRouteComponents.vue";
-import SgtBreadCrumb from "./components/shared/bread-crumb/SgtBreadCrumb.vue";
+import SgtBreadCrumb from "@/lib/components/SgtBreadCrumb/SgtBreadCrumb.vue";
 import { basePathList } from "./components/BreadCrumb.constant";
 import { AppConst } from "./App.constant";
 
