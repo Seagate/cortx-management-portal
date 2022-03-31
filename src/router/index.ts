@@ -21,6 +21,7 @@ import LrAlert from "../components/alerts/LrAlert.vue";
 import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
 import LrS3Account from "../components/manage/s3/LrS3Account.vue";
 import LrIAmUser from "../components/manage/s3/LrIAmUser.vue"
+import LrManageUser from "../components/manage/LrManageUser.vue";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -37,28 +38,19 @@ const routes: Array<RouteConfig> = [
     path: "/alerts",
     name: "alerts",
     component: LrAlert,
-    props:true
+    props: true,
+  },
+  {
+    path: "/manage",
+    name: "manage",
+    component: LrManageUser,
   },
   {
     path: "/alert-details/:alertId",
     name: "alert-details",
     component: LrAlertDetails,
-    props:true
-  },
-  {
-    path: "/manage",
-    redirect: "s3Account"
-  },
-  {
-    path: "/s3account",
-    name: "s3Account",
-    component: LrS3Account,
-  },
-  {
-    path: "/iamuser",
-    name: "iAmUser",
-    component: LrIAmUser,
-  },
+    props: true,
+  }
 ];
 
 const router = new VueRouter({
