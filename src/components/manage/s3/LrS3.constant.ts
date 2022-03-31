@@ -15,81 +15,80 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 export const lrS3AccountConst = {
-    s3AccessConfig: {
-        s3AccessTable: {
-            isMultiSelect: false,
-            itemKey: "access_key_id",
-            headers: [
-                { text: "Access Key", value: "access_key_id", sortable: false },
-                { text: "Last update", value: "updated_time", type: "date", sortable: false },
-                { text: "Status", value: "status", sortable: false, type: "custom" },
-                {
-                    text: "",
-                    value: "action",
-                    type: "action",
-                    align: "end",
-                    sortable: false,
-                    zoomIcon: false,
-                    actionList: ["delete"]
-                }
-            ],
-            headerButton: {
-                name: "generate",
-                label: "Add/Generate",
-                disabled: false
+    s3AccessTable: {
+        isMultiSelect: false,
+        itemKey: "access_key_id",
+        headers: [
+            { text: "Access Key", value: "access_key_id", sortable: false },
+            { text: "Last update", value: "updated_time", type: "date", sortable: false },
+            { text: "Status", value: "status", sortable: false, type: "custom" },
+            {
+                text: "",
+                value: "action",
+                type: "action",
+                align: "end",
+                sortable: false,
+                zoomIcon: false,
+                actionList: ["delete"]
             }
+        ],
+        headerButton: {
+            name: "generate",
+            label: "Add/Generate",
+            disabled: false
+        }
+    }
+}
+
+export const IAmUserConst = {
+    searchConfig: {
+        placeholder: "Search",
+        advanceForm: [
+            {
+                type: "textbox",
+                name: "user_id",
+                label: "User id",
+                placeholder: "Enter user id",
+                value: ""
+            },
+            {
+                type: "textbox",
+                name: "user_name",
+                label: "User name",
+                placeholder: "Enter user name",
+                value: ""
+            }
+        ]
+    },
+    s3IAmUserTable: {
+        isMultiSelect: false,
+        itemKey: "user_name",
+        headers: [
+            { text: "User name", value: "user_name" },
+            { text: "User id", value: "user_id" },
+            { text: "ARN", value: "arn" },
+            {
+                text: "",
+                value: "action",
+                type: "action",
+                align: "end",
+                sortable: false,
+                zoomIcon: false,
+                actionList: ["edit", "delete"]
+            }
+        ],
+        headerButton: {
+            name: "create",
+            label: "Create",
         }
     },
-    iAmUserConfig: {
-        searchConfig: {
-            placeholder: "Search",
-            advanceForm: [
-                {
-                    type: "textbox",
-                    name: "user_id",
-                    label: "User id",
-                    placeholder: "Enter user id",
-                    value: ""
-                },
-                {
-                    type: "textbox",
-                    name: "user_name",
-                    label: "User name",
-                    placeholder: "Enter user name",
-                    value: ""
-                }
-            ]
+    tableConfig: {
+        pagination: {
+            pageSize: 5,
+            totalRecords: 5,
+            currentPage: 1
         },
-        s3IAmUserTable: {
-            isMultiSelect: false,
-            itemKey: "user_name",
-            headers: [
-                { text: "User name", value: "user_name" },
-                { text: "User id", value: "user_id" },
-                { text: "ARN", value: "arn" },
-                {
-                    text: "",
-                    value: "action",
-                    type: "action",
-                    align: "end",
-                    sortable: false,
-                    zoomIcon: false,
-                    actionList: ["edit", "delete"]
-                }
-            ],
-            headerButton: {
-                name: "create",
-                label: "Create",
-            }
-        },
-        tableConfig: {
-            pagination: {
-                pageSize: 5,
-                totalRecords: 5,
-                currentPage: 1
-            },
-            filterList: [],
-            sort: null
-        },
-    }
+        filterList: [],
+        sort: null
+    },
 }

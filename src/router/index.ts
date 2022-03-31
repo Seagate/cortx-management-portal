@@ -50,12 +50,12 @@ const routes: Array<RouteConfig> = [
     redirect: "s3Account"
   },
   {
-    path: "/s3Account",
+    path: "/s3account",
     name: "s3Account",
     component: LrS3Account,
   },
   {
-    path: "/iAmUser",
+    path: "/iamuser",
     name: "iAmUser",
     component: LrIAmUser,
   },

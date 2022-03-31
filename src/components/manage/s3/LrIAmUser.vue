@@ -18,13 +18,13 @@
   <div>
     <SgtDataTable
       ref="lrIAmUserDataTable"
-      :headers="s3IAmUserTable.headers"
+      :headers="iAmUserConfig.s3IAmUserTable.headers"
       :records="userList"
-      :isMultiSelect="s3IAmUserTable.isMultiSelect"
-      :itemKey="s3IAmUserTable.itemKey"
-      :headerButton="s3IAmUserTable.headerButton"
-      :searchConfig="s3IAmUSerSearch"
-      :tableDataConfig="tableDataConfig"
+      :isMultiSelect="iAmUserConfig.s3IAmUserTable.isMultiSelect"
+      :itemKey="iAmUserConfig.s3IAmUserTable.itemKey"
+      :headerButton="iAmUserConfig.s3IAmUserTable.headerButton"
+      :searchConfig="iAmUserConfig.searchConfig"
+      :tableDataConfig="iAmUserConfig.tableConfig"
       :chips="chips"
       @create="createUser"
       @edit="editUser($event)"
@@ -43,27 +43,20 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
-import { lrS3AccountConst } from "./LrS3.constant";
+import { IAmUserConst } from "./LrS3.constant";
 import { Api } from "@/services/Api";
 import LrS3Access from "./LrS3Access.vue";
 import LrS3UserForm from "./LrS3UserForm.vue";
-import { SgtDataTableFilterSortPag } from '@/lib/components/SgtDataTable/SgtDataTableFilterSortPag.model';
-import { SgtFilterObject } from '@/lib/components/SgtChips/SgtFilterObject.model';
+import { SgtDataTableFilterSortPag } from "@/lib/components/SgtDataTable/SgtDataTableFilterSortPag.model";
+import { SgtFilterObject } from "@/lib/components/SgtChips/SgtFilterObject.model";
 
 @Component({
   name: "LrIAmUser",
   components: { SgtDataTable, LrS3Access, LrS3UserForm },
 })
 export default class LrIAmUser extends Vue {
-  s3IAmUserTable: any = JSON.parse(
-    JSON.stringify(lrS3AccountConst.iAmUserConfig.s3IAmUserTable)
-  );
-  s3IAmUSerSearch: any = JSON.parse(
-    JSON.stringify(lrS3AccountConst.iAmUserConfig.searchConfig)
-  );
-  tableDataConfig: any = JSON.parse(
-    JSON.stringify(lrS3AccountConst.iAmUserConfig.tableConfig)
-  );
+  iAmUserConfig: any = JSON.parse(JSON.stringify(IAmUserConst));
+
   userList = [];
   showUserDialog = false;
   formType = "create";
