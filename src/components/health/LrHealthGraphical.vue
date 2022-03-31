@@ -23,11 +23,13 @@
         append-icon="mdi-chevron-down"
         outlined
         color="csmprimary"
+        item-color="csmprimary"
         v-model="selectedExport"
+        dense
       ></v-select>
       <v-btn
         color="csmprimary"
-        class="white--text mt-3"
+        class="white--text export-btn"
         @click="handleExport"
         :disabled="!selectedExport"
       >

@@ -242,6 +242,7 @@
               dense
               height="10px"
               color="csmprimary"
+              item-color="csmprimary"
               @change="updatePageSize"
             ></v-select>
           </div>

@@ -17,7 +17,7 @@
 <template>
   <div>
     <router-view v-if="isDashboard" />
-    <v-card class="wrapper-card pa-3" v-else>
+    <v-card class="wrapper-card pa-3 pb-6" v-else>
       <router-view />
     </v-card>
   </div>
@@ -42,8 +42,4 @@ export default class LrRouteComponents extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-.wrapper-card {
-  overflow: auto;
-}
-</style>
+<style lang="scss" scoped></style>

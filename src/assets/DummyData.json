@@ -296,19 +296,19 @@
       },
       {
         "resource": "site",
-        "id": "1",
+        "id": "fhg658b-0770-4160-b7c9-20f3cdhgjkfis",
         "status": "online",
         "last_updated_time": "1637652160"
       },
       {
         "resource": "rack",
-        "id": "2",
+        "id": "lkj2342-0770-4160-b7c9-20f3c6c654sdf",
         "status": "online",
         "last_updated_time": "1637652160"
       },
       {
         "resource": "node",
-        "id": "3",
+        "id": "897sdfjh2-0770-4160-b7c9-654s6d4fg",
         "status": "offline",
         "last_updated_time": "1637652159"
       }
@@ -341,20 +341,20 @@
   "manage/admin-s3-users": {
     "data": [
       {
-        "accountName": "admin1",
-        "email": "admin1@seagate.com"
+        "accountName": "s3user1",
+        "email": "s3user1@seagate.com"
       },
       {
-        "accountName": "admin2",
-        "email": "admin2@seagate.com"
+        "accountName": "s3user2",
+        "email": "s3user2@seagate.com"
       },
       {
-        "accountName": "monitor1",
-        "email": "monitor1@seagate.com"
+        "accountName": "s3user3",
+        "email": "s3user3@seagate.com"
       },
       {
-        "accountName": "manage1",
-        "email": "manage1@seagate.com"
+        "accountName": "s3user4",
+        "email": "s3user4@seagate.com"
       }
     ]
   },
