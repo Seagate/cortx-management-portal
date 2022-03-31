@@ -49,22 +49,18 @@ import LrS3Access from "./LrS3Access.vue";
 import LrS3UserForm from "./LrS3UserForm.vue";
 import { SgtDataTableFilterSortPag } from "@/lib/components/SgtDataTable/SgtDataTableFilterSortPag.model";
 import { SgtFilterObject } from "@/lib/components/SgtChips/SgtFilterObject.model";
-import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
-import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
-import { create } from "vue-modal-dialogs";
 
 @Component({
-  name: "LrIAMUser",
+  name: "LrIAmUser",
   components: { SgtDataTable, LrS3Access, LrS3UserForm },
 })
-export default class LrIAMUser extends Vue {
+export default class LrIAmUser extends Vue {
   iAmUserConfig: any = JSON.parse(JSON.stringify(IAmUserConst));
 
   userList = [];
   showUserDialog = false;
   formType = "create";
   chips: SgtFilterObject[] = [];
-  deleteModal = create<SgtDialogModel>(SgtDialog);
 
   mounted() {
     this.getAccessKeys();
@@ -90,16 +86,8 @@ export default class LrIAMUser extends Vue {
     this.showUserDialog = true;
   }
 
-  async deleteUser(row: any) {
-    const result = await this.deleteModal({
-      modalTitle: "Confirmation",
-      modalContent: `Are you sure you want to delete <b>${row.user_name}</b> ?`,
-      modalType: "prompt",
-      modalContentType: "html",
-    }).then((resp) => {
-      //code to delete
-      console.log(resp);
-    });
+  deleteUser(row: any) {
+    //code to delete
   }
 
   userForm(data: any) {
