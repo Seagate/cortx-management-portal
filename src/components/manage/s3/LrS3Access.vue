@@ -25,6 +25,7 @@
       :isPagination="false"
       :headerButton="s3AccountConst.s3AccessTable.headerButton"
       @generate="generateNewKey"
+      @delete="deleteKey"
     >
       <template v-slot:status="{ data }">
         <v-switch
@@ -97,19 +98,22 @@ import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
 import { lrS3AccountConst } from "./LrS3.constant";
 import { Api } from "@/services/Api";
 import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
+import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
+import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
+import { create } from "vue-modal-dialogs";
 
 @Component({
   name: "LrS3Access",
   components: { SgtDataTable, SgtSvgIcon },
 })
 export default class LrS3Access extends Vue {
-  s3AccountConst: any = JSON.parse(
-    JSON.stringify(lrS3AccountConst)
-  );
+  s3AccountConst: any = JSON.parse(JSON.stringify(lrS3AccountConst));
   accessList = [];
   selectedRecord: any = null;
   newAccessKey = {};
   generatedAccessKeyDialog = false;
+  deleteModal = create<SgtDialogModel>(SgtDialog);
+
   mounted() {
     this.getAccessKeys();
   }
@@ -155,6 +159,18 @@ export default class LrS3Access extends Vue {
     anchor.click();
     this.getAccessKeys();
     this.generatedAccessKeyDialog = false;
+  }
+
+  async deleteKey(row: any) {
+    const result = await this.deleteModal({
+      modalTitle: "Confirmation",
+      modalContent: `Are you sure you want to delete <b>${row.access_key_id}</b> ?`,
+      modalType: "prompt",
+      modalContentType: "html",
+    }).then((resp) => {
+      //code to delete
+      console.log(resp);
+    });
   }
 
   updateAccessKeyStatus() {

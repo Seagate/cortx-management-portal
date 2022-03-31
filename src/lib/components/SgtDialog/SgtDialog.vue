@@ -35,7 +35,7 @@
           </div>
         </v-card-title>
         <v-divider></v-divider>
-        <v-card-text class="content-container">
+        <v-card-text class="sgt-content-container">
           <div v-if="modalContentType === 'text'" class="text-content">
             <p>{{ modalContent }}</p>
           </div>
@@ -43,7 +43,7 @@
             <div class="text-content" v-html="modalContent"></div>
           </template>
         </v-card-text>
-        <v-card-actions class="button-container">
+        <v-card-actions class="sgt-button-container">
           <v-btn
             :color="dialogColor"
             @click="$close('ok')"
@@ -130,12 +130,12 @@ export default class SgtDialog extends DialogComponent<boolean> {
     display: inline-block;
   }
 }
-.content-container {
+.sgt-content-container {
   min-height: 6rem;
   padding: 2rem 1.5rem !important;
 }
 
-.button-container {
+.sgt-button-container {
   padding: 1.5rem !important;
 }
 
