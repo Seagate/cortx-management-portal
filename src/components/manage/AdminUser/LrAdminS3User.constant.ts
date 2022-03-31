@@ -15,11 +15,6 @@
  * please email opensource@seagate.com.
  */
 
-export interface IAdminS3UserDetail {
-  accountName: string;
-  email: string;
-}
-
 export const adminS3UserTableConst = {
   searchConfig: {
     placeholder: "Search",
