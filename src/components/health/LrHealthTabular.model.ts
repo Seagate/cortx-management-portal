@@ -10,11 +10,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see https://www.gnu.org/licenses/.
  * For any questions about this software or licensing,
  * please email opensource@seagate.com.
  */
-export interface LrDropdownOption {
-  label: string;
-  value: any;
+
+export interface IResource {
+  id: string;
+  last_updated_time: string;
+  resource: string;
+  status: string;
 }

@@ -30,8 +30,7 @@
       class="header-alert-icon"
       @click="
         $router.push({
-          name: 'alerts-large',
-          query: { tm: new Date().getTime() },
+          name: 'alerts',
         })
       "
     />

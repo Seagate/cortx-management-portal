@@ -169,7 +169,7 @@
                   <slot
                     v-bind:data="{
                       ...item,
-											rowIdx: rowIndex
+                      rowIdx: rowIndex,
                     }"
                     :name="col.value"
                     >{{ item[col.value] }}</slot
@@ -187,7 +187,7 @@
                           <LrSvgIcon
                             :icon="action.path"
                             :hoverIcon="action.hoverPath"
-														:refPath ="action.refPath"
+                            :refPath="action.refPath"
                             @click="$emit(action.name, item)"
                           />
                         </span>
@@ -443,6 +443,7 @@ export default class LrDataTable extends Vue {
 .record:hover {
   .hover-btn {
     display: flex;
+    gap: 5px;
     position: absolute;
     right: 2rem;
   }
@@ -489,6 +490,12 @@ export default class LrDataTable extends Vue {
   .sort-icon.sort-desc path:last-child {
     fill: #000;
   }
+}
+
+.action-btn.disabled,
+.action-btn.disabled * {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .pag-dropdown {

@@ -19,11 +19,11 @@
     <LrHeader @menu-click="drawer = !drawer" />
     <main>
       <nav class="side-nav">
-        <SgtNavigationDrawer 
-        :drawer.sync="drawer" 
-        :navItems="navItemsList"
-        brandName="Seagate"
-        brandLogo="images/seagate-green.svg"
+        <SgtNavigationDrawer
+          :drawer.sync="drawer"
+          :navItems="navItemsList"
+          brandName="Seagate"
+          brandLogo="images/seagate-green.svg"
         />
       </nav>
       <div class="main-content">
@@ -58,6 +58,7 @@ import { AppConst } from "./App.constant";
 })
 export default class App extends Vue {
   drawer = true;
+
   get navItemsList() {
     return AppConst.navItems;
   }

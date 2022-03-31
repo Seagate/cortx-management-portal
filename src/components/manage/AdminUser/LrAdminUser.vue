@@ -69,6 +69,9 @@ import { IUserDetail } from "./LrAdminUser.model";
 import { Api } from "../../../services/Api";
 import SgtDataTable from "../../../lib/components/SgtDataTable/SgtDataTable.vue";
 import LrAddOrEditUser from "./LrAddOrEditUser.vue";
+import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
+import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
+import { create } from "vue-modal-dialogs";
 
 @Component({
   name: "LrAdminUser",
@@ -84,8 +87,7 @@ export default class LrAdminUser extends Vue {
   public isUserCreate = false;
   public isUserEdit = false;
   public dataToEdit = {};
-  public isShowPromptDialog = false;
-  public dataToDelete = {};
+  public deleteModal = create<SgtDialogModel>(SgtDialog);
 
   public async mounted() {
     const res: any = await Api.getData("manage/admin-users", {
@@ -107,18 +109,16 @@ export default class LrAdminUser extends Vue {
     this.isUserEdit = true;
   }
 
-  private promptDialogClosed(confirmation: string) {
-    this.isShowPromptDialog = false;
-    if (confirmation === "yes") {
-      // API call to delete the record
-    }
-    this.dataToDelete = {};
-  }
-
-  public deleteUser(userInfo: IUserDetail) {
-    //Make an API call to delete the user from the table
-    this.dataToDelete = userInfo;
-    this.isShowPromptDialog = true;
+  async deleteUser(userInfo: IUserDetail) {
+    const result = await this.deleteModal({
+      modalTitle: "Confirmation",
+      modalContent: `Are you sure you want to delete the user <b>${userInfo.username}</b> ?`,
+      modalType: "prompt",
+      modalContentType: "html",
+    }).then((resp) => {
+      //code to delete
+      console.log(resp);
+    });
   }
 }
 </script>

@@ -14,7 +14,7 @@
  * For any questions about this software or licensing,
  * please email opensource@seagate.com.
  */
-import { LrDropdownOption } from "../LrDropdown/LrDropdown.model";
+import { SgtDropdownOption } from "../SgtDropdown/SgtDropdown.model";
 
 export interface LrAdvanceSearchConfig {
   placeholder?: string;
@@ -26,7 +26,7 @@ export interface LrAdvanceFormField {
   name: string;
   label: string;
   placeholder?: string;
-  options?: LrDropdownOption[];
+  options?: SgtDropdownOption[];
   required?: boolean;
   value?: any;
 }

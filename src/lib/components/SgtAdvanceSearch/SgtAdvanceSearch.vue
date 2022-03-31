@@ -23,6 +23,7 @@
           placeholder="Search"
           outlined
           class="primary-field"
+          color="csmprimary"
           append-icon="mdi-magnify"
           v-model="primarySearch"
           @click:append="primaryAction"
