@@ -31,13 +31,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-
-export interface Tab {
-  id: number;
-  label: string;
-}
-
-export type TabsInfo = Array<Tab>;
+import { TabsInfo } from "./SgtTabs.model";
 
 @Component({
   name: "SgtTabs",

@@ -278,12 +278,6 @@ export default class LrAddOrEditUser extends Vue {
     }
   }
 
-  private strEqualityCaseInsensitive(first: string, second: string) {
-    return (
-      first.localeCompare(second, undefined, { sensitivity: "base" }) === 0
-    );
-  }
-
   private proceedOperation() {
     // Data is available in this.userDetails.
     if (this.userData) {
