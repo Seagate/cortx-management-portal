@@ -25,15 +25,17 @@
     />
     <div class="flex-filler"></div>
 
-    <img
-      :src="alertIconSource()"
-      class="header-alert-icon"
-      @click="
-        $router.push({
-          name: 'alerts',
-        })
-      "
-    />
+    <div class="header-alert-icon">
+      <SgtSvgIcon
+        icon="alert-green.svg"
+        tooltip="Alerts"
+        @click="
+          $router.push({
+            name: 'alerts',
+          })
+        "
+      />
+    </div>
 
     <LrHeaderDropdown />
   </div>
@@ -41,10 +43,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import LrHeaderDropdown from "./LrHeaderDropdown.vue";
+import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 
 @Component({
   name: "LrHeader",
-  components: { LrHeaderDropdown },
+  components: { LrHeaderDropdown, SgtSvgIcon },
 })
 export default class LrHeader extends Vue {
   public alertIconSource() {
@@ -63,6 +66,7 @@ export default class LrHeader extends Vue {
   .header-alert-icon {
     cursor: pointer;
     margin-right: 1.5em;
+    padding-top: 7px;
   }
 
   .lr-brand-logo {

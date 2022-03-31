@@ -15,48 +15,48 @@
  * please email opensource@seagate.com.
  */
 export const AppConst = {
-    navItems: [
-        {
-            title: "dashboard",
-            path: "/dashboard",
-            iconDefault: "images/dashboard-grey.svg",
-            iconActive: "images/dashboard-white.svg",
-            requiredAccess: "alerts",
-        },
-        {
-            title: "health",
-            path: "/health",
-            iconDefault: "images/health-grey.svg",
-            iconActive: "images/health-white.svg",
-            requiredAccess: "sysconfig",
-        },
-        {
-            title: "manage",
-            path: "/manage",
-            iconDefault: "images/manage-grey.svg",
-            iconActive: "images/manage-white.svg",
-            requiredAccess: "s3accounts",
-        },
-        {
-            title: "lyvePilot",
-            path: "/ldp",
-            iconDefault: "images/udx-grey.svg",
-            iconActive: "images/udx-white.svg",
-            requiredAccess: "lyve_pilot",
-        },
-        {
-            title: "settings",
-            path: "/settings",
-            iconDefault: "images/settings-grey.svg",
-            iconActive: "images/settings-white.svg",
-            requiredAccess: "maintenance",
-        },
-        {
-            title: "maintenance",
-            path: "/maintenance",
-            iconDefault: "images/maintenance-grey.svg",
-            iconActive: "images/maintenance-white.svg",
-            requiredAccess: "sysconfig",
-        },
-    ]
-}
+  navItems: [
+    {
+      title: "dashboard",
+      path: "/dashboard",
+      iconDefault: "images/dashboard-grey.svg",
+      iconActive: "images/dashboard-white.svg",
+      requiredAccess: "alerts",
+    },
+    {
+      title: "health",
+      path: "/health",
+      iconDefault: "images/health-grey.svg",
+      iconActive: "images/health-white.svg",
+      requiredAccess: "sysconfig",
+    },
+    {
+      title: "manage",
+      path: "/manage",
+      iconDefault: "images/manage-grey.svg",
+      iconActive: "images/manage-white.svg",
+      requiredAccess: "s3accounts",
+    },
+    // {
+    //     title: "lyvePilot",
+    //     path: "/ldp",
+    //     iconDefault: "images/udx-grey.svg",
+    //     iconActive: "images/udx-white.svg",
+    //     requiredAccess: "lyve_pilot",
+    // },
+    // {
+    //     title: "settings",
+    //     path: "/settings",
+    //     iconDefault: "images/settings-grey.svg",
+    //     iconActive: "images/settings-white.svg",
+    //     requiredAccess: "maintenance",
+    // },
+    // {
+    //     title: "maintenance",
+    //     path: "/maintenance",
+    //     iconDefault: "images/maintenance-grey.svg",
+    //     iconActive: "images/maintenance-white.svg",
+    //     requiredAccess: "sysconfig",
+    // },
+  ],
+};

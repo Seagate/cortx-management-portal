@@ -16,7 +16,11 @@
 -->
 <template>
   <div id="capacityContainer">
-    <SgtCard title="capacity">
+    <SgtCard
+      title="capacity"
+      :showZoomIcon="true"
+      @zoom-click="zoomIconHandler"
+    >
       <div class="capacity-info-wrapper">
         <div class="capacity-info">
           <div id="capacity-gauge"></div>
@@ -117,6 +121,10 @@ export default class LrDashboardCapacityCard extends Vue {
         width: 280,
       },
     });
+  }
+
+  public zoomIconHandler() {
+    //Route to capacity page
   }
 
   public capacityChartVal(chartVal: number) {

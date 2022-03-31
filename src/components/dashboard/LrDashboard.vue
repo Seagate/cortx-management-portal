@@ -55,7 +55,7 @@ export default class LrDashboard extends Vue {}
 .dashboard-container {
   background-color: transparent;
   height: 100%;
-  max-width: 1260px;
+  // max-width: 1260px;
   // margin: 0 auto;
 }
 .top-row,

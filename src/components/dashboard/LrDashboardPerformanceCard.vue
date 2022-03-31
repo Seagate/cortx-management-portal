@@ -16,7 +16,11 @@
 -->
 <template>
   <div class="performance-widget-container">
-    <SgtCard title="performance">
+    <SgtCard
+      title="performance"
+      :showZoomIcon="true"
+      @zoom-click="zoomIconHandler"
+    >
       <div class="performance-cards-container">
         <template v-for="(cardDetail, index) in dashboardCardDetails">
           <LrDashboardInfoCard
@@ -54,6 +58,10 @@ export default class LrDashboardPerformanceCard extends Vue {
       ...datum,
       title: data[datum.description as keyof PerformanceData],
     }));
+  }
+
+  public zoomIconHandler() {
+    //Route to capacity page
   }
 
   cardClickHandler(routePath: string) {
