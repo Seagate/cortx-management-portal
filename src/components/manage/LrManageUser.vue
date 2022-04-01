@@ -27,7 +27,7 @@ import { TabsInfo } from "../../lib/components/SgtTabs/SgtTabs.model";
 import LrAdminUser from "./AdminUser/LrAdminUser.vue";
 import LrAdminS3Account from "./AdminUser/LrAdminS3Account.vue";
 import LrS3Account from "./s3/LrS3Account.vue"
-import LrIAMUser from "./s3/LrIAmUser.vue"
+import LrIAMUser from "./s3/LrIAMUser.vue"
 @Component({
   name: "LrManageUser",
   components: { SgtTabs, LrAdminUser, LrAdminS3Account, LrS3Account, LrIAMUser},
