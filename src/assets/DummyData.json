@@ -381,5 +381,34 @@
     "secret_key": "3afj0RjLGIE9dIYV+EZCsWuELn0SWjZcL",
     "status": "active",
     "user_name": "tests3"
+  },
+  "s3/iAmUser": {
+    "user": [
+      {
+        "user_name": "accesskeytest",
+        "user_id": "ABDA0FA1B0E6E5A64CDA9",
+        "arn": "arn:aws:iam::608745131648:user/accesskeytest"
+      },
+      {
+        "user_name": "accesskeytest1",
+        "user_id": "ABDA0FA1B0E6E5A64CDA9",
+        "arn": "arn:aws:iam::608745131648:user/accesskeytest"
+      },
+      {
+        "user_name": "accesskeytest2",
+        "user_id": "ABDA0FA1B0E6E5A64CDA9",
+        "arn": "arn:aws:iam::608745131648:user/accesskeytest"
+      },
+      {
+        "user_name": "accesskeytest3",
+        "user_id": "ABDA0FA1B0E6E5A64CDA9",
+        "arn": "arn:aws:iam::608745131648:user/accesskeytest"
+      },
+      {
+        "user_name": "accesskeytest4",
+        "user_id": "ABDA0FA1B0E6E5A64CDA9",
+        "arn": "arn:aws:iam::608745131648:user/accesskeytest"
+      }
+    ]
   }
 }
