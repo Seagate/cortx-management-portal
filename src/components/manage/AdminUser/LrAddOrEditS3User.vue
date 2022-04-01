@@ -98,12 +98,14 @@
                     </SgtTooltipIcon></label
                   >
                   <v-text-field
-                    type="password"
                     outlined
                     color="csmprimary"
                     v-model.trim="userDetails.password"
                     dense
                     :rules="validationRules.password"
+                    :type="showPassword ? 'text' : 'password'"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append="showPassword = !showPassword"
                   ></v-text-field>
                 </div>
               </v-col>
@@ -117,12 +119,16 @@
                     >Confirm Password*</label
                   >
                   <v-text-field
-                    type="password"
                     outlined
                     color="csmprimary"
                     v-model.trim="userDetails.confirmPassword"
                     dense
                     :rules="validationRules.confirmPassword"
+                    :type="showConfirmPassword ? 'text' : 'password'"
+                    :append-icon="
+                      showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
+                    "
+                    @click:append="showConfirmPassword = !showConfirmPassword"
                   ></v-text-field>
                 </div>
               </v-col>
@@ -179,6 +185,8 @@ export default class LrAddOrEditUser extends Vue {
   };
 
   public isFormValid = false;
+  public showPassword = false;
+  public showConfirmPassword = false;
   public userDetails = {
     accountName: "",
     email: "",

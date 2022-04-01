@@ -91,12 +91,16 @@
                     Current Password*
                   </label>
                   <v-text-field
-                    type="password"
                     outlined
                     color="csmprimary"
                     v-model.trim="userDetails.currentPassword"
                     dense
                     :rules="validationRules.password"
+                    :type="showCurrentPassword ? 'text' : 'password'"
+                    :append-icon="
+                      showCurrentPassword ? 'mdi-eye' : 'mdi-eye-off'
+                    "
+                    @click:append="showCurrentPassword = !showCurrentPassword"
                   ></v-text-field>
                 </div>
               </v-col>
@@ -119,12 +123,14 @@
                     </SgtTooltipIcon></label
                   >
                   <v-text-field
-                    type="password"
                     outlined
                     color="csmprimary"
                     v-model.trim="userDetails.password"
                     dense
                     :rules="validationRules.password"
+                    :type="showPassword ? 'text' : 'password'"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append="showPassword = !showPassword"
                   ></v-text-field>
                 </div>
               </v-col>
@@ -138,12 +144,16 @@
                     >Confirm Password*</label
                   >
                   <v-text-field
-                    type="password"
                     outlined
                     color="csmprimary"
                     v-model.trim="userDetails.confirmPassword"
                     dense
                     :rules="validationRules.confirmPassword"
+                    :type="showConfirmPassword ? 'text' : 'password'"
+                    :append-icon="
+                      showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
+                    "
+                    @click:append="showConfirmPassword = !showConfirmPassword"
                   ></v-text-field>
                 </div>
               </v-col>
@@ -201,7 +211,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import SgtTooltipIcon from "../../../lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
 import {
   usernameRegex,
@@ -224,6 +234,9 @@ export default class LrAddOrEditUser extends Vue {
   };
 
   public isFormValid = false;
+  public showPassword = false;
+  public showConfirmPassword = false;
+  public showCurrentPassword = false;
   public userDetails = {
     username: "",
     role: "",
