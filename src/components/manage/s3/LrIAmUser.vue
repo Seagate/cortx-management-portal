@@ -51,10 +51,10 @@ import { SgtDataTableFilterSortPag } from "@/lib/components/SgtDataTable/SgtData
 import { SgtFilterObject } from "@/lib/components/SgtChips/SgtFilterObject.model";
 
 @Component({
-  name: "LrIAmUser",
+  name: "LrIAMUser",
   components: { SgtDataTable, LrS3Access, LrS3UserForm },
 })
-export default class LrIAmUser extends Vue {
+export default class LrIAMUser extends Vue {
   iAmUserConfig: any = JSON.parse(JSON.stringify(IAmUserConst));
 
   userList = [];
