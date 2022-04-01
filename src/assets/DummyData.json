@@ -382,7 +382,7 @@
     "status": "active",
     "user_name": "tests3"
   },
-  "s3/iAmUser": {
+  "s3/iAMUser": {
     "user": [
       {
         "user_name": "accesskeytest",

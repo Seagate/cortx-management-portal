@@ -40,7 +40,7 @@ export const lrS3AccountConst = {
     }
 }
 
-export const IAmUserConst = {
+export const IAMUserConst = {
     searchConfig: {
         placeholder: "Search",
         advanceForm: [
@@ -60,7 +60,7 @@ export const IAmUserConst = {
             }
         ]
     },
-    s3IAmUserTable: {
+    s3IAMUserTable: {
         isMultiSelect: false,
         itemKey: "user_name",
         headers: [
