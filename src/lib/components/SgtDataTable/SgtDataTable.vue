@@ -145,7 +145,13 @@
       </template>
       <template v-slot:body="{ items }">
         <tbody>
-          <tr class="record" v-for="(item, rowIndex) in items" :key="rowIndex">
+          <tr
+            class="record"
+            v-for="(item, rowIndex) in items"
+            :key="rowIndex"
+            @mouseover="$emit('onRowHover', rowIndex)"
+            @mouseleave="$emit('onRowHover', -1)"
+          >
             <td v-if="isMultiSelect">
               <v-checkbox
                 multiple
@@ -236,6 +242,7 @@
               dense
               height="10px"
               color="csmprimary"
+              item-color="csmprimary"
               @change="updatePageSize"
             ></v-select>
           </div>

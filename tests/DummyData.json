@@ -205,6 +205,115 @@
   "alerts/comment": {
     "comments": []
   },
+  "/health/health-graphical": {
+    "data": [
+      {
+        "resource": "cluster",
+        "id": "394dce5b-0770-4160-b7c9-20f3c6c5983d",
+        "status": "online",
+        "last_updated_time": "1637652160",
+        "sub_resources": [
+          {
+            "resource": "site",
+            "id": "1",
+            "status": "online",
+            "last_updated_time": "1637652160",
+            "sub_resources": [
+              {
+                "resource": "rack",
+                "id": "1",
+                "status": "online",
+                "last_updated_time": "1637652160",
+                "sub_resources": [
+                  {
+                    "resource": "node",
+                    "id": "1",
+                    "status": "online",
+                    "last_updated_time": "1637652159",
+                    "sub_resources": null
+                  },
+                  {
+                    "resource": "node",
+                    "id": "2",
+                    "status": "online",
+                    "last_updated_time": "1637652159",
+                    "sub_resources": null
+                  }
+                ]
+              },
+              {
+                "resource": "rack",
+                "id": "2",
+                "status": "online",
+                "last_updated_time": "1637652160",
+                "sub_resources": [
+                  {
+                    "resource": "node",
+                    "id": "1",
+                    "status": "online",
+                    "last_updated_time": "1637652159",
+                    "sub_resources": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "resource": "site",
+            "id": "2",
+            "status": "online",
+            "last_updated_time": "1637652160",
+            "sub_resources": [
+              {
+                "resource": "rack",
+                "id": "1",
+                "status": "degraded",
+                "last_updated_time": "1637652160",
+                "sub_resources": [
+                  {
+                    "resource": "node",
+                    "id": "1",
+                    "status": "failed",
+                    "last_updated_time": "1637652159",
+                    "sub_resources": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "version": "2.0"
+  },
+  "/health/health-tabular": {
+    "data": [
+      {
+        "resource": "cluster",
+        "id": "394dce5b-0770-4160-b7c9-20f3c6c5983d",
+        "status": "online",
+        "last_updated_time": "1637652160"
+      },
+      {
+        "resource": "site",
+        "id": "fhg658b-0770-4160-b7c9-20f3cdhgjkfis",
+        "status": "online",
+        "last_updated_time": "1637652160"
+      },
+      {
+        "resource": "rack",
+        "id": "lkj2342-0770-4160-b7c9-20f3c6c654sdf",
+        "status": "online",
+        "last_updated_time": "1637652160"
+      },
+      {
+        "resource": "node",
+        "id": "897sdfjh2-0770-4160-b7c9-654s6d4fg",
+        "status": "offline",
+        "last_updated_time": "1637652159"
+      }
+    ]
+  },
   "manage/admin-users": {
     "data": [
       {
@@ -226,6 +335,26 @@
         "username": "manage1",
         "role": "manage",
         "email": "manage1@seagate.com"
+      }
+    ]
+  },
+  "manage/admin-s3-users": {
+    "data": [
+      {
+        "accountName": "s3user1",
+        "email": "s3user1@seagate.com"
+      },
+      {
+        "accountName": "s3user2",
+        "email": "s3user2@seagate.com"
+      },
+      {
+        "accountName": "s3user3",
+        "email": "s3user3@seagate.com"
+      },
+      {
+        "accountName": "s3user4",
+        "email": "s3user4@seagate.com"
       }
     ]
   },

@@ -16,7 +16,11 @@ module.exports = {
   rules: {
     curly: [1, "multi-line"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "prettier/prettier": ["off", { endOfLine: "auto" }],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-useless-escape": "off",
+    "prettier/prettier": "off",
   },
   overrides: [
     {

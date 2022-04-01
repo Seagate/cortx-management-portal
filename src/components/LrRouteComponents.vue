@@ -17,7 +17,7 @@
 <template>
   <div>
     <router-view v-if="isDashboard" />
-    <v-card class="pa-3" v-else>
+    <v-card class="wrapper-card pa-3 pb-6" v-else>
       <router-view />
     </v-card>
   </div>
@@ -30,11 +30,15 @@ import { Component, Vue, Watch } from "vue-property-decorator";
   name: "LrRouteComponents",
 })
 export default class LrRouteComponents extends Vue {
-  public isDashboard = true;
+  public isDashboard = this.getIsDashboard();
+
+  public getIsDashboard() {
+    return this.$route.path === "/dashboard";
+  }
 
   @Watch("$route")
   public routeChangeHandler() {
-    this.isDashboard = this.$route.path === "/dashboard";
+    this.isDashboard = this.getIsDashboard();
   }
 }
 </script>
