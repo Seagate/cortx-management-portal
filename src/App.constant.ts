@@ -37,6 +37,7 @@ export const AppConst = {
       iconActive: "images/manage-white.svg",
       requiredAccess: "s3accounts",
     },
+    //Uncomment the below menu items as it is built
     // {
     //     title: "lyvePilot",
     //     path: "/ldp",
