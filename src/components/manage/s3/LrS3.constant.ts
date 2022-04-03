@@ -15,7 +15,7 @@
 * please email opensource@seagate.com or cortx-questions@seagate.com.
 */
 export const lrS3AccountConst = {
-    s3AccountTable: {
+    s3AccessTable: {
         isMultiSelect: false,
         itemKey: "access_key_id",
         headers: [
@@ -38,4 +38,57 @@ export const lrS3AccountConst = {
             disabled: false
         }
     }
+}
+
+export const IAMUserConst = {
+    searchConfig: {
+        placeholder: "Search",
+        advanceForm: [
+            {
+                type: "textbox",
+                name: "user_id",
+                label: "User id",
+                placeholder: "Enter user id",
+                value: ""
+            },
+            {
+                type: "textbox",
+                name: "user_name",
+                label: "User name",
+                placeholder: "Enter user name",
+                value: ""
+            }
+        ]
+    },
+    s3IAMUserTable: {
+        isMultiSelect: false,
+        itemKey: "user_name",
+        headers: [
+            { text: "User name", value: "user_name" },
+            { text: "User id", value: "user_id" },
+            { text: "ARN", value: "arn" },
+            {
+                text: "",
+                value: "action",
+                type: "action",
+                align: "end",
+                sortable: false,
+                zoomIcon: false,
+                actionList: ["edit", "delete"]
+            }
+        ],
+        headerButton: {
+            name: "create",
+            label: "Create",
+        }
+    },
+    tableConfig: {
+        pagination: {
+            pageSize: 5,
+            totalRecords: 5,
+            currentPage: 1
+        },
+        filterList: [],
+        sort: null
+    },
 }
