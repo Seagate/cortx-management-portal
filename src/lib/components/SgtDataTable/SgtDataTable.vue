@@ -90,7 +90,7 @@
               ]"
               :style="{
                 'text-align': getTextAlign(header.align),
-                minWidth: header.width,
+                width: header.width,
               }"
               @click="handleSorting(header)"
             >
@@ -193,6 +193,7 @@
                           <SgtSvgIcon
                             :icon="action.path"
                             :hoverIcon="action.hoverPath"
+                            :tooltip="action.tooltip"
                             :refPath="action.refPath"
                             @click="$emit(action.name, item)"
                           />
@@ -203,6 +204,7 @@
                       <SgtSvgIcon
                         icon="zoom-in.svg"
                         hoverIcon="zoom-in-hover.svg"
+                        tooltip="View"
                         @click="$emit('zoom', item)"
                       />
                     </div>
