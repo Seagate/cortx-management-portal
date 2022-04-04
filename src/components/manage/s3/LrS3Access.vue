@@ -41,7 +41,7 @@
       <v-card>
         <v-card-title>
           <div class="title-container">
-            <SgtSvgIcon icon="green-tick.svg" class="title-icon" disableClick />
+            <SgtSvgIcon icon="green-tick.svg" class="title-icon" disableClick=true />
             <div class="title-content">Access key created</div>
           </div>
         </v-card-title>

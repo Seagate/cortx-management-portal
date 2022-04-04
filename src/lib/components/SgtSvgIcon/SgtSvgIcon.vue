@@ -17,7 +17,7 @@
 <template>
   <div
     class="sgt-icon-container"
-    :class="[disableClick ? 'cursor-pointer' : '']"
+    :class="[disableClick ? '' : 'cursor-pointer']"
   >
     <v-tooltip left :disabled="!tooltip">
       <template v-slot:activator="{ on, attrs }">
