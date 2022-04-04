@@ -42,8 +42,6 @@
                   :disabled="icon.disabled"
                   :tooltip="icon.tooltip"
                   @click="actionIconHandler(icon.action, data)"
-                  v-bind="attrs"
-                  v-on="on"
                 />
               </template>
             </div>

@@ -17,7 +17,7 @@
 <template>
   <div
     class="sgt-icon-container"
-    :class="[disableClick ? '' : 'cursor-pointer']"
+    :class="[disableClick || disabled ? '' : 'cursor-pointer']"
   >
     <v-tooltip left :disabled="!tooltip">
       <template v-slot:activator="{ on, attrs }">
@@ -66,8 +66,10 @@ export default class SgtSvgIcon extends Vue {
 <style lang="scss">
 .sgt-icon-container {
   display: inline-block;
-
-  &.disabled {
+  &.cursor-pointer {
+    cursor: pointer;
+  }
+  .disabled {
     pointer-events: none;
     opacity: 0.5;
   }
@@ -87,8 +89,5 @@ export default class SgtSvgIcon extends Vue {
   .action-btn-hover {
     display: block;
   }
-}
-.cursor-pointer {
-  cursor: pointer;
 }
 </style>
