@@ -15,11 +15,13 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div class="sgt-icon-container">
+  <div
+    class="sgt-icon-container"
+    :class="[disableClick ? 'cursor-pointer' : '']"
+  >
     <v-tooltip left :disabled="!tooltip">
       <template v-slot:activator="{ on, attrs }">
         <div
-          class="icon-container"
           v-if="icon"
           :class="[hoverIcon ? 'action-btn' : '', { disabled }]"
           v-bind="attrs"
@@ -57,16 +59,13 @@ export default class SgtSvgIcon extends Vue {
   @Prop({ required: false }) private hoverIcon: string;
   @Prop({ required: false }) private tooltip: string;
   @Prop({ required: false, default: false }) private disabled: boolean;
+  @Prop({ required: false, default: false }) private disableClick: boolean;
 }
 </script>
 
 <style lang="scss">
 .sgt-icon-container {
   display: inline-block;
-}
-.icon-container {
-  display: inline-block;
-  cursor: pointer;
 
   &.disabled {
     pointer-events: none;
@@ -88,5 +87,8 @@ export default class SgtSvgIcon extends Vue {
   .action-btn-hover {
     display: block;
   }
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>
