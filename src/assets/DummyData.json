@@ -410,5 +410,18 @@
         "arn": "arn:aws:iam::608745131648:user/accesskeytest"
       }
     ]
+  },
+  "s3/buckets": {
+    "buckets": [
+      {
+        "name": "s3test"
+      },
+      {
+        "name": "testuser1"
+      },
+      {
+        "name": "testuser2"
+      }
+    ]
   }
 }

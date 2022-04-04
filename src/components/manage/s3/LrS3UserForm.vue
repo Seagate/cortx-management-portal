@@ -8,6 +8,7 @@
             icon="close-green.svg"
             @click="closeForm"
             class="close-btn"
+            tooltip="close"
           />
         </div>
       </v-card-title>

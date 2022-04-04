@@ -15,32 +15,34 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <v-tooltip left :disabled="!tooltip">
-    <template v-slot:activator="{ on, attrs }">
-      <div
-        class="icon-container"
-        v-if="icon"
-        :class="[hoverIcon ? 'action-btn' : '', { disabled }]"
-        v-bind="attrs"
-        v-on="on"
-      >
-        <img
-          :src="require(`@/assets/icons/${icon}`)"
-          @click="$emit('click')"
-          class="action-btn-block"
-          alt="logo"
-        />
-        <img
-          v-if="hoverIcon"
-          :src="require(`@/assets/icons/${hoverIcon}`)"
-          @click="$emit('click')"
-          class="action-btn-hover"
-          alt="logo"
-        />
-      </div>
-    </template>
-    <span>{{ tooltip }}</span>
-  </v-tooltip>
+  <div class="sgt-icon-container">
+    <v-tooltip left :disabled="!tooltip">
+      <template v-slot:activator="{ on, attrs }">
+        <div
+          class="icon-container"
+          v-if="icon"
+          :class="[hoverIcon ? 'action-btn' : '', { disabled }]"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <img
+            :src="require(`@/assets/icons/${icon}`)"
+            @click="$emit('click')"
+            class="action-btn-block"
+            alt="logo"
+          />
+          <img
+            v-if="hoverIcon"
+            :src="require(`@/assets/icons/${hoverIcon}`)"
+            @click="$emit('click')"
+            class="action-btn-hover"
+            alt="logo"
+          />
+        </div>
+      </template>
+      <span>{{ tooltip }}</span>
+    </v-tooltip>
+  </div>
 </template>
 
 <script lang="ts">
@@ -59,6 +61,9 @@ export default class SgtSvgIcon extends Vue {
 </script>
 
 <style lang="scss">
+.sgt-icon-container {
+  display: inline-block;
+}
 .icon-container {
   display: inline-block;
   cursor: pointer;

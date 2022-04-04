@@ -92,3 +92,26 @@ export const IAMUserConst = {
         sort: null
     },
 }
+
+export const LrBucketConst = {
+    bucketTable: {
+        isMultiSelect: false,
+        itemKey: "name",
+        headers: [
+            { text: "Name", value: "name", sortable: false },
+            {
+                text: "",
+                value: "action",
+                type: "action",
+                align: "end",
+                sortable: false,
+                zoomIcon: false,
+                actionList: ["edit", "delete"]
+            }
+        ],
+        headerButton: {
+            name: "create",
+            label: "Create"
+        }
+    }
+}
