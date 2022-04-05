@@ -39,7 +39,7 @@
             }}
             <SgtSvgIcon
               icon="close-green.svg"
-              tooltip="close"
+              tooltip="Close"
               @click="closeForm"
               class="close-btn"
             />
