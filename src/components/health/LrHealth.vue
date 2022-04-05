@@ -21,7 +21,8 @@
   </div>
 </template>
 <script lang="ts">
-import SgtTabs, { TabsInfo } from "../shared/SgtTabs.vue";
+import SgtTabs from "@/lib/components/SgtTabs/SgtTabs.vue";
+import { TabsInfo } from "@/lib/components/SgtTabs/SgtTabs.model";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import LrHealthTabular from "./LrHealthTabular.vue";
 import LrHealthGraphical from "./LrHealthGraphical.vue";
