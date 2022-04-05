@@ -90,7 +90,7 @@
               ]"
               :style="{
                 'text-align': getTextAlign(header.align),
-                minWidth: header.width,
+                width: header.width,
               }"
               @click="handleSorting(header)"
             >
@@ -193,6 +193,7 @@
                           <SgtSvgIcon
                             :icon="action.path"
                             :hoverIcon="action.hoverPath"
+                            :tooltip="action.tooltip"
                             :refPath="action.refPath"
                             @click="$emit(action.name, item)"
                           />
@@ -203,6 +204,7 @@
                       <SgtSvgIcon
                         icon="zoom-in.svg"
                         hoverIcon="zoom-in-hover.svg"
+                        tooltip="View"
                         @click="$emit('zoom', item)"
                       />
                     </div>
@@ -252,7 +254,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import SgtAdvanceSearch from "../SgtAdvanceSearch/SgtAdvanceSearch.vue";
 import { SgtAdvanceSearchConfig } from "../SgtAdvanceSearch/SgtAdvanceSearch.model";
 import moment from "moment";
@@ -331,6 +333,7 @@ export default class SgtDataTable extends Vue {
     const actions = this.headers.find(
       (ele) => ele.type && ele.type === "action"
     );
+    if (!actions) return [];
     this.actionItems = allActions.filter((ele) =>
       actions.actionList.includes(ele.name)
     );

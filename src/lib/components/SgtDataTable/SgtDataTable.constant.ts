@@ -20,41 +20,41 @@ export const SgtDataTableConst = {
       name: "comment",
       path: "comment-default.svg",
       hoverPath: "comment-hover.svg",
-      tooltip: "",
+      tooltip: "Comment",
     },
     {
       name: "edit",
       path: "edit-green.svg",
       hoverPath: "edit-green.svg",
-      tooltip: "edit",
+      tooltip: "Edit",
     },
     {
       name: "remove",
       path: "close-green.svg",
       hoverPath: "close-hover.svg",
-      tooltip: "remove",
+      tooltip: "Remove",
     },
     {
       name: "notification",
       path: "alert-green.svg",
       hoverPath: "alert-hover.svg",
-      tooltip: "notification",
+      tooltip: "Acknowledge",
     },
     {
       name: "delete",
       path: "delete-green.svg",
       hoverPath: "delete-green.svg",
-      tooltip: "delete",
-    }
+      tooltip: "Delete",
+    },
   ],
   defaultTableConfig: {
     pagination: {
       pageSize: 10,
       totalRecords: 10,
-      currentPage: 1
+      currentPage: 1,
     },
     filterList: [],
-    sort: null
+    sort: null,
   },
   defaultPaginationConfig: {
     pageLength: 1,
@@ -63,10 +63,10 @@ export const SgtDataTableConst = {
     nextIcon: "mdi-chevron-double-right",
     prevIcon: "mdi-chevron-double-left",
     pageSizeList: [
-      { text: '5 rows', value: 5 },
-      { text: '10 rows', value: 10 },
-      { text: '15 rows', value: 15 },
-      { text: '20 rows', value: 20 }
-    ]
-  }
+      { text: "5 rows", value: 5 },
+      { text: "10 rows", value: 10 },
+      { text: "15 rows", value: 15 },
+      { text: "20 rows", value: 20 },
+    ],
+  },
 };

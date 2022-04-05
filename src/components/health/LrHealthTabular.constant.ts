@@ -24,22 +24,25 @@ export const lrHealthConst = {
     itemKey: "alert_uuid",
     headers: [
       {
-        text: "Last Updated",
-        value: "last_updated_time",
-        type: "date",
+        text: "Resource",
+        value: "resource",
+        width: "150px",
+      },
+      {
+        text: "Resource ID",
+        value: "id",
+        width: "300px",
       },
       {
         text: "Status",
         value: "status",
         type: "custom",
+        align: "middle",
       },
       {
-        text: "Resource",
-        value: "resource",
-      },
-      {
-        text: "Resource ID",
-        value: "id",
+        text: "Last Updated",
+        value: "last_updated_time",
+        type: "date",
       },
       {
         text: " ",

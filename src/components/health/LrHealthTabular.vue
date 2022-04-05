@@ -24,7 +24,6 @@
       @onRowHover="handleHover"
     >
       <template v-slot:status="{ data }">
-        {{ data.status }}
         <v-avatar :color="getColor(data.status)" size="16"></v-avatar>
       </template>
 
@@ -43,8 +42,6 @@
                   :disabled="icon.disabled"
                   :tooltip="icon.tooltip"
                   @click="actionIconHandler(icon.action, data)"
-                  v-bind="attrs"
-                  v-on="on"
                 />
               </template>
             </div>
@@ -187,10 +184,8 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
     };
   }
 
-  getColor(item: {
-    value: "online" | "offline" | "degraded" | "failed" | "unknown";
-  }) {
-    return this.healthTableConfig.severityList[item.value];
+  getColor(item: "online" | "offline" | "degraded" | "failed" | "unknown") {
+    return this.healthTableConfig.severityList[item];
   }
 
   startNode(resource: IResource) {

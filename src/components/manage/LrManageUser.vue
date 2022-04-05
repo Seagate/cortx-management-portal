@@ -26,10 +26,12 @@ import SgtTabs from "../../lib/components/SgtTabs/SgtTabs.vue";
 import { TabsInfo } from "../../lib/components/SgtTabs/SgtTabs.model";
 import LrAdminUser from "./AdminUser/LrAdminUser.vue";
 import LrAdminS3Account from "./AdminUser/LrAdminS3Account.vue";
-
+import LrS3Account from "./s3/LrS3Account.vue"
+import LrIAMUser from "./s3/LrIAMUser.vue"
+import LrBuckets from "./s3/LrBuckets.vue"
 @Component({
   name: "LrManageUser",
-  components: { SgtTabs, LrAdminUser, LrAdminS3Account },
+  components: { SgtTabs, LrAdminUser, LrAdminS3Account, LrS3Account, LrIAMUser, LrBuckets},
 })
 export default class LrManageUser extends Vue {
   public tabsInfo: TabsInfo = [
@@ -41,6 +43,18 @@ export default class LrManageUser extends Vue {
       id: 2,
       label: "S3 Accounts",
     },
+    {
+      id: 3,
+      label: "S3 Account",
+    },
+    {
+      id: 4,
+      label: "IAM User",
+    },
+    {
+      id: 5,
+      label: "Bucket",
+    },
   ];
   private activeTab = "LrAdminUser";
   public onTabChange(value: number) {
@@ -51,6 +65,14 @@ export default class LrManageUser extends Vue {
       case 2:
         this.activeTab = "LrAdminS3Account";
         break;
+         case 3:
+        this.activeTab = "LrS3Account";
+        break;
+      case 4:
+        this.activeTab = "LrIAMUser";
+        break;
+      case 5:
+        this.activeTab = "LrBuckets";
     }
   }
 }
