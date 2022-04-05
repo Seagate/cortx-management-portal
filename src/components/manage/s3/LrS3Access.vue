@@ -85,7 +85,7 @@
         <v-divider></v-divider>
         <v-card-actions class="pa-4">
           <v-btn color="csmprimary" @click="downloadKey()" dark
-            >Save & close</v-btn
+            >Save & Close</v-btn
           >
         </v-card-actions>
       </v-card>
