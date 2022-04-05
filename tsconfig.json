@@ -16,7 +16,8 @@
     "strictPropertyInitialization": false,
     "types": ["webpack-env", "jest"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@lib/*":["src/lib/components/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
