@@ -16,9 +16,9 @@
  */
 export const SgtDialogConst = {
   modalWidth: "600px",
-  okButtonLabel: "OK",
-  yesButtonLabel: "YES",
-  noButtonLabel: "NO",
+  okButtonLabel: "Ok",
+  yesButtonLabel: "Yes",
+  noButtonLabel: "No",
   infoTypeColors: {
     "success": "csmsuccess",
     "alert": "csmerror",

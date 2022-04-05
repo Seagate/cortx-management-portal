@@ -29,7 +29,7 @@
           <div>Email: {{ s3AccountDetails.account_email }}</div>
         </v-col>
         <v-col cols="1" style="margin-right: 1rem">
-          <SgtSvgIcon icon="edit-green.svg" @click="showUserDialog = true" />
+          <SgtSvgIcon icon="edit-green.svg" @click="showUserDialog = true" tooltip="Reset Password" />
         </v-col>
       </v-row>
     </v-card>

@@ -28,9 +28,10 @@ import LrAdminUser from "./AdminUser/LrAdminUser.vue";
 import LrAdminS3Account from "./AdminUser/LrAdminS3Account.vue";
 import LrS3Account from "./s3/LrS3Account.vue"
 import LrIAMUser from "./s3/LrIAMUser.vue"
+import LrBuckets from "./s3/LrBuckets.vue"
 @Component({
   name: "LrManageUser",
-  components: { SgtTabs, LrAdminUser, LrAdminS3Account, LrS3Account, LrIAMUser},
+  components: { SgtTabs, LrAdminUser, LrAdminS3Account, LrS3Account, LrIAMUser, LrBuckets},
 })
 export default class LrManageUser extends Vue {
   public tabsInfo: TabsInfo = [
@@ -70,6 +71,8 @@ export default class LrManageUser extends Vue {
       case 4:
         this.activeTab = "LrIAMUser";
         break;
+      case 5:
+        this.activeTab = "LrBuckets";
     }
   }
 }

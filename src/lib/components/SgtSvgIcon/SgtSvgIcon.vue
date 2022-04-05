@@ -15,32 +15,36 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <v-tooltip left :disabled="!tooltip">
-    <template v-slot:activator="{ on, attrs }">
-      <div
-        class="icon-container"
-        v-if="icon"
-        :class="[hoverIcon ? 'action-btn' : '', { disabled }]"
-        v-bind="attrs"
-        v-on="on"
-      >
-        <img
-          :src="require(`@/assets/icons/${icon}`)"
-          @click="$emit('click')"
-          class="action-btn-block"
-          alt="logo"
-        />
-        <img
-          v-if="hoverIcon"
-          :src="require(`@/assets/icons/${hoverIcon}`)"
-          @click="$emit('click')"
-          class="action-btn-hover"
-          alt="logo"
-        />
-      </div>
-    </template>
-    <span>{{ tooltip }}</span>
-  </v-tooltip>
+  <div
+    class="sgt-icon-container"
+    :class="[disableClick || disabled ? '' : 'cursor-pointer']"
+  >
+    <v-tooltip left :disabled="!tooltip">
+      <template v-slot:activator="{ on, attrs }">
+        <div
+          v-if="icon"
+          :class="[hoverIcon ? 'action-btn' : '', { disabled }]"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <img
+            :src="require(`@/assets/icons/${icon}`)"
+            @click="$emit('click')"
+            class="action-btn-block"
+            alt="logo"
+          />
+          <img
+            v-if="hoverIcon"
+            :src="require(`@/assets/icons/${hoverIcon}`)"
+            @click="$emit('click')"
+            class="action-btn-hover"
+            alt="logo"
+          />
+        </div>
+      </template>
+      <span>{{ tooltip }}</span>
+    </v-tooltip>
+  </div>
 </template>
 
 <script lang="ts">
@@ -55,15 +59,17 @@ export default class SgtSvgIcon extends Vue {
   @Prop({ required: false }) private hoverIcon: string;
   @Prop({ required: false }) private tooltip: string;
   @Prop({ required: false, default: false }) private disabled: boolean;
+  @Prop({ required: false, default: false }) private disableClick: boolean;
 }
 </script>
 
 <style lang="scss">
-.icon-container {
+.sgt-icon-container {
   display: inline-block;
-  cursor: pointer;
-
-  &.disabled {
+  &.cursor-pointer {
+    cursor: pointer;
+  }
+  .disabled {
     pointer-events: none;
     opacity: 0.5;
   }

@@ -41,7 +41,7 @@
       <v-card>
         <v-card-title>
           <div class="title-container">
-            <SgtSvgIcon icon="green-tick.svg" class="title-icon" />
+            <SgtSvgIcon icon="green-tick.svg" class="title-icon" disableClick=true />
             <div class="title-content">Access key created</div>
           </div>
         </v-card-title>
@@ -85,7 +85,7 @@
         <v-divider></v-divider>
         <v-card-actions class="pa-4">
           <v-btn color="csmprimary" @click="downloadKey()" dark
-            >Save & close</v-btn
+            >Save & Close</v-btn
           >
         </v-card-actions>
       </v-card>

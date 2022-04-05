@@ -17,3 +17,12 @@ export function usernameTest(str: string, reg?: string) {
 
 export const strEqualityCaseInsensitive = (first: string, second: string) =>
   first.localeCompare(second, undefined, { sensitivity: "base" }) === 0;
+
+export function jsonTest(str: string) {
+  try {
+    JSON.parse(str);
+  } catch (error) {
+    return false;
+  }
+  return true;
+}
