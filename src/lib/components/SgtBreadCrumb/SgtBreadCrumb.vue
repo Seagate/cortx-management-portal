@@ -36,7 +36,6 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import { PathData } from "./SgtBreadCrumb.model";
-import { capitalizeFirstLetter } from "../../services/CommonUtilFunctions";
 
 @Component({
   name: "SgtBreadCrumb",
@@ -63,7 +62,7 @@ export default class SgtBreadCrumb extends Vue {
     pathItems.forEach((item) => {
       pathValue += `/${item}`;
       this.pathList.push({
-        text: capitalizeFirstLetter(item),
+        text: this.capitalizeFirstLetter(item),
         to: pathValue,
         disabled: false,
       });
@@ -82,6 +81,10 @@ export default class SgtBreadCrumb extends Vue {
   public routeChangeHandler() {
     this.populatePathList();
   }
+
+  capitalizeFirstLetter = (value: string) => {
+  return value.charAt(0).toUpperCase() + value.substring(1);
+};
 }
 </script>
 
