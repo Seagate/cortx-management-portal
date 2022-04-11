@@ -98,7 +98,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
 import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
-import { passwordTest, usernameTest } from "@/lib/services/CommonUtilFunctions";
+import { passwordTest, usernameTest } from "@/utils/CommonUtilFunctions";
 import { UserForm } from "./LrS3User.model";
 @Component({
   name: "LrS3UserForm",
