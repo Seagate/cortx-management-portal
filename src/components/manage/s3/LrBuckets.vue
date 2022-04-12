@@ -126,7 +126,7 @@ import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
 import { LrBucketConst } from "./LrS3.constant";
 import { Api } from "@/services/Api";
 import { SgtDataTableFilterSortPag } from "@/lib/components/SgtDataTable/SgtDataTableFilterSortPag.model";
-import { jsonTest, usernameTest } from "@/lib/services/CommonUtilFunctions";
+import { jsonTest, usernameTest } from "@/utils/CommonUtilFunctions";
 import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
 import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";

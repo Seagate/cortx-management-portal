@@ -39,7 +39,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import ClickOutsideHOC from "./shared/ClickOutsideHOC.vue";
+import ClickOutsideHOC from "@/lib/components/ClickOutsideHOC.vue";
 
 @Component({
   name: "LrHeaderDropdown",

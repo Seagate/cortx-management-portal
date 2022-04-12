@@ -24,7 +24,7 @@ export abstract class Api {
   ): Promise<AxiosResponse | unknown> {
     if (isDummy) {
       /* eslint-disable */
-      const data = require("@/assets/DummyData.json")[url];
+      const data = require("../../tests/DummyData.json")[url];
 
       // if (queryParams) {
       // }
