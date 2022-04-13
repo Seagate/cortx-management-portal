@@ -16,13 +16,13 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <v-row class="pa-8">
+  <v-row class="pa-8 nav-card-container">
     <v-col
       v-for="card in cardList"
       :key="card.name"
       cols="12"
       lg="3"
-      md="4"
+      md="3"
       sm="6"
     >
       <v-card
@@ -35,7 +35,12 @@
       >
         <div class="icon-container pa-4">
           <div class="icon-box">
-            <SgtSvgIcon :icon="card.icon" class="pa-3" />
+            <img
+              :src="require(`@/assets/icons/${card.icon}`)"
+              class="pa-3"
+              width="96"
+              height="96"
+            />
           </div>
         </div>
         <v-card-title class="card-title">{{ card.title }}</v-card-title>
@@ -49,10 +54,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import SgtSvgIcon from "../SgtSvgIcon/SgtSvgIcon.vue";
 @Component({
   name: "SgtNavigationCard",
-  components: { SgtSvgIcon },
+  components: {},
 })
 export default class SgtNavigationCard extends Vue {
   @Prop({ required: true }) private cardList: string;
@@ -62,34 +66,37 @@ export default class SgtNavigationCard extends Vue {
 </script>
 
 <style lang="scss">
-.sgt-card {
-  border: 1px solid $primary !important;
-  box-shadow: 1px 2px $primary !important;
-  .icon-container {
-    height: 50%;
-    .icon-box {
-      height: 5rem;
-      width: 5rem;
-      border: 1px solid $primary;
-      border-radius: 5px;
-      text-align: center;
+.nav-card-container {
+  max-width: 1440px;
+  .sgt-card {
+    border: 1px solid $primary !important;
+    box-shadow: 1px 2px $primary !important;
+    &:hover {
+      box-shadow: 2px 4px $primary !important;
+      background-color: #f8fff8 !important;
+    }
+    .icon-container {
+      height: 50%;
+      .icon-box {
+        height: 6rem;
+        width: 6rem;
+        border: 1px solid $primary;
+        border-radius: 5px;
+        text-align: center;
+      }
+    }
+    .card-title {
+      color: $primary;
+      font-size: 1.7rem;
+      height: 30%;
+      word-break: inherit;
+    }
+    .card-subtitle {
+      color: $primary !important;
+      padding-top: 1rem;
+      font-size: 1.1rem;
+      height: 20%;
     }
   }
-  .card-title {
-    color: $primary;
-    font-size: 1.7rem;
-    height: 30%;
-  }
-  .card-subtitle {
-    color: $primary !important;
-    padding-top: 1rem;
-    font-size: 1.1rem;
-    height: 20%;
-  }
-}
-
-.sgt-card:hover {
-  box-shadow: 2px 4px $primary !important;
-  background-color: #F8FFF8 !important;
 }
 </style>
