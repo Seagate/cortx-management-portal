@@ -43,7 +43,7 @@ We've listed the coding style that is specific to any submissions made to the co
 
   - Always surround loop and conditional bodies with curly braces. Statements on the same line are allowed to omit braces.
   - Open curly braces always go on the same line as whatever necessitates them.
-  - Parenthesized constructs should have no surrounding whitespace. A single space follows commas, colons, and semicolons in those constructs. 
+  - Parenthesized constructs should have no surrounding empty space. A single space follows commas, colons, and semicolons in those constructs. 
     
     **Example:**
     
