@@ -16,7 +16,7 @@
 -->
 <template>
   <div class="graphical-view-container">
-    <div class="export-feature">
+    <div class="export-feature" v-if="showExport">
       <v-select
         :items="exportOptions"
         label="EXPORT AS"
@@ -89,6 +89,10 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
     const nodes: any[] = this.traverse();
     this.initSVG();
     this.buildSVG(nodes);
+  }
+
+  get showExport(){
+    return this.$route.path === "/health"
   }
 
   private calculateDimensions() {

@@ -23,6 +23,10 @@ import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
 import LrS3Account from "../components/manage/s3/LrS3Account.vue";
 import LrIAmUser from "../components/manage/s3/LrIAmUser.vue"
 import LrManageUser from "../components/manage/LrManageUser.vue";
+import LrMaintenance from '../components/maintenance/LrMaintenance.vue'
+import LrHealthGraphical from "../components/health/LrHealthGraphical.vue"
+import LrMaintenanceCards from '../components/maintenance/LrMaintenanceCards.vue'
+
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -56,6 +60,22 @@ const routes: Array<RouteConfig> = [
     name: "alert-details",
     component: LrAlertDetails,
     props: true,
+  },
+  {
+    path: "/maintenance",
+    component: LrMaintenance,
+    children: [
+      {
+        path: "",
+        name: "maintenance",
+        component: LrMaintenanceCards
+      },
+      {
+        path: "cluster-maintenance",
+        name: "cluster_maintenance",
+        component: LrHealthGraphical
+      }
+    ]
   }
 ];
 
