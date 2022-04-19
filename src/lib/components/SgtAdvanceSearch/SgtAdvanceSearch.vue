@@ -56,7 +56,7 @@
           class="pt-3 pr-3"
         >
           <v-row>
-            <v-col cols="4" class="pr-1">
+            <v-col cols="4" class="pr-1 py-0" style="height:3rem">
               <label :for="row.name">
                 <b>
                   {{ row.label }}

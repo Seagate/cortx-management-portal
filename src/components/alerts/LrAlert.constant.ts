@@ -76,7 +76,7 @@ export const lrAlertConst = {
         align: "start",
         value: "updated_time",
         type: "date",
-        width: "125px",
+        width: "175px",
       },
       { text: "Category", value: "category", width: "125px" },
       {
@@ -88,7 +88,7 @@ export const lrAlertConst = {
       },
       { text: "State", value: "state", width: "125px" },
       { text: "Description", value: "description", type: "custom" },
-      { text: "Alert Type", value: "alert_type", width: "125px" },
+      { text: "Alert Type", value: "alert_type", width: "135px" },
       {
         text: "",
         value: "action",
