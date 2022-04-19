@@ -34,6 +34,7 @@
           color="csmprimary"
           inset
           @change="updateAccessKeyStatus(data.rowIdx)"
+          dense
         ></v-switch>
       </template>
     </SgtDataTable>
@@ -41,7 +42,11 @@
       <v-card>
         <v-card-title>
           <div class="title-container">
-            <SgtSvgIcon icon="green-tick.svg" class="title-icon" disableClick=true />
+            <SgtSvgIcon
+              icon="green-tick.svg"
+              class="title-icon"
+              disableClick="true"
+            />
             <div class="title-content">Access key created</div>
           </div>
         </v-card-title>
@@ -83,7 +88,7 @@
           </div>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions class="pa-4">
+        <v-card-actions class="button-container">
           <v-btn color="csmprimary" @click="downloadKey()" dark
             >Save & Close</v-btn
           >
@@ -187,6 +192,7 @@ export default class LrS3Access extends Vue {
   }
   .title-content {
     display: inline-block;
+    font-weight: bold;
   }
   .title-icon {
     vertical-align: top;
@@ -202,5 +208,8 @@ export default class LrS3Access extends Vue {
       padding-right: 0.5rem;
     }
   }
+}
+.button-container {
+  padding: 1.2rem 1.5rem !important;
 }
 </style>

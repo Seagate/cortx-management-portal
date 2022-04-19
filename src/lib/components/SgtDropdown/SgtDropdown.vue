@@ -31,14 +31,7 @@
   ></v-select>
 </template>
 <script lang="ts">
-import {
-  Component,
-  Vue,
-  Prop,
-  PropSync,
-  Model,
-  ModelSync,
-} from "vue-property-decorator";
+import { Component, Vue, Prop, ModelSync } from "vue-property-decorator";
 @Component({
   name: "SgtDropdown",
 })
