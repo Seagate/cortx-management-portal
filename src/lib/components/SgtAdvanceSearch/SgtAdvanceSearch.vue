@@ -77,15 +77,11 @@
               </template>
               <!-- dropdown -->
               <template v-if="row.type == 'dropdown'">
-                <v-select
-                  :items="row.options"
-                  :label="row.placeholder"
-                  item-text="label"
-                  item-value="value"
+                <SgtDropdown
+                  :placeholder="row.placeholder"
+                  :dropdownOptions="row.options"
                   v-model="row.value"
-                  outlined
-                  dense
-                ></v-select>
+                />
               </template>
               <!-- radio -->
               <template v-if="row.type == 'radio'">
@@ -105,14 +101,18 @@
                     <v-text-field
                       v-model="row.value"
                       :name="row.name"
-                      append-icon="mdi-calendar"
+                      color="green"
                       readonly
                       v-bind="attrs"
                       v-on="on"
                       class="pt-0"
                       outlined
                       dense
-                    ></v-text-field>
+                    >
+                      <template v-slot:append>
+                        <v-icon color="primary"> mdi-calendar-month-outline </v-icon>
+                      </template>
+                    </v-text-field>
                   </template>
                   <v-date-picker v-model="row.value"></v-date-picker>
                 </v-menu>
@@ -153,9 +153,10 @@
 import { Component, Vue, Ref, Prop } from "vue-property-decorator";
 import { SgtAdvanceSearchConfig } from "./SgtAdvanceSearch.model";
 import { SgtFilterObject } from "../SgtChips/SgtFilterObject.model";
-
+import SgtDropdown from "../SgtDropdown/SgtDropdown.vue";
 @Component({
   name: "SgtAdvanceSearch",
+  components: { SgtDropdown },
 })
 export default class SgtAdvanceSearch extends Vue {
   @Prop({ required: true }) private config: SgtAdvanceSearchConfig;

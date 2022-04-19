@@ -80,7 +80,7 @@
       </div>
     </template>
 
-    <div style="float:right">
+    <div style="text-align:right; padding:1rem 0">
       <div class="alert-info">
         <img v-if="alert.resolved" :src="require('@/assets/icons/resolved-disabled.svg')" />
         <img v-else :src="require('@/assets/icons/resolved-disabled.svg')" />
@@ -201,16 +201,16 @@ export default class LrAlertInformation extends Vue {
 
 <style lang="scss" scoped >
 .alert-details-container {
-	margin: 0.5rem;
+	margin: 0;
 }
 .alert-info {
 	display: inline-block;
-	padding-right: 1rem;
+	padding-left: 1rem;
 	span {
 		vertical-align: super;
 	}
 	.action-btn-block {
-		padding-right: 1rem;
+		padding-left: 1rem;
 	}
 }
 </style>

@@ -31,7 +31,7 @@
       @update-record="updateRecord($event)"
     >
       <template v-slot:severity="{ data }">
-        <v-avatar :color="getColor(data)" size="24"></v-avatar>
+        <v-avatar :color="getColor(data)" size="16"></v-avatar>
       </template>
       <template v-slot:description="{ data }">{{ data.description }}</template>
     </SgtDataTable>

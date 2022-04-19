@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
  * CORTX-CSM: CORTX Management web.
  * Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
@@ -14,7 +15,6 @@
  * For any questions about this software or licensing,
  * please email opensource@seagate.com.
  */
-
 export const usernameRegex = /^[a-zA-Z0-9_-]{4,56}$/;
 export const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

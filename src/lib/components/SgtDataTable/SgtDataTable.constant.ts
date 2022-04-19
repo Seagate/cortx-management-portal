@@ -63,10 +63,10 @@ export const SgtDataTableConst = {
     nextIcon: "mdi-chevron-double-right",
     prevIcon: "mdi-chevron-double-left",
     pageSizeList: [
-      { text: "5 rows", value: 5 },
-      { text: "10 rows", value: 10 },
-      { text: "15 rows", value: 15 },
-      { text: "20 rows", value: 20 },
+      { label: "5 rows", value: 5 },
+      { label: "10 rows", value: 10 },
+      { label: "15 rows", value: 15 },
+      { label: "20 rows", value: 20 },
     ],
   },
 };

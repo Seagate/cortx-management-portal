@@ -17,16 +17,11 @@
 <template>
   <div class="graphical-view-container">
     <div class="export-feature">
-      <v-select
-        :items="exportOptions"
-        label="EXPORT AS"
-        append-icon="mdi-chevron-down"
-        outlined
-        color="csmprimary"
-        item-color="csmprimary"
+      <SgtDropdown
+        placeholder="EXPORT AS"
+        :dropdownOptions="exportOptions"
         v-model="selectedExport"
-        dense
-      ></v-select>
+      />
       <v-btn
         color="csmprimary"
         class="white--text export-btn"
@@ -52,9 +47,10 @@ import {
   downloadSVGAsPDF,
 } from "../../utils/SVGExport";
 import { Dimensions } from "@/utils/LrUtilFunctions";
-
+import SgtDropdown from "@/lib/components/SgtDropdown/SgtDropdown.vue";
 @Component({
   name: "LrHealthGraphical",
+  components: { SgtDropdown },
 })
 export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
   public healthTreeContainerDim: any = {
