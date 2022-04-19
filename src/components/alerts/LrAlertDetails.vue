@@ -24,7 +24,7 @@
     <h2 class="alert-title-container pt-2 pb-2">
       Occurrences
       <SgtTooltipIcon>
-        <template #default>
+        <template>
           <div class="i-content">
             Displays all the alerts which are generated.
           </div>

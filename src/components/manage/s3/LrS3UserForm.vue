@@ -19,7 +19,7 @@
     <v-card>
       <v-card-title>
         <div class="title-container">
-          {{ formType === "create" ? "Add New User" : "Reset Password" }}
+          <b>{{ formType === "create" ? "Add New User" : "Reset Password" }}</b>
           <SgtSvgIcon
             icon="close-green.svg"
             @click="closeForm"
@@ -34,10 +34,10 @@
           <v-form ref="form" v-model="formValid">
             <v-container>
               <v-row v-if="formType === 'create'">
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="6" class="pl-0">
                   <label for="username">Username * </label>
                   <SgtTooltipIcon>
-                    <template #default>
+                    <template>
                       <div class="i-content">
                         The username must be of minimum 4 characters and maximum
                         56 characters. The username must be alphanumeric and can
@@ -53,14 +53,15 @@
                     :rules="usernameRules"
                     validate-on-blur
                     type="text"
+                    dense
                   ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="6" class="pl-0">
                   <label for="password">New Password * </label>
                   <SgtTooltipIcon>
-                    <template #default>
+                    <template>
                       <div class="i-content">
                         Password must contain: Minimum 8 characters, One
                         uppercase letter, One lowercase letter, One special
@@ -78,9 +79,10 @@
                     :type="showPassword ? 'text' : 'password'"
                     :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     @click:append="showPassword = !showPassword"
+                    dense
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="6" class="pl-0">
                   <label for="confirmPassword">Confirm Password * </label>
                   <v-text-field
                     name="confirmPassword"
@@ -94,6 +96,7 @@
                       showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
                     "
                     @click:append="showConfirmPassword = !showConfirmPassword"
+                    dense
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -102,7 +105,7 @@
         </div>
       </v-card-text>
       <v-divider></v-divider>
-      <v-card-actions>
+      <v-card-actions class="button-container">
         <v-btn color="csmprimary" @click="validateForm()" dark>{{
           formType === "create" ? "Create" : "Reset"
         }}</v-btn>
@@ -205,5 +208,8 @@ export default class LrS3UserForm extends Vue {
       padding-right: 0.5rem;
     }
   }
+}
+.button-container {
+  padding: 1.2rem 1.5rem !important;
 }
 </style>

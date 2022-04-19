@@ -32,11 +32,13 @@
       <v-card>
         <v-card-title>
           <div class="title-container">
-            {{
-              formType === "create"
-                ? "Add New Bucket"
-                : "Bucket - " + bucketForm.name
-            }}
+            <b
+              >{{
+                formType === "create"
+                  ? "Add New Bucket"
+                  : "Bucket - " + bucketForm.name
+              }}
+            </b>
             <SgtSvgIcon
               icon="close-green.svg"
               tooltip="Close"
@@ -61,6 +63,7 @@
                       :rules="nameRules"
                       validate-on-blur
                       type="text"
+                      dense
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -80,6 +83,7 @@
                       outlined
                       :rules="jsonPolicyRules"
                       validate-on-blur
+                      dense
                     ></v-textarea>
                   </v-col>
                 </v-row>
@@ -88,7 +92,7 @@
           </div>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
+        <v-card-actions class="button-container">
           <v-btn
             color="csmprimary"
             v-if="formType == 'create'"
@@ -233,5 +237,8 @@ export default class LrBuckets extends Vue {
   .title-content {
     display: inline-block;
   }
+}
+.button-container {
+  padding: 1.2rem 1.5rem !important;
 }
 </style>
