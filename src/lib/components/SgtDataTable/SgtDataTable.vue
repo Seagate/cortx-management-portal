@@ -64,7 +64,7 @@
       :item-key="itemKey"
       :hide-default-footer="true"
       :hide-default-header="true"
-      class="elevation-1"
+      class="elevation-1 sgt-table-header"
       v-model="selected"
     >
       <template v-slot:header="{}">
@@ -237,16 +237,12 @@
             ></v-pagination>
           </v-col>
           <div class="pt-1 pag-dropdown">
-            <v-select
-              :items="paginationConfig.pageSizeList"
+            <SgtDropdown
+              :dropdownOptions="paginationConfig.pageSizeList"
               v-model="tableDataConfig.pagination.pageSize"
-              outlined
-              dense
-              height="10px"
-              color="csmprimary"
-              item-color="csmprimary"
               @change="updatePageSize"
-            ></v-select>
+              height="10px"
+            />
           </div>
         </v-row>
       </template>
@@ -267,9 +263,10 @@ import {
   PaginationModel,
 } from "./SgtDataTableFilterSortPag.model";
 
+import SgtDropdown from "../SgtDropdown/SgtDropdown.vue";
 @Component({
   name: "SgtDataTable",
-  components: { SgtAdvanceSearch, SgtChips, SgtSvgIcon },
+  components: { SgtAdvanceSearch, SgtChips, SgtSvgIcon, SgtDropdown },
   filters: {
     formattedDate: function (date: string | number) {
       if (isNaN(+date)) return moment(date).format("DD-MM-YYYY hh:mm A");
@@ -428,6 +425,9 @@ export default class SgtDataTable extends Vue {
   .search-row {
     width: 100%;
   }
+}
+.sgt-table-header{
+  border: 1px solid #DFE0EB;
 }
 .margin-auto {
   margin: auto;

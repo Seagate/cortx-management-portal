@@ -29,6 +29,11 @@ export default new Vuetify({
     },
     themes: {
       light: {
+        primary: "#6EBE49",
+        error: "#DC1F2E",
+        warning: "#F7A528",
+        success: "#6EBE49",
+        info: "#00A1DD",
         csmprimary: "#6EBE49",
         csmdisabled: "#B7B7B7",
         csmborder: "#9E9E9E",
