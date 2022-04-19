@@ -27,10 +27,7 @@
         />
       </nav>
       <div class="main-content">
-        <SgtBreadCrumb
-          backupBasepath="/dashboard"
-          :basePathList="basePathList"
-        />
+        <SgtBreadCrumb backupBasepath="/dashboard" :basePathList="basePathList" />
         <LrRouteComponents />
       </div>
     </main>
@@ -74,7 +71,7 @@ main {
   display: flex;
   height: calc(100vh - 4rem);
   .side-nav {
-    width: 3rem;
+    width: 60px;
     height: 100%;
     background-color: #e7e7e7;
 
@@ -89,7 +86,7 @@ main {
   .main-content {
     background-color: #f7f7f7;
     overflow: auto;
-    width: 100%;
+    width: calc(100vw - 60px);
     padding: 1em 2em;
   }
 }

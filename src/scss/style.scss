@@ -1,7 +1,7 @@
 @import "config.scss";
 
-html {
-  overflow-y: auto;
+.flex-filler {
+  flex-grow: 1;
 }
 
 .lr-zoom-in-icon {

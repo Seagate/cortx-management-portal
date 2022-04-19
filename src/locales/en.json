@@ -14,6 +14,7 @@
   "degraded": "Degraded",
   "failed": "Failed",
   "offline": "Offline",
+  "online": "Online",
   "nodes": "Nodes",
   "onlineNodes": "Online Nodes",
   "offlineNodes": "Offline Nodes",

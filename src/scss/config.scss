@@ -1,3 +1,14 @@
+@font-face {
+  font-family: "HelveticaNeue";
+  src: url("/fonts/HelveticaNeue.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "HelveticaNeue";
+  src: url("/fonts/HelveticaNeueBd.ttf") format("truetype");
+  font-weight: bold;
+}
+
 /* Variables, mixins and other scss implementations can be done here.*/
 $primary: #6ebe49;
 $disabled: #b7b7b7;
@@ -30,10 +41,42 @@ $info-active: #0078d6;
 
 $overlay: #9e9e9e;
 
-.flex-filler {
-  flex-grow: 1;
+$font-family: "HelveticaNeue";
+
+.v-application {
+  font-family: $font-family, sans-serif !important;
+  [class*='text-'] {
+    font-family: $font-family, sans-serif !important;
+  }
+  .title {
+    font-family: $font-family, sans-serif !important;
+  }
+}
+
+html {
+  overflow-y: auto;
 }
 
 ul {
   list-style: none;
+}
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #b7b7b7;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #b7b7b7;
+  border-radius: 6px;
 }
