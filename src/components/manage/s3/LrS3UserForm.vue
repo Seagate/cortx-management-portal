@@ -35,7 +35,16 @@
             <v-container>
               <v-row v-if="formType === 'create'">
                 <v-col cols="12" sm="6">
-                  <label for="username">Username *</label>
+                  <label for="username">Username * </label>
+                  <SgtTooltipIcon>
+                    <template #default>
+                      <div class="i-content">
+                        The username must be of minimum 4 characters and maximum
+                        56 characters. The username must be alphanumeric and can
+                        contain underscore (_) and dash (-).
+                      </div>
+                    </template>
+                  </SgtTooltipIcon>
                   <v-text-field
                     name="username"
                     ref="username"
@@ -49,7 +58,16 @@
               </v-row>
               <v-row>
                 <v-col cols="12" sm="6">
-                  <label for="password">New Password *</label>
+                  <label for="password">New Password * </label>
+                  <SgtTooltipIcon>
+                    <template #default>
+                      <div class="i-content">
+                        Password must contain: Minimum 8 characters, One
+                        uppercase letter, One lowercase letter, One special
+                        character, and One number
+                      </div>
+                    </template>
+                  </SgtTooltipIcon>
                   <v-text-field
                     name="password"
                     ref="password"
@@ -63,7 +81,7 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
-                  <label for="confirmPassword">Confirm Password *</label>
+                  <label for="confirmPassword">Confirm Password * </label>
                   <v-text-field
                     name="confirmPassword"
                     ref="confirmPassword"
@@ -100,9 +118,11 @@ import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
 import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import { passwordTest, usernameTest } from "@/utils/CommonUtilFunctions";
 import { UserForm } from "./LrS3User.model";
+import SgtTooltipIcon from "@/lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
+
 @Component({
   name: "LrS3UserForm",
-  components: { SgtSvgIcon },
+  components: { SgtSvgIcon, SgtTooltipIcon },
 })
 export default class LrS3UserForm extends Vue {
   @PropSync("showDialog", { required: true, default: false })
