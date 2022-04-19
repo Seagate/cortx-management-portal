@@ -44,106 +44,90 @@
     </v-row>
 
     <v-expand-transition v-if="advanceSearchActive">
-      <v-card
-        v-show="expand"
-        hover
-        width="360"
-        class="mx-auto advance-search-container"
-      >
-        <div
-          v-for="row in config.advanceForm"
-          :key="row.name"
-          class="pt-3 pr-3"
-        >
-          <v-row>
-            <v-col cols="4" class="pr-1 py-0" style="height:3rem">
-              <label :for="row.name">
-                <b>
-                  {{ row.label }}
-                  <span v-if="row.required">*</span>
-                </b>
-              </label>
-            </v-col>
-            <v-col cols="8" class="pa-0">
-              <!-- textbox -->
-              <template v-if="row.type == 'textbox'">
-                <v-text-field
-                  :name="row.name"
-                  :placeholder="row.placeholder"
-                  v-model="row.value"
-                  outlined
-                  dense
-                ></v-text-field>
-              </template>
-              <!-- dropdown -->
-              <template v-if="row.type == 'dropdown'">
-                <SgtDropdown
-                  :placeholder="row.placeholder"
-                  :dropdownOptions="row.options"
-                  v-model="row.value"
-                />
-              </template>
-              <!-- radio -->
-              <template v-if="row.type == 'radio'">
-                <v-radio-group v-model="row.value" row class="mt-0">
-                  <v-radio
-                    v-for="radio in row.options"
-                    :key="radio.value"
-                    :label="radio.label"
-                    :value="radio.value"
-                  ></v-radio>
-                </v-radio-group>
-              </template>
-              <!-- date -->
-              <template v-if="row.type == 'date'">
-                <v-menu ref="menu" v-model="menu">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="row.value"
-                      :name="row.name"
-                      color="green"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                      class="pt-0"
-                      outlined
-                      dense
-                    >
-                      <template v-slot:append>
-                        <v-icon color="primary"> mdi-calendar-month-outline </v-icon>
-                      </template>
-                    </v-text-field>
-                  </template>
-                  <v-date-picker v-model="row.value"></v-date-picker>
-                </v-menu>
-              </template>
-              <!-- checkbox -->
-              <template v-if="row.type == 'checkbox'">
-                <v-row>
-                  <v-checkbox
+      <v-card v-show="expand" hover class="mx-auto advance-search-container">
+        <div v-for="row in config.advanceForm" :key="row.name" class="pt-3 pr-3">
+          <v-container class="py-0">
+            <v-row>
+              <v-col cols="4" class="py-0" style="height:3rem" align-self="center">
+                <label class="field-label" :for="row.name">
+                  <b>
+                    {{ row.label }}
+                    <span v-if="row.required">*</span>
+                  </b>
+                </label>
+              </v-col>
+              <v-col cols="8" class="pa-0">
+                <!-- textbox -->
+                <template v-if="row.type == 'textbox'">
+                  <v-text-field
+                    :name="row.name"
+                    :placeholder="row.placeholder"
                     v-model="row.value"
-                    v-for="checkbox in row.options"
-                    :key="checkbox.value"
-                    :label="checkbox.label"
-                    :value="checkbox.value"
-                  ></v-checkbox>
-                </v-row>
-              </template>
-            </v-col>
-          </v-row>
+                    outlined
+                    dense
+                  ></v-text-field>
+                </template>
+                <!-- dropdown -->
+                <template v-if="row.type == 'dropdown'">
+                  <SgtDropdown
+                    :placeholder="row.placeholder"
+                    :dropdownOptions="row.options"
+                    v-model="row.value"
+                  />
+                </template>
+                <!-- radio -->
+                <template v-if="row.type == 'radio'">
+                  <v-radio-group v-model="row.value" row class="mt-0">
+                    <v-radio
+                      v-for="radio in row.options"
+                      :key="radio.value"
+                      :label="radio.label"
+                      :value="radio.value"
+                    ></v-radio>
+                  </v-radio-group>
+                </template>
+                <!-- date -->
+                <template v-if="row.type == 'date'">
+                  <v-menu ref="menu" v-model="menu">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="row.value"
+                        :name="row.name"
+                        color="green"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                        class="pt-0"
+                        outlined
+                        dense
+                      >
+                        <template v-slot:append>
+                          <v-icon color="primary">mdi-calendar-month-outline</v-icon>
+                        </template>
+                      </v-text-field>
+                    </template>
+                    <v-date-picker color="csmprimary" v-model="row.value"></v-date-picker>
+                  </v-menu>
+                </template>
+                <!-- checkbox -->
+                <template v-if="row.type == 'checkbox'">
+                  <v-row>
+                    <v-checkbox
+                      v-model="row.value"
+                      v-for="checkbox in row.options"
+                      :key="checkbox.value"
+                      :label="checkbox.label"
+                      :value="checkbox.value"
+                    ></v-checkbox>
+                  </v-row>
+                </template>
+              </v-col>
+            </v-row>
+          </v-container>
         </div>
-        <div class="btn-container">
-          <v-btn
-            color="csmprimary"
-            class="clear-btn"
-            @click="clearAll"
-            outlined
-          >
-            Clear
-          </v-btn>
-          <v-btn color="csmprimary" class="search-btn" @click="search" dark>
-            Search
-          </v-btn>
+        <div class="btn-container pr-3">
+          <v-btn color="csmprimary" class="clear-btn" @click="clearAll" outlined>Clear</v-btn>
+          <v-btn color="csmprimary" class="search-btn" @click="search" dark>Search</v-btn>
         </div>
       </v-card>
     </v-expand-transition>
@@ -271,6 +255,12 @@ export default class SgtAdvanceSearch extends Vue {
   margin-top: 0.5rem;
   border-radius: 5px;
   border: 1px solid #6ebe49;
+  width: 30rem;
+  max-width: 700px;
+
+  .field-label {
+    white-space: nowrap;
+  }
 }
 .btn-container {
   display: flex;
