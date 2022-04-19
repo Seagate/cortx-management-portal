@@ -16,11 +16,7 @@
 -->
 <template>
   <div class="health-widget-container">
-    <SgtCard
-      title="clusterHealth"
-      :showZoomIcon="true"
-      @zoom-click="zoomIconHandler"
-    >
+    <SgtCard title="clusterHealth" :showZoomIcon="true" @zoom-click="zoomIconHandler">
       <template v-if="clusterDetails.status">
         <LrDashboardInfoCard
           :title="clusterDetails.name"
@@ -85,11 +81,14 @@ export default class LrDashboardClusterHealthCard extends Vue {
     this.$router.push(routePath);
   }
 
-  getClusterHealthImgUrl(healthType: "offline" | "degraded" | "failed") {
+  getClusterHealthImgUrl(
+    healthType: "offline" | "degraded" | "failed" | "online"
+  ) {
     const healthImageUrl = {
       offline: "health-offline-cluster.svg",
       degraded: "health-degraded-cluster.svg",
       failed: "health-failed-cluster.svg",
+      online: "health-online-cluster.svg",
     };
     return healthImageUrl[healthType];
   }

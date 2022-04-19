@@ -19,10 +19,7 @@
     <v-btn text icon color="#000000" @click.stop="$emit('menu-click')">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
-    <img
-      :src="require('@/assets/images/lyve-rack-logo.svg')"
-      class="lr-brand-logo"
-    />
+    <img :src="require('@/assets/images/lyve-rack-logo.svg')" class="lr-brand-logo" />
     <div class="flex-filler"></div>
 
     <div class="header-alert-icon">
@@ -62,6 +59,8 @@ export default class LrHeader extends Vue {
   display: flex;
   align-items: center;
   height: 4rem;
+  box-shadow: 0px 4px 4px #f2f2f2;
+  z-index: 5;
 
   .header-alert-icon {
     cursor: pointer;
