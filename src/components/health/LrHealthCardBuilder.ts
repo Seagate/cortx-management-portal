@@ -51,7 +51,8 @@ export default abstract class HealthCardBuilder {
       .attr("height", 119)
       .attr("rx", 3.5)
       .attr("fill", "#FFFFFF")
-      .attr("stroke", (data: any) => data.config.color.dark);
+      .attr("stroke", (data: any) => data.config.color.dark)
+      .attr("style", "filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.12));");
   }
 
   public static buildHeaderPath(healthCardG: any) {
@@ -101,7 +102,7 @@ export default abstract class HealthCardBuilder {
       .attr("y", 13)
       .attr("width", 20)
       .attr("height", 20)
-      .attr("style", "cursor: pointer;")
+      .attr("style", "cursor: pointer; background-color: transparent")
       .on("click", (event: any, data: any) => {
         HealthCardBuilder.buildDetailsMenu(data);
       });
@@ -242,7 +243,7 @@ export default abstract class HealthCardBuilder {
       },
     ];
     const outerG = d3.select(`#outer_g`);
-    const detailsMenuContainerHeight = details.length * 35;
+    const detailsMenuContainerHeight = details.length * 37;
     const detailsMenuContainerG = outerG
       .append("g")
       .attr("id", `g_detail_menu_${data.treeNodeId}`)
@@ -261,12 +262,14 @@ export default abstract class HealthCardBuilder {
       .append("rect")
       .attr("x", 0)
       .attr("y", 0)
+      .attr("rx", 3.5)
+      .attr("ry", 3.5)
       .attr("height", detailsMenuContainerHeight)
       .attr("width", 269)
       .attr("fill", "#FFFFFF")
       .attr("stroke", data.config.color.dark);
 
-    let detailItemY = 0;
+    let detailItemY = 8;
     details.forEach((detail) => {
       const detailItemContainerG: any = detailsMenuContainerG
         .append("g")
@@ -309,6 +312,8 @@ export default abstract class HealthCardBuilder {
         .append("rect")
         .attr("x", 0)
         .attr("y", 0)
+        .attr("rx", 3.5)
+        .attr("ry", 3.5)
         .attr("height", actionsMenuContainerHeight)
         .attr("width", 269)
         .attr("fill", "#FFFFFF")
