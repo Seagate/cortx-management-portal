@@ -42,4 +42,10 @@ export default class LrRouteComponents extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.wrapper-card {
+  background: #ffffff;
+  box-shadow: 0px 2px 0px #e5e5e5 !important;
+  border-radius: 4px;
+}
+</style>
