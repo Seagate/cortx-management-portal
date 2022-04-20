@@ -15,12 +15,8 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div id="capacityContainer">
-    <SgtCard
-      title="capacity"
-      :showZoomIcon="true"
-      @zoom-click="zoomIconHandler"
-    >
+  <div class="capacity-widget-container">
+    <SgtCard title="capacity" :showZoomIcon="true" @zoom-click="zoomIconHandler">
       <div class="capacity-info-wrapper">
         <div class="capacity-info">
           <div id="capacity-gauge"></div>
@@ -38,9 +34,7 @@
               <div class="d-flex">
                 <div class="capacity-badge capacity-available"></div>
                 <div class="content-section">
-                  <span class="legend-name">
-                    {{ $t("available") }}
-                  </span>
+                  <span class="legend-name">{{ $t("available") }}</span>
                   <span>{{ capacityChartVal(capacityDetails.available) }}</span>
                 </div>
               </div>
