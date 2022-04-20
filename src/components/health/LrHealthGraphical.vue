@@ -27,9 +27,7 @@
         class="white--text export-btn"
         @click="handleExport"
         :disabled="!selectedExport"
-      >
-        Export
-      </v-btn>
+      >Export</v-btn>
     </div>
 
     <div id="health_tree_container" :style="healthTreeContainerDim"></div>
@@ -267,6 +265,7 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
       // Collapse
       data._sub_resources = data.sub_resources;
       data.sub_resources = [];
+      d3.select("#nodeConnectorPath").remove();
     }
     this.resetTreeDimContainer();
     this.healthTreePathLineCoordinates = [];
