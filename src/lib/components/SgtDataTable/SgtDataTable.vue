@@ -52,7 +52,7 @@
     <SgtChips
       v-if="chips && chips.length > 0"
       :chips="chips"
-      class="pb-1"
+      class="pb-2"
       @remove-chip="updateFilterByChip($event)"
     />
     <v-data-table

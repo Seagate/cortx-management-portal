@@ -26,6 +26,7 @@
           color="csmprimary"
           append-icon="mdi-magnify"
           v-model="primarySearch"
+          @keyup.enter="primaryAction"
           @click:append="primaryAction"
           dense
         ></v-text-field>
@@ -257,6 +258,7 @@ export default class SgtAdvanceSearch extends Vue {
   border: 1px solid #6ebe49;
   width: 30rem;
   max-width: 700px;
+  box-shadow: none !important;
 
   .field-label {
     white-space: nowrap;
