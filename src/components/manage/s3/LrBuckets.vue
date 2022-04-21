@@ -54,7 +54,19 @@
               <v-container class="pl-0">
                 <v-row v-if="formType === 'create'">
                   <v-col cols="12" sm="6">
-                    <label for="name">Bucket Name *</label>
+                    <label for="name" class="sgt-form-group-label"
+                      >Bucket Name *
+                      <SgtTooltipIcon>
+                        <template>
+                          <div class="i-content">
+                            The username must be of minimum 4 characters and
+                            maximum 56 characters. The username must be
+                            alphanumeric and can contain underscore (_) and dash
+                            (-).
+                          </div>
+                        </template>
+                      </SgtTooltipIcon>
+                    </label>
                     <v-text-field
                       name="name"
                       ref="name"
@@ -70,7 +82,7 @@
                 <h2 v-else class="pb-2">Bucket Policy</h2>
                 <v-row>
                   <v-col cols="12" sm="12">
-                    <label for="jsonPolicy">{{
+                    <label for="jsonPolicy" class="sgt-form-group-label">{{
                       `Type to add new bucket policy ${
                         formType == "edit" ? "or edit an existing policy" : ""
                       } in the text area below.`
@@ -135,10 +147,11 @@ import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
 import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
 import { create } from "vue-modal-dialogs";
+import SgtTooltipIcon from "@/lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
 
 @Component({
   name: "LrBuckets",
-  components: { SgtDataTable, SgtSvgIcon },
+  components: { SgtDataTable, SgtSvgIcon, SgtTooltipIcon },
 })
 export default class LrBuckets extends Vue {
   bucketTableConfig: any = JSON.parse(

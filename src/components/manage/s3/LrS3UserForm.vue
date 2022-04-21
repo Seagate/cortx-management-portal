@@ -29,22 +29,25 @@
         </div>
       </v-card-title>
       <v-divider></v-divider>
-      <v-card-text>
+      <v-card-text class="card-content-container">
         <div class="content-container">
           <v-form ref="form" v-model="formValid">
             <v-container>
               <v-row v-if="formType === 'create'">
                 <v-col cols="12" sm="6" class="pl-0">
-                  <label for="username">Username * </label>
-                  <SgtTooltipIcon>
-                    <template>
-                      <div class="i-content">
-                        The username must be of minimum 4 characters and maximum
-                        56 characters. The username must be alphanumeric and can
-                        contain underscore (_) and dash (-).
-                      </div>
-                    </template>
-                  </SgtTooltipIcon>
+                  <label for="username" class="sgt-form-group-label"
+                    >Username *
+                    <SgtTooltipIcon>
+                      <template>
+                        <div class="i-content">
+                          The username must be of minimum 4 characters and
+                          maximum 56 characters. The username must be
+                          alphanumeric and can contain underscore (_) and dash
+                          (-).
+                        </div>
+                      </template>
+                    </SgtTooltipIcon>
+                  </label>
                   <v-text-field
                     name="username"
                     ref="username"
@@ -59,16 +62,18 @@
               </v-row>
               <v-row>
                 <v-col cols="12" sm="6" class="pl-0">
-                  <label for="password">New Password * </label>
-                  <SgtTooltipIcon>
-                    <template>
-                      <div class="i-content">
-                        Password must contain: Minimum 8 characters, One
-                        uppercase letter, One lowercase letter, One special
-                        character, and One number
-                      </div>
-                    </template>
-                  </SgtTooltipIcon>
+                  <label for="password" class="sgt-form-group-label"
+                    >New Password *
+                    <SgtTooltipIcon>
+                      <template>
+                        <div class="i-content">
+                          Password must contain: Minimum 8 characters, One
+                          uppercase letter, One lowercase letter, One special
+                          character, and One number
+                        </div>
+                      </template>
+                    </SgtTooltipIcon>
+                  </label>
                   <v-text-field
                     name="password"
                     ref="password"
@@ -83,7 +88,9 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" class="pl-0">
-                  <label for="confirmPassword">Confirm Password * </label>
+                  <label for="confirmPassword" class="sgt-form-group-label"
+                    >Confirm Password *
+                  </label>
                   <v-text-field
                     name="confirmPassword"
                     ref="confirmPassword"

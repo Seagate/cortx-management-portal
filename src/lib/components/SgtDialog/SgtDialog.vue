@@ -43,6 +43,7 @@
             <div class="text-content" v-html="modalContent"></div>
           </template>
         </v-card-text>
+        <v-divider></v-divider>
         <v-card-actions class="sgt-button-container">
           <v-btn
             :color="dialogColor"
@@ -136,7 +137,7 @@ export default class SgtDialog extends DialogComponent<boolean> {
 }
 
 .sgt-button-container {
-  padding: 1.5rem !important;
+  padding: 1.2rem 1.5rem !important;
 }
 
 .alert {
