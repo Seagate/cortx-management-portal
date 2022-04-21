@@ -94,7 +94,7 @@ export default abstract class HealthCardBuilder {
   }
 
   public static buildShowDescriptionIcon(healthCardG: any) {
-    healthCardG
+    const svgIconWrapper = healthCardG
       .append("svg")
       .html(graphImages.magnifyIcon)
       .attr("id", (d: any) => `show_desc_icon_${d.treeNodeId}`)
@@ -102,14 +102,21 @@ export default abstract class HealthCardBuilder {
       .attr("y", 13)
       .attr("width", 20)
       .attr("height", 20)
-      .attr("style", "cursor: pointer; background-color: transparent")
       .on("click", (event: any, data: any) => {
         HealthCardBuilder.buildDetailsMenu(data);
       });
+
+    //Below rect element is added to make the whole area clickable. If not, the gap inside the icon is not clickable.
+    svgIconWrapper
+      .append("rect")
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("fill", "transparent")
+      .attr("style", "cursor: pointer;");
   }
 
   public static buildShowActionsIcon(healthCardG: any, performAction: any) {
-    healthCardG
+    const svgIconWrapper = healthCardG
       .append("svg")
       .html(graphImages.threeDotMenu)
       .attr("id", (d: any) => `show_actions_icon_${d.treeNodeId}`)
@@ -120,10 +127,17 @@ export default abstract class HealthCardBuilder {
       .attr("visibility", (data: any) =>
         data.config.actions.length > 0 ? "visible" : "hidden"
       )
-      .attr("style", "cursor: pointer;")
       .on("click", (event: any, data: any) => {
         HealthCardBuilder.buildActionsMenu(data, performAction);
       });
+
+    //Below rect element is added to make the whole area clickable. If not, the gap inside the icon is not clickable.
+    svgIconWrapper
+      .append("rect")
+      .attr("width", 10)
+      .attr("height", 25)
+      .attr("fill", "transparent")
+      .attr("style", "cursor: pointer");
   }
 
   public static buildStatusRectangle(healthCardG: any) {
