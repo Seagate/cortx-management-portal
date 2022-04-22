@@ -27,9 +27,8 @@
         class="white--text export-btn"
         @click="handleExport"
         :disabled="!selectedExport"
+        >Export</v-btn
       >
-        Export
-      </v-btn>
     </div>
 
     <div id="health_tree_container" :style="healthTreeContainerDim"></div>
@@ -117,6 +116,11 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
       this.outerG.attr("transform", event.transform);
     });
     healthTreeContainerSVG.call(zoom);
+    if (+this.healthTreeContainerDim.width.slice(0, -2) < 1200) {
+      this.outerG.attr("transform", `translate(0,0) scale(0.7)`);
+    } else if (+this.healthTreeContainerDim.width.slice(0, -2) < 1450) {
+      this.outerG.attr("transform", `translate(0,0) scale(0.8)`);
+    }
   }
 
   private buildSVG(nodes: any[]) {
@@ -267,6 +271,7 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
       // Collapse
       data._sub_resources = data.sub_resources;
       data.sub_resources = [];
+      d3.select("#nodeConnectorPath").remove();
     }
     this.resetTreeDimContainer();
     this.healthTreePathLineCoordinates = [];

@@ -17,7 +17,7 @@
 <template>
   <div>
     <router-view v-if="isDashboard" />
-    <v-card class="wrapper-card pa-3 pb-6" v-else>
+    <v-card class="wrapper-card" v-else>
       <router-view />
     </v-card>
   </div>
@@ -42,4 +42,11 @@ export default class LrRouteComponents extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.wrapper-card {
+  background: #ffffff;
+  box-shadow: 0px 2px 0px #e5e5e5 !important;
+  border-radius: 4px;
+  padding: 15px;
+}
+</style>

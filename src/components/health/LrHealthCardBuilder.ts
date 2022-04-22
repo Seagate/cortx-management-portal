@@ -93,7 +93,7 @@ export default abstract class HealthCardBuilder {
   }
 
   public static buildShowDescriptionIcon(healthCardG: any) {
-    healthCardG
+    const svgIconWrapper = healthCardG
       .append("svg")
       .html(graphImages.magnifyIcon)
       .attr("id", (d: any) => `show_desc_icon_${d.treeNodeId}`)
@@ -105,10 +105,17 @@ export default abstract class HealthCardBuilder {
       .on("click", (event: any, data: any) => {
         HealthCardBuilder.buildDetailsMenu(data);
       });
+
+    //Below rect element is added to make the whole area clickable. If not, the gap inside the icon is not clickable.
+    svgIconWrapper
+      .append("rect")
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("fill", "transparent");
   }
 
   public static buildShowActionsIcon(healthCardG: any, performAction: any) {
-    healthCardG
+    const svgIconWrapper = healthCardG
       .append("svg")
       .html(graphImages.threeDotMenu)
       .attr("id", (d: any) => `show_actions_icon_${d.treeNodeId}`)
@@ -119,10 +126,19 @@ export default abstract class HealthCardBuilder {
       .attr("visibility", (data: any) =>
         data.config.actions.length > 0 ? "visible" : "hidden"
       )
-      .attr("style", "cursor: pointer;")
+      .attr("style", "cursor: pointer")
       .on("click", (event: any, data: any) => {
         HealthCardBuilder.buildActionsMenu(data, performAction);
       });
+
+    //Below rect element is added to make the whole area clickable. If not, the gap inside the icon is not clickable.
+    svgIconWrapper
+      .append("rect")
+      .attr("width", 10)
+      .attr("height", 25)
+      .attr("x", -3)
+      .attr("y", -3)
+      .attr("fill", "transparent");
   }
 
   public static buildStatusRectangle(healthCardG: any) {
@@ -242,7 +258,7 @@ export default abstract class HealthCardBuilder {
       },
     ];
     const outerG = d3.select(`#outer_g`);
-    const detailsMenuContainerHeight = details.length * 35;
+    const detailsMenuContainerHeight = details.length * 37;
     const detailsMenuContainerG = outerG
       .append("g")
       .attr("id", `g_detail_menu_${data.treeNodeId}`)
@@ -252,6 +268,10 @@ export default abstract class HealthCardBuilder {
       .attr("width", 269)
       .attr("height", detailsMenuContainerHeight)
       .attr("transform", `translate(${data.x + 0.500488},${data.y + 49.5})`)
+      .attr(
+        "style",
+        "outline: none;filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.12));"
+      )
       .on("blur", () => {
         d3.select(`.g_popup`).remove();
       });
@@ -261,12 +281,14 @@ export default abstract class HealthCardBuilder {
       .append("rect")
       .attr("x", 0)
       .attr("y", 0)
+      .attr("rx", 3.5)
+      .attr("ry", 3.5)
       .attr("height", detailsMenuContainerHeight)
       .attr("width", 269)
       .attr("fill", "#FFFFFF")
       .attr("stroke", data.config.color.dark);
 
-    let detailItemY = 0;
+    let detailItemY = 8;
     details.forEach((detail) => {
       const detailItemContainerG: any = detailsMenuContainerG
         .append("g")
@@ -300,6 +322,10 @@ export default abstract class HealthCardBuilder {
         .attr("width", 269)
         .attr("height", actionsMenuContainerHeight)
         .attr("transform", `translate(${data.x + 0.500488},${data.y + 49.5})`)
+        .attr(
+          "style",
+          "outline: none;filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.12));"
+        )
         .on("blur", () => {
           d3.select(`.g_popup`).remove();
         });
@@ -309,6 +335,8 @@ export default abstract class HealthCardBuilder {
         .append("rect")
         .attr("x", 0)
         .attr("y", 0)
+        .attr("rx", 3.5)
+        .attr("ry", 3.5)
         .attr("height", actionsMenuContainerHeight)
         .attr("width", 269)
         .attr("fill", "#FFFFFF")

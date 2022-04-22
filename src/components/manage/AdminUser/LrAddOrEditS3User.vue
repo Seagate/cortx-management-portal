@@ -29,16 +29,12 @@
       </v-card-title>
       <v-divider />
       <v-card-text>
-        <v-container>
+        <v-container class="pa-0">
           <v-form v-model="isFormValid">
             <v-row v-if="!this.userData">
               <v-col cols="12" sm="6">
-                <div class="sgt-form-group-custom">
-                  <label
-                    class="sgt-form-group-label"
-                    for="accountName"
-                    id="lbl-account-name"
-                  >
+                <div>
+                  <label class="sgt-form-group-label" for="accountName" id="lbl-account-name">
                     Account Name*
                     <SgtTooltipIcon>
                       <span>
@@ -62,13 +58,8 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <div class="sgt-form-group-custom">
-                  <label
-                    class="sgt-form-group-label"
-                    for="Email"
-                    id="localuseremaillbl"
-                    >Email*</label
-                  >
+                <div>
+                  <label class="sgt-form-group-label" for="Email" id="localuseremaillbl">Email*</label>
                   <v-text-field
                     type="text"
                     outlined
@@ -83,20 +74,17 @@
 
             <v-row>
               <v-col cols="12" sm="6">
-                <div class="sgt-form-group-custom">
-                  <label
-                    class="sgt-form-group-label"
-                    for="password"
-                    id="localuser-confirmpasslbl"
-                    >{{ formLabelItems.passwordLabel }}*
+                <div>
+                  <label class="sgt-form-group-label" for="password" id="localuser-confirmpasslbl">
+                    {{ formLabelItems.passwordLabel }}*
                     <SgtTooltipIcon>
-                      <span
-                        >Password must contain: Minimum 8 characters, One
+                      <span>
+                        Password must contain: Minimum 8 characters, One
                         uppercase letter, One lowercase letter, One special
-                        character, One number</span
-                      >
-                    </SgtTooltipIcon></label
-                  >
+                        character, One number
+                      </span>
+                    </SgtTooltipIcon>
+                  </label>
                   <v-text-field
                     outlined
                     color="csmprimary"
@@ -111,13 +99,12 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <div class="sgt-form-group-custom">
+                <div>
                   <label
                     class="sgt-form-group-label"
                     for="password"
                     id="localuser-confirmpasslbl"
-                    >Confirm Password*</label
-                  >
+                  >Confirm Password*</label>
                   <v-text-field
                     outlined
                     color="csmprimary"
@@ -138,22 +125,16 @@
       </v-card-text>
       <v-divider />
       <v-card-actions>
-        <v-container>
-          <v-row>
+        <v-container class="pa-0">
+          <v-row no-gutters>
             <v-col cols="12" class="btn-container">
               <v-btn
                 class="white--text"
                 color="csmprimary"
                 @click="proceedOperation()"
                 :disabled="!isFormValid"
-                >{{ formLabelItems.ctaBtnLabel }}</v-btn
-              >
-              <v-btn
-                class="white--text"
-                color="csmborder"
-                @click="cancelOperation()"
-                >Cancel</v-btn
-              >
+              >{{ formLabelItems.ctaBtnLabel }}</v-btn>
+              <v-btn class="white--text" color="csmborder" @click="cancelOperation()">Cancel</v-btn>
             </v-col>
           </v-row>
         </v-container>

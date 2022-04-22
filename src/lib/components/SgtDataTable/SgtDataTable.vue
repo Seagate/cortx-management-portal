@@ -34,8 +34,7 @@
               :key="button.name"
               :color="button.color ? button.color : 'csmprimary'"
               @click="$emit(button.name, selected)"
-              >{{ button.label }}</v-btn
-            >
+            >{{ button.label }}</v-btn>
           </div>
           <div v-if="headerButton && selected.length == 0" class="multi-btn">
             <v-btn
@@ -45,8 +44,7 @@
               :color="headerButton.color ? headerButton.color : 'csmprimary'"
               :disabled="headerButton.disabled ? headerButton.disabled : false"
               @click="$emit(headerButton.name, selected)"
-              >{{ headerButton.label }}</v-btn
-            >
+            >{{ headerButton.label }}</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -54,7 +52,7 @@
     <SgtChips
       v-if="chips && chips.length > 0"
       :chips="chips"
-      class="pb-1"
+      class="pb-2"
       @remove-chip="updateFilterByChip($event)"
     />
     <v-data-table
@@ -68,7 +66,7 @@
       v-model="selected"
     >
       <template v-slot:header="{}">
-        <tr>
+        <tr class="table-header">
           <th v-if="isMultiSelect">
             <v-simple-checkbox
               :value="selected.length == records.length"
@@ -128,14 +126,8 @@
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
-                      d="M4.42432 0L7.48247 5.25H1.36616L4.42432 0Z"
-                      fill="#9E9E9E"
-                    />
-                    <path
-                      d="M4.42432 13L7.48247 7.75H1.36616L4.42432 13Z"
-                      fill="#9E9E9E"
-                    />
+                    <path d="M4.42432 0L7.48247 5.25H1.36616L4.42432 0Z" fill="#9E9E9E" />
+                    <path d="M4.42432 13L7.48247 7.75H1.36616L4.42432 13Z" fill="#9E9E9E" />
                   </svg>
                 </span>
               </span>
@@ -168,9 +160,11 @@
               :style="{ 'text-align': getTextAlign(col.align) }"
             >
               <template v-if="col.type">
-                <template v-if="col.type == 'date'">{{
+                <template v-if="col.type == 'date'">
+                  {{
                   item[col.value] | formattedDate
-                }}</template>
+                  }}
+                </template>
                 <template v-else-if="col.type == 'custom'">
                   <slot
                     v-bind:data="{
@@ -178,8 +172,7 @@
                       rowIdx: rowIndex,
                     }"
                     :name="col.value"
-                    >{{ item[col.value] }}</slot
-                  >
+                  >{{ item[col.value] }}</slot>
                 </template>
                 <template v-else-if="col.type == 'action'">
                   <div v-if="selected.length < 1" class="action-col">
@@ -219,12 +212,7 @@
       </template>
 
       <template v-slot:footer="{}" v-if="records.length > 0">
-        <v-row
-          justify="end"
-          align="center"
-          class="pr-3 py-4"
-          v-if="isPagination"
-        >
+        <v-row justify="end" align="center" class="pr-3 py-4" v-if="isPagination">
           <v-col class="text-right pa-0 pr-4 flex-grow-0">
             <v-pagination
               v-model="page"
@@ -419,15 +407,15 @@ export default class SgtDataTable extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .search-container {
   min-height: 4rem;
   .search-row {
     width: 100%;
   }
 }
-.sgt-table-header{
-  border: 1px solid #DFE0EB;
+.sgt-table-header {
+  border: 1px solid #dfe0eb;
 }
 .margin-auto {
   margin: auto;
@@ -453,6 +441,7 @@ export default class SgtDataTable extends Vue {
 .record:hover {
   .hover-btn {
     display: flex;
+    gap: 10px;
     position: absolute;
     right: 2rem;
   }
@@ -487,22 +476,98 @@ export default class SgtDataTable extends Vue {
 .cursor-pointer {
   cursor: pointer;
 }
-.table-header {
-  padding: 0 1rem;
-  height: 3rem;
-  .sort-icon {
-    margin-left: 5px;
-  }
-  .sort-icon.sort-asc path:first-child {
-    fill: #000;
-  }
-  .sort-icon.sort-desc path:last-child {
-    fill: #000;
-  }
-}
 
 .pag-dropdown {
   width: 8rem;
   height: 3rem;
+  max-width: 112px;
+
+  .v-select__selection {
+    margin: 0 !important;
+  }
+  .v-input__append-inner {
+    padding: 0 !important;
+  }
+}
+
+.v-data-table {
+  &.elevation-1 {
+    box-shadow: none !important;
+  }
+  border: none !important;
+
+  .table-header {
+    padding: 0 1rem;
+    height: 3rem;
+    background: #fcfcfd;
+    th {
+      border-bottom: 1px solid #dfe0eb;
+    }
+    .sort-icon {
+      margin-left: 5px;
+    }
+    .sort-icon.sort-asc path:first-child {
+      fill: #000;
+    }
+    .sort-icon.sort-desc path:last-child {
+      fill: #000;
+    }
+    & > span {
+      display: flex;
+    }
+  }
+
+  .v-data-table__wrapper {
+    border: 1px solid #dfe0eb !important;
+    border-radius: 8px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .zoom-container > .sgt-icon-container {
+    margin-top: 4px;
+  }
+
+  .record {
+    border: 0 !important;
+    border-bottom: 1px solid #dfe0eb !important;
+    &:hover {
+      background-color: #fafafa !important;
+    }
+  }
+
+  .v-pagination {
+    border: 1px solid #eceeef;
+    .v-pagination__navigation,
+    .v-pagination__item,
+    .v-pagination__item--active {
+      margin: 0;
+      box-shadow: none !important;
+      color: #000 !important;
+      font-weight: bold !important;
+
+      li {
+        border: 1px solid #eceeef;
+      }
+
+      .v-icon {
+        transform: scale(0.65) !important;
+        color: $primary !important;
+        &::before,
+        &::after {
+          font-weight: bold;
+        }
+      }
+    }
+
+    .v-pagination__item--active {
+      color: #fff !important;
+    }
+
+    .v-pagination__navigation--disabled {
+      .v-icon {
+        color: #000 !important;
+      }
+    }
+  }
 }
 </style>

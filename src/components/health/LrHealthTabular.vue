@@ -45,11 +45,7 @@
                 />
               </template>
             </div>
-            <SgtSvgIcon
-              icon="zoom-in.svg"
-              hoverIcon="zoom-in-hover.svg"
-              @click="showMoreDetails"
-            />
+            <SgtSvgIcon icon="zoom-in.svg" hoverIcon="zoom-in-hover.svg" @click="showMoreDetails" />
           </div>
         </div>
       </template>
@@ -72,13 +68,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            class="white--text"
-            color="#6ebe49"
-            @click="displayInfoModal = false"
-          >
-            OK
-          </v-btn>
+          <v-btn class="white--text" color="#6ebe49" @click="displayInfoModal = false">OK</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -155,13 +145,13 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
         path: `poweroff-${data.status}.svg`,
         hoverPath: `poweroff-${data.status}.svg`,
         action: "poweroff",
-        tooltip: "Power off",
+        tooltip: "Server Power Off",
       },
       {
         path: `powerandstorageoff-${data.status}.svg`,
         hoverPath: `powerandstorageoff-${data.status}.svg`,
         action: "powerandstorageoff",
-        tooltip: "Power and storage off",
+        tooltip: "Server and Storage Off",
       },
     ];
   }
@@ -221,9 +211,9 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 5px;
+      gap: 10px;
       position: absolute;
-      right: 25px;
+      right: 35px;
     }
   }
 }
