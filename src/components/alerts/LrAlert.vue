@@ -31,7 +31,17 @@
       @update-record="updateRecord($event)"
     >
       <template v-slot:severity="{ data }">
-        <v-avatar :color="getColor(data)" size="16"></v-avatar>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-avatar
+              v-bind="attrs"
+              v-on="on"
+              :color="getColor(data)"
+              size="16"
+            ></v-avatar>
+          </template>
+          <span>{{ data.severity }}</span>
+        </v-tooltip>
       </template>
       <template v-slot:description="{ data }">{{ data.description }}</template>
     </SgtDataTable>

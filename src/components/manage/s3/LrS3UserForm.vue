@@ -35,76 +35,82 @@
             <v-container>
               <v-row v-if="formType === 'create'">
                 <v-col cols="12" sm="6" class="pl-0">
-                  <label for="username" class="sgt-form-group-label"
-                    >Username *
-                    <SgtTooltipIcon>
-                      <template>
-                        <div class="i-content">
-                          The username must be of minimum 4 characters and
-                          maximum 56 characters. The username must be
-                          alphanumeric and can contain underscore (_) and dash
-                          (-).
-                        </div>
-                      </template>
-                    </SgtTooltipIcon>
-                  </label>
-                  <v-text-field
-                    name="username"
-                    ref="username"
-                    v-model="userForm.username"
-                    outlined
-                    :rules="usernameRules"
-                    validate-on-blur
-                    type="text"
-                    dense
-                  ></v-text-field>
+                  <div class="sgt-form-group-custom">
+                    <label for="username" class="sgt-form-group-label"
+                      >Username *
+                      <SgtTooltipIcon>
+                        <template>
+                          <div class="i-content">
+                            The username must be of minimum 4 characters and
+                            maximum 56 characters. The username must be
+                            alphanumeric and can contain underscore (_) and dash
+                            (-).
+                          </div>
+                        </template>
+                      </SgtTooltipIcon>
+                    </label>
+                    <v-text-field
+                      name="username"
+                      ref="username"
+                      v-model="userForm.username"
+                      outlined
+                      :rules="usernameRules"
+                      validate-on-blur
+                      type="text"
+                      dense
+                    ></v-text-field>
+                  </div>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="6" class="pl-0">
-                  <label for="password" class="sgt-form-group-label"
-                    >New Password *
-                    <SgtTooltipIcon>
-                      <template>
-                        <div class="i-content">
-                          Password must contain: Minimum 8 characters, One
-                          uppercase letter, One lowercase letter, One special
-                          character, and One number
-                        </div>
-                      </template>
-                    </SgtTooltipIcon>
-                  </label>
-                  <v-text-field
-                    name="password"
-                    ref="password"
-                    v-model="userForm.password"
-                    outlined
-                    :rules="passwordRules"
-                    validate-on-blur
-                    :type="showPassword ? 'text' : 'password'"
-                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                    @click:append="showPassword = !showPassword"
-                    dense
-                  ></v-text-field>
+                  <div class="sgt-form-group-custom">
+                    <label for="password" class="sgt-form-group-label"
+                      >New Password *
+                      <SgtTooltipIcon>
+                        <template>
+                          <div class="i-content">
+                            Password must contain: Minimum 8 characters, One
+                            uppercase letter, One lowercase letter, One special
+                            character, and One number
+                          </div>
+                        </template>
+                      </SgtTooltipIcon>
+                    </label>
+                    <v-text-field
+                      name="password"
+                      ref="password"
+                      v-model="userForm.password"
+                      outlined
+                      :rules="passwordRules"
+                      validate-on-blur
+                      :type="showPassword ? 'text' : 'password'"
+                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                      @click:append="showPassword = !showPassword"
+                      dense
+                    ></v-text-field>
+                  </div>
                 </v-col>
                 <v-col cols="12" sm="6" class="pl-0">
-                  <label for="confirmPassword" class="sgt-form-group-label"
-                    >Confirm Password *
-                  </label>
-                  <v-text-field
-                    name="confirmPassword"
-                    ref="confirmPassword"
-                    v-model="userForm.confirmPassword"
-                    :rules="confirmPasswordRules"
-                    outlined
-                    validate-on-blur
-                    :type="showConfirmPassword ? 'text' : 'password'"
-                    :append-icon="
-                      showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
-                    "
-                    @click:append="showConfirmPassword = !showConfirmPassword"
-                    dense
-                  ></v-text-field>
+                  <div class="sgt-form-group-custom">
+                    <label for="confirmPassword" class="sgt-form-group-label"
+                      >Confirm Password *
+                    </label>
+                    <v-text-field
+                      name="confirmPassword"
+                      ref="confirmPassword"
+                      v-model="userForm.confirmPassword"
+                      :rules="confirmPasswordRules"
+                      outlined
+                      validate-on-blur
+                      :type="showConfirmPassword ? 'text' : 'password'"
+                      :append-icon="
+                        showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
+                      "
+                      @click:append="showConfirmPassword = !showConfirmPassword"
+                      dense
+                    ></v-text-field>
+                  </div>
                 </v-col>
               </v-row>
             </v-container>
@@ -113,7 +119,7 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions class="button-container">
-        <v-btn color="csmprimary" @click="validateForm()" dark>{{
+        <v-btn class="mr-2" color="primary" @click="validateForm()" dark>{{
           formType === "create" ? "Create" : "Reset"
         }}</v-btn>
         <v-btn color="csmdisabled" @click="closeForm()" depressed dark

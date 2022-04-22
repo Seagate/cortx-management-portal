@@ -17,16 +17,20 @@
 <template>
   <div>
     <div class="mt-3 mb-3"><b>Account Name</b></div>
-    <v-card width="40%" class="card-container mt-6 mb-6">
+    <v-card width="40%" class="card-container mt-6 mb-6 pa-5">
       <v-row>
-        <v-col cols="3" class="user-avatar">
+        <v-col cols="3">
           <v-avatar class="profile" size="96" v-if="s3AccountDetails">
             <v-img :src="require(`@/assets/images/storage-buckets.svg`)" />
           </v-avatar>
         </v-col>
         <v-col class="user-info">
-          <div>Account: {{ s3AccountDetails.account_name }}</div>
-          <div>Email: {{ s3AccountDetails.account_email }}</div>
+          <div class="sgt-form-group-label">
+            Account :<b> {{ s3AccountDetails.account_name }}</b>
+          </div>
+          <div class="sgt-form-group-label">
+            Email :<b> {{ s3AccountDetails.account_email }}</b>
+          </div>
         </v-col>
         <v-col cols="2">
           <SgtSvgIcon
@@ -78,7 +82,7 @@ export default class LrS3Account extends Vue {
 .card-container {
   position: relative;
   .edit-icon {
-    margin-left: 1rem;
+    float: right;
   }
 }
 .user-info {
