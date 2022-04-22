@@ -51,8 +51,7 @@ export default abstract class HealthCardBuilder {
       .attr("height", 119)
       .attr("rx", 3.5)
       .attr("fill", "#FFFFFF")
-      .attr("stroke", (data: any) => data.config.color.dark)
-      .attr("style", "filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.12));");
+      .attr("stroke", (data: any) => data.config.color.dark);
   }
 
   public static buildHeaderPath(healthCardG: any) {
@@ -102,6 +101,7 @@ export default abstract class HealthCardBuilder {
       .attr("y", 13)
       .attr("width", 20)
       .attr("height", 20)
+      .attr("style", "cursor: pointer;")
       .on("click", (event: any, data: any) => {
         HealthCardBuilder.buildDetailsMenu(data);
       });
@@ -111,8 +111,7 @@ export default abstract class HealthCardBuilder {
       .append("rect")
       .attr("width", 20)
       .attr("height", 20)
-      .attr("fill", "transparent")
-      .attr("style", "cursor: pointer;");
+      .attr("fill", "transparent");
   }
 
   public static buildShowActionsIcon(healthCardG: any, performAction: any) {
@@ -127,6 +126,7 @@ export default abstract class HealthCardBuilder {
       .attr("visibility", (data: any) =>
         data.config.actions.length > 0 ? "visible" : "hidden"
       )
+      .attr("style", "cursor: pointer")
       .on("click", (event: any, data: any) => {
         HealthCardBuilder.buildActionsMenu(data, performAction);
       });
@@ -136,8 +136,9 @@ export default abstract class HealthCardBuilder {
       .append("rect")
       .attr("width", 10)
       .attr("height", 25)
-      .attr("fill", "transparent")
-      .attr("style", "cursor: pointer");
+      .attr("x", -3)
+      .attr("y", -3)
+      .attr("fill", "transparent");
   }
 
   public static buildStatusRectangle(healthCardG: any) {
@@ -267,6 +268,10 @@ export default abstract class HealthCardBuilder {
       .attr("width", 269)
       .attr("height", detailsMenuContainerHeight)
       .attr("transform", `translate(${data.x + 0.500488},${data.y + 49.5})`)
+      .attr(
+        "style",
+        "outline: none;filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.12));"
+      )
       .on("blur", () => {
         d3.select(`.g_popup`).remove();
       });
@@ -317,6 +322,10 @@ export default abstract class HealthCardBuilder {
         .attr("width", 269)
         .attr("height", actionsMenuContainerHeight)
         .attr("transform", `translate(${data.x + 0.500488},${data.y + 49.5})`)
+        .attr(
+          "style",
+          "outline: none;filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.12));"
+        )
         .on("blur", () => {
           d3.select(`.g_popup`).remove();
         });
