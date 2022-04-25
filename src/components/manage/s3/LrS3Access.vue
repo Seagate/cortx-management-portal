@@ -124,20 +124,23 @@ export default class LrS3Access extends Vue {
   }
   getAccessKeys() {
     Api.getData("s3/access_keys", { isDummy: true }).then((resp: any) => {
-      this.accessList = resp["access_keys"];
-      this.accessList = resp["access_keys"].map((ele: any) => {
-        return { ...ele, statusFlag: ele.status == "active" ? true : false };
-      });
-      if (this.accessList.length > 1) {
-        this.s3AccountConst.s3AccessTable.headerButton["disabled"] = true;
-        this.s3AccountConst.s3AccessTable.headers[
-          this.s3AccountConst.s3AccessTable.headers.length - 1
-        ]["actionList"] = ["delete"];
+      if (resp["access_keys"] && resp["access_keys"].length > 0) {
+        this.accessList = resp["access_keys"].map((ele: any) => {
+          return { ...ele, statusFlag: ele.status == "active" };
+        });
+        if (this.accessList.length > 1) {
+          this.s3AccountConst.s3AccessTable.headerButton["disabled"] = true;
+          this.s3AccountConst.s3AccessTable.headers[
+            this.s3AccountConst.s3AccessTable.headers.length - 1
+          ]["actionList"] = ["delete"];
+        } else {
+          this.s3AccountConst.s3AccessTable.headerButton["disabled"] = false;
+          this.s3AccountConst.s3AccessTable.headers[
+            this.s3AccountConst.s3AccessTable.headers.length - 1
+          ]["actionList"] = [];
+        }
       } else {
-        this.s3AccountConst.s3AccessTable.headerButton["disabled"] = false;
-        this.s3AccountConst.s3AccessTable.headers[
-          this.s3AccountConst.s3AccessTable.headers.length - 1
-        ]["actionList"] = [];
+        this.accessList = [];
       }
     });
   }
