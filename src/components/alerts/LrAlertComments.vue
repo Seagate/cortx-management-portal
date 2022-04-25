@@ -64,7 +64,9 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions class="action-button-container">
-        <v-btn color="csmprimary" @click="addComment()" dark>Save</v-btn>
+        <v-btn color="primary" @click="addComment()" class="mr-2" dark
+          >Save</v-btn
+        >
         <v-btn color="csmdisabled" @click="dialog = false" dark>Cancel</v-btn>
       </v-card-actions>
     </v-card>

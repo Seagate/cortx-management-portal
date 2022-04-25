@@ -24,13 +24,21 @@
             <v-img :src="require(`@/assets/images/storage-buckets.svg`)" />
           </v-avatar>
         </v-col>
-        <v-col class="user-info">
-          <div class="sgt-form-group-label">
-            Account :<b> {{ s3AccountDetails.account_name }}</b>
-          </div>
-          <div class="sgt-form-group-label">
-            Email :<b> {{ s3AccountDetails.account_email }}</b>
-          </div>
+        <v-col class="user-info py-6 pl-0">
+          <v-row>
+            <v-col cols="4" class="text-right">
+              <b> Account : </b>
+            </v-col>
+            <v-col>
+              {{ s3AccountDetails.account_name }}
+            </v-col>
+          </v-row>
+          <v-row class="mt-0">
+            <v-col cols="4" class="text-right">
+              <b> Email : </b>
+            </v-col>
+            <v-col> {{ s3AccountDetails.account_email }} </v-col>
+          </v-row>
         </v-col>
         <v-col cols="2">
           <SgtSvgIcon
@@ -89,6 +97,5 @@ export default class LrS3Account extends Vue {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 1rem;
 }
 </style>
