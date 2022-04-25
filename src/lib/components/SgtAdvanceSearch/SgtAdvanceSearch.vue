@@ -46,10 +46,19 @@
 
     <v-expand-transition v-if="advanceSearchActive">
       <v-card v-show="expand" hover class="mx-auto advance-search-container">
-        <div v-for="row in config.advanceForm" :key="row.name" class="pt-3 pr-3">
+        <div
+          v-for="row in config.advanceForm"
+          :key="row.name"
+          class="advance-form-container"
+        >
           <v-container class="py-0">
             <v-row>
-              <v-col cols="4" class="py-0" style="height:3rem" align-self="center">
+              <v-col
+                cols="4"
+                class="py-0"
+                style="height: 3rem"
+                align-self="center"
+              >
                 <label class="field-label" :for="row.name">
                   <b>
                     {{ row.label }}
@@ -103,11 +112,16 @@
                         dense
                       >
                         <template v-slot:append>
-                          <v-icon color="primary">mdi-calendar-month-outline</v-icon>
+                          <v-icon color="primary"
+                            >mdi-calendar-month-outline</v-icon
+                          >
                         </template>
                       </v-text-field>
                     </template>
-                    <v-date-picker color="csmprimary" v-model="row.value"></v-date-picker>
+                    <v-date-picker
+                      color="csmprimary"
+                      v-model="row.value"
+                    ></v-date-picker>
                   </v-menu>
                 </template>
                 <!-- checkbox -->
@@ -127,8 +141,12 @@
           </v-container>
         </div>
         <div class="btn-container pr-3">
-          <v-btn color="csmprimary" class="clear-btn" @click="clearAll" outlined>Clear</v-btn>
-          <v-btn color="csmprimary" class="search-btn" @click="search" dark>Search</v-btn>
+          <v-btn color="csmprimary" class="clear-btn" @click="clearAll" outlined
+            >Clear</v-btn
+          >
+          <v-btn color="csmprimary" class="search-btn" @click="search" dark
+            >Search</v-btn
+          >
         </div>
       </v-card>
     </v-expand-transition>
@@ -252,7 +270,7 @@ export default class SgtAdvanceSearch extends Vue {
 .advance-search-container {
   position: absolute;
   z-index: 99;
-  padding: 0.8rem;
+  padding: 15px 0;
   margin-top: 0.5rem;
   border-radius: 5px;
   border: 1px solid #6ebe49;
@@ -262,6 +280,10 @@ export default class SgtAdvanceSearch extends Vue {
 
   .field-label {
     white-space: nowrap;
+  }
+
+  .advance-form-container {
+    padding: 15px 15px 0 0;
   }
 }
 .btn-container {

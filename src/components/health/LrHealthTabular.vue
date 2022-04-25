@@ -24,7 +24,18 @@
       @onRowHover="handleHover"
     >
       <template v-slot:status="{ data }">
-        <v-avatar :color="getColor(data.status)" size="16"></v-avatar>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-avatar
+              v-bind="attrs"
+              v-on="on"
+              class="status-icon"
+              :color="getColor(data.status)"
+              size="16"
+            ></v-avatar>
+          </template>
+          <span>{{ data.status }}</span>
+        </v-tooltip>
       </template>
 
       <template v-slot:actionColumn="{ data }">
@@ -45,7 +56,11 @@
                 />
               </template>
             </div>
-            <SgtSvgIcon icon="zoom-in.svg" hoverIcon="zoom-in-hover.svg" @click="showMoreDetails" />
+            <SgtSvgIcon
+              icon="zoom-in.svg"
+              hoverIcon="zoom-in-hover.svg"
+              @click="showMoreDetails"
+            />
           </div>
         </div>
       </template>
@@ -68,7 +83,12 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="white--text" color="#6ebe49" @click="displayInfoModal = false">OK</v-btn>
+          <v-btn
+            class="white--text"
+            color="#6ebe49"
+            @click="displayInfoModal = false"
+            >OK</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -201,6 +221,9 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
 }
 </script>
 <style lang="scss" scoped>
+.status-icon {
+  margin-left: 1em;
+}
 .action-icons-wrapper {
   display: flex;
   justify-content: flex-end;
