@@ -86,6 +86,10 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
     this.buildSVG(nodes);
   }
 
+  get showExport() {
+    return this.$route.path === "/health";
+  }
+
   private calculateDimensions() {
     const mainContentDim: any = Dimensions.getInstance().getContentDimension();
     this.healthTreeContainerDim.height = `${mainContentDim.height - 69}px`;
