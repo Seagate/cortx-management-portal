@@ -179,24 +179,16 @@
         </v-form>
       </v-card-text>
       <v-divider />
-      <v-card-actions>
-        <v-row no-gutters>
-          <v-col cols="12" class="btn-container">
-            <v-btn
-              class="white--text"
-              color="csmprimary"
-              @click="proceedOperation()"
-              :disabled="!isFormValid"
-              >{{ formLabelItems.ctaBtnLabel }}</v-btn
-            >
-            <v-btn
-              class="white--text"
-              color="csmborder"
-              @click="cancelOperation()"
-              >Cancel</v-btn
-            >
-          </v-col>
-        </v-row>
+      <v-card-actions class="action-button-container">
+        <v-btn
+          class="mr-2"
+          color="csmprimary"
+          @click="proceedOperation()"
+          :disabled="!isFormValid"
+          :dark="isFormValid"
+          >{{ formLabelItems.ctaBtnLabel }}</v-btn
+        >
+        <v-btn color="csmborder" @click="cancelOperation()" dark>Cancel</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

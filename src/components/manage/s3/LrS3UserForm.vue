@@ -107,7 +107,7 @@
         </div>
       </v-card-text>
       <v-divider></v-divider>
-      <v-card-actions class="button-container">
+      <v-card-actions class="action-button-container">
         <v-btn class="mr-2" color="primary" @click="validateForm()" dark>{{
           formType === "create" ? "Create" : "Reset"
         }}</v-btn>
@@ -210,8 +210,5 @@ export default class LrS3UserForm extends Vue {
       padding-right: 0.5rem;
     }
   }
-}
-.button-container {
-  padding: 1.2rem 1.5rem !important;
 }
 </style>

@@ -110,7 +110,7 @@
           </div>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions class="button-container">
+        <v-card-actions class="action-button-container">
           <v-btn
             class="mr-2"
             color="primary"
@@ -266,9 +266,6 @@ export default class LrBuckets extends Vue {
   .title-content {
     display: inline-block;
   }
-}
-.button-container {
-  padding: 1.2rem 1.5rem !important;
 }
 .content-container {
   margin-top: 1rem;
