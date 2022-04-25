@@ -27,7 +27,10 @@
         />
       </nav>
       <div class="main-content">
-        <SgtBreadCrumb backupBasepath="/dashboard" :basePathList="basePathList" />
+        <SgtBreadCrumb
+          backupBasepath="/dashboard"
+          :basePathList="basePathList"
+        />
         <LrRouteComponents />
       </div>
     </main>
@@ -86,7 +89,7 @@ main {
   .main-content {
     background-color: #f7f7f7;
     overflow: auto;
-    width: calc(100vw - 60px);
+    width: 100%;
     padding: 1em 2em;
   }
 }

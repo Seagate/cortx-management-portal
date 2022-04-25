@@ -15,7 +15,7 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>
+  <div class="sgt-data-table">
     <div class="search-container">
       <v-row class="search-row ma-0">
         <v-col class="pl-0 margin-auto">
@@ -34,7 +34,8 @@
               :key="button.name"
               :color="button.color ? button.color : 'csmprimary'"
               @click="$emit(button.name, selected)"
-            >{{ button.label }}</v-btn>
+              >{{ button.label }}</v-btn
+            >
           </div>
           <div v-if="headerButton && selected.length == 0" class="multi-btn">
             <v-btn
@@ -44,7 +45,8 @@
               :color="headerButton.color ? headerButton.color : 'csmprimary'"
               :disabled="headerButton.disabled ? headerButton.disabled : false"
               @click="$emit(headerButton.name, selected)"
-            >{{ headerButton.label }}</v-btn>
+              >{{ headerButton.label }}</v-btn
+            >
           </div>
         </v-col>
       </v-row>
@@ -126,8 +128,14 @@
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="M4.42432 0L7.48247 5.25H1.36616L4.42432 0Z" fill="#9E9E9E" />
-                    <path d="M4.42432 13L7.48247 7.75H1.36616L4.42432 13Z" fill="#9E9E9E" />
+                    <path
+                      d="M4.42432 0L7.48247 5.25H1.36616L4.42432 0Z"
+                      fill="#9E9E9E"
+                    />
+                    <path
+                      d="M4.42432 13L7.48247 7.75H1.36616L4.42432 13Z"
+                      fill="#9E9E9E"
+                    />
                   </svg>
                 </span>
               </span>
@@ -161,9 +169,7 @@
             >
               <template v-if="col.type">
                 <template v-if="col.type == 'date'">
-                  {{
-                  item[col.value] | formattedDate
-                  }}
+                  {{ item[col.value] | formattedDate }}
                 </template>
                 <template v-else-if="col.type == 'custom'">
                   <slot
@@ -172,7 +178,8 @@
                       rowIdx: rowIndex,
                     }"
                     :name="col.value"
-                  >{{ item[col.value] }}</slot>
+                    >{{ item[col.value] }}</slot
+                  >
                 </template>
                 <template v-else-if="col.type == 'action'">
                   <div v-if="selected.length < 1" class="action-col">
@@ -212,7 +219,12 @@
       </template>
 
       <template v-slot:footer="{}" v-if="records.length > 0">
-        <v-row justify="end" align="center" class="pr-3 py-4" v-if="isPagination">
+        <v-row
+          justify="end"
+          align="center"
+          class="pr-3 py-4"
+          v-if="isPagination"
+        >
           <v-col class="text-right pa-0 pr-4 flex-grow-0">
             <v-pagination
               v-model="page"
@@ -408,164 +420,166 @@ export default class SgtDataTable extends Vue {
 }
 </script>
 <style lang="scss">
-.search-container {
-  min-height: 4rem;
-  .search-row {
-    width: 100%;
+.sgt-data-table {
+  .search-container {
+    min-height: 4rem;
+    .search-row {
+      width: 100%;
+    }
   }
-}
-.sgt-table-header {
-  border: 1px solid #dfe0eb;
-}
-.margin-auto {
-  margin: auto;
-}
-.multi-btn {
-  display: flex;
-  justify-content: flex-end;
-}
-.action-button {
-  text-align: right;
-  min-width: 100px;
-}
-
-.action-col {
-  position: relative;
-  min-height: 1.5rem;
-}
-
-.hover-btn {
-  display: none;
-}
-
-.record:hover {
-  .hover-btn {
+  .sgt-table-header {
+    border: 1px solid #dfe0eb;
+  }
+  .margin-auto {
+    margin: auto;
+  }
+  .multi-btn {
     display: flex;
-    gap: 10px;
-    position: absolute;
-    right: 2rem;
+    justify-content: flex-end;
   }
-}
-
-.vertical-middle {
-  vertical-align: middle;
-}
-
-::v-deep .v-pagination__item {
-  font-size: 1rem;
-  height: 2.4rem;
-  min-width: 3rem;
-  padding: 0 5px;
-  text-decoration: none;
-  transition: 0.3s cubic-bezier(0, 0, 0.2, 1);
-  width: auto;
-  border-radius: 0px;
-  margin: 0;
-  border: 0.5px solid grey;
-  box-shadow: none;
-}
-::v-deep .v-pagination__navigation {
-  border-radius: 0;
-  min-width: 4rem;
-  min-width: 3rem;
-  min-height: 2.4rem;
-  border: 1px solid grey;
-  box-shadow: none;
-  margin: 0;
-}
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.pag-dropdown {
-  width: 8rem;
-  height: 3rem;
-  max-width: 112px;
-
-  .v-select__selection {
-    margin: 0 !important;
+  .action-button {
+    text-align: right;
+    min-width: 100px;
   }
-  .v-input__append-inner {
-    padding: 0 !important;
-  }
-}
 
-.v-data-table {
-  &.elevation-1 {
-    box-shadow: none !important;
+  .action-col {
+    position: relative;
+    min-height: 1.5rem;
   }
-  border: none !important;
 
-  .table-header {
-    padding: 0 1rem;
-    height: 3rem;
-    background: #fcfcfd;
-    th {
-      border-bottom: 1px solid #dfe0eb;
-    }
-    .sort-icon {
-      margin-left: 5px;
-    }
-    .sort-icon.sort-asc path:first-child {
-      fill: #000;
-    }
-    .sort-icon.sort-desc path:last-child {
-      fill: #000;
-    }
-    & > span {
+  .hover-btn {
+    display: none;
+  }
+
+  .record:hover {
+    .hover-btn {
       display: flex;
+      gap: 10px;
+      position: absolute;
+      right: 2rem;
     }
   }
 
-  .v-data-table__wrapper {
-    border: 1px solid #dfe0eb !important;
-    border-radius: 8px !important;
-    margin-bottom: 20px !important;
+  .vertical-middle {
+    vertical-align: middle;
   }
 
-  .zoom-container > .sgt-icon-container {
-    margin-top: 4px;
+  ::v-deep .v-pagination__item {
+    font-size: 1rem;
+    height: 2.4rem;
+    min-width: 3rem;
+    padding: 0 5px;
+    text-decoration: none;
+    transition: 0.3s cubic-bezier(0, 0, 0.2, 1);
+    width: auto;
+    border-radius: 0px;
+    margin: 0;
+    border: 0.5px solid grey;
+    box-shadow: none;
+  }
+  ::v-deep .v-pagination__navigation {
+    border-radius: 0;
+    min-width: 4rem;
+    min-width: 3rem;
+    min-height: 2.4rem;
+    border: 1px solid grey;
+    box-shadow: none;
+    margin: 0;
+  }
+  .cursor-pointer {
+    cursor: pointer;
   }
 
-  .record {
-    border: 0 !important;
-    border-bottom: 1px solid #dfe0eb !important;
-    &:hover {
-      background-color: #fafafa !important;
+  .pag-dropdown {
+    width: 8rem;
+    height: 3rem;
+    max-width: 112px;
+
+    .v-select__selection {
+      margin: 0 !important;
+    }
+    .v-input__append-inner {
+      padding: 0 !important;
     }
   }
 
-  .v-pagination {
-    border: 1px solid #eceeef;
-    .v-pagination__navigation,
-    .v-pagination__item,
-    .v-pagination__item--active {
-      margin: 0;
+  .v-data-table {
+    &.elevation-1 {
       box-shadow: none !important;
-      color: #000 !important;
-      font-weight: bold !important;
+    }
+    border: none !important;
 
-      li {
-        border: 1px solid #eceeef;
+    .table-header {
+      padding: 0 1rem;
+      height: 3rem;
+      background: #fcfcfd;
+      th {
+        border-bottom: 1px solid #dfe0eb;
       }
+      .sort-icon {
+        margin-left: 5px;
+      }
+      .sort-icon.sort-asc path:first-child {
+        fill: #000;
+      }
+      .sort-icon.sort-desc path:last-child {
+        fill: #000;
+      }
+      & > span {
+        display: flex;
+      }
+    }
 
-      .v-icon {
-        transform: scale(0.65) !important;
-        color: $primary !important;
-        &::before,
-        &::after {
-          font-weight: bold;
+    .v-data-table__wrapper {
+      border: 1px solid #dfe0eb !important;
+      border-radius: 8px !important;
+      margin-bottom: 20px !important;
+    }
+
+    .zoom-container > .sgt-icon-container {
+      margin-top: 4px;
+    }
+
+    .record {
+      border: 0 !important;
+      border-bottom: 1px solid #dfe0eb !important;
+      &:hover {
+        background-color: #fafafa !important;
+      }
+    }
+
+    .v-pagination {
+      border: 1px solid #eceeef;
+      .v-pagination__navigation,
+      .v-pagination__item,
+      .v-pagination__item--active {
+        margin: 0;
+        box-shadow: none !important;
+        color: #000 !important;
+        font-weight: bold !important;
+
+        li {
+          border: 1px solid #eceeef;
+        }
+
+        .v-icon {
+          transform: scale(0.65) !important;
+          color: $primary !important;
+          &::before,
+          &::after {
+            font-weight: bold;
+          }
         }
       }
-    }
 
-    .v-pagination__item--active {
-      color: #fff !important;
-    }
+      .v-pagination__item--active {
+        color: #fff !important;
+      }
 
-    .v-pagination__navigation--disabled {
-      .v-icon {
-        color: #000 !important;
+      .v-pagination__navigation--disabled {
+        .v-icon {
+          color: #000 !important;
+        }
       }
     }
   }
