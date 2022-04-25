@@ -126,7 +126,7 @@ export default class LrS3Access extends Vue {
     Api.getData("s3/access_keys", { isDummy: true }).then((resp: any) => {
       if (resp["access_keys"] && resp["access_keys"].length > 0) {
         this.accessList = resp["access_keys"].map((ele: any) => {
-          return { ...ele, statusFlag: ele.status == "active" };
+          return { ...ele, statusFlag: ele.status === "active" };
         });
         if (this.accessList.length > 1) {
           this.s3AccountConst.s3AccessTable.headerButton["disabled"] = true;
