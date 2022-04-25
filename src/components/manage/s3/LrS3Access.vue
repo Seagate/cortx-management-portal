@@ -88,7 +88,7 @@
           </div>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions class="button-container">
+        <v-card-actions class="action-button-container">
           <v-btn color="csmprimary" @click="downloadKey()" dark
             >Save & Close</v-btn
           >
@@ -208,8 +208,5 @@ export default class LrS3Access extends Vue {
       padding-right: 0.5rem;
     }
   }
-}
-.button-container {
-  padding: 1.2rem 1.5rem !important;
 }
 </style>

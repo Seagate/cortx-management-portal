@@ -40,7 +40,7 @@
               size="16"
             ></v-avatar>
           </template>
-          <span>{{ data.severity }}</span>
+          <span>{{ capitalizeFirstLetter(data.severity) }}</span>
         </v-tooltip>
       </template>
       <template v-slot:description="{ data }">{{ data.description }}</template>
@@ -70,6 +70,7 @@ import {
   PaginationModel,
 } from "@/lib/components/SgtDataTable/SgtDataTableFilterSortPag.model";
 import { SgtFilterObject } from "@/lib/components/SgtChips/SgtFilterObject.model";
+import { capitalizeFirstLetter } from "@/utils/CommonUtilFunctions";
 @Component({
   name: "LrAlert",
   components: { SgtDataTable, LrAlertDialog, LrAlertComments },
@@ -84,6 +85,8 @@ export default class LrAlert extends Vue {
   showAlertDetailsDialog = false;
   selectedRecord: any = null;
   showAlertCommentsDialog = false;
+  capitalizeFirstLetter = capitalizeFirstLetter;
+
   mounted() {
     Api.getData("alerts/list", { isDummy: true }).then((resp: any) => {
       this.alerts = resp["list"];

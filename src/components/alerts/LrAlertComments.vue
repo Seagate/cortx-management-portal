@@ -62,8 +62,8 @@
           <span class="error-txt sub-txt">{{ errorMsg }}</span>
         </div>
       </v-card-text>
-
-      <v-card-actions class="button-container">
+      <v-divider></v-divider>
+      <v-card-actions class="action-button-container">
         <v-btn color="csmprimary" @click="addComment()" dark>Save</v-btn>
         <v-btn color="csmdisabled" @click="dialog = false" dark>Cancel</v-btn>
       </v-card-actions>
@@ -124,9 +124,6 @@ export default class LrAlertComments extends Vue {
 .no-comment-label {
   display: block;
   margin-top: 1rem;
-}
-.button-container {
-  padding: 1.2rem 1.5rem !important;
 }
 .card-content-container {
   padding: 0 1.5rem;
