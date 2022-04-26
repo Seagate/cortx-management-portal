@@ -15,7 +15,7 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>
+  <div class="health-tabular-container">
     <SgtDataTable
       ref="healthDetailsTable"
       :headers="healthTableConfig.healthTable.headers"
@@ -34,7 +34,7 @@
               size="16"
             ></v-avatar>
           </template>
-          <span>{{ data.status }}</span>
+          <span class="text-capitalize">{{ data.status }}</span>
         </v-tooltip>
       </template>
 
@@ -56,11 +56,6 @@
                 />
               </template>
             </div>
-            <SgtSvgIcon
-              icon="zoom-in.svg"
-              hoverIcon="zoom-in-hover.svg"
-              @click="showMoreDetails"
-            />
           </div>
         </div>
       </template>
@@ -184,7 +179,6 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
 
   get actionsCallback() {
     return {
-      getMoreInfoAction: this.showMoreDetails,
       startNodeAction: (resource: any) => this.performAction(resource, "start"),
       stopNodeAction: (resource: any) => this.performAction(resource, "stop"),
       powerOffAction: (resource: any) =>
@@ -213,30 +207,35 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
   serverAndStorageOff(resource: IResource) {
     //API call to turn the server and storage off
   }
-
-  public async showMoreDetails(details: IResource) {
-    this.resourceInfo = details;
-    this.displayInfoModal = true;
-  }
 }
 </script>
 <style lang="scss" scoped>
-.status-icon {
-  margin-left: 1em;
-}
-.action-icons-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  .all-icons-container {
-    position: relative;
+.health-tabular-container {
+  .status-icon {
+    margin-left: 1em;
+  }
+  .action-icons-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    .all-icons-container {
+      position: relative;
 
-    .action-icons-container {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 10px;
-      position: absolute;
-      right: 35px;
+      .action-icons-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        position: absolute;
+        right: 0;
+        top: -12px;
+      }
+    }
+  }
+}
+.health-tabular-container::v-deep .sgt-data-table {
+  .v-data-table {
+    .footer-wrapper {
+      margin-bottom: 5px !important;
     }
   }
 }

@@ -222,7 +222,7 @@
         <v-row
           justify="end"
           align="center"
-          class="pr-3 py-4"
+          class="footer-wrapper"
           v-if="isPagination"
         >
           <v-col class="text-right pa-0 pr-4 flex-grow-0">
@@ -533,7 +533,6 @@ export default class SgtDataTable extends Vue {
     .v-data-table__wrapper {
       border: 1px solid #dfe0eb !important;
       border-radius: 8px !important;
-      margin-bottom: 20px !important;
     }
 
     .zoom-container > .sgt-icon-container {
@@ -548,37 +547,40 @@ export default class SgtDataTable extends Vue {
       }
     }
 
-    .v-pagination {
-      border: 1px solid #eceeef;
-      .v-pagination__navigation,
-      .v-pagination__item,
-      .v-pagination__item--active {
-        margin: 0;
-        box-shadow: none !important;
-        color: #000 !important;
-        font-weight: bold !important;
+    .footer-wrapper {
+      margin: 20px 0;
+      .v-pagination {
+        border: 1px solid #eceeef;
+        .v-pagination__navigation,
+        .v-pagination__item,
+        .v-pagination__item--active {
+          margin: 0;
+          box-shadow: none !important;
+          color: #000 !important;
+          font-weight: bold !important;
 
-        li {
-          border: 1px solid #eceeef;
-        }
+          li {
+            border: 1px solid #eceeef;
+          }
 
-        .v-icon {
-          transform: scale(0.65) !important;
-          color: $primary !important;
-          &::before,
-          &::after {
-            font-weight: bold;
+          .v-icon {
+            transform: scale(0.65) !important;
+            color: $primary !important;
+            &::before,
+            &::after {
+              font-weight: bold;
+            }
           }
         }
-      }
 
-      .v-pagination__item--active {
-        color: #fff !important;
-      }
+        .v-pagination__item--active {
+          color: #fff !important;
+        }
 
-      .v-pagination__navigation--disabled {
-        .v-icon {
-          color: #000 !important;
+        .v-pagination__navigation--disabled {
+          .v-icon {
+            color: #000 !important;
+          }
         }
       }
     }

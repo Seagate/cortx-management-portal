@@ -24,6 +24,8 @@ import * as moment from "moment";
 import { graphImages } from "./LrHeathGraphImages.constant";
 
 export default abstract class HealthCardBuilder {
+  public static descBoxId: string = "";
+  public static actionsBoxId: string = "";
   public static build(
     healthCardG: any,
     expandCollapse: any,
@@ -103,10 +105,15 @@ export default abstract class HealthCardBuilder {
       .attr("height", 20)
       .attr("style", "cursor: pointer;")
       .on("click", (event: any, data: any) => {
-        HealthCardBuilder.buildDetailsMenu(data);
+        if (HealthCardBuilder.descBoxId === `desc-box-${data.treeNodeId}`) {
+          HealthCardBuilder.descBoxId = "";
+        } else {
+          HealthCardBuilder.buildDetailsMenu(data);
+          HealthCardBuilder.descBoxId = `desc-box-${data.treeNodeId}`;
+        }
       });
 
-    //Below rect element is added to make the whole area clickable. If not, the gap inside the icon is not clickable.
+    //Below rect element is added to make the whole area clickable. If not added, the gap inside the icon is not clickable.
     svgIconWrapper
       .append("rect")
       .attr("width", 20)
@@ -128,10 +135,17 @@ export default abstract class HealthCardBuilder {
       )
       .attr("style", "cursor: pointer")
       .on("click", (event: any, data: any) => {
-        HealthCardBuilder.buildActionsMenu(data, performAction);
+        if (
+          HealthCardBuilder.actionsBoxId === `actions-box-${data.treeNodeId}`
+        ) {
+          HealthCardBuilder.actionsBoxId = "";
+        } else {
+          HealthCardBuilder.buildActionsMenu(data, performAction);
+          HealthCardBuilder.actionsBoxId = `actions-box-${data.treeNodeId}`;
+        }
       });
 
-    //Below rect element is added to make the whole area clickable. If not, the gap inside the icon is not clickable.
+    //Below rect element is added to make the whole area clickable. If not added, the gap inside the icon is not clickable.
     svgIconWrapper
       .append("rect")
       .attr("width", 10)
