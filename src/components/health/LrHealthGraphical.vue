@@ -16,7 +16,7 @@
 -->
 <template>
   <div class="graphical-view-container">
-    <div class="export-feature">
+    <div class="export-feature" v-if="showExport">
       <SgtDropdown
         placeholder="EXPORT AS"
         :dropdownOptions="exportOptions"
