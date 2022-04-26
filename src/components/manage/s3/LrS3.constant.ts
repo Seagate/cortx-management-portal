@@ -21,7 +21,7 @@ export const lrS3AccountConst = {
         headers: [
             { text: "Access Key", value: "access_key_id", sortable: false },
             { text: "Last update", value: "updated_time", type: "date", sortable: false },
-            { text: "Status", value: "status", sortable: false, type: "custom" },
+            { text: "Status", value: "statusFlag", sortable: false, type: "custom" },
             {
                 text: "",
                 value: "action",
