@@ -25,7 +25,7 @@ export const SgtDataTableConst = {
     {
       name: "edit",
       path: "edit-green.svg",
-      hoverPath: "edit-green.svg",
+      hoverPath: "edit-hover.svg",
       tooltip: "Edit",
     },
     {
@@ -37,13 +37,13 @@ export const SgtDataTableConst = {
     {
       name: "notification",
       path: "alert-green.svg",
-      hoverPath: "alert-hover.svg",
+      hoverPath: "alert-hover-green.svg",
       tooltip: "Acknowledge",
     },
     {
       name: "delete",
       path: "delete-green.svg",
-      hoverPath: "delete-green.svg",
+      hoverPath: "delete-hover.svg",
       tooltip: "Delete",
     },
   ],
