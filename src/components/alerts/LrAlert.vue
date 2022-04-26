@@ -31,7 +31,17 @@
       @update-record="updateRecord($event)"
     >
       <template v-slot:severity="{ data }">
-        <v-avatar :color="getColor(data)" size="24"></v-avatar>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-avatar
+              v-bind="attrs"
+              v-on="on"
+              :color="getColor(data)"
+              size="16"
+            ></v-avatar>
+          </template>
+          <span class="text-capitalize">{{ data.severity }}</span>
+        </v-tooltip>
       </template>
       <template v-slot:description="{ data }">{{ data.description }}</template>
     </SgtDataTable>
@@ -74,6 +84,7 @@ export default class LrAlert extends Vue {
   showAlertDetailsDialog = false;
   selectedRecord: any = null;
   showAlertCommentsDialog = false;
+
   mounted() {
     Api.getData("alerts/list", { isDummy: true }).then((resp: any) => {
       this.alerts = resp["list"];

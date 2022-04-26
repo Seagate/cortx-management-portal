@@ -31,25 +31,25 @@ export abstract class ResourceConfig {
         actions = [
           {
             action: "start",
-            title: "Start",
+            title: "Start Node",
             icon: require(`@/assets/health/node/${status}/operations/start.svg`),
             isEnabled: status === "offline" || status === "failed",
           },
           {
             action: "stop",
-            title: "Stop",
+            title: "Stop Node",
             icon: require(`@/assets/health/node/${status}/operations/stop.svg`),
             isEnabled: status === "online",
           },
           {
             action: "poweroff",
-            title: "Power off",
+            title: "Server Power Off",
             icon: require(`@/assets/health/node/${status}/operations/poweroff.svg`),
             isEnabled: status === "online",
           },
           {
             action: "powerandstorageoff",
-            title: "Power and storage off",
+            title: "Server and Storage Off",
             icon: require(`@/assets/health/node/${status}/operations/powerandstorageoff.svg`),
             isEnabled: status === "online",
           },

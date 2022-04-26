@@ -37,7 +37,7 @@ export const lrHealthConst = {
         text: "Status",
         value: "status",
         type: "custom",
-        align: "middle",
+        width: "150px",
       },
       {
         text: "Last Updated",

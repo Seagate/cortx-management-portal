@@ -17,24 +17,18 @@
 <template>
   <div class="graphical-view-container">
     <div class="export-feature" v-if="showExport">
-      <v-select
-        :items="exportOptions"
-        label="EXPORT AS"
-        append-icon="mdi-chevron-down"
-        outlined
-        color="csmprimary"
-        item-color="csmprimary"
+      <SgtDropdown
+        placeholder="EXPORT AS"
+        :dropdownOptions="exportOptions"
         v-model="selectedExport"
-        dense
-      ></v-select>
+      />
       <v-btn
         color="csmprimary"
         class="white--text export-btn"
         @click="handleExport"
         :disabled="!selectedExport"
+        >Export</v-btn
       >
-        Export
-      </v-btn>
     </div>
 
     <div id="health_tree_container" :style="healthTreeContainerDim"></div>
@@ -52,9 +46,10 @@ import {
   downloadSVGAsPDF,
 } from "../../utils/SVGExport";
 import { Dimensions } from "@/utils/LrUtilFunctions";
-
+import SgtDropdown from "@/lib/components/SgtDropdown/SgtDropdown.vue";
 @Component({
   name: "LrHealthGraphical",
+  components: { SgtDropdown },
 })
 export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
   public healthTreeContainerDim: any = {
@@ -91,8 +86,8 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
     this.buildSVG(nodes);
   }
 
-  get showExport(){
-    return this.$route.path === "/health"
+  get showExport() {
+    return this.$route.path === "/health";
   }
 
   private calculateDimensions() {
@@ -125,6 +120,11 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
       this.outerG.attr("transform", event.transform);
     });
     healthTreeContainerSVG.call(zoom);
+    if (+this.healthTreeContainerDim.width.slice(0, -2) < 1200) {
+      this.outerG.attr("transform", `translate(0,0) scale(0.7)`);
+    } else if (+this.healthTreeContainerDim.width.slice(0, -2) < 1450) {
+      this.outerG.attr("transform", `translate(0,0) scale(0.8)`);
+    }
   }
 
   private buildSVG(nodes: any[]) {
@@ -275,6 +275,7 @@ export default class LrHealthGraphical extends Mixins(ClusterManagementMixin) {
       // Collapse
       data._sub_resources = data.sub_resources;
       data.sub_resources = [];
+      d3.select("#nodeConnectorPath").remove();
     }
     this.resetTreeDimContainer();
     this.healthTreePathLineCoordinates = [];

@@ -34,7 +34,7 @@ export const lrS3AccountConst = {
         ],
         headerButton: {
             name: "generate",
-            label: "Add/Generate",
+            label: "Generate",
             disabled: false
         }
     }

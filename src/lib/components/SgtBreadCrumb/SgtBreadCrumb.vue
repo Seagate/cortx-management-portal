@@ -20,16 +20,10 @@
       <span
         class="path root-path"
         @click="$router.push({ path: item.to, replace: true })"
-      >
-        {{ item.text }}
-      </span>
+      >{{ item.text }}</span>
     </template>
     <template v-slot:divider>
-      <img
-        class="bread-crumb-delimiter"
-        :src="require('@/assets/icons/bread-crumbs.svg')"
-        alt=""
-      />
+      <img class="bread-crumb-delimiter" :src="require('@/assets/icons/bread-crumbs.svg')" alt />
     </template>
   </v-breadcrumbs>
 </template>
@@ -83,8 +77,8 @@ export default class SgtBreadCrumb extends Vue {
   }
 
   capitalizeFirstLetter = (value: string) => {
-  return value.charAt(0).toUpperCase() + value.substring(1);
-};
+    return value.charAt(0).toUpperCase() + value.substring(1);
+  };
 }
 </script>
 
@@ -97,6 +91,7 @@ export default class SgtBreadCrumb extends Vue {
     cursor: pointer;
     &:last-child {
       color: $primary;
+      font-weight: bold;
     }
   }
 }

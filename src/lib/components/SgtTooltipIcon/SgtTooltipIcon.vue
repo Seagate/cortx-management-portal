@@ -17,14 +17,14 @@
 <template>
   <v-tooltip bottom max-width="300">
     <template v-slot:activator="{ on, attrs }">
-      <div v-bind="attrs" v-on="on">
+      <div v-bind="attrs" v-on="on" class="tooltip-icon-container">
         <v-icon
           v-if="!$slots.icon"
           color="csmprimary"
           v-bind="attrs"
           v-on="on"
           small
-          >mdi-information</v-icon
+          >mdi-information-outline</v-icon
         >
         <slot name="icon" />
       </div>
@@ -43,6 +43,9 @@ export default class SgtTooltipIcon extends Vue {}
 </script>
 
 <style lang="scss" scoped>
+.tooltip-icon-container{
+  display: inline;
+}
 .i-button-container {
   position: relative;
 
