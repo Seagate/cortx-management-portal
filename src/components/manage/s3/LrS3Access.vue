@@ -27,21 +27,24 @@
       @generate="generateNewKey"
       @delete="deleteKey"
     >
-      <template v-slot:status="{ data }">
-        <v-switch
-          v-model="data.status"
-          value="active"
-          color="csmprimary"
-          inset
-          @change="updateAccessKeyStatus(data.rowIdx)"
-        ></v-switch>
+      <template v-slot:statusFlag="{ data }">
+        <SgtToggle
+          v-if="data"
+          :tooltip="accessList[data.rowIdx].statusFlag ? 'Active' : 'Inactive'"
+          v-model="accessList[data.rowIdx].statusFlag"
+          @change="updateAccessKeyStatus($event)"
+        ></SgtToggle>
       </template>
     </SgtDataTable>
     <v-dialog v-model="generatedAccessKeyDialog" max-width="800px" persistent>
       <v-card>
         <v-card-title>
           <div class="title-container">
-            <SgtSvgIcon icon="green-tick.svg" class="title-icon" disableClick=true />
+            <SgtSvgIcon
+              icon="green-tick.svg"
+              class="title-icon"
+              disableClick="true"
+            />
             <div class="title-content">Access key created</div>
           </div>
         </v-card-title>
@@ -101,10 +104,11 @@ import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
 import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
 import { create } from "vue-modal-dialogs";
+import SgtToggle from "@/lib/components/SgtToggle/SgtToggle.vue";
 
 @Component({
   name: "LrS3Access",
-  components: { SgtDataTable, SgtSvgIcon },
+  components: { SgtDataTable, SgtSvgIcon, SgtToggle },
 })
 export default class LrS3Access extends Vue {
   s3AccountConst: any = JSON.parse(JSON.stringify(lrS3AccountConst));
@@ -113,23 +117,30 @@ export default class LrS3Access extends Vue {
   newAccessKey = {};
   generatedAccessKeyDialog = false;
   deleteModal = create<SgtDialogModel>(SgtDialog);
+  status = "active";
 
   mounted() {
     this.getAccessKeys();
   }
   getAccessKeys() {
     Api.getData("s3/access_keys", { isDummy: true }).then((resp: any) => {
-      this.accessList = resp["access_keys"];
-      if (this.accessList.length > 1) {
-        this.s3AccountConst.s3AccessTable.headerButton["disabled"] = true;
-        this.s3AccountConst.s3AccessTable.headers[
-          this.s3AccountConst.s3AccessTable.headers.length - 1
-        ]["actionList"] = ["delete"];
+      if (resp["access_keys"] && resp["access_keys"].length > 0) {
+        this.accessList = resp["access_keys"].map((ele: any) => {
+          return { ...ele, statusFlag: ele.status === "active" };
+        });
+        if (this.accessList.length > 1) {
+          this.s3AccountConst.s3AccessTable.headerButton["disabled"] = true;
+          this.s3AccountConst.s3AccessTable.headers[
+            this.s3AccountConst.s3AccessTable.headers.length - 1
+          ]["actionList"] = ["delete"];
+        } else {
+          this.s3AccountConst.s3AccessTable.headerButton["disabled"] = false;
+          this.s3AccountConst.s3AccessTable.headers[
+            this.s3AccountConst.s3AccessTable.headers.length - 1
+          ]["actionList"] = [];
+        }
       } else {
-        this.s3AccountConst.s3AccessTable.headerButton["disabled"] = false;
-        this.s3AccountConst.s3AccessTable.headers[
-          this.s3AccountConst.s3AccessTable.headers.length - 1
-        ]["actionList"] = [];
+        this.accessList = [];
       }
     });
   }
@@ -173,7 +184,7 @@ export default class LrS3Access extends Vue {
     });
   }
 
-  updateAccessKeyStatus() {
+  updateAccessKeyStatus(toggleStatus: boolean) {
     //code to update
   }
 }
