@@ -1,0 +1,54 @@
+# CORTX-CSM: CORTX Management web and CLI interface.
+# Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+# For any questions about this software or licensing,
+# please email opensource@seagate.com or cortx-questions@seagate.com.
+
+csm_web:
+    post_install:
+        cmd: /opt/seagate/cortx/csm/web/bin/csm_web_setup post_install
+        args: --config $URL
+
+    prepare:
+        cmd: /opt/seagate/cortx/csm/web/bin/csm_web_setup prepare
+        args: --config $URL
+
+    config:
+        cmd: /opt/seagate/cortx/csm/web/bin/csm_web_setup config
+        args: --config $URL
+
+    init:
+        cmd: /opt/seagate/cortx/csm/web/bin/csm_web_setup init
+        args: --config $URL
+
+    test:
+        cmd: /opt/seagate/cortx/csm/web/bin/csm_web_setup test
+        args:
+            - -t <CSM_PATH>/test/plans/self_test.pln
+            - -f <CSM_PATH>/test/test_data/args.yaml
+
+    cleanup:
+        cmd: /opt/seagate/cortx/csm/web/bin/csm_web_setup cleanup
+        args: --config $URL [--pre-factory]
+
+    reset:
+        cmd: /opt/seagate/cortx/csm/web/bin/csm_web_setup reset
+        args: --config $URL
+
+    upgrade:
+      pre:
+          cmd: /opt/seagate/cortx/csm/web/bin/csm_web_setup pre_upgrade
+          args: --config $URL
+
+      post:
+          cmd: /opt/seagate/cortx/csm/web/bin/csm_web_setup post_upgrade
+          args: --config $URL
