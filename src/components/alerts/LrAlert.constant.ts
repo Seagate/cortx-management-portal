@@ -21,28 +21,28 @@ export const lrAlertConst = {
       {
         type: "date",
         name: "updateDate",
-        label: "update Date",
+        label: "Update Date",
         placeholder: "Time Period",
         value: "",
       },
       {
         type: "textbox",
         name: "resourceInfo",
-        label: "resource Info",
+        label: "Resource Info",
         placeholder: "Enter resource Info",
         value: "",
       },
       {
         type: "textbox",
         name: "description",
-        label: "description",
+        label: "Description",
         placeholder: "Enter description",
         value: "",
       },
       {
         type: "dropdown",
         name: "status",
-        label: "status",
+        label: "Status",
         placeholder: "select",
         options: [],
         required: false,
@@ -51,7 +51,7 @@ export const lrAlertConst = {
       {
         type: "dropdown",
         name: "severity",
-        label: "severity",
+        label: "Severity",
         placeholder: "select",
         options: [],
         required: false,
@@ -60,7 +60,7 @@ export const lrAlertConst = {
       {
         type: "dropdown",
         name: "category",
-        label: "category",
+        label: "Category",
         placeholder: "select",
         options: [],
         value: "",
@@ -76,7 +76,7 @@ export const lrAlertConst = {
         align: "start",
         value: "updated_time",
         type: "date",
-        width: "125px",
+        width: "175px",
       },
       { text: "Category", value: "category", width: "125px" },
       {
@@ -88,7 +88,7 @@ export const lrAlertConst = {
       },
       { text: "State", value: "state", width: "125px" },
       { text: "Description", value: "description", type: "custom" },
-      { text: "Alert Type", value: "alert_type", width: "125px" },
+      { text: "Alert Type", value: "alert_type", width: "135px" },
       {
         text: "",
         value: "action",

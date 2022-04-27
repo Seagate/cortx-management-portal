@@ -16,20 +16,37 @@
 -->
 <template>
   <div>
-    <div>Account Name</div>
-    <v-card max-width="40%" style="margin: 2rem 0">
+    <div class="mt-3 mb-3"><b>Account Name</b></div>
+    <v-card width="40%" class="card-container mt-6 mb-6 pa-5">
       <v-row>
-        <v-col cols="2" class="user-avatar">
+        <v-col cols="3">
           <v-avatar class="profile" size="96" v-if="s3AccountDetails">
             <v-img :src="require(`@/assets/images/storage-buckets.svg`)" />
           </v-avatar>
         </v-col>
-        <v-col class="user-info">
-          <div>Account: {{ s3AccountDetails.account_name }}</div>
-          <div>Email: {{ s3AccountDetails.account_email }}</div>
+        <v-col class="user-info py-6 pl-0">
+          <v-row>
+            <v-col cols="4" class="text-right">
+              <b> Account : </b>
+            </v-col>
+            <v-col>
+              {{ s3AccountDetails.account_name }}
+            </v-col>
+          </v-row>
+          <v-row class="mt-0">
+            <v-col cols="4" class="text-right">
+              <b> Email : </b>
+            </v-col>
+            <v-col> {{ s3AccountDetails.account_email }} </v-col>
+          </v-row>
         </v-col>
-        <v-col cols="1" style="margin-right: 1rem">
-          <SgtSvgIcon icon="edit-green.svg" @click="showUserDialog = true" tooltip="Reset Password" />
+        <v-col cols="2">
+          <SgtSvgIcon
+            class="edit-icon"
+            icon="edit-green.svg"
+            @click="showUserDialog = true"
+            tooltip="Reset Password"
+          />
         </v-col>
       </v-row>
     </v-card>
@@ -70,13 +87,15 @@ export default class LrS3Account extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.user-avatar {
-  margin-left: 1rem;
+.card-container {
+  position: relative;
+  .edit-icon {
+    float: right;
+  }
 }
 .user-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 1rem;
 }
 </style>

@@ -16,7 +16,7 @@
 -->
 <template>
   <div>
-    <div class="title-container">
+    <div class="title-container mt-3">
       <span class="title-label">User Settings</span>
       <SgtTooltipIcon>
         <template #default>
@@ -125,7 +125,6 @@ export default class LrAdminUser extends Vue {
 
 <style lang="scss" scoped>
 .title-container {
-  margin: 1em 0;
   display: flex;
   align-items: center;
   gap: 5px;

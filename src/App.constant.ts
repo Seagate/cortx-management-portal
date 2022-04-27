@@ -38,13 +38,6 @@ export const AppConst = {
       requiredAccess: "s3accounts",
     },
     {
-      title: "lyvePilot",
-      path: "/ldp",
-      iconDefault: "images/udx-grey.svg",
-      iconActive: "images/udx-white.svg",
-      requiredAccess: "lyve_pilot",
-    },
-    {
       title: "settings",
       path: "/settings",
       iconDefault: "images/settings-grey.svg",

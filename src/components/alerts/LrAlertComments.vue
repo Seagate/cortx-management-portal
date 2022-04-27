@@ -15,7 +15,7 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <v-dialog v-model="dialog" scrollable max-width="400px">
+  <v-dialog v-model="dialog" scrollable max-width="600px">
     <v-card>
       <v-card-title>
         <div class="title-container">
@@ -29,11 +29,13 @@
         </div>
       </v-card-title>
       <v-divider></v-divider>
-      <v-card-text>
-        <label class="no-cmt-lbl" v-if="alertComments.length === 0">No Comments</label>
+      <v-card-text class="card-content-container">
+        <div class="no-comment-label" v-if="alertComments.length === 0">
+          No Comments
+        </div>
         <div
           v-else
-          class="cortx-comment"
+          class="lr-comment"
           v-for="comment in alertComments"
           :key="comment.comment_id"
         >
@@ -41,7 +43,9 @@
             <span>{{ comment.comment_text }}</span>
           </div>
           <div class="mt-2">
-            <span class="sub-txt">{{ new Date(comment.created_time * 1000) | timeago }}</span>
+            <span class="sub-txt">{{
+              new Date(comment.created_time * 1000) | timeago
+            }}</span>
             <span class="sub-txt mx-3">|</span>
             <span class="sub-txt">{{ comment.created_by }}</span>
           </div>
@@ -55,14 +59,15 @@
             row-height="30"
             v-model.trim="commentText"
           ></v-textarea>
-          <span class="error-txt sub-txt">{{errorMsg}}</span>
+          <span class="error-txt sub-txt">{{ errorMsg }}</span>
         </div>
       </v-card-text>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="csmprimary" @click="dialog = false" dark>cancel</v-btn>
-        <v-btn color="csmprimary" @click="addComment()" dark>Save</v-btn>
+      <v-divider></v-divider>
+      <v-card-actions class="action-button-container">
+        <v-btn color="primary" @click="addComment()" class="mr-2" dark
+          >Save</v-btn
+        >
+        <v-btn color="csmdisabled" @click="dialog = false" dark>Cancel</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -72,53 +77,57 @@ import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
 import { Api } from "../../services/Api";
 import { AlertCommentModel } from "./LrAlertComment.model";
 @Component({
-	name: "LrAlertComments",
-	components: {},
+  name: "LrAlertComments",
+  components: {},
 })
 export default class LrAlertComments extends Vue {
-	@Prop({ required: true }) private id: any;
-	@PropSync("showAlertCommentsDialog", { required: false, default: false })
-	private dialog: boolean;
-	private commentText = "";
-	private alertComments: AlertCommentModel[] = [];
-	private errorMsg = "";
+  @Prop({ required: true }) private id: any;
+  @PropSync("showAlertCommentsDialog", { required: false, default: false })
+  private dialog: boolean;
+  private commentText = "";
+  private alertComments: AlertCommentModel[] = [];
+  private errorMsg = "";
 
-	mounted() {
-		Api.getData("alerts/comment", { isDummy: true }).then((resp: any) => {
-			this.alertComments = resp["comments"];
-		});
-	}
+  mounted() {
+    Api.getData("alerts/comment", { isDummy: true }).then((resp: any) => {
+      this.alertComments = resp["comments"];
+    });
+  }
 
-	addComment() {
-		if (!this.commentText) this.errorMsg = "Comment Required";
-		else if (this.commentText.length > 250)
-			this.errorMsg = "Comment Cannot Be More Than 250 Char";
-		else {
-			this.errorMsg = "";
-			// code to post date
-		}
-	}
+  addComment() {
+    if (!this.commentText) this.errorMsg = "Comment Required";
+    else if (this.commentText.length > 250)
+      this.errorMsg = "Comment Cannot Be More Than 250 Char";
+    else {
+      this.errorMsg = "";
+      // code to post date
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
 .title-container {
-	width: 100%;
-	.close-btn {
-		cursor: pointer;
-		float: right;
-	}
+  width: 100%;
+  font-weight: bold;
+  .close-btn {
+    cursor: pointer;
+    float: right;
+  }
 }
 .sub-txt {
-	font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 .error-txt {
-	color: red;
+  color: red;
 }
 .comment-text {
-	margin-top: 1rem;
+  margin-top: 1rem;
 }
-.no-cmnt-lbl{
+.no-comment-label {
   display: block;
   margin-top: 1rem;
+}
+.card-content-container {
+  padding: 0 1.5rem;
 }
 </style>

@@ -49,6 +49,7 @@ export default class SgtCard extends Vue {
 <style lang="scss" scoped>
 .card-container {
   height: 100%;
+  box-shadow: 1px 2px 10px #e5e5e5 !important;
 }
 .title-section {
   display: flex;

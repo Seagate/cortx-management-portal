@@ -15,7 +15,7 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>
+  <div class="health-tabular-container">
     <SgtDataTable
       ref="healthDetailsTable"
       :headers="healthTableConfig.healthTable.headers"
@@ -24,7 +24,18 @@
       @onRowHover="handleHover"
     >
       <template v-slot:status="{ data }">
-        <v-avatar :color="getColor(data.status)" size="16"></v-avatar>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-avatar
+              v-bind="attrs"
+              v-on="on"
+              class="status-icon"
+              :color="getColor(data.status)"
+              size="16"
+            ></v-avatar>
+          </template>
+          <span class="text-capitalize">{{ data.status }}</span>
+        </v-tooltip>
       </template>
 
       <template v-slot:actionColumn="{ data }">
@@ -45,11 +56,6 @@
                 />
               </template>
             </div>
-            <SgtSvgIcon
-              icon="zoom-in.svg"
-              hoverIcon="zoom-in-hover.svg"
-              @click="showMoreDetails"
-            />
           </div>
         </div>
       </template>
@@ -76,9 +82,8 @@
             class="white--text"
             color="#6ebe49"
             @click="displayInfoModal = false"
+            >OK</v-btn
           >
-            OK
-          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -155,13 +160,13 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
         path: `poweroff-${data.status}.svg`,
         hoverPath: `poweroff-${data.status}.svg`,
         action: "poweroff",
-        tooltip: "Power off",
+        tooltip: "Server Power Off",
       },
       {
         path: `powerandstorageoff-${data.status}.svg`,
         hoverPath: `powerandstorageoff-${data.status}.svg`,
         action: "powerandstorageoff",
-        tooltip: "Power and storage off",
+        tooltip: "Server and Storage Off",
       },
     ];
   }
@@ -174,7 +179,6 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
 
   get actionsCallback() {
     return {
-      getMoreInfoAction: this.showMoreDetails,
       startNodeAction: (resource: any) => this.performAction(resource, "start"),
       stopNodeAction: (resource: any) => this.performAction(resource, "stop"),
       powerOffAction: (resource: any) =>
@@ -203,27 +207,35 @@ export default class LrHealthTabular extends Mixins(ClusterManagementMixin) {
   serverAndStorageOff(resource: IResource) {
     //API call to turn the server and storage off
   }
-
-  public async showMoreDetails(details: IResource) {
-    this.resourceInfo = details;
-    this.displayInfoModal = true;
-  }
 }
 </script>
 <style lang="scss" scoped>
-.action-icons-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  .all-icons-container {
-    position: relative;
+.health-tabular-container {
+  .status-icon {
+    margin-left: 1em;
+  }
+  .action-icons-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    .all-icons-container {
+      position: relative;
 
-    .action-icons-container {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 5px;
-      position: absolute;
-      right: 25px;
+      .action-icons-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        position: absolute;
+        right: 0;
+        top: -12px;
+      }
+    }
+  }
+}
+.health-tabular-container::v-deep .sgt-data-table {
+  .v-data-table {
+    .footer-wrapper {
+      margin-bottom: 5px !important;
     }
   }
 }

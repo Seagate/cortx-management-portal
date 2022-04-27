@@ -31,7 +31,7 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text style="height: 300px;">
-          <v-treeview v-if="moreDetails.length" :items="moreDetails[0].children"></v-treeview>
+          <v-treeview v-if="moreDetails.length" :items="moreDetails[0].children" dense></v-treeview>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -68,7 +68,7 @@ export default class LrAlertDialog extends Vue {
 			if (typeof data[prop] == "string" || typeof data[prop] == "number") {
 				item.children.push({
 					id: this.mainIndex,
-					name: `${prop} - ${data[prop]}`,
+					name: `${prop}  -  ${data[prop]}`,
 				});
 			} else if (typeof data[prop] == "object") {
 				item.children.push(this.createTree(data[prop], prop));
@@ -81,6 +81,7 @@ export default class LrAlertDialog extends Vue {
 <style lang="scss" scoped>
 .title-container {
 	width: 100%;
+	font-weight: bold;
 	.close-btn {
 		cursor: pointer;
 		float: right;

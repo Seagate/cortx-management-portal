@@ -1,4 +1,4 @@
- <!--
+<!--
 * CORTX-CSM: CORTX Management web.
 * Copyright (c) 2022 Seagate Technology LLC and/or its Affiliates
 * This program is free software: you can redistribute it and/or modify
@@ -86,7 +86,7 @@
           </div>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions class="pa-4">
+        <v-card-actions class="action-button-container">
           <v-btn color="csmprimary" @click="downloadKey()" dark
             >Save & Close</v-btn
           >
@@ -198,6 +198,7 @@ export default class LrS3Access extends Vue {
   }
   .title-content {
     display: inline-block;
+    font-weight: bold;
   }
   .title-icon {
     vertical-align: top;

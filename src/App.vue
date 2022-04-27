@@ -74,7 +74,7 @@ main {
   display: flex;
   height: calc(100vh - 4rem);
   .side-nav {
-    width: 3rem;
+    width: 60px;
     height: 100%;
     background-color: #e7e7e7;
 

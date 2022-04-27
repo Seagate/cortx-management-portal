@@ -19,7 +19,7 @@
     <v-card>
       <v-card-title>
         <div class="title-container">
-          {{ formType === "create" ? "Add New User" : "Reset Password" }}
+          <b>{{ formType === "create" ? "Add New User" : "Reset Password" }}</b>
           <SgtSvgIcon
             icon="close-green.svg"
             @click="closeForm"
@@ -29,63 +29,86 @@
         </div>
       </v-card-title>
       <v-divider></v-divider>
-      <v-card-text>
+      <v-card-text class="card-content-container">
         <div class="content-container">
           <v-form ref="form" v-model="formValid">
-            <v-container>
-              <v-row v-if="formType === 'create'">
-                <v-col cols="12" sm="6">
-                  <label for="username">Username *</label>
-                  <v-text-field
-                    name="username"
-                    ref="username"
-                    v-model="userForm.username"
-                    outlined
-                    :rules="usernameRules"
-                    validate-on-blur
-                    type="text"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="6">
-                  <label for="password">New Password *</label>
-                  <v-text-field
-                    name="password"
-                    ref="password"
-                    v-model="userForm.password"
-                    outlined
-                    :rules="passwordRules"
-                    validate-on-blur
-                    :type="showPassword ? 'text' : 'password'"
-                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                    @click:append="showPassword = !showPassword"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <label for="confirmPassword">Confirm Password *</label>
-                  <v-text-field
-                    name="confirmPassword"
-                    ref="confirmPassword"
-                    v-model="userForm.confirmPassword"
-                    :rules="confirmPasswordRules"
-                    outlined
-                    validate-on-blur
-                    :type="showConfirmPassword ? 'text' : 'password'"
-                    :append-icon="
-                      showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'
-                    "
-                    @click:append="showConfirmPassword = !showConfirmPassword"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-container>
+            <v-row v-if="formType === 'create'">
+              <v-col cols="12" sm="6">
+                <label for="username" class="sgt-form-group-label"
+                  >Username *
+                  <SgtTooltipIcon>
+                    <template>
+                      <div class="i-content">
+                        The username must be of minimum 4 characters and maximum
+                        56 characters. The username must be alphanumeric and can
+                        contain underscore (_) and dash (-).
+                      </div>
+                    </template>
+                  </SgtTooltipIcon>
+                </label>
+                <v-text-field
+                  name="username"
+                  ref="username"
+                  v-model="userForm.username"
+                  outlined
+                  :rules="usernameRules"
+                  validate-on-blur
+                  type="text"
+                  dense
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <label for="password" class="sgt-form-group-label"
+                  >New Password *
+                  <SgtTooltipIcon>
+                    <template>
+                      <div class="i-content">
+                        Password must contain: Minimum 8 characters, One
+                        uppercase letter, One lowercase letter, One special
+                        character, and One number
+                      </div>
+                    </template>
+                  </SgtTooltipIcon>
+                </label>
+                <v-text-field
+                  name="password"
+                  ref="password"
+                  v-model="userForm.password"
+                  outlined
+                  :rules="passwordRules"
+                  validate-on-blur
+                  :type="showPassword ? 'text' : 'password'"
+                  :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="showPassword = !showPassword"
+                  dense
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <label for="confirmPassword" class="sgt-form-group-label"
+                  >Confirm Password *
+                </label>
+                <v-text-field
+                  name="confirmPassword"
+                  ref="confirmPassword"
+                  v-model="userForm.confirmPassword"
+                  :rules="confirmPasswordRules"
+                  outlined
+                  validate-on-blur
+                  :type="showConfirmPassword ? 'text' : 'password'"
+                  :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="showConfirmPassword = !showConfirmPassword"
+                  dense
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </v-form>
         </div>
       </v-card-text>
       <v-divider></v-divider>
-      <v-card-actions>
-        <v-btn color="csmprimary" @click="validateForm()" dark>{{
+      <v-card-actions class="action-button-container">
+        <v-btn class="mr-2" color="primary" @click="validateForm()" dark>{{
           formType === "create" ? "Create" : "Reset"
         }}</v-btn>
         <v-btn color="csmdisabled" @click="closeForm()" depressed dark
@@ -100,9 +123,11 @@ import { Component, Vue, Prop, PropSync } from "vue-property-decorator";
 import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import { passwordTest, usernameTest } from "@/utils/CommonUtilFunctions";
 import { UserForm } from "./LrS3User.model";
+import SgtTooltipIcon from "@/lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
+
 @Component({
   name: "LrS3UserForm",
-  components: { SgtSvgIcon },
+  components: { SgtSvgIcon, SgtTooltipIcon },
 })
 export default class LrS3UserForm extends Vue {
   @PropSync("showDialog", { required: true, default: false })

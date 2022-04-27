@@ -17,7 +17,7 @@
 -->
 <template>
     <v-chip
-      class="ma-1"
+      class="mr-2 mb-2"
       color="csmprimary"
       label
       outlined

@@ -43,6 +43,7 @@
             <div class="text-content" v-html="modalContent"></div>
           </template>
         </v-card-text>
+        <v-divider></v-divider>
         <v-card-actions class="sgt-button-container">
           <v-btn
             :color="dialogColor"
@@ -52,9 +53,13 @@
             >{{ okButtonLabel }}</v-btn
           >
           <template v-else>
-            <v-btn :color="dialogColor" @click="$close('yes')" dark>{{
-              yesButtonLabel
-            }}</v-btn>
+            <v-btn
+              class="mr-2"
+              :color="dialogColor"
+              @click="$close('yes')"
+              dark
+              >{{ yesButtonLabel }}</v-btn
+            >
             <v-btn :color="dialogColor" @click="$close('no')" dark outlined>{{
               noButtonLabel
             }}</v-btn>
@@ -136,7 +141,7 @@ export default class SgtDialog extends DialogComponent<boolean> {
 }
 
 .sgt-button-container {
-  padding: 1.5rem !important;
+  padding: 1.2rem 1.5rem !important;
 }
 
 .alert {

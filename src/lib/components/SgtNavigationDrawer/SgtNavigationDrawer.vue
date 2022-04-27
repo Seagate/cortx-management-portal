@@ -22,6 +22,7 @@
       fixed
       dark
       color="#000000"
+      width="170"
       :mini-variant-width="minVariantWidth"
       class="nav-style"
     >
@@ -80,49 +81,76 @@ import router from "@/router";
 import { SgtNavigationDrawerItem } from "./SgtNavigationDrawerItem.model";
 
 @Component({
-	name: "SgtNavigationDrawer",
-	components: {},
+  name: "SgtNavigationDrawer",
+  components: {},
 })
 export default class SgtNavigationDrawer extends Vue {
-	@PropSync("drawer", { type: Boolean }) syncedName!: boolean;
-	@Prop({ required: true }) navItems: SgtNavigationDrawerItem[];
-	@Prop({ required: false }) brandLogo: string;
-	@Prop({ required: false }) brandName: string;
-	@Prop({ required: false, default: "4rem" }) minVariantWidth: string;
+  @PropSync("drawer", { type: Boolean }) syncedName!: boolean;
+  @Prop({ required: true }) navItems: SgtNavigationDrawerItem[];
+  @Prop({ required: false }) brandLogo: string;
+  @Prop({ required: false }) brandName: string;
+  @Prop({ required: false, default: "60px" }) minVariantWidth: string;
 
-	activeRoute = "";
+  activeRoute = "";
 
-	navigate(path: string) {
-		router.push(path);
-		this.syncedName = true;
-	}
+  navigate(path: string) {
+    router.push(path);
+    this.syncedName = true;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .nav-style {
-	margin-top: 3.75em;
+  margin-top: 4rem;
+  .v-list {
+    padding: 0;
+    .v-list-item {
+      padding: 4px;
+      padding-left: 20px;
+      border-bottom: 3px solid #000;
+      border-radius: 0;
+
+      .v-list-item__icon {
+        margin-right: 10px;
+      }
+    }
+    .sgt-nav-item-active {
+      background: #262626;
+      color: #ffffff;
+      border-bottom: 3px solid #6ebe49;
+    }
+  }
+}
+.v-navigation-drawer--mini-variant {
+  .v-list {
+    .v-list-item {
+      padding-left: 4px;
+      .v-list-item__icon {
+        margin-right: 0;
+      }
+
+      &:last-child {
+        margin-left: 10px;
+      }
+    }
+  }
 }
 .nav-brand {
-	position: fixed;
-	bottom: 4em;
-	.nav-logo {
-		height: 27px;
-	}
-	.logo-title {
-		color: #6cc04a;
-		font-size: 1rem;
-	}
+  position: fixed;
+  bottom: 4em;
+  .nav-logo {
+    height: 27px;
+  }
+  .logo-title {
+    color: #6cc04a;
+    font-size: 1rem;
+  }
 }
 .font-inherit {
-	font-size: inherit;
-}
-.sgt-nav-item-active {
-	background: #262626;
-	color: #ffffff;
-	border-bottom: 3px solid #6ebe49;
+  font-size: inherit;
 }
 .font-grey {
-	color: #9e9e9e;
+  color: #9e9e9e;
 }
 </style>

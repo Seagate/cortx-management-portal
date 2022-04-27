@@ -32,11 +32,13 @@
       <v-card>
         <v-card-title>
           <div class="title-container">
-            {{
-              formType === "create"
-                ? "Add New Bucket"
-                : "Bucket - " + bucketForm.name
-            }}
+            <b
+              >{{
+                formType === "create"
+                  ? "Add New Bucket"
+                  : "Bucket - " + bucketForm.name
+              }}
+            </b>
             <SgtSvgIcon
               icon="close-green.svg"
               tooltip="Close"
@@ -49,48 +51,69 @@
         <v-card-text>
           <div class="content-container">
             <v-form ref="form" v-model="formValid">
-              <v-container class="pl-0">
-                <v-row v-if="formType === 'create'">
-                  <v-col cols="12" sm="6">
-                    <label for="name">Bucket Name *</label>
-                    <v-text-field
-                      name="name"
-                      ref="name"
-                      v-model="bucketForm.name"
-                      outlined
-                      :rules="nameRules"
-                      validate-on-blur
-                      type="text"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <h2 v-else class="pb-2">Bucket Policy</h2>
-                <v-row>
-                  <v-col cols="12" sm="12">
-                    <label for="jsonPolicy">{{
-                      `Type to add new bucket policy ${
-                        formType == "edit" ? "or edit an existing policy" : ""
-                      } in the text area below.`
-                    }}</label>
-                    <v-textarea
-                      auto-grow
-                      name="jsonPolicy"
-                      ref="jsonPolicy"
-                      v-model="bucketForm.jsonPolicy"
-                      outlined
-                      :rules="jsonPolicyRules"
-                      validate-on-blur
-                    ></v-textarea>
-                  </v-col>
-                </v-row>
-              </v-container>
+              <v-row v-if="formType === 'create'">
+                <v-col cols="12" sm="6">
+                  <label for="name" class="sgt-form-group-label"
+                    >Bucket Name *
+                    <SgtTooltipIcon>
+                      <template>
+                        <div class="i-content">
+                          <p>
+                            Bucket names must be between 3 (min) and 63 (max)
+                            characters long.
+                          </p>
+                          <p>
+                            Names can consist only of lowercase letters,
+                            numbers, dots (.), and hyphens (-).
+                          </p>
+                          <p>
+                            Bucket names must begin and end with a letter or
+                            number.
+                          </p>
+                        </div>
+                      </template>
+                    </SgtTooltipIcon>
+                  </label>
+                  <v-text-field
+                    name="name"
+                    ref="name"
+                    v-model="bucketForm.name"
+                    outlined
+                    :rules="nameRules"
+                    validate-on-blur
+                    type="text"
+                    dense
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <h2 v-else class="pb-2">Bucket Policy</h2>
+              <v-row>
+                <v-col cols="12" sm="12">
+                  <label for="jsonPolicy" class="sgt-form-group-label">{{
+                    `Type to add new bucket policy ${
+                      formType == "edit" ? "or edit an existing policy" : ""
+                    } in the text area below.`
+                  }}</label>
+                  <v-textarea
+                    auto-grow
+                    name="jsonPolicy"
+                    ref="jsonPolicy"
+                    v-model="bucketForm.jsonPolicy"
+                    outlined
+                    :rules="jsonPolicyRules"
+                    validate-on-blur
+                    dense
+                  ></v-textarea>
+                </v-col>
+              </v-row>
             </v-form>
           </div>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
+        <v-card-actions class="action-button-container">
           <v-btn
-            color="csmprimary"
+            class="mr-2"
+            color="primary"
             v-if="formType == 'create'"
             @click="createBucket"
             dark
@@ -98,13 +121,15 @@
             Create bucket
           </v-btn>
           <v-btn
-            color="csmprimary"
+            class="mr-2"
+            color="primary"
             v-if="formType == 'edit'"
             @click="updatePolicy"
             dark
             >Update
           </v-btn>
           <v-btn
+            class="mr-2"
             color="csmdisabled"
             v-if="formType == 'edit'"
             @click="deleteBucket"
@@ -131,10 +156,11 @@ import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
 import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
 import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
 import { create } from "vue-modal-dialogs";
+import SgtTooltipIcon from "@/lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
 
 @Component({
   name: "LrBuckets",
-  components: { SgtDataTable, SgtSvgIcon },
+  components: { SgtDataTable, SgtSvgIcon, SgtTooltipIcon },
 })
 export default class LrBuckets extends Vue {
   bucketTableConfig: any = JSON.parse(
@@ -161,8 +187,15 @@ export default class LrBuckets extends Vue {
   get nameRules() {
     return [
       (value: any) => !!value || "Required.",
+      (value: string) =>
+        (value && value.length >= 3 && value.length <= 63) ||
+        "Bucket names must be between 3 (min) and 63 (max) characters long.",
       (value: any) =>
-        (value && usernameTest(value)) || "Please enter a valid Json",
+        (value && usernameTest(value, "^[ a-z0-9.-]*$")) ||
+        "Names can consist only of lowercase letters, numbers, dots (.), and hyphens (-).",
+      (value: string) =>
+        (value && usernameTest(value, "^[a-z0-9].*[a-z0-9]$")) ||
+        "Bucket names must begin and end with a letter or number.",
     ];
   }
   updateRecord(tableDataConfig: SgtDataTableFilterSortPag) {
@@ -233,5 +266,8 @@ export default class LrBuckets extends Vue {
   .title-content {
     display: inline-block;
   }
+}
+.content-container {
+  margin-top: 1rem;
 }
 </style>

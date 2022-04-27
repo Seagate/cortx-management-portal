@@ -15,7 +15,7 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div>
+  <div class="sgt-data-table">
     <div class="search-container">
       <v-row class="search-row ma-0">
         <v-col class="pl-0 margin-auto">
@@ -54,7 +54,7 @@
     <SgtChips
       v-if="chips && chips.length > 0"
       :chips="chips"
-      class="pb-1"
+      class="pb-2"
       @remove-chip="updateFilterByChip($event)"
     />
     <v-data-table
@@ -64,11 +64,11 @@
       :item-key="itemKey"
       :hide-default-footer="true"
       :hide-default-header="true"
-      class="elevation-1"
+      class="elevation-1 sgt-table-header"
       v-model="selected"
     >
       <template v-slot:header="{}">
-        <tr>
+        <tr class="table-header">
           <th v-if="isMultiSelect">
             <v-simple-checkbox
               :value="selected.length == records.length"
@@ -168,9 +168,9 @@
               :style="{ 'text-align': getTextAlign(col.align) }"
             >
               <template v-if="col.type">
-                <template v-if="col.type == 'date'">{{
-                  item[col.value] | formattedDate
-                }}</template>
+                <template v-if="col.type == 'date'">
+                  {{ item[col.value] | formattedDate }}
+                </template>
                 <template v-else-if="col.type == 'custom'">
                   <slot
                     v-bind:data="{
@@ -222,7 +222,7 @@
         <v-row
           justify="end"
           align="center"
-          class="pr-3 py-4"
+          class="footer-wrapper"
           v-if="isPagination"
         >
           <v-col class="text-right pa-0 pr-4 flex-grow-0">
@@ -237,16 +237,12 @@
             ></v-pagination>
           </v-col>
           <div class="pt-1 pag-dropdown">
-            <v-select
-              :items="paginationConfig.pageSizeList"
+            <SgtDropdown
+              :dropdownOptions="paginationConfig.pageSizeList"
               v-model="tableDataConfig.pagination.pageSize"
-              outlined
-              dense
-              height="10px"
-              color="csmprimary"
-              item-color="csmprimary"
               @change="updatePageSize"
-            ></v-select>
+              height="10px"
+            />
           </div>
         </v-row>
       </template>
@@ -267,9 +263,10 @@ import {
   PaginationModel,
 } from "./SgtDataTableFilterSortPag.model";
 
+import SgtDropdown from "../SgtDropdown/SgtDropdown.vue";
 @Component({
   name: "SgtDataTable",
-  components: { SgtAdvanceSearch, SgtChips, SgtSvgIcon },
+  components: { SgtAdvanceSearch, SgtChips, SgtSvgIcon, SgtDropdown },
   filters: {
     formattedDate: function (date: string | number) {
       if (isNaN(+date)) return moment(date).format("DD-MM-YYYY hh:mm A");
@@ -422,87 +419,171 @@ export default class SgtDataTable extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-.search-container {
-  min-height: 4rem;
-  .search-row {
-    width: 100%;
+<style lang="scss">
+.sgt-data-table {
+  .search-container {
+    min-height: 4rem;
+    .search-row {
+      width: 100%;
+    }
   }
-}
-.margin-auto {
-  margin: auto;
-}
-.multi-btn {
-  display: flex;
-  justify-content: flex-end;
-}
-.action-button {
-  text-align: right;
-  min-width: 100px;
-}
-
-.action-col {
-  position: relative;
-  min-height: 1.5rem;
-}
-
-.hover-btn {
-  display: none;
-}
-
-.record:hover {
-  .hover-btn {
+  .sgt-table-header {
+    border: 1px solid #dfe0eb;
+  }
+  .margin-auto {
+    margin: auto;
+  }
+  .multi-btn {
     display: flex;
-    position: absolute;
-    right: 2rem;
+    justify-content: flex-end;
   }
-}
+  .action-button {
+    text-align: right;
+    min-width: 100px;
+  }
 
-.vertical-middle {
-  vertical-align: middle;
-}
+  .action-col {
+    position: relative;
+    min-height: 1.5rem;
+  }
 
-::v-deep .v-pagination__item {
-  font-size: 1rem;
-  height: 2.4rem;
-  min-width: 3rem;
-  padding: 0 5px;
-  text-decoration: none;
-  transition: 0.3s cubic-bezier(0, 0, 0.2, 1);
-  width: auto;
-  border-radius: 0px;
-  margin: 0;
-  border: 0.5px solid grey;
-  box-shadow: none;
-}
-::v-deep .v-pagination__navigation {
-  border-radius: 0;
-  min-width: 4rem;
-  min-width: 3rem;
-  min-height: 2.4rem;
-  border: 1px solid grey;
-  box-shadow: none;
-  margin: 0;
-}
-.cursor-pointer {
-  cursor: pointer;
-}
-.table-header {
-  padding: 0 1rem;
-  height: 3rem;
-  .sort-icon {
-    margin-left: 5px;
+  .hover-btn {
+    display: none;
   }
-  .sort-icon.sort-asc path:first-child {
-    fill: #000;
-  }
-  .sort-icon.sort-desc path:last-child {
-    fill: #000;
-  }
-}
 
-.pag-dropdown {
-  width: 8rem;
-  height: 3rem;
+  .record:hover {
+    .hover-btn {
+      display: flex;
+      gap: 10px;
+      position: absolute;
+      right: 2rem;
+    }
+  }
+
+  .vertical-middle {
+    vertical-align: middle;
+  }
+
+  ::v-deep .v-pagination__item {
+    font-size: 1rem;
+    height: 2.4rem;
+    min-width: 3rem;
+    padding: 0 5px;
+    text-decoration: none;
+    transition: 0.3s cubic-bezier(0, 0, 0.2, 1);
+    width: auto;
+    border-radius: 0px;
+    margin: 0;
+    border: 0.5px solid grey;
+    box-shadow: none;
+  }
+  ::v-deep .v-pagination__navigation {
+    border-radius: 0;
+    min-width: 4rem;
+    min-width: 3rem;
+    min-height: 2.4rem;
+    border: 1px solid grey;
+    box-shadow: none;
+    margin: 0;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .pag-dropdown {
+    width: 8rem;
+    height: 3rem;
+    max-width: 112px;
+
+    .v-select__selection {
+      margin: 0 !important;
+    }
+    .v-input__append-inner {
+      padding: 0 !important;
+    }
+  }
+
+  .v-data-table {
+    &.elevation-1 {
+      box-shadow: none !important;
+    }
+    border: none !important;
+
+    .table-header {
+      padding: 0 1rem;
+      height: 3rem;
+      background: #fcfcfd;
+      th {
+        border-bottom: 1px solid #dfe0eb;
+      }
+      .sort-icon {
+        margin-left: 5px;
+      }
+      .sort-icon.sort-asc path:first-child {
+        fill: #000;
+      }
+      .sort-icon.sort-desc path:last-child {
+        fill: #000;
+      }
+      & > span {
+        display: flex;
+      }
+    }
+
+    .v-data-table__wrapper {
+      border: 1px solid #dfe0eb !important;
+      border-radius: 8px !important;
+    }
+
+    .zoom-container > .sgt-icon-container {
+      margin-top: 4px;
+    }
+
+    .record {
+      border: 0 !important;
+      border-bottom: 1px solid #dfe0eb !important;
+      &:hover {
+        background-color: #fafafa !important;
+      }
+    }
+
+    .footer-wrapper {
+      margin: 20px 0;
+      .v-pagination {
+        border: 1px solid #eceeef;
+        .v-pagination__navigation,
+        .v-pagination__item,
+        .v-pagination__item--active {
+          margin: 0;
+          box-shadow: none !important;
+          color: #000 !important;
+          font-weight: bold !important;
+
+          li {
+            border: 1px solid #eceeef;
+          }
+
+          .v-icon {
+            transform: scale(0.65) !important;
+            color: $primary !important;
+            &::before,
+            &::after {
+              font-weight: bold;
+            }
+          }
+        }
+
+        .v-pagination__item--active {
+          color: #fff !important;
+        }
+
+        .v-pagination__navigation--disabled {
+          .v-icon {
+            color: #000 !important;
+          }
+        }
+      }
+    }
+  }
 }
 </style>
