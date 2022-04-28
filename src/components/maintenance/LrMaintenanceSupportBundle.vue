@@ -219,9 +219,6 @@ export default class LrMaintenanceSupportBundle extends Vue {
       modalType: "message",
       modalContentType: "html",
       okButtonLabel: "Close",
-    }).then((resp) => {
-      //code to delete
-      console.log(resp);
     });
   }
 
