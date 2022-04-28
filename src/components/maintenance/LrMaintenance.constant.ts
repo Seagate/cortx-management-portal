@@ -16,24 +16,80 @@
  */
 
 export const lrMaintenanceCardsConst = {
-    cardList: [
-        {
-            name: "cluster_maintenance",
-            title: "Cluster Maintenance",
-            description: "Lorem ipsum, or lipsum as it is sometimes known.",
-            icon: "cluster-green.svg"
-        },
-        {
-            name: "updates",
-            title: "Update",
-            description: "Lorem ipsum, or lipsum as it is sometimes known.",
-            icon: "update.svg"
-        },
-        {
-            name: "support_bundle",
-            title: "Support Bundle",
-            description: "Lorem ipsum, or lipsum as it is some known.",
-            icon: "support-bundle.svg"
-        }
-    ]
+  cardList: [
+    {
+      name: "cluster_maintenance",
+      title: "Cluster Maintenance",
+      description: "Lorem ipsum, or lipsum as it is sometimes known.",
+      icon: "cluster-green.svg",
+    },
+    {
+      name: "updates",
+      title: "Update",
+      description: "Lorem ipsum, or lipsum as it is sometimes known.",
+      icon: "update.svg",
+    },
+    {
+      name: "support_bundle",
+      title: "Support Bundle",
+      description: "Lorem ipsum, or lipsum as it is some known.",
+      icon: "support-bundle.svg",
+    },
+  ],
+};
+
+export const lrMaintenanceSupportBundleConst = {
+  searchConfig: {
+    placeholder: "Search",
+    advanceForm: [
+      {
+        type: "textbox",
+        name: "bundleId",
+        label: "Bundle Id",
+        placeholder: "Bundle Id",
+        value: "",
+      },
+      {
+        type: "textbox",
+        name: "status",
+        label: "Status",
+        placeholder: "Status",
+        value: "",
+      },
+    ],
+  },
+  supportBundleTable: {
+    headers: [
+      {
+        text: "Bundle Id",
+        value: "bundleId",
+      },
+      {
+        text: "Timestamp",
+        value: "timestamp",
+        type: "date",
+      },
+      {
+        text: "Status",
+        value: "status",
+      },
+      {
+        text: "",
+        value: "action",
+        type: "action",
+        align: "end",
+        sortable: false,
+        zoomIcon: true,
+        actionList: [],
+        customActionList: [
+          {
+            name: "download",
+            path: "download.svg",
+            hoverPath: "download-hover.svg",
+            tooltip: "Download",
+          },
+        ],
+      },
+    ],
+  },
 };

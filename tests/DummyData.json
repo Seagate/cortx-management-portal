@@ -423,5 +423,48 @@
         "name": "testuser2"
       }
     ]
+  },
+  "maintenance/support-bundle": {
+    "data": [
+      {
+        "bundleId": "2fe291da-c999-44a6",
+        "timestamp": "1637652160",
+        "status": "In progress",
+        "parameters": {
+          "component": "CSM",
+          "node": "Node1"
+        }
+      },
+      {
+        "bundleId": "2fe291da-c999-44a6",
+        "timestamp": "1637652160",
+        "status": "In progress",
+        "parameters": {
+          "component": "CSM",
+          "node": "Node1"
+        }
+      },
+      {
+        "bundleId": "2fe291da-c999-44a6",
+        "timestamp": "1637652160",
+        "status": "In progress",
+        "parameters": {
+          "component": "CSM",
+          "node": "Node1"
+        }
+      },
+      {
+        "bundleId": "2fe291da-c999-44a6",
+        "timestamp": "1637652160",
+        "status": "In progress",
+        "parameters": {
+          "component": "CSM",
+          "node": "Node1"
+        }
+      }
+    ]
+  },
+  "maintenance/node-list": {
+    "data": ["Node1", "Node2", "Node3", "Node4"]
   }
 }
