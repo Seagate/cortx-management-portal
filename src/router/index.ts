@@ -24,6 +24,7 @@ import LrManageUser from "../components/manage/LrManageUser.vue";
 import LrMaintenance from "../components/maintenance/LrMaintenance.vue"
 import LrHealthGraphical from "../components/health/LrHealthGraphical.vue"
 import LrMaintenanceCards from "../components/maintenance/LrMaintenanceCards.vue"
+import LrMaintenanceSupportBundle from "../components/maintenance/LrMaintenanceSupportBundle.vue";
 import LrConfiguration from "../components/configuration/LrConfiguration.vue"
 import LrConfigurationCards from "../components/configuration/LrConfigurationCards.vue"
 
@@ -68,14 +69,19 @@ const routes: Array<RouteConfig> = [
       {
         path: "",
         name: "maintenance",
-        component: LrMaintenanceCards
+        component: LrMaintenanceCards,
       },
       {
         path: "cluster-maintenance",
         name: "cluster_maintenance",
-        component: LrHealthGraphical
-      }
-    ]
+        component: LrHealthGraphical,
+      },
+      {
+        path: "support-bundle",
+        name: "support_bundle",
+        component: LrMaintenanceSupportBundle,
+      },
+    ],
   },
   {
     path: "/configuration",

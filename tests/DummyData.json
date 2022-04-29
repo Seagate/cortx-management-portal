@@ -423,5 +423,77 @@
         "name": "testuser2"
       }
     ]
+  },
+  "maintenance/support-bundle": {
+    "data": [
+      {
+        "bundleId": "2fe291da-c999-44a6",
+        "timestamp": "1637652160",
+        "status": "In progress",
+        "parameters": {
+          "component": "CSM",
+          "node": {
+            "name": "Node1",
+            "id": "1"
+          }
+        }
+      },
+      {
+        "bundleId": "2fe291da-c999-44a6",
+        "timestamp": "1637652160",
+        "status": "In progress",
+        "parameters": {
+          "component": "CSM",
+          "node": {
+            "name": "Node1",
+            "id": "1"
+          }
+        }
+      },
+      {
+        "bundleId": "2fe291da-c999-44a6",
+        "timestamp": "1637652160",
+        "status": "In progress",
+        "parameters": {
+          "component": "CSM",
+          "node": {
+            "name": "Node1",
+            "id": "1"
+          }
+        }
+      },
+      {
+        "bundleId": "2fe291da-c999-44a6",
+        "timestamp": "1637652160",
+        "status": "In progress",
+        "parameters": {
+          "component": "CSM",
+          "node": {
+            "name": "Node1",
+            "id": "1"
+          }
+        }
+      }
+    ]
+  },
+  "maintenance/node-list": {
+    "data": [
+      {
+        "name": "Node1",
+        "id": "1"
+      },
+      {
+        "name": "Node2",
+        "id": "2"
+      },
+      {
+        "name": "Node3",
+        "id": "3"
+      },
+      {
+        "name": "Node4",
+        "id": "4"
+      }
+    ]
   }
 }
