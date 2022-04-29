@@ -68,6 +68,7 @@
               v-model="timePeriod"
               :max="new Date().toISOString().slice(0, 10)"
               range
+              @change="printDates"
             ></v-date-picker>
           </v-menu>
         </div>
@@ -116,7 +117,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import SgtDropdown from "@/lib/components/SgtDropdown/SgtDropdown.vue";
 import SgtDataTable from "@/lib/components/SgtDataTable/SgtDataTable.vue";
 import { Api } from "../../services/Api";
@@ -159,7 +160,6 @@ export default class LrMaintenanceSupportBundle extends Vue {
     endDate: 0,
   };
 
-  @Watch("timePeriod")
   public printDates() {
     if (this.timePeriod.length === 2) {
       if (this.timePeriod[0] > this.timePeriod[1]) {
@@ -202,7 +202,10 @@ export default class LrMaintenanceSupportBundle extends Vue {
     const nodeListRes: any = await Api.getData("maintenance/node-list", {
       isDummy: true,
     });
-    this.nodeOptions = nodeListRes.data;
+    this.nodeOptions = nodeListRes.data.map((datum: any) => ({
+      label: datum.name,
+      value: datum.id,
+    }));
   }
 
   async moreInfoHandler(data: any) {
@@ -214,7 +217,7 @@ export default class LrMaintenanceSupportBundle extends Vue {
         <b>Status: </b> ${data.status}<br>
         <b>Parameters<br>
         <b>Component: </b> ${data.parameters.component}<br>
-        <b>Node: </b> ${data.parameters.node}<br>
+        <b>Node: </b> ${data.parameters.node.name}<br>
       `,
       modalType: "message",
       modalContentType: "html",

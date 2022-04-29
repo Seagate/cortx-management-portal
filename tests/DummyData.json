@@ -432,7 +432,10 @@
         "status": "In progress",
         "parameters": {
           "component": "CSM",
-          "node": "Node1"
+          "node": {
+            "name": "Node1",
+            "id": "1"
+          }
         }
       },
       {
@@ -441,7 +444,10 @@
         "status": "In progress",
         "parameters": {
           "component": "CSM",
-          "node": "Node1"
+          "node": {
+            "name": "Node1",
+            "id": "1"
+          }
         }
       },
       {
@@ -450,7 +456,10 @@
         "status": "In progress",
         "parameters": {
           "component": "CSM",
-          "node": "Node1"
+          "node": {
+            "name": "Node1",
+            "id": "1"
+          }
         }
       },
       {
@@ -459,12 +468,32 @@
         "status": "In progress",
         "parameters": {
           "component": "CSM",
-          "node": "Node1"
+          "node": {
+            "name": "Node1",
+            "id": "1"
+          }
         }
       }
     ]
   },
   "maintenance/node-list": {
-    "data": ["Node1", "Node2", "Node3", "Node4"]
+    "data": [
+      {
+        "name": "Node1",
+        "id": "1"
+      },
+      {
+        "name": "Node2",
+        "id": "2"
+      },
+      {
+        "name": "Node3",
+        "id": "3"
+      },
+      {
+        "name": "Node4",
+        "id": "4"
+      }
+    ]
   }
 }
