@@ -161,22 +161,6 @@ export default class LrMaintenanceSupportBundle extends Vue {
   };
 
   public printDates() {
-    if (this.timePeriod.length === 2) {
-      if (this.timePeriod[0] > this.timePeriod[1]) {
-        this.dateRange.startDate = moment(
-          moment(this.timePeriod[1]).toDate()
-        ).unix();
-        this.dateRange.endDate =
-          moment(moment(this.timePeriod[0]).toDate()).unix() + 86399;
-      } else {
-        this.dateRange.startDate = moment(
-          moment(this.timePeriod[0]).toDate()
-        ).unix();
-        this.dateRange.endDate =
-          moment(moment(this.timePeriod[1]).toDate()).unix() + 86399;
-      }
-    }
-
     switch (this.timePeriod.length) {
       case 1:
         this.dates = this.dates[0];
@@ -226,6 +210,19 @@ export default class LrMaintenanceSupportBundle extends Vue {
   }
 
   generateSupportBundle() {
+    if (this.timePeriod[0] > this.timePeriod[1]) {
+      this.dateRange.startDate = moment(
+        moment(this.timePeriod[1]).toDate()
+      ).unix();
+      this.dateRange.endDate =
+        moment(moment(this.timePeriod[0]).toDate()).unix() + 86399;
+    } else {
+      this.dateRange.startDate = moment(
+        moment(this.timePeriod[0]).toDate()
+      ).unix();
+      this.dateRange.endDate =
+        moment(moment(this.timePeriod[1]).toDate()).unix() + 86399;
+    }
     //API call to generate the support bundle
   }
 
