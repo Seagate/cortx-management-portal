@@ -27,7 +27,7 @@ import LrMaintenanceCards from "../components/maintenance/LrMaintenanceCards.vue
 import LrMaintenanceSupportBundle from "../components/maintenance/LrMaintenanceSupportBundle.vue";
 import LrConfiguration from "../components/configuration/LrConfiguration.vue"
 import LrConfigurationCards from "../components/configuration/LrConfigurationCards.vue"
-
+import LrObjectStore from "../components/configuration/LrObjectStore.vue";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -91,6 +91,11 @@ const routes: Array<RouteConfig> = [
         path: "",
         name: "configuration",
         component: LrConfigurationCards
+      },
+      {
+        path: "object-store",
+        name: "object-store",
+        component: LrObjectStore
       }
     ]
   }
