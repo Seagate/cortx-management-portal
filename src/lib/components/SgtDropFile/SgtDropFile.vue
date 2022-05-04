@@ -48,7 +48,7 @@
       <input
         id="input-field"
         ref="inputField"
-        :name="name"
+        :name="fileName ? fileName : 'dropFile'"
         @change="processInput"
         type="file"
         hidden
@@ -64,7 +64,7 @@ import SgtSvgIcon from "../SgtSvgIcon/SgtSvgIcon.vue";
   components: { SgtSvgIcon },
 })
 export default class SgtDropFile extends Vue {
-  @Prop({ required: true }) private name: string;
+  @Prop({ required: false }) private fileName: string;
   @ModelSync("files", "change", {}) value: any;
 
   dropHandler(ev: any) {
