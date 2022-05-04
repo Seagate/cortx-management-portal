@@ -24,24 +24,17 @@
 import { Component, Vue } from "vue-property-decorator";
 import SgtNavigationCard from "@/lib/components/SgtNavigationCard/SgtNavigationCard.vue";
 import { lrConfigurationCardsConst } from "./LrConfiguration.constant";
-import SgtDropFile from "@/lib/components/SgtDropFile/SgtDropFile.vue";
 
 @Component({
   name: "LrConfigurationCards",
   components: {
     SgtNavigationCard,
-    SgtDropFile,
   },
 })
-export default class LrMaintenanceCards extends Vue {
+export default class LrConfigurationCards extends Vue {
   cardList = JSON.parse(JSON.stringify(lrConfigurationCardsConst.cardList));
-  files: any = [];
   cardClick(name: string) {
     this.$router.push({ name: name });
-  }
-
-  handleDocument() {
-    console.log(this.files);
   }
 }
 </script>
