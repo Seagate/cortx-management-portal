@@ -50,8 +50,8 @@
     </div>
 
     <div class="software-update-status-section">
-      <div class="section-title">Last Update Status</div>
       <SgtDataTable
+        title="Last Update Status"
         :headers="softwareUpdateStatusConfig.softwareUpdateStatusTable.headers"
         :records="softwareUpdateStatusData"
         @zoom="updateStatusInfoHandler"
@@ -92,7 +92,7 @@
     >
       <v-card class="upload-software-card">
         <v-card-title class="title-section">
-          <span>Upload</span>
+          <span>Upload Release</span>
           <SgtSvgIcon
             icon="close-green.svg"
             @click="cancelOperation"
@@ -102,16 +102,14 @@
         </v-card-title>
         <v-divider />
         <v-card-text>
-          <label for="software-file-upload">
-            <v-btn class="mr-2 white--text" color="csmprimary">Browse</v-btn>
-          </label>
-          <input id="software-file-upload" type="file" />
+          <SgtDropFile v-model="uploadedFile" />
         </v-card-text>
         <v-divider />
         <v-card-actions class="action-button-container">
           <v-btn
             class="mr-2 white--text"
             color="csmprimary"
+            :disabled="uploadedFile.length === 0"
             @click="fileUploadHandler()"
             >Upload</v-btn
           >
@@ -136,6 +134,7 @@ import { Api } from "../../services/Api";
 import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
 import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
 import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
+import SgtDropFile from "@/lib/components/SgtDropFile/SgtDropFile.vue";
 
 @Component({
   name: "LrMaintenanceUpdate",
@@ -144,6 +143,7 @@ import SgtSvgIcon from "@/lib/components/SgtSvgIcon/SgtSvgIcon.vue";
     SgtTooltipIcon,
     LrDashboardInfoCard,
     SgtSvgIcon,
+    SgtDropFile,
   },
 })
 export default class LrMaintenanceUpdate extends Vue {
@@ -155,6 +155,7 @@ export default class LrMaintenanceUpdate extends Vue {
   showUploadModel = false;
   value = "";
   rowHoverIndex = -1;
+  uploadedFile = [];
 
   async mounted() {
     const availableSoftwareRes: any = await Api.getData(
@@ -179,7 +180,7 @@ export default class LrMaintenanceUpdate extends Vue {
   }
 
   async fileUploadHandler() {
-    //
+    //Make an API call to upload the file.
   }
 
   cancelOperation() {
@@ -264,15 +265,7 @@ export default class LrMaintenanceUpdate extends Vue {
   .software-update-status-section {
     .section-title {
       font-weight: bold;
-      margin: 1em 0 0.5em;
-    }
-  }
-
-  ::v-deep .software-update-status-section {
-    .sgt-data-table {
-      .search-container {
-        display: none !important;
-      }
+      margin: 1em 0;
     }
   }
 
@@ -295,10 +288,20 @@ export default class LrMaintenanceUpdate extends Vue {
     }
   }
 }
-.upload-software-card .title-section {
-  .close-btn {
-    color: $primary;
-    float: right;
+::v-deep .upload-software-card {
+  .title-section {
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    .close-btn {
+      color: $primary;
+    }
+  }
+
+  .v-card__text {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>
