@@ -35,5 +35,6 @@
   "settings": "Settings",
   "maintenance": "Maintenance",
   "change-password": "Change Password",
-  "logout": "Logout"
+  "logout": "Logout",
+  "configuration":"Configuration"
 }

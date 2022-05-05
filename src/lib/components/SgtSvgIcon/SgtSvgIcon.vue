@@ -29,14 +29,14 @@
         >
           <img
             :src="require(`@/assets/icons/${icon}`)"
-            @click="$emit('click')"
+            @click="$emit('click', $event)"
             class="action-btn-block"
             alt="logo"
           />
           <img
             v-if="hoverIcon"
             :src="require(`@/assets/icons/${hoverIcon}`)"
-            @click="$emit('click')"
+            @click="$emit('click', $event)"
             class="action-btn-hover"
             alt="logo"
           />

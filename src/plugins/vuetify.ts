@@ -34,6 +34,8 @@ export default new Vuetify({
         warning: "#F7A528",
         success: "#6EBE49",
         info: "#00A1DD",
+        border: "#9E9E9E",
+        backgroundGray: "#F7F7F7",
         csmprimary: "#6EBE49",
         csmdisabled: "#B7B7B7",
         csmborder: "#9E9E9E",
