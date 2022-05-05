@@ -24,8 +24,8 @@ export const lrMaintenanceCardsConst = {
       icon: "cluster-green.svg",
     },
     {
-      name: "updates",
-      title: "Update",
+      name: "update_software",
+      title: "Update Software",
       description: "Lorem ipsum, or lipsum as it is sometimes known.",
       icon: "update.svg",
     },
@@ -89,6 +89,77 @@ export const lrMaintenanceSupportBundleConst = {
             tooltip: "Download",
           },
         ],
+      },
+    ],
+  },
+};
+
+export const lrMaintenanceAvailableSoftwareConst = {
+  availableSoftwareTable: {
+    headers: [
+      {
+        text: "Release Name",
+        value: "releaseName",
+      },
+      {
+        text: "Release Date",
+        value: "releaseDate",
+      },
+      {
+        text: "",
+        value: "action",
+        type: "action",
+        align: "end",
+        sortable: false,
+        zoomIcon: true,
+        actionList: [],
+        customActionList: [
+          {
+            name: "update",
+            path: "update-software-icon.svg",
+            hoverPath: "update-software-hover-icon.svg",
+            tooltip: "Update",
+          },
+        ],
+      },
+    ],
+  },
+};
+
+export const lrMaintenanceSoftwareUpdateStatusConst = {
+  softwareUpdateStatusTable: {
+    headers: [
+      {
+        text: "Release Name",
+        value: "releaseName",
+      },
+      {
+        text: "Release Date",
+        value: "releaseDate",
+      },
+      {
+        text: "Status",
+        value: "status",
+      },
+      {
+        text: "Progress (%)",
+        value: "progress",
+      },
+      {
+        text: " ",
+        value: "actionColumn",
+        type: "custom",
+        align: "end",
+        sortable: false,
+      },
+      {
+        text: "",
+        value: "action",
+        type: "action",
+        align: "end",
+        width: "50px",
+        sortable: false,
+        zoomIcon: true,
       },
     ],
   },

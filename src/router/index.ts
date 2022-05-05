@@ -27,6 +27,7 @@ import LrMaintenance from "../components/maintenance/LrMaintenance.vue";
 import LrHealthGraphical from "../components/health/LrHealthGraphical.vue";
 import LrMaintenanceCards from "../components/maintenance/LrMaintenanceCards.vue";
 import LrMaintenanceSupportBundle from "../components/maintenance/LrMaintenanceSupportBundle.vue";
+import LrMaintenanceUpdateSoftware from "../components/maintenance/LrMaintenanceUpdateSoftware.vue";
 
 Vue.use(VueRouter);
 
@@ -80,6 +81,11 @@ const routes: Array<RouteConfig> = [
         path: "support-bundle",
         name: "support_bundle",
         component: LrMaintenanceSupportBundle,
+      },
+      {
+        path: "update-software",
+        name: "update_software",
+        component: LrMaintenanceUpdateSoftware,
       },
     ],
   },
