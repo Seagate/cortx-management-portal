@@ -19,14 +19,14 @@ import VueRouter, { RouteConfig } from "vue-router";
 import LrDashboard from "../components/dashboard/LrDashboard.vue";
 import LrHealth from "../components/health/LrHealth.vue";
 import LrAlert from "../components/alerts/LrAlert.vue";
-import LrAlertDetails from "../components/alerts/LrAlertDetails.vue";
-import LrS3Account from "../components/manage/s3/LrS3Account.vue";
-import LrIAmUser from "../components/manage/s3/LrIAmUser.vue";
+import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
 import LrManageUser from "../components/manage/LrManageUser.vue";
-import LrMaintenance from "../components/maintenance/LrMaintenance.vue";
-import LrHealthGraphical from "../components/health/LrHealthGraphical.vue";
-import LrMaintenanceCards from "../components/maintenance/LrMaintenanceCards.vue";
+import LrMaintenance from "../components/maintenance/LrMaintenance.vue"
+import LrHealthGraphical from "../components/health/LrHealthGraphical.vue"
+import LrMaintenanceCards from "../components/maintenance/LrMaintenanceCards.vue"
 import LrMaintenanceSupportBundle from "../components/maintenance/LrMaintenanceSupportBundle.vue";
+import LrConfiguration from "../components/configuration/LrConfiguration.vue"
+import LrConfigurationCards from "../components/configuration/LrConfigurationCards.vue"
 
 Vue.use(VueRouter);
 
@@ -83,6 +83,17 @@ const routes: Array<RouteConfig> = [
       },
     ],
   },
+  {
+    path: "/configuration",
+    component: LrConfiguration,
+    children: [
+      {
+        path: "",
+        name: "configuration",
+        component: LrConfigurationCards
+      }
+    ]
+  }
 ];
 
 const router = new VueRouter({
