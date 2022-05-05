@@ -100,6 +100,17 @@ const routes: Array<RouteConfig> = [
       },
     ],
   },
+  {
+    path: "/configuration",
+    component: LrConfiguration,
+    children: [
+      {
+        path: "",
+        name: "configuration",
+        component: LrConfigurationCards,
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
