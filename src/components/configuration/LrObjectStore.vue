@@ -17,7 +17,12 @@
 <template>
   <div class="object-store-container">
     <div>
-      <div class="page-title">Object Store</div>
+      <div class="page-title">
+        Object Store
+        <SgtTooltipIcon>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, modi!
+        </SgtTooltipIcon>
+      </div>
       <v-divider></v-divider>
       <div class="page-sub-title">S3 Config</div>
     </div>
@@ -26,7 +31,7 @@
         <v-expansion-panel-header><b> Limits </b></v-expansion-panel-header>
         <v-expansion-panel-content class="panel-content">
           <v-row class="field-row">
-            <v-col cols="3"> Max S3 Account </v-col>
+            <v-col cols="3" class="field-label"> Max S3 Account </v-col>
             <v-col cols="4">
               <SgtDropdown
                 :dropdownOptions="[5, 10, 20, 50, 100]"
@@ -36,20 +41,20 @@
             </v-col>
           </v-row>
           <v-row class="field-row">
-            <v-col cols="3"> Max IAM user </v-col>
+            <v-col cols="3" class="field-label"> Max IAM user </v-col>
             <v-col cols="4">
               <SgtDropdown
-                :dropdownOptions="[5, 10, 20, 50, 100]"
+                :dropdownOptions="[5, 10, 20, 50, 100, 1000]"
                 placeholder="select max IAM user"
                 v-model="limit.maxIAMUser"
               />
             </v-col>
           </v-row>
           <v-row class="field-row">
-            <v-col cols="3"> Max Bucket </v-col>
+            <v-col cols="3" class="field-label"> Max Bucket </v-col>
             <v-col cols="4">
               <SgtDropdown
-                :dropdownOptions="[5, 10, 20, 50, 100]"
+                :dropdownOptions="[5, 10, 20, 50, 100, 1000]"
                 placeholder="select max bucket"
                 v-model="limit.maxBucket"
               />
@@ -75,13 +80,19 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content class="panel-content">
           <v-row class="field-row">
-            <v-col cols="3">SSL certificate status</v-col>
+            <v-col cols="3" class="field-label">SSL certificate status</v-col>
             <v-col cols="4" style="min-height: 75px">
               {{ SSLConfig.status }}
             </v-col>
           </v-row>
           <v-row class="field-row">
-            <v-col cols="3"> SSL certificate upload </v-col>
+            <v-col cols="3" class="field-label">
+              SSL certificate upload
+              <SgtTooltipIcon>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe,
+                modi!
+              </SgtTooltipIcon>
+            </v-col>
             <v-col cols="4">
               <SgtDropFile
                 :fileName="SSLConfig.SSLCertificateName"
@@ -116,10 +127,11 @@ import { Api } from "@/services/Api";
 import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
 import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
 import { create } from "vue-modal-dialogs";
+import SgtTooltipIcon from "@/lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
 
 @Component({
   name: "LrObjectStore",
-  components: { SgtDropdown, SgtDropFile },
+  components: { SgtDropdown, SgtDropFile, SgtTooltipIcon },
 })
 export default class LrObjectStore extends Vue {
   panel = 0;
@@ -134,26 +146,26 @@ export default class LrObjectStore extends Vue {
   };
   SSLFile = [];
   SSLModal = create<SgtDialogModel>(SgtDialog);
+  limitInitialValues = {};
 
   mounted() {
     this.getLimit();
     this.getSSLConfig();
   }
-  getLimit() {
-    Api.getData("config/limit", { isDummy: true }).then((resp: any) => {
-      this.limit = resp["limit"];
-    });
+  async getLimit() {
+    const resp: any = await Api.getData("config/limit", { isDummy: true });
+    this.limitInitialValues = JSON.parse(JSON.stringify(resp.data));
+    this.limit = resp.data;
   }
-  getSSLConfig() {
-    Api.getData("config/SSLConfig", { isDummy: true }).then((resp: any) => {
-      this.SSLConfig = resp["config"];
-    });
+  async getSSLConfig() {
+    const resp: any = await Api.getData("config/SSLConfig", { isDummy: true });
+    this.SSLConfig = resp.data;
   }
   applyLimit() {
     //api call
   }
   resetLimit() {
-    //api call
+    this.limit = JSON.parse(JSON.stringify(this.limitInitialValues));
   }
 
   async installCertificate() {
@@ -163,7 +175,7 @@ export default class LrObjectStore extends Vue {
       modalType: "prompt",
       modalContentType: "html",
     }).then((resp) => {
-      //code to install or not
+      //API call to install the certificate
       console.log(resp);
     });
   }
@@ -179,6 +191,14 @@ export default class LrObjectStore extends Vue {
   .page-sub-title {
     font-weight: bold;
     padding: 1rem 1.5rem;
+  }
+  .field-label {
+    font-weight: bold;
+  }
+  .v-expansion-panel-header,
+  .v-expansion-panel-content {
+    box-shadow: 0px 2px 0px 0px #e5e5e5;
+    border: 1px solid #e5e5e5;
   }
 }
 .panel-content {
