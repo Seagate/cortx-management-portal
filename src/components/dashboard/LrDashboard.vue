@@ -18,8 +18,8 @@
   <div class="dashboard-container">
     <v-row class="top-row">
       <LrDashboardCapacityCard />
-      <LrDashboardStorageComponentsCard />
       <LrDashboardPerformanceCard />
+      <LrDashboardStorageComponentsCard />
     </v-row>
     <v-row class="bottom-row">
       <LrDashboardClusterHealthCard />
