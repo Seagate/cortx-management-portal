@@ -20,7 +20,8 @@
       <div class="page-title">
         Object Store
         <SgtTooltipIcon>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, modi!
+          Administrator can change default limits of the object store and also
+          override the SSL certificate packaged with the system.
         </SgtTooltipIcon>
       </div>
       <v-divider></v-divider>
@@ -31,7 +32,13 @@
         <v-expansion-panel-header><b> Limits </b></v-expansion-panel-header>
         <v-expansion-panel-content class="panel-content">
           <v-row class="field-row">
-            <v-col cols="3" class="field-label"> Max S3 Account </v-col>
+            <v-col cols="3" class="field-label">
+              Max S3 Account
+              <SgtTooltipIcon>
+                Maximum limit of S3 accounts that can be created in the system.
+                Exceeding this value will cause an error.
+              </SgtTooltipIcon>
+            </v-col>
             <v-col cols="4">
               <SgtDropdown
                 :dropdownOptions="[5, 10, 20, 50, 100]"
@@ -41,7 +48,13 @@
             </v-col>
           </v-row>
           <v-row class="field-row">
-            <v-col cols="3" class="field-label"> Max IAM user </v-col>
+            <v-col cols="3" class="field-label">
+              Max IAM user
+              <SgtTooltipIcon>
+                Maximum limit of IAM user accounts that can be created in the
+                system. Exceeding this value will cause an error.
+              </SgtTooltipIcon>
+            </v-col>
             <v-col cols="4">
               <SgtDropdown
                 :dropdownOptions="[5, 10, 20, 50, 100, 1000]"
@@ -51,7 +64,13 @@
             </v-col>
           </v-row>
           <v-row class="field-row">
-            <v-col cols="3" class="field-label"> Max Bucket </v-col>
+            <v-col cols="3" class="field-label">
+              Max Bucket
+              <SgtTooltipIcon>
+                Maximum limit of S3 buckets that can be created in the system.
+                Exceeding this value will cause an error.
+              </SgtTooltipIcon>
+            </v-col>
             <v-col cols="4">
               <SgtDropdown
                 :dropdownOptions="[5, 10, 20, 50, 100, 1000]"
@@ -89,8 +108,8 @@
             <v-col cols="3" class="field-label">
               SSL certificate upload
               <SgtTooltipIcon>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe,
-                modi!
+                The user can upload & install a new certificate which will be
+                applied to all the nodes in the cluster.
               </SgtTooltipIcon>
             </v-col>
             <v-col cols="4">
