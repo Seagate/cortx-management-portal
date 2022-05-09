@@ -115,6 +115,7 @@
             <v-col cols="4">
               <SgtDropFile
                 :fileName="SSLConfig.SSLCertificateName"
+                fileType="*.pem, *.crt, *.ca-bundle, *.cer, *.p7b, *.p7s"
                 v-model="SSLFile"
               />
             </v-col>
@@ -125,7 +126,7 @@
               <v-btn
                 class="mr-5"
                 color="primary"
-                @click="installCertificate"
+                @click="installCertificateConfirmation"
                 :dark="SSLFile.length > 0"
                 :disabled="SSLFile.length < 1"
                 >Install Certificate
@@ -187,15 +188,39 @@ export default class LrObjectStore extends Vue {
     this.limit = JSON.parse(JSON.stringify(this.limitInitialValues));
   }
 
-  async installCertificate() {
+  async installCertificateConfirmation() {
     const result = await this.SSLModal({
       modalTitle: "Confirmation",
       modalContent: `Click Yes to install the SSL certificate. After installing the SSL certificate, you must login again.`,
       modalType: "prompt",
       modalContentType: "html",
     }).then((resp) => {
-      //API call to install the certificate
+      this.installCertificate();
       console.log(resp);
+    });
+  }
+
+  async installCertificate() {
+    //API call to install the certificate
+
+    //Use below popup when the API call succeeds
+    await this.SSLModal({
+      modalTitle: "Success",
+      modalContent: `SSL certificate has been successfully installed.`,
+      infoType: "neutral",
+      modalType: "message",
+      modalContentType: "text",
+      okButtonLabel: "Ok",
+    });
+
+    //Use below popup when the API call fails
+    await this.SSLModal({
+      modalTitle: "Error",
+      modalContent: `Error in installing certificate`, //Display the error message from API response
+      infoType: "neutral",
+      modalType: "message",
+      modalContentType: "text",
+      okButtonLabel: "Ok",
     });
   }
 }
