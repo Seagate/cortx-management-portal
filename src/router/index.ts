@@ -19,14 +19,15 @@ import VueRouter, { RouteConfig } from "vue-router";
 import LrDashboard from "../components/dashboard/LrDashboard.vue";
 import LrHealth from "../components/health/LrHealth.vue";
 import LrAlert from "../components/alerts/LrAlert.vue";
-import LrAlertDetails from "../components/alerts/LrAlertDetails.vue"
+import LrAlertDetails from "../components/alerts/LrAlertDetails.vue";
 import LrManageUser from "../components/manage/LrManageUser.vue";
-import LrMaintenance from "../components/maintenance/LrMaintenance.vue"
-import LrHealthGraphical from "../components/health/LrHealthGraphical.vue"
-import LrMaintenanceCards from "../components/maintenance/LrMaintenanceCards.vue"
+import LrMaintenance from "../components/maintenance/LrMaintenance.vue";
+import LrHealthGraphical from "../components/health/LrHealthGraphical.vue";
+import LrMaintenanceCards from "../components/maintenance/LrMaintenanceCards.vue";
 import LrMaintenanceSupportBundle from "../components/maintenance/LrMaintenanceSupportBundle.vue";
-import LrConfiguration from "../components/configuration/LrConfiguration.vue"
-import LrConfigurationCards from "../components/configuration/LrConfigurationCards.vue"
+import LrMaintenanceUpdateSoftware from "../components/maintenance/LrMaintenanceUpdateSoftware.vue";
+import LrConfiguration from "../components/configuration/LrConfiguration.vue";
+import LrConfigurationCards from "../components/configuration/LrConfigurationCards.vue";
 
 Vue.use(VueRouter);
 
@@ -81,6 +82,11 @@ const routes: Array<RouteConfig> = [
         name: "support_bundle",
         component: LrMaintenanceSupportBundle,
       },
+      {
+        path: "update-software",
+        name: "update_software",
+        component: LrMaintenanceUpdateSoftware,
+      },
     ],
   },
   {
@@ -90,10 +96,21 @@ const routes: Array<RouteConfig> = [
       {
         path: "",
         name: "configuration",
-        component: LrConfigurationCards
-      }
-    ]
-  }
+        component: LrConfigurationCards,
+      },
+    ],
+  },
+  {
+    path: "/configuration",
+    component: LrConfiguration,
+    children: [
+      {
+        path: "",
+        name: "configuration",
+        component: LrConfigurationCards,
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
