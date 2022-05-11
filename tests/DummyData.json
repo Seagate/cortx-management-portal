@@ -508,5 +508,29 @@
       "sslCertificateName": "SSL certificate file 1.pem",
       "status": "Expires on - 02-May-2022"
     }
+  },
+  "config/network-info": {
+    "data": [
+      {
+        "node": {
+          "id": "1",
+          "name": "Node1"
+        },
+        "ipAddress": "147.26.57.89",
+        "netmask": "147.26.57.89",
+        "dnsServers": "80.248.72.1",
+        "searchDomains": "example.com"
+      },
+      {
+        "node": {
+          "id": "2",
+          "name": "Node2"
+        },
+        "ipAddress": "47.126.7.94",
+        "netmask": "7.26.197.19",
+        "dnsServers": "80.248.72.1",
+        "searchDomains": "example2.com"
+      }
+    ]
   }
 }

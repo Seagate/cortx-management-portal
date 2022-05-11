@@ -228,7 +228,7 @@ export default class LrObjectStore extends Vue {
 <style lang="scss" scoped>
 .object-store-container {
   .page-title {
-    font-weight: bolder;
+    font-weight: bold;
     font-size: 1.2rem;
     padding: 1rem 0;
   }
