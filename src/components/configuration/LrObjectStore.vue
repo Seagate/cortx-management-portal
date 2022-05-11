@@ -15,7 +15,7 @@
 * please email opensource@seagate.com.
 -->
 <template>
-  <div class="object-store-container">
+  <div class="object-store-container config-page">
     <div>
       <div class="page-title">
         Object Store
@@ -225,37 +225,4 @@ export default class LrObjectStore extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-.object-store-container {
-  .page-title {
-    font-weight: bold;
-    font-size: 1.2rem;
-    padding: 1rem 0;
-  }
-  .page-sub-title {
-    font-weight: bold;
-    padding: 1rem 1.5rem;
-  }
-  .field-label {
-    font-weight: bold;
-  }
-  .v-expansion-panel-header,
-  .v-expansion-panel-content {
-    box-shadow: 0px 2px 0px 0px #e5e5e5;
-    border: 1px solid #e5e5e5;
-  }
-}
-.panel-content {
-  border-top: 2px solid $border;
-  border-right: 2px solid $border;
-  padding-top: 3rem;
-  padding-bottom: 1rem;
-
-  .field-row {
-    padding: 0 2rem;
-  }
-  .button-col {
-    margin-top: 2rem;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

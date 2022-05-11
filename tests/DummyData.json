@@ -530,6 +530,26 @@
         "netmask": "7.26.197.19",
         "dnsServers": "80.248.72.1",
         "searchDomains": "example2.com"
+      },
+      {
+        "node": {
+          "id": "3",
+          "name": "Node3"
+        },
+        "ipAddress": "47.126.7.94",
+        "netmask": "7.26.197.19",
+        "dnsServers": "80.248.72.1",
+        "searchDomains": "example3.com"
+      },
+      {
+        "node": {
+          "id": "4",
+          "name": "Node4"
+        },
+        "ipAddress": "47.126.7.94",
+        "netmask": "7.26.197.19",
+        "dnsServers": "80.248.72.1",
+        "searchDomains": "example4.com"
       }
     ]
   }
