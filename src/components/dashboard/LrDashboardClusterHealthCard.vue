@@ -16,7 +16,11 @@
 -->
 <template>
   <div class="health-widget-container">
-    <SgtCard title="clusterHealth" :showZoomIcon="true" @zoom-click="zoomIconHandler">
+    <SgtCard
+      title="clusterHealth"
+      :showZoomIcon="true"
+      @zoom-click="zoomIconHandler"
+    >
       <template v-if="clusterDetails.status">
         <LrDashboardInfoCard
           :title="clusterDetails.name"
@@ -68,11 +72,11 @@ export default class LrDashboardClusterHealthCard extends Vue {
     this.clusterDetails = data.cluster;
     this.dashboardCardDetails = dashboardCardData.clusterNodes.map((datum) => {
       const statusType = datum.description.split("Nodes")[0];
-      const nodeCount = data.nodes[statusType as keyof NodeStatus];
+      const nodeCount = +data.nodes[statusType as keyof NodeStatus];
       return {
         ...datum,
         title: nodeCount,
-        imgUrl: this.getNodeImgUrl(nodeCount, statusType as keyof NodeStatus),
+        imgUrl: nodeCount === 0 ? "health-zero-nodes.svg" : datum.imgUrl,
       };
     });
   }
@@ -91,22 +95,6 @@ export default class LrDashboardClusterHealthCard extends Vue {
       online: "health-online-cluster.svg",
     };
     return healthImageUrl[healthType];
-  }
-
-  getNodeImgUrl(
-    nodeCount: number,
-    nodeType: "online" | "offline" | "failed" | "degraded"
-  ) {
-    const nodeImgUrl = {
-      online: "health-online-nodes.svg",
-      offline: "health-offline-nodes.svg",
-      failed: "health-failed-nodes.svg",
-      degraded: "health-degraded-nodes.svg",
-    };
-    if (nodeCount === 0) {
-      return "health-zero-nodes.svg";
-    }
-    return nodeImgUrl[nodeType];
   }
 
   zoomIconHandler() {

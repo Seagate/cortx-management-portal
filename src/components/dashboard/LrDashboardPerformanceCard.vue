@@ -56,7 +56,7 @@ export default class LrDashboardPerformanceCard extends Vue {
     })) as PerformanceData;
     this.dashboardCardDetails = dashboardCardData.performance.map((datum) => ({
       ...datum,
-      title: data[datum.description as keyof PerformanceData],
+      title: `${data[datum.description as keyof PerformanceData]} ${data.unit}`,
     }));
   }
 

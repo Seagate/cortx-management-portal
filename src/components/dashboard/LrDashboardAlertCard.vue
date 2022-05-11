@@ -50,10 +50,14 @@ export default class LrDashboardAlertCard extends Vue {
     const data = (await Api.getData("/dashboard/alerts", {
       isDummy: true,
     })) as AlertData;
-    this.dashboardCardDetails = dashboardCardData.alerts.map((datum) => ({
-      ...datum,
-      title: data[datum.description as keyof AlertData],
-    }));
+    this.dashboardCardDetails = dashboardCardData.alerts.map((datum) => {
+      const count = +data[datum.description as keyof AlertData];
+      return {
+        ...datum,
+        title: count,
+        imgUrl: count === 0 ? "zero-" + datum.imgUrl : datum.imgUrl,
+      };
+    });
   }
 
   cardClickHandler(routePath: string) {

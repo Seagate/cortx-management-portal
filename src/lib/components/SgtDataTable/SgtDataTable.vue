@@ -18,6 +18,11 @@
   <div class="sgt-data-table">
     <div class="search-container">
       <v-row class="search-row ma-0">
+        <v-col class="pl-0 margin-auto"
+          ><p v-if="title && !searchConfig" class="table-title">
+            {{ title }}
+          </p></v-col
+        >
         <v-col class="pl-0 margin-auto">
           <SgtAdvanceSearch
             v-if="searchConfig"
@@ -282,6 +287,7 @@ export default class SgtDataTable extends Vue {
   @Prop({ required: false }) private multiSelectButtons: any[];
   @Prop({ required: false }) private chips: SgtFilterObject[];
   @Prop({ required: false }) private itemKey: string;
+  @Prop({ required: false }) private title: string;
   @Prop({
     required: false,
     default: () => SgtDataTableConst.defaultTableConfig,
@@ -425,6 +431,11 @@ export default class SgtDataTable extends Vue {
     min-height: 4rem;
     .search-row {
       width: 100%;
+    }
+
+    .table-title {
+      font-weight: bold;
+      margin: 15px 0 0;
     }
   }
   .sgt-table-header {
