@@ -496,6 +496,86 @@
       }
     ]
   },
+  "maintenance/available-softwares": {
+    "data": [
+      {
+        "releaseName": "LR 2.1",
+        "releaseId": "ash12kak2",
+        "releaseDate": "24-01-2021",
+        "releaseNotes": ""
+      },
+      {
+        "releaseName": "LR 2.2",
+        "releaseId": "ash12kak2",
+        "releaseDate": "24-01-2021",
+        "releaseNotes": ""
+      },
+      {
+        "releaseName": "LR 2.3",
+        "releaseId": "ash12kak2",
+        "releaseDate": "24-01-2021",
+        "releaseNotes": ""
+      },
+      {
+        "releaseName": "LR 2.4",
+        "releaseId": "ash12kak2",
+        "releaseDate": "24-01-2021",
+        "releaseNotes": ""
+      },
+      {
+        "releaseName": "LR 2.5",
+        "releaseId": "ash12kak2",
+        "releaseDate": "24-01-2021",
+        "releaseNotes": ""
+      }
+    ]
+  },
+  "maintenance/software-update-status": {
+    "data": [
+      {
+        "id": "982n28knk20923",
+        "releaseName": "LR 2.1",
+        "releaseDate": "24-01-2021",
+        "status": "In progress",
+        "progress": "36"
+      },
+      {
+        "id": "982n28knk20923",
+        "releaseName": "LR 2.1",
+        "releaseDate": "24-01-2021",
+        "status": "Failed",
+        "progress": "36"
+      },
+      {
+        "id": "982n28knk20923",
+        "releaseName": "LR 2.1",
+        "releaseDate": "24-01-2021",
+        "status": "Complete",
+        "progress": "36"
+      },
+      {
+        "id": "982n28knk20923",
+        "releaseName": "LR 2.1",
+        "releaseDate": "24-01-2021",
+        "status": "Fetching",
+        "progress": "36"
+      },
+      {
+        "id": "982n28knk20923",
+        "releaseName": "LR 2.1",
+        "releaseDate": "24-01-2021",
+        "status": "Paused",
+        "progress": "36"
+      },
+      {
+        "id": "982n28knk20923",
+        "releaseName": "LR 2.1",
+        "releaseDate": "24-01-2021",
+        "status": "Pausing",
+        "progress": "36"
+      }
+    ]
+  },
   "config/limit": {
     "data": {
       "maxS3Account": 5,

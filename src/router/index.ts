@@ -29,6 +29,8 @@ import LrConfiguration from "../components/configuration/LrConfiguration.vue";
 import LrConfigurationCards from "../components/configuration/LrConfigurationCards.vue";
 import LrObjectStore from "../components/configuration/LrObjectStore.vue";
 import LrNodeConfiguration from "../components/configuration/LrNodeConfiguration.vue";
+import LrMaintenanceUpdateSoftware from "../components/maintenance/LrMaintenanceUpdateSoftware.vue";
+
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -81,6 +83,11 @@ const routes: Array<RouteConfig> = [
         path: "support-bundle",
         name: "support_bundle",
         component: LrMaintenanceSupportBundle,
+      },
+      {
+        path: "update-software",
+        name: "update_software",
+        component: LrMaintenanceUpdateSoftware,
       },
     ],
   },
