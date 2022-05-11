@@ -25,9 +25,10 @@ import LrMaintenance from "../components/maintenance/LrMaintenance.vue";
 import LrHealthGraphical from "../components/health/LrHealthGraphical.vue";
 import LrMaintenanceCards from "../components/maintenance/LrMaintenanceCards.vue";
 import LrMaintenanceSupportBundle from "../components/maintenance/LrMaintenanceSupportBundle.vue";
-import LrMaintenanceUpdateSoftware from "../components/maintenance/LrMaintenanceUpdateSoftware.vue";
 import LrConfiguration from "../components/configuration/LrConfiguration.vue";
 import LrConfigurationCards from "../components/configuration/LrConfigurationCards.vue";
+import LrObjectStore from "../components/configuration/LrObjectStore.vue";
+import LrMaintenanceUpdateSoftware from "../components/maintenance/LrMaintenanceUpdateSoftware.vue";
 
 Vue.use(VueRouter);
 
@@ -98,16 +99,10 @@ const routes: Array<RouteConfig> = [
         name: "configuration",
         component: LrConfigurationCards,
       },
-    ],
-  },
-  {
-    path: "/configuration",
-    component: LrConfiguration,
-    children: [
       {
-        path: "",
-        name: "configuration",
-        component: LrConfigurationCards,
+        path: "object-store",
+        name: "object-store",
+        component: LrObjectStore,
       },
     ],
   },

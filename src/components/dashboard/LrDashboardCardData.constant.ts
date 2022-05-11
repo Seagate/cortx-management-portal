@@ -31,7 +31,7 @@ export const dashboardCardData = {
     {
       title: 0,
       description: "underReplicated",
-      imgUrl: "storage-under-replicated.svg",
+      imgUrl: "storage-objects.svg",
       navPath: "",
     },
   ],
@@ -53,25 +53,25 @@ export const dashboardCardData = {
     {
       title: 0,
       description: "online",
-      imgUrl: "health-zero-nodes.svg",
+      imgUrl: "health-online-nodes.svg",
       navPath: "/health",
     },
     {
       title: 0,
       description: "offline",
-      imgUrl: "health-zero-nodes.svg",
+      imgUrl: "health-offline-nodes.svg",
       navPath: "/health",
     },
     {
       title: 0,
       description: "failed",
-      imgUrl: "health-zero-nodes.svg",
+      imgUrl: "health-failed-nodes.svg",
       navPath: "/health",
     },
     {
       title: 0,
       description: "degraded",
-      imgUrl: "health-zero-nodes.svg",
+      imgUrl: "health-degraded-nodes.svg",
       navPath: "/health",
     },
   ],

@@ -575,5 +575,18 @@
         "progress": "36"
       }
     ]
+  },
+  "config/limit": {
+    "limit": {
+      "maxS3Account": 5,
+      "maxIAMUser": 10,
+      "maxBucket": null
+    }
+  },
+  "config/SSLConfig": {
+    "config": {
+      "sslCertificateName": "SSL certificate file 1.pem",
+      "status": "Expires on - 02-May-2022"
+    }
   }
 }
