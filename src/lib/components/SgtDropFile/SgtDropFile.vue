@@ -18,7 +18,10 @@
   <div>
     <div
       class="sgt-drop-container"
-      :class="{ 'primary-box': value && value.length > 0 }"
+      :class="{
+        'primary-box': value && value.length > 0,
+        'invalid-file-type': isFileInvalid,
+      }"
       v-on:drop.prevent="dropHandler"
       v-on:dragover.prevent="dragHandler"
       @click="$refs.inputField.click()"
@@ -49,6 +52,7 @@
         id="input-field"
         ref="inputField"
         :name="fileName ? fileName : 'dropFile'"
+        :accept="fileType ? fileType : '*.*'"
         @change="processInput"
         type="file"
         hidden
@@ -65,11 +69,23 @@ import SgtSvgIcon from "../SgtSvgIcon/SgtSvgIcon.vue";
 })
 export default class SgtDropFile extends Vue {
   @Prop({ required: false }) private fileName: string;
+  @Prop({ required: false }) private fileType: string;
   @ModelSync("files", "change", {}) value: any;
+
+  isFileInvalid = false;
 
   dropHandler(ev: any) {
     if (ev) {
-      for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+      for (let i = 0; i < ev.dataTransfer.files.length; i++) {
+        if (this.fileType) {
+          let fileName = ev.dataTransfer.files[0].name;
+          let fileExtension = fileName.substr(fileName.lastIndexOf("."));
+          if (!this.fileType.includes(fileExtension)) {
+            this.value = [];
+            this.isFileInvalid = true;
+            break;
+          }
+        }
         this.value.push(ev.dataTransfer.files[i]);
       }
     }
@@ -81,6 +97,7 @@ export default class SgtDropFile extends Vue {
   }
 
   processInput() {
+    this.isFileInvalid = false;
     let src = this.$el.querySelector("#input-field");
     this.dropHandler({ dataTransfer: src });
   }
@@ -100,6 +117,7 @@ export default class SgtDropFile extends Vue {
   text-align: center;
   color: $border;
   background-color: $backgroundGray;
+  position: relative;
   cursor: pointer;
   .file-icon {
     display: block;
@@ -111,9 +129,20 @@ export default class SgtDropFile extends Vue {
   label {
     cursor: pointer;
   }
+
+  &.invalid-file-type::after {
+    content: "Chosen file type is invalid.";
+    position: absolute;
+    top: 105%;
+    left: 0;
+    color: $error;
+  }
 }
 .primary-box {
   color: $primary;
   border-color: $primary;
+}
+.invalid-file-type {
+  border-color: $error;
 }
 </style>

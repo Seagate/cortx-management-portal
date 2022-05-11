@@ -21,4 +21,5 @@ export const basePathList = [
   "/ldp",
   "/settings",
   "/maintenance",
+  "/configuration",
 ];

@@ -17,7 +17,13 @@
 <template>
   <div class="object-store-container">
     <div>
-      <div class="page-title">Object Store</div>
+      <div class="page-title">
+        Object Store
+        <SgtTooltipIcon>
+          Administrator can change default limits of the object store and also
+          override the SSL certificate packaged with the system.
+        </SgtTooltipIcon>
+      </div>
       <v-divider></v-divider>
       <div class="page-sub-title">S3 Config</div>
     </div>
@@ -26,7 +32,13 @@
         <v-expansion-panel-header><b> Limits </b></v-expansion-panel-header>
         <v-expansion-panel-content class="panel-content">
           <v-row class="field-row">
-            <v-col cols="3"> Max S3 Account </v-col>
+            <v-col cols="3" class="field-label">
+              Max S3 Account
+              <SgtTooltipIcon>
+                Maximum limit of S3 accounts that can be created in the system.
+                Exceeding this value will cause an error.
+              </SgtTooltipIcon>
+            </v-col>
             <v-col cols="4">
               <SgtDropdown
                 :dropdownOptions="[5, 10, 20, 50, 100]"
@@ -36,20 +48,32 @@
             </v-col>
           </v-row>
           <v-row class="field-row">
-            <v-col cols="3"> Max IAM user </v-col>
+            <v-col cols="3" class="field-label">
+              Max IAM user
+              <SgtTooltipIcon>
+                Maximum limit of IAM user accounts that can be created in the
+                system. Exceeding this value will cause an error.
+              </SgtTooltipIcon>
+            </v-col>
             <v-col cols="4">
               <SgtDropdown
-                :dropdownOptions="[5, 10, 20, 50, 100]"
+                :dropdownOptions="[5, 10, 20, 50, 100, 1000]"
                 placeholder="select max IAM user"
                 v-model="limit.maxIAMUser"
               />
             </v-col>
           </v-row>
           <v-row class="field-row">
-            <v-col cols="3"> Max Bucket </v-col>
+            <v-col cols="3" class="field-label">
+              Max Bucket
+              <SgtTooltipIcon>
+                Maximum limit of S3 buckets that can be created in the system.
+                Exceeding this value will cause an error.
+              </SgtTooltipIcon>
+            </v-col>
             <v-col cols="4">
               <SgtDropdown
-                :dropdownOptions="[5, 10, 20, 50, 100]"
+                :dropdownOptions="[5, 10, 20, 50, 100, 1000]"
                 placeholder="select max bucket"
                 v-model="limit.maxBucket"
               />
@@ -75,16 +99,23 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content class="panel-content">
           <v-row class="field-row">
-            <v-col cols="3">SSL certificate status</v-col>
+            <v-col cols="3" class="field-label">SSL certificate status</v-col>
             <v-col cols="4" style="min-height: 75px">
               {{ SSLConfig.status }}
             </v-col>
           </v-row>
           <v-row class="field-row">
-            <v-col cols="3"> SSL certificate upload </v-col>
+            <v-col cols="3" class="field-label">
+              SSL certificate upload
+              <SgtTooltipIcon>
+                The user can upload & install a new certificate which will be
+                applied to all the nodes in the cluster.
+              </SgtTooltipIcon>
+            </v-col>
             <v-col cols="4">
               <SgtDropFile
                 :fileName="SSLConfig.SSLCertificateName"
+                fileType="*.pem, *.crt, *.ca-bundle, *.cer, *.p7b, *.p7s"
                 v-model="SSLFile"
               />
             </v-col>
@@ -95,7 +126,7 @@
               <v-btn
                 class="mr-5"
                 color="primary"
-                @click="installCertificate"
+                @click="installCertificateConfirmation"
                 :dark="SSLFile.length > 0"
                 :disabled="SSLFile.length < 1"
                 >Install Certificate
@@ -116,10 +147,11 @@ import { Api } from "@/services/Api";
 import SgtDialog from "@/lib/components/SgtDialog/SgtDialog.vue";
 import { SgtDialogModel } from "@/lib/components/SgtDialog/SgtDialog.model";
 import { create } from "vue-modal-dialogs";
+import SgtTooltipIcon from "@/lib/components/SgtTooltipIcon/SgtTooltipIcon.vue";
 
 @Component({
   name: "LrObjectStore",
-  components: { SgtDropdown, SgtDropFile },
+  components: { SgtDropdown, SgtDropFile, SgtTooltipIcon },
 })
 export default class LrObjectStore extends Vue {
   panel = 0;
@@ -134,37 +166,61 @@ export default class LrObjectStore extends Vue {
   };
   SSLFile = [];
   SSLModal = create<SgtDialogModel>(SgtDialog);
+  limitInitialValues = {};
 
   mounted() {
     this.getLimit();
     this.getSSLConfig();
   }
-  getLimit() {
-    Api.getData("config/limit", { isDummy: true }).then((resp: any) => {
-      this.limit = resp["limit"];
-    });
+  async getLimit() {
+    const resp: any = await Api.getData("config/limit", { isDummy: true });
+    this.limitInitialValues = JSON.parse(JSON.stringify(resp.data));
+    this.limit = resp.data;
   }
-  getSSLConfig() {
-    Api.getData("config/SSLConfig", { isDummy: true }).then((resp: any) => {
-      this.SSLConfig = resp["config"];
-    });
+  async getSSLConfig() {
+    const resp: any = await Api.getData("config/SSLConfig", { isDummy: true });
+    this.SSLConfig = resp.data;
   }
   applyLimit() {
     //api call
   }
   resetLimit() {
-    //api call
+    this.limit = JSON.parse(JSON.stringify(this.limitInitialValues));
   }
 
-  async installCertificate() {
+  async installCertificateConfirmation() {
     const result = await this.SSLModal({
       modalTitle: "Confirmation",
       modalContent: `Click Yes to install the SSL certificate. After installing the SSL certificate, you must login again.`,
       modalType: "prompt",
       modalContentType: "html",
     }).then((resp) => {
-      //code to install or not
+      this.installCertificate();
       console.log(resp);
+    });
+  }
+
+  async installCertificate() {
+    //API call to install the certificate
+
+    //Use below popup when the API call succeeds
+    await this.SSLModal({
+      modalTitle: "Success",
+      modalContent: `SSL certificate has been successfully installed.`,
+      infoType: "neutral",
+      modalType: "message",
+      modalContentType: "text",
+      okButtonLabel: "Ok",
+    });
+
+    //Use below popup when the API call fails
+    await this.SSLModal({
+      modalTitle: "Error",
+      modalContent: `Error in installing certificate`, //Display the error message from API response
+      infoType: "neutral",
+      modalType: "message",
+      modalContentType: "text",
+      okButtonLabel: "Ok",
     });
   }
 }
@@ -179,6 +235,14 @@ export default class LrObjectStore extends Vue {
   .page-sub-title {
     font-weight: bold;
     padding: 1rem 1.5rem;
+  }
+  .field-label {
+    font-weight: bold;
+  }
+  .v-expansion-panel-header,
+  .v-expansion-panel-content {
+    box-shadow: 0px 2px 0px 0px #e5e5e5;
+    border: 1px solid #e5e5e5;
   }
 }
 .panel-content {
