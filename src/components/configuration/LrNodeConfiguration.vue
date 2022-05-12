@@ -149,7 +149,14 @@
         <v-expansion-panel-content class="panel-content">
           <v-form v-model="isPasswordDetailsValid">
             <v-row class="field-row">
-              <v-col cols="3" class="field-label"> New Password </v-col>
+              <v-col cols="3" class="field-label">
+                New Password
+                <SgtTooltipIcon>
+                  Password must contain: Minimum 8 characters, One uppercase
+                  letter, One lowercase letter, One special character, One
+                  number
+                </SgtTooltipIcon>
+              </v-col>
               <v-col cols="4">
                 <v-text-field
                   v-model="password.newPassword"
