@@ -28,6 +28,7 @@ import LrMaintenanceSupportBundle from "../components/maintenance/LrMaintenanceS
 import LrConfiguration from "../components/configuration/LrConfiguration.vue";
 import LrConfigurationCards from "../components/configuration/LrConfigurationCards.vue";
 import LrObjectStore from "../components/configuration/LrObjectStore.vue";
+import LrNodeConfiguration from "../components/configuration/LrNodeConfiguration.vue";
 import LrMaintenanceUpdateSoftware from "../components/maintenance/LrMaintenanceUpdateSoftware.vue";
 
 Vue.use(VueRouter);
@@ -103,6 +104,11 @@ const routes: Array<RouteConfig> = [
         path: "object-store",
         name: "object-store",
         component: LrObjectStore,
+      },
+      {
+        path: "node",
+        name: "node",
+        component: LrNodeConfiguration,
       },
     ],
   },
